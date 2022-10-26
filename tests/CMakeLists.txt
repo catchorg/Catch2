@@ -91,6 +91,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/IntrospectiveTests/Reporters.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Tag.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/TestCaseInfoHasher.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/TestSpec.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/TestSpecParser.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/TextFlow.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Sharding.tests.cpp

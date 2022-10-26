@@ -20,13 +20,13 @@ This info message starts with a linebreak' with 1 message: '
 This warning message starts with a linebreak'
 Tricky.tests.cpp:<line number>: failed: explicitly with 1 message: '1514'
 Compilation.tests.cpp:<line number>: passed: std::is_same<TypeList<int>, TypeList<int>>::value for: true
-CmdLine.tests.cpp:<line number>: passed: spec.matches(*fakeTestCase("spec . char")) for: true
-CmdLine.tests.cpp:<line number>: passed: spec.matches(*fakeTestCase("spec , char")) for: true
-CmdLine.tests.cpp:<line number>: passed: !(spec.matches(*fakeTestCase(R"(spec \, char)"))) for: !false
-CmdLine.tests.cpp:<line number>: passed: spec.matches(*fakeTestCase(R"(spec {a} char)")) for: true
-CmdLine.tests.cpp:<line number>: passed: spec.matches(*fakeTestCase(R"(spec [a] char)")) for: true
-CmdLine.tests.cpp:<line number>: passed: !(spec.matches(*fakeTestCase("differs but has similar tag", "[a]"))) for: !false
-CmdLine.tests.cpp:<line number>: passed: spec.matches(*fakeTestCase(R"(spec \ char)")) for: true
+TestSpec.tests.cpp:<line number>: passed: spec.matches(*fakeTestCase("spec . char")) for: true
+TestSpec.tests.cpp:<line number>: passed: spec.matches(*fakeTestCase("spec , char")) for: true
+TestSpec.tests.cpp:<line number>: passed: !(spec.matches(*fakeTestCase(R"(spec \, char)"))) for: !false
+TestSpec.tests.cpp:<line number>: passed: spec.matches(*fakeTestCase(R"(spec {a} char)")) for: true
+TestSpec.tests.cpp:<line number>: passed: spec.matches(*fakeTestCase(R"(spec [a] char)")) for: true
+TestSpec.tests.cpp:<line number>: passed: !(spec.matches(*fakeTestCase("differs but has similar tag", "[a]"))) for: !false
+TestSpec.tests.cpp:<line number>: passed: spec.matches(*fakeTestCase(R"(spec \ char)")) for: true
 Generators.tests.cpp:<line number>: passed: counter < 7 for: 3 < 7
 Generators.tests.cpp:<line number>: passed: counter < 7 for: 6 < 7
 Generators.tests.cpp:<line number>: passed: i != j for: 1 != 3
@@ -1117,157 +1117,6 @@ Matchers.tests.cpp:<line number>: passed: ( EvilMatcher(), EvilMatcher() ), Evil
 Matchers.tests.cpp:<line number>: passed: &EvilMatcher(), EvilAddressOfOperatorUsed
 Matchers.tests.cpp:<line number>: passed: EvilMatcher() || ( EvilMatcher() && !EvilMatcher() )
 Matchers.tests.cpp:<line number>: passed: ( EvilMatcher() && EvilMatcher() ) || !EvilMatcher()
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: parseTestSpec( "*a" ).matches( *tcA ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: parseTestSpec( "a*" ).matches( *tcA ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: parseTestSpec( "*a*" ).matches( *tcA ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == true for: true == true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *fakeTestCase( "  aardvark " ) ) for: true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *fakeTestCase( "  aardvark" ) ) for: true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *fakeTestCase( " aardvark " ) ) for: true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *fakeTestCase( "aardvark " ) ) for: true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *fakeTestCase( "aardvark" ) ) for: true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *fakeTestCase( "  aardvark " ) ) for: true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *fakeTestCase( "  aardvark" ) ) for: true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *fakeTestCase( " aardvark " ) ) for: true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *fakeTestCase( "aardvark " ) ) for: true
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *fakeTestCase( "aardvark" ) ) for: true
-CmdLine.tests.cpp:<line number>: passed: spec.matches(*fakeTestCase("hidden and foo", "[.][foo]")) for: true
-CmdLine.tests.cpp:<line number>: passed: !(spec.matches(*fakeTestCase("only foo", "[foo]"))) for: !false
-CmdLine.tests.cpp:<line number>: passed: !(spec.matches(*fakeTestCase("hidden and foo", "[.][foo]"))) for: !false
-CmdLine.tests.cpp:<line number>: passed: !(spec.matches(*fakeTestCase("only foo", "[foo]"))) for: !false
-CmdLine.tests.cpp:<line number>: passed: !(spec.matches(*fakeTestCase("only hidden", "[.]"))) for: !false
-CmdLine.tests.cpp:<line number>: passed: spec.matches(*fakeTestCase("neither foo nor hidden", "[bar]")) for: true
 Parse.tests.cpp:<line number>: passed: parseUInt( "0" ) == Optional<unsigned int>{ 0 } for: {?} == {?}
 Parse.tests.cpp:<line number>: passed: parseUInt( "100" ) == Optional<unsigned int>{ 100 } for: {?} == {?}
 Parse.tests.cpp:<line number>: passed: parseUInt( "4294967295" ) == Optional<unsigned int>{ 4294967295 } for: {?} == {?}
@@ -2602,7 +2451,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  395 |  305 passed |  83 failed |  7 failed as expected
-assertions: 2310 | 2140 passed | 143 failed | 27 failed as expected
+test cases:  394 |  304 passed |  83 failed |  7 failed as expected
+assertions: 2159 | 1989 passed | 143 failed | 27 failed as expected
 
 

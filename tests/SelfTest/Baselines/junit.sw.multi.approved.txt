@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="126" tests="2310" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="126" tests="2159" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
@@ -1047,41 +1047,6 @@ Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Overloaded comma or address-of operators are not used" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Empty test spec should have no filters" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Test spec from empty string should have no filters" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Test spec from just a comma should have no filters" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Test spec from name should have one filter" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Test spec from quoted name should have one filter" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Test spec from name should have one filter" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Wildcard at the start" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Wildcard at the end" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Wildcard at both ends" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Redundant wildcard at the start" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Redundant wildcard at the end" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Redundant wildcard at both ends" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Wildcard at both ends, redundant at start" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Just wildcard" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Single tag" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Single tag, two matches" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Two tags" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Two tags, spare separated" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Wildcarded name and tag" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Single tag exclusion" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/One tag exclusion and one tag inclusion" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/One tag exclusion and one wldcarded name inclusion" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/One tag exclusion, using exclude:, and one wldcarded name inclusion" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/name exclusion" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/wildcarded name exclusion" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/wildcarded name exclusion with tag inclusion" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/wildcarded name exclusion, using exclude:, with tag inclusion" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/two wildcarded names" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/empty tag" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/empty quoted name" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/quoted string followed by tag exclusion" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Leading and trailing spaces in test spec" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Leading and trailing spaces in test name" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Shortened hide tags are split apart when parsing" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Parse test names and tags/Shortened hide tags also properly handle exclusion" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parse uints/proper inputs" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parse uints/Bad inputs" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsed tags are matched case insensitive" time="{duration}" status="run"/>
