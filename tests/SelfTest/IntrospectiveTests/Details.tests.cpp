@@ -20,6 +20,7 @@ TEST_CASE("Check that our error handling macros throw the right exceptions", "[!
     REQUIRE_THROWS_AS(CATCH_INTERNAL_ERROR(""), std::logic_error);
     REQUIRE_THROWS_AS(CATCH_ERROR(""), std::domain_error);
     REQUIRE_THROWS_AS(CATCH_RUNTIME_ERROR(""), std::runtime_error);
+    REQUIRE_THROWS_AS(CATCH_SYSTEM_ERROR(0, std::generic_category()), std::system_error);
     REQUIRE_THROWS_AS([](){CATCH_ENFORCE(false, "");}(), std::domain_error);
     REQUIRE_NOTHROW([](){CATCH_ENFORCE(true, "");}());
 }
