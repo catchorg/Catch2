@@ -596,6 +596,17 @@ foreach (reporterName # "Automake" - the simple .trs format does not support any
                       "TAP"
                       # "TeamCity" - does not seem to support test suite-level metadata/comments
                       "XML")
+
+    add_test(NAME "Reporters:Filters:${reporterName}"
+      COMMAND
+        $<TARGET_FILE:SelfTest> [comparisons][string-case] "CaseInsensitiveLess is case insensitive"
+          --reporter ${reporterName}
+    )
+    set_tests_properties("Reporters:Filters:${reporterName}"
+      PROPERTIES
+        PASS_REGULAR_EXPRESSION "[fF]ilters.+\\[comparisons\\]\\[string-case\\]"
+    )
+
     add_test(NAME "Reporters:RngSeed:${reporterName}"
       COMMAND
         $<TARGET_FILE:SelfTest> "Factorials are computed"
