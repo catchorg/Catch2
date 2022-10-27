@@ -325,3 +325,40 @@ TEST_CASE("#1912 -- test spec parser handles escaping", "[command-line][test-spe
         REQUIRE(spec.matches(*fakeTestCase(R"(spec \ char)")));
     }
 }
+
+TEST_CASE("Test spec serialization is round-trippable", "[test-spec][serialization][approvals]") {
+    using Catch::parseTestSpec;
+    using Catch::TestSpec;
+
+    auto serializedTestSpec = []( std::string const& spec ) {
+        Catch::ReusableStringStream sstr;
+        sstr << parseTestSpec( spec );
+        return sstr.str();
+    };
+
+    SECTION("Spaces are normalized") {
+        CHECK( serializedTestSpec( "[abc][def]" ) == "[abc] [def]" );
+        CHECK( serializedTestSpec( "[def]    [abc]" ) == "[def] [abc]" );
+        CHECK( serializedTestSpec( "[def] [abc]" ) == "[def] [abc]" );
+    }
+    SECTION("Output is order dependent") {
+        CHECK( serializedTestSpec( "[abc][def]" ) == "[abc] [def]" );
+        CHECK( serializedTestSpec( "[def][abc]" ) == "[def] [abc]" );
+    }
+    SECTION("Multiple disjunct filters") {
+        CHECK( serializedTestSpec( "[abc],[def]" ) == "[abc],[def]" );
+        CHECK( serializedTestSpec( "[def],[abc],[idkfa]" ) == "[def],[abc],[idkfa]" );
+    }
+    SECTION("Test names are enclosed in string") {
+        CHECK( serializedTestSpec( "Some test" ) == "\"Some test\"" );
+        CHECK( serializedTestSpec( "*Some test" ) == "\"*Some test\"" );
+        CHECK( serializedTestSpec( "* Some test" ) == "\"* Some test\"" );
+        CHECK( serializedTestSpec( "* Some test *" ) == "\"* Some test *\"" );
+    }
+    SECTION( "Mixing test names and tags" ) {
+        CHECK( serializedTestSpec( "some test[abcd]" ) ==
+               "\"some test\" [abcd]" );
+        CHECK( serializedTestSpec( "[ab]some test[cd]" ) ==
+               "[ab] \"some test\" [cd]" );
+    }
+}

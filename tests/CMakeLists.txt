@@ -249,7 +249,7 @@ add_test(NAME TestSpecs::CombiningMatchingAndNonMatchingIsOk-1 COMMAND $<TARGET_
 
 add_test(NAME TestSpecs::CombiningMatchingAndNonMatchingIsOk-2 COMMAND $<TARGET_FILE:SelfTest> Tracker, "___nonexistent_test___")
 set_tests_properties(TestSpecs::CombiningMatchingAndNonMatchingIsOk-2 PROPERTIES
-    PASS_REGULAR_EXPRESSION "No test cases matched '___nonexistent_test___'"
+    PASS_REGULAR_EXPRESSION "No test cases matched '\"___nonexistent_test___\"'"
     FAIL_REGULAR_EXPRESSION "No tests ran"
 )
 
