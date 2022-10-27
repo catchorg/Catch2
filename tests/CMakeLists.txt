@@ -264,6 +264,14 @@ add_test(NAME TestSpecs::OverrideFailureWithNoMatchedTests
   COMMAND $<TARGET_FILE:SelfTest> "___nonexistent_test___" --allow-running-no-tests
 )
 
+add_test(NAME TestSpecs::NonMatchingTestSpecIsRoundTrippable
+    COMMAND $<TARGET_FILE:SelfTest> Tracker, "this test does not exist" "[nor does this tag]"
+)
+set_tests_properties(TestSpecs::NonMatchingTestSpecIsRoundTrippable
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "No test cases matched '\"this test does not exist\" \\[nor does this tag\\]'"
+)
+
 add_test(NAME Warnings::UnmatchedTestSpecIsAccepted
   COMMAND $<TARGET_FILE:SelfTest> Tracker --warn UnmatchedTestSpec
 )
