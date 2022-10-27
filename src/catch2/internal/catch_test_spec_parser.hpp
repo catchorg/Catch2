@@ -71,7 +71,6 @@ namespace Catch {
         }
 
     };
-    TestSpec parseTestSpec( std::string const& arg );
 
 } // namespace Catch
 

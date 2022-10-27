@@ -238,8 +238,4 @@ namespace Catch {
         m_mode = None;
     }
 
-    TestSpec parseTestSpec( std::string const& arg ) {
-        return TestSpecParser( ITagAliasRegistry::get() ).parse( arg ).testSpec();
-    }
-
 } // namespace Catch

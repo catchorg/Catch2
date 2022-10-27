@@ -17,6 +17,7 @@
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 
+#include <helpers/parse_test_spec.hpp>
 
 namespace {
     auto fakeTestCase(const char* name, const char* desc = "") { return Catch::makeTestCaseInfo("", { name, desc }, CATCH_INTERNAL_LINEINFO); }

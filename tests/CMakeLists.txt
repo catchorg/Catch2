@@ -101,6 +101,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/IntrospectiveTests/Xml.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/ToString.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/UniquePtr.tests.cpp
+        ${SELF_TEST_DIR}/helpers/parse_test_spec.cpp
         ${SELF_TEST_DIR}/TimingTests/Sleep.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Approx.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/BDD.tests.cpp
@@ -129,6 +130,10 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/UsageTests/Matchers.tests.cpp
         )
 
+set(TEST_HEADERS
+  ${SELF_TEST_DIR}/helpers/parse_test_spec.hpp
+)
+
 
 # Specify the headers, too, so CLion recognises them as project files
 set(HEADERS
@@ -146,7 +151,8 @@ set(HEADERS
 
 include(CTest)
 
-add_executable(SelfTest ${TEST_SOURCES})
+add_executable(SelfTest ${TEST_SOURCES} ${TEST_HEADERS})
+target_include_directories(SelfTest PRIVATE ${SELF_TEST_DIR})
 target_link_libraries(SelfTest PRIVATE Catch2WithMain)
 if (BUILD_SHARED_LIBS AND WIN32)
     add_custom_command(TARGET SelfTest PRE_LINK
