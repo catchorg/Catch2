@@ -57,8 +57,9 @@ namespace Catch {
              .writeAttribute("name"_sr, m_config->name())
              .writeAttribute("rng-seed"_sr, m_config->rngSeed())
              .writeAttribute("catch2-version"_sr, libraryVersion());
-        if (m_config->testSpec().hasFilters())
-            m_xml.writeAttribute( "filters"_sr, serializeFilters( m_config->getTestsOrTags() ) );
+        if ( m_config->testSpec().hasFilters() ) {
+            m_xml.writeAttribute( "filters"_sr, m_config->testSpec() );
+        }
     }
 
     void XmlReporter::testCaseStarting( TestCaseInfo const& testInfo ) {

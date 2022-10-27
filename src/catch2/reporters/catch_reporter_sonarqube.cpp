@@ -23,7 +23,7 @@ namespace Catch {
             ReusableStringStream sstr;
             if ( config.testSpec().hasFilters() ) {
                 sstr << "filters='"
-                         << serializeFilters( config.getTestsOrTags() )
+                         << config.testSpec()
                          << "' ";
             }
             sstr << "rng-seed=" << config.rngSeed();

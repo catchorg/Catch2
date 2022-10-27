@@ -499,7 +499,7 @@ void ConsoleReporter::testRunStarting(TestRunInfo const& _testInfo) {
     StreamingReporterBase::testRunStarting(_testInfo);
     if ( m_config->testSpec().hasFilters() ) {
         m_stream << m_colour->guardColour( Colour::BrightYellow ) << "Filters: "
-                 << serializeFilters( m_config->getTestsOrTags() ) << '\n';
+                 << m_config->testSpec() << '\n';
     }
     m_stream << "Randomness seeded to: " << getSeed() << '\n';
 }

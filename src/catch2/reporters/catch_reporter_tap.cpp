@@ -189,8 +189,7 @@ namespace Catch {
 
     void TAPReporter::testRunStarting( TestRunInfo const& ) {
         if ( m_config->testSpec().hasFilters() ) {
-            m_stream << "# filters: "
-                     << serializeFilters( m_config->getTestsOrTags() ) << '\n';
+            m_stream << "# filters: " << m_config->testSpec() << '\n';
         }
         m_stream << "# rng-seed: " << m_config->rngSeed() << '\n';
     }

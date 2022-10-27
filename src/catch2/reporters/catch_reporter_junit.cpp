@@ -13,6 +13,7 @@
 #include <catch2/internal/catch_textflow.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/catch_test_case_info.hpp>
+#include <catch2/catch_test_spec.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <cassert>
@@ -143,10 +144,10 @@ namespace Catch {
             xml.scopedElement("property")
                 .writeAttribute("name"_sr, "random-seed"_sr)
                 .writeAttribute("value"_sr, m_config->rngSeed());
-            if (m_config->hasTestFilters()) {
+            if (m_config->testSpec().hasFilters()) {
                 xml.scopedElement("property")
                     .writeAttribute("name"_sr, "filters"_sr)
-                    .writeAttribute("value"_sr, serializeFilters(m_config->getTestsOrTags()));
+                    .writeAttribute("value"_sr, m_config->testSpec());
             }
         }
 

@@ -611,9 +611,15 @@ foreach (reporterName # "Automake" - the simple .trs format does not support any
         $<TARGET_FILE:SelfTest> [comparisons][string-case] "CaseInsensitiveLess is case insensitive"
           --reporter ${reporterName}
     )
+    # Different regex for these two reporters, because the commas end up xml-escaped
+    if (reporterName MATCHES "JUnit|XML")
+      set(testCaseNameFormat "&quot;CaseInsensitiveLess is case insensitive&quot;")
+    else()
+      set(testCaseNameFormat "\"CaseInsensitiveLess is case insensitive\"")
+    endif()
     set_tests_properties("Reporters:Filters:${reporterName}"
       PROPERTIES
-        PASS_REGULAR_EXPRESSION "[fF]ilters.+\\[comparisons\\]\\[string-case\\]"
+        PASS_REGULAR_EXPRESSION "[fF]ilters.+\\[comparisons\\] \\[string-case\\] ${testCaseNameFormat}"
     )
 
     add_test(NAME "Reporters:RngSeed:${reporterName}"

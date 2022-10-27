@@ -207,7 +207,7 @@ private:
             if ( m_config->testSpec().hasFilters() ) {
                 m_stream << m_colour->guardColour( Colour::BrightYellow )
                          << "Filters: "
-                         << serializeFilters( m_config->getTestsOrTags() )
+                         << m_config->testSpec()
                          << '\n';
             }
             m_stream << "RNG seed: " << getSeed() << '\n';
