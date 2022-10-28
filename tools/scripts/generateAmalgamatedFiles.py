@@ -16,7 +16,7 @@ output_cpp = os.path.join(catchPath, 'extras', 'catch_amalgamated.cpp')
 copyright_lines = [
 '//              Copyright Catch2 Authors\n',
 '// Distributed under the Boost Software License, Version 1.0.\n',
-'//   (See accompanying file LICENSE_1_0.txt or copy at\n',
+'//   (See accompanying file LICENSE.txt or copy at\n',
 '//        https://www.boost.org/LICENSE_1_0.txt)\n',
 '// SPDX-License-Identifier: BSL-1.0\n',
 ]
@@ -26,7 +26,7 @@ copyright_lines = [
 file_header = '''\
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
-//   (See accompanying file LICENSE_1_0.txt or copy at
+//   (See accompanying file LICENSE.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
