@@ -99,6 +99,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/IntrospectiveTests/String.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/StringManip.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Xml.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/Traits.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/ToString.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/UniquePtr.tests.cpp
         ${SELF_TEST_DIR}/helpers/parse_test_spec.cpp

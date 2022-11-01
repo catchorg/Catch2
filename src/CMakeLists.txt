@@ -61,6 +61,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_clara.hpp
     ${SOURCES_DIR}/internal/catch_commandline.hpp
     ${SOURCES_DIR}/internal/catch_source_line_info.hpp
+    ${SOURCES_DIR}/internal/catch_compare_traits.hpp
     ${SOURCES_DIR}/internal/catch_compiler_capabilities.hpp
     ${SOURCES_DIR}/catch_config.hpp
     ${SOURCES_DIR}/internal/catch_config_android_logwrite.hpp

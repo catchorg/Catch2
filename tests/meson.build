@@ -31,6 +31,7 @@ self_test_sources = files(
   'SelfTest/IntrospectiveTests/TestSpecParser.tests.cpp',
   'SelfTest/IntrospectiveTests/TextFlow.tests.cpp',
   'SelfTest/IntrospectiveTests/ToString.tests.cpp',
+  'SelfTest/IntrospectiveTests/Traits.tests.cpp',
   'SelfTest/IntrospectiveTests/UniquePtr.tests.cpp',
   'SelfTest/IntrospectiveTests/Xml.tests.cpp',
   'SelfTest/TestRegistrations.cpp',

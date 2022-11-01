@@ -72,6 +72,7 @@ internal_headers = [
   'internal/catch_case_sensitive.hpp',
   'internal/catch_clara.hpp',
   'internal/catch_commandline.hpp',
+  'internal/catch_compare_traits.hpp',
   'internal/catch_compiler_capabilities.hpp',
   'internal/catch_config_android_logwrite.hpp',
   'internal/catch_config_counter.hpp',

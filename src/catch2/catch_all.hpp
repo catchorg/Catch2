@@ -50,6 +50,7 @@
 #include <catch2/internal/catch_case_sensitive.hpp>
 #include <catch2/internal/catch_clara.hpp>
 #include <catch2/internal/catch_commandline.hpp>
+#include <catch2/internal/catch_compare_traits.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_config_android_logwrite.hpp>
 #include <catch2/internal/catch_config_counter.hpp>
