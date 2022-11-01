@@ -133,6 +133,7 @@ set(TEST_SOURCES
 
 set(TEST_HEADERS
   ${SELF_TEST_DIR}/helpers/parse_test_spec.hpp
+  ${SELF_TEST_DIR}/helpers/type_with_lit_0_comparisons.hpp
 )
 
 

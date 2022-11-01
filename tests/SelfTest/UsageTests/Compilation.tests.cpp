@@ -6,6 +6,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
+#include <helpers/type_with_lit_0_comparisons.hpp>
+
 #include <type_traits>
 
 // Setup for #1403 -- look for global overloads of operator << for classes
@@ -309,4 +311,21 @@ TEST_CASE("ADL universal operators don't hijack expression deconstruction", "[co
     REQUIRE(0 | adl::always_true{});
     REQUIRE(0 & adl::always_true{});
     REQUIRE(0 ^ adl::always_true{});
+}
+
+TEST_CASE( "#2555 - types that can only be compared with 0 literal (not int/long) are supported", "[compilation][approvals]" ) {
+    REQUIRE( TypeWithLit0Comparisons{} < 0 );
+    REQUIRE_FALSE( 0 < TypeWithLit0Comparisons{} );
+    REQUIRE( TypeWithLit0Comparisons{} <= 0 );
+    REQUIRE_FALSE( 0 > TypeWithLit0Comparisons{} );
+
+    REQUIRE( TypeWithLit0Comparisons{} > 0 );
+    REQUIRE_FALSE( 0 > TypeWithLit0Comparisons{} );
+    REQUIRE( TypeWithLit0Comparisons{} >= 0 );
+    REQUIRE_FALSE( 0 >= TypeWithLit0Comparisons{} );
+
+    REQUIRE( TypeWithLit0Comparisons{} == 0 );
+    REQUIRE_FALSE( 0 == TypeWithLit0Comparisons{} );
+    REQUIRE( TypeWithLit0Comparisons{} != 0 );
+    REQUIRE_FALSE( 0 != TypeWithLit0Comparisons{} );
 }

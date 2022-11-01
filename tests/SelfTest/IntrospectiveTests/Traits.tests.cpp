@@ -8,36 +8,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/internal/catch_compare_traits.hpp>
-
-// Should only be constructible from literal 0.
-// Used by `TypeWithLit0Comparisons` for testing comparison
-// ops that only work with literal zero, the way std::*orderings do
-struct ZeroLiteralDetector {
-    constexpr ZeroLiteralDetector( ZeroLiteralDetector* ) noexcept {}
-
-    template <typename T,
-              typename = std::enable_if_t<!std::is_same<T, int>::value>>
-    constexpr ZeroLiteralDetector( T ) = delete;
-};
-
-struct TypeWithLit0Comparisons {
-#define DEFINE_COMP_OP( op )                                                  \
-    friend bool operator op( TypeWithLit0Comparisons, ZeroLiteralDetector ) { \
-        return true;                                                          \
-    }                                                                         \
-    friend bool operator op( ZeroLiteralDetector, TypeWithLit0Comparisons ) { \
-        return false;                                                          \
-    }
-
-    DEFINE_COMP_OP( < )
-    DEFINE_COMP_OP( <= )
-    DEFINE_COMP_OP( > )
-    DEFINE_COMP_OP( >= )
-    DEFINE_COMP_OP( == )
-    DEFINE_COMP_OP( != )
-
-#undef DEFINE_COMP_OP
-};
+#include <helpers/type_with_lit_0_comparisons.hpp>
 
 
 #define ADD_TRAIT_TEST_CASE( op )                                         \

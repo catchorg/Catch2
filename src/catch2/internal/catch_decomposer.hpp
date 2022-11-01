@@ -11,7 +11,9 @@
 #include <catch2/catch_tostring.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_meta.hpp>
+#include <catch2/internal/catch_compare_traits.hpp>
 
+#include <type_traits>
 #include <iosfwd>
 
 #ifdef _MSC_VER
@@ -155,53 +157,119 @@ namespace Catch {
     };
 
 
-    // Specialised comparison functions to handle equality comparisons between ints and pointers (NULL deduces as an int)
-    template<typename LhsT, typename RhsT>
-    auto compareEqual( LhsT const& lhs, RhsT const& rhs ) -> bool { return static_cast<bool>(lhs == rhs); }
-    template<typename T>
-    auto compareEqual( T* const& lhs, int rhs ) -> bool { return lhs == reinterpret_cast<void const*>( rhs ); }
-    template<typename T>
-    auto compareEqual( T* const& lhs, long rhs ) -> bool { return lhs == reinterpret_cast<void const*>( rhs ); }
-    template<typename T>
-    auto compareEqual( int lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) == rhs; }
-    template<typename T>
-    auto compareEqual( long lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) == rhs; }
-
-    template<typename LhsT, typename RhsT>
-    auto compareNotEqual( LhsT const& lhs, RhsT&& rhs ) -> bool { return static_cast<bool>(lhs != rhs); }
-    template<typename T>
-    auto compareNotEqual( T* const& lhs, int rhs ) -> bool { return lhs != reinterpret_cast<void const*>( rhs ); }
-    template<typename T>
-    auto compareNotEqual( T* const& lhs, long rhs ) -> bool { return lhs != reinterpret_cast<void const*>( rhs ); }
-    template<typename T>
-    auto compareNotEqual( int lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) != rhs; }
-    template<typename T>
-    auto compareNotEqual( long lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) != rhs; }
-
-
     template<typename LhsT>
     class ExprLhs {
         LhsT m_lhs;
     public:
         explicit ExprLhs( LhsT lhs ) : m_lhs( lhs ) {}
 
-        template<typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
-        friend auto operator == ( ExprLhs && lhs, RhsT && rhs ) -> BinaryExpr<LhsT, RhsT const&> {
-            return { compareEqual( lhs.m_lhs, rhs ), lhs.m_lhs, "=="_sr, rhs };
-        }
-        template<typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
-        friend auto operator == ( ExprLhs && lhs, RhsT rhs ) -> BinaryExpr<LhsT, RhsT> {
-            return { compareEqual( lhs.m_lhs, rhs ), lhs.m_lhs, "=="_sr, rhs };
-        }
+#define CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR( id, op )           \
+    template <                                                                 \
+        typename RhsT,                                                         \
+        std::enable_if_t<                                                      \
+            Detail::is_##id##_comparable<LhsT, RhsT>::value &&                 \
+                !std::is_arithmetic<std::remove_reference_t<RhsT>>::value,     \
+            int> = 0>                                                          \
+    friend auto operator op( ExprLhs&& lhs, RhsT&& rhs )                       \
+        ->BinaryExpr<LhsT, RhsT const&> {                                      \
+        return {                                                               \
+            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
+    }                                                                          \
+    template <                                                                 \
+        typename RhsT,                                                         \
+        std::enable_if_t<Detail::is_##id##_comparable<LhsT, RhsT>::value &&    \
+                             std::is_arithmetic<RhsT>::value,                  \
+                         int> = 0>                                             \
+    friend auto operator op( ExprLhs&& lhs, RhsT rhs )                         \
+        ->BinaryExpr<LhsT, RhsT> {                                             \
+        return {                                                               \
+            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
+    }                                                                          \
+    template <                                                                 \
+        typename RhsT,                                                         \
+        std::enable_if_t<!Detail::is_##id##_comparable<LhsT, RhsT>::value &&   \
+                             Detail::is_eq_0_comparable<LhsT>::                \
+                                 value && /* We allow long because we want     \
+                                             `ptr op NULL to be accepted */    \
+                             ( std::is_same<RhsT, int>::value ||               \
+                               std::is_same<RhsT, long>::value ),              \
+                         int> = 0>                                             \
+    friend auto operator op( ExprLhs&& lhs, RhsT rhs )                         \
+        ->BinaryExpr<LhsT, RhsT> {                                             \
+        return {                                                               \
+            static_cast<bool>( lhs.m_lhs op 0 ), lhs.m_lhs, #op##_sr, rhs };   \
+    }                                                                          \
+    template <                                                                 \
+        typename RhsT,                                                         \
+        std::enable_if_t<!Detail::is_##id##_comparable<LhsT, RhsT>::value &&   \
+                             Detail::is_eq_0_comparable<RhsT>::                \
+                                 value && /* We allow long because we want     \
+                                             `ptr op NULL` to be accepted */   \
+                             ( std::is_same<LhsT, int>::value ||               \
+                               std::is_same<LhsT, long>::value ),              \
+                         int> = 0>                                             \
+    friend auto operator op( ExprLhs&& lhs, RhsT rhs )                         \
+        ->BinaryExpr<LhsT, RhsT> {                                             \
+        return { static_cast<bool>( 0 op rhs ), lhs.m_lhs, #op##_sr, rhs };    \
+    }
+        CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR( eq, == )
+        CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR( ne, != )
 
-        template<typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
-        friend auto operator != ( ExprLhs && lhs, RhsT && rhs ) -> BinaryExpr<LhsT, RhsT const&> {
-            return { compareNotEqual( lhs.m_lhs, rhs ), lhs.m_lhs, "!="_sr, rhs };
-        }
-        template<typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
-        friend auto operator != ( ExprLhs && lhs, RhsT rhs ) -> BinaryExpr<LhsT, RhsT> {
-            return { compareNotEqual( lhs.m_lhs, rhs ), lhs.m_lhs, "!="_sr, rhs };
-        }
+    #undef CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR
+
+    #define CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( id, op )     \
+    template <                                                                 \
+        typename RhsT,                                                         \
+        std::enable_if_t<                                                      \
+            Detail::is_##id##_comparable<LhsT, RhsT>::value &&                 \
+                !std::is_arithmetic<std::remove_reference_t<RhsT>>::value,     \
+            int> = 0>                                                          \
+    friend auto operator op( ExprLhs&& lhs, RhsT&& rhs )                       \
+        ->BinaryExpr<LhsT, RhsT const&> {                                      \
+        return {                                                               \
+            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
+    }                                                                          \
+    template <                                                                 \
+        typename RhsT,                                                         \
+        std::enable_if_t<Detail::is_##id##_comparable<LhsT, RhsT>::value &&    \
+                             std::is_arithmetic<RhsT>::value,                  \
+                         int> = 0>                                             \
+    friend auto operator op( ExprLhs&& lhs, RhsT rhs )                         \
+        ->BinaryExpr<LhsT, RhsT> {                                             \
+        return {                                                               \
+            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
+    }                                                                          \
+    template <                                                                 \
+        typename RhsT,                                                         \
+        std::enable_if_t<!Detail::is_##id##_comparable<LhsT, RhsT>::value &&   \
+                             Detail::is_##id##_0_comparable<LhsT>::value &&    \
+                             std::is_same<RhsT, int>::value,                   \
+                         int> = 0>                                             \
+    friend auto operator op( ExprLhs&& lhs, RhsT rhs )                         \
+        ->BinaryExpr<LhsT, RhsT> {                                             \
+        /* TODO: do we want to assert that Rhs is 0? */                        \
+        return {                                                               \
+            static_cast<bool>( lhs.m_lhs op 0 ), lhs.m_lhs, #op##_sr, rhs };   \
+    }                                                                          \
+    template <                                                                 \
+        typename RhsT,                                                         \
+        std::enable_if_t<!Detail::is_##id##_comparable<LhsT, RhsT>::value &&   \
+                             Detail::is_##id##_0_comparable<RhsT>::value &&    \
+                             std::is_same<LhsT, int>::value,                   \
+                         int> = 0>                                             \
+    friend auto operator op( ExprLhs&& lhs, RhsT rhs )                         \
+        ->BinaryExpr<LhsT, RhsT> {                                             \
+        /* TODO: do we want to assert that lhs is 0? */                        \
+        return { static_cast<bool>( 0 op rhs ), lhs.m_lhs, #op##_sr, rhs };    \
+    }
+
+        CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( lt, < )
+        CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( le, <= )
+        CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( gt, > )
+        CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( ge, >= )
+
+    #undef CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR
+
 
     #define CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(op) \
         template<typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0> \
@@ -213,10 +281,6 @@ namespace Catch {
             return { static_cast<bool>(lhs.m_lhs op rhs), lhs.m_lhs, #op##_sr, rhs }; \
         }
 
-        CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(<)
-        CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(>)
-        CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(<=)
-        CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(>=)
         CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(|)
         CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(&)
         CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(^)

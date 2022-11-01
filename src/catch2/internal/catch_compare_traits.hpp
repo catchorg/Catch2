@@ -15,6 +15,19 @@
 namespace Catch {
     namespace Detail {
 
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#    pragma GCC diagnostic push
+    // GCC likes to complain about comparing bool with 0, in the decltype()
+    // that defines the comparable traits below.
+#    pragma GCC diagnostic ignored "-Wbool-compare"
+    // "ordered comparison of pointer with integer zero" same as above,
+    // but it does not have a separate warning flag to suppress
+#    pragma GCC diagnostic ignored "-Wextra"
+    // Did you know that comparing floats with `0` directly
+    // is super-duper dangerous in unevaluated context?
+#    pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
+
 #define CATCH_DEFINE_COMPARABLE_TRAIT( id, op )                               \
     template <typename, typename, typename = void>                            \
     struct is_##id##_comparable : std::false_type {};                         \
@@ -40,6 +53,11 @@ namespace Catch {
         CATCH_DEFINE_COMPARABLE_TRAIT( ne, != )
 
 #undef CATCH_DEFINE_COMPARABLE_TRAIT
+
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#    pragma GCC diagnostic pop
+#endif
+
 
     } // namespace Detail
 } // namespace Catch
