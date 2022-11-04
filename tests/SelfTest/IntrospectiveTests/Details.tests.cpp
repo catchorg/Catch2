@@ -11,6 +11,8 @@
 #include <catch2/internal/catch_case_insensitive_comparisons.hpp>
 #include <catch2/internal/catch_optional.hpp>
 
+#include <helpers/type_with_lit_0_comparisons.hpp>
+
 #if defined(_MSC_VER)
 #pragma warning(push)
 #pragma warning(disable:4702) // unreachable code in the macro expansions
@@ -85,4 +87,45 @@ TEST_CASE("Optional comparison ops", "[optional][approvals]") {
         REQUIRE( a == b );
         REQUIRE_FALSE( a != b );
     }
+}
+
+TEST_CASE( "Decomposer checks that the argument is 0 when handling "
+           "only-0-comparable types",
+           "[decomposition][approvals]" ) {
+    TypeWithLit0Comparisons t{};
+
+    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
+    CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS
+
+    REQUIRE_THROWS( Catch::Decomposer{} <= t == 42 );
+    REQUIRE_THROWS( Catch::Decomposer{} <= 42 == t );
+    REQUIRE_NOTHROW( Catch::Decomposer{} <= t == 0 );
+    REQUIRE_NOTHROW( Catch::Decomposer{} <= 0 == t );
+
+    REQUIRE_THROWS( Catch::Decomposer{} <= t != 42 );
+    REQUIRE_THROWS( Catch::Decomposer{} <= 42 != t );
+    REQUIRE_NOTHROW( Catch::Decomposer{} <= t != 0 );
+    REQUIRE_NOTHROW( Catch::Decomposer{} <= 0 != t );
+
+    REQUIRE_THROWS( Catch::Decomposer{} <= t < 42 );
+    REQUIRE_THROWS( Catch::Decomposer{} <= 42 < t );
+    REQUIRE_NOTHROW( Catch::Decomposer{} <= t < 0 );
+    REQUIRE_NOTHROW( Catch::Decomposer{} <= 0 < t );
+
+    REQUIRE_THROWS( Catch::Decomposer{} <= t <= 42 );
+    REQUIRE_THROWS( Catch::Decomposer{} <= 42 <= t );
+    REQUIRE_NOTHROW( Catch::Decomposer{} <= t <= 0 );
+    REQUIRE_NOTHROW( Catch::Decomposer{} <= 0 <= t );
+
+    REQUIRE_THROWS( Catch::Decomposer{} <= t > 42 );
+    REQUIRE_THROWS( Catch::Decomposer{} <= 42 > t );
+    REQUIRE_NOTHROW( Catch::Decomposer{} <= t > 0 );
+    REQUIRE_NOTHROW( Catch::Decomposer{} <= 0 > t );
+
+    REQUIRE_THROWS( Catch::Decomposer{} <= t >= 42 );
+    REQUIRE_THROWS( Catch::Decomposer{} <= 42 >= t );
+    REQUIRE_NOTHROW( Catch::Decomposer{} <= t >= 0 );
+    REQUIRE_NOTHROW( Catch::Decomposer{} <= 0 >= t );
+
+    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 }

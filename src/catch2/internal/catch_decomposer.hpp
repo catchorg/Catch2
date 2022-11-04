@@ -12,6 +12,7 @@
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_meta.hpp>
 #include <catch2/internal/catch_compare_traits.hpp>
+#include <catch2/internal/catch_test_failure_exception.hpp>
 
 #include <type_traits>
 #include <iosfwd>
@@ -196,6 +197,9 @@ namespace Catch {
                          int> = 0>                                             \
     friend auto operator op( ExprLhs&& lhs, RhsT rhs )                         \
         ->BinaryExpr<LhsT, RhsT> {                                             \
+        if ( rhs != 0 ) {                                                      \
+            throw_test_failure_exception();                                    \
+        }                                                                      \
         return {                                                               \
             static_cast<bool>( lhs.m_lhs op 0 ), lhs.m_lhs, #op##_sr, rhs };   \
     }                                                                          \
@@ -210,6 +214,9 @@ namespace Catch {
                          int> = 0>                                             \
     friend auto operator op( ExprLhs&& lhs, RhsT rhs )                         \
         ->BinaryExpr<LhsT, RhsT> {                                             \
+        if ( lhs.m_lhs != 0 ) {                                                \
+            throw_test_failure_exception();                                    \
+        }                                                                      \
         return { static_cast<bool>( 0 op rhs ), lhs.m_lhs, #op##_sr, rhs };    \
     }
         CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR( eq, == )
@@ -247,7 +254,9 @@ namespace Catch {
                          int> = 0>                                             \
     friend auto operator op( ExprLhs&& lhs, RhsT rhs )                         \
         ->BinaryExpr<LhsT, RhsT> {                                             \
-        /* TODO: do we want to assert that Rhs is 0? */                        \
+        if ( rhs != 0 ) {                                                      \
+            throw_test_failure_exception();                                    \
+        }                                                                      \
         return {                                                               \
             static_cast<bool>( lhs.m_lhs op 0 ), lhs.m_lhs, #op##_sr, rhs };   \
     }                                                                          \
@@ -259,7 +268,9 @@ namespace Catch {
                          int> = 0>                                             \
     friend auto operator op( ExprLhs&& lhs, RhsT rhs )                         \
         ->BinaryExpr<LhsT, RhsT> {                                             \
-        /* TODO: do we want to assert that lhs is 0? */                        \
+        if ( lhs.m_lhs != 0 ) {                                                \
+            throw_test_failure_exception();                                    \
+        }                                                                      \
         return { static_cast<bool>( 0 op rhs ), lhs.m_lhs, #op##_sr, rhs };    \
     }
 
