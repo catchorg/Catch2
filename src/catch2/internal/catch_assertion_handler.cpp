@@ -48,11 +48,7 @@ namespace Catch {
             CATCH_BREAK_INTO_DEBUGGER();
         }
         if (m_reaction.shouldThrow) {
-#if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
-            throw Catch::TestFailureException();
-#else
-            CATCH_ERROR( "Test failure requires aborting test!" );
-#endif
+            throw_test_failure_exception();
         }
     }
     void AssertionHandler::setCompleted() {

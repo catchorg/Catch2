@@ -231,6 +231,7 @@ internal_sources = files(
   'internal/catch_test_case_info_hasher.cpp',
   'internal/catch_test_case_registry_impl.cpp',
   'internal/catch_test_case_tracker.cpp',
+  'internal/catch_test_failure_exception.cpp',
   'internal/catch_test_registry.cpp',
   'internal/catch_test_spec_parser.cpp',
   'internal/catch_textflow.cpp',

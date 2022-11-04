@@ -13,6 +13,13 @@ namespace Catch {
     //! Used to signal that an assertion macro failed
     struct TestFailureException{};
 
+    /**
+     * Outlines throwing of `TestFailureException` into a single TU
+     *
+     * Also handles `CATCH_CONFIG_DISABLE_EXCEPTIONS` for callers.
+     */
+    [[noreturn]] void throw_test_failure_exception();
+
 } // namespace Catch
 
 #endif // CATCH_TEST_FAILURE_EXCEPTION_HPP_INCLUDED
