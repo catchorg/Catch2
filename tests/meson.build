@@ -8,6 +8,7 @@
 # define the sources of the self test
 # Please keep these ordered alphabetically
 self_test_sources = files(
+  'SelfTest/helpers/parse_test_spec.cpp',
   'SelfTest/IntrospectiveTests/Clara.tests.cpp',
   'SelfTest/IntrospectiveTests/CmdLine.tests.cpp',
   'SelfTest/IntrospectiveTests/CmdLineHelpers.tests.cpp',
@@ -26,6 +27,7 @@ self_test_sources = files(
   'SelfTest/IntrospectiveTests/StringManip.tests.cpp',
   'SelfTest/IntrospectiveTests/Tag.tests.cpp',
   'SelfTest/IntrospectiveTests/TestCaseInfoHasher.tests.cpp',
+  'SelfTest/IntrospectiveTests/TestSpec.tests.cpp',
   'SelfTest/IntrospectiveTests/TestSpecParser.tests.cpp',
   'SelfTest/IntrospectiveTests/TextFlow.tests.cpp',
   'SelfTest/IntrospectiveTests/ToString.tests.cpp',
@@ -65,7 +67,7 @@ self_test_sources = files(
 self_test = executable(
   'SelfTest',
   self_test_sources,
-  include_directories: '../src',
+  include_directories: ['../src', './SelfTest'],
   link_with: [catch2_with_main, catch2],
 )
 
