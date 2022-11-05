@@ -343,7 +343,14 @@ set_tests_properties(FilteredSection::GeneratorsDontCauseInfiniteLoop-2
 )
 
 # AppVeyor has a Python 2.7 in path, but doesn't have .py files as autorunnable
-add_test(NAME ApprovalTests COMMAND ${PYTHON_EXECUTABLE} ${CATCH_DIR}/tools/scripts/approvalTests.py $<TARGET_FILE:SelfTest>)
+add_test(NAME ApprovalTests
+  COMMAND
+    ${PYTHON_EXECUTABLE}
+    ${CATCH_DIR}/tools/scripts/approvalTests.py
+    $<TARGET_FILE:SelfTest>
+    "${CMAKE_CURRENT_BINARY_DIR}"
+)
+
 set_tests_properties(ApprovalTests
   PROPERTIES
     FAIL_REGULAR_EXPRESSION "Results differed"
