@@ -175,7 +175,7 @@ endif()
 add_test(NAME RunTests COMMAND $<TARGET_FILE:SelfTest> --order rand --rng-seed time)
 set_tests_properties(RunTests PROPERTIES
     FAIL_REGULAR_EXPRESSION "Filters:"
-    COST 60
+    COST 15
 )
 
 # Because CTest does not allow us to check both return code _and_ expected
@@ -354,8 +354,11 @@ add_test(NAME ApprovalTests
 set_tests_properties(ApprovalTests
   PROPERTIES
     FAIL_REGULAR_EXPRESSION "Results differed"
-    COST 120 # We know that this is either the most, or second most,
-    # expensive test in the test suite, so we give it high estimate for CI runs
+
+    # This is the most expensive test in the basic test suite, so we give
+    # it high cost estimate so that CI runs it as one of the first ones,
+    # for better parallelization.
+    COST 30
     LABELS "uses-python"
 )
 
