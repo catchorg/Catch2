@@ -11,8 +11,6 @@
 # https://github.com/rasbt/markdown-toclify
 #
 
-from  __future__  import print_function
-
 import argparse
 import glob
 import os
