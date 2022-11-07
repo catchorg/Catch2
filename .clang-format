@@ -1,4 +1,26 @@
 ---
+Language: Cpp
+Standard: c++14
+
+# Note that we cannot use IncludeIsMainRegex functionality, because it
+# does not support includes in angle brackets (<>)
+SortIncludes: True
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: '<catch2/.*\.hpp>'
+    Priority: 1
+  - Regex: '<.*/.*\.hpp>'
+    Priority: 2
+  - Regex: '<.*>'
+    Priority: 3
+
+
+AllowShortBlocksOnASingleLine: Always
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortLambdasOnASingleLine: Inline
+
 AccessModifierOffset: '-4'
 AlignEscapedNewlines: Left
 AllowAllConstructorInitializersOnNextLine: 'true'
@@ -8,17 +30,14 @@ BreakConstructorInitializers: AfterColon
 ConstructorInitializerAllOnOneLineOrOnePerLine: 'true'
 DerivePointerAlignment: 'false'
 FixNamespaceComments: 'true'
-IncludeBlocks: Regroup
 IndentCaseLabels: 'false'
 IndentPPDirectives: AfterHash
 IndentWidth: '4'
-Language: Cpp
 NamespaceIndentation: All
 PointerAlignment: Left
 SpaceBeforeCtorInitializerColon: 'false'
 SpaceInEmptyParentheses: 'false'
 SpacesInParentheses: 'true'
-Standard: Cpp11
 TabWidth: '4'
 UseTab: Never
 
