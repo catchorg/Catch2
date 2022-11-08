@@ -7,7 +7,9 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <catch2/internal/catch_getenv.hpp>
+
 #include <catch2/internal/catch_platform.hpp>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 
 #include <cstdlib>
 
