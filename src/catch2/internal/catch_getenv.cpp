@@ -16,7 +16,7 @@
 namespace Catch {
     namespace Detail {
 
-#if ! defined (CATCH_CONFIG_GETENV)
+#if !defined (CATCH_CONFIG_GETENV)
         char const* getEnv( char const* ) { return nullptr; }
 #else
 
