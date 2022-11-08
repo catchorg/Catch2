@@ -147,7 +147,6 @@ by using `_NO_` in the macro, e.g. `CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS`.
     CATCH_CONFIG_WINDOWS_SEH                // Enable SEH handling on Windows
     CATCH_CONFIG_FAST_COMPILE               // Sacrifices some (rather minor) features for compilation speed
     CATCH_CONFIG_POSIX_SIGNALS              // Enable handling POSIX signals
-    CATCH_CONFIG_GETENV                     // System has a working `getenv`
     CATCH_CONFIG_WINDOWS_CRTDBG             // Enable leak checking using Windows's CRT Debug Heap
     CATCH_CONFIG_DISABLE_STRINGIFICATION    // Disable stringifying the original expression
     CATCH_CONFIG_DISABLE                    // Disables assertions and test case registration
@@ -156,8 +155,11 @@ by using `_NO_` in the macro, e.g. `CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS`.
     CATCH_CONFIG_USE_ASYNC                  // Force parallel statistical processing of samples during benchmarking
     CATCH_CONFIG_ANDROID_LOGWRITE           // Use android's logging system for debug output
     CATCH_CONFIG_GLOBAL_NEXTAFTER           // Use nextafter{,f,l} instead of std::nextafter
+    CATCH_CONFIG_GETENV                     // System has a working `getenv`
 
 > [`CATCH_CONFIG_ANDROID_LOGWRITE`](https://github.com/catchorg/Catch2/issues/1743) and [`CATCH_CONFIG_GLOBAL_NEXTAFTER`](https://github.com/catchorg/Catch2/pull/1739) were introduced in Catch2 2.10.0
+
+> `CATCH_CONFIG_GETENV` was [introduced](https://github.com/catchorg/Catch2/pull/2562) in Catch2 X.Y.Z
 
 Currently Catch enables `CATCH_CONFIG_WINDOWS_SEH` only when compiled with MSVC, because some versions of MinGW do not have the necessary Win32 API support.
 
