@@ -163,7 +163,9 @@ Currently Catch enables `CATCH_CONFIG_WINDOWS_SEH` only when compiled with MSVC,
 
 `CATCH_CONFIG_POSIX_SIGNALS` is on by default, except when Catch is compiled under `Cygwin`, where it is disabled by default (but can be force-enabled by defining `CATCH_CONFIG_POSIX_SIGNALS`).
 
-`CATCH_CONFIG_GETENV` is on by default, except when Catch is compiled under some platforms that lacks working `getenv` (currently Windows UWP and Playstation).
+`CATCH_CONFIG_GETENV` is on by default, except when Catch2 is compiled for
+platforms that lacks working `std::getenv` (currently Windows UWP and
+Playstation).
 
 `CATCH_CONFIG_WINDOWS_CRTDBG` is off by default. If enabled, Windows's
 CRT is used to check for memory leaks, and displays them after the tests
