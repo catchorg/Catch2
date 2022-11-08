@@ -118,19 +118,25 @@
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Assume that non-Windows platforms support posix signals by default
-#if !defined(CATCH_PLATFORM_WINDOWS)
-    #define CATCH_INTERNAL_CONFIG_POSIX_SIGNALS
+// We know some environments not to support full POSIX signals
+#if defined( CATCH_PLATFORM_WINDOWS ) ||                                       \
+    defined( CATCH_PLATFORM_PLAYSTATION ) ||                                   \
+    defined( __CYGWIN__ ) ||                                                   \
+    defined( __QNX__ ) ||                                                      \
+    defined( __EMSCRIPTEN__ ) ||                                               \
+    defined( __DJGPP__ ) ||                                                    \
+    defined( __OS400__ )
+#    define CATCH_INTERNAL_CONFIG_NO_POSIX_SIGNALS
+#else
+#    define CATCH_INTERNAL_CONFIG_POSIX_SIGNALS
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// We know some environments not to support full POSIX signals
-#if defined(__CYGWIN__) || defined(__QNX__) || defined(__EMSCRIPTEN__) || defined(__DJGPP__)
-    #define CATCH_INTERNAL_CONFIG_NO_POSIX_SIGNALS
-#endif
-
-#ifdef __OS400__
-#       define CATCH_INTERNAL_CONFIG_NO_POSIX_SIGNALS
+// Assume that some platforms do not support getenv.
+#if defined(CATCH_PLATFORM_WINDOWS_UWP) || defined(CATCH_PLATFORM_PLAYSTATION)
+#    define CATCH_INTERNAL_CONFIG_NO_GETENV
+#else
+#    define CATCH_INTERNAL_CONFIG_GETENV
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -271,6 +277,10 @@
 // This is set by default, because we assume that unix compilers are posix-signal-compatible by default.
 #if defined(CATCH_INTERNAL_CONFIG_POSIX_SIGNALS) && !defined(CATCH_INTERNAL_CONFIG_NO_POSIX_SIGNALS) && !defined(CATCH_CONFIG_NO_POSIX_SIGNALS) && !defined(CATCH_CONFIG_POSIX_SIGNALS)
 #   define CATCH_CONFIG_POSIX_SIGNALS
+#endif
+
+#if defined(CATCH_INTERNAL_CONFIG_GETENV) && !defined(CATCH_INTERNAL_CONFIG_NO_GETENV) && !defined(CATCH_CONFIG_NO_GETENV) && !defined(CATCH_CONFIG_GETENV)
+#   define CATCH_CONFIG_GETENV
 #endif
 
 #if !defined(CATCH_INTERNAL_CONFIG_NO_CPP11_TO_STRING) && !defined(CATCH_CONFIG_NO_CPP11_TO_STRING) && !defined(CATCH_CONFIG_CPP11_TO_STRING)

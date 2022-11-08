@@ -89,7 +89,7 @@ namespace Catch {
                                TestCaseInfo const* rhs ) {
             return *lhs < *rhs;
         };
-        std::set<TestCaseInfo const*, decltype(testInfoCmp)> seenTests(testInfoCmp);
+        std::set<TestCaseInfo const*, decltype(testInfoCmp) &> seenTests(testInfoCmp);
         for ( auto const& test : tests ) {
             const auto infoPtr = &test.getTestCaseInfo();
             const auto prev = seenTests.insert( infoPtr );

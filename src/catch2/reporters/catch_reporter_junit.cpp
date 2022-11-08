@@ -31,6 +31,8 @@ namespace Catch {
             std::tm timeInfo = {};
 #if defined (_MSC_VER) || defined (__MINGW32__)
             gmtime_s(&timeInfo, &rawtime);
+#elif defined (CATCH_PLATFORM_PLAYSTATION)
+            gmtime_s(&rawtime, &timeInfo);
 #else
             gmtime_r(&rawtime, &timeInfo);
 #endif

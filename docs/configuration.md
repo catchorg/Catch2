@@ -147,6 +147,7 @@ by using `_NO_` in the macro, e.g. `CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS`.
     CATCH_CONFIG_WINDOWS_SEH                // Enable SEH handling on Windows
     CATCH_CONFIG_FAST_COMPILE               // Sacrifices some (rather minor) features for compilation speed
     CATCH_CONFIG_POSIX_SIGNALS              // Enable handling POSIX signals
+    CATCH_CONFIG_GETENV                     // System has a working `getenv`
     CATCH_CONFIG_WINDOWS_CRTDBG             // Enable leak checking using Windows's CRT Debug Heap
     CATCH_CONFIG_DISABLE_STRINGIFICATION    // Disable stringifying the original expression
     CATCH_CONFIG_DISABLE                    // Disables assertions and test case registration
@@ -161,6 +162,8 @@ by using `_NO_` in the macro, e.g. `CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS`.
 Currently Catch enables `CATCH_CONFIG_WINDOWS_SEH` only when compiled with MSVC, because some versions of MinGW do not have the necessary Win32 API support.
 
 `CATCH_CONFIG_POSIX_SIGNALS` is on by default, except when Catch is compiled under `Cygwin`, where it is disabled by default (but can be force-enabled by defining `CATCH_CONFIG_POSIX_SIGNALS`).
+
+`CATCH_CONFIG_GETENV` is on by default, except when Catch is compiled under some platforms that lacks working `getenv` (currently Windows UWP and Playstation).
 
 `CATCH_CONFIG_WINDOWS_CRTDBG` is off by default. If enabled, Windows's
 CRT is used to check for memory leaks, and displays them after the tests
