@@ -28,6 +28,10 @@
 #  if defined( WINAPI_FAMILY ) && ( WINAPI_FAMILY == WINAPI_FAMILY_APP )
 #      define CATCH_PLATFORM_WINDOWS_UWP
 #  endif
+
+#elif defined(__ORBIS__) || defined(__PROSPERO__)
+#  define CATCH_PLATFORM_PLAYSTATION
+
 #endif
 
 #endif // CATCH_PLATFORM_HPP_INCLUDED

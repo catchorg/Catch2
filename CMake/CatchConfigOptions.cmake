@@ -40,6 +40,7 @@ set(_OverridableOptions
   "USE_ASYNC"
   "WCHAR"
   "WINDOWS_SEH"
+  "GETENV"
 )
 
 foreach(OptionName ${_OverridableOptions})

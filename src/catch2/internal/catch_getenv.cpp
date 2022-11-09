@@ -7,14 +7,16 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <catch2/internal/catch_getenv.hpp>
+
 #include <catch2/internal/catch_platform.hpp>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 
 #include <cstdlib>
 
 namespace Catch {
     namespace Detail {
 
-#if defined( CATCH_PLATFORM_WINDOWS_UWP )
+#if !defined (CATCH_CONFIG_GETENV)
         char const* getEnv( char const* ) { return nullptr; }
 #else
 
@@ -29,8 +31,7 @@ namespace Catch {
 #    if defined( _MSC_VER )
 #        pragma warning( pop )
 #    endif
+        }
 #endif
-    }
-
 } // namespace Detail
 } // namespace Catch

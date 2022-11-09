@@ -130,6 +130,16 @@
 
 
 
+#cmakedefine CATCH_CONFIG_GETENV
+#cmakedefine CATCH_CONFIG_NO_GETENV
+
+#if defined( CATCH_CONFIG_GETENV ) && \
+    defined( CATCH_CONFIG_NO_GETENV )
+#    error Cannot force GETENV to both ON and OFF
+#endif
+
+
+
 #cmakedefine CATCH_CONFIG_USE_ASYNC
 #cmakedefine CATCH_CONFIG_NO_USE_ASYNC
 
