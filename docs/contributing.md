@@ -303,6 +303,18 @@ be `CATCH_MATCHERS_FOO_HPP_INCLUDED`, for `catch_generators_bar.hpp`, the includ
 guard should be `CATCH_GENERATORS_BAR_HPP_INCLUDED`, and so on.
 
 
+### Adding new `CATCH_CONFIG` option
+
+When adding new `CATCH_CONFIG` option, there are multiple places to edit:
+  * `CMake/CatchConfigOptions.cmake` - this is used to generate the
+    configuration options in CMake, so that CMake frontends know about them.
+  * `docs/configuration.md` - this is where the options are documented
+  * `src/catch2/catch_user_config.hpp.in` - this is template for generating
+    `catch_user_config.hpp` which contains the materialized configuration
+  * other files as needed, e.g. `catch2/internal/catch_config_foo.hpp`
+    for the logic that guards the configuration
+
+
 ## CoC
 
 This project has a [CoC](../CODE_OF_CONDUCT.md). Please adhere to it
