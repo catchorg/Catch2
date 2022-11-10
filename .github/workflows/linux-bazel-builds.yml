@@ -6,7 +6,10 @@ jobs:
   build_and_test_ubuntu:
     name: Linux Ubuntu 22.04 Bazel build <GCC 11.2.0>
     runs-on: ubuntu-22.04
-    
+    strategy:
+      matrix:
+        compilation_mode: [fastbuild, dbg, opt]
+
     steps:
     - uses: actions/checkout@v3
 
@@ -18,4 +21,4 @@ jobs:
 
     - name: Build Catch2
       run: |
-        bazelisk build //...
+        bazelisk build --compilation_mode=${{matrix.compilation_mode}} //...
