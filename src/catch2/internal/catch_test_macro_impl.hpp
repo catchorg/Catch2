@@ -147,7 +147,7 @@
                 catchAssertionHandler.handleUnexpectedExceptionNotThrown(); \
             } \
             catch( ... ) { \
-                Catch::handleExceptionMatchExpr( catchAssertionHandler, matcher, #matcher##_catch_sr ); \
+                Catch::handleExceptionMatchExpr( catchAssertionHandler, matcher ); \
             } \
         else \
             catchAssertionHandler.handleThrowingCallSkipped(); \

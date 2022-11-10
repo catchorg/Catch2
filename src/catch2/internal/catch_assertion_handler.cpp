@@ -76,8 +76,8 @@ namespace Catch {
 
     // This is the overload that takes a string and infers the Equals matcher from it
     // The more general overload, that takes any string matcher, is in catch_capture_matchers.cpp
-    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str, StringRef matcherString  ) {
-        handleExceptionMatchExpr( handler, Matchers::Equals( str ), matcherString );
+    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str ) {
+        handleExceptionMatchExpr( handler, Matchers::Equals( str ) );
     }
 
 } // namespace Catch
