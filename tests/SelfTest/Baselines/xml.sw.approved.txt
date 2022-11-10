@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Catch2TestRun name="<exe-name>" rng-seed="1" catch2-version="<version>" filters="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]">
+<Catch2TestRun name="<exe-name>" rng-seed="1" xml-format-version="2" catch2-version="<version>" filters="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]">
   <TestCase name="# A test name that starts with a #" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <OverallResult success="true"/>
   </TestCase>
