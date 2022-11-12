@@ -10,7 +10,7 @@ project(
   'cpp',
   version: '3.1.1', # CML version placeholder, don't delete
   license: 'BSL-1.0',
-  meson_version: '>=0.49.0',
+  meson_version: '>=0.50.0',
 )
 
 subdir('src/catch2')
