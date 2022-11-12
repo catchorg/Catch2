@@ -24,7 +24,7 @@ namespace Matchers {
         MatcherGenericBase() = default;
         ~MatcherGenericBase() override; // = default;
 
-        MatcherGenericBase(MatcherGenericBase&) = default;
+        MatcherGenericBase(MatcherGenericBase const&) = default;
         MatcherGenericBase(MatcherGenericBase&&) = default;
 
         MatcherGenericBase& operator=(MatcherGenericBase const&) = delete;
