@@ -311,6 +311,8 @@ When adding new `CATCH_CONFIG` option, there are multiple places to edit:
   * `docs/configuration.md` - this is where the options are documented
   * `src/catch2/catch_user_config.hpp.in` - this is template for generating
     `catch_user_config.hpp` which contains the materialized configuration
+  * `BUILD.bazel` - Bazel does not have configuration support like CMake,
+    and all expansions need to be done manually
   * other files as needed, e.g. `catch2/internal/catch_config_foo.hpp`
     for the logic that guards the configuration
 
