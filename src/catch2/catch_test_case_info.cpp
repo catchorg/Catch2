@@ -114,16 +114,19 @@ namespace Catch {
     Detail::unique_ptr<TestCaseInfo>
         makeTestCaseInfo(StringRef _className,
                          NameAndTags const& nameAndTags,
-                         SourceLineInfo const& _lineInfo ) {
-        return Detail::make_unique<TestCaseInfo>(_className, nameAndTags, _lineInfo);
+                         SourceLineInfo const& _lineInfo,
+                         StringRef _testType ) {
+        return Detail::make_unique<TestCaseInfo>(_className, nameAndTags, _lineInfo, _testType);
     }
 
     TestCaseInfo::TestCaseInfo(StringRef _className,
                                NameAndTags const& _nameAndTags,
-                               SourceLineInfo const& _lineInfo):
+                               SourceLineInfo const& _lineInfo,
+                               StringRef _testType ) :
         name( _nameAndTags.name.empty() ? makeDefaultName() : _nameAndTags.name ),
         className( _className ),
-        lineInfo( _lineInfo )
+        lineInfo( _lineInfo ),
+        testType( _testType )
     {
         StringRef originalTags = _nameAndTags.tags;
         // We need to reserve enough space to store all of the tags
