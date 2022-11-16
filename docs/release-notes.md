@@ -449,7 +449,7 @@ v3 releases.
 ### Improvements
 * `std::result_of` is not used if `std::invoke_result` is available (#1934)
 * JUnit reporter writes out `status` attribute for tests (#1899)
-* Suppresed clang-tidy's `hicpp-vararg` warning (#1921)
+* Suppressed clang-tidy's `hicpp-vararg` warning (#1921)
   * Catch2 was already suppressing the `cppcoreguidelines-pro-type-vararg` alias of the warning
 
 
