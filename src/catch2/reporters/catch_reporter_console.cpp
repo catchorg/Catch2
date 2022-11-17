@@ -21,7 +21,9 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/catch_get_random_seed.hpp>
 
-#include <cstdio>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cstdio>
+#endif
 
 #if defined(_MSC_VER)
 #pragma warning(push)

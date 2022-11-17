@@ -10,7 +10,11 @@
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/catch_user_config.hpp>
 
-#include <cmath>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <cmath>
+#endif
 
 namespace Catch {
 

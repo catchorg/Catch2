@@ -12,7 +12,9 @@
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_reusable_string_stream.hpp>
 
-#include <exception>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <exception>
+#endif
 
 namespace Catch {
 #if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)

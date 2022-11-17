@@ -10,7 +10,9 @@
 
 #include <catch2/catch_user_config.hpp>
 
-#include <iostream>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <iostream>
+#endif
 
 namespace Catch {
 

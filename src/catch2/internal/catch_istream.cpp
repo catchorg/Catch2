@@ -12,10 +12,13 @@
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_stdstreams.hpp>
 
+#if !CATCH_USE_STDLIB_MODULE    
+    #include <fstream>
+    #include <sstream>
+    #include <vector>
+#endif
+
 #include <cstdio>
-#include <fstream>
-#include <sstream>
-#include <vector>
 
 namespace Catch {
 

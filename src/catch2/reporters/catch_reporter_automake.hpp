@@ -12,7 +12,9 @@
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <string>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <string>
+#endif
 
 namespace Catch {
 

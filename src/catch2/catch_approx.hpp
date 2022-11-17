@@ -10,7 +10,9 @@
 
 #include <catch2/catch_tostring.hpp>
 
-#include <type_traits>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <type_traits>
+#endif
 
 namespace Catch {
 

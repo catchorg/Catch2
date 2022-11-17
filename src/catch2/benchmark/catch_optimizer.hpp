@@ -10,13 +10,17 @@
 #ifndef CATCH_OPTIMIZER_HPP_INCLUDED
 #define CATCH_OPTIMIZER_HPP_INCLUDED
 
+#if !CATCH_USE_STDLIB_MODULE
 #if defined(_MSC_VER)
 #   include <atomic> // atomic_thread_fence
+#endif
 #endif
 
 #include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <type_traits>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <type_traits>
+#endif
 
 namespace Catch {
     namespace Benchmark {

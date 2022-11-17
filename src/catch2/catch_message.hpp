@@ -15,8 +15,10 @@
 #include <catch2/interfaces/catch_interfaces_capture.hpp>
 #include <catch2/catch_tostring.hpp>
 
-#include <string>
-#include <vector>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <string>
+    #include <vector>
+#endif
 
 namespace Catch {
 

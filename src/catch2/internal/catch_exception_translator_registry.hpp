@@ -11,8 +11,10 @@
 #include <catch2/interfaces/catch_interfaces_exception.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
-#include <vector>
-#include <string>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <vector>
+    #include <string>
+#endif
 
 namespace Catch {
 

@@ -11,7 +11,9 @@
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
 
-#include <map>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <map>
+#endif
 
 namespace Catch {
 

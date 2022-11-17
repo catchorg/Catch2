@@ -10,9 +10,11 @@
 
 #include <catch2/internal/catch_stringref.hpp>
 
-#include <string>
-#include <iosfwd>
-#include <vector>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <string>
+    #include <iosfwd>
+    #include <vector>
+#endif
 
 namespace Catch {
 

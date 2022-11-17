@@ -10,8 +10,12 @@
 
 #include <catch2/internal/catch_unique_ptr.hpp>
 
-#include <iosfwd>
-#include <cstdint>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <iosfwd>
+    #include <cstdint>
+#endif
 
 namespace Catch {
 

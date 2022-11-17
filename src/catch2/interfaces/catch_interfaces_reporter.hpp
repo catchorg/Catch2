@@ -18,11 +18,12 @@
 #include <catch2/benchmark/catch_estimate.hpp>
 #include <catch2/benchmark/catch_outlier_classification.hpp>
 
-
-#include <map>
-#include <string>
-#include <vector>
-#include <iosfwd>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <map>
+    #include <string>
+    #include <vector>
+    #include <iosfwd>
+#endif
 
 namespace Catch {
 

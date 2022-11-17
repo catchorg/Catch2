@@ -10,8 +10,10 @@
 
 #include <catch2/generators/catch_generators.hpp>
 
-#include <iterator>
-#include <type_traits>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <iterator>
+    #include <type_traits>
+#endif
 
 namespace Catch {
 namespace Generators {

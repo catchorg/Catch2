@@ -9,8 +9,10 @@
 
 #include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <algorithm>
-#include <cassert>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+    #include <cassert>
+#endif
 
 namespace Catch {
     namespace {

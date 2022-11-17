@@ -13,8 +13,10 @@
 #include <catch2/internal/catch_textflow.hpp>
 #include <catch2/catch_test_case_info.hpp>
 
-#include <cassert>
-#include <ostream>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cassert>
+    #include <ostream>
+#endif
 
 namespace Catch {
 

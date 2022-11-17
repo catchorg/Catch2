@@ -11,10 +11,14 @@
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
-#include <iosfwd>
-#include <cstddef>
-#include <ostream>
-#include <string>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <iosfwd>
+    #include <cstddef>
+    #include <ostream>
+    #include <string>
+#endif
 
 namespace Catch {
 

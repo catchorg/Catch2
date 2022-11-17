@@ -7,7 +7,10 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <catch2/interfaces/catch_interfaces_generatortracker.hpp>
-#include <string>
+
+#if !CATCH_USE_STDLIB_MODULE
+    #include <string>
+#endif
 
 namespace Catch {
     namespace Generators {

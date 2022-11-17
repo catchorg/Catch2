@@ -8,7 +8,11 @@
 #ifndef CATCH_INTERFACES_TESTCASE_HPP_INCLUDED
 #define CATCH_INTERFACES_TESTCASE_HPP_INCLUDED
 
-#include <vector>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <vector>
+#endif
 
 namespace Catch {
 

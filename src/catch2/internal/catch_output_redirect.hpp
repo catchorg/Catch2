@@ -12,9 +12,11 @@
 #include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 
-#include <cstdio>
-#include <iosfwd>
-#include <string>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cstdio>
+    #include <iosfwd>
+    #include <string>
+#endif
 
 namespace Catch {
 

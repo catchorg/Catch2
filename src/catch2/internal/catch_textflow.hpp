@@ -8,10 +8,16 @@
 #ifndef CATCH_TEXTFLOW_HPP_INCLUDED
 #define CATCH_TEXTFLOW_HPP_INCLUDED
 
-#include <cassert>
 #include <catch2/internal/catch_console_width.hpp>
-#include <string>
-#include <vector>
+
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else    
+    #include <string>
+    #include <vector>
+#endif
+
+#include <cassert>
 
 namespace Catch {
     namespace TextFlow {

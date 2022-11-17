@@ -11,10 +11,12 @@
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
-#include <chrono>
-#include <iosfwd>
-#include <string>
-#include <vector>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <chrono>
+    #include <iosfwd>
+    #include <string>
+    #include <vector>
+#endif
 
 namespace Catch {
 
@@ -81,7 +83,7 @@ namespace Catch {
         virtual bool hasTestFilters() const = 0;
         virtual std::vector<std::string> const& getTestsOrTags() const = 0;
         virtual TestRunOrder runOrder() const = 0;
-        virtual uint32_t rngSeed() const = 0;
+        virtual std::uint32_t rngSeed() const = 0;
         virtual unsigned int shardCount() const = 0;
         virtual unsigned int shardIndex() const = 0;
         virtual ColourMode defaultColourMode() const = 0;

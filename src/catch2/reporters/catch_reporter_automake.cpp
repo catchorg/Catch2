@@ -8,7 +8,9 @@
 #include <catch2/reporters/catch_reporter_automake.hpp>
 #include <catch2/catch_test_case_info.hpp>
 
-#include <ostream>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <ostream>
+#endif
 
 namespace Catch {
 

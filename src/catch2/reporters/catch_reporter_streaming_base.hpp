@@ -12,7 +12,9 @@
 #include <catch2/reporters/catch_reporter_common_base.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <vector>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <vector>
+#endif
 
 namespace Catch {
 

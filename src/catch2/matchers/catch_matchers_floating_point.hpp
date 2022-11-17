@@ -30,7 +30,7 @@ namespace Matchers {
     class WithinUlpsMatcher final : public MatcherBase<double> {
     public:
         WithinUlpsMatcher( double target,
-                           uint64_t ulps,
+                           std::uint64_t ulps,
                            Detail::FloatingPointKind baseType );
         bool match(double const& matchee) const override;
         std::string describe() const override;
@@ -57,9 +57,9 @@ namespace Matchers {
     };
 
     //! Creates a matcher that accepts doubles within certain ULP range of target
-    WithinUlpsMatcher WithinULP(double target, uint64_t maxUlpDiff);
+    WithinUlpsMatcher WithinULP(double target, std::uint64_t maxUlpDiff);
     //! Creates a matcher that accepts floats within certain ULP range of target
-    WithinUlpsMatcher WithinULP(float target, uint64_t maxUlpDiff);
+    WithinUlpsMatcher WithinULP(float target, std::uint64_t maxUlpDiff);
     //! Creates a matcher that accepts numbers within certain range of target
     WithinAbsMatcher WithinAbs(double target, double margin);
 

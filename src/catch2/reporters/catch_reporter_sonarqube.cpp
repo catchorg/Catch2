@@ -14,7 +14,9 @@
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 
-#include <map>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <map>
+#endif
 
 namespace Catch {
 

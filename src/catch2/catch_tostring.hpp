@@ -8,11 +8,14 @@
 #ifndef CATCH_TOSTRING_HPP_INCLUDED
 #define CATCH_TOSTRING_HPP_INCLUDED
 
-
-#include <vector>
-#include <cstddef>
-#include <type_traits>
-#include <string>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <vector>
+    #include <cstddef>
+    #include <type_traits>
+    #include <string>
+#endif
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_config_wchar.hpp>
@@ -21,7 +24,9 @@
 #include <catch2/interfaces/catch_interfaces_enum_values_registry.hpp>
 
 #ifdef CATCH_CONFIG_CPP17_STRING_VIEW
-#include <string_view>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <string_view>
+#endif
 #endif
 
 #ifdef _MSC_VER
@@ -369,7 +374,9 @@ namespace Catch {
 
 // Separate std::pair specialization
 #if defined(CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER)
-#include <utility>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <utility>
+#endif
 namespace Catch {
     template<typename T1, typename T2>
     struct StringMaker<std::pair<T1, T2> > {
@@ -387,7 +394,9 @@ namespace Catch {
 #endif // CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER
 
 #if defined(CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER) && defined(CATCH_CONFIG_CPP17_OPTIONAL)
-#include <optional>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <optional>
+#endif
 namespace Catch {
     template<typename T>
     struct StringMaker<std::optional<T> > {
@@ -404,7 +413,9 @@ namespace Catch {
 
 // Separate std::tuple specialization
 #if defined(CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER)
-#include <tuple>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <tuple>
+#endif
 namespace Catch {
     namespace Detail {
         template<
@@ -445,7 +456,9 @@ namespace Catch {
 #endif // CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER
 
 #if defined(CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER) && defined(CATCH_CONFIG_CPP17_VARIANT)
-#include <variant>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <variant>
+#endif
 namespace Catch {
     template<>
     struct StringMaker<std::monostate> {
@@ -535,10 +548,11 @@ namespace Catch {
 } // namespace Catch
 
 // Separate std::chrono::duration specialization
-#include <ctime>
-#include <ratio>
-#include <chrono>
-
+#if !CATCH_USE_STDLIB_MODULE
+    #include <ctime>
+    #include <ratio>
+    #include <chrono>
+#endif
 
 namespace Catch {
 
@@ -625,6 +639,10 @@ struct ratio_string<std::milli> {
     template<typename Duration>
     struct StringMaker<std::chrono::time_point<std::chrono::system_clock, Duration>> {
         static std::string convert(std::chrono::time_point<std::chrono::system_clock, Duration> const& time_point) {
+
+#if defined(CATCH_USE_STDLIB_MODULE_BUG_WORKAROUND)
+            return { };
+#else
             auto converted = std::chrono::system_clock::to_time_t(time_point);
 
 #ifdef _MSC_VER
@@ -644,6 +662,7 @@ struct ratio_string<std::milli> {
             std::strftime(timeStamp, timeStampSize, fmt, timeInfo);
 #endif
             return std::string(timeStamp, timeStampSize - 1);
+#endif
         }
     };
 }

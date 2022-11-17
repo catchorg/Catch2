@@ -7,7 +7,11 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_singletons.hpp>
 
-#include <vector>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <vector>
+#endif
 
 namespace Catch {
 

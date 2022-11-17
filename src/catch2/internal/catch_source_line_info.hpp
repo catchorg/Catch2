@@ -8,8 +8,12 @@
 #ifndef CATCH_SOURCE_LINE_INFO_HPP_INCLUDED
 #define CATCH_SOURCE_LINE_INFO_HPP_INCLUDED
 
-#include <cstddef>
-#include <iosfwd>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <cstddef>
+    #include <iosfwd>
+#endif
 
 namespace Catch {
 

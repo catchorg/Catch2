@@ -16,7 +16,9 @@
 #include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
 #include <catch2/internal/catch_getenv.hpp>
 
-#include <fstream>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <fstream>
+#endif
 
 namespace Catch {
 

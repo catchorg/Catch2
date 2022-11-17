@@ -12,8 +12,10 @@
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
-#include <string>
-#include <vector>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <string>
+    #include <vector>
+#endif
 
 namespace Catch {
 namespace TestCaseTracking {

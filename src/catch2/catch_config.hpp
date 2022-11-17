@@ -16,10 +16,12 @@
 #include <catch2/internal/catch_random_seed_generation.hpp>
 #include <catch2/internal/catch_reporter_spec_parser.hpp>
 
-#include <chrono>
-#include <map>
-#include <string>
-#include <vector>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <chrono>
+    #include <map>
+    #include <string>
+    #include <vector>
+#endif
 
 namespace Catch {
 

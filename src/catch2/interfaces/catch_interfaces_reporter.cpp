@@ -17,9 +17,11 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_istream.hpp>
 
-#include <algorithm>
-#include <cassert>
-#include <iomanip>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+    #include <cassert>
+    #include <iomanip>
+#endif
 
 namespace Catch {
 

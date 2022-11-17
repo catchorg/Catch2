@@ -11,8 +11,10 @@
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_xmlwriter.hpp>
 
-#include <iomanip>
-#include <type_traits>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <iomanip>
+    #include <type_traits>
+#endif
 
 namespace Catch {
 
@@ -31,7 +33,7 @@ namespace {
         CATCH_INTERNAL_ERROR("Invalid multibyte utf-8 start byte encountered");
     }
 
-    uint32_t headerValue(unsigned char c) {
+    std::uint32_t headerValue(unsigned char c) {
         if ((c & 0xE0) == 0xC0) {
             return c & 0x1F;
         }

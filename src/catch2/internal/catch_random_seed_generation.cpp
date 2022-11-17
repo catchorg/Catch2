@@ -10,8 +10,10 @@
 
 #include <catch2/internal/catch_enforce.hpp>
 
-#include <ctime>
-#include <random>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <ctime>
+    #include <random>
+#endif
 
 namespace Catch {
 

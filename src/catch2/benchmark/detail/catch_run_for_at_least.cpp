@@ -7,7 +7,9 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <catch2/benchmark/detail/catch_run_for_at_least.hpp>
-#include <exception>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <exception>
+#endif
 #include <catch2/internal/catch_enforce.hpp>
 
 namespace Catch {

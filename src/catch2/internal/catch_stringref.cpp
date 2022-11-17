@@ -7,10 +7,13 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_stringref.hpp>
 
-#include <algorithm>
-#include <ostream>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+    #include <ostream>
+    #include <cstdint>
+#endif
+
 #include <cstring>
-#include <cstdint>
 
 namespace Catch {
     StringRef::StringRef( char const* rawChars ) noexcept

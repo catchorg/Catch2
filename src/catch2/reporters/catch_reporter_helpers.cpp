@@ -17,11 +17,14 @@
 #include <catch2/catch_tostring.hpp>
 #include <catch2/catch_test_case_info.hpp>
 
-#include <algorithm>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+    #include <ostream>
+    #include <iomanip>
+#endif
+
 #include <cfloat>
 #include <cstdio>
-#include <ostream>
-#include <iomanip>
 
 namespace Catch {
 

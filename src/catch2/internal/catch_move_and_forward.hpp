@@ -8,7 +8,9 @@
 #ifndef CATCH_MOVE_AND_FORWARD_HPP_INCLUDED
 #define CATCH_MOVE_AND_FORWARD_HPP_INCLUDED
 
-#include <type_traits>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <type_traits>
+#endif
 
 //! Replacement for std::move with better compile time performance
 #define CATCH_MOVE(...) static_cast<std::remove_reference_t<decltype(__VA_ARGS__)>&&>(__VA_ARGS__)

@@ -11,7 +11,9 @@
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 
-#include <limits>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <limits>
+#endif
 
 namespace Catch {
 

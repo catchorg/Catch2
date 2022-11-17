@@ -11,7 +11,11 @@
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 
-#include <cstdlib>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <cstdlib>
+#endif
 
 namespace Catch {
     namespace Detail {

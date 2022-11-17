@@ -11,8 +11,10 @@
 #include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
 #include <catch2/catch_tag_alias.hpp>
 
-#include <map>
-#include <string>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <map>
+    #include <string>
+#endif
 
 namespace Catch {
     struct SourceLineInfo;

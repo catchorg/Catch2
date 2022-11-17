@@ -16,9 +16,11 @@
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_wildcard_pattern.hpp>
 
-#include <iosfwd>
-#include <string>
-#include <vector>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <iosfwd>
+    #include <string>
+    #include <vector>
+#endif
 
 namespace Catch {
 

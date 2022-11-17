@@ -11,8 +11,10 @@
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/internal/catch_polyfills.hpp>
 
-#include <cmath>
-#include <iomanip>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cmath>
+    #include <iomanip>
+#endif
 
 namespace Catch {
 
@@ -179,7 +181,9 @@ std::string StringMaker<wchar_t *>::convert(wchar_t * str) {
 #endif
 
 #if defined(CATCH_CONFIG_CPP17_BYTE)
-#include <cstddef>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cstddef>
+#endif
 std::string StringMaker<std::byte>::convert(std::byte value) {
     return ::Catch::Detail::stringify(std::to_integer<unsigned long long>(value));
 }

@@ -6,7 +6,10 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/catch_version.hpp>
-#include <ostream>
+
+#if !CATCH_USE_STDLIB_MODULE
+    #include <ostream>
+#endif
 
 namespace Catch {
 

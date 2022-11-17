@@ -15,9 +15,11 @@
 #include <catch2/benchmark/catch_outlier_classification.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <algorithm>
-#include <vector>
-#include <iterator>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+    #include <vector>
+    #include <iterator>
+#endif
 
 namespace Catch {
     namespace Benchmark {

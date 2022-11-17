@@ -26,11 +26,13 @@
 #include <catch2/benchmark/detail/catch_benchmark_function.hpp>
 #include <catch2/benchmark/detail/catch_run_for_at_least.hpp>
 
-#include <algorithm>
-#include <functional>
-#include <string>
-#include <vector>
-#include <cmath>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+    #include <functional>
+    #include <string>
+    #include <vector>
+    #include <cmath>
+#endif
 
 namespace Catch {
     namespace Benchmark {

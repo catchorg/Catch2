@@ -8,11 +8,13 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
-#include <algorithm>
-#include <ostream>
-#include <cstring>
-#include <cctype>
-#include <vector>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+    #include <ostream>
+    #include <cstring>
+    #include <cctype>
+    #include <vector>
+#endif
 
 namespace Catch {
 

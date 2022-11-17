@@ -23,8 +23,9 @@
 #  endif
 #endif
 
-
-#include <exception>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <exception>
+#endif
 
 #if defined(__cpp_lib_uncaught_exceptions) \
     && !defined(CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS)

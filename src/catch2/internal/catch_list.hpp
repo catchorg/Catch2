@@ -10,9 +10,10 @@
 
 #include <catch2/internal/catch_stringref.hpp>
 
-#include <set>
-#include <string>
-
+#if !CATCH_USE_STDLIB_MODULE
+    #include <set>
+    #include <string>
+#endif
 
 namespace Catch {
 

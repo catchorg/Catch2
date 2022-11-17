@@ -9,8 +9,10 @@
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_reusable_string_stream.hpp>
 
-#include <cmath>
-#include <limits>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cmath>
+    #include <limits>
+#endif
 
 namespace {
 

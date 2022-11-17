@@ -11,7 +11,9 @@
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
 #include <catch2/catch_timer.hpp>
 
-#include <cstring>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cstring>
+#endif
 
 #ifdef __clang__
 #   pragma clang diagnostic push

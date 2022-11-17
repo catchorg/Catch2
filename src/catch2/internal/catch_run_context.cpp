@@ -20,8 +20,10 @@
 #include <catch2/internal/catch_assertion_handler.hpp>
 #include <catch2/internal/catch_test_failure_exception.hpp>
 
-#include <cassert>
-#include <algorithm>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cassert>
+    #include <algorithm>
+#endif
 
 namespace Catch {
 

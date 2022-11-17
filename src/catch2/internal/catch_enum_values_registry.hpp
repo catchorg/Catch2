@@ -12,7 +12,9 @@
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
-#include <vector>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <vector>
+#endif
 
 namespace Catch {
 

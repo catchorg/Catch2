@@ -10,17 +10,21 @@
 
 #include <catch2/internal/catch_polyfills.hpp>
 
-#include <cassert>
-#include <cmath>
-#include <cstdint>
-#include <utility>
-#include <limits>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <cassert>
+    #include <cmath>
+    #include <cstdint>
+    #include <utility>
+    #include <limits>
+#endif
 
 namespace Catch {
     namespace Detail {
 
-        uint32_t convertToBits(float f);
-        uint64_t convertToBits(double d);
+        std::uint32_t convertToBits(float f);
+        std::uint64_t convertToBits(double d);
 
     } // end namespace Detail
 

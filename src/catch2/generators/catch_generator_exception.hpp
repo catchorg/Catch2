@@ -8,7 +8,11 @@
 #ifndef CATCH_GENERATOR_EXCEPTION_HPP_INCLUDED
 #define CATCH_GENERATOR_EXCEPTION_HPP_INCLUDED
 
-#include <exception>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <exception>
+#endif
 
 namespace Catch {
 

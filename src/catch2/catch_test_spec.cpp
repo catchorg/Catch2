@@ -10,10 +10,12 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_test_case_info.hpp>
 
-#include <algorithm>
-#include <string>
-#include <vector>
-#include <ostream>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+    #include <string>
+    #include <vector>
+    #include <ostream>
+#endif
 
 namespace Catch {
 

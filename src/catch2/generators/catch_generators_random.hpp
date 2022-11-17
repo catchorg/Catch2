@@ -12,7 +12,9 @@
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
 
-#include <random>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <random>
+#endif
 
 namespace Catch {
 namespace Generators {
@@ -70,8 +72,8 @@ std::enable_if_t<std::is_integral<T>::value, GeneratorWrapper<T>>
 random(T a, T b) {
     static_assert(
         !std::is_same<T, char>::value &&
-        !std::is_same<T, int8_t>::value &&
-        !std::is_same<T, uint8_t>::value &&
+        !std::is_same<T, std::int8_t>::value &&
+        !std::is_same<T, std::uint8_t>::value &&
         !std::is_same<T, signed char>::value &&
         !std::is_same<T, unsigned char>::value &&
         !std::is_same<T, bool>::value,

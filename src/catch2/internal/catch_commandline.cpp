@@ -15,8 +15,10 @@
 #include <catch2/internal/catch_parse_numbers.hpp>
 #include <catch2/internal/catch_reporter_spec_parser.hpp>
 
-#include <fstream>
-#include <string>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <fstream>
+    #include <string>
+#endif
 
 namespace Catch {
 

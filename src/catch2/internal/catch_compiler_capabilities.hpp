@@ -27,6 +27,10 @@
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/catch_user_config.hpp>
 
+#if CATCH_USE_STDLIB_MODULE
+#include <version>
+#endif
+
 #ifdef __cplusplus
 
 #  if (__cplusplus >= 201402L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 201402L)
@@ -250,7 +254,9 @@
 
   // Check if byte is available and usable
   #  if __has_include(<cstddef>) && defined(CATCH_CPP17_OR_GREATER)
-  #    include <cstddef>
+  #    if !CATCH_USE_STDLIB_MODULE
+  #      include <cstddef>
+  #    endif
   #    if defined(__cpp_lib_byte) && (__cpp_lib_byte > 0)
   #      define CATCH_INTERNAL_CONFIG_CPP17_BYTE
   #    endif
@@ -261,7 +267,9 @@
   #    if defined(__clang__) && (__clang_major__ < 8)
          // work around clang bug with libstdc++ https://bugs.llvm.org/show_bug.cgi?id=31852
          // fix should be in clang 8, workaround in libstdc++ 8.2
-  #      include <ciso646>
+  #      if !CATCH_USE_STDLIB_MODULE
+  #          include <ciso646>
+  #      endif
   #      if defined(__GLIBCXX__) && defined(_GLIBCXX_RELEASE) && (_GLIBCXX_RELEASE < 9)
   #        define CATCH_CONFIG_NO_CPP17_VARIANT
   #      else
@@ -272,7 +280,6 @@
   #    endif // defined(__clang__) && (__clang_major__ < 8)
   #  endif // __has_include(<variant>) && defined(CATCH_CPP17_OR_GREATER)
 #endif // defined(__has_include)
-
 
 #if defined(CATCH_INTERNAL_CONFIG_WINDOWS_SEH) && !defined(CATCH_CONFIG_NO_WINDOWS_SEH) && !defined(CATCH_CONFIG_WINDOWS_SEH) && !defined(CATCH_INTERNAL_CONFIG_NO_WINDOWS_SEH)
 #   define CATCH_CONFIG_WINDOWS_SEH
@@ -409,5 +416,4 @@
 #else
 #    define CATCH_EXPORT
 #endif
-
 #endif // CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED

@@ -8,8 +8,11 @@
 #ifndef CATCH_INTERFACES_CAPTURE_HPP_INCLUDED
 #define CATCH_INTERFACES_CAPTURE_HPP_INCLUDED
 
-#include <string>
-#include <chrono>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <string>
+    #include <chrono>
+#endif
+
 
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_result_type.hpp>

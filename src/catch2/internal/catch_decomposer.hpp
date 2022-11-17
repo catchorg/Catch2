@@ -14,8 +14,10 @@
 #include <catch2/internal/catch_compare_traits.hpp>
 #include <catch2/internal/catch_test_failure_exception.hpp>
 
-#include <type_traits>
-#include <iosfwd>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <type_traits>
+    #include <iosfwd>
+#endif
 
 #ifdef _MSC_VER
 #pragma warning(push)

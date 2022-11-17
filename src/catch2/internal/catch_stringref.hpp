@@ -8,9 +8,14 @@
 #ifndef CATCH_STRINGREF_HPP_INCLUDED
 #define CATCH_STRINGREF_HPP_INCLUDED
 
-#include <cstddef>
-#include <string>
-#include <iosfwd>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <cstddef>
+    #include <string>
+    #include <iosfwd>
+#endif
+
 #include <cassert>
 
 namespace Catch {

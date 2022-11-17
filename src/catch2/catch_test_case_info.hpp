@@ -14,9 +14,10 @@
 #include <catch2/internal/catch_test_registry.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
-
-#include <string>
-#include <vector>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <string>
+    #include <vector>
+#endif
 
 #ifdef __clang__
 #pragma clang diagnostic push

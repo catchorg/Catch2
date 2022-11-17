@@ -13,8 +13,6 @@
 #include <catch2/interfaces/catch_interfaces_capture.hpp>
 #include <catch2/internal/catch_lazy_expr.hpp>
 
-#include <string>
-
 namespace Catch {
 
     class IResultCapture;

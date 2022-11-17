@@ -12,7 +12,9 @@
 #include <catch2/internal/catch_meta.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <cassert>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cassert>
+#endif
 
 namespace Catch {
 namespace Generators {
