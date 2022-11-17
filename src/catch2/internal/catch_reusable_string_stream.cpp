@@ -9,9 +9,11 @@
 #include <catch2/internal/catch_singletons.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
-#include <cstdio>
-#include <sstream>
-#include <vector>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cstdio>
+    #include <sstream>
+    #include <vector>
+#endif
 
 namespace Catch {
 

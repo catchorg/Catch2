@@ -11,7 +11,9 @@
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
-#include <string>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <string>
+#endif
 
 namespace Catch {
 

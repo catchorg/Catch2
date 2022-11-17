@@ -13,7 +13,9 @@
 #include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/detail/catch_complete_invoke.hpp>
 
-#include <type_traits>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <type_traits>
+#endif
 
 namespace Catch {
     namespace Benchmark {

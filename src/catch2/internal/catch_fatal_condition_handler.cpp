@@ -32,7 +32,9 @@
 #include <catch2/internal/catch_windows_h_proxy.hpp>
 #include <catch2/internal/catch_stdstreams.hpp>
 
-#include <algorithm>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+#endif
 
 #if !defined( CATCH_CONFIG_WINDOWS_SEH ) && !defined( CATCH_CONFIG_POSIX_SIGNALS )
 

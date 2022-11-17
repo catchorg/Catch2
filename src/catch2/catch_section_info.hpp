@@ -13,7 +13,9 @@
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/catch_totals.hpp>
 
-#include <string>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <string>
+#endif
 
 namespace Catch {
 

@@ -8,7 +8,9 @@
 
 #include <catch2/internal/catch_floating_point_helpers.hpp>
 
-#include <cstring>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cstring>
+#endif
 
 namespace Catch {
     namespace Detail {

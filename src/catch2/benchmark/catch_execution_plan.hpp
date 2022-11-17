@@ -17,8 +17,10 @@
 #include <catch2/benchmark/detail/catch_repeat.hpp>
 #include <catch2/benchmark/detail/catch_run_for_at_least.hpp>
 
-#include <algorithm>
-#include <iterator>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+    #include <iterator>
+#endif
 
 namespace Catch {
     namespace Benchmark {

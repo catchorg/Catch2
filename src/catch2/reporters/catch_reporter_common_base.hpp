@@ -10,8 +10,10 @@
 
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 
-#include <map>
-#include <string>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <map>
+    #include <string>
+#endif
 
 namespace Catch {
     class ColourImpl;

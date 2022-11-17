@@ -17,7 +17,9 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_void_type.hpp>
 
-#include <type_traits>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <type_traits>
+#endif
 
 namespace Catch {
 

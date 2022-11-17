@@ -25,10 +25,12 @@
 #include <catch2/internal/catch_stdstreams.hpp>
 #include <catch2/internal/catch_istream.hpp>
 
-#include <algorithm>
-#include <cassert>
-#include <iomanip>
-#include <set>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+    #include <cassert>
+    #include <iomanip>
+    #include <set>
+#endif
 
 namespace Catch {
 

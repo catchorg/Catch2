@@ -7,9 +7,11 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_textflow.hpp>
 
-#include <algorithm>
-#include <cstring>
-#include <ostream>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+    #include <cstring>
+    #include <ostream>
+#endif
 
 namespace {
     bool isWhitespace( char c ) {

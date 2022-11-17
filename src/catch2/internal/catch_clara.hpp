@@ -33,13 +33,18 @@
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_void_type.hpp>
 
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <memory>
+    #include <ostream>
+    #include <sstream>
+    #include <string>
+    #include <type_traits>
+    #include <vector>
+#endif
+
 #include <cassert>
-#include <memory>
-#include <ostream>
-#include <sstream>
-#include <string>
-#include <type_traits>
-#include <vector>
 
 namespace Catch {
     namespace Clara {

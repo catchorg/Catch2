@@ -10,8 +10,12 @@
 #ifndef CATCH_CLOCK_HPP_INCLUDED
 #define CATCH_CLOCK_HPP_INCLUDED
 
-#include <chrono>
-#include <ratio>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <chrono>
+    #include <ratio>
+#endif
 
 namespace Catch {
     namespace Benchmark {

@@ -8,7 +8,11 @@
 #ifndef CATCH_VERSION_HPP_INCLUDED
 #define CATCH_VERSION_HPP_INCLUDED
 
-#include <iosfwd>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <iosfwd>
+#endif
 
 namespace Catch {
 

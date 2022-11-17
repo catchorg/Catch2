@@ -8,6 +8,10 @@
 
 #include <catch2/internal/catch_errno_guard.hpp>
 
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#endif
+
 #include <cerrno>
 
 namespace Catch {

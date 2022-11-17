@@ -17,9 +17,11 @@
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <algorithm>
-#include <iterator>
-#include <vector>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+    #include <iterator>
+    #include <vector>
+#endif
 
 namespace Catch {
     namespace Benchmark {

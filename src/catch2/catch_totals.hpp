@@ -8,7 +8,11 @@
 #ifndef CATCH_TOTALS_HPP_INCLUDED
 #define CATCH_TOTALS_HPP_INCLUDED
 
-#include <cstdint>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <cstdint>
+#endif
 
 namespace Catch {
 

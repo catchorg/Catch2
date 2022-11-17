@@ -8,8 +8,11 @@
 #ifndef CATCH_INTERFACES_TAG_ALIAS_REGISTRY_HPP_INCLUDED
 #define CATCH_INTERFACES_TAG_ALIAS_REGISTRY_HPP_INCLUDED
 
-#include <string>
-
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <string>
+#endif
 namespace Catch {
 
     struct TagAlias;

@@ -16,8 +16,10 @@
 #include <catch2/internal/catch_unique_name.hpp>
 #include <catch2/internal/catch_preprocessor.hpp>
 
-#include <vector>
-#include <tuple>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <vector>
+    #include <tuple>
+#endif
 
 namespace Catch {
 

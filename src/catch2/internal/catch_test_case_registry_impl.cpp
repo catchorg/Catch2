@@ -18,8 +18,10 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_test_case_info_hasher.hpp>
 
-#include <algorithm>
-#include <set>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+    #include <set>
+#endif
 
 namespace Catch {
 

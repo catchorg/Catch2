@@ -15,8 +15,10 @@
 
 #include <catch2/catch_test_spec.hpp>
 
-#include <vector>
-#include <string>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <vector>
+    #include <string>
+#endif
 
 namespace Catch {
 

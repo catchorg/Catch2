@@ -11,8 +11,10 @@
 #include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
-#include <iosfwd>
-#include <vector>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <iosfwd>
+    #include <vector>
+#endif
 
 namespace Catch {
     enum class XmlFormatting {

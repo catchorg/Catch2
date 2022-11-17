@@ -8,8 +8,11 @@
 #ifndef CATCH_UNIQUE_PTR_HPP_INCLUDED
 #define CATCH_UNIQUE_PTR_HPP_INCLUDED
 
+#if !CATCH_USE_STDLIB_MODULE
+    #include <type_traits>
+#endif
+
 #include <cassert>
-#include <type_traits>
 
 #include <catch2/internal/catch_move_and_forward.hpp>
 

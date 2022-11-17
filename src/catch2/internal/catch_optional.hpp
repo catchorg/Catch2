@@ -8,7 +8,9 @@
 #ifndef CATCH_OPTIONAL_HPP_INCLUDED
 #define CATCH_OPTIONAL_HPP_INCLUDED
 
-#include <cassert>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cassert>
+#endif
 
 namespace Catch {
 

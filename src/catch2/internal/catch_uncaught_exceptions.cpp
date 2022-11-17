@@ -11,7 +11,11 @@
 #include <catch2/internal/catch_config_uncaught_exceptions.hpp>
 #include <catch2/catch_user_config.hpp>
 
-#include <exception>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <exception>
+#endif
 
 namespace Catch {
     bool uncaught_exceptions() {

@@ -8,8 +8,9 @@
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_stdstreams.hpp>
 
-#include <stdexcept>
-
+#if !CATCH_USE_STDLIB_MODULE
+    #include <stdexcept>
+#endif
 
 namespace Catch {
 #if defined(CATCH_CONFIG_DISABLE_EXCEPTIONS) && !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS_CUSTOM_HANDLER)

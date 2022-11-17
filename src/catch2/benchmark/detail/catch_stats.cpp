@@ -11,15 +11,17 @@
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 
-#include <cassert>
-#include <cstddef>
-#include <iterator>
-#include <random>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cstddef>
+    #include <iterator>
+    #include <random>
 
-
-#if defined(CATCH_CONFIG_USE_ASYNC)
-#include <future>
+    #if defined(CATCH_CONFIG_USE_ASYNC)
+    #include <future>
+    #endif
 #endif
+
+#include <cassert>
 
 namespace {
 
@@ -47,7 +49,7 @@ using Catch::Benchmark::Detail::sample;
         // Code accompanying the article "Approximating the erfinv function" in GPU Computing Gems, Volume 2
         double w, p;
 
-        w = -log((1.0 - x) * (1.0 + x));
+        w = -std::log((1.0 - x) * (1.0 + x));
 
         if (w < 6.250000) {
             w = w - 3.125000;

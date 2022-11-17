@@ -11,7 +11,9 @@
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <algorithm>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+#endif
 
 namespace Catch {
 

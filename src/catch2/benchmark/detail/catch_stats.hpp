@@ -13,11 +13,15 @@
 #include <catch2/benchmark/catch_estimate.hpp>
 #include <catch2/benchmark/catch_outlier_classification.hpp>
 
-#include <algorithm>
-#include <vector>
-#include <numeric>
-#include <tuple>
-#include <cmath>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <algorithm>
+    #include <vector>
+    #include <numeric>
+    #include <tuple>
+    #include <cmath>
+#endif
 
 namespace Catch {
     namespace Benchmark {

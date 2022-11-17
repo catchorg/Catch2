@@ -8,7 +8,13 @@
 #ifndef CATCH_META_HPP_INCLUDED
 #define CATCH_META_HPP_INCLUDED
 
-#include <type_traits>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <type_traits>
+#endif
+
+#include <version>
 
 namespace Catch {
     template<typename T>

@@ -14,8 +14,6 @@
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_lazy_expr.hpp>
 
-#include <string>
-
 namespace Catch {
 
     struct AssertionResultData

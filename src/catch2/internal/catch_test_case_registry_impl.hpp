@@ -11,7 +11,9 @@
 #include <catch2/internal/catch_test_registry.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 
-#include <vector>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <vector>
+#endif
 
 namespace Catch {
 

@@ -8,7 +8,9 @@
 #include <catch2/internal/catch_enum_values_registry.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 
-#include <cassert>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cassert>
+#endif
 
 namespace Catch {
 

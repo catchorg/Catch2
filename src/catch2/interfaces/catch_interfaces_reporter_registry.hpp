@@ -11,9 +11,11 @@
 #include <catch2/internal/catch_case_insensitive_comparisons.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
-#include <string>
-#include <vector>
-#include <map>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <string>
+    #include <vector>
+    #include <map>
+#endif
 
 namespace Catch {
 

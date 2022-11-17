@@ -9,9 +9,11 @@
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_stdstreams.hpp>
 
-#include <cstdio>
-#include <cstring>
-#include <sstream>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cstdio>
+    #include <cstring>
+    #include <sstream>
+#endif
 
 #if defined(CATCH_CONFIG_NEW_CAPTURE)
     #if defined(_MSC_VER)

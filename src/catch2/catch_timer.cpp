@@ -7,7 +7,9 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/catch_timer.hpp>
 
-#include <chrono>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <chrono>
+#endif
 
 namespace Catch {
 

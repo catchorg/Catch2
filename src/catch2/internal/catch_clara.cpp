@@ -12,8 +12,10 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_textflow.hpp>
 
-#include <algorithm>
-#include <ostream>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+    #include <ostream>
+#endif
 
 namespace {
     bool isOptPrefix( char c ) {

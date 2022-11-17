@@ -14,7 +14,9 @@
 #include <catch2/catch_user_config.hpp>
 #include <catch2/internal/catch_stdstreams.hpp>
 
-#include <ostream>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <ostream>
+#endif
 
 #if defined(CATCH_CONFIG_ANDROID_LOGWRITE)
 #include <android/log.h>

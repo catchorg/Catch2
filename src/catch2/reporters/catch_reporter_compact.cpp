@@ -16,7 +16,9 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
-#include <ostream>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <ostream>
+#endif
 
 namespace Catch {
 namespace {

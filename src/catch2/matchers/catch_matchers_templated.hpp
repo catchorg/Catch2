@@ -12,10 +12,12 @@
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <array>
-#include <algorithm>
-#include <string>
-#include <type_traits>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <array>
+    #include <algorithm>
+    #include <string>
+    #include <type_traits>
+#endif
 
 namespace Catch {
 namespace Matchers {

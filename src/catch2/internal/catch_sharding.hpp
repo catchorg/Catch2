@@ -10,8 +10,10 @@
 
 #include <catch2/catch_session.hpp>
 
-#include <cmath>
-#include <algorithm>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cmath>
+    #include <algorithm>
+#endif
 
 namespace Catch {
 

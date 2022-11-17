@@ -11,8 +11,10 @@
 #include <catch2/matchers/internal/catch_matchers_impl.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <string>
-#include <vector>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <string>
+    #include <vector>
+#endif
 
 namespace Catch {
 namespace Matchers {

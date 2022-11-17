@@ -10,8 +10,10 @@
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 
-#include <cstddef>
-#include <initializer_list>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cstddef>
+    #include <initializer_list>
+#endif
 
 // We want a simple polyfill over `std::empty`, `std::size` and so on
 // for C++14 or C++ libraries with incomplete support.
@@ -22,7 +24,9 @@
 // We are already using this header either way, so there shouldn't
 // be much additional overhead in including it to get the feature
 // test macros
-#include <string>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <string>
+#endif
 
 #  if !defined(__cpp_lib_nonmember_container_access)
 #      define CATCH_CONFIG_POLYFILL_NONMEMBER_CONTAINER_ACCESS

@@ -10,9 +10,11 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_case_insensitive_comparisons.hpp>
 
-#include <cassert>
-#include <cctype>
-#include <algorithm>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cassert>
+    #include <cctype>
+    #include <algorithm>
+#endif
 
 namespace Catch {
 

@@ -12,7 +12,9 @@
 #include <catch2/internal/catch_case_sensitive.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
-#include <string>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <string>
+#endif
 
 namespace Catch {
 namespace Matchers {

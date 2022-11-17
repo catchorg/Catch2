@@ -12,9 +12,11 @@
 #include <catch2/internal/catch_optional.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
-#include <map>
-#include <string>
-#include <vector>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <map>
+    #include <string>
+    #include <vector>
+#endif
 
 namespace Catch {
 

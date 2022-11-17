@@ -10,7 +10,9 @@
 #include <catch2/catch_tostring.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <regex>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <regex>
+#endif
 
 namespace Catch {
 namespace Matchers {

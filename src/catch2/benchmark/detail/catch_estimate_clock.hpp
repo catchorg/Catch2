@@ -18,10 +18,12 @@
 #include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
-#include <algorithm>
-#include <iterator>
-#include <vector>
-#include <cmath>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+    #include <iterator>
+    #include <vector>
+    #include <cmath>
+#endif
 
 namespace Catch {
     namespace Benchmark {

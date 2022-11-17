@@ -11,7 +11,9 @@
 #include <catch2/matchers/catch_matchers.hpp>
 #include <catch2/catch_approx.hpp>
 
-#include <algorithm>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+#endif
 
 namespace Catch {
 namespace Matchers {

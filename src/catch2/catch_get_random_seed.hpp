@@ -8,7 +8,11 @@
 #ifndef CATCH_GET_RANDOM_SEED_HPP_INCLUDED
 #define CATCH_GET_RANDOM_SEED_HPP_INCLUDED
 
-#include <cstdint>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <cstdint>
+#endif
 
 namespace Catch {
     //! Returns Catch2's current RNG seed.

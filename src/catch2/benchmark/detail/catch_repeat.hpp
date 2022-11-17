@@ -10,7 +10,10 @@
 #ifndef CATCH_REPEAT_HPP_INCLUDED
 #define CATCH_REPEAT_HPP_INCLUDED
 
-#include <type_traits>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <type_traits>
+#endif
+
 #include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {

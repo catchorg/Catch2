@@ -13,9 +13,11 @@
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 
-#include <algorithm>
-#include <iterator>
-#include <ostream>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <algorithm>
+    #include <iterator>
+    #include <ostream>
+#endif
 
 namespace Catch {
 

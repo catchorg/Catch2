@@ -16,10 +16,13 @@
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <cassert>
-#include <ctime>
-#include <algorithm>
-#include <iomanip>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cassert>
+    #include <algorithm>
+    #include <iomanip>
+#endif
+
+#include <time.h>
 
 namespace Catch {
 

@@ -23,9 +23,11 @@
 #include <catch2/internal/catch_windows_h_proxy.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 
-#include <cassert>
-#include <ostream>
-#include <utility>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cassert>
+    #include <ostream>
+    #include <utility>
+#endif
 
 namespace Catch {
 

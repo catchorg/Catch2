@@ -7,8 +7,10 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_source_line_info.hpp>
 
-#include <cstring>
-#include <ostream>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <cstring>
+    #include <ostream>
+#endif
 
 namespace Catch {
 

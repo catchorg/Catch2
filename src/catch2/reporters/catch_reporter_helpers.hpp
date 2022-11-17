@@ -8,9 +8,11 @@
 #ifndef CATCH_REPORTER_HELPERS_HPP_INCLUDED
 #define CATCH_REPORTER_HELPERS_HPP_INCLUDED
 
-#include <iosfwd>
-#include <string>
-#include <vector>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <iosfwd>
+    #include <string>
+    #include <vector>
+#endif
 
 #include <catch2/internal/catch_list.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>

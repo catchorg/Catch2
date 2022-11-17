@@ -12,7 +12,9 @@
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_unique_name.hpp>
 
-#include <exception>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <exception>
+#endif
 
 namespace Catch {
 

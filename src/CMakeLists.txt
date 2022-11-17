@@ -344,6 +344,24 @@ set_target_properties(Catch2 PROPERTIES
                                 VERSION ${PROJECT_VERSION}
                               SOVERSION ${PROJECT_VERSION})
 
+
+# Experimental std library module build
+# A good command line to use is "cmake -DCATCH_DEVELOPMENT_BUILD=ON -DCATCH_USE_STDLIB_MODULE=ON -DCATCH_ENABLE_WERROR=OFF 'path_to_src'
+if(CATCH_USE_STDLIB_MODULE)
+  target_compile_definitions(Catch2 PUBLIC CATCH_USE_STDLIB_MODULE)
+  target_compile_definitions(Catch2 PUBLIC CATCH_USE_STDLIB_MODULE_BUG_WORKAROUND)
+
+    target_compile_features(Catch2 PUBLIC cxx_std_23)
+
+    # Hopefully MS will provide a better/automatic/IJW way to use the standard library module, in other words "import std;" should just work
+    if( MSVC )
+        # We use a path relative to the compiler location which should be stable and avoids VS version/preview/non standard install location issues
+        # Also CMake finds the compiler for you.
+        cmake_path(GET CMAKE_CXX_COMPILER PARENT_PATH  CompilerDir)
+        target_sources(Catch2 PRIVATE "${CompilerDir}/../../../modules/std.ixx" )
+    endif()
+endif()
+
 # depend on bunch of C++11 and C++14 features to have C++14 enabled by default
 target_compile_features(Catch2
   PUBLIC

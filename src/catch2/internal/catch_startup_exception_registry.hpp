@@ -8,9 +8,12 @@
 #ifndef CATCH_STARTUP_EXCEPTION_REGISTRY_HPP_INCLUDED
 #define CATCH_STARTUP_EXCEPTION_REGISTRY_HPP_INCLUDED
 
-
-#include <vector>
-#include <exception>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <vector>
+    #include <exception>
+#endif
 
 namespace Catch {
 

@@ -10,7 +10,9 @@
 
 #include <catch2/internal/catch_source_line_info.hpp>
 
-#include <string>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <string>
+#endif
 
 namespace Catch {
 

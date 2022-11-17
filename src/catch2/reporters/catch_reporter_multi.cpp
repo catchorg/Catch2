@@ -11,7 +11,9 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_stdstreams.hpp>
 
-#include <ostream>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <ostream>
+#endif
 
 namespace Catch {
     void MultiReporter::updatePreferences(IEventListener const& reporterish) {

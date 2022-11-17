@@ -10,7 +10,11 @@
 
 #include <catch2/internal/catch_optional.hpp>
 
-#include <string>
+#if CATCH_USE_STDLIB_MODULE
+    import std;
+#else
+    #include <string>
+#endif
 
 namespace Catch {
 
