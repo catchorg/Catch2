@@ -345,6 +345,8 @@ Matchers.tests.cpp:<line number>|nexpression failed|n  REQUIRE_THROWS_MATCHES( t
 ##teamcity[testFinished name='Exception matchers that fail' duration="{duration}"]
 ##teamcity[testStarted name='Exception matchers that succeed']
 ##teamcity[testFinished name='Exception matchers that succeed' duration="{duration}"]
+##teamcity[testStarted name='Exception message can be matched']
+##teamcity[testFinished name='Exception message can be matched' duration="{duration}"]
 ##teamcity[testStarted name='Exception messages can be tested for']
 ##teamcity[testFinished name='Exception messages can be tested for' duration="{duration}"]
 ##teamcity[testStarted name='Exceptions matchers']

@@ -190,13 +190,21 @@ properties. The macro is `REQUIRE_THROWS_MATCHES(expr, ExceptionType, Matcher)`.
 > `REQUIRE_THROWS_MATCHES` macro lives in `catch2/matchers/catch_matchers.hpp`
 
 
-Catch2 currently provides only one matcher for exceptions,
-`Message(std::string message)`. `Message` checks that the exception's
+Catch2 currently provides two matchers for exceptions.
+These are:
+* `Message(std::string message)`.
+* `MessageMatches(Matcher matcher)`.
+
+`Message` checks that the exception's
 message, as returned from `what` is exactly equal to `message`.
+
+`MessageMatches` applies the provided matcher on the exception's
+message, as returned from `what`. This is useful in conjunctions with the `std::string` matchers (e.g. `StartsWith`)
 
 Example use:
 ```cpp
 REQUIRE_THROWS_MATCHES(throwsDerivedException(),  DerivedException,  Message("DerivedException::what"));
+REQUIRE_THROWS_MATCHES(throwsDerivedException(),  DerivedException,  MessageMatches(StartsWith("DerivedException")));
 ```
 
 Note that `DerivedException` in the example above has to derive from

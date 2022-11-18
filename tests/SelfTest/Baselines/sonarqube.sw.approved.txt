@@ -1156,6 +1156,7 @@ Matchers.tests.cpp:<line number>
       </failure>
     </testCase>
     <testCase name="Exception matchers that succeed" duration="{duration}"/>
+    <testCase name="Exception message can be matched" duration="{duration}"/>
     <testCase name="Exceptions matchers" duration="{duration}"/>
     <testCase name="Floating point matchers: double/Relative" duration="{duration}"/>
     <testCase name="Floating point matchers: double/Relative/Some subnormal values" duration="{duration}"/>

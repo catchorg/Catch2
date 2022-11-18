@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 //  Catch v3.2.0
-//  Generated: 2022-11-16 19:30:14.116909
+//  Generated: 2022-11-18 21:37:28.542527
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -10928,6 +10928,32 @@ public:
 
 //! Creates a matcher that checks whether a std derived exception has the provided message
 ExceptionMessageMatcher Message(std::string const& message);
+
+template <typename StringMatcherType>
+class ExceptionMessageMatchesMatcher final
+    : public MatcherBase<std::exception> {
+    StringMatcherType m_matcher;
+
+public:
+    ExceptionMessageMatchesMatcher( StringMatcherType matcher ):
+        m_matcher( CATCH_MOVE( matcher ) ) {}
+
+    bool match( std::exception const& ex ) const override {
+        return m_matcher.match( ex.what() );
+    }
+
+    std::string describe() const override {
+        return " matches \"" + m_matcher.describe() + '"';
+    }
+};
+
+//! Creates a matcher that checks whether a std derived exception message
+//! matches a provided matcher
+template <typename StringMatcherType>
+ExceptionMessageMatchesMatcher<StringMatcherType>
+MessageMatches( StringMatcherType&& matcher ) {
+    return { CATCH_FORWARD( matcher ) };
+}
 
 } // namespace Matchers
 } // namespace Catch
