@@ -13,6 +13,7 @@
 #include <catch2/internal/catch_meta.hpp>
 #include <catch2/internal/catch_compare_traits.hpp>
 #include <catch2/internal/catch_test_failure_exception.hpp>
+#include <catch2/internal/catch_logical_traits.hpp>
 
 #include <type_traits>
 #include <iosfwd>
@@ -168,19 +169,20 @@ namespace Catch {
     template <                                                                 \
         typename RhsT,                                                         \
         std::enable_if_t<                                                      \
-            Detail::is_##id##_comparable<LhsT, RhsT>::value &&                 \
-                !std::is_arithmetic<std::remove_reference_t<RhsT>>::value,     \
+            Detail::conjunction<Detail::is_##id##_comparable<LhsT, RhsT>,      \
+                                Detail::negation<std::is_arithmetic<           \
+                                    std::remove_reference_t<RhsT>>>>::value,   \
             int> = 0>                                                          \
     friend auto operator op( ExprLhs&& lhs, RhsT&& rhs )                       \
         ->BinaryExpr<LhsT, RhsT const&> {                                      \
         return {                                                               \
             static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
     }                                                                          \
-    template <                                                                 \
-        typename RhsT,                                                         \
-        std::enable_if_t<Detail::is_##id##_comparable<LhsT, RhsT>::value &&    \
-                             std::is_arithmetic<RhsT>::value,                  \
-                         int> = 0>                                             \
+    template <typename RhsT,                                                   \
+              std::enable_if_t<Detail::conjunction<                            \
+                                   Detail::is_##id##_comparable<LhsT, RhsT>,   \
+                                   std::is_arithmetic<RhsT>>::value,           \
+                               int> = 0>                                       \
     friend auto operator op( ExprLhs&& lhs, RhsT rhs )                         \
         ->BinaryExpr<LhsT, RhsT> {                                             \
         return {                                                               \
@@ -188,59 +190,58 @@ namespace Catch {
     }                                                                          \
     template <                                                                 \
         typename RhsT,                                                         \
-        std::enable_if_t<!Detail::is_##id##_comparable<LhsT, RhsT>::value &&   \
-                             Detail::is_eq_0_comparable<LhsT>::                \
-                                 value && /* We allow long because we want     \
-                                             `ptr op NULL to be accepted */    \
-                             ( std::is_same<RhsT, int>::value ||               \
-                               std::is_same<RhsT, long>::value ),              \
-                         int> = 0>                                             \
+        std::enable_if_t<                                                      \
+            Detail::conjunction<                                               \
+                Detail::negation<Detail::is_##id##_comparable<LhsT, RhsT>>,    \
+                Detail::is_eq_0_comparable<LhsT>,                              \
+                Detail::disjunction<std::is_same<RhsT, int>,                   \
+                                    /* On some platforms `NULL` is a long */   \
+                                    std::is_same<RhsT, long>>>::value,         \
+            int> = 0>                                                          \
     friend auto operator op( ExprLhs&& lhs, RhsT rhs )                         \
         ->BinaryExpr<LhsT, RhsT> {                                             \
-        if ( rhs != 0 ) {                                                      \
-            throw_test_failure_exception();                                    \
-        }                                                                      \
+        if ( rhs != 0 ) { throw_test_failure_exception(); }                    \
         return {                                                               \
             static_cast<bool>( lhs.m_lhs op 0 ), lhs.m_lhs, #op##_sr, rhs };   \
     }                                                                          \
     template <                                                                 \
         typename RhsT,                                                         \
-        std::enable_if_t<!Detail::is_##id##_comparable<LhsT, RhsT>::value &&   \
-                             Detail::is_eq_0_comparable<RhsT>::                \
-                                 value && /* We allow long because we want     \
-                                             `ptr op NULL` to be accepted */   \
-                             ( std::is_same<LhsT, int>::value ||               \
-                               std::is_same<LhsT, long>::value ),              \
-                         int> = 0>                                             \
+        std::enable_if_t<                                                      \
+            Detail::conjunction<                                               \
+                Detail::negation<Detail::is_##id##_comparable<LhsT, RhsT>>,    \
+                Detail::is_eq_0_comparable<RhsT>,                              \
+                Detail::disjunction<std::is_same<LhsT, int>,                   \
+                                    /* On some platforms `NULL` is a long */   \
+                                    std::is_same<LhsT, long>>>::value,         \
+            int> = 0>                                                          \
     friend auto operator op( ExprLhs&& lhs, RhsT rhs )                         \
         ->BinaryExpr<LhsT, RhsT> {                                             \
-        if ( lhs.m_lhs != 0 ) {                                                \
-            throw_test_failure_exception();                                    \
-        }                                                                      \
+        if ( lhs.m_lhs != 0 ) { throw_test_failure_exception(); }              \
         return { static_cast<bool>( 0 op rhs ), lhs.m_lhs, #op##_sr, rhs };    \
     }
         CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR( eq, == )
         CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR( ne, != )
 
-    #undef CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR
+#undef CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR
 
-    #define CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( id, op )     \
+#define CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( id, op )         \
     template <                                                                 \
         typename RhsT,                                                         \
         std::enable_if_t<                                                      \
-            Detail::is_##id##_comparable<LhsT, RhsT>::value &&                 \
-                !std::is_arithmetic<std::remove_reference_t<RhsT>>::value,     \
+            Detail::conjunction<Detail::is_##id##_comparable<LhsT, RhsT>,      \
+                                Detail::negation<std::is_arithmetic<           \
+                                    std::remove_reference_t<RhsT>>>>::value,   \
             int> = 0>                                                          \
     friend auto operator op( ExprLhs&& lhs, RhsT&& rhs )                       \
         ->BinaryExpr<LhsT, RhsT const&> {                                      \
         return {                                                               \
             static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
     }                                                                          \
-    template <                                                                 \
-        typename RhsT,                                                         \
-        std::enable_if_t<Detail::is_##id##_comparable<LhsT, RhsT>::value &&    \
-                             std::is_arithmetic<RhsT>::value,                  \
-                         int> = 0>                                             \
+    template <typename RhsT,                                                   \
+              std::enable_if_t<Detail::conjunction<                            \
+                                   Detail::is_##id##_comparable<LhsT, RhsT>,   \
+                                   std::is_arithmetic<RhsT>>::value,           \
+                               int> = 0>                                       \
     friend auto operator op( ExprLhs&& lhs, RhsT rhs )                         \
         ->BinaryExpr<LhsT, RhsT> {                                             \
         return {                                                               \
@@ -248,29 +249,29 @@ namespace Catch {
     }                                                                          \
     template <                                                                 \
         typename RhsT,                                                         \
-        std::enable_if_t<!Detail::is_##id##_comparable<LhsT, RhsT>::value &&   \
-                             Detail::is_##id##_0_comparable<LhsT>::value &&    \
-                             std::is_same<RhsT, int>::value,                   \
-                         int> = 0>                                             \
+        std::enable_if_t<                                                      \
+            Detail::conjunction<                                               \
+                Detail::negation<Detail::is_##id##_comparable<LhsT, RhsT>>,    \
+                Detail::is_##id##_0_comparable<LhsT>,                          \
+                std::is_same<RhsT, int>>::value,                               \
+            int> = 0>                                                          \
     friend auto operator op( ExprLhs&& lhs, RhsT rhs )                         \
         ->BinaryExpr<LhsT, RhsT> {                                             \
-        if ( rhs != 0 ) {                                                      \
-            throw_test_failure_exception();                                    \
-        }                                                                      \
+        if ( rhs != 0 ) { throw_test_failure_exception(); }                    \
         return {                                                               \
             static_cast<bool>( lhs.m_lhs op 0 ), lhs.m_lhs, #op##_sr, rhs };   \
     }                                                                          \
     template <                                                                 \
         typename RhsT,                                                         \
-        std::enable_if_t<!Detail::is_##id##_comparable<LhsT, RhsT>::value &&   \
-                             Detail::is_##id##_0_comparable<RhsT>::value &&    \
-                             std::is_same<LhsT, int>::value,                   \
-                         int> = 0>                                             \
+        std::enable_if_t<                                                      \
+            Detail::conjunction<                                               \
+                Detail::negation<Detail::is_##id##_comparable<LhsT, RhsT>>,    \
+                Detail::is_##id##_0_comparable<RhsT>,                          \
+                std::is_same<LhsT, int>>::value,                               \
+            int> = 0>                                                          \
     friend auto operator op( ExprLhs&& lhs, RhsT rhs )                         \
         ->BinaryExpr<LhsT, RhsT> {                                             \
-        if ( lhs.m_lhs != 0 ) {                                                \
-            throw_test_failure_exception();                                    \
-        }                                                                      \
+        if ( lhs.m_lhs != 0 ) { throw_test_failure_exception(); }              \
         return { static_cast<bool>( 0 op rhs ), lhs.m_lhs, #op##_sr, rhs };    \
     }
 
@@ -279,7 +280,7 @@ namespace Catch {
         CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( gt, > )
         CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( ge, >= )
 
-    #undef CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR
+#undef CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR
 
 
     #define CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(op) \
