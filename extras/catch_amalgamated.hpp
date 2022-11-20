@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 //  Catch v3.2.0
-//  Generated: 2022-11-18 21:37:28.542527
+//  Generated: 2022-11-20 13:04:38.121489
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -10947,8 +10947,8 @@ public:
     }
 };
 
-//! Creates a matcher that checks whether a std derived exception message
-//! matches a provided matcher
+//! Creates a matcher that checks whether a message from an std derived
+//! exception matches a provided matcher
 template <typename StringMatcherType>
 ExceptionMessageMatchesMatcher<StringMatcherType>
 MessageMatches( StringMatcherType&& matcher ) {
