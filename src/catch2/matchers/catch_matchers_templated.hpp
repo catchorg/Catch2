@@ -11,6 +11,7 @@
 #include <catch2/matchers/catch_matchers.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_logical_traits.hpp>
 
 #include <array>
 #include <algorithm>
@@ -56,20 +57,6 @@ namespace Matchers {
             return arr;
         }
 
-#if defined( __cpp_lib_logical_traits ) && __cpp_lib_logical_traits >= 201510
-
-        using std::conjunction;
-
-#else // __cpp_lib_logical_traits
-
-        template<typename... Cond>
-        struct conjunction : std::true_type {};
-
-        template<typename Cond, typename... Rest>
-        struct conjunction<Cond, Rest...> : std::integral_constant<bool, Cond::value && conjunction<Rest...>::value> {};
-
-#endif // __cpp_lib_logical_traits
-
         template<typename T>
         using is_generic_matcher = std::is_base_of<
             Catch::Matchers::MatcherGenericBase,
@@ -77,7 +64,7 @@ namespace Matchers {
         >;
 
         template<typename... Ts>
-        using are_generic_matchers = conjunction<is_generic_matcher<Ts>...>;
+        using are_generic_matchers = Catch::Detail::conjunction<is_generic_matcher<Ts>...>;
 
         template<typename T>
         using is_matcher = std::is_base_of<
