@@ -8,7 +8,9 @@
 #ifndef CATCH_LOGICAL_TRAITS_HPP_INCLUDED
 #define CATCH_LOGICAL_TRAITS_HPP_INCLUDED
 
-#include <type_traits>
+#if !CATCH_USE_STDLIB_MODULE
+    #include <type_traits>
+#endif
 
 namespace Catch {
 namespace Detail {
