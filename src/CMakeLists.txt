@@ -91,6 +91,7 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/internal/catch_lazy_expr.hpp
   ${SOURCES_DIR}/internal/catch_leak_detector.hpp
   ${SOURCES_DIR}/internal/catch_list.hpp
+  ${SOURCES_DIR}/internal/catch_logical_traits.hpp
   ${SOURCES_DIR}/internal/catch_message_info.hpp
   ${SOURCES_DIR}/internal/catch_meta.hpp
   ${SOURCES_DIR}/internal/catch_move_and_forward.hpp
