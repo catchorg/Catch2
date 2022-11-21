@@ -11,7 +11,9 @@
 
 #include <catch2/catch_test_spec.hpp>
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <string>
+#endif
 
 namespace Catch {
     TestSpec parseTestSpec( std::string const& arg );

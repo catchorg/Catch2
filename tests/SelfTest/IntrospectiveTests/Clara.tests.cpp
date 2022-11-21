@@ -9,8 +9,9 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/internal/catch_clara.hpp>
 
-
+#if !CATCH_USE_STDLIB_MODULE
 #include <string>
+#endif
 
 TEST_CASE("is_unary_function", "[clara][compilation]") {
     auto unary1 = [](int) {};

@@ -9,7 +9,13 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/catch_approx.hpp>
 
+#if CATCH_USE_STDLIB_MODULE
+#include "math.h"
+#else
 #include <cmath>
+#endif
+
+
 
 using Catch::Approx;
 

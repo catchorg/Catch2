@@ -16,12 +16,13 @@
 #   pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
 #endif
 
-
+#if !CATCH_USE_STDLIB_MODULE
 #include <iostream>
 #include <cerrno>
 #include <limits>
 #include <array>
 #include <tuple>
+#endif
 
 namespace {
 

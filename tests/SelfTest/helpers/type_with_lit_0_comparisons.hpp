@@ -9,7 +9,9 @@
 #ifndef CATCH_TEST_HELPERS_TYPE_WITH_LIT_0_COMPARISONS_HPP_INCLUDED
 #define CATCH_TEST_HELPERS_TYPE_WITH_LIT_0_COMPARISONS_HPP_INCLUDED
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <type_traits>
+#endif
 
 // Should only be constructible from literal 0.
 // Used by `TypeWithLit0Comparisons` for testing comparison

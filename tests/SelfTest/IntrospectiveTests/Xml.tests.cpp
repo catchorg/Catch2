@@ -12,7 +12,9 @@
 #include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <sstream>
+#endif
 
 static std::string encode( std::string const& str, Catch::XmlEncode::ForWhat forWhat = Catch::XmlEncode::ForTextNodes ) {
     Catch::ReusableStringStream oss;

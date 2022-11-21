@@ -11,8 +11,10 @@
 
 #if defined(CATCH_CONFIG_CPP17_VARIANT)
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <string>
 #include <variant>
+#endif
 
 // We need 2 types with non-trivial copies/moves
 struct MyType1 {

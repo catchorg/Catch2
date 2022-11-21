@@ -10,7 +10,9 @@
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_istream.hpp>
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <sstream>
+#endif
 
 namespace {
     class TestColourImpl : public Catch::ColourImpl {

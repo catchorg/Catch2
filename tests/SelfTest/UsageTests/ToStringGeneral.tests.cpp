@@ -9,8 +9,10 @@
 #define CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER
 #include <catch2/catch_test_macros.hpp>
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <map>
 #include <set>
+#endif
 
 TEST_CASE( "Character pretty printing" ){
     SECTION("Specifically escaped"){

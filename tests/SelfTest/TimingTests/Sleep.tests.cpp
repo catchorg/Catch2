@@ -8,8 +8,10 @@
 
 #include <catch2/catch_test_macros.hpp>
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <chrono>
 #include <thread>
+#endif
 
 TEST_CASE( "sleep_for_100ms", "[.min_duration_test][approvals]" )
 {

@@ -19,9 +19,11 @@
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/generators/catch_generators_range.hpp>
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <cstdio>
 #include <sstream>
 #include <iostream>
+#endif
 
 struct Opaque
 {
@@ -130,7 +132,7 @@ namespace ObjectWithConversions
 
 namespace EnumBitFieldTests
 {
-    enum Bits : uint32_t {
+    enum Bits : std::uint32_t {
         bit0 = 0x0001,
         bit1 = 0x0002,
         bit2 = 0x0004,
@@ -295,7 +297,9 @@ TEST_CASE( "pointer to class", "[Tricky]" )
    REQUIRE( p == 0 );
 }
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <memory>
+#endif
 
 TEST_CASE( "null_ptr", "[Tricky]" )
 {
@@ -311,7 +315,7 @@ TEST_CASE( "X/level/1/b", "[Tricky]" )      { SUCCEED(""); }
 TEST_CASE( "has printf" ) {
 
     // This can cause problems as, currently, stdout itself is not redirected - only the cout (and cerr) buffer
-    printf( "loose text artifact\n" );
+    std::printf( "loose text artifact\n" );
 }
 
 namespace {

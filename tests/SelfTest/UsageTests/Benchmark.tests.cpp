@@ -12,7 +12,9 @@
 #include <catch2/benchmark/catch_constructor.hpp>
 #include <catch2/generators/catch_generators_range.hpp>
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <map>
+#endif
 
 namespace {
     std::uint64_t Fibonacci(std::uint64_t number) {

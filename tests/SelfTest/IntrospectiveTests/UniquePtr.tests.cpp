@@ -9,7 +9,9 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <tuple>
+#endif
 
 namespace {
     struct unique_ptr_test_helper {

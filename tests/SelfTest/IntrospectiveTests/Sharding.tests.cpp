@@ -11,8 +11,10 @@
 
 #include <catch2/internal/catch_sharding.hpp>
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <unordered_map>
 #include <vector>
+#endif
 
 TEST_CASE("Sharding Function", "[approvals]") {
     std::vector<int> testContainer = { 0, 1, 2, 3, 4, 5, 6 };

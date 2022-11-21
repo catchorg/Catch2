@@ -14,6 +14,7 @@
 #include <catch2/matchers/catch_matchers_predicate.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <cmath>
 #include <initializer_list>
 #include <list>
@@ -21,6 +22,7 @@
 #include <type_traits>
 #include <vector>
 #include <memory>
+#endif
 
 namespace {
 

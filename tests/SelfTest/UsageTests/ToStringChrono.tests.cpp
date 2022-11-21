@@ -8,8 +8,10 @@
 
 #include <catch2/catch_test_macros.hpp>
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <chrono>
 #include <cstdint>
+#endif
 
 TEST_CASE("Stringifying std::chrono::duration helpers", "[toString][chrono]") {
     // No literals because we still support c++11
@@ -26,10 +28,10 @@ TEST_CASE("Stringifying std::chrono::duration helpers", "[toString][chrono]") {
 }
 
 TEST_CASE("Stringifying std::chrono::duration with weird ratios", "[toString][chrono]") {
-    std::chrono::duration<int64_t, std::ratio<30>> half_minute(1);
-    std::chrono::duration<int64_t, std::ratio<1, 1000000000000>> pico_second(1);
-    std::chrono::duration<int64_t, std::ratio<1, 1000000000000000>> femto_second(1);
-    std::chrono::duration<int64_t, std::ratio<1, 1000000000000000000>> atto_second(1);
+    std::chrono::duration<std::int64_t, std::ratio<30>> half_minute(1);
+    std::chrono::duration<std::int64_t, std::ratio<1, 1000000000000>> pico_second(1);
+    std::chrono::duration<std::int64_t, std::ratio<1, 1000000000000000>> femto_second(1);
+    std::chrono::duration<std::int64_t, std::ratio<1, 1000000000000000000>> atto_second(1);
     REQUIRE(half_minute != femto_second);
     REQUIRE(pico_second != atto_second);
 }

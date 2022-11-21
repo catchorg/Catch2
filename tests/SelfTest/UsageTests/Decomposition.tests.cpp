@@ -6,7 +6,12 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
+#if CATCH_USE_STDLIB_MODULE
+import std;
+#else
 #include <iostream>
+#endif
+
 #include <cstdio>
 
 namespace {

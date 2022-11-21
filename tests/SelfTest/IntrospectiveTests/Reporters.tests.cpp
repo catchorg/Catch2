@@ -25,7 +25,9 @@
 #include <catch2/reporters/catch_reporter_multi.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <sstream>
+#endif
 
 namespace {
     class StringIStream : public Catch::IStream {

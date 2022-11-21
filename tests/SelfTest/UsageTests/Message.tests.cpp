@@ -7,7 +7,10 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <catch2/catch_test_macros.hpp>
+
+#if !CATCH_USE_STDLIB_MODULE
 #include <iostream>
+#endif
 
 TEST_CASE( "INFO and WARN do not abort tests", "[messages][.]" ) {
     INFO( "this is a " << "message" );    // This should output the message if a failure occurs

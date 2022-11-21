@@ -10,8 +10,10 @@
 #include <catch2/catch_translate_exception.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <string>
 #include <stdexcept>
+#endif
 
 #ifdef _MSC_VER
 #pragma warning(disable:4702) // Unreachable code -- unconditional throws and so on

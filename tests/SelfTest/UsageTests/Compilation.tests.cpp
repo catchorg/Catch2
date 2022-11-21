@@ -8,11 +8,15 @@
 
 #include <helpers/type_with_lit_0_comparisons.hpp>
 
+#if CATCH_USE_STDLIB_MODULE
+import std;
+#else
 #include <type_traits>
 
 // Setup for #1403 -- look for global overloads of operator << for classes
 // in a different namespace.
 #include <ostream>
+#endif
 
 namespace foo {
     struct helper_1403 {
@@ -135,7 +139,7 @@ TEST_CASE("#872") {
 
 TEST_CASE("#1027: Bitfields can be captured") {
     struct Y {
-        uint32_t v : 1;
+        std::uint32_t v : 1;
     };
     Y y{ 0 };
     REQUIRE(y.v == 0);

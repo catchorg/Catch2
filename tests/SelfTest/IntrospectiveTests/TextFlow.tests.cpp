@@ -9,7 +9,9 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/internal/catch_textflow.hpp>
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <sstream>
+#endif
 
 using Catch::TextFlow::Column;
 

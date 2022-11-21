@@ -15,11 +15,15 @@
 #include <catch2/matchers/catch_matchers_vector.hpp>
 #include <catch2/matchers/catch_matchers_templated.hpp>
 
+#if CATCH_USE_STDLIB_MODULE
+#include <math.h>
+#else
 #include <algorithm>
 #include <exception>
 #include <cmath>
 #include <list>
 #include <sstream>
+#endif
 
 #ifdef __clang__
 #    pragma clang diagnostic push

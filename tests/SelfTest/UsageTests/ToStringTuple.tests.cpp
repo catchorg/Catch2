@@ -9,7 +9,9 @@
 #define CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER
 #include <catch2/catch_test_macros.hpp>
 
+#if !CATCH_USE_STDLIB_MODULE
 #include <tuple>
+#endif
 
 TEST_CASE( "tuple<>", "[toString][tuple]" )
 {
