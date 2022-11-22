@@ -67,7 +67,8 @@ namespace Catch {
 
         TestCaseInfo(StringRef _className,
                      NameAndTags const& _tags,
-                     SourceLineInfo const& _lineInfo);
+                     SourceLineInfo const& _lineInfo,
+                     StringRef _testInfo);
 
         bool isHidden() const;
         bool throws() const;
@@ -95,6 +96,7 @@ namespace Catch {
         std::vector<Tag> tags;
         SourceLineInfo lineInfo;
         TestCaseProperties properties = TestCaseProperties::None;
+        StringRef testType;
     };
 
     /**
@@ -120,7 +122,8 @@ namespace Catch {
     Detail::unique_ptr<TestCaseInfo>
     makeTestCaseInfo( StringRef className,
                       NameAndTags const& nameAndTags,
-                      SourceLineInfo const& lineInfo );
+                      SourceLineInfo const& lineInfo,
+                      StringRef testType );
 }
 
 #ifdef __clang__

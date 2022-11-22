@@ -52,14 +52,15 @@ namespace Catch {
         return Detail::make_unique<TestInvokerAsFunction>( testAsFunction );
     }
 
-    AutoReg::AutoReg( Detail::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, StringRef classOrMethod, NameAndTags const& nameAndTags ) noexcept {
+    AutoReg::AutoReg( Detail::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, StringRef classOrMethod, NameAndTags const& nameAndTags, StringRef testType ) noexcept {
         CATCH_TRY {
             getMutableRegistryHub()
                     .registerTest(
                         makeTestCaseInfo(
                             extractClassName( classOrMethod ),
                             nameAndTags,
-                            lineInfo),
+                            lineInfo,
+                            testType),
                         CATCH_MOVE(invoker)
                     );
         } CATCH_CATCH_ALL {

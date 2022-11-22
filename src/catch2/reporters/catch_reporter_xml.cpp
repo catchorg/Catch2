@@ -67,6 +67,7 @@ namespace Catch {
         StreamingReporterBase::testCaseStarting(testInfo);
         m_xml.startElement( "TestCase" )
             .writeAttribute( "name"_sr, trim( testInfo.name ) )
+             .writeAttribute("testType"_sr, trim(testInfo.testType) )
             .writeAttribute( "tags"_sr, testInfo.tagsAsString() );
 
         writeSourceInfo( testInfo.lineInfo );

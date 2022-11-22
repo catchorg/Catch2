@@ -165,30 +165,30 @@
 
 #define INTERNAL_CATCH_NTTP_REGISTER0(TestFunc, signature)\
     template<typename Type>\
-    void reg_test(TypeList<Type>, Catch::NameAndTags nameAndTags)\
+    void reg_test(TypeList<Type>, Catch::NameAndTags nameAndTags, Catch::StringRef testType)\
     {\
-        Catch::AutoReg( Catch::makeTestInvoker(&TestFunc<Type>), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), nameAndTags);\
+        Catch::AutoReg( Catch::makeTestInvoker(&TestFunc<Type>), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), nameAndTags, testType);\
     }
 
 #define INTERNAL_CATCH_NTTP_REGISTER(TestFunc, signature, ...)\
     template<INTERNAL_CATCH_REMOVE_PARENS(signature)>\
-    void reg_test(Nttp<__VA_ARGS__>, Catch::NameAndTags nameAndTags)\
+    void reg_test(Nttp<__VA_ARGS__>, Catch::NameAndTags nameAndTags, Catch::StringRef testType)\
     {\
-        Catch::AutoReg( Catch::makeTestInvoker(&TestFunc<__VA_ARGS__>), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), nameAndTags);\
+        Catch::AutoReg( Catch::makeTestInvoker(&TestFunc<__VA_ARGS__>), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), nameAndTags, testType);\
     }
 
 #define INTERNAL_CATCH_NTTP_REGISTER_METHOD0(TestName, signature, ...)\
     template<typename Type>\
-    void reg_test(TypeList<Type>, Catch::StringRef className, Catch::NameAndTags nameAndTags)\
+    void reg_test(TypeList<Type>, Catch::StringRef className, Catch::NameAndTags nameAndTags, Catch::StringRef testType)\
     {\
-        Catch::AutoReg( Catch::makeTestInvoker(&TestName<Type>::test), CATCH_INTERNAL_LINEINFO, className, nameAndTags);\
+        Catch::AutoReg( Catch::makeTestInvoker(&TestName<Type>::test), CATCH_INTERNAL_LINEINFO, className, nameAndTags, testType);\
     }
 
 #define INTERNAL_CATCH_NTTP_REGISTER_METHOD(TestName, signature, ...)\
     template<INTERNAL_CATCH_REMOVE_PARENS(signature)>\
-    void reg_test(Nttp<__VA_ARGS__>, Catch::StringRef className, Catch::NameAndTags nameAndTags)\
+    void reg_test(Nttp<__VA_ARGS__>, Catch::StringRef className, Catch::NameAndTags nameAndTags, Catch::StringRef testType)\
     {\
-        Catch::AutoReg( Catch::makeTestInvoker(&TestName<__VA_ARGS__>::test), CATCH_INTERNAL_LINEINFO, className, nameAndTags);\
+        Catch::AutoReg( Catch::makeTestInvoker(&TestName<__VA_ARGS__>::test), CATCH_INTERNAL_LINEINFO, className, nameAndTags, testType);\
     }
 
 #define INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD0(TestName, ClassName)
