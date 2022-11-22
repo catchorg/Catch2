@@ -65,6 +65,22 @@ jobs:
             build_type: Release
             std: 17
             other_pkgs: clang-10
+          - cxx: clang++-10
+            build_type: Debug
+            std: 20
+            other_pkgs: clang-10
+          - cxx: clang++-10
+            build_type: Release
+            std: 20
+            other_pkgs: clang-10
+          - cxx: g++-10
+            build_type: Debug
+            std: 20
+            other_pkgs: g++-10
+          - cxx: g++-10
+            build_type: Release
+            std: 20
+            other_pkgs: g++-10
 
     steps:
     - uses: actions/checkout@v2

@@ -74,6 +74,7 @@
 #include <catch2/internal/catch_lazy_expr.hpp>
 #include <catch2/internal/catch_leak_detector.hpp>
 #include <catch2/internal/catch_list.hpp>
+#include <catch2/internal/catch_logical_traits.hpp>
 #include <catch2/internal/catch_message_info.hpp>
 #include <catch2/internal/catch_meta.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
