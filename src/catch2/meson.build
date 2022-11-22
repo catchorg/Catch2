@@ -96,6 +96,7 @@ internal_headers = [
   'internal/catch_lazy_expr.hpp',
   'internal/catch_leak_detector.hpp',
   'internal/catch_list.hpp',
+  'internal/catch_logical_traits.hpp',
   'internal/catch_message_info.hpp',
   'internal/catch_meta.hpp',
   'internal/catch_move_and_forward.hpp',
