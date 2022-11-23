@@ -51,16 +51,16 @@ uint64_t fibonacci(uint64_t number) {
 }
 
 TEST_CASE("Benchmark Fibonacci", "[!benchmark]") {
-    REQUIRE(Fibonacci(5) == 5);
+    REQUIRE(fibonacci(5) == 5);
 
-    REQUIRE(Fibonacci(20) == 6'765);
-    BENCHMARK("Fibonacci 20") {
-        return Fibonacci(20);
+    REQUIRE(fibonacci(20) == 6'765);
+    BENCHMARK("fibonacci 20") {
+        return fibonacci(20);
     };
 
-    REQUIRE(Fibonacci(25) == 75'025);
-    BENCHMARK("Fibonacci 25") {
-        return Fibonacci(25);
+    REQUIRE(fibonacci(25) == 75'025);
+    BENCHMARK("fibonacci 25") {
+        return fibonacci(25);
     };
 }
 ```
