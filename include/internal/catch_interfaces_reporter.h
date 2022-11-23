@@ -21,6 +21,8 @@
 #if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
 #include "benchmark/catch_estimate.hpp"
 #include "benchmark/catch_outlier_classification.hpp"
+
+#include <iterator>
 #endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
 

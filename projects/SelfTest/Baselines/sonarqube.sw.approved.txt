@@ -575,6 +575,30 @@ Condition.tests.cpp:<line number>
       </skipped>
     </testCase>
     <testCase name="Inequality checks that should succeed" duration="{duration}"/>
+    <testCase name="Mayfail test case with nested sections/1/A" duration="{duration}">
+      <skipped message="FAIL()">
+FAILED:
+Condition.tests.cpp:<line number>
+      </skipped>
+    </testCase>
+    <testCase name="Mayfail test case with nested sections/2/A" duration="{duration}">
+      <skipped message="FAIL()">
+FAILED:
+Condition.tests.cpp:<line number>
+      </skipped>
+    </testCase>
+    <testCase name="Mayfail test case with nested sections/1/B" duration="{duration}">
+      <skipped message="FAIL()">
+FAILED:
+Condition.tests.cpp:<line number>
+      </skipped>
+    </testCase>
+    <testCase name="Mayfail test case with nested sections/2/B" duration="{duration}">
+      <skipped message="FAIL()">
+FAILED:
+Condition.tests.cpp:<line number>
+      </skipped>
+    </testCase>
     <testCase name="Ordering comparison checks that should fail" duration="{duration}">
       <failure message="CHECK(data.int_seven > 7)">
 FAILED:

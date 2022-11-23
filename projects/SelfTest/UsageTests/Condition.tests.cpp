@@ -11,7 +11,7 @@
 // Wdouble-promotion is not supported until 3.8
 #   if (__clang_major__ > 3) || (__clang_major__ == 3 && __clang_minor__ > 7)
 #       pragma clang diagnostic ignored "-Wdouble-promotion"
-#   endif    
+#   endif
 #endif
 
 #include "catch.hpp"
@@ -88,6 +88,19 @@ TEST_CASE( "Equality checks that should fail", "[.][failing][!mayfail]" )
     double x = 1.1 + 0.1 + 0.1;
     CHECK( x == Approx( 1.301 ) );
 }
+
+// Needed to test junit reporter's handling of mayfail test cases and sections
+TEST_CASE("Mayfail test case with nested sections", "[!mayfail]") {
+    SECTION("A") {
+        SECTION("1") { FAIL(); }
+        SECTION("2") { FAIL(); }
+    }
+    SECTION("B") {
+        SECTION("1") { FAIL(); }
+        SECTION("2") { FAIL(); }
+    }
+}
+
 
 TEST_CASE( "Inequality checks that should succeed" )
 {

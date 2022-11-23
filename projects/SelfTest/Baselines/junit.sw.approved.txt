@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1777" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1782" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -48,6 +48,7 @@ Nor would this
     <testcase classname="<exe-name>.global" name="#1954 - 7 arg template test case sig compiles - 5, 1, 1, 1, 1, 0, 0" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1954 - 7 arg template test case sig compiles - 5, 3, 1, 1, 1, 0, 0" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
       <error type="TEST_CASE">
 FAILED:
 expected exception
@@ -56,6 +57,7 @@ Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/inside REQUIRE_NOTHROW" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
       <error message="thisThrows()" type="REQUIRE_NOTHROW">
 FAILED:
   REQUIRE_NOTHROW( thisThrows() )
@@ -68,6 +70,7 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="#809" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#833" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#835 -- errno should not be touched by Catch" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure message="f() == 0" type="CHECK">
 FAILED:
   CHECK( f() == 0 )
@@ -443,6 +446,7 @@ Matchers.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Enums in namespaces can quickly have stringification enabled using REGISTER_ENUM" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Epsilon only applies to Approx's value" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Equality checks that should fail" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure message="data.int_seven == 6" type="CHECK">
 FAILED:
   CHECK( data.int_seven == 6 )
@@ -736,6 +740,7 @@ Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Inequality checks that should fail" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure message="data.int_seven != 7" type="CHECK">
 FAILED:
   CHECK( data.int_seven != 7 )
@@ -797,6 +802,34 @@ FAILED:
 with expansion:
   "this string contains 'abc' as a substring" not contains: "substring"
 Matchers.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/1/A" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
+      <failure type="FAIL">
+FAILED:
+Condition.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/2/A" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
+      <failure type="FAIL">
+FAILED:
+Condition.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/1/B" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
+      <failure type="FAIL">
+FAILED:
+Condition.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/2/B" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
+      <failure type="FAIL">
+FAILED:
+Condition.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Mismatching exception messages failing the test" time="{duration}" status="run">

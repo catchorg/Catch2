@@ -11,59 +11,58 @@
 
 #include "catch_platform.h"
 #include "catch_compiler_capabilities.h"
-#include "catch_windows_h_proxy.h"
 
-
-#if defined( CATCH_CONFIG_WINDOWS_SEH )
+#include <cassert>
 
 namespace Catch {
 
-    struct FatalConditionHandler {
+    // Wrapper for platform-specific fatal error (signals/SEH) handlers
+    //
+    // Tries to be cooperative with other handlers, and not step over
+    // other handlers. This means that unknown structured exceptions
+    // are passed on, previous signal handlers are called, and so on.
+    //
+    // Can only be instantiated once, and assumes that once a signal
+    // is caught, the binary will end up terminating. Thus, there
+    class FatalConditionHandler {
+        bool m_started = false;
 
-        static LONG CALLBACK handleVectoredException(PEXCEPTION_POINTERS ExceptionInfo);
-        FatalConditionHandler();
-        static void reset();
-        ~FatalConditionHandler();
-
-    private:
-        static bool isSet;
-        static ULONG guaranteeSize;
-        static PVOID exceptionHandlerHandle;
-    };
-
-} // namespace Catch
-
-#elif defined ( CATCH_CONFIG_POSIX_SIGNALS )
-
-#include <signal.h>
-
-namespace Catch {
-
-    struct FatalConditionHandler {
-
-        static bool isSet;
-        static struct sigaction oldSigActions[];
-        static stack_t oldSigStack;
-        static char altStackMem[];
-
-        static void handleSignal( int sig );
-
+        // Install/disengage implementation for specific platform.
+        // Should be if-defed to work on current platform, can assume
+        // engage-disengage 1:1 pairing.
+        void engage_platform();
+        void disengage_platform();
+    public:
+        // Should also have platform-specific implementations as needed
         FatalConditionHandler();
         ~FatalConditionHandler();
-        static void reset();
+
+        void engage() {
+            assert(!m_started && "Handler cannot be installed twice.");
+            m_started = true;
+            engage_platform();
+        }
+
+        void disengage() {
+            assert(m_started && "Handler cannot be uninstalled without being installed first");
+            m_started = false;
+            disengage_platform();
+        }
     };
 
-} // namespace Catch
-
-
-#else
-
-namespace Catch {
-    struct FatalConditionHandler {
-        void reset();
+    //! Simple RAII guard for (dis)engaging the FatalConditionHandler
+    class FatalConditionHandlerGuard {
+        FatalConditionHandler* m_handler;
+    public:
+        FatalConditionHandlerGuard(FatalConditionHandler* handler):
+            m_handler(handler) {
+            m_handler->engage();
+        }
+        ~FatalConditionHandlerGuard() {
+            m_handler->disengage();
+        }
     };
-}
 
-#endif
+} // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_FATAL_CONDITION_H_INCLUDED

@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 3.5)
 # disable testsuite in that case
 if(NOT DEFINED PROJECT_NAME)
     set(NOT_SUBPROJECT ON)
+else()
+    set(NOT_SUBPROJECT OFF)
 endif()
 
 # Catch2's build breaks if done in-tree. You probably should not build
@@ -14,7 +16,7 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 endif()
 
 
-project(Catch2 LANGUAGES CXX VERSION 2.13.4)
+project(Catch2 LANGUAGES CXX VERSION 2.13.10)
 
 # Provide path for scripts
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")
@@ -25,11 +27,11 @@ option(CATCH_USE_VALGRIND "Perform SelfTests with Valgrind" OFF)
 option(CATCH_BUILD_TESTING "Build SelfTest project" ON)
 option(CATCH_BUILD_EXAMPLES "Build documentation examples" OFF)
 option(CATCH_BUILD_EXTRA_TESTS "Build extra tests" OFF)
+option(CATCH_BUILD_STATIC_LIBRARY "Builds static library from the main implementation. EXPERIMENTAL" OFF)
 option(CATCH_ENABLE_COVERAGE "Generate coverage for codecov.io" OFF)
 option(CATCH_ENABLE_WERROR "Enable all warnings as errors" ON)
 option(CATCH_INSTALL_DOCS "Install documentation alongside library" ON)
 option(CATCH_INSTALL_HELPERS "Install contrib alongside library" ON)
-
 
 # define some folders
 set(CATCH_DIR ${CMAKE_CURRENT_SOURCE_DIR})
@@ -104,15 +106,21 @@ endif()
 add_library(Catch2::Catch2 ALIAS Catch2)
 
 # Hacky support for compiling the impl into a static lib
-add_library(Catch2WithMain ${CMAKE_CURRENT_LIST_DIR}/src/catch_with_main.cpp)
-target_link_libraries(Catch2WithMain PUBLIC Catch2)
-add_library(Catch2::Catch2WithMain ALIAS Catch2WithMain)
+if (CATCH_BUILD_STATIC_LIBRARY)
+  add_library(Catch2WithMain ${CMAKE_CURRENT_LIST_DIR}/src/catch_with_main.cpp)
+  target_link_libraries(Catch2WithMain PUBLIC Catch2)
+  add_library(Catch2::Catch2WithMain ALIAS Catch2WithMain)
 
-# Make the build reproducible on versions of g++ and clang that supports -ffile-prefix-map
-if(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND NOT ${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 8) OR
-   ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND NOT ${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 10))
-  target_compile_options(Catch2WithMain PRIVATE "-ffile-prefix-map=${CMAKE_SOURCE_DIR}=.")
-endif()
+  # Make the build reproducible on versions of g++ and clang that supports -ffile-prefix-map
+  if(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND NOT ${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 8) OR
+     ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND NOT ${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 10))
+    target_compile_options(Catch2WithMain PRIVATE "-ffile-prefix-map=${CMAKE_SOURCE_DIR}=.")
+  endif()
+
+  if (CATCH_CONFIG_DEFAULT_REPORTER) 
+    target_compile_definitions(Catch2WithMain PRIVATE CATCH_CONFIG_DEFAULT_REPORTER=${CATCH_CONFIG_DEFAULT_REPORTER})
+  endif()
+endif(CATCH_BUILD_STATIC_LIBRARY)
 
 # Only perform the installation steps when Catch is not being used as
 # a subproject via `add_subdirectory`, or the destinations will break,
@@ -128,11 +136,17 @@ if (NOT_SUBPROJECT)
           ${CATCH_CMAKE_CONFIG_DESTINATION}
     )
 
+    # Workaround lack of generator expressions in install(TARGETS
+    set(InstallationTargets Catch2)
+    if (TARGET Catch2WithMain)
+      list(APPEND InstallationTargets Catch2WithMain)
+    endif()
+
 
     # create and install an export set for catch target as Catch2::Catch
     install(
       TARGETS
-        Catch2 Catch2WithMain
+        ${InstallationTargets}
       EXPORT
         Catch2Targets
       DESTINATION

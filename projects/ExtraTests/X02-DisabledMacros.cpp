@@ -26,6 +26,10 @@ foo f;
 
 // This test should not be run, because it won't be registered
 TEST_CASE( "Disabled Macros" ) {
+
+    CAPTURE( 1 );
+    CAPTURE( 1, "captured" );
+
     std::cout << "This should not happen\n";
     FAIL();
 }

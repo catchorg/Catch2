@@ -452,9 +452,8 @@ namespace Catch {
     }
 
     void RunContext::invokeActiveTestCase() {
-        FatalConditionHandler fatalConditionHandler; // Handle signals
+        FatalConditionHandlerGuard _(&m_fatalConditionhandler);
         m_activeTestCase->invoke();
-        fatalConditionHandler.reset();
     }
 
     void RunContext::handleUnfinishedSections() {

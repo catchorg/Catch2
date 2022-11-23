@@ -242,12 +242,14 @@ namespace { namespace MatchersTests {
 
             ~CustomAllocator() = default;
 
+#if defined(_MSC_VER) && _MSVC_LANG < 201703L
             using std::allocator<T>::address;
-            using std::allocator<T>::allocate;
             using std::allocator<T>::construct;
-            using std::allocator<T>::deallocate;
             using std::allocator<T>::max_size;
             using std::allocator<T>::destroy;
+#endif
+            using std::allocator<T>::allocate;
+            using std::allocator<T>::deallocate;
         };
 
         TEST_CASE("Vector matchers", "[matchers][vector]") {

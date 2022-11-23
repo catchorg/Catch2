@@ -5720,7 +5720,15 @@ Nor would this
             filter([] (int) { return false; }, value(1)), Catch::GeneratorException
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+        <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            filter( []( int ) { return false; }, values( { 1, 2, 3 } ) ), Catch::GeneratorException
+          </Original>
+          <Expanded>
+            filter( []( int ) { return false; }, values( { 1, 2, 3 } ) ), Catch::GeneratorException
+          </Expanded>
+        </Expression>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Take generator" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
         <Section name="Take less" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7955,6 +7963,43 @@ Nor would this
         </Expanded>
       </Expression>
       <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="Mayfail test case with nested sections" tags="[!mayfail]" filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" >
+      <Section name="A" filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" >
+        <Section name="1" filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" >
+          <Failure filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" />
+          <OverallResults successes="0" failures="0" expectedFailures="1"/>
+        </Section>
+        <OverallResults successes="0" failures="0" expectedFailures="1"/>
+      </Section>
+      <Section name="A" filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" >
+        <Section name="2" filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" >
+          <Failure filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" />
+          <OverallResults successes="0" failures="0" expectedFailures="1"/>
+        </Section>
+        <OverallResults successes="0" failures="0" expectedFailures="1"/>
+      </Section>
+      <Section name="A" filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" >
+        <OverallResults successes="0" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="B" filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" >
+        <Section name="1" filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" >
+          <Failure filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" />
+          <OverallResults successes="0" failures="0" expectedFailures="1"/>
+        </Section>
+        <OverallResults successes="0" failures="0" expectedFailures="1"/>
+      </Section>
+      <Section name="B" filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" >
+        <Section name="2" filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" >
+          <Failure filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" />
+          <OverallResults successes="0" failures="0" expectedFailures="1"/>
+        </Section>
+        <OverallResults successes="0" failures="0" expectedFailures="1"/>
+      </Section>
+      <Section name="B" filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" >
+        <OverallResults successes="0" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Mismatching exception messages failing the test" tags="[!hide][!throws][.][failing]" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
@@ -16722,9 +16767,9 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1607" failures="149" expectedFailures="21"/>
-    <OverallResultsCases successes="232" failures="86" expectedFailures="4"/>
+    <OverallResults successes="1608" failures="149" expectedFailures="25"/>
+    <OverallResultsCases successes="232" failures="86" expectedFailures="5"/>
   </Group>
-  <OverallResults successes="1607" failures="148" expectedFailures="21"/>
-  <OverallResultsCases successes="232" failures="86" expectedFailures="4"/>
+  <OverallResults successes="1608" failures="148" expectedFailures="25"/>
+  <OverallResultsCases successes="232" failures="86" expectedFailures="5"/>
 </Catch>

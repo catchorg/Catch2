@@ -264,6 +264,15 @@ matrix:
       addons:
           apt:
               sources: *all_sources
+              packages: ['clang-5.0']
+      env: COMPILER='clang++-5.0' CPP17=1
+
+    - os: linux
+      dist: xenial
+      compiler: clang
+      addons:
+          apt:
+              sources: *all_sources
               packages: ['clang-6.0', 'libstdc++-8-dev']
       env: COMPILER='clang++-6.0' CPP17=1
 
@@ -275,19 +284,6 @@ matrix:
               sources: *all_sources
               packages: ['clang-6.0', 'libstdc++-8-dev']
       env: COMPILER='clang++-6.0' CPP17=1 EXAMPLES=1 COVERAGE=1 EXTRAS=1
-
-    # 8/ Conan
-    - language: python
-      python:
-        - "3.7"
-      dist: xenial
-      install:
-        - pip install conan-package-tools
-      env:
-        - CONAN_GCC_VERSIONS=8
-        - CONAN_DOCKER_IMAGE=conanio/gcc8
-      script:
-        - python .conan/build.py
 
 install:
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"

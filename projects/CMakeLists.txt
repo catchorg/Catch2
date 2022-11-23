@@ -354,7 +354,7 @@ endif()
 if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
     target_compile_options( SelfTest PRIVATE -Wall -Wextra -Wunreachable-code -Wpedantic -Wmissing-declarations )
     if (CATCH_ENABLE_WERROR)
-        target_compile_options( SelfTest PRIVATE -Werror )
+        target_compile_options( SelfTest PRIVATE -Werror -Wno-error=pragmas )
     endif()
 endif()
 # Clang specific options go here

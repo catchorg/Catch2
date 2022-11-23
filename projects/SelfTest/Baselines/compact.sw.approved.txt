@@ -628,6 +628,7 @@ GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 3 for: 3 == 3
 GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
 GeneratorsImpl.tests.cpp:<line number>: passed: filter([] (int) { return false; }, value(1)), Catch::GeneratorException
+GeneratorsImpl.tests.cpp:<line number>: passed: filter( []( int ) { return false; }, values( { 1, 2, 3 } ) ), Catch::GeneratorException
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 1 for: 1 == 1
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2 for: 2 == 2
@@ -846,6 +847,10 @@ Matchers.tests.cpp:<line number>: passed: testStringForMatching(), (Contains("st
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), (Contains("string") || Contains("different")) && Contains("random") for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "random" )
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), !Contains("different") for: "this string contains 'abc' as a substring" not contains: "different"
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), !Contains("substring") for: "this string contains 'abc' as a substring" not contains: "substring"
+Condition.tests.cpp:<line number>: failed: explicitly
+Condition.tests.cpp:<line number>: failed: explicitly
+Condition.tests.cpp:<line number>: failed: explicitly
+Condition.tests.cpp:<line number>: failed: explicitly
 Exception.tests.cpp:<line number>: passed: thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
 Exception.tests.cpp:<line number>: failed: thisThrows(), "should fail" for: "expected exception" equals: "should fail"
 Generators.tests.cpp:<line number>: passed: values > -6 for: 3 > -6
