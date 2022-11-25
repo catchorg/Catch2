@@ -7,7 +7,7 @@
  */
 
 #include "catch.hpp"
-#include <catch2/internal/catch_windows_h_proxy.hpp>
+#include "internal/catch_windows_h_proxy.h"
 
 #ifdef __clang__
 #   pragma clang diagnostic ignored "-Wc++98-compat"
