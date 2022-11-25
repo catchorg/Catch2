@@ -85,7 +85,7 @@ namespace Catch {
         { static_cast<DWORD>(EXCEPTION_INT_DIVIDE_BY_ZERO), "Divide by zero error" },
     };
 
-    static LONG CALLBACK handleVectoredException(PEXCEPTION_POINTERS ExceptionInfo) {
+    static LONG CALLBACK topLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo) {
         for (auto const& def : signalDefs) {
             if (ExceptionInfo->ExceptionRecord->ExceptionCode == def.id) {
                 reportFatal(def.name);
@@ -99,7 +99,7 @@ namespace Catch {
     // Since we do not support multiple instantiations, we put these
     // into global variables and rely on cleaning them up in outlined
     // constructors/destructors
-    static PVOID exceptionHandlerHandle = nullptr;
+    static LPTOP_LEVEL_EXCEPTION_FILTER previousTopLevelExceptionFilter = nullptr;
 
 
     // For MSVC, we reserve part of the stack memory for handling
@@ -121,18 +121,15 @@ namespace Catch {
 
 
     void FatalConditionHandler::engage_platform() {
-        // Register as first handler in current chain
-        exceptionHandlerHandle = AddVectoredExceptionHandler(1, handleVectoredException);
-        if (!exceptionHandlerHandle) {
-            CATCH_RUNTIME_ERROR("Could not register vectored exception handler");
-        }
+        // Register as a the top level exception filter.
+        previousTopLevelExceptionFilter = SetUnhandledExceptionFilter(topLevelExceptionFilter);
     }
 
     void FatalConditionHandler::disengage_platform() {
-        if (!RemoveVectoredExceptionHandler(exceptionHandlerHandle)) {
-            CATCH_RUNTIME_ERROR("Could not unregister vectored exception handler");
+        if (SetUnhandledExceptionFilter(reinterpret_cast<LPTOP_LEVEL_EXCEPTION_FILTER>(previousTopLevelExceptionFilter)) != topLevelExceptionFilter) {
+            CATCH_RUNTIME_ERROR("Could not restore previous top level exception filter");
         }
-        exceptionHandlerHandle = nullptr;
+        previousTopLevelExceptionFilter = nullptr;
     }
 
 } // end namespace Catch
