@@ -47,7 +47,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( macroName, resultDisposition, ... ) \
-    do { /* NOLINT(bugprone-infinite-loop) */ \
+    do { /* NOLINT(bugprone-infinite-loop, cppcoreguidelines-avoid-do-while) */ \
         /* The expression should not be evaluated, but warnings should hopefully be checked */ \
         CATCH_INTERNAL_IGNORE_BUT_WARN(__VA_ARGS__); \
         Catch::AssertionHandler catchAssertionHandler( macroName##_catch_sr, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(__VA_ARGS__), resultDisposition ); \
