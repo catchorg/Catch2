@@ -329,3 +329,27 @@ TEST_CASE( "#2555 - types that can only be compared with 0 literal (not int/long
     REQUIRE( TypeWithLit0Comparisons{} != 0 );
     REQUIRE_FALSE( 0 != TypeWithLit0Comparisons{} );
 }
+
+namespace {
+    struct MultipleImplicitConstructors {
+        MultipleImplicitConstructors( double ) {}
+        MultipleImplicitConstructors( int64_t ) {}
+        bool operator==( MultipleImplicitConstructors ) const { return true; }
+        bool operator!=( MultipleImplicitConstructors ) const { return true; }
+        bool operator<( MultipleImplicitConstructors ) const { return true; }
+        bool operator<=( MultipleImplicitConstructors ) const { return true; }
+        bool operator>( MultipleImplicitConstructors ) const { return true; }
+        bool operator>=( MultipleImplicitConstructors ) const { return true; }
+    };
+}
+TEST_CASE("#2571 - tests compile types that have multiple implicit constructors from lit 0",
+          "[compilation][approvals]") {
+    MultipleImplicitConstructors mic1( 0.0 );
+    MultipleImplicitConstructors mic2( 0.0 );
+    REQUIRE( mic1 == mic2 );
+    REQUIRE( mic1 != mic2 );
+    REQUIRE( mic1 < mic2 );
+    REQUIRE( mic1 <= mic2 );
+    REQUIRE( mic1 > mic2 );
+    REQUIRE( mic1 >= mic2 );
+}

@@ -28,6 +28,13 @@ namespace Catch {
 #    pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif
 
+#if defined( __clang__ )
+#    pragma clang diagnostic push
+    // Did you know that comparing floats with `0` directly
+    // is super-duper dangerous in unevaluated context?
+#    pragma clang diagnostic ignored "-Wfloat-equal"
+#endif
+
 #define CATCH_DEFINE_COMPARABLE_TRAIT( id, op )                               \
     template <typename, typename, typename = void>                            \
     struct is_##id##_comparable : std::false_type {};                         \
@@ -56,6 +63,9 @@ namespace Catch {
 
 #if defined( __GNUC__ ) && !defined( __clang__ )
 #    pragma GCC diagnostic pop
+#endif
+#if defined( __clang__ )
+#    pragma clang diagnostic pop
 #endif
 
 
