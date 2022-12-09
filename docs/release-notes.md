@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.2.1](#321)<br>
 [3.2.0](#320)<br>
 [3.1.1](#311)<br>
 [3.1.0](#310)<br>
@@ -51,6 +52,13 @@
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
 
+
+
+## 3.2.1
+
+### Improvements
+* Fix the reworked decomposer to work with older (pre 9) GCC versions (#2571)
+  * **This required more significant changes to properly support C++20, there might be bugs.**
 
 
 ## 3.2.0

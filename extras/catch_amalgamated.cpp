@@ -5,8 +5,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.2.0
-//  Generated: 2022-11-16 19:30:16.114602
+//  Catch v3.2.1
+//  Generated: 2022-12-09 23:01:15.713081
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -2012,7 +2012,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 3, 2, 0, "", 0 );
+        static Version version( 3, 2, 1, "", 0 );
         return version;
     }
 
