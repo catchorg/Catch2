@@ -11,10 +11,9 @@
 #include <type_traits>
 
 namespace Catch {
-    template<typename T>
-    struct always_false : std::false_type {};
+    template <typename>
+    struct true_given : std::true_type {};
 
-    template <typename> struct true_given : std::true_type {};
     struct is_callable_tester {
         template <typename Fun, typename... Args>
         static true_given<decltype(std::declval<Fun>()(std::declval<Args>()...))> test(int);

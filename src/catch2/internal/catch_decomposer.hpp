@@ -10,7 +10,6 @@
 
 #include <catch2/catch_tostring.hpp>
 #include <catch2/internal/catch_stringref.hpp>
-#include <catch2/internal/catch_meta.hpp>
 #include <catch2/internal/catch_compare_traits.hpp>
 #include <catch2/internal/catch_test_failure_exception.hpp>
 #include <catch2/internal/catch_logical_traits.hpp>
@@ -36,6 +35,9 @@
 #endif
 
 namespace Catch {
+
+    template <typename T>
+    struct always_false : std::false_type {};
 
     class ITransientExpression {
         bool m_isBinaryExpression;
