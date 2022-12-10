@@ -9,6 +9,7 @@
 #include "catch_interfaces_registry_hub.h"
 
 #include "catch_context.h"
+#include "catch_enforce.h"
 #include "catch_test_case_registry_impl.h"
 #include "catch_reporter_registry.h"
 #include "catch_exception_translator_registry.h"
