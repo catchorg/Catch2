@@ -660,6 +660,21 @@ TEST_CASE( "Exceptions matchers", "[matchers][exceptions][!throws]" ) {
                             Message( "SpecialException::what" ) );
 }
 
+TEST_CASE( "Exception message can be matched", "[matchers][exceptions][!throws]" ) {
+    REQUIRE_THROWS_MATCHES( throwsDerivedException(),
+                            DerivedException,
+                            MessageMatches( StartsWith( "Derived" ) ) );
+    REQUIRE_THROWS_MATCHES( throwsDerivedException(),
+                            DerivedException,
+                            MessageMatches( EndsWith( "::what" ) ) );
+    REQUIRE_THROWS_MATCHES( throwsDerivedException(),
+                            DerivedException,
+                            MessageMatches( !StartsWith( "::what" ) ) );
+    REQUIRE_THROWS_MATCHES( throwsSpecialException( 2 ),
+                            SpecialException,
+                            MessageMatches( StartsWith( "Special" ) ) );
+}
+
 struct CheckedTestingMatcher : Catch::Matchers::MatcherBase<int> {
     mutable bool matchCalled = false;
     bool matchSucceeds = false;

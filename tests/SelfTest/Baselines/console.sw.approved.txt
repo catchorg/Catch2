@@ -4283,6 +4283,32 @@ with expansion:
   SpecialException::what special exception has value of 2
 
 -------------------------------------------------------------------------------
+Exception message can be matched
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_MATCHES( throwsDerivedException(), DerivedException, MessageMatches( StartsWith( "Derived" ) ) )
+with expansion:
+  DerivedException::what  matches "starts with: "Derived""
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_MATCHES( throwsDerivedException(), DerivedException, MessageMatches( EndsWith( "::what" ) ) )
+with expansion:
+  DerivedException::what  matches "ends with: "::what""
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_MATCHES( throwsDerivedException(), DerivedException, MessageMatches( !StartsWith( "::what" ) ) )
+with expansion:
+  DerivedException::what  matches "not starts with: "::what""
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_MATCHES( throwsSpecialException( 2 ), SpecialException, MessageMatches( StartsWith( "Special" ) ) )
+with expansion:
+  SpecialException::what  matches "starts with: "Special""
+
+-------------------------------------------------------------------------------
 Exception messages can be tested for
   exact match
 -------------------------------------------------------------------------------
@@ -17518,6 +17544,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  394 |  304 passed |  83 failed |  7 failed as expected
-assertions: 2159 | 1989 passed | 143 failed | 27 failed as expected
+test cases:  395 |  305 passed |  83 failed |  7 failed as expected
+assertions: 2163 | 1993 passed | 143 failed | 27 failed as expected
 

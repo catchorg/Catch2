@@ -142,6 +142,7 @@ Nor would this
 :test-result: PASS Exception as a value (e.g. in REQUIRE_THROWS_MATCHES) can be stringified
 :test-result: FAIL Exception matchers that fail
 :test-result: PASS Exception matchers that succeed
+:test-result: PASS Exception message can be matched
 :test-result: PASS Exception messages can be tested for
 :test-result: PASS Exceptions matchers
 :test-result: FAIL Expected exceptions that don't throw or unexpected exceptions fail the test

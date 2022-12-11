@@ -570,6 +570,10 @@ Matchers.tests.cpp:<line number>: failed: throwsSpecialException( 3 ), SpecialEx
 Matchers.tests.cpp:<line number>: failed: throwsSpecialException( 4 ), SpecialException, ExceptionMatcher{ 1 } for: SpecialException::what special exception has value of 1
 Matchers.tests.cpp:<line number>: passed: throwsSpecialException( 1 ), SpecialException, ExceptionMatcher{ 1 } for: SpecialException::what special exception has value of 1
 Matchers.tests.cpp:<line number>: passed: throwsSpecialException( 2 ), SpecialException, ExceptionMatcher{ 2 } for: SpecialException::what special exception has value of 2
+Matchers.tests.cpp:<line number>: passed: throwsDerivedException(), DerivedException, MessageMatches( StartsWith( "Derived" ) ) for: DerivedException::what  matches "starts with: "Derived""
+Matchers.tests.cpp:<line number>: passed: throwsDerivedException(), DerivedException, MessageMatches( EndsWith( "::what" ) ) for: DerivedException::what  matches "ends with: "::what""
+Matchers.tests.cpp:<line number>: passed: throwsDerivedException(), DerivedException, MessageMatches( !StartsWith( "::what" ) ) for: DerivedException::what  matches "not starts with: "::what""
+Matchers.tests.cpp:<line number>: passed: throwsSpecialException( 2 ), SpecialException, MessageMatches( StartsWith( "Special" ) ) for: SpecialException::what  matches "starts with: "Special""
 Exception.tests.cpp:<line number>: passed: thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
 Exception.tests.cpp:<line number>: passed: thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) for: "expected exception" equals: "expected exception" (case insensitive)
 Exception.tests.cpp:<line number>: passed: thisThrows(), StartsWith( "expected" ) for: "expected exception" starts with: "expected"
@@ -2451,7 +2455,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  394 |  304 passed |  83 failed |  7 failed as expected
-assertions: 2159 | 1989 passed | 143 failed | 27 failed as expected
+test cases:  395 |  305 passed |  83 failed |  7 failed as expected
+assertions: 2163 | 1993 passed | 143 failed | 27 failed as expected
 
 

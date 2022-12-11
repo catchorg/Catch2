@@ -4794,6 +4794,41 @@ C
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="Exception message can be matched" tags="[!throws][exceptions][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+    <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Original>
+        throwsDerivedException(), DerivedException, MessageMatches( StartsWith( "Derived" ) )
+      </Original>
+      <Expanded>
+        DerivedException::what  matches "starts with: "Derived""
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Original>
+        throwsDerivedException(), DerivedException, MessageMatches( EndsWith( "::what" ) )
+      </Original>
+      <Expanded>
+        DerivedException::what  matches "ends with: "::what""
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Original>
+        throwsDerivedException(), DerivedException, MessageMatches( !StartsWith( "::what" ) )
+      </Original>
+      <Expanded>
+        DerivedException::what  matches "not starts with: "::what""
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Original>
+        throwsSpecialException( 2 ), SpecialException, MessageMatches( StartsWith( "Special" ) )
+      </Original>
+      <Expanded>
+        SpecialException::what  matches "starts with: "Special""
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Exception messages can be tested for" tags="[!throws]" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
     <Section name="exact match" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Expression success="true" type="REQUIRE_THROWS_WITH" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
@@ -20483,6 +20518,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="1989" failures="143" expectedFailures="27"/>
-  <OverallResultsCases successes="304" failures="83" expectedFailures="7"/>
+  <OverallResults successes="1993" failures="143" expectedFailures="27"/>
+  <OverallResultsCases successes="305" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

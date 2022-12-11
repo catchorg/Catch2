@@ -1074,6 +1074,14 @@ not ok {test-number} - throwsSpecialException( 4 ), SpecialException, ExceptionM
 ok {test-number} - throwsSpecialException( 1 ), SpecialException, ExceptionMatcher{ 1 } for: SpecialException::what special exception has value of 1
 # Exception matchers that succeed
 ok {test-number} - throwsSpecialException( 2 ), SpecialException, ExceptionMatcher{ 2 } for: SpecialException::what special exception has value of 2
+# Exception message can be matched
+ok {test-number} - throwsDerivedException(), DerivedException, MessageMatches( StartsWith( "Derived" ) ) for: DerivedException::what  matches "starts with: "Derived""
+# Exception message can be matched
+ok {test-number} - throwsDerivedException(), DerivedException, MessageMatches( EndsWith( "::what" ) ) for: DerivedException::what  matches "ends with: "::what""
+# Exception message can be matched
+ok {test-number} - throwsDerivedException(), DerivedException, MessageMatches( !StartsWith( "::what" ) ) for: DerivedException::what  matches "not starts with: "::what""
+# Exception message can be matched
+ok {test-number} - throwsSpecialException( 2 ), SpecialException, MessageMatches( StartsWith( "Special" ) ) for: SpecialException::what  matches "starts with: "Special""
 # Exception messages can be tested for
 ok {test-number} - thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
 # Exception messages can be tested for
@@ -4314,5 +4322,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2159
+1..2163
 
