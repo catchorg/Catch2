@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 //  Catch v3.2.0
-//  Generated: 2022-11-20 13:43:07.614987
+//  Generated: 2022-11-16 19:30:16.114602
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -4509,8 +4509,8 @@ namespace Catch {
 
 
 
+
 #include <limits>
-#include <stdexcept>
 
 namespace Catch {
 
@@ -4538,14 +4538,11 @@ namespace Catch {
                 return {};
             }
             return static_cast<unsigned int>(ret);
+        } CATCH_CATCH_ANON( std::exception const& ) {
+            // There was a larger issue with the input, e.g. the parsed
+            // number would be too large to fit within ull.
+            return {};
         }
-        CATCH_CATCH_ANON( std::invalid_argument const& ) {
-            // no conversion could be performed
-        }
-        CATCH_CATCH_ANON( std::out_of_range const& ) {
-            // the input does not fit into an unsigned long long
-        }
-        return {};
     }
 
 } // namespace Catch
