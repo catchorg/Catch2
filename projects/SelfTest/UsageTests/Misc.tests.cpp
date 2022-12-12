@@ -522,7 +522,7 @@ TEST_CASE("Validate SEH behavior - unhandled", "[.approvals][FatalConditionHandl
     throw_no_catch();
 }
 
-static LONG CALLBACK dummyExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo) {
+static LONG CALLBACK dummyExceptionFilter(PEXCEPTION_POINTERS /*ExceptionInfo*/) {
     return EXCEPTION_CONTINUE_SEARCH;
 }
 

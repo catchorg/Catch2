@@ -127,9 +127,7 @@ namespace Catch {
 
     void FatalConditionHandler::disengage_platform() noexcept {
         if (SetUnhandledExceptionFilter(previousTopLevelExceptionFilter) != topLevelExceptionFilter) {
-            Catch::cerr()
-                << "Unexpected SEH unhandled exception filter on disengage."
-                << " The filter was restored, but might be rolled back unexpectedly.";
+            CATCH_RUNTIME_ERROR("Could not restore previous top level exception filter");
         }
         previousTopLevelExceptionFilter = nullptr;
     }
