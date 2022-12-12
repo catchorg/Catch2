@@ -87,7 +87,7 @@ $ ./scripts/generateSingleHeader.py
 ```
 2. Configure the full test build
 ```
-$ cmake -Bdebug-build -H. -DCMAKE_BUILD_TYPE=Debug -DCATCH_BUILD_EXAMPLES=ON -DCATCH_BUILD_EXTRA_TESTS=ON
+$ cmake -Bdebug-build -DCMAKE_BUILD_TYPE=Debug -DCATCH_BUILD_EXAMPLES=ON -DCATCH_BUILD_EXTRA_TESTS=ON
 ```
 3. Run the actual build
 ```
