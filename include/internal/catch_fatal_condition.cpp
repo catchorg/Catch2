@@ -125,9 +125,11 @@ namespace Catch {
         previousTopLevelExceptionFilter = SetUnhandledExceptionFilter(topLevelExceptionFilter);
     }
 
-    void FatalConditionHandler::disengage_platform() {
-        if (SetUnhandledExceptionFilter(reinterpret_cast<LPTOP_LEVEL_EXCEPTION_FILTER>(previousTopLevelExceptionFilter)) != topLevelExceptionFilter) {
-            CATCH_RUNTIME_ERROR("Could not restore previous top level exception filter");
+    void FatalConditionHandler::disengage_platform() noexcept {
+        if (SetUnhandledExceptionFilter(previousTopLevelExceptionFilter) != topLevelExceptionFilter) {
+            Catch::cerr()
+                << "Unexpected SEH unhandled exception filter on disengage."
+                << " The filter was restored, but might be rolled back unexpectedly.";
         }
         previousTopLevelExceptionFilter = nullptr;
     }
