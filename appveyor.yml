@@ -51,18 +51,6 @@ test_script:
 # build explicitly.
 environment:
   matrix:
-    - FLAVOR: VS 2019 x64 Debug Surrogates Configure Tests
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      surrogates: 1
-      configure_tests: 1
-      platform: x64
-      configuration: Debug
-    
-    - FLAVOR: VS 2019 x64 Release
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      platform: x64
-      configuration: Release
-
     - FLAVOR: VS 2019 x64 Debug Coverage Examples
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       examples: 1
@@ -77,11 +65,6 @@ environment:
       platform: x64
       configuration: Debug
 
-    - FLAVOR: VS 2019 Win32 Debug
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      platform: Win32
-      configuration: Debug
-
     - FLAVOR: VS 2019 x64 Debug Latest Strict
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       additional_flags: "/permissive- /std:c++latest"
@@ -92,38 +75,9 @@ environment:
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       platform: x64
       configuration: Debug
-    
-    - FLAVOR: VS 2017 x64 Release
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      platform: x64
-      configuration: Release
 
     - FLAVOR: VS 2017 x64 Release Coverage
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       coverage: 1
-      platform: x64
-      configuration: Debug
-
-    - FLAVOR: VS 2017 Win32 Debug
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      platform: Win32
-      configuration: Debug
-
-    - FLAVOR: VS 2017 Win32 Debug Examples
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      examples: 1
-      platform: Win32
-      configuration: Debug
-
-    - FLAVOR: VS 2017 Win32 Debug WMain
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      wmain: 1
-      additional_flags: "/D_UNICODE /DUNICODE"
-      platform: Win32
-      configuration: Debug
-
-    - FLAVOR: VS 2017 x64 Debug Latest Strict
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      additional_flags: "/permissive- /std:c++latest"
       platform: x64
       configuration: Debug
