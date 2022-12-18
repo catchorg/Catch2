@@ -65,6 +65,10 @@ TEST_CASE("Benchmark Fibonacci", "[!benchmark]") {
 }
 ```
 
+_Note that benchmarks are not run by default, so you need to run it explicitly
+with the `[!benchmark]` tag._
+
+
 ## Catch2 v3 has been released!
 
 You are on the `devel` branch, where the v3 version is being developed.
