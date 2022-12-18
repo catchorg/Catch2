@@ -47,10 +47,10 @@ TEST_CASE( "Factorials are computed", "[factorial]" ) {
 #include <cstdint>
 
 uint64_t fibonacci(uint64_t number) {
-    return number < 2 ? 1 : fibonacci(number - 1) + fibonacci(number - 2);
+    return number < 3 ? 1 : fibonacci(number - 1) + fibonacci(number - 2);
 }
 
-TEST_CASE("Benchmark Fibonacci", "[!benchmark]") {
+TEST_CASE("Benchmark Fibonacci", "[benchmark]") {
     REQUIRE(fibonacci(5) == 5);
 
     REQUIRE(fibonacci(20) == 6'765);
