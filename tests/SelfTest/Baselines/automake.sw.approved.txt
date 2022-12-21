@@ -297,7 +297,7 @@ Message from section two
 :test-result: PASS X/level/1/b
 :test-result: PASS XmlEncode
 :test-result: PASS XmlWriter writes boolean attributes as true/false
-:test-result: XFAIL a succeeding test can still be skipped
+:test-result: SKIP a succeeding test can still be skipped
 :test-result: PASS analyse no analysis
 :test-result: PASS array<int, N> -> toString
 :test-result: PASS benchmark function call
@@ -310,7 +310,7 @@ Message from section two
 :test-result: PASS comparisons between const int variables
 :test-result: PASS comparisons between int variables
 :test-result: PASS convertToBits
-:test-result: XFAIL dynamic skipping works with generators
+:test-result: SKIP dynamic skipping works with generators
 :test-result: PASS empty tags are not allowed
 :test-result: PASS erfc_inv
 :test-result: PASS estimate_clock_resolution
@@ -361,11 +361,11 @@ b1!
 :test-result: PASS run_for_at_least, chronometer
 :test-result: PASS run_for_at_least, int
 :test-result: FAIL second tag
-:test-result: XFAIL sections can be skipped dynamically at runtime
+:test-result: SKIP sections can be skipped dynamically at runtime
 :test-result: FAIL send a single char to INFO
 :test-result: FAIL sends information to INFO
 :test-result: PASS shortened hide tags are split apart
-:test-result: XFAIL skipped tests can optionally provide a reason
+:test-result: SKIP skipped tests can optionally provide a reason
 :test-result: PASS splitString
 :test-result: FAIL stacks unscoped info in loops
 :test-result: PASS startsWith
@@ -387,7 +387,7 @@ b1!
 :test-result: PASS strlen3
 :test-result: PASS tables
 :test-result: PASS tags with dots in later positions are not parsed as hidden
-:test-result: XFAIL tests can be skipped dynamically at runtime
+:test-result: SKIP tests can be skipped dynamically at runtime
 :test-result: FAIL thrown std::strings are translated
 :test-result: PASS toString on const wchar_t const pointer returns the string contents
 :test-result: PASS toString on const wchar_t pointer returns the string contents

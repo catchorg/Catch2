@@ -105,11 +105,15 @@ public:
             printIssue("explicitly");
             printRemainingMessages(Colour::None);
             break;
+        case ResultWas::ExplicitSkip:
+            printResultType(Colour::Skip, "skipped"_sr);
+            printMessage();
+            printRemainingMessages();
+            break;
             // These cases are here to prevent compiler warnings
         case ResultWas::Unknown:
         case ResultWas::FailureBit:
         case ResultWas::Exception:
-        case ResultWas::ExplicitSkip:
             printResultType(Colour::Error, "** internal error **");
             break;
         }
@@ -221,7 +225,7 @@ private:
 
             // Drop out if result was successful and we're not printing those
             if( !m_config->includeSuccessfulResults() && result.isOk() ) {
-                if( result.getResultType() != ResultWas::Warning )
+                if( result.getResultType() != ResultWas::Warning && result.getResultType() != ResultWas::ExplicitSkip )
                     return;
                 printInfoMessages = false;
             }

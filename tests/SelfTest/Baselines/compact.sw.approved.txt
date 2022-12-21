@@ -2061,7 +2061,7 @@ Xml.tests.cpp:<line number>: passed: stream.str(), ContainsSubstring(R"(attr1="t
 <Element1 attr1="true" attr2="false"/>
 " ( contains: "attr1="true"" and contains: "attr2="false"" )
 Skip.tests.cpp:<line number>: passed:
-Skip.tests.cpp:<line number>: ** internal error **:
+Skip.tests.cpp:<line number>: skipped:
 InternalBenchmark.tests.cpp:<line number>: passed: analysis.mean.point.count() == 23 for: 23.0 == 23
 InternalBenchmark.tests.cpp:<line number>: passed: analysis.mean.lower_bound.count() == 23 for: 23.0 == 23
 InternalBenchmark.tests.cpp:<line number>: passed: analysis.mean.upper_bound.count() == 23 for: 23.0 == 23
@@ -2151,9 +2151,9 @@ FloatingPoint.tests.cpp:<line number>: passed: convertToBits( -0. ) == ( 1ULL <<
 9223372036854775808 (0x<hex digits>)
 FloatingPoint.tests.cpp:<line number>: passed: convertToBits( std::numeric_limits<float>::denorm_min() ) == 1 for: 1 == 1
 FloatingPoint.tests.cpp:<line number>: passed: convertToBits( std::numeric_limits<double>::denorm_min() ) == 1 for: 1 == 1
-Skip.tests.cpp:<line number>: ** internal error **:
+Skip.tests.cpp:<line number>: skipped: 'skipping because answer = 41'
 Skip.tests.cpp:<line number>: passed:
-Skip.tests.cpp:<line number>: ** internal error **:
+Skip.tests.cpp:<line number>: skipped: 'skipping because answer = 43'
 Tag.tests.cpp:<line number>: passed: Catch::TestCaseInfo("", { "test with an empty tag", "[]" }, dummySourceLineInfo)
 InternalBenchmark.tests.cpp:<line number>: passed: erfc_inv(1.103560) == Approx(-0.09203687623843015) for: -0.0920368762 == Approx( -0.0920368762 )
 InternalBenchmark.tests.cpp:<line number>: passed: erfc_inv(1.067400) == Approx(-0.05980291115763361) for: -0.0598029112 == Approx( -0.0598029112 )
@@ -2164,12 +2164,12 @@ Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
 Skip.tests.cpp:<line number>: failed: 3 == 4
-Skip.tests.cpp:<line number>: ** internal error **:
+Skip.tests.cpp:<line number>: skipped:
 Skip.tests.cpp:<line number>: failed: explicitly
-Skip.tests.cpp:<line number>: ** internal error **:
+Skip.tests.cpp:<line number>: skipped:
 Skip.tests.cpp:<line number>: failed: explicitly
-Skip.tests.cpp:<line number>: ** internal error **:
-Skip.tests.cpp:<line number>: ** internal error **:
+Skip.tests.cpp:<line number>: skipped:
+Skip.tests.cpp:<line number>: skipped:
 Skip.tests.cpp:<line number>: failed: explicitly
 loose text artifact
 Clara.tests.cpp:<line number>: passed: with 1 message: 'Catch::Clara::Detail::is_unary_function<decltype(unary1)>::value'
@@ -2230,7 +2230,7 @@ Misc.tests.cpp:<line number>: passed: b != a for: 2 != 1
 Misc.tests.cpp:<line number>: passed: a != b for: 1 != 2
 a!
 b1!
-Skip.tests.cpp:<line number>: ** internal error **:
+Skip.tests.cpp:<line number>: skipped:
 !
 Tricky.tests.cpp:<line number>: passed: s == "7" for: "7" == "7"
 Tricky.tests.cpp:<line number>: passed: ti == typeid(int) for: {?} == {?}
@@ -2317,12 +2317,12 @@ InternalBenchmark.tests.cpp:<line number>: passed: Timing.elapsed >= time for: 1
 InternalBenchmark.tests.cpp:<line number>: passed: Timing.result == Timing.iterations + 17 for: 145 == 145
 InternalBenchmark.tests.cpp:<line number>: passed: Timing.iterations >= time.count() for: 128 >= 100
 Skip.tests.cpp:<line number>: passed:
-Skip.tests.cpp:<line number>: ** internal error **:
+Skip.tests.cpp:<line number>: skipped:
 Skip.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: failed: false with 1 message: '3'
 Message.tests.cpp:<line number>: failed: false with 2 messages: 'hi' and 'i := 7'
 Tag.tests.cpp:<line number>: passed: testcase.tags, VectorContains( Tag( "magic-tag" ) ) && VectorContains( Tag( "."_catch_sr ) ) for: { {?}, {?} } ( Contains: {?} and Contains: {?} )
-Skip.tests.cpp:<line number>: ** internal error **:
+Skip.tests.cpp:<line number>: skipped: 'skipping because answer = 43'
 StringManip.tests.cpp:<line number>: passed: splitStringRef("", ','), Equals(std::vector<StringRef>()) for: {  } Equals: {  }
 StringManip.tests.cpp:<line number>: passed: splitStringRef("abc", ','), Equals(std::vector<StringRef>{"abc"}) for: { abc } Equals: { abc }
 StringManip.tests.cpp:<line number>: passed: splitStringRef("abc,def", ','), Equals(std::vector<StringRef>{"abc", "def"}) for: { abc, def } Equals: { abc, def }
@@ -2388,7 +2388,7 @@ Generators.tests.cpp:<line number>: passed: strlen(std::get<0>(data)) == static_
 Generators.tests.cpp:<line number>: passed: strlen(std::get<0>(data)) == static_cast<size_t>(std::get<1>(data)) for: 6 == 6
 Tag.tests.cpp:<line number>: passed: testcase.tags.size() == 1 for: 1 == 1
 Tag.tests.cpp:<line number>: passed: testcase.tags[0].original == "magic.tag"_catch_sr for: magic.tag == magic.tag
-Skip.tests.cpp:<line number>: ** internal error **:
+Skip.tests.cpp:<line number>: skipped:
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'Why would you throw a std::string?'
 Misc.tests.cpp:<line number>: passed: result == "\"wide load\"" for: ""wide load"" == ""wide load""
 Misc.tests.cpp:<line number>: passed: result == "\"wide load\"" for: ""wide load"" == ""wide load""

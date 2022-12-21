@@ -100,11 +100,16 @@ namespace Catch {
                     printIssue("explicitly"_sr);
                     printRemainingMessages(Colour::None);
                     break;
+                case ResultWas::ExplicitSkip:
+                    printResultType(tapPassedString);
+                    printIssue(" # SKIP"_sr);
+                    printMessage();
+                    printRemainingMessages();
+                    break;
                     // These cases are here to prevent compiler warnings
                 case ResultWas::Unknown:
                 case ResultWas::FailureBit:
                 case ResultWas::Exception:
-                case ResultWas::ExplicitSkip:
                     printResultType("** internal error **"_sr);
                     break;
                 }

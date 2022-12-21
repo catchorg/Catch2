@@ -1833,12 +1833,32 @@ at Misc.tests.cpp:<line number>
     <testCase name="xmlentitycheck/encoded chars: these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/UsageTests/Skip.tests.cpp">
-    <testCase name="a succeeding test can still be skipped" duration="{duration}"/>
-    <testCase name="dynamic skipping works with generators" duration="{duration}"/>
+    <testCase name="a succeeding test can still be skipped" duration="{duration}">
+      <skipped message="SKIP()">
+SKIPPED
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testCase>
+    <testCase name="dynamic skipping works with generators" duration="{duration}">
+      <skipped message="SKIP()">
+SKIPPED
+skipping because answer = 41
+at Skip.tests.cpp:<line number>
+      </skipped>
+      <skipped message="SKIP()">
+SKIPPED
+skipping because answer = 43
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testCase>
     <testCase name="failed assertions before SKIP cause test case to fail" duration="{duration}">
       <skipped message="CHECK(3 == 4)">
 FAILED:
 	CHECK( 3 == 4 )
+at Skip.tests.cpp:<line number>
+      </skipped>
+      <skipped message="SKIP()">
+SKIPPED
 at Skip.tests.cpp:<line number>
       </skipped>
     </testCase>
@@ -1847,25 +1867,59 @@ at Skip.tests.cpp:<line number>
 FAILED:
 at Skip.tests.cpp:<line number>
       </skipped>
+      <skipped message="SKIP()">
+SKIPPED
+at Skip.tests.cpp:<line number>
+      </skipped>
       <skipped message="FAIL()">
 FAILED:
 at Skip.tests.cpp:<line number>
       </skipped>
+      <skipped message="SKIP()">
+SKIPPED
+at Skip.tests.cpp:<line number>
+      </skipped>
     </testCase>
-    <testCase name="failing in some unskipped sections causes entire test case to fail/skipped" duration="{duration}"/>
+    <testCase name="failing in some unskipped sections causes entire test case to fail/skipped" duration="{duration}">
+      <skipped message="SKIP()">
+SKIPPED
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testCase>
     <testCase name="failing in some unskipped sections causes entire test case to fail/not skipped" duration="{duration}">
       <skipped message="FAIL()">
 FAILED:
 at Skip.tests.cpp:<line number>
       </skipped>
     </testCase>
-    <testCase name="nested sections can be skipped dynamically at runtime/B2/B" duration="{duration}"/>
+    <testCase name="nested sections can be skipped dynamically at runtime/B2/B" duration="{duration}">
+      <skipped message="SKIP()">
+SKIPPED
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testCase>
     <testCase name="nested sections can be skipped dynamically at runtime/B" duration="{duration}"/>
     <testCase name="sections can be skipped dynamically at runtime/not skipped" duration="{duration}"/>
-    <testCase name="sections can be skipped dynamically at runtime/skipped" duration="{duration}"/>
+    <testCase name="sections can be skipped dynamically at runtime/skipped" duration="{duration}">
+      <skipped message="SKIP()">
+SKIPPED
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testCase>
     <testCase name="sections can be skipped dynamically at runtime/also not skipped" duration="{duration}"/>
-    <testCase name="skipped tests can optionally provide a reason" duration="{duration}"/>
-    <testCase name="tests can be skipped dynamically at runtime" duration="{duration}"/>
+    <testCase name="skipped tests can optionally provide a reason" duration="{duration}">
+      <skipped message="SKIP()">
+SKIPPED
+skipping because answer = 43
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testCase>
+    <testCase name="tests can be skipped dynamically at runtime" duration="{duration}">
+      <skipped message="SKIP()">
+SKIPPED
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testCase>
   </file>
   <file path="tests/<exe-name>/UsageTests/ToStringChrono.tests.cpp">
     <testCase name="Stringifying std::chrono::duration helpers" duration="{duration}"/>
