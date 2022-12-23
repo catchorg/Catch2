@@ -1,17 +1,17 @@
 
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
-//   (See accompanying file LICENSE_1_0.txt or copy at
+//   (See accompanying file LICENSE.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
 
-#include <catch2/internal/catch_parse_numbers.hpp>
-
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_parse_numbers.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 
 #include <limits>
+#include <stdexcept>
 
 namespace Catch {
 
@@ -39,11 +39,14 @@ namespace Catch {
                 return {};
             }
             return static_cast<unsigned int>(ret);
-        } CATCH_CATCH_ANON( std::exception const& ) {
-            // There was a larger issue with the input, e.g. the parsed
-            // number would be too large to fit within ull.
-            return {};
         }
+        CATCH_CATCH_ANON( std::invalid_argument const& ) {
+            // no conversion could be performed
+        }
+        CATCH_CATCH_ANON( std::out_of_range const& ) {
+            // the input does not fit into an unsigned long long
+        }
+        return {};
     }
 
 } // namespace Catch

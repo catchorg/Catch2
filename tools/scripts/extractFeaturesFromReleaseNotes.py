@@ -21,8 +21,6 @@
 #   to add the 'Introduced in Catch ...' snippets to the relevant pages.
 #
 
-from __future__ import print_function
-
 import re
 
 

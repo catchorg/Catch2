@@ -1,6 +1,6 @@
 #              Copyright Catch2 Authors
 # Distributed under the Boost Software License, Version 1.0.
-#   (See accompanying file LICENSE_1_0.txt or copy at
+#   (See accompanying file LICENSE.txt or copy at
 #        https://www.boost.org/LICENSE_1_0.txt)
 
 # SPDX-License-Identifier: BSL-1.0
@@ -72,6 +72,7 @@ internal_headers = [
   'internal/catch_case_sensitive.hpp',
   'internal/catch_clara.hpp',
   'internal/catch_commandline.hpp',
+  'internal/catch_compare_traits.hpp',
   'internal/catch_compiler_capabilities.hpp',
   'internal/catch_config_android_logwrite.hpp',
   'internal/catch_config_counter.hpp',
@@ -95,6 +96,7 @@ internal_headers = [
   'internal/catch_lazy_expr.hpp',
   'internal/catch_leak_detector.hpp',
   'internal/catch_list.hpp',
+  'internal/catch_logical_traits.hpp',
   'internal/catch_message_info.hpp',
   'internal/catch_meta.hpp',
   'internal/catch_move_and_forward.hpp',
@@ -230,6 +232,7 @@ internal_sources = files(
   'internal/catch_test_case_info_hasher.cpp',
   'internal/catch_test_case_registry_impl.cpp',
   'internal/catch_test_case_tracker.cpp',
+  'internal/catch_test_failure_exception.cpp',
   'internal/catch_test_registry.cpp',
   'internal/catch_test_spec_parser.cpp',
   'internal/catch_textflow.cpp',

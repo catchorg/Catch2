@@ -54,8 +54,6 @@ set(ALL_EXAMPLE_TARGETS
 
 foreach( name ${ALL_EXAMPLE_TARGETS} )
     target_link_libraries( ${name} Catch2 Catch2WithMain )
-    set_property(TARGET ${name} PROPERTY CXX_STANDARD 14)
-    set_property(TARGET ${name} PROPERTY CXX_EXTENSIONS OFF)
 endforeach()
 
 

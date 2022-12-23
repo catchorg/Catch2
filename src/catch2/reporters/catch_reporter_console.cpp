@@ -1,7 +1,7 @@
 
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
-//   (See accompanying file LICENSE_1_0.txt or copy at
+//   (See accompanying file LICENSE.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
@@ -491,7 +491,7 @@ void ConsoleReporter::testCaseEnded(TestCaseStats const& _testCaseStats) {
 }
 void ConsoleReporter::testRunEnded(TestRunStats const& _testRunStats) {
     printTotalsDivider(_testRunStats.totals);
-    printTotals(_testRunStats.totals);
+    printTestRunTotals( m_stream, *m_colour, _testRunStats.totals );
     m_stream << '\n' << std::flush;
     StreamingReporterBase::testRunEnded(_testRunStats);
 }
@@ -499,7 +499,7 @@ void ConsoleReporter::testRunStarting(TestRunInfo const& _testInfo) {
     StreamingReporterBase::testRunStarting(_testInfo);
     if ( m_config->testSpec().hasFilters() ) {
         m_stream << m_colour->guardColour( Colour::BrightYellow ) << "Filters: "
-                 << serializeFilters( m_config->getTestsOrTags() ) << '\n';
+                 << m_config->testSpec() << '\n';
     }
     m_stream << "Randomness seeded to: " << getSeed() << '\n';
 }
@@ -598,82 +598,6 @@ void ConsoleReporter::printHeaderString(std::string const& _string, std::size_t 
            << '\n';
 }
 
-struct SummaryColumn {
-
-    SummaryColumn( std::string _label, Colour::Code _colour )
-    :   label( CATCH_MOVE( _label ) ),
-        colour( _colour ) {}
-    SummaryColumn addRow( std::uint64_t count ) {
-        ReusableStringStream rss;
-        rss << count;
-        std::string row = rss.str();
-        for (auto& oldRow : rows) {
-            while (oldRow.size() < row.size())
-                oldRow = ' ' + oldRow;
-            while (oldRow.size() > row.size())
-                row = ' ' + row;
-        }
-        rows.push_back(row);
-        return *this;
-    }
-
-    std::string label;
-    Colour::Code colour;
-    std::vector<std::string> rows;
-
-};
-
-void ConsoleReporter::printTotals( Totals const& totals ) {
-    if (totals.testCases.total() == 0) {
-        m_stream << m_colour->guardColour( Colour::Warning )
-                 << "No tests ran\n";
-    } else if (totals.assertions.total() > 0 && totals.testCases.allPassed()) {
-        m_stream << m_colour->guardColour( Colour::ResultSuccess )
-                 << "All tests passed";
-        m_stream << " ("
-            << pluralise(totals.assertions.passed, "assertion"_sr) << " in "
-            << pluralise(totals.testCases.passed, "test case"_sr) << ')'
-            << '\n';
-    } else {
-
-        std::vector<SummaryColumn> columns;
-        columns.push_back(SummaryColumn("", Colour::None)
-                          .addRow(totals.testCases.total())
-                          .addRow(totals.assertions.total()));
-        columns.push_back(SummaryColumn("passed", Colour::Success)
-                          .addRow(totals.testCases.passed)
-                          .addRow(totals.assertions.passed));
-        columns.push_back(SummaryColumn("failed", Colour::ResultError)
-                          .addRow(totals.testCases.failed)
-                          .addRow(totals.assertions.failed));
-        columns.push_back(SummaryColumn("failed as expected", Colour::ResultExpectedFailure)
-                          .addRow(totals.testCases.failedButOk)
-                          .addRow(totals.assertions.failedButOk));
-
-        printSummaryRow("test cases"_sr, columns, 0);
-        printSummaryRow("assertions"_sr, columns, 1);
-    }
-}
-void ConsoleReporter::printSummaryRow(StringRef label, std::vector<SummaryColumn> const& cols, std::size_t row) {
-    for (auto col : cols) {
-        std::string const& value = col.rows[row];
-        if (col.label.empty()) {
-            m_stream << label << ": ";
-            if ( value != "0" ) {
-                m_stream << value;
-            } else {
-                m_stream << m_colour->guardColour( Colour::Warning )
-                         << "- none -";
-            }
-        } else if (value != "0") {
-            m_stream << m_colour->guardColour( Colour::LightGrey ) << " | "
-                     << m_colour->guardColour( col.colour ) << value << ' '
-                     << col.label;
-        }
-    }
-    m_stream << '\n';
-}
-
 void ConsoleReporter::printTotalsDivider(Totals const& totals) {
     if (totals.testCases.total() > 0) {
         std::size_t failedRatio = makeRatio(totals.testCases.failed, totals.testCases.total());
@@ -700,9 +624,6 @@ void ConsoleReporter::printTotalsDivider(Totals const& totals) {
                  << std::string( CATCH_CONFIG_CONSOLE_WIDTH - 1, '=' );
     }
     m_stream << '\n';
-}
-void ConsoleReporter::printSummaryDivider() {
-    m_stream << lineOfChars('-') << '\n';
 }
 
 } // end namespace Catch

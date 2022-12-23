@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Catch2TestRun name="<exe-name>" rng-seed="1" catch2-version="<version>" filters="~[!nonportable]~[!benchmark]~[approvals] *">
+<Catch2TestRun name="<exe-name>" rng-seed="1" xml-format-version="2" catch2-version="<version>" filters="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]">
   <TestCase name="# A test name that starts with a #" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <OverallResult success="true"/>
   </TestCase>
@@ -162,8 +162,8 @@ Nor would this
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
-  <TestCase name="#1905 -- test spec parser properly clears internal state between compound tests" tags="[command-line][test-spec]" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+  <TestCase name="#1905 -- test spec parser properly clears internal state between compound tests" tags="[command-line][test-spec]" filename="tests/<exe-name>/IntrospectiveTests/TestSpec.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpec.tests.cpp" >
       <Original>
         spec.matches(*fakeTestCase("spec . char"))
       </Original>
@@ -171,7 +171,7 @@ Nor would this
         true
       </Expanded>
     </Expression>
-    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpec.tests.cpp" >
       <Original>
         spec.matches(*fakeTestCase("spec , char"))
       </Original>
@@ -179,7 +179,7 @@ Nor would this
         true
       </Expanded>
     </Expression>
-    <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+    <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/TestSpec.tests.cpp" >
       <Original>
         !(spec.matches(*fakeTestCase(R"(spec \, char)")))
       </Original>
@@ -189,9 +189,9 @@ Nor would this
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
-  <TestCase name="#1912 -- test spec parser handles escaping" tags="[command-line][test-spec]" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-    <Section name="Various parentheses" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+  <TestCase name="#1912 -- test spec parser handles escaping" tags="[command-line][test-spec]" filename="tests/<exe-name>/IntrospectiveTests/TestSpec.tests.cpp" >
+    <Section name="Various parentheses" filename="tests/<exe-name>/IntrospectiveTests/TestSpec.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpec.tests.cpp" >
         <Original>
           spec.matches(*fakeTestCase(R"(spec {a} char)"))
         </Original>
@@ -199,7 +199,7 @@ Nor would this
           true
         </Expanded>
       </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpec.tests.cpp" >
         <Original>
           spec.matches(*fakeTestCase(R"(spec [a] char)"))
         </Original>
@@ -207,7 +207,7 @@ Nor would this
           true
         </Expanded>
       </Expression>
-      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/TestSpec.tests.cpp" >
         <Original>
           !(spec.matches(*fakeTestCase("differs but has similar tag", "[a]")))
         </Original>
@@ -217,8 +217,8 @@ Nor would this
       </Expression>
       <OverallResults successes="3" failures="0" expectedFailures="0"/>
     </Section>
-    <Section name="backslash in test name" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+    <Section name="backslash in test name" filename="tests/<exe-name>/IntrospectiveTests/TestSpec.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpec.tests.cpp" >
         <Original>
           spec.matches(*fakeTestCase(R"(spec \ char)"))
         </Original>
@@ -4790,6 +4790,41 @@ C
       </Original>
       <Expanded>
         SpecialException::what special exception has value of 2
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="Exception message can be matched" tags="[!throws][exceptions][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+    <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Original>
+        throwsDerivedException(), DerivedException, MessageMatches( StartsWith( "Derived" ) )
+      </Original>
+      <Expanded>
+        DerivedException::what  matches "starts with: "Derived""
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Original>
+        throwsDerivedException(), DerivedException, MessageMatches( EndsWith( "::what" ) )
+      </Original>
+      <Expanded>
+        DerivedException::what  matches "ends with: "::what""
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Original>
+        throwsDerivedException(), DerivedException, MessageMatches( !StartsWith( "::what" ) )
+      </Original>
+      <Expanded>
+        DerivedException::what  matches "not starts with: "::what""
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Original>
+        throwsSpecialException( 2 ), SpecialException, MessageMatches( StartsWith( "Special" ) )
+      </Original>
+      <Expanded>
+        SpecialException::what  matches "starts with: "Special""
       </Expanded>
     </Expression>
     <OverallResult success="true"/>
@@ -9689,1322 +9724,6 @@ C
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
-  <TestCase name="Parse test names and tags" tags="[command-line][test-spec]" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-    <Section name="Empty test spec should have no filters" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="3" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Test spec from empty string should have no filters" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="3" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Test spec from just a comma should have no filters" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="3" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Test spec from name should have one filter" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <OverallResults successes="3" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Test spec from quoted name should have one filter" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <OverallResults successes="3" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Test spec from name should have one filter" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="4" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Wildcard at the start" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcD ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          parseTestSpec( "*a" ).matches( *tcA ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <OverallResults successes="6" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Wildcard at the end" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcD ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          parseTestSpec( "a*" ).matches( *tcA ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <OverallResults successes="6" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Wildcard at both ends" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcD ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          parseTestSpec( "*a*" ).matches( *tcA ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <OverallResults successes="6" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Redundant wildcard at the start" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="3" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Redundant wildcard at the end" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="3" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Redundant wildcard at both ends" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="3" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Wildcard at both ends, redundant at start" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcD ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Just wildcard" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcD ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Single tag" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="4" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Single tag, two matches" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <OverallResults successes="4" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Two tags" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <OverallResults successes="4" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Two tags, spare separated" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <OverallResults successes="4" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Wildcarded name and tag" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcD ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Single tag exclusion" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="4" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="One tag exclusion and one tag inclusion" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="4" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="One tag exclusion and one wldcarded name inclusion" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcD ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="One tag exclusion, using exclude:, and one wldcarded name inclusion" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcD ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="name exclusion" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcD ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="wildcarded name exclusion" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcD ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="wildcarded name exclusion with tag inclusion" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcD ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="wildcarded name exclusion, using exclude:, with tag inclusion" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcD ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="two wildcarded names" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcD ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="empty tag" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcD ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="empty quoted name" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcD ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="quoted string followed by tag exclusion" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.hasFilters() == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcA ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcB ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcC ) == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *tcD ) == true
-        </Original>
-        <Expanded>
-          true == true
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Leading and trailing spaces in test spec" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *fakeTestCase( "  aardvark " ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *fakeTestCase( "  aardvark" ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *fakeTestCase( " aardvark " ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *fakeTestCase( "aardvark " ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *fakeTestCase( "aardvark" ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Leading and trailing spaces in test name" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *fakeTestCase( "  aardvark " ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *fakeTestCase( "  aardvark" ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *fakeTestCase( " aardvark " ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *fakeTestCase( "aardvark " ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches( *fakeTestCase( "aardvark" ) )
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Shortened hide tags are split apart when parsing" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches(*fakeTestCase("hidden and foo", "[.][foo]"))
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          !(spec.matches(*fakeTestCase("only foo", "[foo]")))
-        </Original>
-        <Expanded>
-          !false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="2" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Shortened hide tags also properly handle exclusion" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Expression success="true" type="CHECK_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          !(spec.matches(*fakeTestCase("hidden and foo", "[.][foo]")))
-        </Original>
-        <Expanded>
-          !false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          !(spec.matches(*fakeTestCase("only foo", "[foo]")))
-        </Original>
-        <Expanded>
-          !false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          !(spec.matches(*fakeTestCase("only hidden", "[.]")))
-        </Original>
-        <Expanded>
-          !false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Original>
-          spec.matches(*fakeTestCase("neither foo nor hidden", "[bar]"))
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <OverallResults successes="4" failures="0" expectedFailures="0"/>
-    </Section>
-    <OverallResult success="true"/>
-  </TestCase>
   <TestCase name="Parse uints" tags="[parse-numbers]" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
     <Section name="proper inputs" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
@@ -11160,10 +9879,10 @@ C
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          result.errorMessage(), ContainsSubstring("Shard count must be a positive number")
+          result.errorMessage(), ContainsSubstring( "Could not parse '-1' as shard count" )
         </Original>
         <Expanded>
-          "Shard count must be a positive number" contains: "Shard count must be a positive number"
+          "Could not parse '-1' as shard count" contains: "Could not parse '-1' as shard count"
         </Expanded>
       </Expression>
       <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -11179,10 +9898,10 @@ C
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          result.errorMessage(), ContainsSubstring("Shard count must be a positive number")
+          result.errorMessage(), ContainsSubstring( "Shard count must be positive" )
         </Original>
         <Expanded>
-          "Shard count must be a positive number" contains: "Shard count must be a positive number"
+          "Shard count must be positive" contains: "Shard count must be positive"
         </Expanded>
       </Expression>
       <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -11217,10 +9936,10 @@ C
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          result.errorMessage(), ContainsSubstring("Shard index must be a non-negative number")
+          result.errorMessage(), ContainsSubstring( "Could not parse '-12' as shard index" )
         </Original>
         <Expanded>
-          "Shard index must be a non-negative number" contains: "Shard index must be a non-negative number"
+          "Could not parse '-12' as shard index" contains: "Could not parse '-12' as shard index"
         </Expanded>
       </Expression>
       <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -21799,6 +20518,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2140" failures="143" expectedFailures="27"/>
+  <OverallResults successes="1993" failures="143" expectedFailures="27"/>
   <OverallResultsCases successes="305" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

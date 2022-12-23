@@ -1,7 +1,7 @@
 
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
-//   (See accompanying file LICENSE_1_0.txt or copy at
+//   (See accompanying file LICENSE.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
@@ -658,6 +658,21 @@ TEST_CASE( "Exceptions matchers", "[matchers][exceptions][!throws]" ) {
     REQUIRE_THROWS_MATCHES( throwsSpecialException( 2 ),
                             SpecialException,
                             Message( "SpecialException::what" ) );
+}
+
+TEST_CASE( "Exception message can be matched", "[matchers][exceptions][!throws]" ) {
+    REQUIRE_THROWS_MATCHES( throwsDerivedException(),
+                            DerivedException,
+                            MessageMatches( StartsWith( "Derived" ) ) );
+    REQUIRE_THROWS_MATCHES( throwsDerivedException(),
+                            DerivedException,
+                            MessageMatches( EndsWith( "::what" ) ) );
+    REQUIRE_THROWS_MATCHES( throwsDerivedException(),
+                            DerivedException,
+                            MessageMatches( !StartsWith( "::what" ) ) );
+    REQUIRE_THROWS_MATCHES( throwsSpecialException( 2 ),
+                            SpecialException,
+                            MessageMatches( StartsWith( "Special" ) ) );
 }
 
 struct CheckedTestingMatcher : Catch::Matchers::MatcherBase<int> {

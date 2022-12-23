@@ -1,7 +1,7 @@
 
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
-//   (See accompanying file LICENSE_1_0.txt or copy at
+//   (See accompanying file LICENSE.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
@@ -89,7 +89,7 @@ namespace Catch {
                                TestCaseInfo const* rhs ) {
             return *lhs < *rhs;
         };
-        std::set<TestCaseInfo const*, decltype(testInfoCmp)> seenTests(testInfoCmp);
+        std::set<TestCaseInfo const*, decltype(testInfoCmp) &> seenTests(testInfoCmp);
         for ( auto const& test : tests ) {
             const auto infoPtr = &test.getTestCaseInfo();
             const auto prev = seenTests.insert( infoPtr );

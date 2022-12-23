@@ -1,7 +1,7 @@
 
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
-//   (See accompanying file LICENSE_1_0.txt or copy at
+//   (See accompanying file LICENSE.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
@@ -48,11 +48,7 @@ namespace Catch {
             CATCH_BREAK_INTO_DEBUGGER();
         }
         if (m_reaction.shouldThrow) {
-#if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
-            throw Catch::TestFailureException();
-#else
-            CATCH_ERROR( "Test failure requires aborting test!" );
-#endif
+            throw_test_failure_exception();
         }
     }
     void AssertionHandler::setCompleted() {
@@ -80,8 +76,8 @@ namespace Catch {
 
     // This is the overload that takes a string and infers the Equals matcher from it
     // The more general overload, that takes any string matcher, is in catch_capture_matchers.cpp
-    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str, StringRef matcherString  ) {
-        handleExceptionMatchExpr( handler, Matchers::Equals( str ), matcherString );
+    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str ) {
+        handleExceptionMatchExpr( handler, Matchers::Equals( str ) );
     }
 
 } // namespace Catch

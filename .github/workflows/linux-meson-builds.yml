@@ -1,4 +1,4 @@
-name: Linux builds (basic) using meson build system
+name: Linux builds (meson)
 
 on: [push, pull_request]
 

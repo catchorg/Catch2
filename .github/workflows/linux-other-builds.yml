@@ -86,6 +86,7 @@ jobs:
         cmake -Bbuild -H$GITHUB_WORKSPACE \
               -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
               -DCMAKE_CXX_STANDARD=${{matrix.std}} \
+              -DCMAKE_CXX_STANDARD_REQUIRED=ON \
               -DCMAKE_CXX_EXTENSIONS=OFF \
               -DCATCH_DEVELOPMENT_BUILD=ON \
               ${{matrix.cmake_configurations}} \

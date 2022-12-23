@@ -1,17 +1,19 @@
 
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
-//   (See accompanying file LICENSE_1_0.txt or copy at
+//   (See accompanying file LICENSE.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/catch_test_spec.hpp>
+#include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_test_case_info.hpp>
 
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <ostream>
 
 namespace Catch {
 
@@ -35,6 +37,10 @@ namespace Catch {
         return m_wildcardPattern.matches( testCase.name );
     }
 
+    void TestSpec::NamePattern::serializeTo( std::ostream& out ) const {
+        out << '"' << name() << '"';
+    }
+
 
     TestSpec::TagPattern::TagPattern( std::string const& tag, std::string const& filterString )
     : Pattern( filterString )
@@ -45,6 +51,10 @@ namespace Catch {
         return std::find( begin( testCase.tags ),
                           end( testCase.tags ),
                           Tag( m_tag ) ) != end( testCase.tags );
+    }
+
+    void TestSpec::TagPattern::serializeTo( std::ostream& out ) const {
+        out << name();
     }
 
     bool TestSpec::Filter::matches( TestCaseInfo const& testCase ) const {
@@ -63,17 +73,30 @@ namespace Catch {
         return should_use;
     }
 
-    std::string TestSpec::Filter::name() const {
-        std::string name;
-        for (auto const& p : m_required) {
-            name += p->name();
+    void TestSpec::Filter::serializeTo( std::ostream& out ) const {
+        bool first = true;
+        for ( auto const& pattern : m_required ) {
+            if ( !first ) {
+                out << ' ';
+            }
+            out << *pattern;
+            first = false;
         }
-        for (auto const& p : m_forbidden) {
-            name += p->name();
+        for ( auto const& pattern : m_forbidden ) {
+            if ( !first ) {
+                out << ' ';
+            }
+            out << *pattern;
+            first = false;
         }
-        return name;
     }
 
+
+    std::string TestSpec::extractFilterName( Filter const& filter ) {
+        Catch::ReusableStringStream sstr;
+        sstr << filter;
+        return sstr.str();
+    }
 
     bool TestSpec::hasFilters() const {
         return !m_filters.empty();
@@ -91,13 +114,24 @@ namespace Catch {
             for( auto const& test : testCases )
                 if( isThrowSafe( test, config ) && filter.matches( test.getTestCaseInfo() ) )
                     currentMatches.emplace_back( &test );
-            return FilterMatch{ filter.name(), currentMatches };
+            return FilterMatch{ extractFilterName(filter), currentMatches };
         } );
         return matches;
     }
 
     const TestSpec::vectorStrings& TestSpec::getInvalidSpecs() const {
         return m_invalidSpecs;
+    }
+
+    void TestSpec::serializeTo( std::ostream& out ) const {
+        bool first = true;
+        for ( auto const& filter : m_filters ) {
+            if ( !first ) {
+                out << ',';
+            }
+            out << filter;
+            first = false;
+        }
     }
 
 }

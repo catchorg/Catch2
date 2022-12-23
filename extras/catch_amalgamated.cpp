@@ -1,12 +1,12 @@
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
-//   (See accompanying file LICENSE_1_0.txt or copy at
+//   (See accompanying file LICENSE.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.1.1
-//  Generated: 2022-10-17 18:47:22.400176
+//  Catch v3.2.1
+//  Generated: 2022-12-09 23:01:15.713081
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -508,32 +508,73 @@ namespace Catch {
 
 
 
-namespace {
-    bool provideBazelReporterOutput() {
-#if defined(CATCH_CONFIG_BAZEL_SUPPORT)
-        return true;
-#elif defined(CATCH_PLATFORM_WINDOWS_UWP)
-        // UWP does not support environment variables
-        return false;
-#else
-
-#    if defined( _MSC_VER )
-        // On Windows getenv throws a warning as there is no input validation,
-        // since the switch is hardcoded, this should not be an issue.
-#        pragma warning( push )
-#        pragma warning( disable : 4996 )
-#    endif
-
-        return std::getenv( "BAZEL_TEST" ) != nullptr;
-
-#    if defined( _MSC_VER )
-#        pragma warning( pop )
-#    endif
-#endif
-    }
-}
+#include <fstream>
 
 namespace Catch {
+
+    namespace {
+        static bool enableBazelEnvSupport() {
+#if defined( CATCH_CONFIG_BAZEL_SUPPORT )
+            return true;
+#else
+            return Detail::getEnv( "BAZEL_TEST" ) != nullptr;
+#endif
+        }
+
+        struct bazelShardingOptions {
+            unsigned int shardIndex, shardCount;
+            std::string shardFilePath;
+        };
+
+        static Optional<bazelShardingOptions> readBazelShardingOptions() {
+            const auto bazelShardIndex = Detail::getEnv( "TEST_SHARD_INDEX" );
+            const auto bazelShardTotal = Detail::getEnv( "TEST_TOTAL_SHARDS" );
+            const auto bazelShardInfoFile = Detail::getEnv( "TEST_SHARD_STATUS_FILE" );
+
+
+            const bool has_all =
+                bazelShardIndex && bazelShardTotal && bazelShardInfoFile;
+            if ( !has_all ) {
+                // We provide nice warning message if the input is
+                // misconfigured.
+                auto warn = []( const char* env_var ) {
+                    Catch::cerr()
+                        << "Warning: Bazel shard configuration is missing '"
+                        << env_var << "'. Shard configuration is skipped.\n";
+                };
+                if ( !bazelShardIndex ) {
+                    warn( "TEST_SHARD_INDEX" );
+                }
+                if ( !bazelShardTotal ) {
+                    warn( "TEST_TOTAL_SHARDS" );
+                }
+                if ( !bazelShardInfoFile ) {
+                    warn( "TEST_SHARD_STATUS_FILE" );
+                }
+                return {};
+            }
+
+            auto shardIndex = parseUInt( bazelShardIndex );
+            if ( !shardIndex ) {
+                Catch::cerr()
+                    << "Warning: could not parse 'TEST_SHARD_INDEX' ('" << bazelShardIndex
+                    << "') as unsigned int.\n";
+                return {};
+            }
+            auto shardTotal = parseUInt( bazelShardTotal );
+            if ( !shardTotal ) {
+                Catch::cerr()
+                    << "Warning: could not parse 'TEST_TOTAL_SHARD' ('"
+                    << bazelShardTotal << "') as unsigned int.\n";
+                return {};
+            }
+
+            return bazelShardingOptions{
+                *shardIndex, *shardTotal, bazelShardInfoFile };
+
+        }
+    } // end namespace
+
 
     bool operator==( ProcessedReporterSpec const& lhs,
                      ProcessedReporterSpec const& rhs ) {
@@ -556,17 +597,6 @@ namespace Catch {
             elem = trim(elem);
         }
 
-
-        TestSpecParser parser(ITagAliasRegistry::get());
-        if (!m_data.testsOrTags.empty()) {
-            m_hasTestFilters = true;
-            for (auto const& testOrTags : m_data.testsOrTags) {
-                parser.parse(testOrTags);
-            }
-        }
-        m_testSpec = parser.testSpec();
-
-
         // Insert the default reporter if user hasn't asked for a specfic one
         if ( m_data.reporterSpecifications.empty() ) {
             m_data.reporterSpecifications.push_back( {
@@ -579,29 +609,21 @@ namespace Catch {
             } );
         }
 
-#if !defined(CATCH_PLATFORM_WINDOWS_UWP)
-    if(provideBazelReporterOutput()){
-            // Register a JUnit reporter for Bazel. Bazel sets an environment
-            // variable with the path to XML output. If this file is written to
-            // during test, Bazel will not generate a default XML output.
-            // This allows the XML output file to contain higher level of detail
-            // than what is possible otherwise.
-#    if defined( _MSC_VER )
-            // On Windows getenv throws a warning as there is no input validation,
-            // since the key is hardcoded, this should not be an issue.
-#           pragma warning( push )
-#           pragma warning( disable : 4996 )
-#    endif
-            const auto bazelOutputFilePtr = std::getenv( "XML_OUTPUT_FILE" );
-#    if defined( _MSC_VER )
-#        pragma warning( pop )
-#    endif
-            if ( bazelOutputFilePtr != nullptr ) {
-                m_data.reporterSpecifications.push_back(
-                    { "junit", std::string( bazelOutputFilePtr ), {}, {} } );
+        if ( enableBazelEnvSupport() ) {
+            readBazelEnvVars();
+        }
+
+        // Bazel support can modify the test specs, so parsing has to happen
+        // after reading Bazel env vars.
+        TestSpecParser parser( ITagAliasRegistry::get() );
+        if ( !m_data.testsOrTags.empty() ) {
+            m_hasTestFilters = true;
+            for ( auto const& testOrTags : m_data.testsOrTags ) {
+                parser.parse( testOrTags );
             }
-    }
-#endif
+        }
+        m_testSpec = parser.testSpec();
+
 
         // We now fixup the reporter specs to handle default output spec,
         // default colour spec, etc
@@ -680,6 +702,39 @@ namespace Catch {
     double Config::benchmarkConfidenceInterval() const            { return m_data.benchmarkConfidenceInterval; }
     unsigned int Config::benchmarkResamples() const               { return m_data.benchmarkResamples; }
     std::chrono::milliseconds Config::benchmarkWarmupTime() const { return std::chrono::milliseconds(m_data.benchmarkWarmupTime); }
+
+    void Config::readBazelEnvVars() {
+        // Register a JUnit reporter for Bazel. Bazel sets an environment
+        // variable with the path to XML output. If this file is written to
+        // during test, Bazel will not generate a default XML output.
+        // This allows the XML output file to contain higher level of detail
+        // than what is possible otherwise.
+        const auto bazelOutputFile = Detail::getEnv( "XML_OUTPUT_FILE" );
+
+        if ( bazelOutputFile ) {
+            m_data.reporterSpecifications.push_back(
+                { "junit", std::string( bazelOutputFile ), {}, {} } );
+        }
+
+        const auto bazelTestSpec = Detail::getEnv( "TESTBRIDGE_TEST_ONLY" );
+        if ( bazelTestSpec ) {
+            // Presumably the test spec from environment should overwrite
+            // the one we got from CLI (if we got any)
+            m_data.testsOrTags.clear();
+            m_data.testsOrTags.push_back( bazelTestSpec );
+        }
+
+        const auto bazelShardOptions = readBazelShardingOptions();
+        if ( bazelShardOptions ) {
+            std::ofstream f( bazelShardOptions->shardFilePath,
+                             std::ios_base::out | std::ios_base::trunc );
+            if ( f.is_open() ) {
+                f << "";
+                m_data.shardIndex = bazelShardOptions->shardIndex;
+                m_data.shardCount = bazelShardOptions->shardCount;
+            }
+        }
+    }
 
 } // end namespace Catch
 
@@ -1472,6 +1527,7 @@ namespace Catch {
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <ostream>
 
 namespace Catch {
 
@@ -1495,6 +1551,10 @@ namespace Catch {
         return m_wildcardPattern.matches( testCase.name );
     }
 
+    void TestSpec::NamePattern::serializeTo( std::ostream& out ) const {
+        out << '"' << name() << '"';
+    }
+
 
     TestSpec::TagPattern::TagPattern( std::string const& tag, std::string const& filterString )
     : Pattern( filterString )
@@ -1505,6 +1565,10 @@ namespace Catch {
         return std::find( begin( testCase.tags ),
                           end( testCase.tags ),
                           Tag( m_tag ) ) != end( testCase.tags );
+    }
+
+    void TestSpec::TagPattern::serializeTo( std::ostream& out ) const {
+        out << name();
     }
 
     bool TestSpec::Filter::matches( TestCaseInfo const& testCase ) const {
@@ -1523,17 +1587,30 @@ namespace Catch {
         return should_use;
     }
 
-    std::string TestSpec::Filter::name() const {
-        std::string name;
-        for (auto const& p : m_required) {
-            name += p->name();
+    void TestSpec::Filter::serializeTo( std::ostream& out ) const {
+        bool first = true;
+        for ( auto const& pattern : m_required ) {
+            if ( !first ) {
+                out << ' ';
+            }
+            out << *pattern;
+            first = false;
         }
-        for (auto const& p : m_forbidden) {
-            name += p->name();
+        for ( auto const& pattern : m_forbidden ) {
+            if ( !first ) {
+                out << ' ';
+            }
+            out << *pattern;
+            first = false;
         }
-        return name;
     }
 
+
+    std::string TestSpec::extractFilterName( Filter const& filter ) {
+        Catch::ReusableStringStream sstr;
+        sstr << filter;
+        return sstr.str();
+    }
 
     bool TestSpec::hasFilters() const {
         return !m_filters.empty();
@@ -1551,13 +1628,24 @@ namespace Catch {
             for( auto const& test : testCases )
                 if( isThrowSafe( test, config ) && filter.matches( test.getTestCaseInfo() ) )
                     currentMatches.emplace_back( &test );
-            return FilterMatch{ filter.name(), currentMatches };
+            return FilterMatch{ extractFilterName(filter), currentMatches };
         } );
         return matches;
     }
 
     const TestSpec::vectorStrings& TestSpec::getInvalidSpecs() const {
         return m_invalidSpecs;
+    }
+
+    void TestSpec::serializeTo( std::ostream& out ) const {
+        bool first = true;
+        for ( auto const& filter : m_filters ) {
+            if ( !first ) {
+                out << ',';
+            }
+            out << filter;
+            first = false;
+        }
     }
 
 }
@@ -1924,7 +2012,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 3, 1, 1, "", 0 );
+        static Version version( 3, 2, 1, "", 0 );
         return version;
     }
 
@@ -2175,11 +2263,7 @@ namespace Catch {
             CATCH_BREAK_INTO_DEBUGGER();
         }
         if (m_reaction.shouldThrow) {
-#if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
-            throw Catch::TestFailureException();
-#else
-            CATCH_ERROR( "Test failure requires aborting test!" );
-#endif
+            throw_test_failure_exception();
         }
     }
     void AssertionHandler::setCompleted() {
@@ -2207,8 +2291,8 @@ namespace Catch {
 
     // This is the overload that takes a string and infers the Equals matcher from it
     // The more general overload, that takes any string matcher, is in catch_capture_matchers.cpp
-    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str, StringRef matcherString  ) {
-        handleExceptionMatchExpr( handler, Matchers::Equals( str ), matcherString );
+    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str ) {
+        handleExceptionMatchExpr( handler, Matchers::Equals( str ) );
     }
 
 } // namespace Catch
@@ -2744,23 +2828,14 @@ namespace Catch {
                     return ParserResult::ok(ParseResultType::Matched);
                 }
 
-                CATCH_TRY {
-                    std::size_t parsedTo = 0;
-                    unsigned long parsedSeed = std::stoul(seed, &parsedTo, 0);
-                    if (parsedTo != seed.size()) {
-                        return ParserResult::runtimeError("Could not parse '" + seed + "' as seed");
-                    }
-
-                    // TODO: Ideally we could parse unsigned int directly,
-                    //       but the stdlib doesn't provide helper for that
-                    //       type. After this is refactored to use fixed size
-                    //       type, we should check the parsed value is in range
-                    //       of the underlying type.
-                    config.rngSeed = static_cast<unsigned int>(parsedSeed);
-                    return ParserResult::ok(ParseResultType::Matched);
-                } CATCH_CATCH_ANON(std::exception const&) {
-                    return ParserResult::runtimeError("Could not parse '" + seed + "' as seed");
+                // TODO: ideally we should be parsing uint32_t directly
+                //       fix this later when we add new parse overload
+                auto parsedSeed = parseUInt( seed, 0 );
+                if ( !parsedSeed ) {
+                    return ParserResult::runtimeError( "Could not parse '" + seed + "' as seed" );
                 }
+                config.rngSeed = *parsedSeed;
+                return ParserResult::ok( ParseResultType::Matched );
             };
         auto const setDefaultColourMode = [&]( std::string const& colourMode ) {
             Optional<ColourMode> maybeMode = Catch::Detail::stringToColourMode(toLower( colourMode ));
@@ -2852,41 +2927,28 @@ namespace Catch {
             return ParserResult::ok( ParseResultType::Matched );
         };
         auto const setShardCount = [&]( std::string const& shardCount ) {
-            CATCH_TRY{
-                std::size_t parsedTo = 0;
-                int64_t parsedCount = std::stoll(shardCount, &parsedTo, 0);
-                if (parsedTo != shardCount.size()) {
-                    return ParserResult::runtimeError("Could not parse '" + shardCount + "' as shard count");
-                }
-                if (parsedCount <= 0) {
-                    return ParserResult::runtimeError("Shard count must be a positive number");
-                }
-
-                config.shardCount = static_cast<unsigned int>(parsedCount);
-                return ParserResult::ok(ParseResultType::Matched);
-            } CATCH_CATCH_ANON(std::exception const&) {
-                return ParserResult::runtimeError("Could not parse '" + shardCount + "' as shard count");
+            auto parsedCount = parseUInt( shardCount );
+            if ( !parsedCount ) {
+                return ParserResult::runtimeError(
+                    "Could not parse '" + shardCount + "' as shard count" );
             }
+            if ( *parsedCount == 0 ) {
+                return ParserResult::runtimeError(
+                    "Shard count must be positive" );
+            }
+            config.shardCount = *parsedCount;
+            return ParserResult::ok( ParseResultType::Matched );
         };
 
         auto const setShardIndex = [&](std::string const& shardIndex) {
-            CATCH_TRY{
-                std::size_t parsedTo = 0;
-                int64_t parsedIndex = std::stoll(shardIndex, &parsedTo, 0);
-                if (parsedTo != shardIndex.size()) {
-                    return ParserResult::runtimeError("Could not parse '" + shardIndex + "' as shard index");
-                }
-                if (parsedIndex < 0) {
-                    return ParserResult::runtimeError("Shard index must be a non-negative number");
-                }
-
-                config.shardIndex = static_cast<unsigned int>(parsedIndex);
-                return ParserResult::ok(ParseResultType::Matched);
-            } CATCH_CATCH_ANON(std::exception const&) {
-                return ParserResult::runtimeError("Could not parse '" + shardIndex + "' as shard index");
+            auto parsedIndex = parseUInt( shardIndex );
+            if ( !parsedIndex ) {
+                return ParserResult::runtimeError(
+                    "Could not parse '" + shardIndex + "' as shard index" );
             }
+            config.shardIndex = *parsedIndex;
+            return ParserResult::ok( ParseResultType::Matched );
         };
-
 
         auto cli
             = ExeName( config.processName )
@@ -3925,6 +3987,35 @@ namespace Catch {
 
 
 
+
+#include <cstdlib>
+
+namespace Catch {
+    namespace Detail {
+
+#if !defined (CATCH_CONFIG_GETENV)
+        char const* getEnv( char const* ) { return nullptr; }
+#else
+
+        char const* getEnv( char const* varName ) {
+#    if defined( _MSC_VER )
+#        pragma warning( push )
+#        pragma warning( disable : 4996 ) // use getenv_s instead of getenv
+#    endif
+
+            return std::getenv( varName );
+
+#    if defined( _MSC_VER )
+#        pragma warning( pop )
+#    endif
+        }
+#endif
+} // namespace Detail
+} // namespace Catch
+
+
+
+
 #include <cstdio>
 #include <fstream>
 #include <sstream>
@@ -4414,6 +4505,47 @@ namespace Catch {
     #undef fileno
     #endif
 #endif
+
+
+
+
+
+#include <limits>
+
+namespace Catch {
+
+    Optional<unsigned int> parseUInt(std::string const& input, int base) {
+        auto trimmed = trim( input );
+        // std::stoull is annoying and accepts numbers starting with '-',
+        // it just negates them into unsigned int
+        if ( trimmed.empty() || trimmed[0] == '-' ) {
+            return {};
+        }
+
+        CATCH_TRY {
+            size_t pos = 0;
+            const auto ret = std::stoull( trimmed, &pos, base );
+
+            // We did not consume the whole input, so there is an issue
+            // This can be bunch of different stuff, like multiple numbers
+            // in the input, or invalid digits/characters and so on. Either
+            // way, we do not want to return the partially parsed result.
+            if ( pos != trimmed.size() ) {
+                return {};
+            }
+            // Too large
+            if ( ret > std::numeric_limits<unsigned int>::max() ) {
+                return {};
+            }
+            return static_cast<unsigned int>(ret);
+        } CATCH_CATCH_ANON( std::exception const& ) {
+            // There was a larger issue with the input, e.g. the parsed
+            // number would be too large to fit within ull.
+            return {};
+        }
+    }
+
+} // namespace Catch
 
 
 
@@ -5885,7 +6017,7 @@ namespace Catch {
                                TestCaseInfo const* rhs ) {
             return *lhs < *rhs;
         };
-        std::set<TestCaseInfo const*, decltype(testInfoCmp)> seenTests(testInfoCmp);
+        std::set<TestCaseInfo const*, decltype(testInfoCmp) &> seenTests(testInfoCmp);
         for ( auto const& test : tests ) {
             const auto infoPtr = &test.getTestCaseInfo();
             const auto prev = seenTests.insert( infoPtr );
@@ -6190,6 +6322,21 @@ namespace TestCaseTracking {
 
 
 
+
+namespace Catch {
+
+    void throw_test_failure_exception() {
+#if !defined( CATCH_CONFIG_DISABLE_EXCEPTIONS )
+        throw TestFailureException{};
+#else
+        CATCH_ERROR( "Test failure requires aborting test!" );
+#endif
+    }
+
+} // namespace Catch
+
+
+
 #include <algorithm>
 #include <iterator>
 
@@ -6474,10 +6621,6 @@ namespace Catch {
         m_substring.clear();
         m_exclusion = false;
         m_mode = None;
-    }
-
-    TestSpec parseTestSpec( std::string const& arg ) {
-        return TestSpecParser( ITagAliasRegistry::get() ).parse( arg ).testSpec();
     }
 
 } // namespace Catch
@@ -7588,9 +7731,9 @@ namespace Catch {
     // This is the general overload that takes a any string matcher
     // There is another overload, in catch_assertionhandler.h/.cpp, that only takes a string and infers
     // the Equals matcher (so the header does not mention matchers)
-    void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher, StringRef matcherString  ) {
+    void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher ) {
         std::string exceptionMessage = Catch::translateActiveException();
-        MatchExpr<std::string, StringMatcher const&> expr( CATCH_MOVE(exceptionMessage), matcher, matcherString );
+        MatchExpr<std::string, StringMatcher const&> expr( CATCH_MOVE(exceptionMessage), matcher );
         handler.handleExpr( expr );
     }
 
@@ -7669,22 +7812,6 @@ namespace Catch {
 
 #include <ostream>
 
-namespace {
-
-    constexpr Catch::StringRef bothOrAll( std::uint64_t count ) {
-        switch (count) {
-        case 1:
-            return Catch::StringRef{};
-        case 2:
-            return "both "_catch_sr;
-        default:
-            return "all "_catch_sr;
-        }
-    }
-
-} // anon namespace
-
-
 namespace Catch {
 namespace {
 
@@ -7698,42 +7825,6 @@ namespace {
     static constexpr Catch::StringRef compactFailedString = "failed"_sr;
     static constexpr Catch::StringRef compactPassedString = "passed"_sr;
 #endif
-
-// Colour, message variants:
-// - white: No tests ran.
-// -   red: Failed [both/all] N test cases, failed [both/all] M assertions.
-// - white: Passed [both/all] N test cases (no assertions).
-// -   red: Failed N tests cases, failed M assertions.
-// - green: Passed [both/all] N tests cases with M assertions.
-void printTotals(std::ostream& out, const Totals& totals, ColourImpl* colourImpl) {
-    if (totals.testCases.total() == 0) {
-        out << "No tests ran.";
-    } else if (totals.testCases.failed == totals.testCases.total()) {
-        auto guard = colourImpl->guardColour( Colour::ResultError ).engage( out );
-        const StringRef qualify_assertions_failed =
-            totals.assertions.failed == totals.assertions.total() ?
-            bothOrAll(totals.assertions.failed) : StringRef{};
-        out <<
-            "Failed " << bothOrAll(totals.testCases.failed)
-            << pluralise(totals.testCases.failed, "test case"_sr) << ", "
-            "failed " << qualify_assertions_failed <<
-            pluralise(totals.assertions.failed, "assertion"_sr) << '.';
-    } else if (totals.assertions.total() == 0) {
-        out <<
-            "Passed " << bothOrAll(totals.testCases.total())
-            << pluralise(totals.testCases.total(), "test case"_sr)
-            << " (no assertions).";
-    } else if (totals.assertions.failed) {
-        out << colourImpl->guardColour( Colour::ResultError ) <<
-            "Failed " << pluralise(totals.testCases.failed, "test case"_sr) << ", "
-            "failed " << pluralise(totals.assertions.failed, "assertion"_sr) << '.';
-    } else {
-        out << colourImpl->guardColour( Colour::ResultSuccess ) <<
-            "Passed " << bothOrAll(totals.testCases.passed)
-            << pluralise(totals.testCases.passed, "test case"_sr) <<
-            " with " << pluralise(totals.assertions.passed, "assertion"_sr) << '.';
-    }
-}
 
 // Implementation of CompactReporter formatting
 class AssertionPrinter {
@@ -7910,7 +8001,7 @@ private:
             if ( m_config->testSpec().hasFilters() ) {
                 m_stream << m_colour->guardColour( Colour::BrightYellow )
                          << "Filters: "
-                         << serializeFilters( m_config->getTestsOrTags() )
+                         << m_config->testSpec()
                          << '\n';
             }
             m_stream << "RNG seed: " << getSeed() << '\n';
@@ -7942,7 +8033,7 @@ private:
         }
 
         void CompactReporter::testRunEnded( TestRunStats const& _testRunStats ) {
-            printTotals( m_stream, _testRunStats.totals, m_colour.get() );
+            printTestRunTotals( m_stream, *m_colour, _testRunStats.totals );
             m_stream << "\n\n" << std::flush;
             StreamingReporterBase::testRunEnded( _testRunStats );
         }
@@ -8424,7 +8515,7 @@ void ConsoleReporter::testCaseEnded(TestCaseStats const& _testCaseStats) {
 }
 void ConsoleReporter::testRunEnded(TestRunStats const& _testRunStats) {
     printTotalsDivider(_testRunStats.totals);
-    printTotals(_testRunStats.totals);
+    printTestRunTotals( m_stream, *m_colour, _testRunStats.totals );
     m_stream << '\n' << std::flush;
     StreamingReporterBase::testRunEnded(_testRunStats);
 }
@@ -8432,7 +8523,7 @@ void ConsoleReporter::testRunStarting(TestRunInfo const& _testInfo) {
     StreamingReporterBase::testRunStarting(_testInfo);
     if ( m_config->testSpec().hasFilters() ) {
         m_stream << m_colour->guardColour( Colour::BrightYellow ) << "Filters: "
-                 << serializeFilters( m_config->getTestsOrTags() ) << '\n';
+                 << m_config->testSpec() << '\n';
     }
     m_stream << "Randomness seeded to: " << getSeed() << '\n';
 }
@@ -8531,82 +8622,6 @@ void ConsoleReporter::printHeaderString(std::string const& _string, std::size_t 
            << '\n';
 }
 
-struct SummaryColumn {
-
-    SummaryColumn( std::string _label, Colour::Code _colour )
-    :   label( CATCH_MOVE( _label ) ),
-        colour( _colour ) {}
-    SummaryColumn addRow( std::uint64_t count ) {
-        ReusableStringStream rss;
-        rss << count;
-        std::string row = rss.str();
-        for (auto& oldRow : rows) {
-            while (oldRow.size() < row.size())
-                oldRow = ' ' + oldRow;
-            while (oldRow.size() > row.size())
-                row = ' ' + row;
-        }
-        rows.push_back(row);
-        return *this;
-    }
-
-    std::string label;
-    Colour::Code colour;
-    std::vector<std::string> rows;
-
-};
-
-void ConsoleReporter::printTotals( Totals const& totals ) {
-    if (totals.testCases.total() == 0) {
-        m_stream << m_colour->guardColour( Colour::Warning )
-                 << "No tests ran\n";
-    } else if (totals.assertions.total() > 0 && totals.testCases.allPassed()) {
-        m_stream << m_colour->guardColour( Colour::ResultSuccess )
-                 << "All tests passed";
-        m_stream << " ("
-            << pluralise(totals.assertions.passed, "assertion"_sr) << " in "
-            << pluralise(totals.testCases.passed, "test case"_sr) << ')'
-            << '\n';
-    } else {
-
-        std::vector<SummaryColumn> columns;
-        columns.push_back(SummaryColumn("", Colour::None)
-                          .addRow(totals.testCases.total())
-                          .addRow(totals.assertions.total()));
-        columns.push_back(SummaryColumn("passed", Colour::Success)
-                          .addRow(totals.testCases.passed)
-                          .addRow(totals.assertions.passed));
-        columns.push_back(SummaryColumn("failed", Colour::ResultError)
-                          .addRow(totals.testCases.failed)
-                          .addRow(totals.assertions.failed));
-        columns.push_back(SummaryColumn("failed as expected", Colour::ResultExpectedFailure)
-                          .addRow(totals.testCases.failedButOk)
-                          .addRow(totals.assertions.failedButOk));
-
-        printSummaryRow("test cases"_sr, columns, 0);
-        printSummaryRow("assertions"_sr, columns, 1);
-    }
-}
-void ConsoleReporter::printSummaryRow(StringRef label, std::vector<SummaryColumn> const& cols, std::size_t row) {
-    for (auto col : cols) {
-        std::string const& value = col.rows[row];
-        if (col.label.empty()) {
-            m_stream << label << ": ";
-            if ( value != "0" ) {
-                m_stream << value;
-            } else {
-                m_stream << m_colour->guardColour( Colour::Warning )
-                         << "- none -";
-            }
-        } else if (value != "0") {
-            m_stream << m_colour->guardColour( Colour::LightGrey ) << " | "
-                     << m_colour->guardColour( col.colour ) << value << ' '
-                     << col.label;
-        }
-    }
-    m_stream << '\n';
-}
-
 void ConsoleReporter::printTotalsDivider(Totals const& totals) {
     if (totals.testCases.total() > 0) {
         std::size_t failedRatio = makeRatio(totals.testCases.failed, totals.testCases.total());
@@ -8633,9 +8648,6 @@ void ConsoleReporter::printTotalsDivider(Totals const& totals) {
                  << std::string( CATCH_CONFIG_CONSOLE_WIDTH - 1, '=' );
     }
     m_stream << '\n';
-}
-void ConsoleReporter::printSummaryDivider() {
-    m_stream << lineOfChars('-') << '\n';
 }
 
 } // end namespace Catch
@@ -9054,6 +9066,104 @@ namespace Catch {
         out << "\n\n" << std::flush;
     }
 
+    namespace {
+        class SummaryColumn {
+        public:
+            SummaryColumn( std::string suffix, Colour::Code colour ):
+                m_suffix( CATCH_MOVE( suffix ) ), m_colour( colour ) {}
+
+            SummaryColumn&& addRow( std::uint64_t count ) && {
+                std::string row = std::to_string(count);
+                auto const new_width = std::max( m_width, row.size() );
+                if ( new_width > m_width ) {
+                    for ( auto& oldRow : m_rows ) {
+                        oldRow.insert( 0, new_width - m_width, ' ' );
+                    }
+                } else {
+                    row.insert( 0, m_width - row.size(), ' ' );
+                }
+                m_width = new_width;
+                m_rows.push_back( row );
+                return std::move( *this );
+            }
+
+            std::string const& getSuffix() const { return m_suffix; }
+            Colour::Code getColour() const { return m_colour; }
+            std::string const& getRow( std::size_t index ) const {
+                return m_rows[index];
+            }
+
+        private:
+            std::string m_suffix;
+            Colour::Code m_colour;
+            std::size_t m_width = 0;
+            std::vector<std::string> m_rows;
+        };
+
+        void printSummaryRow( std::ostream& stream,
+                              ColourImpl& colour,
+                              StringRef label,
+                              std::vector<SummaryColumn> const& cols,
+                              std::size_t row ) {
+            for ( auto const& col : cols ) {
+                auto const& value = col.getRow( row );
+                auto const& suffix = col.getSuffix();
+                if ( suffix.empty() ) {
+                    stream << label << ": ";
+                    if ( value != "0" ) {
+                        stream << value;
+                    } else {
+                        stream << colour.guardColour( Colour::Warning )
+                               << "- none -";
+                    }
+                } else if ( value != "0" ) {
+                    stream << colour.guardColour( Colour::LightGrey ) << " | "
+                           << colour.guardColour( col.getColour() ) << value
+                           << ' ' << suffix;
+                }
+            }
+            stream << '\n';
+        }
+    } // namespace
+
+    void printTestRunTotals( std::ostream& stream,
+                             ColourImpl& streamColour,
+                             Totals const& totals ) {
+        if ( totals.testCases.total() == 0 ) {
+            stream << streamColour.guardColour( Colour::Warning )
+                   << "No tests ran\n";
+            return;
+        }
+
+        if ( totals.assertions.total() > 0 && totals.testCases.allPassed() ) {
+            stream << streamColour.guardColour( Colour::ResultSuccess )
+                   << "All tests passed";
+            stream << " ("
+                   << pluralise( totals.assertions.passed, "assertion"_sr )
+                   << " in "
+                   << pluralise( totals.testCases.passed, "test case"_sr )
+                   << ')' << '\n';
+            return;
+        }
+
+        std::vector<SummaryColumn> columns;
+        columns.push_back( SummaryColumn( "", Colour::None )
+                               .addRow( totals.testCases.total() )
+                               .addRow( totals.assertions.total() ) );
+        columns.push_back( SummaryColumn( "passed", Colour::Success )
+                               .addRow( totals.testCases.passed )
+                               .addRow( totals.assertions.passed ) );
+        columns.push_back( SummaryColumn( "failed", Colour::ResultError )
+                               .addRow( totals.testCases.failed )
+                               .addRow( totals.assertions.failed ) );
+        columns.push_back(
+            SummaryColumn( "failed as expected", Colour::ResultExpectedFailure )
+                .addRow( totals.testCases.failedButOk )
+                .addRow( totals.assertions.failedButOk ) );
+        printSummaryRow( stream, streamColour, "test cases"_sr, columns, 0 );
+        printSummaryRow( stream, streamColour, "assertions"_sr, columns, 1 );
+    }
+
 } // namespace Catch
 
 
@@ -9074,6 +9184,8 @@ namespace Catch {
             std::tm timeInfo = {};
 #if defined (_MSC_VER) || defined (__MINGW32__)
             gmtime_s(&timeInfo, &rawtime);
+#elif defined (CATCH_PLATFORM_PLAYSTATION)
+            gmtime_s(&rawtime, &timeInfo);
 #else
             gmtime_r(&rawtime, &timeInfo);
 #endif
@@ -9187,10 +9299,10 @@ namespace Catch {
             xml.scopedElement("property")
                 .writeAttribute("name"_sr, "random-seed"_sr)
                 .writeAttribute("value"_sr, m_config->rngSeed());
-            if (m_config->hasTestFilters()) {
+            if (m_config->testSpec().hasFilters()) {
                 xml.scopedElement("property")
                     .writeAttribute("name"_sr, "filters"_sr)
-                    .writeAttribute("value"_sr, serializeFilters(m_config->getTestsOrTags()));
+                    .writeAttribute("value"_sr, m_config->testSpec());
             }
         }
 
@@ -9563,9 +9675,14 @@ namespace Catch {
 namespace Catch {
 
     namespace {
-        std::string createRngSeedString(uint32_t seed) {
+        std::string createMetadataString(IConfig const& config) {
             ReusableStringStream sstr;
-            sstr << "rng-seed=" << seed;
+            if ( config.testSpec().hasFilters() ) {
+                sstr << "filters='"
+                         << config.testSpec()
+                         << "' ";
+            }
+            sstr << "rng-seed=" << config.rngSeed();
             return sstr.str();
         }
     }
@@ -9573,7 +9690,7 @@ namespace Catch {
     void SonarQubeReporter::testRunStarting(TestRunInfo const& testRunInfo) {
         CumulativeReporterBase::testRunStarting(testRunInfo);
 
-        xml.writeComment( createRngSeedString( m_config->rngSeed() ) );
+        xml.writeComment( createMetadataString( *m_config ) );
         xml.startElement("testExecutions");
         xml.writeAttribute("version"_sr, '1');
     }
@@ -9893,6 +10010,9 @@ namespace Catch {
     } // End anonymous namespace
 
     void TAPReporter::testRunStarting( TestRunInfo const& ) {
+        if ( m_config->testSpec().hasFilters() ) {
+            m_stream << "# filters: " << m_config->testSpec() << '\n';
+        }
         m_stream << "# rng-seed: " << m_config->rngSeed() << '\n';
     }
 
@@ -10131,9 +10251,11 @@ namespace Catch {
         m_xml.startElement("Catch2TestRun")
              .writeAttribute("name"_sr, m_config->name())
              .writeAttribute("rng-seed"_sr, m_config->rngSeed())
+             .writeAttribute("xml-format-version"_sr, 2)
              .writeAttribute("catch2-version"_sr, libraryVersion());
-        if (m_config->testSpec().hasFilters())
-            m_xml.writeAttribute( "filters"_sr, serializeFilters( m_config->getTestsOrTags() ) );
+        if ( m_config->testSpec().hasFilters() ) {
+            m_xml.writeAttribute( "filters"_sr, m_config->testSpec() );
+        }
     }
 
     void XmlReporter::testCaseStarting( TestCaseInfo const& testInfo ) {

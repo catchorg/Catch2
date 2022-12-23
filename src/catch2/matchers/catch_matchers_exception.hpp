@@ -1,7 +1,7 @@
 
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
-//   (See accompanying file LICENSE_1_0.txt or copy at
+//   (See accompanying file LICENSE.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
@@ -28,6 +28,32 @@ public:
 
 //! Creates a matcher that checks whether a std derived exception has the provided message
 ExceptionMessageMatcher Message(std::string const& message);
+
+template <typename StringMatcherType>
+class ExceptionMessageMatchesMatcher final
+    : public MatcherBase<std::exception> {
+    StringMatcherType m_matcher;
+
+public:
+    ExceptionMessageMatchesMatcher( StringMatcherType matcher ):
+        m_matcher( CATCH_MOVE( matcher ) ) {}
+
+    bool match( std::exception const& ex ) const override {
+        return m_matcher.match( ex.what() );
+    }
+
+    std::string describe() const override {
+        return " matches \"" + m_matcher.describe() + '"';
+    }
+};
+
+//! Creates a matcher that checks whether a message from an std derived
+//! exception matches a provided matcher
+template <typename StringMatcherType>
+ExceptionMessageMatchesMatcher<StringMatcherType>
+MessageMatches( StringMatcherType&& matcher ) {
+    return { CATCH_FORWARD( matcher ) };
+}
 
 } // namespace Matchers
 } // namespace Catch

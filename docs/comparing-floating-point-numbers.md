@@ -16,7 +16,7 @@ this blog post](https://codingnest.com/the-little-things-comparing-floating-poin
 ## Floating point matchers
 
 ```
-#include <catch2/matchers/catch_matchers_floating.hpp
+#include <catch2/matchers/catch_matchers_floating_point.hpp>
 ```
 
 [Matchers](matchers.md#top) are the preferred way of comparing floating

@@ -1,7 +1,7 @@
 
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
-//   (See accompanying file LICENSE_1_0.txt or copy at
+//   (See accompanying file LICENSE.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
@@ -16,6 +16,7 @@
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_wildcard_pattern.hpp>
 
+#include <iosfwd>
 #include <string>
 #include <vector>
 
@@ -34,6 +35,14 @@ namespace Catch {
             virtual bool matches( TestCaseInfo const& testCase ) const = 0;
             std::string const& name() const;
         private:
+            virtual void serializeTo( std::ostream& out ) const = 0;
+            // Writes string that would be reparsed into the pattern
+            friend std::ostream& operator<<(std::ostream& out,
+                                            Pattern const& pattern) {
+                pattern.serializeTo( out );
+                return out;
+            }
+
             std::string const m_name;
         };
 
@@ -42,6 +51,8 @@ namespace Catch {
             explicit NamePattern( std::string const& name, std::string const& filterString );
             bool matches( TestCaseInfo const& testCase ) const override;
         private:
+            void serializeTo( std::ostream& out ) const override;
+
             WildcardPattern m_wildcardPattern;
         };
 
@@ -50,6 +61,8 @@ namespace Catch {
             explicit TagPattern( std::string const& tag, std::string const& filterString );
             bool matches( TestCaseInfo const& testCase ) const override;
         private:
+            void serializeTo( std::ostream& out ) const override;
+
             std::string m_tag;
         };
 
@@ -57,9 +70,18 @@ namespace Catch {
             std::vector<Detail::unique_ptr<Pattern>> m_required;
             std::vector<Detail::unique_ptr<Pattern>> m_forbidden;
 
+            //! Serializes this filter into a string that would be parsed into
+            //! an equivalent filter
+            void serializeTo( std::ostream& out ) const;
+            friend std::ostream& operator<<(std::ostream& out, Filter const& f) {
+                f.serializeTo( out );
+                return out;
+            }
+
             bool matches( TestCaseInfo const& testCase ) const;
-            std::string name() const;
         };
+
+        static std::string extractFilterName( Filter const& filter );
 
     public:
         struct FilterMatch {
@@ -77,7 +99,16 @@ namespace Catch {
     private:
         std::vector<Filter> m_filters;
         std::vector<std::string> m_invalidSpecs;
+
         friend class TestSpecParser;
+        //! Serializes this test spec into a string that would be parsed into
+        //! equivalent test spec
+        void serializeTo( std::ostream& out ) const;
+        friend std::ostream& operator<<(std::ostream& out,
+                                        TestSpec const& spec) {
+            spec.serializeTo( out );
+            return out;
+        }
     };
 }
 

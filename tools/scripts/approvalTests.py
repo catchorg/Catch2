@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 
-from __future__ import print_function
-
 import io
 import os
 import sys
 import subprocess
 import re
 import difflib
+import shutil
 
 import scriptCommon
 from scriptCommon import catchPath
@@ -17,6 +16,35 @@ if os.name == 'nt':
     os.system('')
 
 rootPath = os.path.join(catchPath, 'tests/SelfTest/Baselines')
+# Init so it is guaranteed to fail loudly if the scoping gets messed up
+outputDirPath = None
+
+if len(sys.argv) == 3:
+    cmdPath = sys.argv[1]
+    outputDirBasePath = sys.argv[2]
+    outputDirPath = os.path.join(outputDirBasePath, 'ApprovalTests')
+    if not os.path.isdir(outputDirPath):
+        os.mkdir(outputDirPath)
+else:
+    print('Usage: {} path-to-SelfTest-executable path-to-temp-output-dir'.format(sys.argv[0]))
+    exit(1)
+
+
+
+def get_rawResultsPath(baseName):
+    return os.path.join(outputDirPath, '_{0}.tmp'.format(baseName))
+
+def get_baselinesPath(baseName):
+    return os.path.join(rootPath, '{0}.approved.txt'.format(baseName))
+
+def _get_unapprovedPath(path, baseName):
+    return os.path.join(path, '{0}.unapproved.txt'.format(baseName))
+
+def get_filteredResultsPath(baseName):
+    return _get_unapprovedPath(outputDirPath, baseName)
+
+def get_unapprovedResultsPath(baseName):
+    return _get_unapprovedPath(rootPath, baseName)
 
 langFilenameParser = re.compile(r'(.+\.[ch]pp)')
 filelocParser = re.compile(r'''
@@ -50,13 +78,7 @@ sinceEpochParser = re.compile(r'\d+ .+ since epoch')
 # The weird OR is there to always have at least empty string for group 1
 tapTestNumParser = re.compile(r'^((?:not ok)|(?:ok)|(?:warning)|(?:info)) (\d+) -')
 
-if len(sys.argv) == 2:
-    cmdPath = sys.argv[1]
-else:
-    cmdPath = os.path.join(catchPath, scriptCommon.getBuildExecutable())
-
 overallResult = 0
-
 
 def diffFiles(fileA, fileB):
     with io.open(fileA, 'r', encoding='utf-8', errors='surrogateescape') as file:
@@ -134,18 +156,6 @@ def filterLine(line, isCompact):
     return line
 
 
-def get_rawResultsPath(baseName):
-    return os.path.join(rootPath, '_{0}.tmp'.format(baseName))
-
-
-def get_baselinesPath(baseName):
-    return os.path.join(rootPath, '{0}.approved.txt'.format(baseName))
-
-
-def get_filteredResultsPath(baseName):
-    return os.path.join(rootPath, '{0}.unapproved.txt'.format(baseName))
-
-
 def run_test(baseName, args):
     args[0:0] = [cmdPath]
     if not os.path.exists(cmdPath):
@@ -174,21 +184,20 @@ def check_outputs(baseName):
     os.remove(rawResultsPath)
     print()
     print(baseName + ":")
-    if os.path.exists(baselinesPath):
-        diffResult = diffFiles(baselinesPath, filteredResultsPath)
-        if diffResult:
-            print('\n'.join(diffResult))
-            print("  \n****************************\n  \033[91mResults differed")
-            if len(diffResult) > overallResult:
-                overallResult = len(diffResult)
-        else:
-            os.remove(filteredResultsPath)
-            print("  \033[92mResults matched")
-        print("\033[0m")
+    if not os.path.exists(baselinesPath):
+        print(  'first approval')
+        overallResult += 1
+        return
+
+    diffResult = diffFiles(baselinesPath, filteredResultsPath)
+    if diffResult:
+        print('\n'.join(diffResult))
+        print("  \n****************************\n  \033[91mResults differed\033[0m")
+        overallResult += 1
+        shutil.move(filteredResultsPath, get_unapprovedResultsPath(baseName))
     else:
-        print("  first approval")
-        if overallResult == 0:
-            overallResult = 1
+        os.remove(filteredResultsPath)
+        print("  \033[92mResults matched\033[0m")
 
 
 def approve(baseName, args):
@@ -205,6 +214,7 @@ base_args = ["--order", "lex", "--rng-seed", "1", "--colour-mode", "none"]
 ## special cases first:
 # Standard console reporter
 approve("console.std", ["~[!nonportable]~[!benchmark]~[approvals] *"] + base_args)
+
 # console reporter, include passes, warn about No Assertions, limit failures to first 4
 approve("console.swa4", ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "-x", "4"] + base_args)
 
@@ -216,8 +226,8 @@ for reporter in reporters:
     reporter_args = ['-r', reporter]
     approve(filename, common_args + reporter_args)
 
-## All reporters at the same time
 
+## All reporters at the same time
 common_args = ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions"] + base_args
 filenames = ['{}.sw.multi'.format(reporter) for reporter in reporters]
 reporter_args = []
@@ -225,6 +235,7 @@ for reporter, filename in zip(reporters, filenames):
     reporter_args += ['-r', '{}::out={}'.format(reporter, get_rawResultsPath(filename))]
 
 run_test("default.sw.multi", common_args + reporter_args)
+
 check_outputs("default.sw.multi")
 for reporter, filename in zip(reporters, filenames):
     check_outputs(filename)
@@ -232,4 +243,4 @@ for reporter, filename in zip(reporters, filenames):
 
 if overallResult != 0:
     print("If these differences are expected, run approve.py to approve new baselines.")
-exit(overallResult)
+    exit(2)

@@ -1,7 +1,7 @@
 
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
-//   (See accompanying file LICENSE_1_0.txt or copy at
+//   (See accompanying file LICENSE.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
@@ -233,6 +233,104 @@ namespace Catch {
             out << pluralise(tests.size(), "test case"_sr);
         }
         out << "\n\n" << std::flush;
+    }
+
+    namespace {
+        class SummaryColumn {
+        public:
+            SummaryColumn( std::string suffix, Colour::Code colour ):
+                m_suffix( CATCH_MOVE( suffix ) ), m_colour( colour ) {}
+
+            SummaryColumn&& addRow( std::uint64_t count ) && {
+                std::string row = std::to_string(count);
+                auto const new_width = std::max( m_width, row.size() );
+                if ( new_width > m_width ) {
+                    for ( auto& oldRow : m_rows ) {
+                        oldRow.insert( 0, new_width - m_width, ' ' );
+                    }
+                } else {
+                    row.insert( 0, m_width - row.size(), ' ' );
+                }
+                m_width = new_width;
+                m_rows.push_back( row );
+                return std::move( *this );
+            }
+
+            std::string const& getSuffix() const { return m_suffix; }
+            Colour::Code getColour() const { return m_colour; }
+            std::string const& getRow( std::size_t index ) const {
+                return m_rows[index];
+            }
+
+        private:
+            std::string m_suffix;
+            Colour::Code m_colour;
+            std::size_t m_width = 0;
+            std::vector<std::string> m_rows;
+        };
+
+        void printSummaryRow( std::ostream& stream,
+                              ColourImpl& colour,
+                              StringRef label,
+                              std::vector<SummaryColumn> const& cols,
+                              std::size_t row ) {
+            for ( auto const& col : cols ) {
+                auto const& value = col.getRow( row );
+                auto const& suffix = col.getSuffix();
+                if ( suffix.empty() ) {
+                    stream << label << ": ";
+                    if ( value != "0" ) {
+                        stream << value;
+                    } else {
+                        stream << colour.guardColour( Colour::Warning )
+                               << "- none -";
+                    }
+                } else if ( value != "0" ) {
+                    stream << colour.guardColour( Colour::LightGrey ) << " | "
+                           << colour.guardColour( col.getColour() ) << value
+                           << ' ' << suffix;
+                }
+            }
+            stream << '\n';
+        }
+    } // namespace
+
+    void printTestRunTotals( std::ostream& stream,
+                             ColourImpl& streamColour,
+                             Totals const& totals ) {
+        if ( totals.testCases.total() == 0 ) {
+            stream << streamColour.guardColour( Colour::Warning )
+                   << "No tests ran\n";
+            return;
+        }
+
+        if ( totals.assertions.total() > 0 && totals.testCases.allPassed() ) {
+            stream << streamColour.guardColour( Colour::ResultSuccess )
+                   << "All tests passed";
+            stream << " ("
+                   << pluralise( totals.assertions.passed, "assertion"_sr )
+                   << " in "
+                   << pluralise( totals.testCases.passed, "test case"_sr )
+                   << ')' << '\n';
+            return;
+        }
+
+        std::vector<SummaryColumn> columns;
+        columns.push_back( SummaryColumn( "", Colour::None )
+                               .addRow( totals.testCases.total() )
+                               .addRow( totals.assertions.total() ) );
+        columns.push_back( SummaryColumn( "passed", Colour::Success )
+                               .addRow( totals.testCases.passed )
+                               .addRow( totals.assertions.passed ) );
+        columns.push_back( SummaryColumn( "failed", Colour::ResultError )
+                               .addRow( totals.testCases.failed )
+                               .addRow( totals.assertions.failed ) );
+        columns.push_back(
+            SummaryColumn( "failed as expected", Colour::ResultExpectedFailure )
+                .addRow( totals.testCases.failedButOk )
+                .addRow( totals.assertions.failedButOk ) );
+        printSummaryRow( stream, streamColour, "test cases"_sr, columns, 0 );
+        printSummaryRow( stream, streamColour, "assertions"_sr, columns, 1 );
     }
 
 } // namespace Catch

@@ -9,6 +9,8 @@
 [What is Catch2's API stability policy?](#what-is-catch2s-api-stability-policy)<br>
 [Does Catch2 support running tests in parallel?](#does-catch2-support-running-tests-in-parallel)<br>
 [Can I compile Catch2 into a dynamic library?](#can-i-compile-catch2-into-a-dynamic-library)<br>
+[What repeatability guarantees does Catch2 provide?](#what-repeatability-guarantees-does-catch2-provide)<br>
+
 
 ## How do I run global setup/teardown only if tests will be run?
 
@@ -67,6 +69,24 @@ However, the dynamic library support is provided as-is. Catch2 does not
 provide API export annotations, and so you can only use it as a dynamic
 library on platforms that default to public visibility, or with tooling
 support to force export Catch2's API.
+
+
+## What repeatability guarantees does Catch2 provide?
+
+There are two places where it is meaningful to talk about Catch2's
+repeatability guarantees without taking into account user-provided
+code. First one is in the test case shuffling, and the second one is
+the output from random generators.
+
+Test case shuffling is repeatable across different platforms since v2.12.0,
+and it is also generally repeatable across versions, but we might break
+it from time to time. E.g. we broke repeatability with previous versions
+in v2.13.4 so that test cases with similar names are shuffled better.
+
+Random generators currently rely on platform's stdlib, specifically
+the distributions from `<random>`. We thus provide no extra guarantee
+above what your platform does. **Important: `<random>`'s distributions
+are not specified to be repeatable across different platforms.**
 
 
 ---

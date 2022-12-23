@@ -1,7 +1,7 @@
 
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
-//   (See accompanying file LICENSE_1_0.txt or copy at
+//   (See accompanying file LICENSE.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
@@ -11,15 +11,22 @@
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
+#include <catch2/catch_test_spec.hpp>
+#include <catch2/reporters/catch_reporter_helpers.hpp>
 
 #include <map>
 
 namespace Catch {
 
     namespace {
-        std::string createRngSeedString(uint32_t seed) {
+        std::string createMetadataString(IConfig const& config) {
             ReusableStringStream sstr;
-            sstr << "rng-seed=" << seed;
+            if ( config.testSpec().hasFilters() ) {
+                sstr << "filters='"
+                         << config.testSpec()
+                         << "' ";
+            }
+            sstr << "rng-seed=" << config.rngSeed();
             return sstr.str();
         }
     }
@@ -27,7 +34,7 @@ namespace Catch {
     void SonarQubeReporter::testRunStarting(TestRunInfo const& testRunInfo) {
         CumulativeReporterBase::testRunStarting(testRunInfo);
 
-        xml.writeComment( createRngSeedString( m_config->rngSeed() ) );
+        xml.writeComment( createMetadataString( *m_config ) );
         xml.startElement("testExecutions");
         xml.writeAttribute("version"_sr, '1');
     }

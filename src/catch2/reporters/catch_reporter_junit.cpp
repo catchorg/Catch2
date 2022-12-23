@@ -1,7 +1,7 @@
 
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
-//   (See accompanying file LICENSE_1_0.txt or copy at
+//   (See accompanying file LICENSE.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
@@ -13,6 +13,7 @@
 #include <catch2/internal/catch_textflow.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/catch_test_case_info.hpp>
+#include <catch2/catch_test_spec.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <cassert>
@@ -30,6 +31,8 @@ namespace Catch {
             std::tm timeInfo = {};
 #if defined (_MSC_VER) || defined (__MINGW32__)
             gmtime_s(&timeInfo, &rawtime);
+#elif defined (CATCH_PLATFORM_PLAYSTATION)
+            gmtime_s(&rawtime, &timeInfo);
 #else
             gmtime_r(&rawtime, &timeInfo);
 #endif
@@ -143,10 +146,10 @@ namespace Catch {
             xml.scopedElement("property")
                 .writeAttribute("name"_sr, "random-seed"_sr)
                 .writeAttribute("value"_sr, m_config->rngSeed());
-            if (m_config->hasTestFilters()) {
+            if (m_config->testSpec().hasFilters()) {
                 xml.scopedElement("property")
                     .writeAttribute("name"_sr, "filters"_sr)
-                    .writeAttribute("value"_sr, serializeFilters(m_config->getTestsOrTags()));
+                    .writeAttribute("value"_sr, m_config->testSpec());
             }
         }
 

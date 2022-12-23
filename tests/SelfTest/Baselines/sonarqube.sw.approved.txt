@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- rng-seed=1 -->
+<!-- filters='"*" ~[!nonportable] ~[!benchmark] ~[approvals]' rng-seed=1 -->
 <testExecutions version="1"loose text artifact
 >
   <file path="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp">
@@ -9,44 +9,6 @@
     <testCase name="is_unary_function" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp">
-    <testCase name="#1905 -- test spec parser properly clears internal state between compound tests" duration="{duration}"/>
-    <testCase name="#1912 -- test spec parser handles escaping/Various parentheses" duration="{duration}"/>
-    <testCase name="#1912 -- test spec parser handles escaping/backslash in test name" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Empty test spec should have no filters" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Test spec from empty string should have no filters" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Test spec from just a comma should have no filters" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Test spec from name should have one filter" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Test spec from quoted name should have one filter" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Test spec from name should have one filter" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Wildcard at the start" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Wildcard at the end" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Wildcard at both ends" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Redundant wildcard at the start" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Redundant wildcard at the end" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Redundant wildcard at both ends" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Wildcard at both ends, redundant at start" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Just wildcard" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Single tag" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Single tag, two matches" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Two tags" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Two tags, spare separated" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Wildcarded name and tag" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Single tag exclusion" duration="{duration}"/>
-    <testCase name="Parse test names and tags/One tag exclusion and one tag inclusion" duration="{duration}"/>
-    <testCase name="Parse test names and tags/One tag exclusion and one wldcarded name inclusion" duration="{duration}"/>
-    <testCase name="Parse test names and tags/One tag exclusion, using exclude:, and one wldcarded name inclusion" duration="{duration}"/>
-    <testCase name="Parse test names and tags/name exclusion" duration="{duration}"/>
-    <testCase name="Parse test names and tags/wildcarded name exclusion" duration="{duration}"/>
-    <testCase name="Parse test names and tags/wildcarded name exclusion with tag inclusion" duration="{duration}"/>
-    <testCase name="Parse test names and tags/wildcarded name exclusion, using exclude:, with tag inclusion" duration="{duration}"/>
-    <testCase name="Parse test names and tags/two wildcarded names" duration="{duration}"/>
-    <testCase name="Parse test names and tags/empty tag" duration="{duration}"/>
-    <testCase name="Parse test names and tags/empty quoted name" duration="{duration}"/>
-    <testCase name="Parse test names and tags/quoted string followed by tag exclusion" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Leading and trailing spaces in test spec" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Leading and trailing spaces in test name" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Shortened hide tags are split apart when parsing" duration="{duration}"/>
-    <testCase name="Parse test names and tags/Shortened hide tags also properly handle exclusion" duration="{duration}"/>
     <testCase name="Parsing sharding-related cli flags/shard-count" duration="{duration}"/>
     <testCase name="Parsing sharding-related cli flags/Negative shard count reports error" duration="{duration}"/>
     <testCase name="Parsing sharding-related cli flags/Zero shard count reports error" duration="{duration}"/>
@@ -286,6 +248,11 @@
     <testCase name="Hashing different test cases produces different result/Different classname" duration="{duration}"/>
     <testCase name="Hashing different test cases produces different result/Different tags" duration="{duration}"/>
     <testCase name="Hashing test case produces same hash across multiple calls" duration="{duration}"/>
+  </file>
+  <file path="tests/<exe-name>/IntrospectiveTests/TestSpec.tests.cpp">
+    <testCase name="#1905 -- test spec parser properly clears internal state between compound tests" duration="{duration}"/>
+    <testCase name="#1912 -- test spec parser handles escaping/Various parentheses" duration="{duration}"/>
+    <testCase name="#1912 -- test spec parser handles escaping/backslash in test name" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp">
     <testCase name="Parsed tags are matched case insensitive" duration="{duration}"/>
@@ -1189,6 +1156,7 @@ Matchers.tests.cpp:<line number>
       </failure>
     </testCase>
     <testCase name="Exception matchers that succeed" duration="{duration}"/>
+    <testCase name="Exception message can be matched" duration="{duration}"/>
     <testCase name="Exceptions matchers" duration="{duration}"/>
     <testCase name="Floating point matchers: double/Relative" duration="{duration}"/>
     <testCase name="Floating point matchers: double/Relative/Some subnormal values" duration="{duration}"/>

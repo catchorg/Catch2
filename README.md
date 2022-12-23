@@ -1,5 +1,5 @@
 <a id="top"></a>
-![Catch2 logo](data/artwork/catch2-logo-small.png)
+![Catch2 logo](data/artwork/catch2-logo-small-with-background.png)
 
 [![Github Releases](https://img.shields.io/github/release/catchorg/catch2.svg)](https://github.com/catchorg/catch2/releases)
 [![Linux build status](https://github.com/catchorg/Catch2/actions/workflows/linux-simple-builds.yml/badge.svg)](https://github.com/catchorg/Catch2/actions/workflows/linux-simple-builds.yml)
@@ -47,23 +47,27 @@ TEST_CASE( "Factorials are computed", "[factorial]" ) {
 #include <cstdint>
 
 uint64_t fibonacci(uint64_t number) {
-    return number < 2 ? 1 : fibonacci(number - 1) + fibonacci(number - 2);
+    return number < 2 ? number : fibonacci(number - 1) + fibonacci(number - 2);
 }
 
 TEST_CASE("Benchmark Fibonacci", "[!benchmark]") {
-    REQUIRE(Fibonacci(5) == 5);
+    REQUIRE(fibonacci(5) == 5);
 
-    REQUIRE(Fibonacci(20) == 6'765);
-    BENCHMARK("Fibonacci 20") {
-        return Fibonacci(20);
+    REQUIRE(fibonacci(20) == 6'765);
+    BENCHMARK("fibonacci 20") {
+        return fibonacci(20);
     };
 
-    REQUIRE(Fibonacci(25) == 75'025);
-    BENCHMARK("Fibonacci 25") {
-        return Fibonacci(25);
+    REQUIRE(fibonacci(25) == 75'025);
+    BENCHMARK("fibonacci 25") {
+        return fibonacci(25);
     };
 }
 ```
+
+_Note that benchmarks are not run by default, so you need to run it explicitly
+with the `[!benchmark]` tag._
+
 
 ## Catch2 v3 has been released!
 

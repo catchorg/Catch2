@@ -2,6 +2,8 @@
 
 # Release notes
 **Contents**<br>
+[3.2.1](#321)<br>
+[3.2.0](#320)<br>
 [3.1.1](#311)<br>
 [3.1.0](#310)<br>
 [3.0.1](#301)<br>
@@ -49,6 +51,49 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+
+## 3.2.1
+
+### Improvements
+* Fix the reworked decomposer to work with older (pre 9) GCC versions (#2571)
+  * **This required more significant changes to properly support C++20, there might be bugs.**
+
+
+## 3.2.0
+
+### Improvements
+* Catch2 now compiles on PlayStation (#2562)
+* Added `CATCH_CONFIG_GETENV` compile-time toggle (#2562)
+  * This toggle guards whether Catch2 calls `std::getenv` when reading env variables
+* Added support for more Bazel test environment variables
+  * `TESTBRIDGE_TEST_ONLY` is now supported (#2490)
+  * Sharding variables, `TEST_SHARD_INDEX`, `TEST_TOTAL_SHARDS`, `TEST_SHARD_STATUS_FILE`, are now all supported (#2491)
+* Bunch of small tweaks and improvements in reporters
+  * The TAP and SonarQube reporters output the used test filters
+  * The XML reporter now also reports the version of its output format
+  * The compact reporter now uses the same summary output as the console reporter (#878, #2554)
+* Added support for asserting on types that can only be compared with literal 0 (#2555)
+  * A canonical example is C++20's `std::*_ordering` types, which cannot be compared with an `int` variable, only `0`
+  * The support extends to any type with this property, not just the ones in stdlib
+  * This change imposes 2-3% slowdown on compiling files that are heavy on `REQUIRE` and friends
+  * **This required significant rewrite of decomposition, there might be bugs**
+* Simplified internals of matcher related macros
+  * This provides about ~2% speed up compiling files that are heavy on `REQUIRE_THAT` and friends
+
+
+### Fixes
+* Cleaned out some warnings and static analysis issues
+  * Suppressed `-Wcomma` warning rarely occuring in templated test cases (#2543)
+  * Constified implementation details in `INFO` (#2564)
+  * Made `MatcherGenericBase` copy constructor const (#2566)
+* Fixed serialization of test filters so the output roundtrips
+  * This means that e.g. `./tests/SelfTest "aaa bbb", [approx]` outputs `Filters: "aaa bbb",[approx]`
+
+
+### Miscellaneous
+* Catch2's build no longer leaks `-ffile-prefix-map` setting  to dependees (#2533)
 
 
 
@@ -449,7 +494,7 @@ v3 releases.
 ### Improvements
 * `std::result_of` is not used if `std::invoke_result` is available (#1934)
 * JUnit reporter writes out `status` attribute for tests (#1899)
-* Suppresed clang-tidy's `hicpp-vararg` warning (#1921)
+* Suppressed clang-tidy's `hicpp-vararg` warning (#1921)
   * Catch2 was already suppressing the `cppcoreguidelines-pro-type-vararg` alias of the warning
 
 

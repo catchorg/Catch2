@@ -1,7 +1,7 @@
 
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
-//   (See accompanying file LICENSE_1_0.txt or copy at
+//   (See accompanying file LICENSE.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
@@ -13,7 +13,6 @@
 
 namespace Catch {
     // Fwd decls
-    struct SummaryColumn;
     class TablePrinter;
 
     class ConsoleReporter final : public StreamingReporterBase {
@@ -57,12 +56,7 @@ namespace Catch {
         // subsequent lines
         void printHeaderString(std::string const& _string, std::size_t indent = 0);
 
-
-        void printTotals(Totals const& totals);
-        void printSummaryRow(StringRef label, std::vector<SummaryColumn> const& cols, std::size_t row);
-
         void printTotalsDivider(Totals const& totals);
-        void printSummaryDivider();
 
         bool m_headerPrinted = false;
         bool m_testRunInfoPrinted = false;

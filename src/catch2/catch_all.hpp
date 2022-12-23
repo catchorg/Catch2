@@ -1,7 +1,7 @@
 
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
-//   (See accompanying file LICENSE_1_0.txt or copy at
+//   (See accompanying file LICENSE.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
@@ -50,6 +50,7 @@
 #include <catch2/internal/catch_case_sensitive.hpp>
 #include <catch2/internal/catch_clara.hpp>
 #include <catch2/internal/catch_commandline.hpp>
+#include <catch2/internal/catch_compare_traits.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_config_android_logwrite.hpp>
 #include <catch2/internal/catch_config_counter.hpp>
@@ -73,6 +74,7 @@
 #include <catch2/internal/catch_lazy_expr.hpp>
 #include <catch2/internal/catch_leak_detector.hpp>
 #include <catch2/internal/catch_list.hpp>
+#include <catch2/internal/catch_logical_traits.hpp>
 #include <catch2/internal/catch_message_info.hpp>
 #include <catch2/internal/catch_meta.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
