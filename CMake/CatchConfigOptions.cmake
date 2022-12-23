@@ -61,6 +61,7 @@ set(_OtherConfigOptions
   "FAST_COMPILE"
   "NOSTDOUT"
   "PREFIX_ALL"
+  "PREFIX_MESSAGES"
   "WINDOWS_CRTDBG"
 )
 
