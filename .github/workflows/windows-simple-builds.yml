@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: ${{matrix.os}}, ${{matrix.std}}, ${{matrix.build_type}}
+    name: ${{matrix.os}}, ${{matrix.std}}, ${{matrix.build_type}}, ${{matrix.platform}}
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
@@ -14,7 +14,7 @@ jobs:
         std: [14, 17]
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Configure build
         working-directory: ${{runner.workspace}}
         run: |
@@ -23,17 +23,15 @@ jobs:
                 -DCMAKE_CXX_STANDARD=${{matrix.std}}   `
                 -A ${{matrix.platform}}                `
                 --preset all-tests
-      
+
       - name: Build tests
         working-directory: ${{runner.workspace}}
-        run: |
-          $jobs = (Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors
-          cmake --build build --config ${{matrix.build_type}} --parallel $jobs
-      
+        run: cmake --build build --config ${{matrix.build_type}} --parallel %NUMBER_OF_PROCESSORS%
+        shell: cmd
+
       - name: Run tests
         working-directory: ${{runner.workspace}}/build
         env:
             CTEST_OUTPUT_ON_FAILURE: 1
-        run: |
-          $jobs = (Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors
-          ctest -C ${{matrix.build_type}} -j $jobs
+        run: ctest -C ${{matrix.build_type}} -j %NUMBER_OF_PROCESSORS%
+        shell: cmd
