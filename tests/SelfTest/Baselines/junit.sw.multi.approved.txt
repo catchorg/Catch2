@@ -18,7 +18,7 @@
       <failure type="FAIL">
 FAILED:
 1514
-Tricky.tests.cpp:<line number>
+at Tricky.tests.cpp:<line number>
       </failure>
       <system-out>
 This would not be caught previously
@@ -53,7 +53,7 @@ Nor would this
 FAILED:
 expected exception
 answer := 42
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/inside REQUIRE_NOTHROW" time="{duration}" status="run">
@@ -63,7 +63,7 @@ FAILED:
   REQUIRE_NOTHROW( thisThrows() )
 expected exception
 answer := 42
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/inside REQUIRE_THROWS" time="{duration}" status="run"/>
@@ -76,7 +76,7 @@ FAILED:
   CHECK( f() == 0 )
 with expansion:
   1 == 0
-Misc.tests.cpp:<line number>
+at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="#872" time="{duration}" status="run"/>
@@ -89,52 +89,52 @@ Misc.tests.cpp:<line number>
       <failure message="false != false" type="CHECK">
 FAILED:
   CHECK( false != false )
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="true != true" type="CHECK">
 FAILED:
   CHECK( true != true )
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="!true" type="CHECK">
 FAILED:
   CHECK( !true )
 with expansion:
   false
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="!(true)" type="CHECK_FALSE">
 FAILED:
   CHECK_FALSE( true )
 with expansion:
   !true
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="!trueValue" type="CHECK">
 FAILED:
   CHECK( !trueValue )
 with expansion:
   false
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="!(trueValue)" type="CHECK_FALSE">
 FAILED:
   CHECK_FALSE( trueValue )
 with expansion:
   !true
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="!(1 == 1)" type="CHECK">
 FAILED:
   CHECK( !(1 == 1) )
 with expansion:
   false
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="!(1 == 1)" type="CHECK_FALSE">
 FAILED:
   CHECK_FALSE( 1 == 1 )
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="'Not' checks that should succeed" time="{duration}" status="run"/>
@@ -150,7 +150,7 @@ FAILED:
   REQUIRE( s == "world" )
 with expansion:
   "hello" == "world"
-Class.tests.cpp:<line number>
+at Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.TestClass" name="A METHOD_AS_TEST_CASE based test run that succeeds" time="{duration}" status="run"/>
@@ -160,7 +160,7 @@ FAILED:
   REQUIRE( Template_Fixture_2&lt;TestType>::m_a.size() == 1 )
 with expansion:
   0 == 1
-Class.tests.cpp:<line number>
+at Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - Template_Foo&lt;int>" time="{duration}" status="run">
@@ -169,7 +169,7 @@ FAILED:
   REQUIRE( Template_Fixture_2&lt;TestType>::m_a.size() == 1 )
 with expansion:
   0 == 1
-Class.tests.cpp:<line number>
+at Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - std::vector&lt;float>" time="{duration}" status="run">
@@ -178,7 +178,7 @@ FAILED:
   REQUIRE( Template_Fixture_2&lt;TestType>::m_a.size() == 1 )
 with expansion:
   0 == 1
-Class.tests.cpp:<line number>
+at Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - std::vector&lt;int>" time="{duration}" status="run">
@@ -187,7 +187,7 @@ FAILED:
   REQUIRE( Template_Fixture_2&lt;TestType>::m_a.size() == 1 )
 with expansion:
   0 == 1
-Class.tests.cpp:<line number>
+at Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - Template_Foo&lt;float>" time="{duration}" status="run"/>
@@ -200,7 +200,7 @@ FAILED:
   REQUIRE( Template_Fixture_2&lt;TestType>{}.m_a.size() &lt; 2 )
 with expansion:
   6 &lt; 2
-Class.tests.cpp:<line number>
+at Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test run that fails - Template_Foo_2&lt;int, 2>" time="{duration}" status="run">
@@ -209,7 +209,7 @@ FAILED:
   REQUIRE( Template_Fixture_2&lt;TestType>{}.m_a.size() &lt; 2 )
 with expansion:
   2 &lt; 2
-Class.tests.cpp:<line number>
+at Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test run that fails - std::array&lt;float, 6>" time="{duration}" status="run">
@@ -218,7 +218,7 @@ FAILED:
   REQUIRE( Template_Fixture_2&lt;TestType>{}.m_a.size() &lt; 2 )
 with expansion:
   6 &lt; 2
-Class.tests.cpp:<line number>
+at Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test run that fails - std::array&lt;int, 2>" time="{duration}" status="run">
@@ -227,7 +227,7 @@ FAILED:
   REQUIRE( Template_Fixture_2&lt;TestType>{}.m_a.size() &lt; 2 )
 with expansion:
   2 &lt; 2
-Class.tests.cpp:<line number>
+at Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test run that succeeds - Template_Foo_2&lt;float,6>" time="{duration}" status="run"/>
@@ -240,7 +240,7 @@ FAILED:
   REQUIRE( Template_Fixture&lt;TestType>::m_a == 2 )
 with expansion:
   1.0 == 2
-Class.tests.cpp:<line number>
+at Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.Template_Fixture" name="A TEMPLATE_TEST_CASE_METHOD based test run that fails - float" time="{duration}" status="run">
@@ -249,7 +249,7 @@ FAILED:
   REQUIRE( Template_Fixture&lt;TestType>::m_a == 2 )
 with expansion:
   1.0f == 2
-Class.tests.cpp:<line number>
+at Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.Template_Fixture" name="A TEMPLATE_TEST_CASE_METHOD based test run that fails - int" time="{duration}" status="run">
@@ -258,7 +258,7 @@ FAILED:
   REQUIRE( Template_Fixture&lt;TestType>::m_a == 2 )
 with expansion:
   1 == 2
-Class.tests.cpp:<line number>
+at Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.Template_Fixture" name="A TEMPLATE_TEST_CASE_METHOD based test run that succeeds - double" time="{duration}" status="run"/>
@@ -270,7 +270,7 @@ FAILED:
   REQUIRE( Nttp_Fixture&lt;V>::value == 0 )
 with expansion:
   1 == 0
-Class.tests.cpp:<line number>
+at Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.Nttp_Fixture" name="A TEMPLATE_TEST_CASE_METHOD_SIG based test run that fails - 3" time="{duration}" status="run">
@@ -279,7 +279,7 @@ FAILED:
   REQUIRE( Nttp_Fixture&lt;V>::value == 0 )
 with expansion:
   3 == 0
-Class.tests.cpp:<line number>
+at Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.Nttp_Fixture" name="A TEMPLATE_TEST_CASE_METHOD_SIG based test run that fails - 6" time="{duration}" status="run">
@@ -288,7 +288,7 @@ FAILED:
   REQUIRE( Nttp_Fixture&lt;V>::value == 0 )
 with expansion:
   6 == 0
-Class.tests.cpp:<line number>
+at Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.Nttp_Fixture" name="A TEMPLATE_TEST_CASE_METHOD_SIG based test run that succeeds - 1" time="{duration}" status="run"/>
@@ -300,7 +300,7 @@ FAILED:
   REQUIRE( m_a == 2 )
 with expansion:
   1 == 2
-Class.tests.cpp:<line number>
+at Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.Fixture" name="A TEST_CASE_METHOD based test run that succeeds" time="{duration}" status="run"/>
@@ -317,7 +317,7 @@ Class.tests.cpp:<line number>
       <failure type="FAIL">
 FAILED:
 to infinity and beyond
-Misc.tests.cpp:<line number>
+at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="A couple of nested sections followed by a failure/Outer/Inner" time="{duration}" status="run"/>
@@ -327,14 +327,14 @@ FAILED:
   CHECK( &amp;o1 == &amp;o2 )
 with expansion:
   0x<hex digits> == 0x<hex digits>
-Tricky.tests.cpp:<line number>
+at Tricky.tests.cpp:<line number>
       </failure>
       <failure message="o1 == o2" type="CHECK">
 FAILED:
   CHECK( o1 == o2 )
 with expansion:
   {?} == {?}
-Tricky.tests.cpp:<line number>
+at Tricky.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Absolute margin" time="{duration}" status="run"/>
@@ -344,7 +344,7 @@ Tricky.tests.cpp:<line number>
 FAILED:
   {Unknown expression after the reported line}
 unexpected exception
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="Anonymous test case 1" time="{duration}" status="run"/>
@@ -414,14 +414,14 @@ FAILED:
 with expansion:
   "this string contains 'abc' as a substring" contains: "not there" (case
   insensitive)
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="testStringForMatching(), ContainsSubstring( &quot;STRING&quot; )" type="CHECK_THAT">
 FAILED:
   CHECK_THAT( testStringForMatching(), ContainsSubstring( "STRING" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "STRING"
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Copy and then generate a range/from var and iterators" time="{duration}" status="run"/>
@@ -433,7 +433,7 @@ Matchers.tests.cpp:<line number>
 FAILED:
   REQUIRE_NOTHROW( throwCustom() )
 custom exception - not std
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="Custom exceptions can be translated when testing for throwing as something else" time="{duration}" status="run">
@@ -441,14 +441,14 @@ Exception.tests.cpp:<line number>
 FAILED:
   REQUIRE_THROWS_AS( throwCustom(), std::exception )
 custom exception - not std
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="Custom std-exceptions can be custom translated" time="{duration}" status="run">
       <error type="TEST_CASE">
 FAILED:
 custom std exception
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="Default scale is invisible to comparison" time="{duration}" status="run"/>
@@ -461,7 +461,7 @@ FAILED:
   CHECK_THAT( testStringForMatching(), EndsWith( "Substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "Substring"
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="testStringForMatching(), EndsWith( &quot;this&quot;, Catch::CaseSensitive::No )" type="CHECK_THAT">
 FAILED:
@@ -469,7 +469,7 @@ FAILED:
 with expansion:
   "this string contains 'abc' as a substring" ends with: "this" (case
   insensitive)
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Enums can quickly have stringification enabled using REGISTER_ENUM" time="{duration}" status="run"/>
@@ -482,91 +482,91 @@ FAILED:
   CHECK( data.int_seven == 6 )
 with expansion:
   7 == 6
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.int_seven == 8" type="CHECK">
 FAILED:
   CHECK( data.int_seven == 8 )
 with expansion:
   7 == 8
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.int_seven == 0" type="CHECK">
 FAILED:
   CHECK( data.int_seven == 0 )
 with expansion:
   7 == 0
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.float_nine_point_one == Approx( 9.11f )" type="CHECK">
 FAILED:
   CHECK( data.float_nine_point_one == Approx( 9.11f ) )
 with expansion:
   9.1f == Approx( 9.1099996567 )
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.float_nine_point_one == Approx( 9.0f )" type="CHECK">
 FAILED:
   CHECK( data.float_nine_point_one == Approx( 9.0f ) )
 with expansion:
   9.1f == Approx( 9.0 )
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.float_nine_point_one == Approx( 1 )" type="CHECK">
 FAILED:
   CHECK( data.float_nine_point_one == Approx( 1 ) )
 with expansion:
   9.1f == Approx( 1.0 )
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.float_nine_point_one == Approx( 0 )" type="CHECK">
 FAILED:
   CHECK( data.float_nine_point_one == Approx( 0 ) )
 with expansion:
   9.1f == Approx( 0.0 )
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.double_pi == Approx( 3.1415 )" type="CHECK">
 FAILED:
   CHECK( data.double_pi == Approx( 3.1415 ) )
 with expansion:
   3.1415926535 == Approx( 3.1415 )
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.str_hello == &quot;goodbye&quot;" type="CHECK">
 FAILED:
   CHECK( data.str_hello == "goodbye" )
 with expansion:
   "hello" == "goodbye"
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.str_hello == &quot;hell&quot;" type="CHECK">
 FAILED:
   CHECK( data.str_hello == "hell" )
 with expansion:
   "hello" == "hell"
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.str_hello == &quot;hello1&quot;" type="CHECK">
 FAILED:
   CHECK( data.str_hello == "hello1" )
 with expansion:
   "hello" == "hello1"
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.str_hello.size() == 6" type="CHECK">
 FAILED:
   CHECK( data.str_hello.size() == 6 )
 with expansion:
   5 == 6
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="x == Approx( 1.301 )" type="CHECK">
 FAILED:
   CHECK( x == Approx( 1.301 ) )
 with expansion:
   1.3 == Approx( 1.301 )
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Equality checks that should succeed" time="{duration}" status="run"/>
@@ -578,7 +578,7 @@ FAILED:
 with expansion:
   "this string contains 'abc' as a substring" equals: "this string contains
   'ABC' as a substring"
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="testStringForMatching(), Equals( &quot;something else&quot;, Catch::CaseSensitive::No )" type="CHECK_THAT">
 FAILED:
@@ -586,7 +586,7 @@ FAILED:
 with expansion:
   "this string contains 'abc' as a substring" equals: "something else" (case
   insensitive)
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Exception as a value (e.g. in REQUIRE_THROWS_MATCHES) can be stringified" time="{duration}" status="run"/>
@@ -594,12 +594,12 @@ Matchers.tests.cpp:<line number>
       <failure message="doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }" type="CHECK_THROWS_MATCHES">
 FAILED:
   CHECK_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{ 1 } )
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }" type="REQUIRE_THROWS_MATCHES">
 FAILED:
   REQUIRE_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{ 1 } )
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Exception matchers that fail/Type mismatch" time="{duration}" status="run">
@@ -607,13 +607,13 @@ Matchers.tests.cpp:<line number>
 FAILED:
   CHECK_THROWS_MATCHES( throwsAsInt( 1 ), SpecialException, ExceptionMatcher{ 1 } )
 Unknown exception
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </error>
       <error message="throwsAsInt( 1 ), SpecialException, ExceptionMatcher{ 1 }" type="REQUIRE_THROWS_MATCHES">
 FAILED:
   REQUIRE_THROWS_MATCHES( throwsAsInt( 1 ), SpecialException, ExceptionMatcher{ 1 } )
 Unknown exception
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="Exception matchers that fail/Contents are wrong" time="{duration}" status="run">
@@ -622,14 +622,14 @@ FAILED:
   CHECK_THROWS_MATCHES( throwsSpecialException( 3 ), SpecialException, ExceptionMatcher{ 1 } )
 with expansion:
   SpecialException::what special exception has value of 1
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="throwsSpecialException( 4 ), SpecialException, ExceptionMatcher{ 1 }" type="REQUIRE_THROWS_MATCHES">
 FAILED:
   REQUIRE_THROWS_MATCHES( throwsSpecialException( 4 ), SpecialException, ExceptionMatcher{ 1 } )
 with expansion:
   SpecialException::what special exception has value of 1
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Exception matchers that succeed" time="{duration}" status="run"/>
@@ -643,38 +643,38 @@ Matchers.tests.cpp:<line number>
 FAILED:
   CHECK_THROWS_AS( thisThrows(), std::string )
 expected exception
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </error>
       <failure message="thisDoesntThrow(), std::domain_error" type="CHECK_THROWS_AS">
 FAILED:
   CHECK_THROWS_AS( thisDoesntThrow(), std::domain_error )
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </failure>
       <error message="thisThrows()" type="CHECK_NOTHROW">
 FAILED:
   CHECK_NOTHROW( thisThrows() )
 expected exception
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="FAIL aborts the test" time="{duration}" status="run">
       <failure type="FAIL">
 FAILED:
 This is a failure
-Message.tests.cpp:<line number>
+at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="FAIL does not require an argument" time="{duration}" status="run">
       <failure type="FAIL">
 FAILED:
-Message.tests.cpp:<line number>
+at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="FAIL_CHECK does not abort the test" time="{duration}" status="run">
       <failure type="FAIL_CHECK">
 FAILED:
 This is a failure
-Message.tests.cpp:<line number>
+at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Factorials are computed" time="{duration}" status="run"/>
@@ -743,7 +743,7 @@ with expansion:
   2 == 1
 this message should be logged
 so should this
-Message.tests.cpp:<line number>
+at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="INFO gets logged on failure, even if captured before successful assertions" time="{duration}" status="run">
@@ -754,7 +754,7 @@ with expansion:
   2 == 1
 this message may be logged later
 this message should be logged
-Message.tests.cpp:<line number>
+at Message.tests.cpp:<line number>
       </failure>
       <failure message="a == 0" type="CHECK">
 FAILED:
@@ -764,7 +764,7 @@ with expansion:
 this message may be logged later
 this message should be logged
 and this, but later
-Message.tests.cpp:<line number>
+at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="INFO is reset for each loop" time="{duration}" status="run">
@@ -775,7 +775,7 @@ with expansion:
   10 &lt; 10
 current counter 10
 i := 10
-Message.tests.cpp:<line number>
+at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Inequality checks that should fail" time="{duration}" status="run">
@@ -785,35 +785,35 @@ FAILED:
   CHECK( data.int_seven != 7 )
 with expansion:
   7 != 7
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.float_nine_point_one != Approx( 9.1f )" type="CHECK">
 FAILED:
   CHECK( data.float_nine_point_one != Approx( 9.1f ) )
 with expansion:
   9.1f != Approx( 9.1000003815 )
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.double_pi != Approx( 3.1415926535 )" type="CHECK">
 FAILED:
   CHECK( data.double_pi != Approx( 3.1415926535 ) )
 with expansion:
   3.1415926535 != Approx( 3.1415926535 )
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.str_hello != &quot;hello&quot;" type="CHECK">
 FAILED:
   CHECK( data.str_hello != "hello" )
 with expansion:
   "hello" != "hello"
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.str_hello.size() != 5" type="CHECK">
 FAILED:
   CHECK( data.str_hello.size() != 5 )
 with expansion:
   5 != 5
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Inequality checks that should succeed" time="{duration}" status="run"/>
@@ -830,7 +830,7 @@ FAILED:
 with expansion:
   "this string contains 'abc' as a substring" ( ( contains: "string" or
   contains: "different" ) and contains: "random" )
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Matchers can be negated (Not) with the ! operator" time="{duration}" status="run"/>
@@ -840,35 +840,35 @@ FAILED:
   CHECK_THAT( testStringForMatching(), !ContainsSubstring( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" not contains: "substring"
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/1/A" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure type="FAIL">
 FAILED:
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/2/A" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure type="FAIL">
 FAILED:
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/1/B" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure type="FAIL">
 FAILED:
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/2/B" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure type="FAIL">
 FAILED:
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Mismatching exception messages failing the test" time="{duration}" status="run">
@@ -877,7 +877,7 @@ FAILED:
   REQUIRE_THROWS_WITH( thisThrows(), "should fail" )
 with expansion:
   "expected exception" equals: "should fail"
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Multireporter calls reporters and listeners in correct order" time="{duration}" status="run"/>
@@ -890,7 +890,7 @@ Exception.tests.cpp:<line number>
       <error type="TEST_CASE">
 FAILED:
 custom exception
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="Objects that evaluated in boolean contexts can be checked" time="{duration}" status="run"/>
@@ -901,133 +901,133 @@ FAILED:
   CHECK( data.int_seven > 7 )
 with expansion:
   7 > 7
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.int_seven &lt; 7" type="CHECK">
 FAILED:
   CHECK( data.int_seven &lt; 7 )
 with expansion:
   7 &lt; 7
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.int_seven > 8" type="CHECK">
 FAILED:
   CHECK( data.int_seven > 8 )
 with expansion:
   7 > 8
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.int_seven &lt; 6" type="CHECK">
 FAILED:
   CHECK( data.int_seven &lt; 6 )
 with expansion:
   7 &lt; 6
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.int_seven &lt; 0" type="CHECK">
 FAILED:
   CHECK( data.int_seven &lt; 0 )
 with expansion:
   7 &lt; 0
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.int_seven &lt; -1" type="CHECK">
 FAILED:
   CHECK( data.int_seven &lt; -1 )
 with expansion:
   7 &lt; -1
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.int_seven >= 8" type="CHECK">
 FAILED:
   CHECK( data.int_seven >= 8 )
 with expansion:
   7 >= 8
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.int_seven &lt;= 6" type="CHECK">
 FAILED:
   CHECK( data.int_seven &lt;= 6 )
 with expansion:
   7 &lt;= 6
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.float_nine_point_one &lt; 9" type="CHECK">
 FAILED:
   CHECK( data.float_nine_point_one &lt; 9 )
 with expansion:
   9.1f &lt; 9
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.float_nine_point_one > 10" type="CHECK">
 FAILED:
   CHECK( data.float_nine_point_one > 10 )
 with expansion:
   9.1f > 10
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.float_nine_point_one > 9.2" type="CHECK">
 FAILED:
   CHECK( data.float_nine_point_one > 9.2 )
 with expansion:
   9.1f > 9.2
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.str_hello > &quot;hello&quot;" type="CHECK">
 FAILED:
   CHECK( data.str_hello > "hello" )
 with expansion:
   "hello" > "hello"
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.str_hello &lt; &quot;hello&quot;" type="CHECK">
 FAILED:
   CHECK( data.str_hello &lt; "hello" )
 with expansion:
   "hello" &lt; "hello"
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.str_hello > &quot;hellp&quot;" type="CHECK">
 FAILED:
   CHECK( data.str_hello > "hellp" )
 with expansion:
   "hello" > "hellp"
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.str_hello > &quot;z&quot;" type="CHECK">
 FAILED:
   CHECK( data.str_hello > "z" )
 with expansion:
   "hello" > "z"
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.str_hello &lt; &quot;hellm&quot;" type="CHECK">
 FAILED:
   CHECK( data.str_hello &lt; "hellm" )
 with expansion:
   "hello" &lt; "hellm"
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.str_hello &lt; &quot;a&quot;" type="CHECK">
 FAILED:
   CHECK( data.str_hello &lt; "a" )
 with expansion:
   "hello" &lt; "a"
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.str_hello >= &quot;z&quot;" type="CHECK">
 FAILED:
   CHECK( data.str_hello >= "z" )
 with expansion:
   "hello" >= "z"
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
       <failure message="data.str_hello &lt;= &quot;a&quot;" type="CHECK">
 FAILED:
   CHECK( data.str_hello &lt;= "a" )
 with expansion:
   "hello" &lt;= "a"
-Condition.tests.cpp:<line number>
+at Condition.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Ordering comparison checks that should succeed" time="{duration}" status="run"/>
@@ -1037,14 +1037,14 @@ Condition.tests.cpp:<line number>
       <failure type="FAIL">
 FAILED:
 Message from section one
-Message.tests.cpp:<line number>
+at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Output from all sections is reported/two" time="{duration}" status="run">
       <failure type="FAIL">
 FAILED:
 Message from section two
-Message.tests.cpp:<line number>
+at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Overloaded comma or address-of operators are not used" time="{duration}" status="run"/>
@@ -1113,7 +1113,7 @@ FAILED:
   CHECK( truthy(false) )
 with expansion:
   Hey, its truthy!
-Decomposition.tests.cpp:<line number>
+at Decomposition.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Regex string matcher" time="{duration}" status="run">
@@ -1123,7 +1123,7 @@ FAILED:
 with expansion:
   "this string contains 'abc' as a substring" matches "this STRING contains
   'abc' as a substring" case sensitively
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="testStringForMatching(), Matches( &quot;contains 'abc' as a substring&quot; )" type="CHECK_THAT">
 FAILED:
@@ -1131,7 +1131,7 @@ FAILED:
 with expansion:
   "this string contains 'abc' as a substring" matches "contains 'abc' as a
   substring" case sensitively
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="testStringForMatching(), Matches( &quot;this string contains 'abc' as a&quot; )" type="CHECK_THAT">
 FAILED:
@@ -1139,7 +1139,7 @@ FAILED:
 with expansion:
   "this string contains 'abc' as a substring" matches "this string contains
   'abc' as a" case sensitively
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Registering reporter with '::' in name fails" time="{duration}" status="run"/>
@@ -1203,7 +1203,7 @@ FAILED:
   CHECK_THAT( testStringForMatching(), StartsWith( "This String" ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "This String"
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="testStringForMatching(), StartsWith( &quot;string&quot;, Catch::CaseSensitive::No )" type="CHECK_THAT">
 FAILED:
@@ -1211,7 +1211,7 @@ FAILED:
 with expansion:
   "this string contains 'abc' as a substring" starts with: "string" (case
   insensitive)
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Static arrays are convertible to string/Single item" time="{duration}" status="run"/>
@@ -1259,7 +1259,7 @@ with expansion:
   	$a = 20;
   }
   "
-Misc.tests.cpp:<line number>
+at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Tag alias can be registered against tag patterns/The same tag alias can only be registered once" time="{duration}" status="run"/>
@@ -1332,14 +1332,14 @@ Misc.tests.cpp:<line number>
       <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure type="FAIL">
 FAILED:
-Misc.tests.cpp:<line number>
+at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Testing checked-if 3" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure type="FAIL">
 FAILED:
-Misc.tests.cpp:<line number>
+at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="The NO_FAIL macro reports a failure but does not fail the test" time="{duration}" status="run"/>
@@ -1352,7 +1352,7 @@ Misc.tests.cpp:<line number>
       <error type="TEST_CASE">
 FAILED:
 For some reason someone is throwing a string literal!
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="Tracker" time="{duration}" status="run"/>
@@ -1370,7 +1370,7 @@ Exception.tests.cpp:<line number>
       <error type="TEST_CASE">
 FAILED:
 3.14
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="Upcasting special member functions/Move constructor" time="{duration}" status="run"/>
@@ -1429,7 +1429,7 @@ FAILED:
   CHECK_THAT( empty, Approx( t1 ) )
 with expansion:
   {  } is approx: { 1.0, 2.0 }
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Vector Approx matcher -- failing/Just different vectors" time="{duration}" status="run">
@@ -1438,7 +1438,7 @@ FAILED:
   CHECK_THAT( v1, Approx( v2 ) )
 with expansion:
   { 2.0, 4.0, 6.0 } is approx: { 1.0, 3.0, 5.0 }
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Vector matchers/Contains (element)" time="{duration}" status="run"/>
@@ -1452,14 +1452,14 @@ FAILED:
   CHECK_THAT( v, VectorContains( -1 ) )
 with expansion:
   { 1, 2, 3 } Contains: -1
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="empty, VectorContains( 1 )" type="CHECK_THAT">
 FAILED:
   CHECK_THAT( empty, VectorContains( 1 ) )
 with expansion:
   {  } Contains: 1
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Vector matchers that fail/Contains (vector)" time="{duration}" status="run">
@@ -1468,14 +1468,14 @@ FAILED:
   CHECK_THAT( empty, Contains( v ) )
 with expansion:
   {  } Contains: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="v, Contains( v2 )" type="CHECK_THAT">
 FAILED:
   CHECK_THAT( v, Contains( v2 ) )
 with expansion:
   { 1, 2, 3 } Contains: { 1, 2, 4 }
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Vector matchers that fail/Equals" time="{duration}" status="run">
@@ -1484,28 +1484,28 @@ FAILED:
   CHECK_THAT( v, Equals( v2 ) )
 with expansion:
   { 1, 2, 3 } Equals: { 1, 2 }
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="v2, Equals( v )" type="CHECK_THAT">
 FAILED:
   CHECK_THAT( v2, Equals( v ) )
 with expansion:
   { 1, 2 } Equals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="empty, Equals( v )" type="CHECK_THAT">
 FAILED:
   CHECK_THAT( empty, Equals( v ) )
 with expansion:
   {  } Equals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="v, Equals( empty )" type="CHECK_THAT">
 FAILED:
   CHECK_THAT( v, Equals( empty ) )
 with expansion:
   { 1, 2, 3 } Equals: {  }
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Vector matchers that fail/UnorderedEquals" time="{duration}" status="run">
@@ -1514,28 +1514,28 @@ FAILED:
   CHECK_THAT( v, UnorderedEquals( empty ) )
 with expansion:
   { 1, 2, 3 } UnorderedEquals: {  }
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="empty, UnorderedEquals( v )" type="CHECK_THAT">
 FAILED:
   CHECK_THAT( empty, UnorderedEquals( v ) )
 with expansion:
   {  } UnorderedEquals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="permuted, UnorderedEquals( v )" type="CHECK_THAT">
 FAILED:
   CHECK_THAT( permuted, UnorderedEquals( v ) )
 with expansion:
   { 1, 3 } UnorderedEquals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="permuted, UnorderedEquals( v )" type="CHECK_THAT">
 FAILED:
   CHECK_THAT( permuted, UnorderedEquals( v ) )
 with expansion:
   { 3, 1 } UnorderedEquals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>
+at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="When checked exceptions are thrown they can be expected or unexpected" time="{duration}" status="run"/>
@@ -1543,7 +1543,7 @@ Matchers.tests.cpp:<line number>
       <error type="TEST_CASE">
 FAILED:
 unexpected exception
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="When unchecked exceptions are thrown during a CHECK the test should continue" time="{duration}" status="run">
@@ -1551,7 +1551,7 @@ Exception.tests.cpp:<line number>
 FAILED:
   CHECK( thisThrows() == 0 )
 expected exception
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="When unchecked exceptions are thrown during a REQUIRE the test should abort fail" time="{duration}" status="run">
@@ -1559,7 +1559,7 @@ Exception.tests.cpp:<line number>
 FAILED:
   REQUIRE( thisThrows() == 0 )
 expected exception
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="When unchecked exceptions are thrown from functions they are always failures" time="{duration}" status="run">
@@ -1567,14 +1567,14 @@ Exception.tests.cpp:<line number>
 FAILED:
   CHECK( thisThrows() == 0 )
 expected exception
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="When unchecked exceptions are thrown from sections they are always failures/section name" time="{duration}" status="run">
       <error type="TEST_CASE">
 FAILED:
 unexpected exception
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="X/level/0/a" time="{duration}" status="run"/>
@@ -1602,7 +1602,7 @@ FAILED:
   REQUIRE( testCheckedElse( false ) )
 with expansion:
   false
-Misc.tests.cpp:<line number>
+at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="checkedIf" time="{duration}" status="run"/>
@@ -1612,7 +1612,7 @@ FAILED:
   REQUIRE( testCheckedIf( false ) )
 with expansion:
   false
-Misc.tests.cpp:<line number>
+at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="classify_outliers/none" time="{duration}" status="run"/>
@@ -1635,14 +1635,14 @@ Misc.tests.cpp:<line number>
       <failure type="FAIL">
 FAILED:
 Previous info should not be seen
-Message.tests.cpp:<line number>
+at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="just failure after unscoped info" time="{duration}" status="run">
       <failure type="FAIL">
 FAILED:
 previous unscoped info SHOULD not be seen
-Message.tests.cpp:<line number>
+at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="long long" time="{duration}" status="run"/>
@@ -1652,7 +1652,7 @@ FAILED:
   CHECK( b > a )
 with expansion:
   0 > 1
-Misc.tests.cpp:<line number>
+at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="looped SECTION tests/b is currently: 1" time="{duration}" status="run">
@@ -1661,7 +1661,7 @@ FAILED:
   CHECK( b > a )
 with expansion:
   1 > 1
-Misc.tests.cpp:<line number>
+at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="looped SECTION tests/b is currently: 2" time="{duration}" status="run"/>
@@ -1679,7 +1679,7 @@ FAILED:
 with expansion:
   1 == 0
 Testing if fib[0] (1) is even
-Misc.tests.cpp:<line number>
+at Misc.tests.cpp:<line number>
       </failure>
       <failure message="( fib[i] % 2 ) == 0" type="CHECK">
 FAILED:
@@ -1687,7 +1687,7 @@ FAILED:
 with expansion:
   1 == 0
 Testing if fib[1] (1) is even
-Misc.tests.cpp:<line number>
+at Misc.tests.cpp:<line number>
       </failure>
       <failure message="( fib[i] % 2 ) == 0" type="CHECK">
 FAILED:
@@ -1695,7 +1695,7 @@ FAILED:
 with expansion:
   1 == 0
 Testing if fib[3] (3) is even
-Misc.tests.cpp:<line number>
+at Misc.tests.cpp:<line number>
       </failure>
       <failure message="( fib[i] % 2 ) == 0" type="CHECK">
 FAILED:
@@ -1703,7 +1703,7 @@ FAILED:
 with expansion:
   1 == 0
 Testing if fib[4] (5) is even
-Misc.tests.cpp:<line number>
+at Misc.tests.cpp:<line number>
       </failure>
       <failure message="( fib[i] % 2 ) == 0" type="CHECK">
 FAILED:
@@ -1711,7 +1711,7 @@ FAILED:
 with expansion:
   1 == 0
 Testing if fib[6] (13) is even
-Misc.tests.cpp:<line number>
+at Misc.tests.cpp:<line number>
       </failure>
       <failure message="( fib[i] % 2 ) == 0" type="CHECK">
 FAILED:
@@ -1719,7 +1719,7 @@ FAILED:
 with expansion:
   1 == 0
 Testing if fib[7] (21) is even
-Misc.tests.cpp:<line number>
+at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="makeStream recognizes %debug stream name" time="{duration}" status="run"/>
@@ -1735,7 +1735,7 @@ FAILED:
   REQUIRE( a == b )
 with expansion:
   1 == 2
-Misc.tests.cpp:<line number>
+at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="more nested SECTION tests/doesn't equal/not equal" time="{duration}" status="run"/>
@@ -1752,7 +1752,7 @@ Misc.tests.cpp:<line number>
 FAILED:
   REQUIRE( false )
 this SHOULD be seen
-Message.tests.cpp:<line number>
+at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="null strings" time="{duration}" status="run"/>
@@ -1769,7 +1769,7 @@ FAILED:
   REQUIRE( false )
 this SHOULD be seen
 this SHOULD also be seen
-Message.tests.cpp:<line number>
+at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="prints unscoped info only for the first assertion" time="{duration}" status="run">
@@ -1777,7 +1777,7 @@ Message.tests.cpp:<line number>
 FAILED:
   CHECK( false )
 this SHOULD be seen only ONCE
-Message.tests.cpp:<line number>
+at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="random SECTION tests/doesn't equal" time="{duration}" status="run"/>
@@ -1798,7 +1798,7 @@ Message.tests.cpp:<line number>
 FAILED:
   REQUIRE( false )
 3
-Misc.tests.cpp:<line number>
+at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="sends information to INFO" time="{duration}" status="run">
@@ -1807,7 +1807,7 @@ FAILED:
   REQUIRE( false )
 hi
 i := 7
-Message.tests.cpp:<line number>
+at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="shortened hide tags are split apart" time="{duration}" status="run"/>
@@ -1820,7 +1820,7 @@ Count 1 to 3...
 1
 2
 3
-Message.tests.cpp:<line number>
+at Message.tests.cpp:<line number>
       </failure>
       <failure message="false" type="CHECK">
 FAILED:
@@ -1829,7 +1829,7 @@ Count 4 to 6...
 4
 5
 6
-Message.tests.cpp:<line number>
+at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="startsWith" time="{duration}" status="run"/>
@@ -1859,7 +1859,7 @@ Message.tests.cpp:<line number>
       <error type="TEST_CASE">
 FAILED:
 Why would you throw a std::string?
-Exception.tests.cpp:<line number>
+at Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="toString on const wchar_t const pointer returns the string contents" time="{duration}" status="run"/>
