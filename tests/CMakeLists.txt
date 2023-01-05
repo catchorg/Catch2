@@ -273,6 +273,10 @@ add_test(NAME TestSpecs::OverrideFailureWithNoMatchedTests
   COMMAND $<TARGET_FILE:SelfTest> "___nonexistent_test___" --allow-running-no-tests
 )
 
+add_test(NAME TestSpecs::OverrideAllSkipFailure
+  COMMAND $<TARGET_FILE:SelfTest> "tests can be skipped dynamically at runtime" --allow-running-no-tests
+)
+
 add_test(NAME TestSpecs::NonMatchingTestSpecIsRoundTrippable
     COMMAND $<TARGET_FILE:SelfTest> Tracker, "this test does not exist" "[nor does this tag]"
 )

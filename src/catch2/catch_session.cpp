@@ -342,7 +342,8 @@ namespace Catch {
             }
 
             if ( totals.testCases.total() > 0 &&
-                 totals.testCases.total() == totals.testCases.skipped ) {
+                 totals.testCases.total() == totals.testCases.skipped
+                && !m_config->zeroTestsCountAsSuccess() ) {
                 return 4;
             }
 
