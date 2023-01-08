@@ -10,6 +10,7 @@
 
 #include <catch2/internal/catch_stringref.hpp>
 
+#include <cstdint>
 #include <string>
 #include <iosfwd>
 #include <vector>
