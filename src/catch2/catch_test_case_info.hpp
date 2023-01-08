@@ -15,6 +15,7 @@
 #include <catch2/internal/catch_unique_ptr.hpp>
 
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
