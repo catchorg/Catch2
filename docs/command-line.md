@@ -148,7 +148,7 @@ validity, and throw an error if they are wrong._
 > Support for passing arguments to reporters through the `-r`, `--reporter` flag was introduced in Catch2 3.0.1
 
 There are multiple built-in reporters, you can see what they do by using the
-[`--list-reporter`](command-line.md#listing-available-tests-tags-or-reporters)
+[`--list-reporters`](command-line.md#listing-available-tests-tags-or-reporters)
 flag. If you need a reporter providing custom format outside of the already
 provided ones, look at the ["write your own reporter" part of the reporter
 documentation](reporters.md#writing-your-own-reporter).
