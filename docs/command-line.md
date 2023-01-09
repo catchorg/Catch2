@@ -561,10 +561,10 @@ processes, as is done with the [Bazel test sharding](https://docs.bazel.build/ve
 
 > Introduced in Catch2 3.0.1.
 
-By default, Catch2 test binaries return non-0 exit code if no tests were
-run, e.g. if the binary was compiled with no tests, or the provided test
-spec matched no tests. This flag overrides that, so a test run with no
-tests still returns 0.
+By default, Catch2 test binaries return non-0 exit code if no tests were run,
+e.g. if the binary was compiled with no tests, the provided test spec matched no
+tests, or all tests [were skipped at runtime](skipping.md#top). This flag
+overrides that, so a test run with no tests still returns 0.
 
 ## Output verbosity
 ```
