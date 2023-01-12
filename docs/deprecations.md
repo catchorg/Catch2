@@ -33,7 +33,7 @@ is deprecated and will be removed in the next major release. It is currently
 invoked for all test cases that are not going to be executed due to the test run
 being aborted (when using `--abort` or `--abortx`). It is however
 **NOT** invoked for test cases that are [explicitly skipped using the `SKIP`
-macro](skipping.md#top).
+macro](skipping-passing-failing.md#top).
 
 ---
 

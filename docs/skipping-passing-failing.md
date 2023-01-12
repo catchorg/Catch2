@@ -1,5 +1,7 @@
 <a id="top"></a>
-# Skipping Test Cases at Runtime
+# Explicitly skipping, passing, and failing tests at runtime
+
+## Skipping Test Cases at Runtime
 
 > [Introduced](https://github.com/catchorg/Catch2/pull/2360) in Catch2 X.Y.Z.
 
@@ -7,7 +9,7 @@ In some situations it may not be possible to meaningfully execute a test case, f
 If the required conditions can only be determined at runtime, it often doesn't make sense to consider such a test case as either passed or failed, because it simply can not run at all.
 To properly express such scenarios, Catch2 allows to explicitly _skip_ test cases, using the `SKIP` macro:
 
-**SKIP(** _message expression_ **)**
+**SKIP(** [streamable expression] **)**
 
 Example usage:
 
@@ -41,7 +43,7 @@ TEST_CASE("failing test") {
 }
 ```
 
-## Interaction with Sections and Generators
+### Interaction with Sections and Generators
 
 Sections, nested sections as well as test cases with [generators](generators.md#top) can all be individually skipped, with the rest executing as usual:
 
@@ -66,6 +68,46 @@ Note that as soon as one section is skipped, the entire test case will be report
 
 If all test cases in a run are skipped, Catch2 returns a non-zero exit code by default.
 This can be overridden using the [--allow-running-no-tests](command-line.md#no-tests-override) flag.
+
+
+## Passing and failing test cases
+
+Test cases can also be explicitly passed or failed, without the use of
+assertions, and with a specific message. This can be useful to handle
+complex preconditions/postconditions and give useful error messages
+when they fail.
+
+* `SUCCEED( [streamable expression] )`
+
+`SUCCEED` is morally equivalent with `INFO( [streamable expression] ); REQUIRE( true );`.
+Note that it does not stop further test execution, so it cannot be used
+to guard failing assertions from being executed.
+
+_In practice, `SUCCEED` is usually used as a test placeholder, to avoid
+[failing a test case due to missing assertions](command-line.md#warnings)._
+
+```cpp
+TEST_CASE( "SUCCEED showcase" ) {
+    int I = 1;
+    SUCCEED( "I is " << I );
+    // ... execution continues here ...
+}
+```
+
+* `FAIL( [streamable expression] )`
+
+`FAIL` is morally equivalent with `INFO( [streamable expression] ); REQUIRE( false );`.
+
+_In practice, `FAIL` is usually used to stop executing test that is currently
+known to be broken, but has to be fixed later._
+
+```cpp
+TEST_CASE( "FAIL showcase" ) {
+    FAIL( "This test case causes segfault, which breaks CI." );
+    // ... this will not be executed ...
+}
+```
+
 
 ---
 
