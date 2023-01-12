@@ -22,6 +22,7 @@ namespace Catch {
     struct AssertionReaction {
         bool shouldDebugBreak = false;
         bool shouldThrow = false;
+        bool shouldSkip = false;
     };
 
     class AssertionHandler {

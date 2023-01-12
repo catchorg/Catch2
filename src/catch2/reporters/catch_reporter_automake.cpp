@@ -17,7 +17,9 @@ namespace Catch {
     void AutomakeReporter::testCaseEnded(TestCaseStats const& _testCaseStats) {
         // Possible values to emit are PASS, XFAIL, SKIP, FAIL, XPASS and ERROR.
         m_stream << ":test-result: ";
-        if (_testCaseStats.totals.assertions.allPassed()) {
+        if ( _testCaseStats.totals.testCases.skipped > 0 ) {
+            m_stream << "SKIP";
+        } else if (_testCaseStats.totals.assertions.allPassed()) {
             m_stream << "PASS";
         } else if (_testCaseStats.totals.assertions.allOk()) {
             m_stream << "XFAIL";

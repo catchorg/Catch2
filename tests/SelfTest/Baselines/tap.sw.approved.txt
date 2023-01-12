@@ -3609,6 +3609,10 @@ ok {test-number} - encode( "[\x01]" ) == "[\\x01]" for: "[\x01]" == "[\x01]"
 ok {test-number} - encode( "[\x7F]" ) == "[\\x7F]" for: "[\x7F]" == "[\x7F]"
 # XmlWriter writes boolean attributes as true/false
 ok {test-number} - stream.str(), ContainsSubstring(R"(attr1="true")") && ContainsSubstring(R"(attr2="false")") for: "<?xml version="1.0" encoding="UTF-8"?> <Element1 attr1="true" attr2="false"/> " ( contains: "attr1="true"" and contains: "attr2="false"" )
+# a succeeding test can still be skipped
+ok {test-number} -
+# a succeeding test can still be skipped
+ok {test-number} -  # SKIP
 # analyse no analysis
 ok {test-number} - analysis.mean.point.count() == 23 for: 23.0 == 23
 # analyse no analysis
@@ -3779,6 +3783,12 @@ ok {test-number} - convertToBits( -0. ) == ( 1ULL << 63 ) for: 92233720368547758
 ok {test-number} - convertToBits( std::numeric_limits<float>::denorm_min() ) == 1 for: 1 == 1
 # convertToBits
 ok {test-number} - convertToBits( std::numeric_limits<double>::denorm_min() ) == 1 for: 1 == 1
+# dynamic skipping works with generators
+ok {test-number} -  # SKIP 'skipping because answer = 41'
+# dynamic skipping works with generators
+ok {test-number} -
+# dynamic skipping works with generators
+ok {test-number} -  # SKIP 'skipping because answer = 43'
 # empty tags are not allowed
 ok {test-number} - Catch::TestCaseInfo("", { "test with an empty tag", "[]" }, dummySourceLineInfo)
 # erfc_inv
@@ -3797,6 +3807,22 @@ ok {test-number} -
 ok {test-number} -
 # even more nested SECTION tests
 ok {test-number} -
+# failed assertions before SKIP cause test case to fail
+not ok {test-number} - 3 == 4
+# failed assertions before SKIP cause test case to fail
+ok {test-number} -  # SKIP
+# failing for some generator values causes entire test case to fail
+not ok {test-number} - explicitly
+# failing for some generator values causes entire test case to fail
+ok {test-number} -  # SKIP
+# failing for some generator values causes entire test case to fail
+not ok {test-number} - explicitly
+# failing for some generator values causes entire test case to fail
+ok {test-number} -  # SKIP
+# failing in some unskipped sections causes entire test case to fail
+ok {test-number} -  # SKIP
+# failing in some unskipped sections causes entire test case to fail
+not ok {test-number} - explicitly
 loose text artifact
 # is_unary_function
 ok {test-number} - with 1 message: 'Catch::Clara::Detail::is_unary_function<decltype(unary1)>::value'
@@ -3906,6 +3932,11 @@ ok {test-number} - a != b for: 1 != 2
 ok {test-number} - b != a for: 2 != 1
 # nested SECTION tests
 ok {test-number} - a != b for: 1 != 2
+a!
+b1!
+# nested sections can be skipped dynamically at runtime
+ok {test-number} -  # SKIP
+!
 # non streamable - with conv. op
 ok {test-number} - s == "7" for: "7" == "7"
 # non-copyable objects
@@ -4070,12 +4101,20 @@ ok {test-number} - Timing.elapsed >= time for: 128 ns >= 100 ns
 ok {test-number} - Timing.result == Timing.iterations + 17 for: 145 == 145
 # run_for_at_least, int
 ok {test-number} - Timing.iterations >= time.count() for: 128 >= 100
+# sections can be skipped dynamically at runtime
+ok {test-number} -
+# sections can be skipped dynamically at runtime
+ok {test-number} -  # SKIP
+# sections can be skipped dynamically at runtime
+ok {test-number} -
 # send a single char to INFO
 not ok {test-number} - false with 1 message: '3'
 # sends information to INFO
 not ok {test-number} - false with 2 messages: 'hi' and 'i := 7'
 # shortened hide tags are split apart
 ok {test-number} - testcase.tags, VectorContains( Tag( "magic-tag" ) ) && VectorContains( Tag( "."_catch_sr ) ) for: { {?}, {?} } ( Contains: {?} and Contains: {?} )
+# skipped tests can optionally provide a reason
+ok {test-number} -  # SKIP 'skipping because answer = 43'
 # splitString
 ok {test-number} - splitStringRef("", ','), Equals(std::vector<StringRef>()) for: {  } Equals: {  }
 # splitString
@@ -4158,6 +4197,8 @@ ok {test-number} - strlen(std::get<0>(data)) == static_cast<size_t>(std::get<1>(
 ok {test-number} - testcase.tags.size() == 1 for: 1 == 1
 # tags with dots in later positions are not parsed as hidden
 ok {test-number} - testcase.tags[0].original == "magic.tag"_catch_sr for: magic.tag == magic.tag
+# tests can be skipped dynamically at runtime
+ok {test-number} -  # SKIP
 # thrown std::strings are translated
 not ok {test-number} - unexpected exception with message: 'Why would you throw a std::string?'
 # toString on const wchar_t const pointer returns the string contents
@@ -4330,5 +4371,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2163
+1..2184
 

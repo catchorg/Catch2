@@ -297,6 +297,7 @@ Message from section two
 :test-result: PASS X/level/1/b
 :test-result: PASS XmlEncode
 :test-result: PASS XmlWriter writes boolean attributes as true/false
+:test-result: SKIP a succeeding test can still be skipped
 :test-result: PASS analyse no analysis
 :test-result: PASS array<int, N> -> toString
 :test-result: PASS benchmark function call
@@ -309,10 +310,14 @@ Message from section two
 :test-result: PASS comparisons between const int variables
 :test-result: PASS comparisons between int variables
 :test-result: PASS convertToBits
+:test-result: SKIP dynamic skipping works with generators
 :test-result: PASS empty tags are not allowed
 :test-result: PASS erfc_inv
 :test-result: PASS estimate_clock_resolution
 :test-result: PASS even more nested SECTION tests
+:test-result: XFAIL failed assertions before SKIP cause test case to fail
+:test-result: XFAIL failing for some generator values causes entire test case to fail
+:test-result: XFAIL failing in some unskipped sections causes entire test case to fail
 :test-result: FAIL first tag
 loose text artifact
 :test-result: FAIL has printf
@@ -331,6 +336,10 @@ loose text artifact
 :test-result: FAIL mix info, unscoped info and warning
 :test-result: FAIL more nested SECTION tests
 :test-result: PASS nested SECTION tests
+a!
+b1!
+!
+:test-result: FAIL nested sections can be skipped dynamically at runtime
 :test-result: PASS non streamable - with conv. op
 :test-result: PASS non-copyable objects
 :test-result: PASS normal_cdf
@@ -352,9 +361,11 @@ loose text artifact
 :test-result: PASS run_for_at_least, chronometer
 :test-result: PASS run_for_at_least, int
 :test-result: FAIL second tag
+:test-result: SKIP sections can be skipped dynamically at runtime
 :test-result: FAIL send a single char to INFO
 :test-result: FAIL sends information to INFO
 :test-result: PASS shortened hide tags are split apart
+:test-result: SKIP skipped tests can optionally provide a reason
 :test-result: PASS splitString
 :test-result: FAIL stacks unscoped info in loops
 :test-result: PASS startsWith
@@ -376,6 +387,7 @@ loose text artifact
 :test-result: PASS strlen3
 :test-result: PASS tables
 :test-result: PASS tags with dots in later positions are not parsed as hidden
+:test-result: SKIP tests can be skipped dynamically at runtime
 :test-result: FAIL thrown std::strings are translated
 :test-result: PASS toString on const wchar_t const pointer returns the string contents
 :test-result: PASS toString on const wchar_t pointer returns the string contents

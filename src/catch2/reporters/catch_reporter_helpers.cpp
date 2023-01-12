@@ -316,15 +316,22 @@ namespace Catch {
         }
 
         std::vector<SummaryColumn> columns;
+        // Don't include "skipped assertions" in total count
+        const auto totalAssertionCount =
+            totals.assertions.total() - totals.assertions.skipped;
         columns.push_back( SummaryColumn( "", Colour::None )
                                .addRow( totals.testCases.total() )
-                               .addRow( totals.assertions.total() ) );
+                               .addRow( totalAssertionCount ) );
         columns.push_back( SummaryColumn( "passed", Colour::Success )
                                .addRow( totals.testCases.passed )
                                .addRow( totals.assertions.passed ) );
         columns.push_back( SummaryColumn( "failed", Colour::ResultError )
                                .addRow( totals.testCases.failed )
                                .addRow( totals.assertions.failed ) );
+        columns.push_back( SummaryColumn( "skipped", Colour::Skip )
+                               .addRow( totals.testCases.skipped )
+                               // Don't print "skipped assertions"
+                               .addRow( 0 ) );
         columns.push_back(
             SummaryColumn( "failed as expected", Colour::ResultExpectedFailure )
                 .addRow( totals.testCases.failedButOk )

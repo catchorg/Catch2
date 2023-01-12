@@ -14660,6 +14660,16 @@ with expansion:
   " ( contains: "attr1="true"" and contains: "attr2="false"" )
 
 -------------------------------------------------------------------------------
+a succeeding test can still be skipped
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: PASSED:
+
+Skip.tests.cpp:<line number>: SKIPPED:
+
+-------------------------------------------------------------------------------
 analyse no analysis
 -------------------------------------------------------------------------------
 InternalBenchmark.tests.cpp:<line number>
@@ -15205,6 +15215,34 @@ with expansion:
   1 == 1
 
 -------------------------------------------------------------------------------
+dynamic skipping works with generators
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+explicitly with message:
+  skipping because answer = 41
+
+-------------------------------------------------------------------------------
+dynamic skipping works with generators
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+dynamic skipping works with generators
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+explicitly with message:
+  skipping because answer = 43
+
+-------------------------------------------------------------------------------
 empty tags are not allowed
 -------------------------------------------------------------------------------
 Tag.tests.cpp:<line number>
@@ -15278,6 +15316,67 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+failed assertions before SKIP cause test case to fail
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: FAILED:
+  CHECK( 3 == 4 )
+
+Skip.tests.cpp:<line number>: SKIPPED:
+
+-------------------------------------------------------------------------------
+failing for some generator values causes entire test case to fail
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: FAILED:
+
+-------------------------------------------------------------------------------
+failing for some generator values causes entire test case to fail
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+
+-------------------------------------------------------------------------------
+failing for some generator values causes entire test case to fail
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: FAILED:
+
+-------------------------------------------------------------------------------
+failing for some generator values causes entire test case to fail
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+
+-------------------------------------------------------------------------------
+failing in some unskipped sections causes entire test case to fail
+  skipped
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+
+-------------------------------------------------------------------------------
+failing in some unskipped sections causes entire test case to fail
+  not skipped
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: FAILED:
 
 -------------------------------------------------------------------------------
 first tag
@@ -15775,6 +15874,40 @@ Misc.tests.cpp:<line number>: PASSED:
 with expansion:
   1 != 2
 
+a-------------------------------------------------------------------------------
+nested sections can be skipped dynamically at runtime
+  A
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+
+No assertions in section 'A'
+
+!
+b1-------------------------------------------------------------------------------
+nested sections can be skipped dynamically at runtime
+  B
+  B1
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+
+No assertions in section 'B1'
+
+!
+-------------------------------------------------------------------------------
+nested sections can be skipped dynamically at runtime
+  B
+  B2
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+
+!
 -------------------------------------------------------------------------------
 non streamable - with conv. op
 -------------------------------------------------------------------------------
@@ -16377,6 +16510,33 @@ Misc.tests.cpp:<line number>
 No assertions in test case 'second tag'
 
 -------------------------------------------------------------------------------
+sections can be skipped dynamically at runtime
+  not skipped
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+sections can be skipped dynamically at runtime
+  skipped
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+
+-------------------------------------------------------------------------------
+sections can be skipped dynamically at runtime
+  also not skipped
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
 send a single char to INFO
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -16409,6 +16569,16 @@ Tag.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( testcase.tags, VectorContains( Tag( "magic-tag" ) ) && VectorContains( Tag( "."_catch_sr ) ) )
 with expansion:
   { {?}, {?} } ( Contains: {?} and Contains: {?} )
+
+-------------------------------------------------------------------------------
+skipped tests can optionally provide a reason
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+explicitly with message:
+  skipping because answer = 43
 
 -------------------------------------------------------------------------------
 splitString
@@ -16836,6 +17006,14 @@ Tag.tests.cpp:<line number>: PASSED:
   REQUIRE( testcase.tags[0].original == "magic.tag"_catch_sr )
 with expansion:
   magic.tag == magic.tag
+
+-------------------------------------------------------------------------------
+tests can be skipped dynamically at runtime
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
 
 -------------------------------------------------------------------------------
 thrown std::strings are translated
@@ -17544,6 +17722,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  395 |  305 passed |  83 failed |  7 failed as expected
-assertions: 2163 | 1993 passed | 143 failed | 27 failed as expected
+test cases:  404 |  305 passed |  84 failed | 5 skipped | 10 failed as expected
+assertions: 2173 | 1997 passed | 145 failed | 31 failed as expected
 

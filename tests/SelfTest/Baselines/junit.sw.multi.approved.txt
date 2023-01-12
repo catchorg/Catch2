@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="126" tests="2163" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="128" skipped="11" tests="2184" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1590,6 +1590,12 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="XmlEncode/string with control char (1)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="XmlEncode/string with control char (x7F)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="XmlWriter writes boolean attributes as true/false" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="a succeeding test can still be skipped" time="{duration}" status="run">
+      <skipped type="SKIP">
+SKIPPED
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testcase>
     <testcase classname="<exe-name>.global" name="analyse no analysis" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="array&lt;int, N> -> toString" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="benchmark function call/without chronometer" time="{duration}" status="run"/>
@@ -1624,12 +1630,67 @@ at Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="comparisons between const int variables" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="comparisons between int variables" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="convertToBits" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="dynamic skipping works with generators" time="{duration}" status="run">
+      <skipped type="SKIP">
+SKIPPED
+skipping because answer = 41
+at Skip.tests.cpp:<line number>
+      </skipped>
+      <skipped type="SKIP">
+SKIPPED
+skipping because answer = 43
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testcase>
     <testcase classname="<exe-name>.global" name="empty tags are not allowed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="erfc_inv" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="estimate_clock_resolution" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="even more nested SECTION tests/c/d (leaf)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="even more nested SECTION tests/c/e (leaf)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="even more nested SECTION tests/f (leaf)" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="failed assertions before SKIP cause test case to fail" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
+      <failure message="3 == 4" type="CHECK">
+FAILED:
+  CHECK( 3 == 4 )
+at Skip.tests.cpp:<line number>
+      </failure>
+      <skipped type="SKIP">
+SKIPPED
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="failing for some generator values causes entire test case to fail" time="{duration}" status="run">
+      <failure type="FAIL">
+FAILED:
+at Skip.tests.cpp:<line number>
+      </failure>
+      <skipped type="SKIP">
+SKIPPED
+at Skip.tests.cpp:<line number>
+      </skipped>
+      <failure type="FAIL">
+FAILED:
+at Skip.tests.cpp:<line number>
+      </failure>
+      <skipped type="SKIP">
+SKIPPED
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="failing in some unskipped sections causes entire test case to fail/skipped" time="{duration}" status="run">
+      <skipped type="SKIP">
+SKIPPED
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="failing in some unskipped sections causes entire test case to fail/not skipped" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
+      <failure type="FAIL">
+FAILED:
+at Skip.tests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="<exe-name>.global" name="is_unary_function" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="just failure" time="{duration}" status="run">
       <failure type="FAIL">
@@ -1742,6 +1803,19 @@ at Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="more nested SECTION tests/doesn't equal/less than" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="nested SECTION tests/doesn't equal" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="nested SECTION tests/doesn't equal/not equal" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="nested sections can be skipped dynamically at runtime/B2/B" time="{duration}" status="run">
+      <skipped type="SKIP">
+SKIPPED
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="nested sections can be skipped dynamically at runtime/B" time="{duration}" status="run">
+      <system-out>
+a!
+b1!
+!
+      </system-out>
+    </testcase>
     <testcase classname="<exe-name>.global" name="non streamable - with conv. op" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="non-copyable objects" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="normal_cdf" time="{duration}" status="run"/>
@@ -1793,6 +1867,14 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="resolution" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="run_for_at_least, chronometer" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="run_for_at_least, int" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="sections can be skipped dynamically at runtime/not skipped" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="sections can be skipped dynamically at runtime/skipped" time="{duration}" status="run">
+      <skipped type="SKIP">
+SKIPPED
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="sections can be skipped dynamically at runtime/also not skipped" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="send a single char to INFO" time="{duration}" status="run">
       <failure message="false" type="REQUIRE">
 FAILED:
@@ -1811,6 +1893,13 @@ at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="shortened hide tags are split apart" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="skipped tests can optionally provide a reason" time="{duration}" status="run">
+      <skipped type="SKIP">
+SKIPPED
+skipping because answer = 43
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testcase>
     <testcase classname="<exe-name>.global" name="splitString" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="stacks unscoped info in loops" time="{duration}" status="run">
       <failure message="false" type="CHECK">
@@ -1855,6 +1944,12 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="strlen3" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="tables" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="tags with dots in later positions are not parsed as hidden" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="tests can be skipped dynamically at runtime" time="{duration}" status="run">
+      <skipped type="SKIP">
+SKIPPED
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testcase>
     <testcase classname="<exe-name>.global" name="thrown std::strings are translated" time="{duration}" status="run">
       <error type="TEST_CASE">
 FAILED:
@@ -1904,6 +1999,9 @@ This would not be caught previously
 A string sent directly to stdout
 Message from section one
 Message from section two
+a!
+b1!
+!
     </system-out>
     <system-err>
 Nor would this

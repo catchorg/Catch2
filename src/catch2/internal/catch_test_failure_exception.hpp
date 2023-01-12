@@ -20,6 +20,9 @@ namespace Catch {
      */
     [[noreturn]] void throw_test_failure_exception();
 
+    //! Used to signal that the remainder of a test should be skipped
+    struct TestSkipException{};
+
 } // namespace Catch
 
 #endif // CATCH_TEST_FAILURE_EXCEPTION_HPP_INCLUDED

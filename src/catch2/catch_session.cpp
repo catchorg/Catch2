@@ -341,6 +341,12 @@ namespace Catch {
                 return 2;
             }
 
+            if ( totals.testCases.total() > 0 &&
+                 totals.testCases.total() == totals.testCases.skipped
+                && !m_config->zeroTestsCountAsSuccess() ) {
+                return 4;
+            }
+
             // Note that on unices only the lower 8 bits are usually used, clamping
             // the return value to 255 prevents false negative when some multiple
             // of 256 tests has failed

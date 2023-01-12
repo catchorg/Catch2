@@ -270,6 +270,9 @@ namespace Catch {
         if (result.getResultType() == ResultWas::Ok) {
             m_totals.assertions.passed++;
             m_lastAssertionPassed = true;
+        } else if (result.getResultType() == ResultWas::ExplicitSkip) {
+            m_totals.assertions.skipped++;
+            m_lastAssertionPassed = true;
         } else if (!result.succeeded()) {
             m_lastAssertionPassed = false;
             if (result.isOk()) {
@@ -475,6 +478,8 @@ namespace Catch {
             duration = timer.getElapsedSeconds();
         } CATCH_CATCH_ANON (TestFailureException&) {
             // This just means the test was aborted due to failure
+        } CATCH_CATCH_ANON (TestSkipException&) {
+            // This just means the test was explicitly skipped
         } CATCH_CATCH_ALL {
             // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions
             // are reported without translation at the point of origin.
@@ -571,8 +576,13 @@ namespace Catch {
         data.message = static_cast<std::string>(message);
         AssertionResult assertionResult{ m_lastAssertionInfo, data };
         assertionEnded( assertionResult );
-        if( !assertionResult.isOk() )
+        if ( !assertionResult.isOk() ) {
             populateReaction( reaction );
+        } else if ( resultType == ResultWas::ExplicitSkip ) {
+            // TODO: Need to handle this explicitly, as ExplicitSkip is
+            // considered "OK"
+            reaction.shouldSkip = true;
+        }
     }
     void RunContext::handleUnexpectedExceptionNotThrown(
             AssertionInfo const& info,

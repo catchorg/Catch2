@@ -488,15 +488,32 @@ set_tests_properties(TestSpecs::EmptySpecWithNoTestsFails
   PROPERTIES
     WILL_FAIL ON
 )
+
 add_test(
   NAME TestSpecs::OverrideFailureWithEmptySpec
   COMMAND $<TARGET_FILE:NoTests> --allow-running-no-tests
 )
+
 add_test(
   NAME List::Listeners::WorksWithoutRegisteredListeners
   COMMAND $<TARGET_FILE:NoTests> --list-listeners
 )
+
+
+add_executable(AllSkipped ${TESTS_DIR}/X93-AllSkipped.cpp)
+target_link_libraries(AllSkipped PRIVATE Catch2::Catch2WithMain)
+
+add_test(
+  NAME TestSpecs::SkippingAllTestsFails
+  COMMAND $<TARGET_FILE:AllSkipped>
+)
+set_tests_properties(TestSpecs::SkippingAllTestsFails
+  PROPERTIES
+    WILL_FAIL ON
+)
+
 set( EXTRA_TEST_BINARIES
+    AllSkipped
     PrefixedMacros
     DisabledMacros
     DisabledExceptions-DefaultHandler

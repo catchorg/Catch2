@@ -97,7 +97,8 @@ namespace Catch {
 
     void SonarQubeReporter::writeAssertion(AssertionStats const& stats, bool okToFail) {
         AssertionResult const& result = stats.assertionResult;
-        if (!result.isOk()) {
+        if ( !result.isOk() ||
+             result.getResultType() == ResultWas::ExplicitSkip ) {
             std::string elementName;
             if (okToFail) {
                 elementName = "skipped";
@@ -108,15 +109,13 @@ namespace Catch {
                     elementName = "error";
                     break;
                 case ResultWas::ExplicitFailure:
-                    elementName = "failure";
-                    break;
                 case ResultWas::ExpressionFailed:
-                    elementName = "failure";
-                    break;
                 case ResultWas::DidntThrowException:
                     elementName = "failure";
                     break;
-
+                case ResultWas::ExplicitSkip:
+                    elementName = "skipped";
+                    break;
                     // We should never see these here:
                 case ResultWas::Info:
                 case ResultWas::Warning:
@@ -136,7 +135,9 @@ namespace Catch {
             xml.writeAttribute("message"_sr, messageRss.str());
 
             ReusableStringStream textRss;
-            if (stats.totals.assertions.total() > 0) {
+            if ( result.getResultType() == ResultWas::ExplicitSkip ) {
+                textRss << "SKIPPED\n";
+            } else {
                 textRss << "FAILED:\n";
                 if (result.hasExpression()) {
                     textRss << '\t' << result.getExpressionInMacro() << '\n';

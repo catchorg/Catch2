@@ -116,6 +116,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/UsageTests/Generators.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Message.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Misc.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/Skip.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringByte.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringChrono.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringGeneral.tests.cpp
@@ -270,6 +271,10 @@ set_tests_properties(TestSpecs::NoMatchedTestsFail
 )
 add_test(NAME TestSpecs::OverrideFailureWithNoMatchedTests
   COMMAND $<TARGET_FILE:SelfTest> "___nonexistent_test___" --allow-running-no-tests
+)
+
+add_test(NAME TestSpecs::OverrideAllSkipFailure
+  COMMAND $<TARGET_FILE:SelfTest> "tests can be skipped dynamically at runtime" --allow-running-no-tests
 )
 
 add_test(NAME TestSpecs::NonMatchingTestSpecIsRoundTrippable
