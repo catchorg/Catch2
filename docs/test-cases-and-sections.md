@@ -25,7 +25,8 @@ _section description_ can be used to provide long form description
 of a section while keeping the _section name_ short for use with the
 [`-c` command line parameter](command-line.md#specify-the-section-to-run).
 
-**Test names must be unique within the Catch executable.**
+**The combination of test names and tags must be unique within the Catch2
+executable.**
 
 For examples see the [Tutorial](tutorial.md#top)
 
