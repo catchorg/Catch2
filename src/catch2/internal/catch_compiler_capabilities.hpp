@@ -37,6 +37,17 @@
 #    define CATCH_CPP17_OR_GREATER
 #  endif
 
+// Visual C++ Update 3 reports itself as being capable of C++14 but is still
+// lacking
+// - Extended constexpr
+// - Aggregates with default member initializers
+#    if ( __cpp_constexpr >= 201304L ) || \
+        ( defined( _MSC_VER ) && _MSC_VER > 1900 )
+#        define CATCH_INTERNAL_RELAXED_CONSTEXPR_FUNCTION constexpr
+#    else
+#        define CATCH_INTERNAL_RELAXED_CONSTEXPR_FUNCTION
+#    endif
+
 #endif
 
 // Only GCC compiler should be used in this block, so other compilers trying to

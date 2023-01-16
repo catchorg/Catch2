@@ -8,6 +8,8 @@
 #ifndef CATCH_STRINGREF_HPP_INCLUDED
 #define CATCH_STRINGREF_HPP_INCLUDED
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+
 #include <cstddef>
 #include <string>
 #include <iosfwd>
@@ -54,7 +56,7 @@ namespace Catch {
             return !(*this == other);
         }
 
-        constexpr auto operator[] ( size_type index ) const noexcept -> char {
+        CATCH_INTERNAL_RELAXED_CONSTEXPR_FUNCTION auto operator[] ( size_type index ) const noexcept -> char {
             assert(index < m_size);
             return m_start[index];
         }
@@ -72,7 +74,7 @@ namespace Catch {
         // Returns a substring of [start, start + length).
         // If start + length > size(), then the substring is [start, start + size()).
         // If start > size(), then the substring is empty.
-        constexpr StringRef substr(size_type start, size_type length) const noexcept {
+        CATCH_INTERNAL_RELAXED_CONSTEXPR_FUNCTION StringRef substr(size_type start, size_type length) const noexcept {
             if (start < m_size) {
                 const auto shortened_size = m_size - start;
                 return StringRef(m_start + start, (shortened_size < length) ? shortened_size : length);
