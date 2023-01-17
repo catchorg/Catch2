@@ -204,18 +204,28 @@ namespace Detail {
         return makeGenerators( value( T( CATCH_FORWARD( val ) ) ), CATCH_FORWARD( moreGenerators )... );
     }
 
-    auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker&;
+    IGeneratorTracker* acquireGeneratorTracker( StringRef generatorName,
+                                                SourceLineInfo const& lineInfo );
+    IGeneratorTracker* createGeneratorTracker( StringRef generatorName,
+                                               SourceLineInfo lineInfo,
+                                               GeneratorBasePtr&& generator );
 
     template<typename L>
     auto generate( StringRef generatorName, SourceLineInfo const& lineInfo, L const& generatorExpression ) -> typename decltype(generatorExpression())::type {
         using UnderlyingType = typename decltype(generatorExpression())::type;
 
-        IGeneratorTracker& tracker = acquireGeneratorTracker( generatorName, lineInfo );
-        if (!tracker.hasGenerator()) {
-            tracker.setGenerator(Catch::Detail::make_unique<Generators<UnderlyingType>>(generatorExpression()));
+        IGeneratorTracker* tracker = acquireGeneratorTracker( generatorName, lineInfo );
+        // Creation of tracker is delayed after generator creation, so
+        // that constructing generator can fail without breaking everything.
+        if (!tracker) {
+            tracker = createGeneratorTracker(
+                generatorName,
+                lineInfo,
+                Catch::Detail::make_unique<Generators<UnderlyingType>>(
+                    generatorExpression() ) );
         }
 
-        auto const& generator = static_cast<IGenerator<UnderlyingType> const&>( *tracker.getGenerator() );
+        auto const& generator = static_cast<IGenerator<UnderlyingType> const&>( *tracker->getGenerator() );
         return generator.get();
     }
 

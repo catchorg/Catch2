@@ -13,6 +13,7 @@
 
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_result_type.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 namespace Catch {
 
@@ -33,6 +34,12 @@ namespace Catch {
     template <typename Duration = std::chrono::duration<double, std::nano>>
     struct BenchmarkStats;
 
+    namespace Generators {
+        class GeneratorUntypedBase;
+        using GeneratorBasePtr = Catch::Detail::unique_ptr<GeneratorUntypedBase>;
+    }
+
+
     class IResultCapture {
     public:
         virtual ~IResultCapture();
@@ -42,7 +49,13 @@ namespace Catch {
         virtual void sectionEnded( SectionEndInfo const& endInfo ) = 0;
         virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) = 0;
 
-        virtual auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& = 0;
+        virtual IGeneratorTracker*
+        acquireGeneratorTracker( StringRef generatorName,
+                                 SourceLineInfo const& lineInfo ) = 0;
+        virtual IGeneratorTracker*
+        createGeneratorTracker( StringRef generatorName,
+                                SourceLineInfo lineInfo,
+                                Generators::GeneratorBasePtr&& generator ) = 0;
 
         virtual void benchmarkPreparing( StringRef name ) = 0;
         virtual void benchmarkStarting( BenchmarkInfo const& info ) = 0;

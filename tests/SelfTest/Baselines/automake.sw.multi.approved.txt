@@ -23,6 +23,7 @@
 :test-result: PASS #1954 - 7 arg template test case sig compiles - 5, 3, 1, 1, 1, 0, 0
 :test-result: PASS #2152 - ULP checks between differently signed values were wrong - double
 :test-result: PASS #2152 - ULP checks between differently signed values were wrong - float
+:test-result: XFAIL #2615 - Throwing in constructor generator fails test case but does not abort
 :test-result: XFAIL #748 - captures with unexpected exceptions
 :test-result: PASS #809
 :test-result: PASS #833

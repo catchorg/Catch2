@@ -27,6 +27,10 @@ namespace TestCaseTracking {
             return lhs.name == rhs.name
                 && lhs.location == rhs.location;
         }
+        friend bool operator!=(NameAndLocation const& lhs,
+                               NameAndLocation const& rhs) {
+            return !( lhs == rhs );
+        }
     };
 
     class ITracker;

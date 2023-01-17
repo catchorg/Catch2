@@ -34,7 +34,7 @@ namespace Catch {
             {}
             ~GeneratorTracker() override;
 
-            static GeneratorTracker& acquire( TrackerContext& ctx, TestCaseTracking::NameAndLocation const& nameAndLocation ) {
+            static GeneratorTracker* acquire( TrackerContext& ctx, TestCaseTracking::NameAndLocation const& nameAndLocation ) {
                 GeneratorTracker* tracker;
 
                 ITracker& currentTracker = ctx.currentTracker();
@@ -61,18 +61,14 @@ namespace Catch {
                     assert( childTracker->isGeneratorTracker() );
                     tracker = static_cast<GeneratorTracker*>( childTracker );
                 } else {
-                    auto newTracker =
-                        Catch::Detail::make_unique<GeneratorTracker>(
-                            nameAndLocation, ctx, &currentTracker );
-                    tracker = newTracker.get();
-                    currentTracker.addChild( CATCH_MOVE(newTracker) );
+                    return nullptr;
                 }
 
                 if( !tracker->isComplete() ) {
                     tracker->open();
                 }
 
-                return *tracker;
+                return tracker;
             }
 
             // TrackerBase interface
@@ -141,6 +137,7 @@ namespace Catch {
                 // has a side-effect, where it consumes generator's current
                 // value, but we do not want to invoke the side-effect if
                 // this generator is still waiting for any child to start.
+                assert( m_generator && "Tracker without generator" );
                 if ( should_wait_for_child ||
                      ( m_runState == CompletedSuccessfully &&
                        m_generator->countedNext() ) ) {
@@ -314,12 +311,37 @@ namespace Catch {
 
         return true;
     }
-    auto RunContext::acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& {
+    IGeneratorTracker*
+    RunContext::acquireGeneratorTracker( StringRef generatorName,
+                                         SourceLineInfo const& lineInfo ) {
         using namespace Generators;
-        GeneratorTracker& tracker = GeneratorTracker::acquire(m_trackerContext,
-                                                              TestCaseTracking::NameAndLocation( static_cast<std::string>(generatorName), lineInfo ) );
+        GeneratorTracker* tracker = GeneratorTracker::acquire(
+            m_trackerContext,
+            TestCaseTracking::NameAndLocation(
+                static_cast<std::string>( generatorName ), lineInfo ) );
         m_lastAssertionInfo.lineInfo = lineInfo;
         return tracker;
+    }
+
+    IGeneratorTracker* RunContext::createGeneratorTracker(
+        StringRef generatorName,
+        SourceLineInfo lineInfo,
+        Generators::GeneratorBasePtr&& generator ) {
+
+        auto nameAndLoc = TestCaseTracking::NameAndLocation( static_cast<std::string>( generatorName ), lineInfo );
+        auto& currentTracker = m_trackerContext.currentTracker();
+        assert(
+            currentTracker.nameAndLocation() != nameAndLoc &&
+            "Trying to create tracker for a genreator that already has one" );
+
+        auto newTracker = Catch::Detail::make_unique<Generators::GeneratorTracker>(
+            nameAndLoc, m_trackerContext, &currentTracker );
+        auto ret = newTracker.get();
+        currentTracker.addChild( CATCH_MOVE( newTracker ) );
+
+        ret->setGenerator( CATCH_MOVE( generator ) );
+        ret->open();
+        return ret;
     }
 
     bool RunContext::testForMissingAssertions(Counts& assertions) {

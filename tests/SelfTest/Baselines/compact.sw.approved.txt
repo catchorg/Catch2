@@ -84,6 +84,7 @@ Matchers.tests.cpp:<line number>: passed: smallest_non_zero, WithinULP( -smalles
 Matchers.tests.cpp:<line number>: passed: smallest_non_zero, !WithinULP( -smallest_non_zero, 1 ) for: 0.0 not is within 1 ULPs of -4.9406564584124654e-324 ([-9.8813129168249309e-324, -0.0000000000000000e+00])
 Matchers.tests.cpp:<line number>: passed: smallest_non_zero, WithinULP( -smallest_non_zero, 2 ) for: 0.0f is within 2 ULPs of -1.40129846e-45f ([-4.20389539e-45, 1.40129846e-45])
 Matchers.tests.cpp:<line number>: passed: smallest_non_zero, !WithinULP( -smallest_non_zero, 1 ) for: 0.0f not is within 1 ULPs of -1.40129846e-45f ([-2.80259693e-45, -0.00000000e+00])
+Generators.tests.cpp:<line number>: failed: unexpected exception with message: 'failure to init'
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42' with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42'; expression was: thisThrows() with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: passed: thisThrows() with 1 message: 'answer := 42'
@@ -2521,7 +2522,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  407 |  308 passed |  84 failed | 5 skipped | 10 failed as expected
-assertions: 2209 | 2033 passed | 145 failed | 31 failed as expected
+test cases:  408 |  308 passed |  84 failed | 5 skipped | 11 failed as expected
+assertions: 2210 | 2033 passed | 145 failed | 32 failed as expected
 
 

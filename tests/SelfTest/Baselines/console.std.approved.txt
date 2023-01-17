@@ -28,6 +28,16 @@ explicitly with message:
   1514
 
 -------------------------------------------------------------------------------
+#2615 - Throwing in constructor generator fails test case but does not abort
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: FAILED:
+due to unexpected exception with message:
+  failure to init
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -1523,6 +1533,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  407 |  322 passed |  69 failed | 6 skipped | 10 failed as expected
-assertions: 2192 | 2033 passed | 128 failed | 31 failed as expected
+test cases:  408 |  322 passed |  69 failed | 6 skipped | 11 failed as expected
+assertions: 2193 | 2033 passed | 128 failed | 32 failed as expected
 

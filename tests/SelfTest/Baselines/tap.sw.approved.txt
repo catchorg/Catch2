@@ -164,6 +164,8 @@ ok {test-number} - smallest_non_zero, !WithinULP( -smallest_non_zero, 1 ) for: 0
 ok {test-number} - smallest_non_zero, WithinULP( -smallest_non_zero, 2 ) for: 0.0f is within 2 ULPs of -1.40129846e-45f ([-4.20389539e-45, 1.40129846e-45])
 # #2152 - ULP checks between differently signed values were wrong - float
 ok {test-number} - smallest_non_zero, !WithinULP( -smallest_non_zero, 1 ) for: 0.0f not is within 1 ULPs of -1.40129846e-45f ([-2.80259693e-45, -0.00000000e+00])
+# #2615 - Throwing in constructor generator fails test case but does not abort
+not ok {test-number} - unexpected exception with message: 'failure to init'
 # #748 - captures with unexpected exceptions
 not ok {test-number} - unexpected exception with message: 'answer := 42' with 1 message: 'expected exception'
 # #748 - captures with unexpected exceptions
@@ -4443,5 +4445,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2220
+1..2221
 

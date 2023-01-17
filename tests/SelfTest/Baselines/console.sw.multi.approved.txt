@@ -760,6 +760,16 @@ with expansion:
   00000000e+00])
 
 -------------------------------------------------------------------------------
+#2615 - Throwing in constructor generator fails test case but does not abort
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: FAILED:
+due to unexpected exception with message:
+  failure to init
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -18082,6 +18092,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  407 |  308 passed |  84 failed | 5 skipped | 10 failed as expected
-assertions: 2209 | 2033 passed | 145 failed | 31 failed as expected
+test cases:  408 |  308 passed |  84 failed | 5 skipped | 11 failed as expected
+assertions: 2210 | 2033 passed | 145 failed | 32 failed as expected
 

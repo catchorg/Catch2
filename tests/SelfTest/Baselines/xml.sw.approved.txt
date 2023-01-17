@@ -667,6 +667,12 @@ Nor would this
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="#2615 - Throwing in constructor generator fails test case but does not abort" tags="[!shouldfail]" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
+    <Exception filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
+      failure to init
+    </Exception>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws][.][failing]" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
     <Section name="outside assertions" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Info>
@@ -21042,6 +21048,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2033" failures="145" expectedFailures="31" skips="11"/>
-  <OverallResultsCases successes="308" failures="84" expectedFailures="10" skips="5"/>
+  <OverallResults successes="2033" failures="145" expectedFailures="32" skips="11"/>
+  <OverallResultsCases successes="308" failures="84" expectedFailures="11" skips="5"/>
 </Catch2TestRun>

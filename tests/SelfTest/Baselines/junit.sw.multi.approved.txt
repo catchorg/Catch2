@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="128" skipped="11" tests="2220" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="128" skipped="11" tests="2221" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -47,6 +47,14 @@ Nor would this
     <testcase classname="<exe-name>.global" name="#1954 - 7 arg template test case sig compiles - 5, 3, 1, 1, 1, 0, 0" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#2152 - ULP checks between differently signed values were wrong - double" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#2152 - ULP checks between differently signed values were wrong - float" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#2615 - Throwing in constructor generator fails test case but does not abort" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
+      <error type="TEST_CASE">
+FAILED:
+failure to init
+at Generators.tests.cpp:<line number>
+      </error>
+    </testcase>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
       <error type="TEST_CASE">
