@@ -30,7 +30,7 @@ namespace Catch {
 
 namespace Catch {
     class FatalConditionHandler {
-        bool m_started = false;
+        bool m_started;
 
         // Install/disengage implementation for specific platform.
         // Should be if-defed to work on current platform, can assume
@@ -40,7 +40,7 @@ namespace Catch {
 
     public:
         // Should also have platform-specific implementations as needed
-        FatalConditionHandler() {}
+        FatalConditionHandler() : m_started(false) {}
         ~FatalConditionHandler() {}
 
         void engage() {
@@ -90,7 +90,7 @@ namespace Catch {
     static PVOID exceptionHandlerHandle = CATCH_NULL;
 
     class FatalConditionHandler {
-        bool m_started = false;
+        bool m_started;
 
         // Install/disengage implementation for specific platform.
         // Should be if-defed to work on current platform, can assume
@@ -112,7 +112,7 @@ namespace Catch {
         }
 
     public:
-        FatalConditionHandler() {
+        FatalConditionHandler() : m_started(false) {
             ULONG guaranteeSize = static_cast<ULONG>(32 * 1024);
             if (!SetThreadStackGuarantee(&guaranteeSize)) {
                 // We do not want to fully error out, because needing
@@ -150,7 +150,7 @@ namespace Catch {
 
 namespace Catch {
     class FatalConditionHandler {
-        bool m_started = false;
+        bool m_started;
 
         // Install/disengage implementation for specific platform.
         // Should be if-defed to work on current platform, can assume
@@ -160,7 +160,7 @@ namespace Catch {
 
     public:
         // Should also have platform-specific implementations as needed
-        FatalConditionHandler() {}
+        FatalConditionHandler() : m_started(false) {}
         ~FatalConditionHandler() {}
 
         void engage() {
@@ -241,7 +241,7 @@ namespace Catch {
     }
 
     class FatalConditionHandler {
-        bool m_started = false;
+        bool m_started;
 
         // Install/disengage implementation for specific platform.
         // Should be if-defed to work on current platform, can assume
@@ -267,7 +267,7 @@ namespace Catch {
         }
 
     public:
-        FatalConditionHandler() {
+        FatalConditionHandler() : m_started(false) {
             assert(!altStackMem && "Cannot initialize POSIX signal handler when one already exists");
             if (altStackSize == 0) {
                 altStackSize = SIGSTKSZ;
