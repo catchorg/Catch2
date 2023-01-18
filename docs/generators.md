@@ -205,13 +205,17 @@ struct IGenerator : GeneratorUntypedBase {
     // Precondition:
     // The generator is either freshly constructed or the last call to next() returned true
     virtual T const& get() const = 0;
+
+    // Returns user-friendly string showing the current generator element
+    // Does not have to be overridden, IGenerator provides default implementation
+    virtual std::string stringifyImpl() const;
 };
 ```
 
 However, to be able to use your custom generator inside `GENERATE`, it
 will need to be wrapped inside a `GeneratorWrapper<T>`.
 `GeneratorWrapper<T>` is a value wrapper around a
-`std::unique_ptr<IGenerator<T>>`.
+`Catch::Detail::unique_ptr<IGenerator<T>>`.
 
 For full example of implementing your own generator, look into Catch2's
 examples, specifically
