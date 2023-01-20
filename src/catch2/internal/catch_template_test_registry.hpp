@@ -13,6 +13,7 @@
 #include <catch2/internal/catch_preprocessor.hpp>
 #include <catch2/internal/catch_meta.hpp>
 #include <catch2/internal/catch_unique_name.hpp>
+#include <catch2/internal/catch_type_to_string.hpp>
 
 
 // GCC 5 and older do not properly handle disabling unused-variable warning
@@ -181,7 +182,7 @@
             void reg_tests() {                                          \
                 size_t index = 0;                                    \
                 using expander = size_t[];                           \
-                (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestFunc<Types> ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ Name " - " + std::string(INTERNAL_CATCH_STRINGIZE(TmplList)) + " - " + std::to_string(index), Tags } ), index++)... };/* NOLINT */\
+                (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestFunc<Types> ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ Name " - " + std::string(INTERNAL_CATCH_STRINGIZE(TmplList)) + " - " + std::to_string(index) + " - " + Catch::type_to_string<Types>(), Tags } ), index++)... };/* NOLINT */\
             }                                                     \
         };\
         static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){ \

@@ -1625,13 +1625,13 @@ with expansion:
 at Misc.tests.cpp:<line number>
       </failure>
     </testCase>
-    <testCase name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 0" duration="{duration}"/>
-    <testCase name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 1" duration="{duration}"/>
-    <testCase name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 0" duration="{duration}"/>
-    <testCase name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 1" duration="{duration}"/>
-    <testCase name="Template test case with test types specified inside std::tuple - MyTypes - 0" duration="{duration}"/>
-    <testCase name="Template test case with test types specified inside std::tuple - MyTypes - 1" duration="{duration}"/>
-    <testCase name="Template test case with test types specified inside std::tuple - MyTypes - 2" duration="{duration}"/>
+    <testCase name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 0 - NonCopyableAndNonMovableType" duration="{duration}"/>
+    <testCase name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 1 - float" duration="{duration}"/>
+    <testCase name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 0 - NonDefaultConstructibleType" duration="{duration}"/>
+    <testCase name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 1 - float" duration="{duration}"/>
+    <testCase name="Template test case with test types specified inside std::tuple - MyTypes - 0 - int" duration="{duration}"/>
+    <testCase name="Template test case with test types specified inside std::tuple - MyTypes - 1 - char" duration="{duration}"/>
+    <testCase name="Template test case with test types specified inside std::tuple - MyTypes - 2 - float" duration="{duration}"/>
     <testCase name="TemplateTest: vectors can be sized and resized - float" duration="{duration}"/>
     <testCase name="TemplateTest: vectors can be sized and resized - float/resizing bigger changes size and capacity" duration="{duration}"/>
     <testCase name="TemplateTest: vectors can be sized and resized - float/resizing smaller changes size but not capacity" duration="{duration}"/>
