@@ -15253,12 +15253,12 @@ There is no extra whitespace here
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <TestCase name="Type conversions of ElementsAre and similar" tags="[matchers][quantifiers][templated]" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+  <TestCase name="Type conversions of RangeEquals and similar" tags="[matchers][quantifiers][templated]" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
     <Section name="Container conversions" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
       <Section name="Two equal containers of different container types" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            array_int_a, ElementsAre( vector_int_a )
+            array_int_a, RangeEquals( vector_int_a )
           </Original>
           <Expanded>
             { 1, 2, 3 } elements are { 1, 2, 3 }
@@ -15266,7 +15266,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            array_int_a, UnorderedElementsAre( vector_int_a )
+            array_int_a, UnorderedRangeEquals( vector_int_a )
           </Original>
           <Expanded>
             { 1, 2, 3 } unordered elements are { 1, 2, 3 }
@@ -15280,7 +15280,7 @@ There is no extra whitespace here
       <Section name="Two equal containers of different container types (differ in array N)" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            array_int_3, !ElementsAre( array_int_4 )
+            array_int_3, !RangeEquals( array_int_4 )
           </Original>
           <Expanded>
             { 1, 2, 3 } not elements are { 1, 2, 3, 4 }
@@ -15288,7 +15288,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            array_int_3, !UnorderedElementsAre( array_int_4 )
+            array_int_3, !UnorderedRangeEquals( array_int_4 )
           </Original>
           <Expanded>
             { 1, 2, 3 } not unordered elements are { 1, 2, 3, 4 }
@@ -15302,7 +15302,7 @@ There is no extra whitespace here
       <Section name="Two equal containers of different container types and value types" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            array_int_a, ElementsAre( vector_char_a )
+            array_int_a, RangeEquals( vector_char_a )
           </Original>
           <Expanded>
             { 1, 2, 3 } elements are { 1, 2, 3 }
@@ -15310,7 +15310,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            array_int_a, UnorderedElementsAre( vector_char_a )
+            array_int_a, UnorderedRangeEquals( vector_char_a )
           </Original>
           <Expanded>
             { 1, 2, 3 } unordered elements are { 1, 2, 3 }
@@ -15324,7 +15324,7 @@ There is no extra whitespace here
       <Section name="Two equal containers, one random access, one not" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            array_int_a, ElementsAre( list_char_a )
+            array_int_a, RangeEquals( list_char_a )
           </Original>
           <Expanded>
             { 1, 2, 3 } elements are { 1, 2, 3 }
@@ -15332,7 +15332,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            array_int_a, UnorderedElementsAre( list_char_a )
+            array_int_a, UnorderedRangeEquals( list_char_a )
           </Original>
           <Expanded>
             { 1, 2, 3 } unordered elements are { 1, 2, 3 }
@@ -15346,7 +15346,7 @@ There is no extra whitespace here
       <Section name="Two equal containers of different value types" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            vector_int_a, ElementsAre( vector_char_a )
+            vector_int_a, RangeEquals( vector_char_a )
           </Original>
           <Expanded>
             { 1, 2, 3 } elements are { 1, 2, 3 }
@@ -15354,7 +15354,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            vector_int_a, UnorderedElementsAre( vector_char_a )
+            vector_int_a, UnorderedRangeEquals( vector_char_a )
           </Original>
           <Expanded>
             { 1, 2, 3 } unordered elements are { 1, 2, 3 }
@@ -15368,7 +15368,7 @@ There is no extra whitespace here
       <Section name="Two non-equal containers of different value types" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            vector_int_a, !ElementsAre( vector_char_b )
+            vector_int_a, !RangeEquals( vector_char_b )
           </Original>
           <Expanded>
             { 1, 2, 3 } not elements are { 1, 2, 2 }
@@ -15376,7 +15376,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            vector_int_a, !UnorderedElementsAre( vector_char_b )
+            vector_int_a, !UnorderedRangeEquals( vector_char_b )
           </Original>
           <Expanded>
             { 1, 2, 3 } not unordered elements are { 1, 2, 2 }
@@ -15390,7 +15390,7 @@ There is no extra whitespace here
       <Section name="Two equal non-empty containers (close enough)" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            vector_a, ElementsAre( array_a_plus_1, close_enough )
+            vector_a, RangeEquals( array_a_plus_1, close_enough )
           </Original>
           <Expanded>
             { 1, 2, 3 } elements are { 2, 3, 4 }
@@ -15398,7 +15398,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            vector_a, UnorderedElementsAre( array_a_plus_1, close_enough )
+            vector_a, UnorderedRangeEquals( array_a_plus_1, close_enough )
           </Original>
           <Expanded>
             { 1, 2, 3 } unordered elements are { 2, 3, 4 }
@@ -16141,137 +16141,6 @@ There is no extra whitespace here
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <TestCase name="Usage of ElementsAre range matcher" tags="[matchers][quantifiers][templated]" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-    <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="Empty container matches empty container" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-          <Original>
-            empty_vector, ElementsAre( empty_vector )
-          </Original>
-          <Expanded>
-            {  } elements are {  }
-          </Expanded>
-        </Expression>
-        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="Empty container does not match non-empty container" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-          <Original>
-            empty_vector, !ElementsAre( non_empty_vector )
-          </Original>
-          <Expanded>
-            {  } not elements are { 1 }
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-          <Original>
-            non_empty_vector, !ElementsAre( empty_vector )
-          </Original>
-          <Expanded>
-            { 1 } not elements are {  }
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="Two equal 1-length non-empty containers" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-          <Original>
-            non_empty_array, ElementsAre( non_empty_array )
-          </Original>
-          <Expanded>
-            { 1 } elements are { 1 }
-          </Expanded>
-        </Expression>
-        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="Two equal-sized, equal, non-empty containers" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-          <Original>
-            array_a, ElementsAre( array_a )
-          </Original>
-          <Expanded>
-            { 1, 2, 3 } elements are { 1, 2, 3 }
-          </Expanded>
-        </Expression>
-        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="Two equal-sized, non-equal, non-empty containers" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-          <Original>
-            array_a, !ElementsAre( array_b )
-          </Original>
-          <Expanded>
-            { 1, 2, 3 } not elements are { 2, 2, 3 }
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-          <Original>
-            array_a, !ElementsAre( array_c )
-          </Original>
-          <Expanded>
-            { 1, 2, 3 } not elements are { 1, 2, 2 }
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="Two non-equal-sized, non-empty containers (with same first elements)" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-          <Original>
-            vector_a, !ElementsAre( vector_b )
-          </Original>
-          <Expanded>
-            { 1, 2, 3 } not elements are { 1, 2, 3, 4 }
-          </Expanded>
-        </Expression>
-        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Custom predicate" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="Two equal non-empty containers (close enough)" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-          <Original>
-            vector_a, ElementsAre( vector_a_plus_1, close_enough )
-          </Original>
-          <Expanded>
-            { 1, 2, 3 } elements are { 2, 3, 4 }
-          </Expanded>
-        </Expression>
-        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Custom predicate" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="Two non-equal non-empty containers (close enough)" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-          <Original>
-            vector_a, !ElementsAre( vector_b, close_enough )
-          </Original>
-          <Expanded>
-            { 1, 2, 3 } not elements are { 3, 3, 4 }
-          </Expanded>
-        </Expression>
-        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <OverallResult success="true" skips="0"/>
-  </TestCase>
   <TestCase name="Usage of NoneMatch range matcher" tags="[matchers][quantifiers][templated]" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
     <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
@@ -16622,12 +16491,143 @@ There is no extra whitespace here
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <TestCase name="Usage of UnorderedElementsAre range matcher" tags="[matchers][quantifiers][templated]" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+  <TestCase name="Usage of RangeEquals range matcher" tags="[matchers][quantifiers][templated]" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
     <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
       <Section name="Empty container matches empty container" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            empty_vector, UnorderedElementsAre( empty_vector )
+            empty_vector, RangeEquals( empty_vector )
+          </Original>
+          <Expanded>
+            {  } elements are {  }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="Empty container does not match non-empty container" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            empty_vector, !RangeEquals( non_empty_vector )
+          </Original>
+          <Expanded>
+            {  } not elements are { 1 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            non_empty_vector, !RangeEquals( empty_vector )
+          </Original>
+          <Expanded>
+            { 1 } not elements are {  }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="Two equal 1-length non-empty containers" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            non_empty_array, RangeEquals( non_empty_array )
+          </Original>
+          <Expanded>
+            { 1 } elements are { 1 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="Two equal-sized, equal, non-empty containers" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            array_a, RangeEquals( array_a )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } elements are { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="Two equal-sized, non-equal, non-empty containers" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            array_a, !RangeEquals( array_b )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } not elements are { 2, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            array_a, !RangeEquals( array_c )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } not elements are { 1, 2, 2 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="Two non-equal-sized, non-empty containers (with same first elements)" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            vector_a, !RangeEquals( vector_b )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } not elements are { 1, 2, 3, 4 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Custom predicate" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="Two equal non-empty containers (close enough)" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            vector_a, RangeEquals( vector_a_plus_1, close_enough )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } elements are { 2, 3, 4 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Custom predicate" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="Two non-equal non-empty containers (close enough)" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            vector_a, !RangeEquals( vector_b, close_enough )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } not elements are { 3, 3, 4 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Usage of UnorderedRangeEquals range matcher" tags="[matchers][quantifiers][templated]" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+    <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="Empty container matches empty container" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            empty_vector, UnorderedRangeEquals( empty_vector )
           </Original>
           <Expanded>
             {  } unordered elements are {  }
@@ -16641,7 +16641,7 @@ There is no extra whitespace here
       <Section name="Empty container does not match non-empty container" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            empty_vector, !UnorderedElementsAre( non_empty_vector )
+            empty_vector, !UnorderedRangeEquals( non_empty_vector )
           </Original>
           <Expanded>
             {  } not unordered elements are { 1 }
@@ -16649,7 +16649,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            non_empty_vector, !UnorderedElementsAre( empty_vector )
+            non_empty_vector, !UnorderedRangeEquals( empty_vector )
           </Original>
           <Expanded>
             { 1 } not unordered elements are {  }
@@ -16663,7 +16663,7 @@ There is no extra whitespace here
       <Section name="Two equal 1-length non-empty containers" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            non_empty_array, UnorderedElementsAre( non_empty_array )
+            non_empty_array, UnorderedRangeEquals( non_empty_array )
           </Original>
           <Expanded>
             { 1 } unordered elements are { 1 }
@@ -16677,7 +16677,7 @@ There is no extra whitespace here
       <Section name="Two equal-sized, equal, non-empty containers" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            array_a, UnorderedElementsAre( array_a )
+            array_a, UnorderedRangeEquals( array_a )
           </Original>
           <Expanded>
             { 1, 2, 3 } unordered elements are { 1, 2, 3 }
@@ -16691,7 +16691,7 @@ There is no extra whitespace here
       <Section name="Two equal-sized, non-equal, non-empty containers" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            array_a, !UnorderedElementsAre( array_b )
+            array_a, !UnorderedRangeEquals( array_b )
           </Original>
           <Expanded>
             { 1, 2, 3 } not unordered elements are { 2, 2, 3 }
@@ -16705,7 +16705,7 @@ There is no extra whitespace here
       <Section name="Two non-equal-sized, non-empty containers" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            vector_a, !UnorderedElementsAre( vector_b )
+            vector_a, !UnorderedRangeEquals( vector_b )
           </Original>
           <Expanded>
             { 1, 2, 3 } not unordered elements are { 1, 2, 3, 4 }
@@ -16719,7 +16719,7 @@ There is no extra whitespace here
       <Section name="Two equal non-empty containers (close enough)" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            vector_a, UnorderedElementsAre( vector_a_plus_1, close_enough )
+            vector_a, UnorderedRangeEquals( vector_a_plus_1, close_enough )
           </Original>
           <Expanded>
             { 1, 10, 20 } unordered elements are { 11, 21, 2 }
@@ -16733,7 +16733,7 @@ There is no extra whitespace here
       <Section name="Two non-equal non-empty containers (close enough)" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            vector_a, !UnorderedElementsAre( vector_b, close_enough )
+            vector_a, !UnorderedRangeEquals( vector_b, close_enough )
           </Original>
           <Expanded>
             { 1, 10, 21 } not unordered elements are { 11, 21, 3 }

@@ -1,12 +1,12 @@
 
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
-//   (See accompanying file LICENSE_1_0.txt or copy at
+//   (See accompanying file LICENSE.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
-#ifndef CATCH_MATCHERS_ELEMENTS_ARE_HPP_INCLUDED
-#define CATCH_MATCHERS_ELEMENTS_ARE_HPP_INCLUDED
+#ifndef CATCH_MATCHERS_RANGE_EQUALS_HPP_INCLUDED
+#define CATCH_MATCHERS_RANGE_EQUALS_HPP_INCLUDED
 
 #include <algorithm>
 #include <catch2/matchers/catch_matchers_templated.hpp>
@@ -20,22 +20,25 @@ namespace Catch {
          * elements in the same order
          */
         template <typename TargetRangeLike, typename Equality>
-        class ElementsAreElementsMatcher final : public MatcherGenericBase {
+        class RangeEqualsMatcher final : public MatcherGenericBase {
             TargetRangeLike m_desired;
             Equality m_predicate;
 
         public:
             template <typename TargetRangeLike2, typename Equality2>
-            ElementsAreElementsMatcher( TargetRangeLike2&& range,
-                                        Equality2&& predicate ):
+            RangeEqualsMatcher( TargetRangeLike2&& range,
+                                Equality2&& predicate ):
                 m_desired( CATCH_FORWARD( range ) ),
                 m_predicate( CATCH_FORWARD( predicate ) ) {}
 
-            template <typename RangeLike> bool match( RangeLike&& rng ) const {
-                return std::equal( m_desired.begin(),
-                                   m_desired.end(),
-                                   rng.begin(),
-                                   rng.end(),
+            template <typename RangeLike>
+            bool match( RangeLike&& rng ) const {
+                using std::begin;
+                using std::end;
+                return std::equal( begin(m_desired),
+                                   end(m_desired),
+                                   begin(rng),
+                                   end(rng),
                                    m_predicate );
             }
 
@@ -49,23 +52,25 @@ namespace Catch {
          * elements (but not necessarily in the same order)
          */
         template <typename TargetRangeLike, typename Equality>
-        class UnorderedElementsAreElementsMatcher final
-            : public MatcherGenericBase {
+        class UnorderedRangeEqualsMatcher final : public MatcherGenericBase {
             TargetRangeLike m_desired;
             Equality m_predicate;
 
         public:
             template <typename TargetRangeLike2, typename Equality2>
-            UnorderedElementsAreElementsMatcher( TargetRangeLike2&& range,
-                                                 Equality2&& predicate ):
+            UnorderedRangeEqualsMatcher( TargetRangeLike2&& range,
+                                         Equality2&& predicate ):
                 m_desired( CATCH_FORWARD( range ) ),
                 m_predicate( CATCH_FORWARD( predicate ) ) {}
 
-            template <typename RangeLike> bool match( RangeLike&& rng ) const {
-                return std::is_permutation( m_desired.begin(),
-                                            m_desired.end(),
-                                            rng.begin(),
-                                            rng.end(),
+            template <typename RangeLike>
+            bool match( RangeLike&& rng ) const {
+                using std::begin;
+                using std::end;
+                return std::is_permutation( begin( m_desired ),
+                                            end( m_desired ),
+                                            begin( rng ),
+                                            end( rng ),
                                             m_predicate );
             }
 
@@ -83,8 +88,8 @@ namespace Catch {
          */
         template <typename RangeLike>
         std::enable_if_t<!Detail::is_matcher<RangeLike>::value,
-                         ElementsAreElementsMatcher<RangeLike, std::equal_to<>>>
-        ElementsAre( RangeLike range ) {
+                         RangeEqualsMatcher<RangeLike, std::equal_to<>>>
+        RangeEquals( RangeLike&& range ) {
             return { CATCH_FORWARD( range ), std::equal_to<>{} };
         }
 
@@ -95,8 +100,8 @@ namespace Catch {
          * Uses to provided predicate `predicate` to do the comparisons
          */
         template <typename RangeLike, typename Equality>
-        ElementsAreElementsMatcher<RangeLike, Equality>
-        ElementsAre( RangeLike&& range, Equality&& predicate ) {
+        RangeEqualsMatcher<RangeLike, Equality>
+        RangeEquals( RangeLike&& range, Equality&& predicate ) {
             return { CATCH_FORWARD( range ), CATCH_FORWARD( predicate ) };
         }
 
@@ -109,8 +114,8 @@ namespace Catch {
         template <typename RangeLike>
         std::enable_if_t<
             !Detail::is_matcher<RangeLike>::value,
-            UnorderedElementsAreElementsMatcher<RangeLike, std::equal_to<>>>
-        UnorderedElementsAre( RangeLike range ) {
+            UnorderedRangeEqualsMatcher<RangeLike, std::equal_to<>>>
+        UnorderedRangeEquals( RangeLike&& range ) {
             return { CATCH_FORWARD( range ), std::equal_to<>{} };
         }
 
@@ -121,11 +126,11 @@ namespace Catch {
          * Uses to provided predicate `predicate` to do the comparisons
          */
         template <typename RangeLike, typename Equality>
-        UnorderedElementsAreElementsMatcher<RangeLike, Equality>
-        UnorderedElementsAre( RangeLike&& range, Equality&& predicate ) {
+        UnorderedRangeEqualsMatcher<RangeLike, Equality>
+        UnorderedRangeEquals( RangeLike&& range, Equality&& predicate ) {
             return { CATCH_FORWARD( range ), CATCH_FORWARD( predicate ) };
         }
     } // namespace Matchers
 } // namespace Catch
 
-#endif // CATCH_MATCHERS_ELEMENTS_ARE_HPP_INCLUDED
+#endif // CATCH_MATCHERS_RANGE_EQUALS_HPP_INCLUDED

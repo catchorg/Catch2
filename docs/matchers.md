@@ -226,14 +226,21 @@ definitions to handle generic range-like types. These are:
 * `Contains(T&& target_element, Comparator = std::equal_to<>{})`
 * `Contains(Matcher element_matcher)`
 * `AllMatch(Matcher element_matcher)`
-* `NoneMatch(Matcher element_matcher)`
 * `AnyMatch(Matcher element_matcher)`
+* `NoneMatch(Matcher element_matcher)`
 * `AllTrue()`
-* `NoneTrue()`
 * `AnyTrue()`
-* `ElementsAre(TargetRangeLike&&, Comparator = std::equal_to<>{})`
-* `UnorderedElementsAre(TargetRangeLike&&, Comparator = std::equal_to<>{})`
+* `NoneTrue()`
+* `RangeEquals(TargetRangeLike&&, Comparator = std::equal_to<>{})`
+* `UnorderedRangeEquals(TargetRangeLike&&, Comparator = std::equal_to<>{})`
 
+> `IsEmpty`, `SizeIs`, `Contains` were introduced in Catch2 3.0.1
+
+> `All/Any/NoneMatch` were introduced in Catch2 3.0.1
+
+> `All/Any/NoneTrue` were introduced in Catch2 3.1.0
+
+> `RangeEquals` and `UnorderedRangeEquals` matchers were [introduced](https://github.com/catchorg/Catch2/pull/2377) in Catch2 X.Y.Z
 
 `IsEmpty` should be self-explanatory. It successfully matches objects
 that are empty according to either `std::empty`, or ADL-found `empty`
@@ -260,7 +267,7 @@ all, none, or any of the contained elements are `true`, respectively.
 It works for ranges of `bool`s and ranges of elements (explicitly)
 convertible to `bool`.
 
-`ElementsAre` compares the range that the matcher is constructed with
+`RangeEquals` compares the range that the matcher is constructed with
 (the "target range") against the range to be tested. If the two ranges
 compare equal (according to `std::equal`, which uses `operator==` to
 determine equality), the match succeeds. The ranges do not need to be
@@ -268,12 +275,12 @@ the same type, and the element types do not need to be the same (e.g.
 you may compare `std::vector<int>` to `std::array<char>`). The
 containers do not need to be the same length.
 
-`UnorderedElementsAre` is similar to `ElementsAre`, but the order
+`UnorderedRangeEquals` is similar to `RangeEquals`, but the order
 does not matter. For example "1, 2, 3" would match "3, 2, 1". This
 matcher succeeds if `std::is_permuation` returns true. As for
-`ElementsAre`, this uses `operator==` to determine equality.
+`RangeEquals`, this uses `operator==` to determine equality.
 
-Both `ElementsAre` and `UnorderedElementsAre` optionally accept a
+Both `RangeEquals` and `UnorderedRangeEquals` optionally accept a
 predicate which can be used to compare the containers element-wise.
 
 To check a container elementwise against a given matcher, use
