@@ -226,13 +226,17 @@ definitions to handle generic range-like types. These are:
 * `Contains(T&& target_element, Comparator = std::equal_to<>{})`
 * `Contains(Matcher element_matcher)`
 * `AllMatch(Matcher element_matcher)`
-* `NoneMatch(Matcher element_matcher)`
 * `AnyMatch(Matcher element_matcher)`
-* `AllTrue()`
-* `NoneTrue()`
-* `AnyTrue()`
+* `NoneMatch(Matcher element_matcher)`
+* `AllTrue()`, `AnyTrue()`, `NoneTrue()`
 * `RangeEquals(TargetRangeLike&&, Comparator = std::equal_to<>{})`
 * `UnorderedRangeEquals(TargetRangeLike&&, Comparator = std::equal_to<>{})`
+
+> `IsEmpty`, `SizeIs`, `Contains` were introduced in Catch2 3.0.1
+
+> `All/Any/NoneMatch` were introduced in Catch2 3.0.1
+
+> `All/Any/NoneTrue` were introduced in Catch2 3.1.0
 
 > `RangeEquals` and `UnorderedRangeEquals` matchers were [introduced](https://github.com/catchorg/Catch2/pull/2377) in Catch2 X.Y.Z
 
