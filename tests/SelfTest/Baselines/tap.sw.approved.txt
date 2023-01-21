@@ -3223,6 +3223,36 @@ ok {test-number} - trim(StringRef(leading_whitespace)) == StringRef(no_whitespac
 ok {test-number} - trim(StringRef(trailing_whitespace)) == StringRef(no_whitespace) for: There is no extra whitespace here == There is no extra whitespace here
 # Trim strings
 ok {test-number} - trim(StringRef(whitespace_at_both_ends)) == StringRef(no_whitespace) for: There is no extra whitespace here == There is no extra whitespace here
+# Type conversions of ElementsAre and similar
+ok {test-number} - array_int_a, ElementsAre( vector_int_a ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
+# Type conversions of ElementsAre and similar
+ok {test-number} - array_int_a, UnorderedElementsAre( vector_int_a ) for: { 1, 2, 3 } unordered elements are { 1, 2, 3 }
+# Type conversions of ElementsAre and similar
+ok {test-number} - array_int_3, !ElementsAre( array_int_4 ) for: { 1, 2, 3 } not elements are { 1, 2, 3, 4 }
+# Type conversions of ElementsAre and similar
+ok {test-number} - array_int_3, !UnorderedElementsAre( array_int_4 ) for: { 1, 2, 3 } not unordered elements are { 1, 2, 3, 4 }
+# Type conversions of ElementsAre and similar
+ok {test-number} - array_int_a, ElementsAre( vector_char_a ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
+# Type conversions of ElementsAre and similar
+ok {test-number} - array_int_a, UnorderedElementsAre( vector_char_a ) for: { 1, 2, 3 } unordered elements are { 1, 2, 3 }
+# Type conversions of ElementsAre and similar
+ok {test-number} - with 1 message: 'ContainerIsRandomAccess( array_int_a ) != ContainerIsRandomAccess( list_char_a )'
+# Type conversions of ElementsAre and similar
+ok {test-number} - array_int_a, ElementsAre( list_char_a ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
+# Type conversions of ElementsAre and similar
+ok {test-number} - array_int_a, UnorderedElementsAre( list_char_a ) for: { 1, 2, 3 } unordered elements are { 1, 2, 3 }
+# Type conversions of ElementsAre and similar
+ok {test-number} - vector_int_a, ElementsAre( vector_char_a ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
+# Type conversions of ElementsAre and similar
+ok {test-number} - vector_int_a, UnorderedElementsAre( vector_char_a ) for: { 1, 2, 3 } unordered elements are { 1, 2, 3 }
+# Type conversions of ElementsAre and similar
+ok {test-number} - vector_int_a, !ElementsAre( vector_char_b ) for: { 1, 2, 3 } not elements are { 1, 2, 2 }
+# Type conversions of ElementsAre and similar
+ok {test-number} - vector_int_a, !UnorderedElementsAre( vector_char_b ) for: { 1, 2, 3 } not unordered elements are { 1, 2, 2 }
+# Type conversions of ElementsAre and similar
+ok {test-number} - vector_a, ElementsAre( array_a_plus_1, close_enough ) for: { 1, 2, 3 } elements are { 2, 3, 4 }
+# Type conversions of ElementsAre and similar
+ok {test-number} - vector_a, UnorderedElementsAre( array_a_plus_1, close_enough ) for: { 1, 2, 3 } unordered elements are { 2, 3, 4 }
 # Unexpected exceptions can be translated
 not ok {test-number} - unexpected exception with message: '3.14'
 # Upcasting special member functions
@@ -3365,6 +3395,26 @@ ok {test-number} - mocked.m_derefed[2] for: true
 ok {test-number} - !(mocked.m_derefed[3]) for: !false
 # Usage of AnyTrue range matcher
 ok {test-number} - !(mocked.m_derefed[4]) for: !false
+# Usage of ElementsAre range matcher
+ok {test-number} - empty_vector, ElementsAre( empty_vector ) for: {  } elements are {  }
+# Usage of ElementsAre range matcher
+ok {test-number} - empty_vector, !ElementsAre( non_empty_vector ) for: {  } not elements are { 1 }
+# Usage of ElementsAre range matcher
+ok {test-number} - non_empty_vector, !ElementsAre( empty_vector ) for: { 1 } not elements are {  }
+# Usage of ElementsAre range matcher
+ok {test-number} - non_empty_array, ElementsAre( non_empty_array ) for: { 1 } elements are { 1 }
+# Usage of ElementsAre range matcher
+ok {test-number} - array_a, ElementsAre( array_a ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
+# Usage of ElementsAre range matcher
+ok {test-number} - array_a, !ElementsAre( array_b ) for: { 1, 2, 3 } not elements are { 2, 2, 3 }
+# Usage of ElementsAre range matcher
+ok {test-number} - array_a, !ElementsAre( array_c ) for: { 1, 2, 3 } not elements are { 1, 2, 2 }
+# Usage of ElementsAre range matcher
+ok {test-number} - vector_a, !ElementsAre( vector_b ) for: { 1, 2, 3 } not elements are { 1, 2, 3, 4 }
+# Usage of ElementsAre range matcher
+ok {test-number} - vector_a, ElementsAre( vector_a_plus_1, close_enough ) for: { 1, 2, 3 } elements are { 2, 3, 4 }
+# Usage of ElementsAre range matcher
+ok {test-number} - vector_a, !ElementsAre( vector_b, close_enough ) for: { 1, 2, 3 } not elements are { 3, 3, 4 }
 # Usage of NoneMatch range matcher
 ok {test-number} - data, NoneMatch(SizeIs(6)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } none match has size == 6
 # Usage of NoneMatch range matcher
@@ -3433,6 +3483,24 @@ ok {test-number} - mocked.m_derefed[2] for: true
 ok {test-number} - !(mocked.m_derefed[3]) for: !false
 # Usage of NoneTrue range matcher
 ok {test-number} - !(mocked.m_derefed[4]) for: !false
+# Usage of UnorderedElementsAre range matcher
+ok {test-number} - empty_vector, UnorderedElementsAre( empty_vector ) for: {  } unordered elements are {  }
+# Usage of UnorderedElementsAre range matcher
+ok {test-number} - empty_vector, !UnorderedElementsAre( non_empty_vector ) for: {  } not unordered elements are { 1 }
+# Usage of UnorderedElementsAre range matcher
+ok {test-number} - non_empty_vector, !UnorderedElementsAre( empty_vector ) for: { 1 } not unordered elements are {  }
+# Usage of UnorderedElementsAre range matcher
+ok {test-number} - non_empty_array, UnorderedElementsAre( non_empty_array ) for: { 1 } unordered elements are { 1 }
+# Usage of UnorderedElementsAre range matcher
+ok {test-number} - array_a, UnorderedElementsAre( array_a ) for: { 1, 2, 3 } unordered elements are { 1, 2, 3 }
+# Usage of UnorderedElementsAre range matcher
+ok {test-number} - array_a, !UnorderedElementsAre( array_b ) for: { 1, 2, 3 } not unordered elements are { 2, 2, 3 }
+# Usage of UnorderedElementsAre range matcher
+ok {test-number} - vector_a, !UnorderedElementsAre( vector_b ) for: { 1, 2, 3 } not unordered elements are { 1, 2, 3, 4 }
+# Usage of UnorderedElementsAre range matcher
+ok {test-number} - vector_a, UnorderedElementsAre( vector_a_plus_1, close_enough ) for: { 1, 10, 20 } unordered elements are { 11, 21, 2 }
+# Usage of UnorderedElementsAre range matcher
+ok {test-number} - vector_a, !UnorderedElementsAre( vector_b, close_enough ) for: { 1, 10, 21 } not unordered elements are { 11, 21, 3 }
 # Usage of the SizeIs range matcher
 ok {test-number} - empty_vec, SizeIs(0) for: {  } has size == 0
 # Usage of the SizeIs range matcher
@@ -4371,5 +4439,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2184
+1..2218
 

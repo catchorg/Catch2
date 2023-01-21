@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="128" skipped="11" tests="2184" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="128" skipped="11" tests="2218" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1366,6 +1366,13 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Tracker/successfully close one section, then find another/Re-enter - skips S1 and enters S2/fail S2" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Tracker/open a nested section" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Trim strings" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Type conversions of ElementsAre and similar/Container conversions/Two equal containers of different container types" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Type conversions of ElementsAre and similar/Container conversions/Two equal containers of different container types (differ in array N)" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Type conversions of ElementsAre and similar/Container conversions/Two equal containers of different container types and value types" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Type conversions of ElementsAre and similar/Container conversions/Two equal containers, one random access, one not" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Type conversions of ElementsAre and similar/Value type/Two equal containers of different value types" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Type conversions of ElementsAre and similar/Value type/Two non-equal containers of different value types" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Type conversions of ElementsAre and similar/Custom predicate/Two equal non-empty containers (close enough)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Unexpected exceptions can be translated" time="{duration}" status="run">
       <error type="TEST_CASE">
 FAILED:
@@ -1401,6 +1408,14 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Contained type is convertible to bool/All false evaluates to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Shortcircuiting/All are read" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Shortcircuiting/Short-circuited" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of ElementsAre range matcher/Basic usage/Empty container matches empty container" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of ElementsAre range matcher/Basic usage/Empty container does not match non-empty container" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of ElementsAre range matcher/Basic usage/Two equal 1-length non-empty containers" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of ElementsAre range matcher/Basic usage/Two equal-sized, equal, non-empty containers" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of ElementsAre range matcher/Basic usage/Two equal-sized, non-equal, non-empty containers" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of ElementsAre range matcher/Basic usage/Two non-equal-sized, non-empty containers (with same first elements)" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of ElementsAre range matcher/Custom predicate/Two equal non-empty containers (close enough)" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of ElementsAre range matcher/Custom predicate/Two non-equal non-empty containers (close enough)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneMatch range matcher/Basic usage" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneMatch range matcher/Type requires ADL found begin and end" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneMatch range matcher/Shortcircuiting/All are read" time="{duration}" status="run"/>
@@ -1414,6 +1429,14 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Contained type is convertible to bool/All false evaluates to true" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Shortcircuiting/All are read" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Shortcircuiting/Short-circuited" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of UnorderedElementsAre range matcher/Basic usage/Empty container matches empty container" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of UnorderedElementsAre range matcher/Basic usage/Empty container does not match non-empty container" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of UnorderedElementsAre range matcher/Basic usage/Two equal 1-length non-empty containers" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of UnorderedElementsAre range matcher/Basic usage/Two equal-sized, equal, non-empty containers" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of UnorderedElementsAre range matcher/Basic usage/Two equal-sized, non-equal, non-empty containers" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of UnorderedElementsAre range matcher/Basic usage/Two non-equal-sized, non-empty containers" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of UnorderedElementsAre range matcher/Custom predicate/Two equal non-empty containers (close enough)" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of UnorderedElementsAre range matcher/Custom predicate/Two non-equal non-empty containers (close enough)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of the SizeIs range matcher/Some with stdlib containers" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of the SizeIs range matcher/Type requires ADL found size free function" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of the SizeIs range matcher/Type has size member" time="{duration}" status="run"/>
