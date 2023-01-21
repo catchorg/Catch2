@@ -487,12 +487,10 @@ set(CATCH_WARNING_TARGETS ${CATCH_WARNING_TARGETS} PARENT_SCOPE)
 # so we want to check & warn users if they do this. However, we won't abort
 # the configuration step so that we don't have to also provide an override.
 if (BUILD_SHARED_LIBS)
-    if (MSVC)
-        set_target_properties(Catch2 Catch2WithMain
-          PROPERTIES
-            WINDOWS_EXPORT_ALL_SYMBOLS ON
-        )
-    endif()
+    set_target_properties(Catch2 Catch2WithMain
+      PROPERTIES
+        WINDOWS_EXPORT_ALL_SYMBOLS ON
+    )
 
     get_target_property(_VisPreset Catch2 CXX_VISIBILITY_PRESET)
     if (NOT MSVC AND _VisPreset STREQUAL "hidden")
