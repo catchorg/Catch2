@@ -1859,8 +1859,8 @@ There is no extra whitespace here
 StringManip.tests.cpp:<line number>: passed: trim(StringRef(whitespace_at_both_ends)) == StringRef(no_whitespace) for: There is no extra whitespace here
 ==
 There is no extra whitespace here
-MatchersRanges.tests.cpp:<line number>: passed: array_int_a, RangeEquals( vector_int_a ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
-MatchersRanges.tests.cpp:<line number>: passed: array_int_a, UnorderedRangeEquals( vector_int_a ) for: { 1, 2, 3 } unordered elements are { 1, 2, 3 }
+MatchersRanges.tests.cpp:<line number>: passed: array_int_a, RangeEquals( c_array ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
+MatchersRanges.tests.cpp:<line number>: passed: array_int_a, UnorderedRangeEquals( c_array ) for: { 1, 2, 3 } unordered elements are { 1, 2, 3 }
 MatchersRanges.tests.cpp:<line number>: passed: array_int_3, !RangeEquals( array_int_4 ) for: { 1, 2, 3 } not elements are { 1, 2, 3, 4 }
 MatchersRanges.tests.cpp:<line number>: passed: array_int_3, !UnorderedRangeEquals( array_int_4 ) for: { 1, 2, 3 } not unordered elements are { 1, 2, 3, 4 }
 MatchersRanges.tests.cpp:<line number>: passed: array_int_a, RangeEquals( vector_char_a ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
@@ -1872,6 +1872,8 @@ MatchersRanges.tests.cpp:<line number>: passed: vector_int_a, RangeEquals( vecto
 MatchersRanges.tests.cpp:<line number>: passed: vector_int_a, UnorderedRangeEquals( vector_char_a ) for: { 1, 2, 3 } unordered elements are { 1, 2, 3 }
 MatchersRanges.tests.cpp:<line number>: passed: vector_int_a, !RangeEquals( vector_char_b ) for: { 1, 2, 3 } not elements are { 1, 2, 2 }
 MatchersRanges.tests.cpp:<line number>: passed: vector_int_a, !UnorderedRangeEquals( vector_char_b ) for: { 1, 2, 3 } not unordered elements are { 1, 2, 2 }
+MatchersRanges.tests.cpp:<line number>: passed: a, !RangeEquals( b ) for: { 1, 2, 3 } not elements are { 3, 2, 1 }
+MatchersRanges.tests.cpp:<line number>: passed: a, UnorderedRangeEquals( b ) for: { 1, 2, 3 } unordered elements are { 3, 2, 1 }
 MatchersRanges.tests.cpp:<line number>: passed: vector_a, RangeEquals( array_a_plus_1, close_enough ) for: { 1, 2, 3 } elements are { 2, 3, 4 }
 MatchersRanges.tests.cpp:<line number>: passed: vector_a, UnorderedRangeEquals( array_a_plus_1, close_enough ) for: { 1, 2, 3 } unordered elements are { 2, 3, 4 }
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: '3.14'
@@ -2520,6 +2522,6 @@ InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
 test cases:  407 |  308 passed |  84 failed | 5 skipped | 10 failed as expected
-assertions: 2207 | 2031 passed | 145 failed | 31 failed as expected
+assertions: 2209 | 2033 passed | 145 failed | 31 failed as expected
 
 

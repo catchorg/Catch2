@@ -15258,7 +15258,7 @@ There is no extra whitespace here
       <Section name="Two equal containers of different container types" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            array_int_a, RangeEquals( vector_int_a )
+            array_int_a, RangeEquals( c_array )
           </Original>
           <Expanded>
             { 1, 2, 3 } elements are { 1, 2, 3 }
@@ -15266,7 +15266,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            array_int_a, UnorderedRangeEquals( vector_int_a )
+            array_int_a, UnorderedRangeEquals( c_array )
           </Original>
           <Expanded>
             { 1, 2, 3 } unordered elements are { 1, 2, 3 }
@@ -15384,6 +15384,25 @@ There is no extra whitespace here
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
       </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Ranges with begin that needs ADL" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Original>
+          a, !RangeEquals( b )
+        </Original>
+        <Expanded>
+          { 1, 2, 3 } not elements are { 3, 2, 1 }
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Original>
+          a, UnorderedRangeEquals( b )
+        </Original>
+        <Expanded>
+          { 1, 2, 3 } unordered elements are { 3, 2, 1 }
+        </Expanded>
+      </Expression>
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Custom predicate" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
@@ -21022,6 +21041,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2031" failures="145" expectedFailures="31" skips="11"/>
+  <OverallResults successes="2033" failures="145" expectedFailures="31" skips="11"/>
   <OverallResultsCases successes="308" failures="84" expectedFailures="10" skips="5"/>
 </Catch2TestRun>

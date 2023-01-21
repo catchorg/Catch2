@@ -3224,9 +3224,9 @@ ok {test-number} - trim(StringRef(trailing_whitespace)) == StringRef(no_whitespa
 # Trim strings
 ok {test-number} - trim(StringRef(whitespace_at_both_ends)) == StringRef(no_whitespace) for: There is no extra whitespace here == There is no extra whitespace here
 # Type conversions of RangeEquals and similar
-ok {test-number} - array_int_a, RangeEquals( vector_int_a ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
+ok {test-number} - array_int_a, RangeEquals( c_array ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
 # Type conversions of RangeEquals and similar
-ok {test-number} - array_int_a, UnorderedRangeEquals( vector_int_a ) for: { 1, 2, 3 } unordered elements are { 1, 2, 3 }
+ok {test-number} - array_int_a, UnorderedRangeEquals( c_array ) for: { 1, 2, 3 } unordered elements are { 1, 2, 3 }
 # Type conversions of RangeEquals and similar
 ok {test-number} - array_int_3, !RangeEquals( array_int_4 ) for: { 1, 2, 3 } not elements are { 1, 2, 3, 4 }
 # Type conversions of RangeEquals and similar
@@ -3249,6 +3249,10 @@ ok {test-number} - vector_int_a, UnorderedRangeEquals( vector_char_a ) for: { 1,
 ok {test-number} - vector_int_a, !RangeEquals( vector_char_b ) for: { 1, 2, 3 } not elements are { 1, 2, 2 }
 # Type conversions of RangeEquals and similar
 ok {test-number} - vector_int_a, !UnorderedRangeEquals( vector_char_b ) for: { 1, 2, 3 } not unordered elements are { 1, 2, 2 }
+# Type conversions of RangeEquals and similar
+ok {test-number} - a, !RangeEquals( b ) for: { 1, 2, 3 } not elements are { 3, 2, 1 }
+# Type conversions of RangeEquals and similar
+ok {test-number} - a, UnorderedRangeEquals( b ) for: { 1, 2, 3 } unordered elements are { 3, 2, 1 }
 # Type conversions of RangeEquals and similar
 ok {test-number} - vector_a, RangeEquals( array_a_plus_1, close_enough ) for: { 1, 2, 3 } elements are { 2, 3, 4 }
 # Type conversions of RangeEquals and similar
@@ -4439,5 +4443,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2218
+1..2220
 

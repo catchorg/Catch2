@@ -13107,12 +13107,12 @@ MatchersRanges.tests.cpp:<line number>
 ...............................................................................
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( array_int_a, RangeEquals( vector_int_a ) )
+  CHECK_THAT( array_int_a, RangeEquals( c_array ) )
 with expansion:
   { 1, 2, 3 } elements are { 1, 2, 3 }
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( array_int_a, UnorderedRangeEquals( vector_int_a ) )
+  CHECK_THAT( array_int_a, UnorderedRangeEquals( c_array ) )
 with expansion:
   { 1, 2, 3 } unordered elements are { 1, 2, 3 }
 
@@ -13210,6 +13210,23 @@ MatchersRanges.tests.cpp:<line number>: PASSED:
   CHECK_THAT( vector_int_a, !UnorderedRangeEquals( vector_char_b ) )
 with expansion:
   { 1, 2, 3 } not unordered elements are { 1, 2, 2 }
+
+-------------------------------------------------------------------------------
+Type conversions of RangeEquals and similar
+  Ranges with begin that needs ADL
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( a, !RangeEquals( b ) )
+with expansion:
+  { 1, 2, 3 } not elements are { 3, 2, 1 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( a, UnorderedRangeEquals( b ) )
+with expansion:
+  { 1, 2, 3 } unordered elements are { 3, 2, 1 }
 
 -------------------------------------------------------------------------------
 Type conversions of RangeEquals and similar
@@ -18077,5 +18094,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  407 |  308 passed |  84 failed | 5 skipped | 10 failed as expected
-assertions: 2207 | 2031 passed | 145 failed | 31 failed as expected
+assertions: 2209 | 2033 passed | 145 failed | 31 failed as expected
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="128" skipped="11" tests="2218" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="128" skipped="11" tests="2220" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1373,6 +1373,7 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Container conversions/Two equal containers, one random access, one not" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Value type/Two equal containers of different value types" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Value type/Two non-equal containers of different value types" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Ranges with begin that needs ADL" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Custom predicate/Two equal non-empty containers (close enough)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Unexpected exceptions can be translated" time="{duration}" status="run">
       <error type="TEST_CASE">

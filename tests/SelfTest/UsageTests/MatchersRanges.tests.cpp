@@ -987,9 +987,9 @@ TEST_CASE( "Type conversions of RangeEquals and similar",
     SECTION( "Container conversions" ) {
         SECTION( "Two equal containers of different container types" ) {
             const std::array<int, 3> array_int_a{ { 1, 2, 3 } };
-            const std::vector<int> vector_int_a{ 1, 2, 3 };
-            CHECK_THAT( array_int_a, RangeEquals( vector_int_a ) );
-            CHECK_THAT( array_int_a, UnorderedRangeEquals( vector_int_a ) );
+            const int c_array[3] = { 1, 2, 3 };
+            CHECK_THAT( array_int_a, RangeEquals( c_array ) );
+            CHECK_THAT( array_int_a, UnorderedRangeEquals( c_array ) );
         }
         SECTION( "Two equal containers of different container types "
                     "(differ in array N)" ) {
@@ -1031,6 +1031,12 @@ TEST_CASE( "Type conversions of RangeEquals and similar",
             CHECK_THAT( vector_int_a, !RangeEquals( vector_char_b ) );
             CHECK_THAT( vector_int_a, !UnorderedRangeEquals( vector_char_b ) );
         }
+    }
+
+    SECTION( "Ranges with begin that needs ADL" ) {
+        unrelated::needs_ADL_begin<int> a{ 1, 2, 3 }, b{ 3, 2, 1 };
+        REQUIRE_THAT( a, !RangeEquals( b ) );
+        REQUIRE_THAT( a, UnorderedRangeEquals( b ) );
     }
 
     SECTION( "Custom predicate" ) {

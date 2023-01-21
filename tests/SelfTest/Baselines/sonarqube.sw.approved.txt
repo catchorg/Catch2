@@ -1371,6 +1371,7 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Type conversions of RangeEquals and similar/Container conversions/Two equal containers, one random access, one not" duration="{duration}"/>
     <testCase name="Type conversions of RangeEquals and similar/Value type/Two equal containers of different value types" duration="{duration}"/>
     <testCase name="Type conversions of RangeEquals and similar/Value type/Two non-equal containers of different value types" duration="{duration}"/>
+    <testCase name="Type conversions of RangeEquals and similar/Ranges with begin that needs ADL" duration="{duration}"/>
     <testCase name="Type conversions of RangeEquals and similar/Custom predicate/Two equal non-empty containers (close enough)" duration="{duration}"/>
     <testCase name="Usage of AllMatch range matcher/Basic usage" duration="{duration}"/>
     <testCase name="Usage of AllMatch range matcher/Type requires ADL found begin and end" duration="{duration}"/>
