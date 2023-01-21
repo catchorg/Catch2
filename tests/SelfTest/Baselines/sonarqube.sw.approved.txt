@@ -1365,6 +1365,14 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Basic use of the Empty range matcher/Simple, std-provided containers" duration="{duration}"/>
     <testCase name="Basic use of the Empty range matcher/Type with empty" duration="{duration}"/>
     <testCase name="Basic use of the Empty range matcher/Type requires ADL found empty free function" duration="{duration}"/>
+    <testCase name="Type conversions of RangeEquals and similar/Container conversions/Two equal containers of different container types" duration="{duration}"/>
+    <testCase name="Type conversions of RangeEquals and similar/Container conversions/Two equal containers of different container types (differ in array N)" duration="{duration}"/>
+    <testCase name="Type conversions of RangeEquals and similar/Container conversions/Two equal containers of different container types and value types" duration="{duration}"/>
+    <testCase name="Type conversions of RangeEquals and similar/Container conversions/Two equal containers, one random access, one not" duration="{duration}"/>
+    <testCase name="Type conversions of RangeEquals and similar/Value type/Two equal containers of different value types" duration="{duration}"/>
+    <testCase name="Type conversions of RangeEquals and similar/Value type/Two non-equal containers of different value types" duration="{duration}"/>
+    <testCase name="Type conversions of RangeEquals and similar/Ranges with begin that needs ADL" duration="{duration}"/>
+    <testCase name="Type conversions of RangeEquals and similar/Custom predicate/Two equal non-empty containers (close enough)" duration="{duration}"/>
     <testCase name="Usage of AllMatch range matcher/Basic usage" duration="{duration}"/>
     <testCase name="Usage of AllMatch range matcher/Type requires ADL found begin and end" duration="{duration}"/>
     <testCase name="Usage of AllMatch range matcher/Shortcircuiting/All are read" duration="{duration}"/>
@@ -1404,6 +1412,22 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Usage of NoneTrue range matcher/Contained type is convertible to bool/All false evaluates to true" duration="{duration}"/>
     <testCase name="Usage of NoneTrue range matcher/Shortcircuiting/All are read" duration="{duration}"/>
     <testCase name="Usage of NoneTrue range matcher/Shortcircuiting/Short-circuited" duration="{duration}"/>
+    <testCase name="Usage of RangeEquals range matcher/Basic usage/Empty container matches empty container" duration="{duration}"/>
+    <testCase name="Usage of RangeEquals range matcher/Basic usage/Empty container does not match non-empty container" duration="{duration}"/>
+    <testCase name="Usage of RangeEquals range matcher/Basic usage/Two equal 1-length non-empty containers" duration="{duration}"/>
+    <testCase name="Usage of RangeEquals range matcher/Basic usage/Two equal-sized, equal, non-empty containers" duration="{duration}"/>
+    <testCase name="Usage of RangeEquals range matcher/Basic usage/Two equal-sized, non-equal, non-empty containers" duration="{duration}"/>
+    <testCase name="Usage of RangeEquals range matcher/Basic usage/Two non-equal-sized, non-empty containers (with same first elements)" duration="{duration}"/>
+    <testCase name="Usage of RangeEquals range matcher/Custom predicate/Two equal non-empty containers (close enough)" duration="{duration}"/>
+    <testCase name="Usage of RangeEquals range matcher/Custom predicate/Two non-equal non-empty containers (close enough)" duration="{duration}"/>
+    <testCase name="Usage of UnorderedRangeEquals range matcher/Basic usage/Empty container matches empty container" duration="{duration}"/>
+    <testCase name="Usage of UnorderedRangeEquals range matcher/Basic usage/Empty container does not match non-empty container" duration="{duration}"/>
+    <testCase name="Usage of UnorderedRangeEquals range matcher/Basic usage/Two equal 1-length non-empty containers" duration="{duration}"/>
+    <testCase name="Usage of UnorderedRangeEquals range matcher/Basic usage/Two equal-sized, equal, non-empty containers" duration="{duration}"/>
+    <testCase name="Usage of UnorderedRangeEquals range matcher/Basic usage/Two equal-sized, non-equal, non-empty containers" duration="{duration}"/>
+    <testCase name="Usage of UnorderedRangeEquals range matcher/Basic usage/Two non-equal-sized, non-empty containers" duration="{duration}"/>
+    <testCase name="Usage of UnorderedRangeEquals range matcher/Custom predicate/Two equal non-empty containers (close enough)" duration="{duration}"/>
+    <testCase name="Usage of UnorderedRangeEquals range matcher/Custom predicate/Two non-equal non-empty containers (close enough)" duration="{duration}"/>
     <testCase name="Usage of the SizeIs range matcher/Some with stdlib containers" duration="{duration}"/>
     <testCase name="Usage of the SizeIs range matcher/Type requires ADL found size free function" duration="{duration}"/>
     <testCase name="Usage of the SizeIs range matcher/Type has size member" duration="{duration}"/>

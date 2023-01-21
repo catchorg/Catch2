@@ -3223,6 +3223,40 @@ ok {test-number} - trim(StringRef(leading_whitespace)) == StringRef(no_whitespac
 ok {test-number} - trim(StringRef(trailing_whitespace)) == StringRef(no_whitespace) for: There is no extra whitespace here == There is no extra whitespace here
 # Trim strings
 ok {test-number} - trim(StringRef(whitespace_at_both_ends)) == StringRef(no_whitespace) for: There is no extra whitespace here == There is no extra whitespace here
+# Type conversions of RangeEquals and similar
+ok {test-number} - array_int_a, RangeEquals( c_array ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
+# Type conversions of RangeEquals and similar
+ok {test-number} - array_int_a, UnorderedRangeEquals( c_array ) for: { 1, 2, 3 } unordered elements are { 1, 2, 3 }
+# Type conversions of RangeEquals and similar
+ok {test-number} - array_int_3, !RangeEquals( array_int_4 ) for: { 1, 2, 3 } not elements are { 1, 2, 3, 4 }
+# Type conversions of RangeEquals and similar
+ok {test-number} - array_int_3, !UnorderedRangeEquals( array_int_4 ) for: { 1, 2, 3 } not unordered elements are { 1, 2, 3, 4 }
+# Type conversions of RangeEquals and similar
+ok {test-number} - array_int_a, RangeEquals( vector_char_a ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
+# Type conversions of RangeEquals and similar
+ok {test-number} - array_int_a, UnorderedRangeEquals( vector_char_a ) for: { 1, 2, 3 } unordered elements are { 1, 2, 3 }
+# Type conversions of RangeEquals and similar
+ok {test-number} - with 1 message: 'ContainerIsRandomAccess( array_int_a ) != ContainerIsRandomAccess( list_char_a )'
+# Type conversions of RangeEquals and similar
+ok {test-number} - array_int_a, RangeEquals( list_char_a ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
+# Type conversions of RangeEquals and similar
+ok {test-number} - array_int_a, UnorderedRangeEquals( list_char_a ) for: { 1, 2, 3 } unordered elements are { 1, 2, 3 }
+# Type conversions of RangeEquals and similar
+ok {test-number} - vector_int_a, RangeEquals( vector_char_a ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
+# Type conversions of RangeEquals and similar
+ok {test-number} - vector_int_a, UnorderedRangeEquals( vector_char_a ) for: { 1, 2, 3 } unordered elements are { 1, 2, 3 }
+# Type conversions of RangeEquals and similar
+ok {test-number} - vector_int_a, !RangeEquals( vector_char_b ) for: { 1, 2, 3 } not elements are { 1, 2, 2 }
+# Type conversions of RangeEquals and similar
+ok {test-number} - vector_int_a, !UnorderedRangeEquals( vector_char_b ) for: { 1, 2, 3 } not unordered elements are { 1, 2, 2 }
+# Type conversions of RangeEquals and similar
+ok {test-number} - a, !RangeEquals( b ) for: { 1, 2, 3 } not elements are { 3, 2, 1 }
+# Type conversions of RangeEquals and similar
+ok {test-number} - a, UnorderedRangeEquals( b ) for: { 1, 2, 3 } unordered elements are { 3, 2, 1 }
+# Type conversions of RangeEquals and similar
+ok {test-number} - vector_a, RangeEquals( array_a_plus_1, close_enough ) for: { 1, 2, 3 } elements are { 2, 3, 4 }
+# Type conversions of RangeEquals and similar
+ok {test-number} - vector_a, UnorderedRangeEquals( array_a_plus_1, close_enough ) for: { 1, 2, 3 } unordered elements are { 2, 3, 4 }
 # Unexpected exceptions can be translated
 not ok {test-number} - unexpected exception with message: '3.14'
 # Upcasting special member functions
@@ -3433,6 +3467,44 @@ ok {test-number} - mocked.m_derefed[2] for: true
 ok {test-number} - !(mocked.m_derefed[3]) for: !false
 # Usage of NoneTrue range matcher
 ok {test-number} - !(mocked.m_derefed[4]) for: !false
+# Usage of RangeEquals range matcher
+ok {test-number} - empty_vector, RangeEquals( empty_vector ) for: {  } elements are {  }
+# Usage of RangeEquals range matcher
+ok {test-number} - empty_vector, !RangeEquals( non_empty_vector ) for: {  } not elements are { 1 }
+# Usage of RangeEquals range matcher
+ok {test-number} - non_empty_vector, !RangeEquals( empty_vector ) for: { 1 } not elements are {  }
+# Usage of RangeEquals range matcher
+ok {test-number} - non_empty_array, RangeEquals( non_empty_array ) for: { 1 } elements are { 1 }
+# Usage of RangeEquals range matcher
+ok {test-number} - array_a, RangeEquals( array_a ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
+# Usage of RangeEquals range matcher
+ok {test-number} - array_a, !RangeEquals( array_b ) for: { 1, 2, 3 } not elements are { 2, 2, 3 }
+# Usage of RangeEquals range matcher
+ok {test-number} - array_a, !RangeEquals( array_c ) for: { 1, 2, 3 } not elements are { 1, 2, 2 }
+# Usage of RangeEquals range matcher
+ok {test-number} - vector_a, !RangeEquals( vector_b ) for: { 1, 2, 3 } not elements are { 1, 2, 3, 4 }
+# Usage of RangeEquals range matcher
+ok {test-number} - vector_a, RangeEquals( vector_a_plus_1, close_enough ) for: { 1, 2, 3 } elements are { 2, 3, 4 }
+# Usage of RangeEquals range matcher
+ok {test-number} - vector_a, !RangeEquals( vector_b, close_enough ) for: { 1, 2, 3 } not elements are { 3, 3, 4 }
+# Usage of UnorderedRangeEquals range matcher
+ok {test-number} - empty_vector, UnorderedRangeEquals( empty_vector ) for: {  } unordered elements are {  }
+# Usage of UnorderedRangeEquals range matcher
+ok {test-number} - empty_vector, !UnorderedRangeEquals( non_empty_vector ) for: {  } not unordered elements are { 1 }
+# Usage of UnorderedRangeEquals range matcher
+ok {test-number} - non_empty_vector, !UnorderedRangeEquals( empty_vector ) for: { 1 } not unordered elements are {  }
+# Usage of UnorderedRangeEquals range matcher
+ok {test-number} - non_empty_array, UnorderedRangeEquals( non_empty_array ) for: { 1 } unordered elements are { 1 }
+# Usage of UnorderedRangeEquals range matcher
+ok {test-number} - array_a, UnorderedRangeEquals( array_a ) for: { 1, 2, 3 } unordered elements are { 1, 2, 3 }
+# Usage of UnorderedRangeEquals range matcher
+ok {test-number} - array_a, !UnorderedRangeEquals( array_b ) for: { 1, 2, 3 } not unordered elements are { 2, 2, 3 }
+# Usage of UnorderedRangeEquals range matcher
+ok {test-number} - vector_a, !UnorderedRangeEquals( vector_b ) for: { 1, 2, 3 } not unordered elements are { 1, 2, 3, 4 }
+# Usage of UnorderedRangeEquals range matcher
+ok {test-number} - vector_a, UnorderedRangeEquals( vector_a_plus_1, close_enough ) for: { 1, 10, 20 } unordered elements are { 11, 21, 2 }
+# Usage of UnorderedRangeEquals range matcher
+ok {test-number} - vector_a, !UnorderedRangeEquals( vector_b, close_enough ) for: { 1, 10, 21 } not unordered elements are { 11, 21, 3 }
 # Usage of the SizeIs range matcher
 ok {test-number} - empty_vec, SizeIs(0) for: {  } has size == 0
 # Usage of the SizeIs range matcher
@@ -4371,5 +4443,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2184
+1..2220
 

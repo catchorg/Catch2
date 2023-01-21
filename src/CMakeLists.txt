@@ -252,6 +252,7 @@ set(MATCHER_HEADERS
   ${SOURCES_DIR}/matchers/catch_matchers_all.hpp
   ${SOURCES_DIR}/matchers/catch_matchers_container_properties.hpp
   ${SOURCES_DIR}/matchers/catch_matchers_contains.hpp
+  ${SOURCES_DIR}/matchers/catch_matchers_range_equals.hpp
   ${SOURCES_DIR}/matchers/catch_matchers_exception.hpp
   ${SOURCES_DIR}/matchers/catch_matchers_floating_point.hpp
   ${SOURCES_DIR}/matchers/catch_matchers_predicate.hpp

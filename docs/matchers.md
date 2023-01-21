@@ -231,6 +231,10 @@ definitions to handle generic range-like types. These are:
 * `AllTrue()`
 * `NoneTrue()`
 * `AnyTrue()`
+* `RangeEquals(TargetRangeLike&&, Comparator = std::equal_to<>{})`
+* `UnorderedRangeEquals(TargetRangeLike&&, Comparator = std::equal_to<>{})`
+
+> `RangeEquals` and `UnorderedRangeEquals` matchers were [introduced](https://github.com/catchorg/Catch2/pull/2377) in Catch2 X.Y.Z
 
 `IsEmpty` should be self-explanatory. It successfully matches objects
 that are empty according to either `std::empty`, or ADL-found `empty`
@@ -256,6 +260,25 @@ respectively.
 all, none, or any of the contained elements are `true`, respectively.
 It works for ranges of `bool`s and ranges of elements (explicitly)
 convertible to `bool`.
+
+`RangeEquals` compares the range that the matcher is constructed with
+(the "target range") against the range to be tested, element-wise. The
+match succeeds if all elements from the two ranges compare equal (using
+`operator==` by default). The ranges do not need to be the same type,
+and the element types do not need to be the same, as long as they are
+comparable. (e.g. you may compare `std::vector<int>` to `std::array<char>`).
+
+`UnorderedRangeEquals` is similar to `RangeEquals`, but the order
+does not matter. For example "1, 2, 3" would match "3, 2, 1", but not
+"1, 1, 2, 3" As with `RangeEquals`, `UnorderedRangeEquals` compares
+the individual elements using using `operator==` by default.
+
+Both `RangeEquals` and `UnorderedRangeEquals` optionally accept a
+predicate which can be used to compare the containers element-wise.
+
+To check a container elementwise against a given matcher, use
+`AllMatch`.
+
 
 ## Writing custom matchers (old style)
 

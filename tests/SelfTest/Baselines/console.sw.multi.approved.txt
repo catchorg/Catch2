@@ -13092,6 +13092,154 @@ with expansion:
   There is no extra whitespace here
 
 -------------------------------------------------------------------------------
+Type conversions of RangeEquals and similar
+  Container conversions
+  Two equal containers of different container types
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( array_int_a, RangeEquals( c_array ) )
+with expansion:
+  { 1, 2, 3 } elements are { 1, 2, 3 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( array_int_a, UnorderedRangeEquals( c_array ) )
+with expansion:
+  { 1, 2, 3 } unordered elements are { 1, 2, 3 }
+
+-------------------------------------------------------------------------------
+Type conversions of RangeEquals and similar
+  Container conversions
+  Two equal containers of different container types (differ in array N)
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( array_int_3, !RangeEquals( array_int_4 ) )
+with expansion:
+  { 1, 2, 3 } not elements are { 1, 2, 3, 4 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( array_int_3, !UnorderedRangeEquals( array_int_4 ) )
+with expansion:
+  { 1, 2, 3 } not unordered elements are { 1, 2, 3, 4 }
+
+-------------------------------------------------------------------------------
+Type conversions of RangeEquals and similar
+  Container conversions
+  Two equal containers of different container types and value types
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( array_int_a, RangeEquals( vector_char_a ) )
+with expansion:
+  { 1, 2, 3 } elements are { 1, 2, 3 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( array_int_a, UnorderedRangeEquals( vector_char_a ) )
+with expansion:
+  { 1, 2, 3 } unordered elements are { 1, 2, 3 }
+
+-------------------------------------------------------------------------------
+Type conversions of RangeEquals and similar
+  Container conversions
+  Two equal containers, one random access, one not
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+with message:
+  ContainerIsRandomAccess( array_int_a ) != ContainerIsRandomAccess(
+  list_char_a )
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( array_int_a, RangeEquals( list_char_a ) )
+with expansion:
+  { 1, 2, 3 } elements are { 1, 2, 3 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( array_int_a, UnorderedRangeEquals( list_char_a ) )
+with expansion:
+  { 1, 2, 3 } unordered elements are { 1, 2, 3 }
+
+-------------------------------------------------------------------------------
+Type conversions of RangeEquals and similar
+  Value type
+  Two equal containers of different value types
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( vector_int_a, RangeEquals( vector_char_a ) )
+with expansion:
+  { 1, 2, 3 } elements are { 1, 2, 3 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( vector_int_a, UnorderedRangeEquals( vector_char_a ) )
+with expansion:
+  { 1, 2, 3 } unordered elements are { 1, 2, 3 }
+
+-------------------------------------------------------------------------------
+Type conversions of RangeEquals and similar
+  Value type
+  Two non-equal containers of different value types
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( vector_int_a, !RangeEquals( vector_char_b ) )
+with expansion:
+  { 1, 2, 3 } not elements are { 1, 2, 2 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( vector_int_a, !UnorderedRangeEquals( vector_char_b ) )
+with expansion:
+  { 1, 2, 3 } not unordered elements are { 1, 2, 2 }
+
+-------------------------------------------------------------------------------
+Type conversions of RangeEquals and similar
+  Ranges with begin that needs ADL
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( a, !RangeEquals( b ) )
+with expansion:
+  { 1, 2, 3 } not elements are { 3, 2, 1 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( a, UnorderedRangeEquals( b ) )
+with expansion:
+  { 1, 2, 3 } unordered elements are { 3, 2, 1 }
+
+-------------------------------------------------------------------------------
+Type conversions of RangeEquals and similar
+  Custom predicate
+  Two equal non-empty containers (close enough)
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( vector_a, RangeEquals( array_a_plus_1, close_enough ) )
+with expansion:
+  { 1, 2, 3 } elements are { 2, 3, 4 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( vector_a, UnorderedRangeEquals( array_a_plus_1, close_enough ) )
+with expansion:
+  { 1, 2, 3 } unordered elements are { 2, 3, 4 }
+
+-------------------------------------------------------------------------------
 Unexpected exceptions can be translated
 -------------------------------------------------------------------------------
 Exception.tests.cpp:<line number>
@@ -13949,6 +14097,229 @@ MatchersRanges.tests.cpp:<line number>: PASSED:
   REQUIRE_FALSE( mocked.m_derefed[4] )
 with expansion:
   !false
+
+-------------------------------------------------------------------------------
+Usage of RangeEquals range matcher
+  Basic usage
+  Empty container matches empty container
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( empty_vector, RangeEquals( empty_vector ) )
+with expansion:
+  {  } elements are {  }
+
+-------------------------------------------------------------------------------
+Usage of RangeEquals range matcher
+  Basic usage
+  Empty container does not match non-empty container
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( empty_vector, !RangeEquals( non_empty_vector ) )
+with expansion:
+  {  } not elements are { 1 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( non_empty_vector, !RangeEquals( empty_vector ) )
+with expansion:
+  { 1 } not elements are {  }
+
+-------------------------------------------------------------------------------
+Usage of RangeEquals range matcher
+  Basic usage
+  Two equal 1-length non-empty containers
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( non_empty_array, RangeEquals( non_empty_array ) )
+with expansion:
+  { 1 } elements are { 1 }
+
+-------------------------------------------------------------------------------
+Usage of RangeEquals range matcher
+  Basic usage
+  Two equal-sized, equal, non-empty containers
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( array_a, RangeEquals( array_a ) )
+with expansion:
+  { 1, 2, 3 } elements are { 1, 2, 3 }
+
+-------------------------------------------------------------------------------
+Usage of RangeEquals range matcher
+  Basic usage
+  Two equal-sized, non-equal, non-empty containers
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( array_a, !RangeEquals( array_b ) )
+with expansion:
+  { 1, 2, 3 } not elements are { 2, 2, 3 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( array_a, !RangeEquals( array_c ) )
+with expansion:
+  { 1, 2, 3 } not elements are { 1, 2, 2 }
+
+-------------------------------------------------------------------------------
+Usage of RangeEquals range matcher
+  Basic usage
+  Two non-equal-sized, non-empty containers (with same first elements)
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( vector_a, !RangeEquals( vector_b ) )
+with expansion:
+  { 1, 2, 3 } not elements are { 1, 2, 3, 4 }
+
+-------------------------------------------------------------------------------
+Usage of RangeEquals range matcher
+  Custom predicate
+  Two equal non-empty containers (close enough)
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( vector_a, RangeEquals( vector_a_plus_1, close_enough ) )
+with expansion:
+  { 1, 2, 3 } elements are { 2, 3, 4 }
+
+-------------------------------------------------------------------------------
+Usage of RangeEquals range matcher
+  Custom predicate
+  Two non-equal non-empty containers (close enough)
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( vector_a, !RangeEquals( vector_b, close_enough ) )
+with expansion:
+  { 1, 2, 3 } not elements are { 3, 3, 4 }
+
+-------------------------------------------------------------------------------
+Usage of UnorderedRangeEquals range matcher
+  Basic usage
+  Empty container matches empty container
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( empty_vector, UnorderedRangeEquals( empty_vector ) )
+with expansion:
+  {  } unordered elements are {  }
+
+-------------------------------------------------------------------------------
+Usage of UnorderedRangeEquals range matcher
+  Basic usage
+  Empty container does not match non-empty container
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( empty_vector, !UnorderedRangeEquals( non_empty_vector ) )
+with expansion:
+  {  } not unordered elements are { 1 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( non_empty_vector, !UnorderedRangeEquals( empty_vector ) )
+with expansion:
+  { 1 } not unordered elements are {  }
+
+-------------------------------------------------------------------------------
+Usage of UnorderedRangeEquals range matcher
+  Basic usage
+  Two equal 1-length non-empty containers
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( non_empty_array, UnorderedRangeEquals( non_empty_array ) )
+with expansion:
+  { 1 } unordered elements are { 1 }
+
+-------------------------------------------------------------------------------
+Usage of UnorderedRangeEquals range matcher
+  Basic usage
+  Two equal-sized, equal, non-empty containers
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( array_a, UnorderedRangeEquals( array_a ) )
+with expansion:
+  { 1, 2, 3 } unordered elements are { 1, 2, 3 }
+
+-------------------------------------------------------------------------------
+Usage of UnorderedRangeEquals range matcher
+  Basic usage
+  Two equal-sized, non-equal, non-empty containers
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( array_a, !UnorderedRangeEquals( array_b ) )
+with expansion:
+  { 1, 2, 3 } not unordered elements are { 2, 2, 3 }
+
+-------------------------------------------------------------------------------
+Usage of UnorderedRangeEquals range matcher
+  Basic usage
+  Two non-equal-sized, non-empty containers
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( vector_a, !UnorderedRangeEquals( vector_b ) )
+with expansion:
+  { 1, 2, 3 } not unordered elements are { 1, 2, 3, 4 }
+
+-------------------------------------------------------------------------------
+Usage of UnorderedRangeEquals range matcher
+  Custom predicate
+  Two equal non-empty containers (close enough)
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( vector_a, UnorderedRangeEquals( vector_a_plus_1, close_enough ) )
+with expansion:
+  { 1, 10, 20 } unordered elements are { 11, 21, 2 }
+
+-------------------------------------------------------------------------------
+Usage of UnorderedRangeEquals range matcher
+  Custom predicate
+  Two non-equal non-empty containers (close enough)
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( vector_a, !UnorderedRangeEquals( vector_b, close_enough ) )
+with expansion:
+  { 1, 10, 21 } not unordered elements are { 11, 21, 3 }
 
 -------------------------------------------------------------------------------
 Usage of the SizeIs range matcher
@@ -17711,6 +18082,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  404 |  305 passed |  84 failed | 5 skipped | 10 failed as expected
-assertions: 2173 | 1997 passed | 145 failed | 31 failed as expected
+test cases:  407 |  308 passed |  84 failed | 5 skipped | 10 failed as expected
+assertions: 2209 | 2033 passed | 145 failed | 31 failed as expected
 
