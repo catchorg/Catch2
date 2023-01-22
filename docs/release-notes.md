@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.3.0](#330)<br>
 [3.2.1](#321)<br>
 [3.2.0](#320)<br>
 [3.1.1](#311)<br>
@@ -51,6 +52,35 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+
+## 3.3.0
+
+### Improvements
+
+* Added `MessageMatches` exception matcher (#2570)
+* Added `RangeEquals` and `UnorderedRangeEquals` generic range matchers (#2377)
+* Added `SKIP` macro for skipping tests from within the test body (#2360)
+  * All built-in reporters have been extended to handle it properly, whether your custom reporter needs changes depends on how it was written
+  * `skipTest` reporter event **is unrelated** to this, and has been deprecated since it has practically no uses
+* Restored support for PPC Macs in the break-into-debugger functionality (#2619)
+* Made our warning suppression compatible with CUDA toolkit pre 11.5 (#2626)
+* Cleaned out some static analysis complaints
+
+
+### Fixes
+
+* Fixed macro redefinition warning when NVCC was reporting as MSVC (#2603)
+* Fixed throws in generator constructor causing the whole binary to abort (#2615)
+  * Now it just fails the test
+* Fixed missing transitive include with libstdc++13 (#2611)
+
+
+### Miscellaneous
+
+* Improved support for dynamic library build with non-MSVC compilers on Windows (#2630)
+* When used as a subproject, Catch2 keeps its generated header in a separate directory from the main project (#2604)
 
 
 

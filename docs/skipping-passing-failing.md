@@ -3,7 +3,7 @@
 
 ## Skipping Test Cases at Runtime
 
-> [Introduced](https://github.com/catchorg/Catch2/pull/2360) in Catch2 X.Y.Z.
+> [Introduced](https://github.com/catchorg/Catch2/pull/2360) in Catch2 3.3.0.
 
 In some situations it may not be possible to meaningfully execute a test case,
 for example when the system under test is missing certain hardware capabilities.

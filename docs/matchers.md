@@ -195,6 +195,8 @@ These are:
 * `Message(std::string message)`.
 * `MessageMatches(Matcher matcher)`.
 
+> `MessageMatches` was [introduced](https://github.com/catchorg/Catch2/pull/2570) in Catch2 3.3.0
+
 `Message` checks that the exception's
 message, as returned from `what` is exactly equal to `message`.
 
@@ -238,7 +240,7 @@ definitions to handle generic range-like types. These are:
 
 > `All/Any/NoneTrue` were introduced in Catch2 3.1.0
 
-> `RangeEquals` and `UnorderedRangeEquals` matchers were [introduced](https://github.com/catchorg/Catch2/pull/2377) in Catch2 X.Y.Z
+> `RangeEquals` and `UnorderedRangeEquals` matchers were [introduced](https://github.com/catchorg/Catch2/pull/2377) in Catch2 3.3.0
 
 `IsEmpty` should be self-explanatory. It successfully matches objects
 that are empty according to either `std::empty`, or ADL-found `empty`
