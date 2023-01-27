@@ -22,7 +22,7 @@ namespace TestCaseTracking {
         std::string name;
         SourceLineInfo location;
 
-        NameAndLocation( std::string const& _name, SourceLineInfo const& _location );
+        NameAndLocation( std::string&& _name, SourceLineInfo const& _location );
         friend bool operator==(NameAndLocation const& lhs, NameAndLocation const& rhs) {
             return lhs.name == rhs.name
                 && lhs.location == rhs.location;
@@ -30,6 +30,32 @@ namespace TestCaseTracking {
         friend bool operator!=(NameAndLocation const& lhs,
                                NameAndLocation const& rhs) {
             return !( lhs == rhs );
+        }
+    };
+
+    /**
+     * This is a variant of `NameAndLocation` that does not own the name string
+     *
+     * This avoids extra allocations when trying to locate a tracker by its
+     * name and location, as long as we make sure that trackers only keep
+     * around the owning variant.
+     */
+    struct NameAndLocationRef {
+        StringRef name;
+        SourceLineInfo location;
+
+        constexpr NameAndLocationRef( StringRef name_,
+                                      SourceLineInfo location_ ):
+            name( name_ ), location( location_ ) {}
+
+        friend bool operator==( NameAndLocation const& lhs,
+                                NameAndLocationRef rhs ) {
+            return StringRef( lhs.name ) == rhs.name &&
+                   lhs.location == rhs.location;
+        }
+        friend bool operator==( NameAndLocationRef lhs,
+                                NameAndLocation const& rhs ) {
+            return rhs == lhs;
         }
     };
 
@@ -57,8 +83,8 @@ namespace TestCaseTracking {
         CycleState m_runState = NotStarted;
 
     public:
-        ITracker( NameAndLocation const& nameAndLoc, ITracker* parent ):
-            m_nameAndLocation( nameAndLoc ),
+        ITracker( NameAndLocation&& nameAndLoc, ITracker* parent ):
+            m_nameAndLocation( CATCH_MOVE(nameAndLoc) ),
             m_parent( parent )
         {}
 
@@ -97,7 +123,7 @@ namespace TestCaseTracking {
          *
          * Returns nullptr if not found.
          */
-        ITracker* findChild( NameAndLocation const& nameAndLocation );
+        ITracker* findChild( NameAndLocationRef nameAndLocation );
         //! Have any children been added?
         bool hasChildren() const {
             return !m_children.empty();
@@ -154,7 +180,7 @@ namespace TestCaseTracking {
         TrackerContext& m_ctx;
 
     public:
-        TrackerBase( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent );
+        TrackerBase( NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent );
 
         bool isComplete() const override;
 
@@ -172,13 +198,13 @@ namespace TestCaseTracking {
         std::vector<StringRef> m_filters;
         std::string m_trimmed_name;
     public:
-        SectionTracker( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent );
+        SectionTracker( NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent );
 
         bool isSectionTracker() const override;
 
         bool isComplete() const override;
 
-        static SectionTracker& acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation );
+        static SectionTracker& acquire( TrackerContext& ctx, NameAndLocationRef nameAndLocation );
 
         void tryOpen();
 

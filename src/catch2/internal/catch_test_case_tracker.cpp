@@ -22,8 +22,8 @@
 namespace Catch {
 namespace TestCaseTracking {
 
-    NameAndLocation::NameAndLocation( std::string const& _name, SourceLineInfo const& _location )
-    :   name( _name ),
+    NameAndLocation::NameAndLocation( std::string&& _name, SourceLineInfo const& _location )
+    :   name( CATCH_MOVE(_name) ),
         location( _location )
     {}
 
@@ -38,14 +38,12 @@ namespace TestCaseTracking {
         m_children.push_back( CATCH_MOVE(child) );
     }
 
-    ITracker* ITracker::findChild( NameAndLocation const& nameAndLocation ) {
+    ITracker* ITracker::findChild( NameAndLocationRef nameAndLocation ) {
         auto it = std::find_if(
             m_children.begin(),
             m_children.end(),
             [&nameAndLocation]( ITrackerPtr const& tracker ) {
-                return tracker->nameAndLocation().location ==
-                           nameAndLocation.location &&
-                       tracker->nameAndLocation().name == nameAndLocation.name;
+                return tracker->nameAndLocation() == nameAndLocation;
             } );
         return ( it != m_children.end() ) ? it->get() : nullptr;
     }
@@ -108,8 +106,8 @@ namespace TestCaseTracking {
     }
 
 
-    TrackerBase::TrackerBase( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent ):
-        ITracker(nameAndLocation, parent),
+    TrackerBase::TrackerBase( NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent ):
+        ITracker(CATCH_MOVE(nameAndLocation), parent),
         m_ctx( ctx )
     {}
 
@@ -169,13 +167,14 @@ namespace TestCaseTracking {
         m_ctx.setCurrentTracker( this );
     }
 
-    SectionTracker::SectionTracker( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent )
-    :   TrackerBase( nameAndLocation, ctx, parent ),
-        m_trimmed_name(trim(nameAndLocation.name))
+    SectionTracker::SectionTracker( NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent )
+    :   TrackerBase( CATCH_MOVE(nameAndLocation), ctx, parent ),
+        m_trimmed_name(trim(ITracker::nameAndLocation().name))
     {
         if( parent ) {
-            while( !parent->isSectionTracker() )
+            while ( !parent->isSectionTracker() ) {
                 parent = parent->parent();
+            }
 
             SectionTracker& parentSection = static_cast<SectionTracker&>( *parent );
             addNextFilters( parentSection.m_filters );
@@ -195,24 +194,30 @@ namespace TestCaseTracking {
 
     bool SectionTracker::isSectionTracker() const { return true; }
 
-    SectionTracker& SectionTracker::acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation ) {
-        SectionTracker* section;
+    SectionTracker& SectionTracker::acquire( TrackerContext& ctx, NameAndLocationRef nameAndLocation ) {
+        SectionTracker* tracker;
 
         ITracker& currentTracker = ctx.currentTracker();
         if ( ITracker* childTracker =
                  currentTracker.findChild( nameAndLocation ) ) {
             assert( childTracker );
             assert( childTracker->isSectionTracker() );
-            section = static_cast<SectionTracker*>( childTracker );
+            tracker = static_cast<SectionTracker*>( childTracker );
         } else {
-            auto newSection = Catch::Detail::make_unique<SectionTracker>(
-                nameAndLocation, ctx, &currentTracker );
-            section = newSection.get();
-            currentTracker.addChild( CATCH_MOVE( newSection ) );
+            auto newTracker = Catch::Detail::make_unique<SectionTracker>(
+                NameAndLocation{ static_cast<std::string>(nameAndLocation.name),
+                                 nameAndLocation.location },
+                ctx,
+                &currentTracker );
+            tracker = newTracker.get();
+            currentTracker.addChild( CATCH_MOVE( newTracker ) );
         }
-        if( !ctx.completedCycle() )
-            section->tryOpen();
-        return *section;
+
+        if ( !ctx.completedCycle() ) {
+            tracker->tryOpen();
+        }
+
+        return *tracker;
     }
 
     void SectionTracker::tryOpen() {

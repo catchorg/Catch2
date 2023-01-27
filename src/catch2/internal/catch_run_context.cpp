@@ -29,12 +29,12 @@ namespace Catch {
         struct GeneratorTracker : TestCaseTracking::TrackerBase, IGeneratorTracker {
             GeneratorBasePtr m_generator;
 
-            GeneratorTracker( TestCaseTracking::NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent )
-            :   TrackerBase( nameAndLocation, ctx, parent )
+            GeneratorTracker( TestCaseTracking::NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent )
+            :   TrackerBase( CATCH_MOVE(nameAndLocation), ctx, parent )
             {}
             ~GeneratorTracker() override;
 
-            static GeneratorTracker* acquire( TrackerContext& ctx, TestCaseTracking::NameAndLocation const& nameAndLocation ) {
+            static GeneratorTracker* acquire( TrackerContext& ctx, TestCaseTracking::NameAndLocationRef nameAndLocation ) {
                 GeneratorTracker* tracker;
 
                 ITracker& currentTracker = ctx.currentTracker();
@@ -226,7 +226,7 @@ namespace Catch {
         uint64_t testRuns = 0;
         do {
             m_trackerContext.startCycle();
-            m_testCaseTracker = &SectionTracker::acquire(m_trackerContext, TestCaseTracking::NameAndLocation(testInfo.name, testInfo.lineInfo));
+            m_testCaseTracker = &SectionTracker::acquire(m_trackerContext, TestCaseTracking::NameAndLocationRef(testInfo.name, testInfo.lineInfo));
 
             m_reporter->testCasePartialStarting(testInfo, testRuns);
 
@@ -298,7 +298,8 @@ namespace Catch {
     }
 
     bool RunContext::sectionStarted(SectionInfo const & sectionInfo, Counts & assertions) {
-        ITracker& sectionTracker = SectionTracker::acquire(m_trackerContext, TestCaseTracking::NameAndLocation(sectionInfo.name, sectionInfo.lineInfo));
+        ITracker& sectionTracker = SectionTracker::acquire(m_trackerContext, TestCaseTracking::NameAndLocationRef(sectionInfo.name, sectionInfo.lineInfo));
+
         if (!sectionTracker.isOpen())
             return false;
         m_activeSections.push_back(&sectionTracker);
@@ -317,8 +318,8 @@ namespace Catch {
         using namespace Generators;
         GeneratorTracker* tracker = GeneratorTracker::acquire(
             m_trackerContext,
-            TestCaseTracking::NameAndLocation(
-                static_cast<std::string>( generatorName ), lineInfo ) );
+            TestCaseTracking::NameAndLocationRef(
+                 generatorName, lineInfo ) );
         m_lastAssertionInfo.lineInfo = lineInfo;
         return tracker;
     }
@@ -335,7 +336,7 @@ namespace Catch {
             "Trying to create tracker for a genreator that already has one" );
 
         auto newTracker = Catch::Detail::make_unique<Generators::GeneratorTracker>(
-            nameAndLoc, m_trackerContext, &currentTracker );
+            CATCH_MOVE(nameAndLoc), m_trackerContext, &currentTracker );
         auto ret = newTracker.get();
         currentTracker.addChild( CATCH_MOVE( newTracker ) );
 
