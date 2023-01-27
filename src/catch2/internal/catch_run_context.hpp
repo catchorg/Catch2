@@ -68,7 +68,9 @@ namespace Catch {
                     ResultWas::OfType resultType,
                     AssertionReaction &reaction ) override;
 
-        bool sectionStarted( SectionInfo const& sectionInfo, Counts& assertions ) override;
+        bool sectionStarted( StringRef sectionName,
+                             SourceLineInfo const& sectionLineInfo,
+                             Counts& assertions ) override;
 
         void sectionEnded( SectionEndInfo&& endInfo ) override;
         void sectionEndedEarly( SectionEndInfo&& endInfo ) override;

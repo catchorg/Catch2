@@ -297,13 +297,17 @@ namespace Catch {
         m_lastAssertionInfo.capturedExpression = "{Unknown expression after the reported line}"_sr;
     }
 
-    bool RunContext::sectionStarted(SectionInfo const & sectionInfo, Counts & assertions) {
-        ITracker& sectionTracker = SectionTracker::acquire(m_trackerContext, TestCaseTracking::NameAndLocationRef(sectionInfo.name, sectionInfo.lineInfo));
+    bool RunContext::sectionStarted(StringRef sectionName, SourceLineInfo const& sectionLineInfo, Counts & assertions) {
+        ITracker& sectionTracker =
+            SectionTracker::acquire( m_trackerContext,
+                                     TestCaseTracking::NameAndLocationRef(
+                                         sectionName, sectionLineInfo ) );
 
         if (!sectionTracker.isOpen())
             return false;
         m_activeSections.push_back(&sectionTracker);
 
+        SectionInfo sectionInfo( sectionLineInfo, static_cast<std::string>(sectionName) );
         m_lastAssertionInfo.lineInfo = sectionInfo.lineInfo;
 
         m_reporter->sectionStarting(sectionInfo);

@@ -44,8 +44,9 @@ namespace Catch {
     public:
         virtual ~IResultCapture();
 
-        virtual bool sectionStarted(    SectionInfo const& sectionInfo,
-                                        Counts& assertions ) = 0;
+        virtual bool sectionStarted( StringRef sectionName,
+                                     SourceLineInfo const& sectionLineInfo,
+                                     Counts& assertions ) = 0;
         virtual void sectionEnded( SectionEndInfo&& endInfo ) = 0;
         virtual void sectionEndedEarly( SectionEndInfo&& endInfo ) = 0;
 
