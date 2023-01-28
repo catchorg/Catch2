@@ -428,7 +428,7 @@ namespace Catch {
         // Instead, fake a result data.
         AssertionResultData tempResult( ResultWas::FatalErrorCondition, { false } );
         tempResult.message = static_cast<std::string>(message);
-        AssertionResult result(m_lastAssertionInfo, tempResult);
+        AssertionResult result(m_lastAssertionInfo, CATCH_MOVE(tempResult));
 
         assertionEnded(result);
 
@@ -579,7 +579,7 @@ namespace Catch {
         m_lastAssertionInfo = info;
         AssertionResultData data( resultType, LazyExpression( negated ) );
 
-        AssertionResult assertionResult{ info, data };
+        AssertionResult assertionResult{ info, CATCH_MOVE( data ) };
         assertionResult.m_resultData.lazyExpression.m_transientExpression = expr;
 
         assertionEnded( assertionResult );
@@ -597,7 +597,8 @@ namespace Catch {
 
         AssertionResultData data( resultType, LazyExpression( false ) );
         data.message = static_cast<std::string>(message);
-        AssertionResult assertionResult{ m_lastAssertionInfo, data };
+        AssertionResult assertionResult{ m_lastAssertionInfo,
+                                         CATCH_MOVE( data ) };
         assertionEnded( assertionResult );
         if ( !assertionResult.isOk() ) {
             populateReaction( reaction );
@@ -623,7 +624,7 @@ namespace Catch {
 
         AssertionResultData data( ResultWas::ThrewException, LazyExpression( false ) );
         data.message = message;
-        AssertionResult assertionResult{ info, data };
+        AssertionResult assertionResult{ info, CATCH_MOVE(data) };
         assertionEnded( assertionResult );
         populateReaction( reaction );
     }
@@ -640,7 +641,7 @@ namespace Catch {
 
         AssertionResultData data( ResultWas::ThrewException, LazyExpression( false ) );
         data.message = "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE";
-        AssertionResult assertionResult{ info, data };
+        AssertionResult assertionResult{ info, CATCH_MOVE( data ) };
         assertionEnded( assertionResult );
     }
     void RunContext::handleNonExpr(
@@ -651,7 +652,7 @@ namespace Catch {
         m_lastAssertionInfo = info;
 
         AssertionResultData data( resultType, LazyExpression( false ) );
-        AssertionResult assertionResult{ info, data };
+        AssertionResult assertionResult{ info, CATCH_MOVE( data ) };
         assertionEnded( assertionResult );
 
         if( !assertionResult.isOk() )

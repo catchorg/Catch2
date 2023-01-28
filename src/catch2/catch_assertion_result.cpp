@@ -7,6 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/catch_assertion_result.hpp>
 #include <catch2/internal/catch_reusable_string_stream.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
 
@@ -26,9 +27,9 @@ namespace Catch {
         return reconstructedExpression;
     }
 
-    AssertionResult::AssertionResult( AssertionInfo const& info, AssertionResultData const& data )
+    AssertionResult::AssertionResult( AssertionInfo const& info, AssertionResultData&& data )
     :   m_info( info ),
-        m_resultData( data )
+        m_resultData( CATCH_MOVE(data) )
     {}
 
     // Result was a success
