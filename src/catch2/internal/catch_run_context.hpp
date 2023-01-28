@@ -70,8 +70,8 @@ namespace Catch {
 
         bool sectionStarted( SectionInfo const& sectionInfo, Counts& assertions ) override;
 
-        void sectionEnded( SectionEndInfo const& endInfo ) override;
-        void sectionEndedEarly( SectionEndInfo const& endInfo ) override;
+        void sectionEnded( SectionEndInfo&& endInfo ) override;
+        void sectionEndedEarly( SectionEndInfo&& endInfo ) override;
 
         IGeneratorTracker*
         acquireGeneratorTracker( StringRef generatorName,

@@ -67,11 +67,11 @@ namespace Catch {
         }
     }
 
-    SectionStats::SectionStats(  SectionInfo const& _sectionInfo,
+    SectionStats::SectionStats(  SectionInfo&& _sectionInfo,
                                  Counts const& _assertions,
                                  double _durationInSeconds,
                                  bool _missingAssertions )
-    :   sectionInfo( _sectionInfo ),
+    :   sectionInfo( CATCH_MOVE(_sectionInfo) ),
         assertions( _assertions ),
         durationInSeconds( _durationInSeconds ),
         missingAssertions( _missingAssertions )

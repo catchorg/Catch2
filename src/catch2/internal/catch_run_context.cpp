@@ -356,7 +356,7 @@ namespace Catch {
         return true;
     }
 
-    void RunContext::sectionEnded(SectionEndInfo const & endInfo) {
+    void RunContext::sectionEnded(SectionEndInfo&& endInfo) {
         Counts assertions = m_totals.assertions - endInfo.prevAssertions;
         bool missingAssertions = testForMissingAssertions(assertions);
 
@@ -365,19 +365,20 @@ namespace Catch {
             m_activeSections.pop_back();
         }
 
-        m_reporter->sectionEnded(SectionStats(endInfo.sectionInfo, assertions, endInfo.durationInSeconds, missingAssertions));
+        m_reporter->sectionEnded(SectionStats(CATCH_MOVE(endInfo.sectionInfo), assertions, endInfo.durationInSeconds, missingAssertions));
         m_messages.clear();
         m_messageScopes.clear();
     }
 
-    void RunContext::sectionEndedEarly(SectionEndInfo const & endInfo) {
-        if (m_unfinishedSections.empty())
+    void RunContext::sectionEndedEarly(SectionEndInfo&& endInfo) {
+        if ( m_unfinishedSections.empty() ) {
             m_activeSections.back()->fail();
-        else
+        } else {
             m_activeSections.back()->close();
+        }
         m_activeSections.pop_back();
 
-        m_unfinishedSections.push_back(endInfo);
+        m_unfinishedSections.push_back(CATCH_MOVE(endInfo));
     }
 
     void RunContext::benchmarkPreparing( StringRef name ) {
@@ -439,7 +440,7 @@ namespace Catch {
 
         Counts assertions;
         assertions.failed = 1;
-        SectionStats testCaseSectionStats(testCaseSection, assertions, 0, false);
+        SectionStats testCaseSectionStats(CATCH_MOVE(testCaseSection), assertions, 0, false);
         m_reporter->sectionEnded(testCaseSectionStats);
 
         auto const& testInfo = m_activeTestCase->getTestCaseInfo();
@@ -518,7 +519,7 @@ namespace Catch {
         m_messages.clear();
         m_messageScopes.clear();
 
-        SectionStats testCaseSectionStats(testCaseSection, assertions, duration, missingAssertions);
+        SectionStats testCaseSectionStats(CATCH_MOVE(testCaseSection), assertions, duration, missingAssertions);
         m_reporter->sectionEnded(testCaseSectionStats);
     }
 
@@ -542,7 +543,7 @@ namespace Catch {
              itEnd = m_unfinishedSections.rend();
              it != itEnd;
              ++it)
-            sectionEnded(*it);
+            sectionEnded(CATCH_MOVE(*it));
         m_unfinishedSections.clear();
     }
 

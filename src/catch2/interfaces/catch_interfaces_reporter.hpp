@@ -78,7 +78,7 @@ namespace Catch {
     };
 
     struct SectionStats {
-        SectionStats(   SectionInfo const& _sectionInfo,
+        SectionStats(   SectionInfo&& _sectionInfo,
                         Counts const& _assertions,
                         double _durationInSeconds,
                         bool _missingAssertions );

@@ -46,8 +46,8 @@ namespace Catch {
 
         virtual bool sectionStarted(    SectionInfo const& sectionInfo,
                                         Counts& assertions ) = 0;
-        virtual void sectionEnded( SectionEndInfo const& endInfo ) = 0;
-        virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) = 0;
+        virtual void sectionEnded( SectionEndInfo&& endInfo ) = 0;
+        virtual void sectionEndedEarly( SectionEndInfo&& endInfo ) = 0;
 
         virtual IGeneratorTracker*
         acquireGeneratorTracker( StringRef generatorName,

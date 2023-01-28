@@ -26,10 +26,11 @@ namespace Catch {
     Section::~Section() {
         if( m_sectionIncluded ) {
             SectionEndInfo endInfo{ CATCH_MOVE(m_info), m_assertions, m_timer.getElapsedSeconds() };
-            if( uncaught_exceptions() )
-                getResultCapture().sectionEndedEarly( endInfo );
-            else
-                getResultCapture().sectionEnded( endInfo );
+            if ( uncaught_exceptions() ) {
+                getResultCapture().sectionEndedEarly( CATCH_MOVE(endInfo) );
+            } else {
+                getResultCapture().sectionEnded( CATCH_MOVE( endInfo ) );
+            }
         }
     }
 
