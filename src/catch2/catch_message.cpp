@@ -19,8 +19,8 @@ namespace Catch {
     ////////////////////////////////////////////////////////////////////////////
 
 
-    ScopedMessage::ScopedMessage( MessageBuilder const& builder ):
-        m_info( builder.m_info ) {
+    ScopedMessage::ScopedMessage( MessageBuilder&& builder ):
+        m_info( CATCH_MOVE(builder.m_info) ) {
         m_info.message = builder.m_stream.str();
         getResultCapture().pushScopedMessage( m_info );
     }

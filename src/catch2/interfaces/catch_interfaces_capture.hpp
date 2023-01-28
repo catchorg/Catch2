@@ -65,7 +65,7 @@ namespace Catch {
         virtual void pushScopedMessage( MessageInfo const& message ) = 0;
         virtual void popScopedMessage( MessageInfo const& message ) = 0;
 
-        virtual void emplaceUnscopedMessage( MessageBuilder const& builder ) = 0;
+        virtual void emplaceUnscopedMessage( MessageBuilder&& builder ) = 0;
 
         virtual void handleFatalErrorCondition( StringRef message ) = 0;
 
