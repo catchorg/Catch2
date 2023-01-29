@@ -5,8 +5,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.3.0
-//  Generated: 2023-01-22 19:46:24.251531
+//  Catch v3.3.1
+//  Generated: 2023-01-29 22:55:05.183536
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -428,9 +428,9 @@ namespace Catch {
         return reconstructedExpression;
     }
 
-    AssertionResult::AssertionResult( AssertionInfo const& info, AssertionResultData const& data )
+    AssertionResult::AssertionResult( AssertionInfo const& info, AssertionResultData&& data )
     :   m_info( info ),
-        m_resultData( data )
+        m_resultData( CATCH_MOVE(data) )
     {}
 
     // Result was a success
@@ -758,8 +758,8 @@ namespace Catch {
     ////////////////////////////////////////////////////////////////////////////
 
 
-    ScopedMessage::ScopedMessage( MessageBuilder const& builder ):
-        m_info( builder.m_info ) {
+    ScopedMessage::ScopedMessage( MessageBuilder&& builder ):
+        m_info( CATCH_MOVE(builder.m_info) ) {
         m_info.message = builder.m_stream.str();
         getResultCapture().pushScopedMessage( m_info );
     }
@@ -2022,7 +2022,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 3, 3, 0, "", 0 );
+        static Version version( 3, 3, 1, "", 0 );
         return version;
     }
 
@@ -2179,18 +2179,17 @@ namespace Catch {
             // Copy message into messages list.
             // !TBD This should have been done earlier, somewhere
             MessageBuilder builder( assertionResult.getTestMacroName(), assertionResult.getSourceInfo(), assertionResult.getResultType() );
-            builder << assertionResult.getMessage();
-            builder.m_info.message = builder.m_stream.str();
+            builder.m_info.message = static_cast<std::string>(assertionResult.getMessage());
 
-            infoMessages.push_back( builder.m_info );
+            infoMessages.push_back( CATCH_MOVE(builder.m_info) );
         }
     }
 
-    SectionStats::SectionStats(  SectionInfo const& _sectionInfo,
+    SectionStats::SectionStats(  SectionInfo&& _sectionInfo,
                                  Counts const& _assertions,
                                  double _durationInSeconds,
                                  bool _missingAssertions )
-    :   sectionInfo( _sectionInfo ),
+    :   sectionInfo( CATCH_MOVE(_sectionInfo) ),
         assertions( _assertions ),
         durationInSeconds( _durationInSeconds ),
         missingAssertions( _missingAssertions )
@@ -4993,12 +4992,12 @@ namespace Catch {
         struct GeneratorTracker : TestCaseTracking::TrackerBase, IGeneratorTracker {
             GeneratorBasePtr m_generator;
 
-            GeneratorTracker( TestCaseTracking::NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent )
-            :   TrackerBase( nameAndLocation, ctx, parent )
+            GeneratorTracker( TestCaseTracking::NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent )
+            :   TrackerBase( CATCH_MOVE(nameAndLocation), ctx, parent )
             {}
             ~GeneratorTracker() override;
 
-            static GeneratorTracker* acquire( TrackerContext& ctx, TestCaseTracking::NameAndLocation const& nameAndLocation ) {
+            static GeneratorTracker* acquire( TrackerContext& ctx, TestCaseTracking::NameAndLocationRef nameAndLocation ) {
                 GeneratorTracker* tracker;
 
                 ITracker& currentTracker = ctx.currentTracker();
@@ -5190,7 +5189,7 @@ namespace Catch {
         uint64_t testRuns = 0;
         do {
             m_trackerContext.startCycle();
-            m_testCaseTracker = &SectionTracker::acquire(m_trackerContext, TestCaseTracking::NameAndLocation(testInfo.name, testInfo.lineInfo));
+            m_testCaseTracker = &SectionTracker::acquire(m_trackerContext, TestCaseTracking::NameAndLocationRef(testInfo.name, testInfo.lineInfo));
 
             m_reporter->testCasePartialStarting(testInfo, testRuns);
 
@@ -5261,12 +5260,17 @@ namespace Catch {
         m_lastAssertionInfo.capturedExpression = "{Unknown expression after the reported line}"_sr;
     }
 
-    bool RunContext::sectionStarted(SectionInfo const & sectionInfo, Counts & assertions) {
-        ITracker& sectionTracker = SectionTracker::acquire(m_trackerContext, TestCaseTracking::NameAndLocation(sectionInfo.name, sectionInfo.lineInfo));
+    bool RunContext::sectionStarted(StringRef sectionName, SourceLineInfo const& sectionLineInfo, Counts & assertions) {
+        ITracker& sectionTracker =
+            SectionTracker::acquire( m_trackerContext,
+                                     TestCaseTracking::NameAndLocationRef(
+                                         sectionName, sectionLineInfo ) );
+
         if (!sectionTracker.isOpen())
             return false;
         m_activeSections.push_back(&sectionTracker);
 
+        SectionInfo sectionInfo( sectionLineInfo, static_cast<std::string>(sectionName) );
         m_lastAssertionInfo.lineInfo = sectionInfo.lineInfo;
 
         m_reporter->sectionStarting(sectionInfo);
@@ -5281,8 +5285,8 @@ namespace Catch {
         using namespace Generators;
         GeneratorTracker* tracker = GeneratorTracker::acquire(
             m_trackerContext,
-            TestCaseTracking::NameAndLocation(
-                static_cast<std::string>( generatorName ), lineInfo ) );
+            TestCaseTracking::NameAndLocationRef(
+                 generatorName, lineInfo ) );
         m_lastAssertionInfo.lineInfo = lineInfo;
         return tracker;
     }
@@ -5299,7 +5303,7 @@ namespace Catch {
             "Trying to create tracker for a genreator that already has one" );
 
         auto newTracker = Catch::Detail::make_unique<Generators::GeneratorTracker>(
-            nameAndLoc, m_trackerContext, &currentTracker );
+            CATCH_MOVE(nameAndLoc), m_trackerContext, &currentTracker );
         auto ret = newTracker.get();
         currentTracker.addChild( CATCH_MOVE( newTracker ) );
 
@@ -5320,7 +5324,7 @@ namespace Catch {
         return true;
     }
 
-    void RunContext::sectionEnded(SectionEndInfo const & endInfo) {
+    void RunContext::sectionEnded(SectionEndInfo&& endInfo) {
         Counts assertions = m_totals.assertions - endInfo.prevAssertions;
         bool missingAssertions = testForMissingAssertions(assertions);
 
@@ -5329,19 +5333,20 @@ namespace Catch {
             m_activeSections.pop_back();
         }
 
-        m_reporter->sectionEnded(SectionStats(endInfo.sectionInfo, assertions, endInfo.durationInSeconds, missingAssertions));
+        m_reporter->sectionEnded(SectionStats(CATCH_MOVE(endInfo.sectionInfo), assertions, endInfo.durationInSeconds, missingAssertions));
         m_messages.clear();
         m_messageScopes.clear();
     }
 
-    void RunContext::sectionEndedEarly(SectionEndInfo const & endInfo) {
-        if (m_unfinishedSections.empty())
+    void RunContext::sectionEndedEarly(SectionEndInfo&& endInfo) {
+        if ( m_unfinishedSections.empty() ) {
             m_activeSections.back()->fail();
-        else
+        } else {
             m_activeSections.back()->close();
+        }
         m_activeSections.pop_back();
 
-        m_unfinishedSections.push_back(endInfo);
+        m_unfinishedSections.push_back(CATCH_MOVE(endInfo));
     }
 
     void RunContext::benchmarkPreparing( StringRef name ) {
@@ -5365,8 +5370,8 @@ namespace Catch {
         m_messages.erase(std::remove(m_messages.begin(), m_messages.end(), message), m_messages.end());
     }
 
-    void RunContext::emplaceUnscopedMessage( MessageBuilder const& builder ) {
-        m_messageScopes.emplace_back( builder );
+    void RunContext::emplaceUnscopedMessage( MessageBuilder&& builder ) {
+        m_messageScopes.emplace_back( CATCH_MOVE(builder) );
     }
 
     std::string RunContext::getCurrentTestName() const {
@@ -5391,7 +5396,7 @@ namespace Catch {
         // Instead, fake a result data.
         AssertionResultData tempResult( ResultWas::FatalErrorCondition, { false } );
         tempResult.message = static_cast<std::string>(message);
-        AssertionResult result(m_lastAssertionInfo, tempResult);
+        AssertionResult result(m_lastAssertionInfo, CATCH_MOVE(tempResult));
 
         assertionEnded(result);
 
@@ -5403,7 +5408,7 @@ namespace Catch {
 
         Counts assertions;
         assertions.failed = 1;
-        SectionStats testCaseSectionStats(testCaseSection, assertions, 0, false);
+        SectionStats testCaseSectionStats(CATCH_MOVE(testCaseSection), assertions, 0, false);
         m_reporter->sectionEnded(testCaseSectionStats);
 
         auto const& testInfo = m_activeTestCase->getTestCaseInfo();
@@ -5482,7 +5487,7 @@ namespace Catch {
         m_messages.clear();
         m_messageScopes.clear();
 
-        SectionStats testCaseSectionStats(testCaseSection, assertions, duration, missingAssertions);
+        SectionStats testCaseSectionStats(CATCH_MOVE(testCaseSection), assertions, duration, missingAssertions);
         m_reporter->sectionEnded(testCaseSectionStats);
     }
 
@@ -5506,7 +5511,7 @@ namespace Catch {
              itEnd = m_unfinishedSections.rend();
              it != itEnd;
              ++it)
-            sectionEnded(*it);
+            sectionEnded(CATCH_MOVE(*it));
         m_unfinishedSections.clear();
     }
 
@@ -5542,7 +5547,7 @@ namespace Catch {
         m_lastAssertionInfo = info;
         AssertionResultData data( resultType, LazyExpression( negated ) );
 
-        AssertionResult assertionResult{ info, data };
+        AssertionResult assertionResult{ info, CATCH_MOVE( data ) };
         assertionResult.m_resultData.lazyExpression.m_transientExpression = expr;
 
         assertionEnded( assertionResult );
@@ -5560,7 +5565,8 @@ namespace Catch {
 
         AssertionResultData data( resultType, LazyExpression( false ) );
         data.message = static_cast<std::string>(message);
-        AssertionResult assertionResult{ m_lastAssertionInfo, data };
+        AssertionResult assertionResult{ m_lastAssertionInfo,
+                                         CATCH_MOVE( data ) };
         assertionEnded( assertionResult );
         if ( !assertionResult.isOk() ) {
             populateReaction( reaction );
@@ -5586,7 +5592,7 @@ namespace Catch {
 
         AssertionResultData data( ResultWas::ThrewException, LazyExpression( false ) );
         data.message = message;
-        AssertionResult assertionResult{ info, data };
+        AssertionResult assertionResult{ info, CATCH_MOVE(data) };
         assertionEnded( assertionResult );
         populateReaction( reaction );
     }
@@ -5603,7 +5609,7 @@ namespace Catch {
 
         AssertionResultData data( ResultWas::ThrewException, LazyExpression( false ) );
         data.message = "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE";
-        AssertionResult assertionResult{ info, data };
+        AssertionResult assertionResult{ info, CATCH_MOVE( data ) };
         assertionEnded( assertionResult );
     }
     void RunContext::handleNonExpr(
@@ -5614,7 +5620,7 @@ namespace Catch {
         m_lastAssertionInfo = info;
 
         AssertionResultData data( resultType, LazyExpression( false ) );
-        AssertionResult assertionResult{ info, data };
+        AssertionResult assertionResult{ info, CATCH_MOVE( data ) };
         assertionEnded( assertionResult );
 
         if( !assertionResult.isOk() )
@@ -5646,7 +5652,7 @@ namespace Catch {
     Section::Section( SectionInfo&& info ):
         m_info( CATCH_MOVE( info ) ),
         m_sectionIncluded(
-            getResultCapture().sectionStarted( m_info, m_assertions ) ) {
+            getResultCapture().sectionStarted( m_info.name, m_info.lineInfo, m_assertions ) ) {
         // Non-"included" sections will not use the timing information
         // anyway, so don't bother with the potential syscall.
         if (m_sectionIncluded) {
@@ -5654,13 +5660,31 @@ namespace Catch {
         }
     }
 
+    Section::Section( SourceLineInfo const& _lineInfo,
+                      StringRef _name,
+                      const char* const ):
+        m_info( { "invalid", static_cast<std::size_t>(-1) }, "" ),
+        m_sectionIncluded(
+            getResultCapture().sectionStarted( _name, _lineInfo, m_assertions ) ) {
+        // We delay initialization the SectionInfo member until we know
+        // this section needs it, so we avoid allocating std::string for name.
+        // We also delay timer start to avoid the potential syscall unless we
+        // will actually use the result.
+        if ( m_sectionIncluded ) {
+            m_info.name = static_cast<std::string>( _name );
+            m_info.lineInfo = _lineInfo;
+            m_timer.start();
+        }
+    }
+
     Section::~Section() {
         if( m_sectionIncluded ) {
-            SectionEndInfo endInfo{ m_info, m_assertions, m_timer.getElapsedSeconds() };
-            if( uncaught_exceptions() )
-                getResultCapture().sectionEndedEarly( endInfo );
-            else
-                getResultCapture().sectionEnded( endInfo );
+            SectionEndInfo endInfo{ CATCH_MOVE(m_info), m_assertions, m_timer.getElapsedSeconds() };
+            if ( uncaught_exceptions() ) {
+                getResultCapture().sectionEndedEarly( CATCH_MOVE(endInfo) );
+            } else {
+                getResultCapture().sectionEnded( CATCH_MOVE( endInfo ) );
+            }
         }
     }
 
@@ -6155,8 +6179,8 @@ namespace Catch {
 namespace Catch {
 namespace TestCaseTracking {
 
-    NameAndLocation::NameAndLocation( std::string const& _name, SourceLineInfo const& _location )
-    :   name( _name ),
+    NameAndLocation::NameAndLocation( std::string&& _name, SourceLineInfo const& _location )
+    :   name( CATCH_MOVE(_name) ),
         location( _location )
     {}
 
@@ -6171,14 +6195,12 @@ namespace TestCaseTracking {
         m_children.push_back( CATCH_MOVE(child) );
     }
 
-    ITracker* ITracker::findChild( NameAndLocation const& nameAndLocation ) {
+    ITracker* ITracker::findChild( NameAndLocationRef nameAndLocation ) {
         auto it = std::find_if(
             m_children.begin(),
             m_children.end(),
             [&nameAndLocation]( ITrackerPtr const& tracker ) {
-                return tracker->nameAndLocation().location ==
-                           nameAndLocation.location &&
-                       tracker->nameAndLocation().name == nameAndLocation.name;
+                return tracker->nameAndLocation() == nameAndLocation;
             } );
         return ( it != m_children.end() ) ? it->get() : nullptr;
     }
@@ -6241,8 +6263,8 @@ namespace TestCaseTracking {
     }
 
 
-    TrackerBase::TrackerBase( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent ):
-        ITracker(nameAndLocation, parent),
+    TrackerBase::TrackerBase( NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent ):
+        ITracker(CATCH_MOVE(nameAndLocation), parent),
         m_ctx( ctx )
     {}
 
@@ -6302,13 +6324,14 @@ namespace TestCaseTracking {
         m_ctx.setCurrentTracker( this );
     }
 
-    SectionTracker::SectionTracker( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent )
-    :   TrackerBase( nameAndLocation, ctx, parent ),
-        m_trimmed_name(trim(nameAndLocation.name))
+    SectionTracker::SectionTracker( NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent )
+    :   TrackerBase( CATCH_MOVE(nameAndLocation), ctx, parent ),
+        m_trimmed_name(trim(ITracker::nameAndLocation().name))
     {
         if( parent ) {
-            while( !parent->isSectionTracker() )
+            while ( !parent->isSectionTracker() ) {
                 parent = parent->parent();
+            }
 
             SectionTracker& parentSection = static_cast<SectionTracker&>( *parent );
             addNextFilters( parentSection.m_filters );
@@ -6328,24 +6351,30 @@ namespace TestCaseTracking {
 
     bool SectionTracker::isSectionTracker() const { return true; }
 
-    SectionTracker& SectionTracker::acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation ) {
-        SectionTracker* section;
+    SectionTracker& SectionTracker::acquire( TrackerContext& ctx, NameAndLocationRef nameAndLocation ) {
+        SectionTracker* tracker;
 
         ITracker& currentTracker = ctx.currentTracker();
         if ( ITracker* childTracker =
                  currentTracker.findChild( nameAndLocation ) ) {
             assert( childTracker );
             assert( childTracker->isSectionTracker() );
-            section = static_cast<SectionTracker*>( childTracker );
+            tracker = static_cast<SectionTracker*>( childTracker );
         } else {
-            auto newSection = Catch::Detail::make_unique<SectionTracker>(
-                nameAndLocation, ctx, &currentTracker );
-            section = newSection.get();
-            currentTracker.addChild( CATCH_MOVE( newSection ) );
+            auto newTracker = Catch::Detail::make_unique<SectionTracker>(
+                NameAndLocation{ static_cast<std::string>(nameAndLocation.name),
+                                 nameAndLocation.location },
+                ctx,
+                &currentTracker );
+            tracker = newTracker.get();
+            currentTracker.addChild( CATCH_MOVE( newTracker ) );
         }
-        if( !ctx.completedCycle() )
-            section->tryOpen();
-        return *section;
+
+        if ( !ctx.completedCycle() ) {
+            tracker->tryOpen();
+        }
+
+        return *tracker;
     }
 
     void SectionTracker::tryOpen() {
@@ -8809,7 +8838,8 @@ namespace Catch {
 
     void
     CumulativeReporterBase::sectionStarting( SectionInfo const& sectionInfo ) {
-        SectionStats incompleteStats( sectionInfo, Counts(), 0, false );
+        // We need a copy, because SectionStats expect to take ownership
+        SectionStats incompleteStats( SectionInfo(sectionInfo), Counts(), 0, false );
         SectionNode* node;
         if ( m_sectionStack.empty() ) {
             if ( !m_rootSection ) {
@@ -9792,7 +9822,7 @@ namespace Catch {
     }
 
     void SonarQubeReporter::writeRun( TestRunNode const& runNode ) {
-        std::map<std::string, std::vector<TestCaseNode const*>> testsPerFile;
+        std::map<StringRef, std::vector<TestCaseNode const*>> testsPerFile;
 
         for ( auto const& child : runNode.children ) {
             testsPerFile[child->value.testInfo->lineInfo.file].push_back(
@@ -9804,7 +9834,7 @@ namespace Catch {
         }
     }
 
-    void SonarQubeReporter::writeTestFile(std::string const& filename, std::vector<TestCaseNode const*> const& testCaseNodes) {
+    void SonarQubeReporter::writeTestFile(StringRef filename, std::vector<TestCaseNode const*> const& testCaseNodes) {
         XmlWriter::ScopedElement e = xml.scopedElement("file");
         xml.writeAttribute("path"_sr, filename);
 

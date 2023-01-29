@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.3.1](#331)<br>
 [3.3.0](#330)<br>
 [3.2.1](#321)<br>
 [3.2.0](#320)<br>
@@ -52,6 +53,16 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+
+## 3.3.1
+
+### Improvements
+* Reduced allocations and improved performance
+  * The exact improvements are dependent on your usage of Catch2.
+  * For example running Catch2's SelfTest binary performs 8k less allocations.
+  * The main improvement comes from smarter handling of `SECTION`s, especially sibling `SECTION`s
 
 
 
