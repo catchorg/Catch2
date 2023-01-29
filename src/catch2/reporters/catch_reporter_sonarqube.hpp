@@ -41,7 +41,7 @@ namespace Catch {
 
         void writeRun( TestRunNode const& groupNode );
 
-        void writeTestFile(std::string const& filename, std::vector<TestCaseNode const*> const& testCaseNodes);
+        void writeTestFile(StringRef filename, std::vector<TestCaseNode const*> const& testCaseNodes);
 
         void writeTestCase(TestCaseNode const& testCaseNode);
 

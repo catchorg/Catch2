@@ -40,7 +40,7 @@ namespace Catch {
     }
 
     void SonarQubeReporter::writeRun( TestRunNode const& runNode ) {
-        std::map<std::string, std::vector<TestCaseNode const*>> testsPerFile;
+        std::map<StringRef, std::vector<TestCaseNode const*>> testsPerFile;
 
         for ( auto const& child : runNode.children ) {
             testsPerFile[child->value.testInfo->lineInfo.file].push_back(
@@ -52,7 +52,7 @@ namespace Catch {
         }
     }
 
-    void SonarQubeReporter::writeTestFile(std::string const& filename, std::vector<TestCaseNode const*> const& testCaseNodes) {
+    void SonarQubeReporter::writeTestFile(StringRef filename, std::vector<TestCaseNode const*> const& testCaseNodes) {
         XmlWriter::ScopedElement e = xml.scopedElement("file");
         xml.writeAttribute("path"_sr, filename);
 
