@@ -66,7 +66,7 @@ namespace Catch {
     void XmlReporter::testCaseStarting( TestCaseInfo const& testInfo ) {
         StreamingReporterBase::testCaseStarting(testInfo);
         m_xml.startElement( "TestCase" )
-            .writeAttribute( "name"_sr, trim( testInfo.name ) )
+            .writeAttribute( "name"_sr, trim( StringRef(testInfo.name) ) )
             .writeAttribute( "tags"_sr, testInfo.tagsAsString() );
 
         writeSourceInfo( testInfo.lineInfo );
@@ -80,7 +80,7 @@ namespace Catch {
         StreamingReporterBase::sectionStarting( sectionInfo );
         if( m_sectionDepth++ > 0 ) {
             m_xml.startElement( "Section" )
-                .writeAttribute( "name"_sr, trim( sectionInfo.name ) );
+                .writeAttribute( "name"_sr, trim( StringRef(sectionInfo.name) ) );
             writeSourceInfo( sectionInfo.lineInfo );
             m_xml.ensureTagClosed();
         }
@@ -194,11 +194,10 @@ namespace Catch {
 
         if ( m_config->showDurations() == ShowDurations::Always )
             e.writeAttribute( "durationInSeconds"_sr, m_testCaseTimer.getElapsedSeconds() );
-
         if( !testCaseStats.stdOut.empty() )
-            m_xml.scopedElement( "StdOut" ).writeText( trim( testCaseStats.stdOut ), XmlFormatting::Newline );
+            m_xml.scopedElement( "StdOut" ).writeText( trim( StringRef(testCaseStats.stdOut) ), XmlFormatting::Newline );
         if( !testCaseStats.stdErr.empty() )
-            m_xml.scopedElement( "StdErr" ).writeText( trim( testCaseStats.stdErr ), XmlFormatting::Newline );
+            m_xml.scopedElement( "StdErr" ).writeText( trim( StringRef(testCaseStats.stdErr) ), XmlFormatting::Newline );
 
         m_xml.endElement();
     }

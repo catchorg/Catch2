@@ -192,7 +192,7 @@ private:
 private:
     std::ostream& stream;
     AssertionResult const& result;
-    std::vector<MessageInfo> messages;
+    std::vector<MessageInfo> const& messages;
     std::vector<MessageInfo>::const_iterator itMessage;
     bool printInfoMessages;
     ColourImpl* colourImpl;

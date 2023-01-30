@@ -51,7 +51,6 @@ public:
         stats(_stats),
         result(_stats.assertionResult),
         colour(Colour::None),
-        message(result.getMessage()),
         messages(_stats.infoMessages),
         colourImpl(colourImpl_),
         printInfoMessages(_printInfoMessages) {
@@ -60,10 +59,10 @@ public:
             colour = Colour::Success;
             passOrFail = "PASSED"_sr;
             //if( result.hasMessage() )
-            if (_stats.infoMessages.size() == 1)
-                messageLabel = "with message";
-            if (_stats.infoMessages.size() > 1)
-                messageLabel = "with messages";
+            if (messages.size() == 1)
+                messageLabel = "with message"_sr;
+            if (messages.size() > 1)
+                messageLabel = "with messages"_sr;
             break;
         case ResultWas::ExpressionFailed:
             if (result.isOk()) {
@@ -73,51 +72,57 @@ public:
                 colour = Colour::Error;
                 passOrFail = "FAILED"_sr;
             }
-            if (_stats.infoMessages.size() == 1)
-                messageLabel = "with message";
-            if (_stats.infoMessages.size() > 1)
-                messageLabel = "with messages";
+            if (messages.size() == 1)
+                messageLabel = "with message"_sr;
+            if (messages.size() > 1)
+                messageLabel = "with messages"_sr;
             break;
         case ResultWas::ThrewException:
             colour = Colour::Error;
             passOrFail = "FAILED"_sr;
-            messageLabel = "due to unexpected exception with ";
-            if (_stats.infoMessages.size() == 1)
-                messageLabel += "message";
-            if (_stats.infoMessages.size() > 1)
-                messageLabel += "messages";
+            // todo switch
+            switch (messages.size()) { case 0:
+                messageLabel = "due to unexpected exception with "_sr;
+                break;
+            case 1:
+                messageLabel = "due to unexpected exception with message"_sr;
+                break;
+            default:
+                messageLabel = "due to unexpected exception with messages"_sr;
+                break;
+            }
             break;
         case ResultWas::FatalErrorCondition:
             colour = Colour::Error;
             passOrFail = "FAILED"_sr;
-            messageLabel = "due to a fatal error condition";
+            messageLabel = "due to a fatal error condition"_sr;
             break;
         case ResultWas::DidntThrowException:
             colour = Colour::Error;
             passOrFail = "FAILED"_sr;
-            messageLabel = "because no exception was thrown where one was expected";
+            messageLabel = "because no exception was thrown where one was expected"_sr;
             break;
         case ResultWas::Info:
-            messageLabel = "info";
+            messageLabel = "info"_sr;
             break;
         case ResultWas::Warning:
-            messageLabel = "warning";
+            messageLabel = "warning"_sr;
             break;
         case ResultWas::ExplicitFailure:
             passOrFail = "FAILED"_sr;
             colour = Colour::Error;
-            if (_stats.infoMessages.size() == 1)
-                messageLabel = "explicitly with message";
-            if (_stats.infoMessages.size() > 1)
-                messageLabel = "explicitly with messages";
+            if (messages.size() == 1)
+                messageLabel = "explicitly with message"_sr;
+            if (messages.size() > 1)
+                messageLabel = "explicitly with messages"_sr;
             break;
         case ResultWas::ExplicitSkip:
             colour = Colour::Skip;
             passOrFail = "SKIPPED"_sr;
-            if (_stats.infoMessages.size() == 1)
-                messageLabel = "explicitly with message";
-            if (_stats.infoMessages.size() > 1)
-                messageLabel = "explicitly with messages";
+            if (messages.size() == 1)
+                messageLabel = "explicitly with message"_sr;
+            if (messages.size() > 1)
+                messageLabel = "explicitly with messages"_sr;
             break;
             // These cases are here to prevent compiler warnings
         case ResultWas::Unknown:
@@ -181,9 +186,8 @@ private:
     AssertionResult const& result;
     Colour::Code colour;
     StringRef passOrFail;
-    std::string messageLabel;
-    std::string message;
-    std::vector<MessageInfo> messages;
+    StringRef messageLabel;
+    std::vector<MessageInfo> const& messages;
     ColourImpl* colourImpl;
     bool printInfoMessages;
 };
