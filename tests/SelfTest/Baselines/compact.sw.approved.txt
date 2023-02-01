@@ -599,6 +599,7 @@ Misc.tests.cpp:<line number>: passed: Factorial(1) == 1 for: 1 == 1
 Misc.tests.cpp:<line number>: passed: Factorial(2) == 2 for: 2 == 2
 Misc.tests.cpp:<line number>: passed: Factorial(3) == 6 for: 6 == 6
 Misc.tests.cpp:<line number>: passed: Factorial(10) == 3628800 for: 3628800 (0x<hex digits>) == 3628800 (0x<hex digits>)
+GeneratorsImpl.tests.cpp:<line number>: passed: filter( []( int ) { return false; }, value( 3 ) ), Catch::GeneratorException
 Matchers.tests.cpp:<line number>: passed: 10., WithinRel( 11.1, 0.1 ) for: 10.0 and 11.1 are within 10% of each other
 Matchers.tests.cpp:<line number>: passed: 10., !WithinRel( 11.2, 0.1 ) for: 10.0 not and 11.2 are within 10% of each other
 Matchers.tests.cpp:<line number>: passed: 1., !WithinRel( 0., 0.99 ) for: 1.0 not and 0 are within 99% of each other
@@ -2522,7 +2523,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  408 |  308 passed |  84 failed | 5 skipped | 11 failed as expected
-assertions: 2210 | 2033 passed | 145 failed | 32 failed as expected
+test cases:  409 |  309 passed |  84 failed | 5 skipped | 11 failed as expected
+assertions: 2211 | 2034 passed | 145 failed | 32 failed as expected
 
 

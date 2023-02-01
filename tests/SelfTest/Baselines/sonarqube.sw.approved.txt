@@ -71,6 +71,7 @@
     <testCase name="convertToBits" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp">
+    <testCase name="Filter generator throws exception for empty generator" duration="{duration}"/>
     <testCase name="Generators internals/Single value" duration="{duration}"/>
     <testCase name="Generators internals/Preset values" duration="{duration}"/>
     <testCase name="Generators internals/Generator combinator" duration="{duration}"/>

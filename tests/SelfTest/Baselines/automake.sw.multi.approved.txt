@@ -149,6 +149,7 @@
 :test-result: FAIL FAIL does not require an argument
 :test-result: FAIL FAIL_CHECK does not abort the test
 :test-result: PASS Factorials are computed
+:test-result: PASS Filter generator throws exception for empty generator
 :test-result: PASS Floating point matchers: double
 :test-result: PASS Floating point matchers: float
 :test-result: PASS Generators -- adapters

@@ -370,6 +370,8 @@
 ##teamcity[testFinished name='FAIL_CHECK does not abort the test' duration="{duration}"]
 ##teamcity[testStarted name='Factorials are computed']
 ##teamcity[testFinished name='Factorials are computed' duration="{duration}"]
+##teamcity[testStarted name='Filter generator throws exception for empty generator']
+##teamcity[testFinished name='Filter generator throws exception for empty generator' duration="{duration}"]
 ##teamcity[testStarted name='Floating point matchers: double']
 ##teamcity[testFinished name='Floating point matchers: double' duration="{duration}"]
 ##teamcity[testStarted name='Floating point matchers: float']

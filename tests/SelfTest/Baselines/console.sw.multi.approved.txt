@@ -4476,6 +4476,15 @@ with expansion:
   3628800 (0x<hex digits>) == 3628800 (0x<hex digits>)
 
 -------------------------------------------------------------------------------
+Filter generator throws exception for empty generator
+-------------------------------------------------------------------------------
+GeneratorsImpl.tests.cpp:<line number>
+...............................................................................
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_AS( filter( []( int ) { return false; }, value( 3 ) ), Catch::GeneratorException )
+
+-------------------------------------------------------------------------------
 Floating point matchers: double
   Relative
 -------------------------------------------------------------------------------
@@ -18092,6 +18101,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  408 |  308 passed |  84 failed | 5 skipped | 11 failed as expected
-assertions: 2210 | 2033 passed | 145 failed | 32 failed as expected
+test cases:  409 |  309 passed |  84 failed | 5 skipped | 11 failed as expected
+assertions: 2211 | 2034 passed | 145 failed | 32 failed as expected
 

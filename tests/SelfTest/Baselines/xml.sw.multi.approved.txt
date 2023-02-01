@@ -5025,6 +5025,17 @@ C
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="Filter generator throws exception for empty generator" tags="[generators]" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+    <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+      <Original>
+        filter( []( int ) { return false; }, value( 3 ) ), Catch::GeneratorException
+      </Original>
+      <Expanded>
+        filter( []( int ) { return false; }, value( 3 ) ), Catch::GeneratorException
+      </Expanded>
+    </Expression>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="Floating point matchers: double" tags="[floating-point][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
     <Section name="Relative" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -21047,6 +21058,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2033" failures="145" expectedFailures="32" skips="11"/>
-  <OverallResultsCases successes="308" failures="84" expectedFailures="11" skips="5"/>
+  <OverallResults successes="2034" failures="145" expectedFailures="32" skips="11"/>
+  <OverallResultsCases successes="309" failures="84" expectedFailures="11" skips="5"/>
 </Catch2TestRun>

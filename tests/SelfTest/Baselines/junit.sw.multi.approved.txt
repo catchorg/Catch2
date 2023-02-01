@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="128" skipped="11" tests="2221" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="128" skipped="11" tests="2222" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -686,6 +686,7 @@ at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Factorials are computed" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Filter generator throws exception for empty generator" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: double/Relative" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: double/Relative/Some subnormal values" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: double/Margin" time="{duration}" status="run"/>

@@ -1130,6 +1130,8 @@ ok {test-number} - Factorial(2) == 2 for: 2 == 2
 ok {test-number} - Factorial(3) == 6 for: 6 == 6
 # Factorials are computed
 ok {test-number} - Factorial(10) == 3628800 for: 3628800 (0x<hex digits>) == 3628800 (0x<hex digits>)
+# Filter generator throws exception for empty generator
+ok {test-number} - filter( []( int ) { return false; }, value( 3 ) ), Catch::GeneratorException
 # Floating point matchers: double
 ok {test-number} - 10., WithinRel( 11.1, 0.1 ) for: 10.0 and 11.1 are within 10% of each other
 # Floating point matchers: double
@@ -4445,5 +4447,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2221
+1..2222
 
