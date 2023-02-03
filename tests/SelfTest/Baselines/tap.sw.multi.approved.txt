@@ -3484,6 +3484,30 @@ ok {test-number} - vector_a, !RangeEquals( vector_b ) for: { 1, 2, 3 } not eleme
 ok {test-number} - vector_a, RangeEquals( vector_a_plus_1, close_enough ) for: { 1, 2, 3 } elements are { 2, 3, 4 }
 # Usage of RangeEquals range matcher
 ok {test-number} - vector_a, !RangeEquals( vector_b, close_enough ) for: { 1, 2, 3 } not elements are { 3, 3, 4 }
+# Usage of RangeEquals range matcher
+ok {test-number} - needs_adl1, RangeEquals( needs_adl2 ) for: { 1, 2, 3, 4, 5 } elements are { 1, 2, 3, 4, 5 }
+# Usage of RangeEquals range matcher
+ok {test-number} - needs_adl1, RangeEquals( needs_adl3, []( int l, int r ) { return l + 1 == r; } ) for: { 1, 2, 3, 4, 5 } elements are { 2, 3, 4, 5, 6 }
+# Usage of RangeEquals range matcher
+ok {test-number} - mocked1, !RangeEquals( arr ) for: { 1, 2, 3, 4 } not elements are { 1, 2, 4, 4 }
+# Usage of RangeEquals range matcher
+ok {test-number} - mocked1.m_derefed[0] for: true
+# Usage of RangeEquals range matcher
+ok {test-number} - mocked1.m_derefed[1] for: true
+# Usage of RangeEquals range matcher
+ok {test-number} - mocked1.m_derefed[2] for: true
+# Usage of RangeEquals range matcher
+ok {test-number} - !(mocked1.m_derefed[3]) for: !false
+# Usage of RangeEquals range matcher
+ok {test-number} - mocked1, RangeEquals( arr ) for: { 1, 2, 3, 4 } elements are { 1, 2, 3, 4 }
+# Usage of RangeEquals range matcher
+ok {test-number} - mocked1.m_derefed[0] for: true
+# Usage of RangeEquals range matcher
+ok {test-number} - mocked1.m_derefed[1] for: true
+# Usage of RangeEquals range matcher
+ok {test-number} - mocked1.m_derefed[2] for: true
+# Usage of RangeEquals range matcher
+ok {test-number} - mocked1.m_derefed[3] for: true
 # Usage of UnorderedRangeEquals range matcher
 ok {test-number} - empty_vector, UnorderedRangeEquals( empty_vector ) for: {  } unordered elements are {  }
 # Usage of UnorderedRangeEquals range matcher
@@ -4436,5 +4460,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2222
+1..2234
 

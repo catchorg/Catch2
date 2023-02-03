@@ -33,13 +33,19 @@ namespace Catch {
 
             template <typename RangeLike>
             bool match( RangeLike&& rng ) const {
-                using std::begin;
-                using std::end;
-                return std::equal( begin(m_desired),
-                                   end(m_desired),
-                                   begin(rng),
-                                   end(rng),
-                                   m_predicate );
+                auto rng_start = begin( rng );
+                const auto rng_end = end( rng );
+                auto target_start = begin( m_desired );
+                const auto target_end = end( m_desired );
+
+                while (rng_start != rng_end && target_start != target_end) {
+                    if (!m_predicate(*rng_start, *target_start)) {
+                        return false;
+                    }
+                    ++rng_start;
+                    ++target_start;
+                }
+                return rng_start == rng_end && target_start == target_end;
             }
 
             std::string describe() const override {

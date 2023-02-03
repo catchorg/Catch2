@@ -14239,6 +14239,89 @@ with expansion:
   { 1, 2, 3 } not elements are { 3, 3, 4 }
 
 -------------------------------------------------------------------------------
+Usage of RangeEquals range matcher
+  Ranges that need ADL begin/end
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( needs_adl1, RangeEquals( needs_adl2 ) )
+with expansion:
+  { 1, 2, 3, 4, 5 } elements are { 1, 2, 3, 4, 5 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( needs_adl1, RangeEquals( needs_adl3, []( int l, int r ) { return l + 1 == r; } ) )
+with expansion:
+  { 1, 2, 3, 4, 5 } elements are { 2, 3, 4, 5, 6 }
+
+-------------------------------------------------------------------------------
+Usage of RangeEquals range matcher
+  Check short-circuiting behaviour
+  Check short-circuits on failure
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( mocked1, !RangeEquals( arr ) )
+with expansion:
+  { 1, 2, 3, 4 } not elements are { 1, 2, 4, 4 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked1.m_derefed[0] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked1.m_derefed[1] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked1.m_derefed[2] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( mocked1.m_derefed[3] )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Usage of RangeEquals range matcher
+  Check short-circuiting behaviour
+  All elements are checked on success
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( mocked1, RangeEquals( arr ) )
+with expansion:
+  { 1, 2, 3, 4 } elements are { 1, 2, 3, 4 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked1.m_derefed[0] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked1.m_derefed[1] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked1.m_derefed[2] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked1.m_derefed[3] )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 Usage of UnorderedRangeEquals range matcher
   Basic usage
   Empty container matches empty container
@@ -18113,5 +18196,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  409 |  309 passed |  84 failed | 5 skipped | 11 failed as expected
-assertions: 2211 | 2034 passed | 145 failed | 32 failed as expected
+assertions: 2223 | 2046 passed | 145 failed | 32 failed as expected
 

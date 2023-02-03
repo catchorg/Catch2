@@ -1427,6 +1427,9 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Usage of RangeEquals range matcher/Basic usage/Two non-equal-sized, non-empty containers (with same first elements)" duration="{duration}"/>
     <testCase name="Usage of RangeEquals range matcher/Custom predicate/Two equal non-empty containers (close enough)" duration="{duration}"/>
     <testCase name="Usage of RangeEquals range matcher/Custom predicate/Two non-equal non-empty containers (close enough)" duration="{duration}"/>
+    <testCase name="Usage of RangeEquals range matcher/Ranges that need ADL begin/end" duration="{duration}"/>
+    <testCase name="Usage of RangeEquals range matcher/Check short-circuiting behaviour/Check short-circuits on failure" duration="{duration}"/>
+    <testCase name="Usage of RangeEquals range matcher/Check short-circuiting behaviour/All elements are checked on success" duration="{duration}"/>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Basic usage/Empty container matches empty container" duration="{duration}"/>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Basic usage/Empty container does not match non-empty container" duration="{duration}"/>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Basic usage/Two equal 1-length non-empty containers" duration="{duration}"/>

@@ -832,6 +832,19 @@ TEST_CASE( "The quantifier range matchers support types with different types ret
     }
 }
 
+TEST_CASE( "RangeEquals supports ranges with different types returned from begin and end",
+           "[matchers][templated][range][approvals] ") {
+    using Catch::Matchers::RangeEquals;
+
+    has_different_begin_end_types<int> diff_types{ 1, 2, 3, 4, 5 };
+    std::array<int, 5> arr1{ { 1, 2, 3, 4, 5 } }, arr2{ { 2, 3, 4, 5, 6 } };
+
+    REQUIRE_THAT( diff_types, RangeEquals( arr1 ) );
+    REQUIRE_THAT( diff_types, RangeEquals( arr2, []( int l, int r ) {
+                      return l + 1 == r;
+                  } ) );
+}
+
 #endif
 
 TEST_CASE( "Usage of RangeEquals range matcher", "[matchers][templated][quantifiers]" ) {
@@ -891,10 +904,40 @@ TEST_CASE( "Usage of RangeEquals range matcher", "[matchers][templated][quantifi
         }
     }
 
-    // Cannot usefully test short-circuits, as the complexiy of std::equal is
-    // only guaranteed to be O(n) or better (even if many implementations
-    // short-circuit if the range lengths differ for
-    // LegacyRandomAccessIterators)
+    SECTION( "Ranges that need ADL begin/end" ) {
+        unrelated::needs_ADL_begin<int> const
+            needs_adl1{ 1, 2, 3, 4, 5 },
+            needs_adl2{ 1, 2, 3, 4, 5 },
+            needs_adl3{ 2, 3, 4, 5, 6 };
+
+        REQUIRE_THAT( needs_adl1, RangeEquals( needs_adl2 ) );
+        REQUIRE_THAT( needs_adl1, RangeEquals( needs_adl3, []( int l, int r ) {
+                          return l + 1 == r;
+                      } ) );
+    }
+
+    SECTION("Check short-circuiting behaviour") {
+        with_mocked_iterator_access<int> const mocked1{ 1, 2, 3, 4 };
+
+        SECTION( "Check short-circuits on failure" ) {
+            std::array<int, 4> arr{ { 1, 2, 4, 4 } };
+
+            REQUIRE_THAT( mocked1, !RangeEquals( arr ) );
+            REQUIRE( mocked1.m_derefed[0] );
+            REQUIRE( mocked1.m_derefed[1] );
+            REQUIRE( mocked1.m_derefed[2] );
+            REQUIRE_FALSE( mocked1.m_derefed[3] );
+        }
+        SECTION("All elements are checked on success") {
+            std::array<int, 4> arr{ { 1, 2, 3, 4 } };
+
+            REQUIRE_THAT( mocked1, RangeEquals( arr ) );
+            REQUIRE( mocked1.m_derefed[0] );
+            REQUIRE( mocked1.m_derefed[1] );
+            REQUIRE( mocked1.m_derefed[2] );
+            REQUIRE( mocked1.m_derefed[3] );
+        }
+    }
 }
 
 TEST_CASE( "Usage of UnorderedRangeEquals range matcher",
