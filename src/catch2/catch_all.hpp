@@ -70,6 +70,7 @@
 #include <catch2/internal/catch_fatal_condition_handler.hpp>
 #include <catch2/internal/catch_floating_point_helpers.hpp>
 #include <catch2/internal/catch_getenv.hpp>
+#include <catch2/internal/catch_is_permutation.hpp>
 #include <catch2/internal/catch_istream.hpp>
 #include <catch2/internal/catch_lazy_expr.hpp>
 #include <catch2/internal/catch_leak_detector.hpp>

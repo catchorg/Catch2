@@ -77,6 +77,7 @@ endif(MSVC) #Temporary workaround
 # Please keep these ordered alphabetically
 set(TEST_SOURCES
         ${SELF_TEST_DIR}/TestRegistrations.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/Algorithms.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Clara.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/CmdLine.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/CmdLineHelpers.tests.cpp
@@ -134,6 +135,7 @@ set(TEST_SOURCES
 
 set(TEST_HEADERS
   ${SELF_TEST_DIR}/helpers/parse_test_spec.hpp
+  ${SELF_TEST_DIR}/helpers/range_test_helpers.hpp
   ${SELF_TEST_DIR}/helpers/type_with_lit_0_comparisons.hpp
 )
 

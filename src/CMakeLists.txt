@@ -88,6 +88,7 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/internal/catch_floating_point_helpers.hpp
   ${SOURCES_DIR}/internal/catch_getenv.hpp
   ${SOURCES_DIR}/internal/catch_istream.hpp
+  ${SOURCES_DIR}/internal/catch_is_permutation.hpp
   ${SOURCES_DIR}/internal/catch_lazy_expr.hpp
   ${SOURCES_DIR}/internal/catch_leak_detector.hpp
   ${SOURCES_DIR}/internal/catch_list.hpp

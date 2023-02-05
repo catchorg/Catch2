@@ -93,6 +93,7 @@ internal_headers = [
   'internal/catch_floating_point_helpers.hpp',
   'internal/catch_getenv.hpp',
   'internal/catch_istream.hpp',
+  'internal/catch_is_permutation.hpp',
   'internal/catch_lazy_expr.hpp',
   'internal/catch_leak_detector.hpp',
   'internal/catch_list.hpp',
