@@ -2014,6 +2014,7 @@ MatchersRanges.tests.cpp:<line number>: passed: array_a, !UnorderedRangeEquals( 
 MatchersRanges.tests.cpp:<line number>: passed: vector_a, !UnorderedRangeEquals( vector_b ) for: { 1, 2, 3 } not unordered elements are { 1, 2, 3, 4 }
 MatchersRanges.tests.cpp:<line number>: passed: vector_a, UnorderedRangeEquals( vector_a_plus_1, close_enough ) for: { 1, 10, 20 } unordered elements are { 11, 21, 2 }
 MatchersRanges.tests.cpp:<line number>: passed: vector_a, !UnorderedRangeEquals( vector_b, close_enough ) for: { 1, 10, 21 } not unordered elements are { 11, 21, 3 }
+MatchersRanges.tests.cpp:<line number>: passed: needs_adl1, UnorderedRangeEquals( needs_adl2 ) for: { 1, 2, 3, 4, 5 } unordered elements are { 1, 2, 3, 4, 5 }
 MatchersRanges.tests.cpp:<line number>: passed: empty_vec, SizeIs(0) for: {  } has size == 0
 MatchersRanges.tests.cpp:<line number>: passed: empty_vec, !SizeIs(2) for: {  } not has size == 2
 MatchersRanges.tests.cpp:<line number>: passed: empty_vec, SizeIs(Lt(2)) for: {  } size matches is less than 2
@@ -2536,6 +2537,6 @@ InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
 test cases:  409 |  309 passed |  84 failed | 5 skipped | 11 failed as expected
-assertions: 2223 | 2046 passed | 145 failed | 32 failed as expected
+assertions: 2224 | 2047 passed | 145 failed | 32 failed as expected
 
 

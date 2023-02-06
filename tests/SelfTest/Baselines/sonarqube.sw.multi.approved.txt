@@ -1438,6 +1438,7 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Basic usage/Two non-equal-sized, non-empty containers" duration="{duration}"/>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Custom predicate/Two equal non-empty containers (close enough)" duration="{duration}"/>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Custom predicate/Two non-equal non-empty containers (close enough)" duration="{duration}"/>
+    <testCase name="Usage of UnorderedRangeEquals range matcher/Ranges that need ADL begin/end" duration="{duration}"/>
     <testCase name="Usage of the SizeIs range matcher/Some with stdlib containers" duration="{duration}"/>
     <testCase name="Usage of the SizeIs range matcher/Type requires ADL found size free function" duration="{duration}"/>
     <testCase name="Usage of the SizeIs range matcher/Type has size member" duration="{duration}"/>

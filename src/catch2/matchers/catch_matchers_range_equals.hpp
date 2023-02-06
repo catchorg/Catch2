@@ -8,8 +8,10 @@
 #ifndef CATCH_MATCHERS_RANGE_EQUALS_HPP_INCLUDED
 #define CATCH_MATCHERS_RANGE_EQUALS_HPP_INCLUDED
 
-#include <algorithm>
+#include <catch2/internal/catch_is_permutation.hpp>
 #include <catch2/matchers/catch_matchers_templated.hpp>
+
+#include <algorithm>
 #include <utility>
 
 namespace Catch {
@@ -73,11 +75,11 @@ namespace Catch {
             bool match( RangeLike&& rng ) const {
                 using std::begin;
                 using std::end;
-                return std::is_permutation( begin( m_desired ),
-                                            end( m_desired ),
-                                            begin( rng ),
-                                            end( rng ),
-                                            m_predicate );
+                return Catch::Detail::is_permutation( begin( m_desired ),
+                                                      end( m_desired ),
+                                                      begin( rng ),
+                                                      end( rng ),
+                                                      m_predicate );
             }
 
             std::string describe() const override {

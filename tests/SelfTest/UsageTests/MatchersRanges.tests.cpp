@@ -634,6 +634,7 @@ TEST_CASE( "The quantifier range matchers support types with different types ret
 TEST_CASE( "RangeEquals supports ranges with different types returned from begin and end",
            "[matchers][templated][range][approvals] ") {
     using Catch::Matchers::RangeEquals;
+    using Catch::Matchers::UnorderedRangeEquals;
 
     has_different_begin_end_types<int> diff_types{ 1, 2, 3, 4, 5 };
     std::array<int, 5> arr1{ { 1, 2, 3, 4, 5 } }, arr2{ { 2, 3, 4, 5, 6 } };
@@ -642,6 +643,7 @@ TEST_CASE( "RangeEquals supports ranges with different types returned from begin
     REQUIRE_THAT( diff_types, RangeEquals( arr2, []( int l, int r ) {
                       return l + 1 == r;
                   } ) );
+    REQUIRE_THAT( diff_types, UnorderedRangeEquals( diff_types ) );
 }
 
 #endif
@@ -800,8 +802,14 @@ TEST_CASE( "Usage of UnorderedRangeEquals range matcher",
         }
     }
 
-    // As above with RangeEquals, short cicuiting and other optimisations
-    // are left to the STL implementation
+
+    SECTION( "Ranges that need ADL begin/end" ) {
+        unrelated::needs_ADL_begin<int> const
+            needs_adl1{ 1, 2, 3, 4, 5 },
+            needs_adl2{ 1, 2, 3, 4, 5 };
+
+        REQUIRE_THAT( needs_adl1, UnorderedRangeEquals( needs_adl2 ) );
+    }
 }
 
 /**

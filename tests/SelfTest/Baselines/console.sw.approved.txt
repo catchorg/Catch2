@@ -14431,6 +14431,18 @@ with expansion:
   { 1, 10, 21 } not unordered elements are { 11, 21, 3 }
 
 -------------------------------------------------------------------------------
+Usage of UnorderedRangeEquals range matcher
+  Ranges that need ADL begin/end
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( needs_adl1, UnorderedRangeEquals( needs_adl2 ) )
+with expansion:
+  { 1, 2, 3, 4, 5 } unordered elements are { 1, 2, 3, 4, 5 }
+
+-------------------------------------------------------------------------------
 Usage of the SizeIs range matcher
   Some with stdlib containers
 -------------------------------------------------------------------------------
@@ -18196,5 +18208,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  409 |  309 passed |  84 failed | 5 skipped | 11 failed as expected
-assertions: 2223 | 2046 passed | 145 failed | 32 failed as expected
+assertions: 2224 | 2047 passed | 145 failed | 32 failed as expected
 

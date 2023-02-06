@@ -3526,6 +3526,8 @@ ok {test-number} - vector_a, !UnorderedRangeEquals( vector_b ) for: { 1, 2, 3 } 
 ok {test-number} - vector_a, UnorderedRangeEquals( vector_a_plus_1, close_enough ) for: { 1, 10, 20 } unordered elements are { 11, 21, 2 }
 # Usage of UnorderedRangeEquals range matcher
 ok {test-number} - vector_a, !UnorderedRangeEquals( vector_b, close_enough ) for: { 1, 10, 21 } not unordered elements are { 11, 21, 3 }
+# Usage of UnorderedRangeEquals range matcher
+ok {test-number} - needs_adl1, UnorderedRangeEquals( needs_adl2 ) for: { 1, 2, 3, 4, 5 } unordered elements are { 1, 2, 3, 4, 5 }
 # Usage of the SizeIs range matcher
 ok {test-number} - empty_vec, SizeIs(0) for: {  } has size == 0
 # Usage of the SizeIs range matcher
@@ -4460,5 +4462,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2234
+1..2235
 

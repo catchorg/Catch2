@@ -16890,6 +16890,17 @@ There is no extra whitespace here
       </Section>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
+    <Section name="Ranges that need ADL begin/end" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Original>
+          needs_adl1, UnorderedRangeEquals( needs_adl2 )
+        </Original>
+        <Expanded>
+          { 1, 2, 3, 4, 5 } unordered elements are { 1, 2, 3, 4, 5 }
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="Usage of the SizeIs range matcher" tags="[matchers][size][templated]" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
@@ -21170,6 +21181,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2046" failures="145" expectedFailures="32" skips="11"/>
+  <OverallResults successes="2047" failures="145" expectedFailures="32" skips="11"/>
   <OverallResultsCases successes="309" failures="84" expectedFailures="11" skips="5"/>
 </Catch2TestRun>
