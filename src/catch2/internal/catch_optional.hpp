@@ -18,10 +18,10 @@ namespace Catch {
     public:
         Optional() : nullableValue( nullptr ) {}
         Optional( T const& _value )
-        : nullableValue( new( storage ) T( _value ) )
+        : nullableValue( new( &storage ) T( _value ) )
         {}
         Optional( Optional const& _other )
-        : nullableValue( _other ? new( storage ) T( *_other ) : nullptr )
+        : nullableValue( _other ? new( &storage ) T( *_other ) : nullptr )
         {}
 
         ~Optional() {
@@ -32,13 +32,13 @@ namespace Catch {
             if( &_other != this ) {
                 reset();
                 if( _other )
-                    nullableValue = new( storage ) T( *_other );
+                    nullableValue = new( &storage ) T( *_other );
             }
             return *this;
         }
         Optional& operator = ( T const& _value ) {
             reset();
-            nullableValue = new( storage ) T( _value );
+            nullableValue = new( &storage ) T( _value );
             return *this;
         }
 
@@ -92,7 +92,7 @@ namespace Catch {
 
     private:
         T *nullableValue;
-        alignas(alignof(T)) char storage[sizeof(T)];
+        struct { alignas(alignof(T)) char data[sizeof(T)]; } storage;
     };
 
 } // end namespace Catch

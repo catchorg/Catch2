@@ -24,12 +24,12 @@ namespace Catch {
 
                 ObjectStorage(const ObjectStorage& other)
                 {
-                    new(&data) T(other.stored_object());
+                    new(&storage) T(other.stored_object());
                 }
 
                 ObjectStorage(ObjectStorage&& other)
                 {
-                    new(data) T(CATCH_MOVE(other.stored_object()));
+                    new(&storage) T(CATCH_MOVE(other.stored_object()));
                 }
 
                 ~ObjectStorage() { destruct_on_exit<T>(); }
@@ -37,7 +37,7 @@ namespace Catch {
                 template <typename... Args>
                 void construct(Args&&... args)
                 {
-                    new (data) T(CATCH_FORWARD(args)...);
+                    new (&storage) T(CATCH_FORWARD(args)...);
                 }
 
                 template <bool AllowManualDestruction = !Destruct>
@@ -54,20 +54,16 @@ namespace Catch {
                 template <typename U>
                 void destruct_on_exit(std::enable_if_t<!Destruct, U>* = nullptr) { }
 
-#if defined( __GNUC__ ) && __GNUC__ <= 6
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wstrict-aliasing"
-#endif
-                T& stored_object() { return *reinterpret_cast<T*>( data ); }
+                T& stored_object() {
+                    return *CATCH_LAUNDER(reinterpret_cast<T*>( &storage ));
+                }
 
                 T const& stored_object() const {
-                    return *reinterpret_cast<T const*>( data );
+                    return *CATCH_LAUNDER(reinterpret_cast<T const*>(&storage));
                 }
-#if defined( __GNUC__ ) && __GNUC__ <= 6
-#    pragma GCC diagnostic pop
-#endif
 
-                alignas( T ) unsigned char data[sizeof( T )]{};
+
+                struct { alignas( T ) unsigned char data[sizeof( T )]; }  storage{};
             };
         } // namespace Detail
 

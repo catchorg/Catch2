@@ -37,6 +37,14 @@
 #    define CATCH_CPP17_OR_GREATER
 #  endif
 
+#  include <new> // for __cpp_lib_launder
+
+#  ifdef __cpp_lib_launder
+#    define CATCH_LAUNDER(p) std::launder(p)
+#  else
+#    define CATCH_LAUNDER(p) (p)
+#  endif
+
 #endif
 
 // Only GCC compiler should be used in this block, so other compilers trying to
