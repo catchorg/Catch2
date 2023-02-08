@@ -54,11 +54,11 @@ namespace Catch {
                 void destruct_on_exit(typename std::enable_if<!Destruct, U>::type* = 0) { }
 
                 T& stored_object() {
-                    return *static_cast<T*>(static_cast<void*>(&data));
+                    return *CATCH_LAUNDER(static_cast<T*>(static_cast<void*>(&data)));
                 }
 
                 T const& stored_object() const {
-                    return *static_cast<T*>(static_cast<void*>(&data));
+                    return *CATCH_LAUNDER(static_cast<T*>(static_cast<void*>(&data)));
                 }
 
 
