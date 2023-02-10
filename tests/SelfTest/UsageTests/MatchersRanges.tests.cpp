@@ -646,6 +646,16 @@ TEST_CASE( "RangeEquals supports ranges with different types returned from begin
     REQUIRE_THAT( diff_types, UnorderedRangeEquals( diff_types ) );
 }
 
+TEST_CASE( "RangeContains supports ranges with different types returned from "
+           "begin and end",
+           "[matchers][templated][range][approvals]" ) {
+    using Catch::Matchers::Contains;
+
+    has_different_begin_end_types<size_t> diff_types{ 1, 2, 3, 4, 5 };
+    REQUIRE_THAT( diff_types, Contains( size_t( 3 ) ) );
+    REQUIRE_THAT( diff_types, Contains( LessThanMatcher( size_t( 4 ) ) ) );
+}
+
 #endif
 
 TEST_CASE( "Usage of RangeEquals range matcher", "[matchers][templated][quantifiers]" ) {
