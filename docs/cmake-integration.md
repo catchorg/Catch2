@@ -90,12 +90,12 @@ cmake_minimum_required(VERSION 3.5)
 project(baz LANGUAGES CXX VERSION 0.0.1)
 
 find_package(Catch2 REQUIRED)
-add_executable(foo test.cpp)
-target_link_libraries(foo PRIVATE Catch2::Catch2)
+add_executable(tests test.cpp)
+target_link_libraries(tests PRIVATE Catch2::Catch2)
 
 include(CTest)
 include(Catch)
-catch_discover_tests(foo)
+catch_discover_tests(tests)
 ```
 
 When using `FetchContent`, `include(Catch)` will fail unless
@@ -108,7 +108,7 @@ directory.
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 include(CTest)
 include(Catch)
-catch_discover_tests()
+catch_discover_tests(tests)
 ```
 
 #### Customization
@@ -222,12 +222,12 @@ cmake_minimum_required(VERSION 3.5)
 project(baz LANGUAGES CXX VERSION 0.0.1)
 
 find_package(Catch2 REQUIRED)
-add_executable(foo test.cpp)
-target_link_libraries(foo PRIVATE Catch2::Catch2)
+add_executable(tests test.cpp)
+target_link_libraries(tests PRIVATE Catch2::Catch2)
 
 include(CTest)
 include(ParseAndAddCatchTests)
-ParseAndAddCatchTests(foo)
+ParseAndAddCatchTests(tests)
 ```
 
 
