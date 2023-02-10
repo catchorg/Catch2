@@ -642,10 +642,11 @@ namespace Catch {
     void RunContext::handleIncomplete(
             AssertionInfo const& info
     ) {
+        using namespace std::string_literals;
         m_lastAssertionInfo = info;
 
         AssertionResultData data( ResultWas::ThrewException, LazyExpression( false ) );
-        data.message = "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE";
+        data.message = "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE"s;
         AssertionResult assertionResult{ info, CATCH_MOVE( data ) };
         assertionEnded( assertionResult );
     }
