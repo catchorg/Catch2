@@ -507,10 +507,13 @@ start of the first section.</br>
 ## Filenames as tags
 <pre>-#, --filenames-as-tags</pre>
 
-When this option is used then every test is given an additional tag which is formed of the unqualified
-filename it is found in, with any extension stripped, prefixed with the `#` character.
+This option adds an extra tag to all test cases. The tag is `#` followed
+by the unqualified filename the test case is defined in, with the _last_
+extension stripped out.
 
-So, for example,  tests within the file `~\Dev\MyProject\Ferrets.cpp` would be tagged `[#Ferrets]`.
+For example, tests within the file `tests\SelfTest\UsageTests\BDD.tests.cpp`
+will be given the `[#BDD.tests]` tag.
+
 
 <a id="colour-mode"></a>
 ## Override output colouring

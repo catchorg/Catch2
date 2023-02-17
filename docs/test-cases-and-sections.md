@@ -69,7 +69,8 @@ All tag names beginning with non-alphanumeric characters are reserved by Catch. 
 
 * `[!nonportable]` - Indicates that behaviour may vary between platforms or compilers.
 
-* `[#<filename>]` - running with `-#` or `--filenames-as-tags` causes Catch to add the filename, prefixed with `#` (and with any extension stripped), as a tag to all contained tests, e.g. tests in testfile.cpp would all be tagged `[#testfile]`.
+* `[#<filename>]` - these tags are added to test cases when you run Catch2
+                    with [`-#` or `--filenames-as-tags`](command-line.md#filenames-as-tags).
 
 * `[@<alias>]` - tag aliases all begin with `@` (see below).
 
