@@ -118,7 +118,7 @@ namespace Catch {
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                               \
         namespace {                                                            \
             Catch::ListenerRegistrar<listenerType> INTERNAL_CATCH_UNIQUE_NAME( \
-                catch_internal_RegistrarFor )( #listenerType );                \
+                catch_internal_RegistrarFor )( #listenerType##_catch_sr );     \
         }                                                                      \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
