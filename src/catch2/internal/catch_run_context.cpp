@@ -34,7 +34,7 @@ namespace Catch {
             {}
             ~GeneratorTracker() override;
 
-            static GeneratorTracker* acquire( TrackerContext& ctx, TestCaseTracking::NameAndLocationRef nameAndLocation ) {
+            static GeneratorTracker* acquire( TrackerContext& ctx, TestCaseTracking::NameAndLocationRef const& nameAndLocation ) {
                 GeneratorTracker* tracker;
 
                 ITracker& currentTracker = ctx.currentTracker();

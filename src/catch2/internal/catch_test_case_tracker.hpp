@@ -49,11 +49,11 @@ namespace TestCaseTracking {
             name( name_ ), location( location_ ) {}
 
         friend bool operator==( NameAndLocation const& lhs,
-                                NameAndLocationRef rhs ) {
+                                NameAndLocationRef const& rhs ) {
             return StringRef( lhs.name ) == rhs.name &&
                    lhs.location == rhs.location;
         }
-        friend bool operator==( NameAndLocationRef lhs,
+        friend bool operator==( NameAndLocationRef const& lhs,
                                 NameAndLocation const& rhs ) {
             return rhs == lhs;
         }
@@ -125,7 +125,7 @@ namespace TestCaseTracking {
          *
          * Returns nullptr if not found.
          */
-        ITracker* findChild( NameAndLocationRef nameAndLocation );
+        ITracker* findChild( NameAndLocationRef const& nameAndLocation );
         //! Have any children been added?
         bool hasChildren() const {
             return !m_children.empty();
@@ -212,7 +212,7 @@ namespace TestCaseTracking {
 
         bool isComplete() const override;
 
-        static SectionTracker& acquire( TrackerContext& ctx, NameAndLocationRef nameAndLocation );
+        static SectionTracker& acquire( TrackerContext& ctx, NameAndLocationRef const& nameAndLocation );
 
         void tryOpen();
 
