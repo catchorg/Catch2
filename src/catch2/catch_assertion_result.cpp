@@ -68,16 +68,15 @@ namespace Catch {
     }
 
     std::string AssertionResult::getExpressionInMacro() const {
-        std::string expr;
-        if( m_info.macroName.empty() )
-            expr = static_cast<std::string>(m_info.capturedExpression);
-        else {
-            expr.reserve( m_info.macroName.size() + m_info.capturedExpression.size() + 4 );
-            expr += m_info.macroName;
-            expr += "( ";
-            expr += m_info.capturedExpression;
-            expr += " )";
+        if ( m_info.macroName.empty() ) {
+            return static_cast<std::string>( m_info.capturedExpression );
         }
+        std::string expr;
+        expr.reserve( m_info.macroName.size() + m_info.capturedExpression.size() + 4 );
+        expr += m_info.macroName;
+        expr += "( ";
+        expr += m_info.capturedExpression;
+        expr += " )";
         return expr;
     }
 
