@@ -26,7 +26,7 @@ namespace Catch {
     Section::Section( SourceLineInfo const& _lineInfo,
                       StringRef _name,
                       const char* const ):
-        m_info( { "invalid", static_cast<std::size_t>(-1) }, "" ),
+        m_info( { "invalid", static_cast<std::size_t>( -1 ) }, std::string{} ),
         m_sectionIncluded(
             getResultCapture().sectionStarted( _name, _lineInfo, m_assertions ) ) {
         // We delay initialization the SectionInfo member until we know
