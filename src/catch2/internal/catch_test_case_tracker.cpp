@@ -81,12 +81,6 @@ namespace TestCaseTracking {
         return *m_rootTracker;
     }
 
-    void TrackerContext::endRun() {
-        m_rootTracker.reset();
-        m_currentTracker = nullptr;
-        m_runState = NotStarted;
-    }
-
     void TrackerContext::startCycle() {
         m_currentTracker = m_rootTracker.get();
         m_runState = Executing;

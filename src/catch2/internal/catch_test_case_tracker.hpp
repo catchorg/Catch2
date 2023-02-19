@@ -164,7 +164,6 @@ namespace TestCaseTracking {
     public:
 
         ITracker& startRun();
-        void endRun();
 
         void startCycle();
         void completeCycle();
