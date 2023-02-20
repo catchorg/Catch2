@@ -176,13 +176,8 @@ namespace Catch {
     Totals RunContext::runTest(TestCaseHandle const& testCase) {
         const Totals prevTotals = m_totals;
 
-        std::string redirectedCout;
-        std::string redirectedCerr;
-
         auto const& testInfo = testCase.getTestCaseInfo();
-
         m_reporter->testCaseStarting(testInfo);
-
         m_activeTestCase = &testCase;
 
 
@@ -224,6 +219,8 @@ namespace Catch {
         seedRng( *m_config );
 
         uint64_t testRuns = 0;
+        std::string redirectedCout;
+        std::string redirectedCerr;
         do {
             m_trackerContext.startCycle();
             m_testCaseTracker = &SectionTracker::acquire(m_trackerContext, TestCaseTracking::NameAndLocationRef(testInfo.name, testInfo.lineInfo));
@@ -237,7 +234,7 @@ namespace Catch {
             redirectedCerr += oneRunCerr;
 
             const auto singleRunTotals = m_totals.delta(beforeRunTotals);
-            auto statsForOneRun = TestCaseStats(testInfo, singleRunTotals, oneRunCout, oneRunCerr, aborting());
+            auto statsForOneRun = TestCaseStats(testInfo, singleRunTotals, CATCH_MOVE(oneRunCout), CATCH_MOVE(oneRunCerr), aborting());
 
             m_reporter->testCasePartialEnded(statsForOneRun, testRuns);
             ++testRuns;
@@ -252,8 +249,8 @@ namespace Catch {
         m_totals.testCases += deltaTotals.testCases;
         m_reporter->testCaseEnded(TestCaseStats(testInfo,
                                   deltaTotals,
-                                  redirectedCout,
-                                  redirectedCerr,
+                                  CATCH_MOVE(redirectedCout),
+                                  CATCH_MOVE(redirectedCerr),
                                   aborting()));
 
         m_activeTestCase = nullptr;
