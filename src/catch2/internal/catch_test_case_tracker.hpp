@@ -24,8 +24,12 @@ namespace TestCaseTracking {
 
         NameAndLocation( std::string&& _name, SourceLineInfo const& _location );
         friend bool operator==(NameAndLocation const& lhs, NameAndLocation const& rhs) {
-            return lhs.name == rhs.name
-                && lhs.location == rhs.location;
+            // This is a very cheap check that should have a very high hit rate.
+            // If we get to SourceLineInfo::operator==, we will redo it, but the
+            // cost of repeating is trivial at that point (we will be paying
+            // multiple strcmp/memcmps at that point).
+            if ( lhs.location.line != rhs.location.line ) { return false; }
+            return lhs.name == rhs.name && lhs.location == rhs.location;
         }
         friend bool operator!=(NameAndLocation const& lhs,
                                NameAndLocation const& rhs) {
@@ -50,6 +54,11 @@ namespace TestCaseTracking {
 
         friend bool operator==( NameAndLocation const& lhs,
                                 NameAndLocationRef const& rhs ) {
+            // This is a very cheap check that should have a very high hit rate.
+            // If we get to SourceLineInfo::operator==, we will redo it, but the
+            // cost of repeating is trivial at that point (we will be paying
+            // multiple strcmp/memcmps at that point).
+            if ( lhs.location.line != rhs.location.line ) { return false; }
             return StringRef( lhs.name ) == rhs.name &&
                    lhs.location == rhs.location;
         }
