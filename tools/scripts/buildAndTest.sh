@@ -8,7 +8,7 @@
 ./tools/scripts/generateAmalgamatedFiles.py
 
 # 2. Configure the full test build
-cmake -Bdebug-build -H. -DCMAKE_BUILD_TYPE=Debug -DCATCH_DEVELOPMENT_BUILD=ON -DCATCH_BUILD_EXAMPLES=ON -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_ENABLE_CONFIGURE_TESTS=ON
+cmake -B debug-build -S . -DCMAKE_BUILD_TYPE=Debug --preset all-tests
 
 # 3. Run the actual build
 cmake --build debug-build
