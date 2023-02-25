@@ -4672,6 +4672,18 @@ Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THROWS_AS( WithinRel( 1., 1. ), std::domain_error )
 
 -------------------------------------------------------------------------------
+Floating point matchers: double
+  IsNaN
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( 1., !IsNaN() )
+with expansion:
+  1.0 not is NaN
+
+-------------------------------------------------------------------------------
 Floating point matchers: float
   Relative
 -------------------------------------------------------------------------------
@@ -4863,6 +4875,18 @@ Matchers.tests.cpp:<line number>: PASSED:
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THROWS_AS( WithinRel( 1.f, 1.f ), std::domain_error )
+
+-------------------------------------------------------------------------------
+Floating point matchers: float
+  IsNaN
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( 1., !IsNaN() )
+with expansion:
+  1.0 not is NaN
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -18208,5 +18232,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  409 |  309 passed |  84 failed | 5 skipped | 11 failed as expected
-assertions: 2224 | 2047 passed | 145 failed | 32 failed as expected
+assertions: 2226 | 2049 passed | 145 failed | 32 failed as expected
 

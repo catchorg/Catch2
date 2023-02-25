@@ -1172,12 +1172,14 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Floating point matchers: double/ULPs" duration="{duration}"/>
     <testCase name="Floating point matchers: double/Composed" duration="{duration}"/>
     <testCase name="Floating point matchers: double/Constructor validation" duration="{duration}"/>
+    <testCase name="Floating point matchers: double/IsNaN" duration="{duration}"/>
     <testCase name="Floating point matchers: float/Relative" duration="{duration}"/>
     <testCase name="Floating point matchers: float/Relative/Some subnormal values" duration="{duration}"/>
     <testCase name="Floating point matchers: float/Margin" duration="{duration}"/>
     <testCase name="Floating point matchers: float/ULPs" duration="{duration}"/>
     <testCase name="Floating point matchers: float/Composed" duration="{duration}"/>
     <testCase name="Floating point matchers: float/Constructor validation" duration="{duration}"/>
+    <testCase name="Floating point matchers: float/IsNaN" duration="{duration}"/>
     <testCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator" duration="{duration}"/>
     <testCase name="Matchers can be (AnyOf) composed with the || operator" duration="{duration}"/>
     <testCase name="Matchers can be composed with both &amp;&amp; and ||" duration="{duration}"/>

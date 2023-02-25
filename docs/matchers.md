@@ -141,17 +141,26 @@ are a permutation of the ones in `some_vec`.
 
 ### Floating point matchers
 
-Catch2 provides 3 matchers that target floating point numbers. These
+Catch2 provides 4 matchers that target floating point numbers. These
 are:
 
 * `WithinAbs(double target, double margin)`,
 * `WithinULP(FloatingPoint target, uint64_t maxUlpDiff)`, and
 * `WithinRel(FloatingPoint target, FloatingPoint eps)`.
+* `IsNaN()`
 
 > `WithinRel` matcher was introduced in Catch2 2.10.0
 
-For more details, read [the docs on comparing floating point
+> `IsNaN` matcher was introduced in Catch2 X.Y.Z.
+
+The first three serve to compare two floating pointe numbers. For more
+details about how they work, read [the docs on comparing floating point
 numbers](comparing-floating-point-numbers.md#floating-point-matchers).
+
+`IsNaN` then does exactly what it says on the tin. It matches the input
+if it is a NaN (Not a Number). The advantage of using it over just plain
+`REQUIRE(std::isnan(x))`, is that if the check fails, with `REQUIRE` you
+won't see the value of `x`, but with `REQUIRE_THAT(x, IsNaN())`, you will.
 
 
 ### Miscellaneous matchers

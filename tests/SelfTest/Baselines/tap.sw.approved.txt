@@ -1190,6 +1190,8 @@ ok {test-number} - WithinRel( 1., 0. )
 ok {test-number} - WithinRel( 1., -0.2 ), std::domain_error
 # Floating point matchers: double
 ok {test-number} - WithinRel( 1., 1. ), std::domain_error
+# Floating point matchers: double
+ok {test-number} - 1., !IsNaN() for: 1.0 not is NaN
 # Floating point matchers: float
 ok {test-number} - 10.f, WithinRel( 11.1f, 0.1f ) for: 10.0f and 11.1 are within 10% of each other
 # Floating point matchers: float
@@ -1254,6 +1256,8 @@ ok {test-number} - WithinRel( 1.f, 0.f )
 ok {test-number} - WithinRel( 1.f, -0.2f ), std::domain_error
 # Floating point matchers: float
 ok {test-number} - WithinRel( 1.f, 1.f ), std::domain_error
+# Floating point matchers: float
+ok {test-number} - 1., !IsNaN() for: 1.0 not is NaN
 # Generators -- adapters
 ok {test-number} - i % 2 == 0 for: 0 == 0
 # Generators -- adapters
@@ -4473,5 +4477,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2235
+1..2237
 

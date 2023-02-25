@@ -497,6 +497,9 @@ TEST_CASE( "Floating point matchers: float", "[matchers][floating-point]" ) {
         REQUIRE_THROWS_AS( WithinRel( 1.f, -0.2f ), std::domain_error );
         REQUIRE_THROWS_AS( WithinRel( 1.f, 1.f ), std::domain_error );
     }
+    SECTION( "IsNaN" ) {
+        REQUIRE_THAT( 1., !IsNaN() );
+    }
 }
 
 TEST_CASE( "Floating point matchers: double", "[matchers][floating-point]" ) {
@@ -552,6 +555,9 @@ TEST_CASE( "Floating point matchers: double", "[matchers][floating-point]" ) {
         REQUIRE_THROWS_AS( WithinRel( 1., -0.2 ), std::domain_error );
         REQUIRE_THROWS_AS( WithinRel( 1., 1. ), std::domain_error );
     }
+    SECTION("IsNaN") {
+        REQUIRE_THAT( 1., !IsNaN() );
+    }
 }
 
 TEST_CASE( "Floating point matchers that are problematic in approvals",
@@ -566,6 +572,8 @@ TEST_CASE( "Floating point matchers that are problematic in approvals",
     REQUIRE_THAT( NAN, !WithinRel( NAN ) );
     REQUIRE_THAT( 1., !WithinRel( NAN ) );
     REQUIRE_THAT( NAN, !WithinRel( 1. ) );
+    REQUIRE_THAT( NAN, IsNaN() );
+    REQUIRE_THAT( static_cast<double>(NAN), IsNaN() );
 }
 
 TEST_CASE( "Arbitrary predicate matcher", "[matchers][generic]" ) {

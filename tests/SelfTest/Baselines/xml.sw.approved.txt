@@ -5287,6 +5287,17 @@ C
       </Expression>
       <OverallResults successes="6" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
+    <Section name="IsNaN" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          1., !IsNaN()
+        </Original>
+        <Expanded>
+          1.0 not is NaN
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="Floating point matchers: float" tags="[floating-point][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -5563,6 +5574,17 @@ C
         </Expanded>
       </Expression>
       <OverallResults successes="7" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="IsNaN" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          1., !IsNaN()
+        </Original>
+        <Expanded>
+          1.0 not is NaN
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
@@ -21181,6 +21203,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2047" failures="145" expectedFailures="32" skips="11"/>
+  <OverallResults successes="2049" failures="145" expectedFailures="32" skips="11"/>
   <OverallResultsCases successes="309" failures="84" expectedFailures="11" skips="5"/>
 </Catch2TestRun>
