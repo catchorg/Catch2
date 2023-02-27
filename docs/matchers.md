@@ -151,7 +151,7 @@ are:
 
 > `WithinRel` matcher was introduced in Catch2 2.10.0
 
-> `IsNaN` matcher was introduced in Catch2 X.Y.Z.
+> `IsNaN` matcher was introduced in Catch2 3.3.2.
 
 The first three serve to compare two floating pointe numbers. For more
 details about how they work, read [the docs on comparing floating point

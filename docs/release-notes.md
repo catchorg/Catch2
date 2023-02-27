@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.3.2](#332)<br>
 [3.3.1](#331)<br>
 [3.3.0](#330)<br>
 [3.2.1](#321)<br>
@@ -56,6 +57,29 @@
 
 
 
+## 3.3.2
+
+### Improvements
+* Further reduced allocations
+  * The compact, console, TAP and XML reporters perform less allocations in various cases
+  * Removed 1 allocation per entered `SECTION`/`TEST_CASE`.
+  * Removed 2 allocations per test case exit, if stdout/stderr is captured
+* Improved performance
+  * Section tracking is 10%-25% faster than in v3.3.0
+  * Assertion handling is 5%-10% faster than in v3.3.0
+  * Test case registration is 1%-2% faster than in v3.3.0
+  * Tiny speedup for registering listeners
+  * Tiny speedup for `CAPTURE`, `TEST_CASE_METHOD`, `METHOD_AS_TEST_CASE`, and `TEMPLATE_LIST_TEST_*` macros.
+* `Contains`, `RangeEquals` and `UnorderedRangeEquals` matchers now support ranges with iterator + sentinel pair
+* Added `IsNaN` matcher
+  * Unlike `REQUIRE(isnan(x))`, `REQUIRE_THAT(x, IsNaN())` shows you the value of `x`.
+* Suppressed `declared_but_not_referenced` warning for NVHPC (#2637)
+
+### Fixes
+* Fixed performance regression in section tracking introduced in v3.3.1
+  * Extreme cases would cause the tracking to run about 4x slower than in 3.3.0
+
+
 ## 3.3.1
 
 ### Improvements
@@ -63,7 +87,6 @@
   * The exact improvements are dependent on your usage of Catch2.
   * For example running Catch2's SelfTest binary performs 8k less allocations.
   * The main improvement comes from smarter handling of `SECTION`s, especially sibling `SECTION`s
-
 
 
 ## 3.3.0

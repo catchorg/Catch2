@@ -5,8 +5,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.3.1
-//  Generated: 2023-01-29 22:55:03.856079
+//  Catch v3.3.2
+//  Generated: 2023-02-26 10:28:46.785908
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -95,6 +95,8 @@ namespace Catch {
 #include <iosfwd>
 #include <cassert>
 
+#include <cstring>
+
 namespace Catch {
 
     /// A non-owning string class (similar to the forthcoming std::string_view)
@@ -131,7 +133,10 @@ namespace Catch {
         }
 
     public: // operators
-        auto operator == ( StringRef other ) const noexcept -> bool;
+        auto operator == ( StringRef other ) const noexcept -> bool {
+            return m_size == other.m_size
+                && (std::memcmp( m_start, other.m_start, m_size ) == 0);
+        }
         auto operator != (StringRef other) const noexcept -> bool {
             return !(*this == other);
         }
@@ -352,7 +357,7 @@ namespace Catch {
 
 // Only GCC compiler should be used in this block, so other compilers trying to
 // mask themselves as GCC should be ignored.
-#if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC) && !defined(__CUDACC__) && !defined(__LCC__)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC) && !defined(__CUDACC__) && !defined(__LCC__) && !defined(__NVCOMPILER)
 #    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "GCC diagnostic push" )
 #    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "GCC diagnostic pop" )
 
@@ -369,6 +374,12 @@ namespace Catch {
 
 #    define CATCH_INTERNAL_IGNORE_BUT_WARN(...) (void)__builtin_constant_p(__VA_ARGS__)
 
+#endif
+
+#if defined(__NVCOMPILER)
+#    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "diag push" )
+#    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "diag pop" )
+#    define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS _Pragma( "diag_suppress declared_but_not_referenced" )
 #endif
 
 #if defined(__CUDACC__) && !defined(__clang__)
@@ -1434,8 +1445,8 @@ namespace Catch {
     struct TestCaseStats {
         TestCaseStats(  TestCaseInfo const& _testInfo,
                         Totals const& _totals,
-                        std::string const& _stdOut,
-                        std::string const& _stdErr,
+                        std::string&& _stdOut,
+                        std::string&& _stdErr,
                         bool _aborting );
 
         TestCaseInfo const * testInfo;
@@ -4518,7 +4529,10 @@ namespace Catch {
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_CAPTURE( varName, macroName, ... ) \
-    Catch::Capturer varName( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info, #__VA_ARGS__ ); \
+    Catch::Capturer varName( macroName##_catch_sr,        \
+                             CATCH_INTERNAL_LINEINFO,     \
+                             Catch::ResultWas::Info,      \
+                             #__VA_ARGS__##_catch_sr );   \
     varName.captureValues( 0, __VA_ARGS__ )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5904,9 +5918,9 @@ namespace Catch {
 #if !defined(CATCH_CONFIG_DISABLE)
 
 #if !defined(CATCH_CONFIG_DISABLE_STRINGIFICATION)
-  #define CATCH_INTERNAL_STRINGIFY(...) #__VA_ARGS__
+  #define CATCH_INTERNAL_STRINGIFY(...) #__VA_ARGS__##_catch_sr
 #else
-  #define CATCH_INTERNAL_STRINGIFY(...) "Disabled by CATCH_CONFIG_DISABLE_STRINGIFICATION"
+  #define CATCH_INTERNAL_STRINGIFY(...) "Disabled by CATCH_CONFIG_DISABLE_STRINGIFICATION"_catch_sr
 #endif
 
 #if defined(CATCH_CONFIG_FAST_COMPILE) || defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
@@ -6233,7 +6247,13 @@ struct AutoReg : Detail::NonCopyable {
         CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
         CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
-        namespace{ const Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( &QualifiedMethod ), CATCH_INTERNAL_LINEINFO, "&" #QualifiedMethod, Catch::NameAndTags{ __VA_ARGS__ } ); } /* NOLINT */ \
+        namespace {                                                           \
+        const Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( \
+            Catch::makeTestInvoker( &QualifiedMethod ),                   \
+            CATCH_INTERNAL_LINEINFO,                                      \
+            "&" #QualifiedMethod##_catch_sr,                              \
+            Catch::NameAndTags{ __VA_ARGS__ } );                          \
+    } /* NOLINT */ \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6245,7 +6265,11 @@ struct AutoReg : Detail::NonCopyable {
             struct TestName : INTERNAL_CATCH_REMOVE_PARENS(ClassName) { \
                 void test(); \
             }; \
-            const Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( Catch::makeTestInvoker( &TestName::test ), CATCH_INTERNAL_LINEINFO, #ClassName, Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
+            const Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( \
+            Catch::makeTestInvoker( &TestName::test ),                    \
+            CATCH_INTERNAL_LINEINFO,                                      \
+            #ClassName##_catch_sr,                                        \
+            Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
         } \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         void TestName::test()
@@ -6878,7 +6902,7 @@ struct AutoReg : Detail::NonCopyable {
             void reg_tests() {                                          \
                 size_t index = 0;                                    \
                 using expander = size_t[];                           \
-                (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestFunc<Types> ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ Name " - " + std::string(INTERNAL_CATCH_STRINGIZE(TmplList)) + " - " + std::to_string(index), Tags } ), index++)... };/* NOLINT */\
+                (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestFunc<Types> ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ Name " - " INTERNAL_CATCH_STRINGIZE(TmplList) " - " + std::to_string(index), Tags } ), index++)... };/* NOLINT */\
             }                                                     \
         };\
         static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){ \
@@ -7013,7 +7037,7 @@ struct AutoReg : Detail::NonCopyable {
                 void reg_tests(){\
                     size_t index = 0;\
                     using expander = size_t[];\
-                    (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestName<Types>::test ), CATCH_INTERNAL_LINEINFO, #ClassName, Catch::NameAndTags{ Name " - " + std::string(INTERNAL_CATCH_STRINGIZE(TmplList)) + " - " + std::to_string(index), Tags } ), index++)... };/* NOLINT */ \
+                    (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestName<Types>::test ), CATCH_INTERNAL_LINEINFO, #ClassName##_catch_sr, Catch::NameAndTags{ Name " - " INTERNAL_CATCH_STRINGIZE(TmplList) " - " + std::to_string(index), Tags } ), index++)... };/* NOLINT */ \
                 }\
             };\
             static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){\
@@ -7402,7 +7426,7 @@ namespace Catch {
 
 #define CATCH_VERSION_MAJOR 3
 #define CATCH_VERSION_MINOR 3
-#define CATCH_VERSION_PATCH 1
+#define CATCH_VERSION_PATCH 2
 
 #endif // CATCH_VERSION_MACROS_HPP_INCLUDED
 
@@ -7754,16 +7778,19 @@ namespace Detail {
 } // namespace Generators
 } // namespace Catch
 
+#define CATCH_INTERNAL_GENERATOR_STRINGIZE_IMPL( ... ) #__VA_ARGS__##_catch_sr
+#define CATCH_INTERNAL_GENERATOR_STRINGIZE(...) CATCH_INTERNAL_GENERATOR_STRINGIZE_IMPL(__VA_ARGS__)
+
 #define GENERATE( ... ) \
-    Catch::Generators::generate( INTERNAL_CATCH_STRINGIZE(INTERNAL_CATCH_UNIQUE_NAME(generator)), \
+    Catch::Generators::generate( CATCH_INTERNAL_GENERATOR_STRINGIZE(INTERNAL_CATCH_UNIQUE_NAME(generator)), \
                                  CATCH_INTERNAL_LINEINFO, \
                                  [ ]{ using namespace Catch::Generators; return makeGenerators( __VA_ARGS__ ); } ) //NOLINT(google-build-using-namespace)
 #define GENERATE_COPY( ... ) \
-    Catch::Generators::generate( INTERNAL_CATCH_STRINGIZE(INTERNAL_CATCH_UNIQUE_NAME(generator)), \
+    Catch::Generators::generate( CATCH_INTERNAL_GENERATOR_STRINGIZE(INTERNAL_CATCH_UNIQUE_NAME(generator)), \
                                  CATCH_INTERNAL_LINEINFO, \
                                  [=]{ using namespace Catch::Generators; return makeGenerators( __VA_ARGS__ ); } ) //NOLINT(google-build-using-namespace)
 #define GENERATE_REF( ... ) \
-    Catch::Generators::generate( INTERNAL_CATCH_STRINGIZE(INTERNAL_CATCH_UNIQUE_NAME(generator)), \
+    Catch::Generators::generate( CATCH_INTERNAL_GENERATOR_STRINGIZE(INTERNAL_CATCH_UNIQUE_NAME(generator)), \
                                  CATCH_INTERNAL_LINEINFO, \
                                  [&]{ using namespace Catch::Generators; return makeGenerators( __VA_ARGS__ ); } ) //NOLINT(google-build-using-namespace)
 
@@ -8919,6 +8946,139 @@ namespace Detail {
 #endif // CATCH_GETENV_HPP_INCLUDED
 
 
+#ifndef CATCH_IS_PERMUTATION_HPP_INCLUDED
+#define CATCH_IS_PERMUTATION_HPP_INCLUDED
+
+#include <algorithm>
+#include <iterator>
+
+namespace Catch {
+    namespace Detail {
+
+        template <typename ForwardIter,
+                  typename Sentinel,
+                  typename T,
+                  typename Comparator>
+        ForwardIter find_sentinel( ForwardIter start,
+                                   Sentinel sentinel,
+                                   T const& value,
+                                   Comparator cmp ) {
+            while ( start != sentinel ) {
+                if ( cmp( *start, value ) ) { break; }
+                ++start;
+            }
+            return start;
+        }
+
+        template <typename ForwardIter,
+                  typename Sentinel,
+                  typename T,
+                  typename Comparator>
+        std::ptrdiff_t count_sentinel( ForwardIter start,
+                                       Sentinel sentinel,
+                                       T const& value,
+                                       Comparator cmp ) {
+            std::ptrdiff_t count = 0;
+            while ( start != sentinel ) {
+                if ( cmp( *start, value ) ) { ++count; }
+                ++start;
+            }
+            return count;
+        }
+
+        template <typename ForwardIter, typename Sentinel>
+        std::enable_if_t<!std::is_same<ForwardIter, Sentinel>::value,
+                         std::ptrdiff_t>
+        sentinel_distance( ForwardIter iter, const Sentinel sentinel ) {
+            std::ptrdiff_t dist = 0;
+            while ( iter != sentinel ) {
+                ++iter;
+                ++dist;
+            }
+            return dist;
+        }
+
+        template <typename ForwardIter>
+        std::ptrdiff_t sentinel_distance( ForwardIter first,
+                                          ForwardIter last ) {
+            return std::distance( first, last );
+        }
+
+        template <typename ForwardIter1,
+                  typename Sentinel1,
+                  typename ForwardIter2,
+                  typename Sentinel2,
+                  typename Comparator>
+        bool check_element_counts( ForwardIter1 first_1,
+                                   const Sentinel1 end_1,
+                                   ForwardIter2 first_2,
+                                   const Sentinel2 end_2,
+                                   Comparator cmp ) {
+            auto cursor = first_1;
+            while ( cursor != end_1 ) {
+                if ( find_sentinel( first_1, cursor, *cursor, cmp ) ==
+                     cursor ) {
+                    // we haven't checked this element yet
+                    const auto count_in_range_2 =
+                        count_sentinel( first_2, end_2, *cursor, cmp );
+                    // Not a single instance in 2nd range, so it cannot be a
+                    // permutation of 1st range
+                    if ( count_in_range_2 == 0 ) { return false; }
+
+                    const auto count_in_range_1 =
+                        count_sentinel( cursor, end_1, *cursor, cmp );
+                    if ( count_in_range_1 != count_in_range_2 ) {
+                        return false;
+                    }
+                }
+
+                ++cursor;
+            }
+
+            return true;
+        }
+
+        template <typename ForwardIter1,
+                  typename Sentinel1,
+                  typename ForwardIter2,
+                  typename Sentinel2,
+                  typename Comparator>
+        bool is_permutation( ForwardIter1 first_1,
+                             const Sentinel1 end_1,
+                             ForwardIter2 first_2,
+                             const Sentinel2 end_2,
+                             Comparator cmp ) {
+            // TODO: no optimization for stronger iterators, because we would also have to constrain on sentinel vs not sentinel types
+            // TODO: Comparator has to be "both sides", e.g. a == b => b == a
+            // This skips shared prefix of the two ranges
+            while (first_1 != end_1 && first_2 != end_2 && cmp(*first_1, *first_2)) {
+                ++first_1;
+                ++first_2;
+            }
+
+            // We need to handle case where at least one of the ranges has no more elements
+            if (first_1 == end_1 || first_2 == end_2) {
+                return first_1 == end_1 && first_2 == end_2;
+            }
+
+            // pair counting is n**2, so we pay linear walk to compare the sizes first
+            auto dist_1 = sentinel_distance( first_1, end_1 );
+            auto dist_2 = sentinel_distance( first_2, end_2 );
+
+            if (dist_1 != dist_2) { return false; }
+
+            // Since we do not try to handle stronger iterators pair (e.g.
+            // bidir) optimally, the only thing left to do is to check counts in
+            // the remaining ranges.
+            return check_element_counts( first_1, end_1, first_2, end_2, cmp );
+        }
+
+    } // namespace Detail
+} // namespace Catch
+
+#endif // CATCH_IS_PERMUTATION_HPP_INCLUDED
+
+
 #ifndef CATCH_ISTREAM_HPP_INCLUDED
 #define CATCH_ISTREAM_HPP_INCLUDED
 
@@ -9199,8 +9359,12 @@ namespace TestCaseTracking {
 
         NameAndLocation( std::string&& _name, SourceLineInfo const& _location );
         friend bool operator==(NameAndLocation const& lhs, NameAndLocation const& rhs) {
-            return lhs.name == rhs.name
-                && lhs.location == rhs.location;
+            // This is a very cheap check that should have a very high hit rate.
+            // If we get to SourceLineInfo::operator==, we will redo it, but the
+            // cost of repeating is trivial at that point (we will be paying
+            // multiple strcmp/memcmps at that point).
+            if ( lhs.location.line != rhs.location.line ) { return false; }
+            return lhs.name == rhs.name && lhs.location == rhs.location;
         }
         friend bool operator!=(NameAndLocation const& lhs,
                                NameAndLocation const& rhs) {
@@ -9224,11 +9388,16 @@ namespace TestCaseTracking {
             name( name_ ), location( location_ ) {}
 
         friend bool operator==( NameAndLocation const& lhs,
-                                NameAndLocationRef rhs ) {
+                                NameAndLocationRef const& rhs ) {
+            // This is a very cheap check that should have a very high hit rate.
+            // If we get to SourceLineInfo::operator==, we will redo it, but the
+            // cost of repeating is trivial at that point (we will be paying
+            // multiple strcmp/memcmps at that point).
+            if ( lhs.location.line != rhs.location.line ) { return false; }
             return StringRef( lhs.name ) == rhs.name &&
                    lhs.location == rhs.location;
         }
-        friend bool operator==( NameAndLocationRef lhs,
+        friend bool operator==( NameAndLocationRef const& lhs,
                                 NameAndLocation const& rhs ) {
             return rhs == lhs;
         }
@@ -9280,7 +9449,9 @@ namespace TestCaseTracking {
         //! Returns true if tracker run to completion (successfully or not)
         virtual bool isComplete() const = 0;
         //! Returns true if tracker run to completion succesfully
-        bool isSuccessfullyCompleted() const;
+        bool isSuccessfullyCompleted() const {
+            return m_runState == CompletedSuccessfully;
+        }
         //! Returns true if tracker has started but hasn't been completed
         bool isOpen() const;
         //! Returns true iff tracker has started
@@ -9298,7 +9469,7 @@ namespace TestCaseTracking {
          *
          * Returns nullptr if not found.
          */
-        ITracker* findChild( NameAndLocationRef nameAndLocation );
+        ITracker* findChild( NameAndLocationRef const& nameAndLocation );
         //! Have any children been added?
         bool hasChildren() const {
             return !m_children.empty();
@@ -9339,13 +9510,15 @@ namespace TestCaseTracking {
     public:
 
         ITracker& startRun();
-        void endRun();
 
-        void startCycle();
+        void startCycle() {
+            m_currentTracker = m_rootTracker.get();
+            m_runState = Executing;
+        }
         void completeCycle();
 
         bool completedCycle() const;
-        ITracker& currentTracker();
+        ITracker& currentTracker() { return *m_currentTracker; }
         void setCurrentTracker( ITracker* tracker );
     };
 
@@ -9371,7 +9544,11 @@ namespace TestCaseTracking {
 
     class SectionTracker : public TrackerBase {
         std::vector<StringRef> m_filters;
-        std::string m_trimmed_name;
+        // Note that lifetime-wise we piggy back off the name stored in the `ITracker` parent`.
+        // Currently it allocates owns the name, so this is safe. If it is later refactored
+        // to not own the name, the name still has to outlive the `ITracker` parent, so
+        // this should still be safe.
+        StringRef m_trimmed_name;
     public:
         SectionTracker( NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent );
 
@@ -9379,14 +9556,14 @@ namespace TestCaseTracking {
 
         bool isComplete() const override;
 
-        static SectionTracker& acquire( TrackerContext& ctx, NameAndLocationRef nameAndLocation );
+        static SectionTracker& acquire( TrackerContext& ctx, NameAndLocationRef const& nameAndLocation );
 
         void tryOpen();
 
         void addInitialFilters( std::vector<std::string> const& filters );
         void addNextFilters( std::vector<StringRef> const& filters );
         //! Returns filters active in this tracker
-        std::vector<StringRef> const& getFilters() const;
+        std::vector<StringRef> const& getFilters() const { return m_filters; }
         //! Returns whitespace-trimmed name of the tracked section
         StringRef trimmedName() const;
     };
@@ -10960,13 +11137,11 @@ namespace Catch {
             }
 
             template <typename RangeLike>
-            bool match(RangeLike&& rng) const {
-                using std::begin; using std::end;
-
-                return end(rng) != std::find_if(begin(rng), end(rng),
-                                               [&](auto const& elem) {
-                                                    return m_eq(elem, m_desired);
-                                               });
+            bool match( RangeLike&& rng ) const {
+                for ( auto&& elem : rng ) {
+                    if ( m_eq( elem, m_desired ) ) { return true; }
+                }
+                return false;
             }
         };
 
@@ -11018,7 +11193,7 @@ namespace Catch {
         /**
          * Creates a matcher that checks whether a range contains a specific element.
          *
-         * Uses `eq` to do the comparisons
+         * Uses `eq` to do the comparisons, the element is provided on the rhs
          */
         template <typename T, typename Equality>
         ContainsElementMatcher<T, Equality> Contains(T&& elem, Equality&& eq) {
@@ -11107,6 +11282,11 @@ namespace Matchers {
         double m_margin;
     };
 
+    //! Creates a matcher that accepts numbers within certain range of target
+    WithinAbsMatcher WithinAbs( double target, double margin );
+
+
+
     class WithinUlpsMatcher final : public MatcherBase<double> {
     public:
         WithinUlpsMatcher( double target,
@@ -11119,6 +11299,13 @@ namespace Matchers {
         uint64_t m_ulps;
         Detail::FloatingPointKind m_type;
     };
+
+    //! Creates a matcher that accepts doubles within certain ULP range of target
+    WithinUlpsMatcher WithinULP(double target, uint64_t maxUlpDiff);
+    //! Creates a matcher that accepts floats within certain ULP range of target
+    WithinUlpsMatcher WithinULP(float target, uint64_t maxUlpDiff);
+
+
 
     // Given IEEE-754 format for floats and doubles, we can assume
     // that float -> double promotion is lossless. Given this, we can
@@ -11136,13 +11323,6 @@ namespace Matchers {
         double m_epsilon;
     };
 
-    //! Creates a matcher that accepts doubles within certain ULP range of target
-    WithinUlpsMatcher WithinULP(double target, uint64_t maxUlpDiff);
-    //! Creates a matcher that accepts floats within certain ULP range of target
-    WithinUlpsMatcher WithinULP(float target, uint64_t maxUlpDiff);
-    //! Creates a matcher that accepts numbers within certain range of target
-    WithinAbsMatcher WithinAbs(double target, double margin);
-
     //! Creates a matcher that accepts doubles within certain relative range of target
     WithinRelMatcher WithinRel(double target, double eps);
     //! Creates a matcher that accepts doubles within 100*DBL_EPS relative range of target
@@ -11151,6 +11331,17 @@ namespace Matchers {
     WithinRelMatcher WithinRel(float target, float eps);
     //! Creates a matcher that accepts floats within 100*FLT_EPS relative range of target
     WithinRelMatcher WithinRel(float target);
+
+
+
+    class IsNaNMatcher final : public MatcherBase<double> {
+    public:
+        IsNaNMatcher() = default;
+        bool match( double const& matchee ) const override;
+        std::string describe() const override;
+    };
+
+    IsNaNMatcher IsNaN();
 
 } // namespace Matchers
 } // namespace Catch
@@ -11370,6 +11561,7 @@ namespace Catch {
 #ifndef CATCH_MATCHERS_RANGE_EQUALS_HPP_INCLUDED
 #define CATCH_MATCHERS_RANGE_EQUALS_HPP_INCLUDED
 
+
 #include <algorithm>
 #include <utility>
 
@@ -11394,13 +11586,19 @@ namespace Catch {
 
             template <typename RangeLike>
             bool match( RangeLike&& rng ) const {
-                using std::begin;
-                using std::end;
-                return std::equal( begin(m_desired),
-                                   end(m_desired),
-                                   begin(rng),
-                                   end(rng),
-                                   m_predicate );
+                auto rng_start = begin( rng );
+                const auto rng_end = end( rng );
+                auto target_start = begin( m_desired );
+                const auto target_end = end( m_desired );
+
+                while (rng_start != rng_end && target_start != target_end) {
+                    if (!m_predicate(*rng_start, *target_start)) {
+                        return false;
+                    }
+                    ++rng_start;
+                    ++target_start;
+                }
+                return rng_start == rng_end && target_start == target_end;
             }
 
             std::string describe() const override {
@@ -11428,11 +11626,11 @@ namespace Catch {
             bool match( RangeLike&& rng ) const {
                 using std::begin;
                 using std::end;
-                return std::is_permutation( begin( m_desired ),
-                                            end( m_desired ),
-                                            begin( rng ),
-                                            end( rng ),
-                                            m_predicate );
+                return Catch::Detail::is_permutation( begin( m_desired ),
+                                                      end( m_desired ),
+                                                      begin( rng ),
+                                                      end( rng ),
+                                                      m_predicate );
             }
 
             std::string describe() const override {
@@ -12549,7 +12747,7 @@ namespace Catch {
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                               \
         namespace {                                                            \
             Catch::ListenerRegistrar<listenerType> INTERNAL_CATCH_UNIQUE_NAME( \
-                catch_internal_RegistrarFor )( #listenerType );                \
+                catch_internal_RegistrarFor )( #listenerType##_catch_sr );     \
         }                                                                      \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
