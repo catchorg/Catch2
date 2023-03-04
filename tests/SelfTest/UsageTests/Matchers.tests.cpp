@@ -406,6 +406,25 @@ TEST_CASE( "Vector matchers that fail", "[matchers][vector][.][failing]" ) {
     }
 }
 
+namespace {
+    struct SomeType {
+        int i;
+        friend bool operator==( SomeType lhs, SomeType rhs ) {
+            return lhs.i == rhs.i;
+        }
+    };
+} // end anonymous namespace
+
+TEST_CASE( "Vector matcher with elements without !=", "[matchers][vector][approvals]" ) {
+    std::vector<SomeType> lhs, rhs;
+    lhs.push_back( { 1 } );
+    lhs.push_back( { 2 } );
+    rhs.push_back( { 1 } );
+    rhs.push_back( { 1 } );
+
+    REQUIRE_THAT( lhs, !Equals(rhs) );
+}
+
 TEST_CASE( "Exception matchers that succeed",
            "[matchers][exceptions][!throws]" ) {
     CHECK_THROWS_MATCHES(
