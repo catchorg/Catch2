@@ -33,6 +33,8 @@ namespace Catch {
             gmtime_s(&timeInfo, &rawtime);
 #elif defined (CATCH_PLATFORM_PLAYSTATION)
             gmtime_s(&rawtime, &timeInfo);
+#elif defined (__IAR_SYSTEMS_ICC__)
+            timeInfo = *std::gmtime(&rawtime);
 #else
             gmtime_r(&rawtime, &timeInfo);
 #endif
