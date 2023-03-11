@@ -148,6 +148,8 @@ if (NOT_SUBPROJECT)
             "extras/ParseAndAddCatchTests.cmake"
             "extras/Catch.cmake"
             "extras/CatchAddTests.cmake"
+            "extras/CatchShardTests.cmake"
+            "extras/CatchShardTestsImpl.cmake"
           DESTINATION
             ${CATCH_CMAKE_CONFIG_DESTINATION}
         )
