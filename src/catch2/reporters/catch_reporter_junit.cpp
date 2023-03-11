@@ -295,7 +295,7 @@ namespace Catch {
                 }
             }
 
-            if( !result.hasMessage() )
+            if( result.hasMessage() )
                 rss << result.getMessage() << '\n';
             for( auto const& msg : stats.infoMessages )
                 if( msg.type == ResultWas::Info )
