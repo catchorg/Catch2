@@ -59,7 +59,7 @@ namespace Catch {
                     AssertionReaction& reaction ) override;
         void handleUnexpectedInflightException
                 (   AssertionInfo const& info,
-                    std::string const& message,
+                    std::string&& message,
                     AssertionReaction& reaction ) override;
         void handleIncomplete
                 (   AssertionInfo const& info ) override;

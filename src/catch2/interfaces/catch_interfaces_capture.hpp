@@ -84,7 +84,7 @@ namespace Catch {
                     AssertionReaction& reaction ) = 0;
         virtual void handleUnexpectedInflightException
                 (   AssertionInfo const& info,
-                    std::string const& message,
+                    std::string&& message,
                     AssertionReaction& reaction ) = 0;
         virtual void handleIncomplete
                 (   AssertionInfo const& info ) = 0;
