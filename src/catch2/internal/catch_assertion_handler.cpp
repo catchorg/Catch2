@@ -51,11 +51,7 @@ namespace Catch {
             throw_test_failure_exception();
         }
         if ( m_reaction.shouldSkip ) {
-#if !defined( CATCH_CONFIG_DISABLE_EXCEPTIONS )
-            throw Catch::TestSkipException();
-#else
-            CATCH_ERROR( "Explicitly skipping tests during runtime requires exceptions" );
-#endif
+            throw_test_skip_exception();
         }
     }
 
