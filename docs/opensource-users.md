@@ -110,6 +110,9 @@ A header-only TOML parser and serializer for modern C++.
 ### [Trompeloeil](https://github.com/rollbear/trompeloeil)
 A thread-safe header-only mocking framework for C++14.
 
+### [wxWidgets](https://www.wxwidgets.org/)
+Cross-Platform C++ GUI Library.
+
 ### [xmlwrapp](https://github.com/vslavik/xmlwrapp)
 C++ XML parsing library using libxml2.
 
