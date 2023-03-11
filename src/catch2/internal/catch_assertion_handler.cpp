@@ -38,7 +38,7 @@ namespace Catch {
     }
 
     void AssertionHandler::complete() {
-        setCompleted();
+        m_completed = true;
         if( m_reaction.shouldDebugBreak ) {
 
             // If you find your debugger stopping you here then go one level up on the
@@ -57,9 +57,6 @@ namespace Catch {
             CATCH_ERROR( "Explicitly skipping tests during runtime requires exceptions" );
 #endif
         }
-    }
-    void AssertionHandler::setCompleted() {
-        m_completed = true;
     }
 
     void AssertionHandler::handleUnexpectedInflightException() {

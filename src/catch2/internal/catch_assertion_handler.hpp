@@ -59,7 +59,6 @@ namespace Catch {
         void handleUnexpectedInflightException();
 
         void complete();
-        void setCompleted();
 
         // query
         auto allowThrows() const -> bool;
