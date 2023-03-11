@@ -147,7 +147,7 @@ namespace Catch {
                 }
             }
 
-            if (!result.getMessage().empty())
+            if (!result.hasMessage())
                 textRss << result.getMessage() << '\n';
 
             for (auto const& msg : stats.infoMessages)
