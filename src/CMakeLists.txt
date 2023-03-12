@@ -216,7 +216,6 @@ set(INTERFACE_HEADERS
   ${SOURCES_DIR}/interfaces/catch_interfaces_registry_hub.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_reporter.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_reporter_factory.hpp
-  ${SOURCES_DIR}/interfaces/catch_interfaces_reporter_registry.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_tag_alias_registry.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_testcase.hpp
 )
@@ -228,7 +227,6 @@ set(INTERFACE_SOURCES
   ${SOURCES_DIR}/interfaces/catch_interfaces_registry_hub.cpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_reporter.cpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_reporter_factory.cpp
-  ${SOURCES_DIR}/interfaces/catch_interfaces_reporter_registry.cpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_testcase.cpp
 )
 set(INTERFACE_FILES ${INTERFACE_HEADERS} ${INTERFACE_SOURCES})
