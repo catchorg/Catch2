@@ -19,7 +19,7 @@ namespace Catch {
     class ITestCaseRegistry;
     class IExceptionTranslatorRegistry;
     class IExceptionTranslator;
-    class IReporterRegistry;
+    class ReporterRegistry;
     class IReporterFactory;
     class ITagAliasRegistry;
     class ITestInvoker;
@@ -35,7 +35,7 @@ namespace Catch {
     public:
         virtual ~IRegistryHub(); // = default
 
-        virtual IReporterRegistry const& getReporterRegistry() const = 0;
+        virtual ReporterRegistry const& getReporterRegistry() const = 0;
         virtual ITestCaseRegistry const& getTestCaseRegistry() const = 0;
         virtual ITagAliasRegistry const& getTagAliasRegistry() const = 0;
         virtual IExceptionTranslatorRegistry const& getExceptionTranslatorRegistry() const = 0;
