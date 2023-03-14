@@ -23,7 +23,7 @@ namespace Catch {
     class IReporterFactory;
     class ITagAliasRegistry;
     class ITestInvoker;
-    class IMutableEnumValuesRegistry;
+    class EnumValuesRegistry;
     struct SourceLineInfo;
 
     class StartupExceptionRegistry;
@@ -53,7 +53,7 @@ namespace Catch {
         virtual void registerTranslator( Detail::unique_ptr<IExceptionTranslator>&& translator ) = 0;
         virtual void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) = 0;
         virtual void registerStartupException() noexcept = 0;
-        virtual IMutableEnumValuesRegistry& getMutableEnumValuesRegistry() = 0;
+        virtual EnumValuesRegistry& getMutableEnumValuesRegistry() = 0;
     };
 
     IRegistryHub const& getRegistryHub();

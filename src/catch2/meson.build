@@ -58,7 +58,6 @@ internal_headers = [
   'interfaces/catch_interfaces_all.hpp',
   'interfaces/catch_interfaces_capture.hpp',
   'interfaces/catch_interfaces_config.hpp',
-  'interfaces/catch_interfaces_enum_values_registry.hpp',
   'interfaces/catch_interfaces_exception.hpp',
   'interfaces/catch_interfaces_generatortracker.hpp',
   'interfaces/catch_interfaces_registry_hub.hpp',

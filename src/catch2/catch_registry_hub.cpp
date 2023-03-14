@@ -71,7 +71,7 @@ namespace Catch {
                 CATCH_INTERNAL_ERROR("Attempted to register active exception under CATCH_CONFIG_DISABLE_EXCEPTIONS!");
 #endif
             }
-            IMutableEnumValuesRegistry& getMutableEnumValuesRegistry() override {
+            EnumValuesRegistry& getMutableEnumValuesRegistry() override {
                 return m_enumValuesRegistry;
             }
 
@@ -81,7 +81,7 @@ namespace Catch {
             ExceptionTranslatorRegistry m_exceptionTranslatorRegistry;
             TagAliasRegistry m_tagAliasRegistry;
             StartupExceptionRegistry m_exceptionRegistry;
-            Detail::EnumValuesRegistry m_enumValuesRegistry;
+            EnumValuesRegistry m_enumValuesRegistry;
         };
     }
 

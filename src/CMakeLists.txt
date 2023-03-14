@@ -210,7 +210,6 @@ set(INTERFACE_HEADERS
   ${SOURCES_DIR}/interfaces/catch_interfaces_all.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_capture.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_config.hpp
-  ${SOURCES_DIR}/interfaces/catch_interfaces_enum_values_registry.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_exception.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_generatortracker.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_registry_hub.hpp

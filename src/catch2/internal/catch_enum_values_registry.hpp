@@ -8,29 +8,54 @@
 #ifndef CATCH_ENUM_VALUES_REGISTRY_HPP_INCLUDED
 #define CATCH_ENUM_VALUES_REGISTRY_HPP_INCLUDED
 
-#include <catch2/interfaces/catch_interfaces_enum_values_registry.hpp>
-#include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_stringref.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 #include <vector>
 
 namespace Catch {
 
     namespace Detail {
+        struct EnumInfo {
+            StringRef m_name;
+            std::vector<std::pair<int, StringRef>> m_values;
 
-        Catch::Detail::unique_ptr<EnumInfo> makeEnumInfo( StringRef enumName, StringRef allValueNames, std::vector<int> const& values );
+            ~EnumInfo();
 
-        class EnumValuesRegistry : public IMutableEnumValuesRegistry {
-
-            std::vector<Catch::Detail::unique_ptr<EnumInfo>> m_enumInfos;
-
-            EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::vector<int> const& values) override;
+            StringRef lookup( int value ) const;
         };
 
+        Detail::unique_ptr<EnumInfo>
+        makeEnumInfo( StringRef enumName,
+                      StringRef allValueNames,
+                      std::vector<int> const& values );
         std::vector<StringRef> parseEnums( StringRef enums );
 
-    } // Detail
+    } // namespace Detail
 
-} // Catch
+    class EnumValuesRegistry {
+        std::vector<Catch::Detail::unique_ptr<Detail::EnumInfo>> m_enumInfos;
+
+    public:
+        Detail::EnumInfo const& registerEnum( StringRef enumName,
+                                              StringRef allEnums,
+                                              std::vector<int> const& values );
+        template <typename E>
+        Detail::EnumInfo const&
+        registerEnum( StringRef enumName,
+                      StringRef allEnums,
+                      std::initializer_list<E> values ) {
+            static_assert( sizeof( int ) >= sizeof( E ),
+                           "Cannot serialize enum to int" );
+            std::vector<int> intValues;
+            intValues.reserve( values.size() );
+            for ( auto enumValue : values ) {
+                intValues.push_back( static_cast<int>( enumValue ) );
+            }
+            return registerEnum( enumName, allEnums, intValues );
+        }
+    };
+
+} // namespace Catch
 
 #endif // CATCH_ENUM_VALUES_REGISTRY_HPP_INCLUDED
