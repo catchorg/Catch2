@@ -216,7 +216,6 @@ set(INTERFACE_HEADERS
   ${SOURCES_DIR}/interfaces/catch_interfaces_registry_hub.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_reporter.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_reporter_factory.hpp
-  ${SOURCES_DIR}/interfaces/catch_interfaces_tag_alias_registry.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_testcase.hpp
 )
 set(INTERFACE_SOURCES

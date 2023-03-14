@@ -11,13 +11,21 @@
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 
-namespace Catch {
+#include <map>
 
-    TagAliasRegistry::~TagAliasRegistry() {}
+namespace Catch {
+    struct TagAliasRegistry::TagAliasRegistryImpl {
+        std::map<std::string, TagAlias> registry;
+    };
+
+
+    TagAliasRegistry::TagAliasRegistry():
+        m_impl( Detail::make_unique<TagAliasRegistryImpl>() ){}
+    TagAliasRegistry::~TagAliasRegistry() = default;
 
     TagAlias const* TagAliasRegistry::find( std::string const& alias ) const {
-        auto it = m_registry.find( alias );
-        if( it != m_registry.end() )
+        auto it = m_impl->registry.find( alias );
+        if( it != m_impl->registry.end() )
             return &(it->second);
         else
             return nullptr;
@@ -25,7 +33,7 @@ namespace Catch {
 
     std::string TagAliasRegistry::expandAliases( std::string const& unexpandedTestSpec ) const {
         std::string expandedTestSpec = unexpandedTestSpec;
-        for( auto const& registryKvp : m_registry ) {
+        for( auto const& registryKvp : m_impl->registry ) {
             std::size_t pos = expandedTestSpec.find( registryKvp.first );
             if( pos != std::string::npos ) {
                 expandedTestSpec =  expandedTestSpec.substr( 0, pos ) +
@@ -40,15 +48,13 @@ namespace Catch {
         CATCH_ENFORCE( startsWith(alias, "[@") && endsWith(alias, ']'),
                       "error: tag alias, '" << alias << "' is not of the form [@alias name].\n" << lineInfo );
 
-        CATCH_ENFORCE( m_registry.insert(std::make_pair(alias, TagAlias(tag, lineInfo))).second,
+        CATCH_ENFORCE( m_impl->registry.insert(std::make_pair(alias, TagAlias(tag, lineInfo))).second,
                       "error: tag alias, '" << alias << "' already registered.\n"
                       << "\tFirst seen at: " << find(alias)->lineInfo << "\n"
                       << "\tRedefined at: " << lineInfo );
     }
 
-    ITagAliasRegistry::~ITagAliasRegistry() = default;
-
-    ITagAliasRegistry const& ITagAliasRegistry::get() {
+    TagAliasRegistry const& TagAliasRegistry::get() {
         return getRegistryHub().getTagAliasRegistry();
     }
 

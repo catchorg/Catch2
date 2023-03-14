@@ -21,7 +21,7 @@ namespace Catch {
     class IExceptionTranslator;
     class ReporterRegistry;
     class IReporterFactory;
-    class ITagAliasRegistry;
+    class TagAliasRegistry;
     class ITestInvoker;
     class EnumValuesRegistry;
     struct SourceLineInfo;
@@ -37,7 +37,7 @@ namespace Catch {
 
         virtual ReporterRegistry const& getReporterRegistry() const = 0;
         virtual ITestCaseRegistry const& getTestCaseRegistry() const = 0;
-        virtual ITagAliasRegistry const& getTagAliasRegistry() const = 0;
+        virtual TagAliasRegistry const& getTagAliasRegistry() const = 0;
         virtual ExceptionTranslatorRegistry const& getExceptionTranslatorRegistry() const = 0;
 
 

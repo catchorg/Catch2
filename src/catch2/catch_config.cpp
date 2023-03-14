@@ -13,7 +13,7 @@
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_test_spec_parser.hpp>
-#include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
+#include <catch2/internal/catch_tag_alias_registry.hpp>
 #include <catch2/internal/catch_getenv.hpp>
 
 #include <fstream>
@@ -123,7 +123,7 @@ namespace Catch {
 
         // Bazel support can modify the test specs, so parsing has to happen
         // after reading Bazel env vars.
-        TestSpecParser parser( ITagAliasRegistry::get() );
+        TestSpecParser parser( TagAliasRegistry::get() );
         if ( !m_data.testsOrTags.empty() ) {
             m_hasTestFilters = true;
             for ( auto const& testOrTags : m_data.testsOrTags ) {

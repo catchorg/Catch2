@@ -20,7 +20,7 @@
 
 namespace Catch {
 
-    class ITagAliasRegistry;
+    class TagAliasRegistry;
 
     class TestSpecParser {
         enum Mode{ None, Name, QuotedName, Tag, EscapedName };
@@ -35,10 +35,10 @@ namespace Catch {
         std::vector<std::size_t> m_escapeChars;
         TestSpec::Filter m_currentFilter;
         TestSpec m_testSpec;
-        ITagAliasRegistry const* m_tagAliases = nullptr;
+        TagAliasRegistry const* m_tagAliases = nullptr;
 
     public:
-        TestSpecParser( ITagAliasRegistry const& tagAliases );
+        TestSpecParser( TagAliasRegistry const& tagAliases );
 
         TestSpecParser& parse( std::string const& arg );
         TestSpec testSpec();

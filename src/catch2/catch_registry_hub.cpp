@@ -41,7 +41,7 @@ namespace Catch {
             ExceptionTranslatorRegistry const& getExceptionTranslatorRegistry() const override {
                 return m_exceptionTranslatorRegistry;
             }
-            ITagAliasRegistry const& getTagAliasRegistry() const override {
+            TagAliasRegistry const& getTagAliasRegistry() const override {
                 return m_tagAliasRegistry;
             }
             StartupExceptionRegistry const& getStartupExceptionRegistry() const override {

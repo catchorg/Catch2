@@ -9,12 +9,12 @@
 #include <helpers/parse_test_spec.hpp>
 
 #include <catch2/internal/catch_test_spec_parser.hpp>
-#include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
+#include <catch2/internal/catch_tag_alias_registry.hpp>
 
 namespace Catch {
 
     TestSpec parseTestSpec( std::string const& arg ) {
-        return TestSpecParser( ITagAliasRegistry::get() )
+        return TestSpecParser( TagAliasRegistry::get() )
             .parse( arg )
             .testSpec();
     }

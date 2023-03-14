@@ -8,24 +8,30 @@
 #ifndef CATCH_TAG_ALIAS_REGISTRY_HPP_INCLUDED
 #define CATCH_TAG_ALIAS_REGISTRY_HPP_INCLUDED
 
-#include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
 #include <catch2/catch_tag_alias.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
-#include <map>
 #include <string>
 
 namespace Catch {
     struct SourceLineInfo;
 
-    class TagAliasRegistry : public ITagAliasRegistry {
+    class TagAliasRegistry {
+        struct TagAliasRegistryImpl;
+        Detail::unique_ptr<TagAliasRegistryImpl> m_impl;
     public:
-        ~TagAliasRegistry() override;
-        TagAlias const* find( std::string const& alias ) const override;
-        std::string expandAliases( std::string const& unexpandedTestSpec ) const override;
+        TagAliasRegistry();
+        ~TagAliasRegistry(); // = default;
+
+        //! Nullptr if not present
+        TagAlias const* find( std::string const& alias ) const;
+        //! Returns the test spec but with expanded aliases
+        std::string expandAliases( std::string const& unexpandedTestSpec ) const;
         void add( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo );
 
+        static TagAliasRegistry const& get();
+
     private:
-        std::map<std::string, TagAlias> m_registry;
     };
 
 } // end namespace Catch

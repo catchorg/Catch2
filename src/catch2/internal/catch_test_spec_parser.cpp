@@ -8,13 +8,13 @@
 #include <catch2/internal/catch_test_spec_parser.hpp>
 
 #include <catch2/internal/catch_string_manip.hpp>
-#include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
+#include <catch2/internal/catch_tag_alias_registry.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
 
 namespace Catch {
 
-    TestSpecParser::TestSpecParser( ITagAliasRegistry const& tagAliases ) : m_tagAliases( &tagAliases ) {}
+    TestSpecParser::TestSpecParser( TagAliasRegistry const& tagAliases ) : m_tagAliases( &tagAliases ) {}
 
     TestSpecParser& TestSpecParser::parse( std::string const& arg ) {
         m_mode = None;
