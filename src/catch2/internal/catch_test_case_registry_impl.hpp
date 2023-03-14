@@ -8,8 +8,6 @@
 #ifndef CATCH_TEST_CASE_REGISTRY_IMPL_HPP_INCLUDED
 #define CATCH_TEST_CASE_REGISTRY_IMPL_HPP_INCLUDED
 
-#include <catch2/interfaces/catch_interfaces_testcase.hpp>
-#include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
 #include <vector>
@@ -19,37 +17,28 @@ namespace Catch {
     class TestCaseHandle;
     class IConfig;
     class TestSpec;
+    class ITestInvoker;
+    struct TestCaseInfo;
 
     std::vector<TestCaseHandle> sortTests( IConfig const& config, std::vector<TestCaseHandle> const& unsortedTestCases );
 
     bool isThrowSafe( TestCaseHandle const& testCase, IConfig const& config );
-    bool matchTest( TestCaseHandle const& testCase, TestSpec const& testSpec, IConfig const& config );
-
-    void enforceNoDuplicateTestCases( std::vector<TestCaseHandle> const& functions );
 
     std::vector<TestCaseHandle> filterTests( std::vector<TestCaseHandle> const& testCases, TestSpec const& testSpec, IConfig const& config );
     std::vector<TestCaseHandle> const& getAllTestCasesSorted( IConfig const& config );
 
-    class TestRegistry : public ITestCaseRegistry {
+    class TestCaseRegistry {
+        struct TestCaseRegistryImpl;
+        Detail::unique_ptr<TestCaseRegistryImpl> m_impl;
     public:
-        ~TestRegistry() override = default;
+        TestCaseRegistry();
+        ~TestCaseRegistry(); // = default;
 
         void registerTest( Detail::unique_ptr<TestCaseInfo> testInfo, Detail::unique_ptr<ITestInvoker> testInvoker );
 
-        std::vector<TestCaseInfo*> const& getAllInfos() const override;
-        std::vector<TestCaseHandle> const& getAllTests() const override;
-        std::vector<TestCaseHandle> const& getAllTestsSorted( IConfig const& config ) const override;
-
-    private:
-        std::vector<Detail::unique_ptr<TestCaseInfo>> m_owned_test_infos;
-        // Keeps a materialized vector for `getAllInfos`.
-        // We should get rid of that eventually (see interface note)
-        std::vector<TestCaseInfo*> m_viewed_test_infos;
-
-        std::vector<Detail::unique_ptr<ITestInvoker>> m_invokers;
-        std::vector<TestCaseHandle> m_handles;
-        mutable TestRunOrder m_currentSortOrder = TestRunOrder::Declared;
-        mutable std::vector<TestCaseHandle> m_sortedFunctions;
+        std::vector<TestCaseInfo*> const& getAllInfos() const;
+        std::vector<TestCaseHandle> const& getAllTests() const;
+        std::vector<TestCaseHandle> const& getAllTestsSorted( IConfig const& config ) const;
     };
 
     ///////////////////////////////////////////////////////////////////////////

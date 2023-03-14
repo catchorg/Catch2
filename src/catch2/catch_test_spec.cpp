@@ -8,6 +8,7 @@
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
+#include <catch2/internal/catch_test_case_registry_impl.hpp>
 #include <catch2/catch_test_case_info.hpp>
 
 #include <algorithm>

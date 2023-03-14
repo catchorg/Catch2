@@ -24,6 +24,8 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_stdstreams.hpp>
 #include <catch2/internal/catch_istream.hpp>
+#include <catch2/internal/catch_test_case_registry_impl.hpp>
+
 
 #include <algorithm>
 #include <cassert>

@@ -24,6 +24,54 @@
 
 namespace Catch {
 
+    namespace {
+        static bool matchTest( TestCaseHandle const& testCase,
+                               TestSpec const& testSpec,
+                               IConfig const& config ) {
+            return testSpec.matches( testCase.getTestCaseInfo() ) &&
+                   isThrowSafe( testCase, config );
+        }
+
+        static void enforceNoDuplicateTestCases(
+            std::vector<TestCaseHandle> const& tests ) {
+            auto testInfoCmp = []( TestCaseInfo const* lhs,
+                                   TestCaseInfo const* rhs ) {
+                return *lhs < *rhs;
+            };
+            std::set<TestCaseInfo const*, decltype( testInfoCmp )&> seenTests(
+                testInfoCmp );
+            for ( auto const& test : tests ) {
+                const auto infoPtr = &test.getTestCaseInfo();
+                const auto prev = seenTests.insert( infoPtr );
+                CATCH_ENFORCE( prev.second,
+                               "error: test case \""
+                                   << infoPtr->name << "\", with tags \""
+                                   << infoPtr->tagsAsString()
+                                   << "\" already defined.\n"
+                                   << "\tFirst seen at "
+                                   << ( *prev.first )->lineInfo << "\n"
+                                   << "\tRedefined at " << infoPtr->lineInfo );
+            }
+        }
+    } // namespace
+
+    struct TestCaseRegistry::TestCaseRegistryImpl {
+        std::vector<Detail::unique_ptr<TestCaseInfo>> owned_test_infos;
+        // Keeps a materialized vector for `getAllInfos`.
+        // We should get rid of that eventually (see interface note)
+        std::vector<TestCaseInfo*> viewed_test_infos;
+
+        std::vector<Detail::unique_ptr<ITestInvoker>> invokers;
+        std::vector<TestCaseHandle> handles;
+        mutable TestRunOrder currentSortOrder = TestRunOrder::Declared;
+        mutable std::vector<TestCaseHandle> sortedFunctions;
+    };
+
+    TestCaseRegistry::TestCaseRegistry():
+        m_impl( Detail::make_unique<TestCaseRegistryImpl>() ) {}
+    TestCaseRegistry ::~TestCaseRegistry() = default;
+
+
     std::vector<TestCaseHandle> sortTests( IConfig const& config, std::vector<TestCaseHandle> const& unsortedTestCases ) {
         switch (config.runOrder()) {
         case TestRunOrder::Declared:
@@ -80,29 +128,6 @@ namespace Catch {
         return !testCase.getTestCaseInfo().throws() || config.allowThrows();
     }
 
-    bool matchTest( TestCaseHandle const& testCase, TestSpec const& testSpec, IConfig const& config ) {
-        return testSpec.matches( testCase.getTestCaseInfo() ) && isThrowSafe( testCase, config );
-    }
-
-    void
-    enforceNoDuplicateTestCases( std::vector<TestCaseHandle> const& tests ) {
-        auto testInfoCmp = []( TestCaseInfo const* lhs,
-                               TestCaseInfo const* rhs ) {
-            return *lhs < *rhs;
-        };
-        std::set<TestCaseInfo const*, decltype(testInfoCmp) &> seenTests(testInfoCmp);
-        for ( auto const& test : tests ) {
-            const auto infoPtr = &test.getTestCaseInfo();
-            const auto prev = seenTests.insert( infoPtr );
-            CATCH_ENFORCE(
-                prev.second,
-                "error: test case \"" << infoPtr->name << "\", with tags \""
-                    << infoPtr->tagsAsString() << "\" already defined.\n"
-                    << "\tFirst seen at " << ( *prev.first )->lineInfo << "\n"
-                    << "\tRedefined at " << infoPtr->lineInfo );
-        }
-    }
-
     std::vector<TestCaseHandle> filterTests( std::vector<TestCaseHandle> const& testCases, TestSpec const& testSpec, IConfig const& config ) {
         std::vector<TestCaseHandle> filtered;
         filtered.reserve( testCases.size() );
@@ -118,29 +143,29 @@ namespace Catch {
         return getRegistryHub().getTestCaseRegistry().getAllTestsSorted( config );
     }
 
-    void TestRegistry::registerTest(Detail::unique_ptr<TestCaseInfo> testInfo, Detail::unique_ptr<ITestInvoker> testInvoker) {
-        m_handles.emplace_back(testInfo.get(), testInvoker.get());
-        m_viewed_test_infos.push_back(testInfo.get());
-        m_owned_test_infos.push_back(CATCH_MOVE(testInfo));
-        m_invokers.push_back(CATCH_MOVE(testInvoker));
+    void TestCaseRegistry::registerTest(Detail::unique_ptr<TestCaseInfo> testInfo, Detail::unique_ptr<ITestInvoker> testInvoker) {
+        m_impl->handles.emplace_back(testInfo.get(), testInvoker.get());
+        m_impl->viewed_test_infos.push_back(testInfo.get());
+        m_impl->owned_test_infos.push_back(CATCH_MOVE(testInfo));
+        m_impl->invokers.push_back(CATCH_MOVE(testInvoker));
     }
 
-    std::vector<TestCaseInfo*> const& TestRegistry::getAllInfos() const {
-        return m_viewed_test_infos;
+    std::vector<TestCaseInfo*> const& TestCaseRegistry::getAllInfos() const {
+        return m_impl->viewed_test_infos;
     }
 
-    std::vector<TestCaseHandle> const& TestRegistry::getAllTests() const {
-        return m_handles;
+    std::vector<TestCaseHandle> const& TestCaseRegistry::getAllTests() const {
+        return m_impl->handles;
     }
-    std::vector<TestCaseHandle> const& TestRegistry::getAllTestsSorted( IConfig const& config ) const {
-        if( m_sortedFunctions.empty() )
-            enforceNoDuplicateTestCases( m_handles );
+    std::vector<TestCaseHandle> const& TestCaseRegistry::getAllTestsSorted( IConfig const& config ) const {
+        if( m_impl->sortedFunctions.empty() )
+            enforceNoDuplicateTestCases( m_impl->handles );
 
-        if(  m_currentSortOrder != config.runOrder() || m_sortedFunctions.empty() ) {
-            m_sortedFunctions = sortTests( config, m_handles );
-            m_currentSortOrder = config.runOrder();
+        if(  m_impl->currentSortOrder != config.runOrder() || m_impl->sortedFunctions.empty() ) {
+            m_impl->sortedFunctions = sortTests( config, m_impl->handles );
+            m_impl->currentSortOrder = config.runOrder();
         }
-        return m_sortedFunctions;
+        return m_impl->sortedFunctions;
     }
 
 } // end namespace Catch

@@ -35,7 +35,7 @@ namespace Catch {
             ReporterRegistry const& getReporterRegistry() const override {
                 return m_reporterRegistry;
             }
-            ITestCaseRegistry const& getTestCaseRegistry() const override {
+            TestCaseRegistry const& getTestCaseRegistry() const override {
                 return m_testCaseRegistry;
             }
             ExceptionTranslatorRegistry const& getExceptionTranslatorRegistry() const override {
@@ -76,7 +76,7 @@ namespace Catch {
             }
 
         private:
-            TestRegistry m_testCaseRegistry;
+            TestCaseRegistry m_testCaseRegistry;
             ReporterRegistry m_reporterRegistry;
             ExceptionTranslatorRegistry m_exceptionTranslatorRegistry;
             TagAliasRegistry m_tagAliasRegistry;

@@ -10,5 +10,4 @@
 
 namespace Catch {
     ITestInvoker::~ITestInvoker() = default;
-    ITestCaseRegistry::~ITestCaseRegistry() = default;
 }

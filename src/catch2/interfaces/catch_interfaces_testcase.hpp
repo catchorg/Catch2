@@ -8,35 +8,13 @@
 #ifndef CATCH_INTERFACES_TESTCASE_HPP_INCLUDED
 #define CATCH_INTERFACES_TESTCASE_HPP_INCLUDED
 
-#include <vector>
-
 namespace Catch {
-
-    class TestSpec;
-    struct TestCaseInfo;
 
     class ITestInvoker {
     public:
         virtual void invoke () const = 0;
         virtual ~ITestInvoker(); // = default
     };
-
-    class TestCaseHandle;
-    class IConfig;
-
-    class ITestCaseRegistry {
-    public:
-        virtual ~ITestCaseRegistry(); // = default
-        // TODO: this exists only for adding filenames to test cases -- let's expose this in a saner way later
-        virtual std::vector<TestCaseInfo* > const& getAllInfos() const = 0;
-        virtual std::vector<TestCaseHandle> const& getAllTests() const = 0;
-        virtual std::vector<TestCaseHandle> const& getAllTestsSorted( IConfig const& config ) const = 0;
-    };
-
-    bool isThrowSafe( TestCaseHandle const& testCase, IConfig const& config );
-    bool matchTest( TestCaseHandle const& testCase, TestSpec const& testSpec, IConfig const& config );
-    std::vector<TestCaseHandle> filterTests( std::vector<TestCaseHandle> const& testCases, TestSpec const& testSpec, IConfig const& config );
-    std::vector<TestCaseHandle> const& getAllTestCasesSorted( IConfig const& config );
 
 }
 
