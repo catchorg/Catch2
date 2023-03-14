@@ -8,23 +8,22 @@
 #ifndef CATCH_EXCEPTION_TRANSLATOR_REGISTRY_HPP_INCLUDED
 #define CATCH_EXCEPTION_TRANSLATOR_REGISTRY_HPP_INCLUDED
 
-#include <catch2/interfaces/catch_interfaces_exception.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
-#include <vector>
 #include <string>
 
 namespace Catch {
+    class IExceptionTranslator;
 
-    class ExceptionTranslatorRegistry : public IExceptionTranslatorRegistry {
+    class ExceptionTranslatorRegistry {
+        struct ExceptionTranslatorRegistryImpl;
+        Detail::unique_ptr<ExceptionTranslatorRegistryImpl> m_impl;
+
     public:
-        ~ExceptionTranslatorRegistry() override;
+        ExceptionTranslatorRegistry();
+        ~ExceptionTranslatorRegistry();
         void registerTranslator( Detail::unique_ptr<IExceptionTranslator>&& translator );
-        std::string translateActiveException() const override;
-        std::string tryTranslators() const;
-
-    private:
-        ExceptionTranslators m_translators;
+        std::string translateActiveException() const;
     };
 }
 

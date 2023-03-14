@@ -153,6 +153,7 @@ set(IMPL_SOURCES
   ${SOURCES_DIR}/catch_timer.cpp
   ${SOURCES_DIR}/catch_tostring.cpp
   ${SOURCES_DIR}/catch_totals.cpp
+  ${SOURCES_DIR}/catch_translate_exception.cpp
   ${SOURCES_DIR}/catch_version.cpp
   ${SOURCES_DIR}/internal/catch_assertion_handler.cpp
   ${SOURCES_DIR}/internal/catch_case_insensitive_comparisons.cpp

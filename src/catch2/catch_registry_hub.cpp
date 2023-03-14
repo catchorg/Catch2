@@ -38,7 +38,7 @@ namespace Catch {
             ITestCaseRegistry const& getTestCaseRegistry() const override {
                 return m_testCaseRegistry;
             }
-            IExceptionTranslatorRegistry const& getExceptionTranslatorRegistry() const override {
+            ExceptionTranslatorRegistry const& getExceptionTranslatorRegistry() const override {
                 return m_exceptionTranslatorRegistry;
             }
             ITagAliasRegistry const& getTagAliasRegistry() const override {
