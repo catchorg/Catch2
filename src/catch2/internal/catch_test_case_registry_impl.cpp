@@ -9,6 +9,7 @@
 
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/internal/catch_enforce.hpp>
+#include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
 #include <catch2/internal/catch_run_context.hpp>
@@ -140,13 +141,6 @@ namespace Catch {
             m_currentSortOrder = config.runOrder();
         }
         return m_sortedFunctions;
-    }
-
-
-
-    ///////////////////////////////////////////////////////////////////////////
-    void TestInvokerAsFunction::invoke() const {
-        m_testAsFunction();
     }
 
 } // end namespace Catch
