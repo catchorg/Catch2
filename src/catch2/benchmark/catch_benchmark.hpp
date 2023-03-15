@@ -14,6 +14,7 @@
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
+#include <catch2/internal/catch_registry_hub.hpp>
 #include <catch2/internal/catch_unique_name.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/benchmark/catch_chronometer.hpp>
@@ -25,6 +26,7 @@
 #include <catch2/benchmark/detail/catch_analyse.hpp>
 #include <catch2/benchmark/detail/catch_benchmark_function.hpp>
 #include <catch2/benchmark/detail/catch_run_for_at_least.hpp>
+
 
 #include <algorithm>
 #include <functional>

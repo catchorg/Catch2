@@ -7,7 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <catch2/internal/catch_leak_detector.hpp>
-#include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
+#include <catch2/internal/catch_registry_hub.hpp>
 #include <catch2/catch_user_config.hpp>
 
 #ifdef CATCH_CONFIG_WINDOWS_CRTDBG

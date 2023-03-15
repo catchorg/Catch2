@@ -648,7 +648,7 @@ struct ratio_string<std::milli> {
     };
 }
 
-#include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
+#include <catch2/internal/catch_registry_hub.hpp>
 
 #define INTERNAL_CATCH_REGISTER_ENUM( enumName, ... ) \
 namespace Catch { \

@@ -9,6 +9,7 @@
 #include <catch2/reporters/catch_reporter_registrars.hpp>
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_registry_hub.hpp>
 
 namespace Catch {
     namespace Detail {

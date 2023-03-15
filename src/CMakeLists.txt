@@ -106,6 +106,7 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/internal/catch_preprocessor_remove_parens.hpp
   ${SOURCES_DIR}/internal/catch_random_number_generator.hpp
   ${SOURCES_DIR}/internal/catch_random_seed_generation.hpp
+  ${SOURCES_DIR}/internal/catch_registry_hub.hpp
   ${SOURCES_DIR}/internal/catch_reporter_registry.hpp
   ${SOURCES_DIR}/internal/catch_reporter_spec_parser.hpp
   ${SOURCES_DIR}/internal/catch_result_type.hpp
@@ -145,7 +146,6 @@ set(IMPL_SOURCES
   ${SOURCES_DIR}/catch_config.cpp
   ${SOURCES_DIR}/catch_get_random_seed.cpp
   ${SOURCES_DIR}/catch_message.cpp
-  ${SOURCES_DIR}/catch_registry_hub.cpp
   ${SOURCES_DIR}/catch_session.cpp
   ${SOURCES_DIR}/catch_tag_alias_autoregistrar.cpp
   ${SOURCES_DIR}/catch_test_case_info.cpp
@@ -181,6 +181,7 @@ set(IMPL_SOURCES
   ${SOURCES_DIR}/internal/catch_polyfills.cpp
   ${SOURCES_DIR}/internal/catch_random_number_generator.cpp
   ${SOURCES_DIR}/internal/catch_random_seed_generation.cpp
+  ${SOURCES_DIR}/internal/catch_registry_hub.cpp
   ${SOURCES_DIR}/internal/catch_reporter_registry.cpp
   ${SOURCES_DIR}/internal/catch_reporter_spec_parser.cpp
   ${SOURCES_DIR}/internal/catch_result_type.cpp
@@ -213,7 +214,6 @@ set(INTERFACE_HEADERS
   ${SOURCES_DIR}/interfaces/catch_interfaces_config.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_exception.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_generatortracker.hpp
-  ${SOURCES_DIR}/interfaces/catch_interfaces_registry_hub.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_reporter.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_reporter_factory.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_testcase.hpp
@@ -223,7 +223,6 @@ set(INTERFACE_SOURCES
   ${SOURCES_DIR}/interfaces/catch_interfaces_config.cpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_exception.cpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_generatortracker.cpp
-  ${SOURCES_DIR}/interfaces/catch_interfaces_registry_hub.cpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_reporter.cpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_reporter_factory.cpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_testcase.cpp
