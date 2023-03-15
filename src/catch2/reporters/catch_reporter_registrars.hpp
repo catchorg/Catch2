@@ -36,7 +36,8 @@ namespace Catch {
         //! independent on the reporter's concrete type
         void registerReporterImpl( std::string const& name,
                                    IReporterFactoryPtr reporterPtr );
-
+        //! Actually registers the factory, independent on listener's concrete type
+        void registerListenerImpl( Detail::unique_ptr<EventListenerFactory> listenerFactory );
     } // namespace Detail
 
     class IEventListener;
@@ -97,7 +98,7 @@ namespace Catch {
 
     public:
         ListenerRegistrar(StringRef listenerName) {
-            getMutableRegistryHub().registerListener( Detail::make_unique<TypedListenerFactory>(listenerName) );
+            registerListenerImpl( Detail::make_unique<TypedListenerFactory>(listenerName) );
         }
     };
 }

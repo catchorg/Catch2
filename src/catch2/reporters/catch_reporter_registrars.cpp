@@ -26,5 +26,10 @@ namespace Catch {
             }
         }
 
+        void registerListenerImpl( Detail::unique_ptr<EventListenerFactory> listenerFactory ) {
+            getMutableRegistryHub().registerListener( CATCH_MOVE(listenerFactory) );
+        }
+
+
     } // namespace Detail
 } // namespace Catch
