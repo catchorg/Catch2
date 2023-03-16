@@ -6,10 +6,10 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/catch_message.hpp>
-#include <catch2/interfaces/catch_interfaces_capture.hpp>
 #include <catch2/internal/catch_uncaught_exceptions.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_run_context.hpp>
 
 #include <cassert>
 #include <stack>

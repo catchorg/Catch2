@@ -22,7 +22,6 @@
 #ifndef CATCH_INTERFACES_ALL_HPP_INCLUDED
 #define CATCH_INTERFACES_ALL_HPP_INCLUDED
 
-#include <catch2/interfaces/catch_interfaces_capture.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/interfaces/catch_interfaces_exception.hpp>
 #include <catch2/interfaces/catch_interfaces_generatortracker.hpp>

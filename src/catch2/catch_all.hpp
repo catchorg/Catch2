@@ -36,6 +36,7 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_test_run_info.hpp>
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/catch_timer.hpp>
 #include <catch2/catch_tostring.hpp>
@@ -46,6 +47,7 @@
 #include <catch2/generators/catch_generators_all.hpp>
 #include <catch2/interfaces/catch_interfaces_all.hpp>
 #include <catch2/internal/catch_assertion_handler.hpp>
+#include <catch2/internal/catch_benchmark_stats_fwd.hpp>
 #include <catch2/internal/catch_case_insensitive_comparisons.hpp>
 #include <catch2/internal/catch_case_sensitive.hpp>
 #include <catch2/internal/catch_clara.hpp>

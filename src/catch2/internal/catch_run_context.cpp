@@ -7,7 +7,11 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_run_context.hpp>
 
+#include <catch2/interfaces/catch_interfaces_reporter.hpp>
+#include <catch2/catch_test_case_info.hpp>
+#include <catch2/catch_assertion_result.hpp>
 #include <catch2/catch_user_config.hpp>
+#include <catch2/catch_timer.hpp>
 #include <catch2/interfaces/catch_interfaces_generatortracker.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
@@ -15,10 +19,14 @@
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_fatal_condition_handler.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
-#include <catch2/catch_timer.hpp>
 #include <catch2/internal/catch_output_redirect.hpp>
 #include <catch2/internal/catch_assertion_handler.hpp>
 #include <catch2/internal/catch_test_failure_exception.hpp>
+#include <catch2/internal/catch_optional.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_fatal_condition_handler.hpp>
+#include <catch2/internal/catch_test_case_tracker.hpp>
+#include <catch2/catch_message.hpp>
 
 #include <cassert>
 #include <algorithm>
@@ -164,30 +172,44 @@ namespace Catch {
         } // namespace
     }
 
-    RunContext::RunContext(IConfig const* _config, IEventListenerPtr&& reporter)
-    :   m_runInfo(_config->name()),
+
+    struct RunContext::RunContextImpl {
+        Optional<AssertionResult> lastResult;
+        FatalConditionHandler fatalConditionhandler;
+        TrackerContext trackerContext;
+        std::vector<MessageInfo> messages;
+        // Fake owners for unscoped messages
+        std::vector<ScopedMessage> messageScopes;
+        IEventListenerPtr reporter;
+        std::vector<SectionEndInfo> unfinishedSections;
+        std::vector<ITracker*> activeSections;
+    };
+
+    RunContext::RunContext(IConfig const* _config, IEventListenerPtr&& reporter):
+        m_impl( Detail::make_unique<RunContextImpl>() ),
+        m_runInfo(_config->name()),
         m_config(_config),
-        m_reporter(CATCH_MOVE(reporter)),
         m_lastAssertionInfo{ StringRef(), SourceLineInfo("",0), StringRef(), ResultDisposition::Normal },
-        m_includeSuccessfulResults( m_config->includeSuccessfulResults() || m_reporter->getPreferences().shouldReportAllAssertions )
+        m_includeSuccessfulResults( m_config->includeSuccessfulResults() || reporter->getPreferences().shouldReportAllAssertions )
     {
-        getCurrentMutableContext().setResultCapture( this );
-        m_reporter->testRunStarting(m_runInfo);
+        getCurrentMutableContext().setResultCapture(this);
+        m_impl->reporter = CATCH_MOVE( reporter );
+        m_impl->reporter->testRunStarting(m_runInfo);
     }
 
     RunContext::~RunContext() {
-        m_reporter->testRunEnded(TestRunStats(m_runInfo, m_totals, aborting()));
+        m_impl->reporter->testRunEnded(TestRunStats(m_runInfo, m_totals, aborting()));
     }
 
     Totals RunContext::runTest(TestCaseHandle const& testCase) {
         const Totals prevTotals = m_totals;
 
         auto const& testInfo = testCase.getTestCaseInfo();
-        m_reporter->testCaseStarting(testInfo);
+        m_impl->reporter->testCaseStarting( testInfo );
         m_activeTestCase = &testCase;
 
 
-        ITracker& rootTracker = m_trackerContext.startRun();
+        ITracker& rootTracker = m_impl->trackerContext.startRun();
         assert(rootTracker.isSectionTracker());
         static_cast<SectionTracker&>(rootTracker).addInitialFilters(m_config->getSectionsToRun());
 
@@ -228,10 +250,10 @@ namespace Catch {
         std::string redirectedCout;
         std::string redirectedCerr;
         do {
-            m_trackerContext.startCycle();
-            m_testCaseTracker = &SectionTracker::acquire(m_trackerContext, TestCaseTracking::NameAndLocationRef(testInfo.name, testInfo.lineInfo));
+            m_impl->trackerContext.startCycle();
+            m_testCaseTracker = &SectionTracker::acquire(m_impl->trackerContext, TestCaseTracking::NameAndLocationRef(testInfo.name, testInfo.lineInfo));
 
-            m_reporter->testCasePartialStarting(testInfo, testRuns);
+            m_impl->reporter->testCasePartialStarting( testInfo, testRuns );
 
             const auto beforeRunTotals = m_totals;
             std::string oneRunCout, oneRunCerr;
@@ -242,7 +264,7 @@ namespace Catch {
             const auto singleRunTotals = m_totals.delta(beforeRunTotals);
             auto statsForOneRun = TestCaseStats(testInfo, singleRunTotals, CATCH_MOVE(oneRunCout), CATCH_MOVE(oneRunCerr), aborting());
 
-            m_reporter->testCasePartialEnded(statsForOneRun, testRuns);
+            m_impl->reporter->testCasePartialEnded( statsForOneRun, testRuns );
             ++testRuns;
         } while (!m_testCaseTracker->isSuccessfullyCompleted() && !aborting());
 
@@ -253,11 +275,12 @@ namespace Catch {
             deltaTotals.testCases.failed++;
         }
         m_totals.testCases += deltaTotals.testCases;
-        m_reporter->testCaseEnded(TestCaseStats(testInfo,
-                                  deltaTotals,
-                                  CATCH_MOVE(redirectedCout),
-                                  CATCH_MOVE(redirectedCerr),
-                                  aborting()));
+        m_impl->reporter->testCaseEnded(
+            TestCaseStats( testInfo,
+                           deltaTotals,
+                           CATCH_MOVE( redirectedCout ),
+                           CATCH_MOVE( redirectedCerr ),
+                           aborting() ) );
 
         m_activeTestCase = nullptr;
         m_testCaseTracker = nullptr;
@@ -286,14 +309,15 @@ namespace Catch {
             m_lastAssertionPassed = true;
         }
 
-        m_reporter->assertionEnded(AssertionStats(result, m_messages, m_totals));
+        m_impl->reporter->assertionEnded(AssertionStats(result, m_impl->messages, m_totals));
 
-        if (result.getResultType() != ResultWas::Warning)
-            m_messageScopes.clear();
+        if ( result.getResultType() != ResultWas::Warning ) {
+            m_impl->messageScopes.clear();
+        }
 
         // Reset working state
         resetAssertionInfo();
-        m_lastResult = result;
+        m_impl->lastResult = result;
     }
     void RunContext::resetAssertionInfo() {
         m_lastAssertionInfo.macroName = StringRef();
@@ -302,18 +326,18 @@ namespace Catch {
 
     bool RunContext::sectionStarted(StringRef sectionName, SourceLineInfo const& sectionLineInfo, Counts & assertions) {
         ITracker& sectionTracker =
-            SectionTracker::acquire( m_trackerContext,
+            SectionTracker::acquire( m_impl->trackerContext,
                                      TestCaseTracking::NameAndLocationRef(
                                          sectionName, sectionLineInfo ) );
 
         if (!sectionTracker.isOpen())
             return false;
-        m_activeSections.push_back(&sectionTracker);
+        m_impl->activeSections.push_back(&sectionTracker);
 
         SectionInfo sectionInfo( sectionLineInfo, static_cast<std::string>(sectionName) );
         m_lastAssertionInfo.lineInfo = sectionInfo.lineInfo;
 
-        m_reporter->sectionStarting(sectionInfo);
+        m_impl->reporter->sectionStarting( sectionInfo );
 
         assertions = m_totals.assertions;
 
@@ -324,7 +348,7 @@ namespace Catch {
                                          SourceLineInfo const& lineInfo ) {
         using namespace Generators;
         GeneratorTracker* tracker = GeneratorTracker::acquire(
-            m_trackerContext,
+            m_impl->trackerContext,
             TestCaseTracking::NameAndLocationRef(
                  generatorName, lineInfo ) );
         m_lastAssertionInfo.lineInfo = lineInfo;
@@ -337,13 +361,13 @@ namespace Catch {
         Generators::GeneratorBasePtr&& generator ) {
 
         auto nameAndLoc = TestCaseTracking::NameAndLocation( static_cast<std::string>( generatorName ), lineInfo );
-        auto& currentTracker = m_trackerContext.currentTracker();
+        auto& currentTracker = m_impl->trackerContext.currentTracker();
         assert(
             currentTracker.nameAndLocation() != nameAndLoc &&
             "Trying to create tracker for a genreator that already has one" );
 
         auto newTracker = Catch::Detail::make_unique<Generators::GeneratorTracker>(
-            CATCH_MOVE(nameAndLoc), m_trackerContext, &currentTracker );
+            CATCH_MOVE(nameAndLoc), m_impl->trackerContext, &currentTracker );
         auto ret = newTracker.get();
         currentTracker.addChild( CATCH_MOVE( newTracker ) );
 
@@ -357,7 +381,7 @@ namespace Catch {
             return false;
         if (!m_config->warnAboutMissingAssertions())
             return false;
-        if (m_trackerContext.currentTracker().hasChildren())
+        if (m_impl->trackerContext.currentTracker().hasChildren())
             return false;
         m_totals.assertions.failed++;
         assertions.failed++;
@@ -368,50 +392,57 @@ namespace Catch {
         Counts assertions = m_totals.assertions - endInfo.prevAssertions;
         bool missingAssertions = testForMissingAssertions(assertions);
 
-        if (!m_activeSections.empty()) {
-            m_activeSections.back()->close();
-            m_activeSections.pop_back();
+        if (!m_impl->activeSections.empty()) {
+            m_impl->activeSections.back()->close();
+            m_impl->activeSections.pop_back();
         }
 
-        m_reporter->sectionEnded(SectionStats(CATCH_MOVE(endInfo.sectionInfo), assertions, endInfo.durationInSeconds, missingAssertions));
-        m_messages.clear();
-        m_messageScopes.clear();
+        m_impl->reporter->sectionEnded(
+            SectionStats( CATCH_MOVE( endInfo.sectionInfo ),
+                          assertions,
+                          endInfo.durationInSeconds,
+                          missingAssertions ) );
+        m_impl->messages.clear();
+        m_impl->messageScopes.clear();
     }
 
     void RunContext::sectionEndedEarly(SectionEndInfo&& endInfo) {
-        if ( m_unfinishedSections.empty() ) {
-            m_activeSections.back()->fail();
+        if ( m_impl->unfinishedSections.empty() ) {
+            m_impl->activeSections.back()->fail();
         } else {
-            m_activeSections.back()->close();
+            m_impl->activeSections.back()->close();
         }
-        m_activeSections.pop_back();
+        m_impl->activeSections.pop_back();
 
-        m_unfinishedSections.push_back(CATCH_MOVE(endInfo));
+        m_impl->unfinishedSections.push_back(CATCH_MOVE(endInfo));
     }
 
     void RunContext::benchmarkPreparing( StringRef name ) {
-        m_reporter->benchmarkPreparing(name);
+        m_impl->reporter->benchmarkPreparing( name );
     }
     void RunContext::benchmarkStarting( BenchmarkInfo const& info ) {
-        m_reporter->benchmarkStarting( info );
+        m_impl->reporter->benchmarkStarting( info );
     }
     void RunContext::benchmarkEnded( BenchmarkStats<> const& stats ) {
-        m_reporter->benchmarkEnded( stats );
+        m_impl->reporter->benchmarkEnded( stats );
     }
     void RunContext::benchmarkFailed( StringRef error ) {
-        m_reporter->benchmarkFailed( error );
+        m_impl->reporter->benchmarkFailed( error );
     }
 
     void RunContext::pushScopedMessage(MessageInfo const & message) {
-        m_messages.push_back(message);
+        m_impl->messages.push_back(message);
     }
 
     void RunContext::popScopedMessage(MessageInfo const & message) {
-        m_messages.erase(std::remove(m_messages.begin(), m_messages.end(), message), m_messages.end());
+        m_impl->messages.erase( std::remove( m_impl->messages.begin(),
+                                             m_impl->messages.end(),
+                                             message ),
+                                m_impl->messages.end() );
     }
 
     void RunContext::emplaceUnscopedMessage( MessageBuilder&& builder ) {
-        m_messageScopes.emplace_back( CATCH_MOVE(builder) );
+        m_impl->messageScopes.emplace_back( CATCH_MOVE(builder) );
     }
 
     std::string RunContext::getCurrentTestName() const {
@@ -421,7 +452,7 @@ namespace Catch {
     }
 
     const AssertionResult * RunContext::getLastResult() const {
-        return &(*m_lastResult);
+        return &(*m_impl->lastResult);
     }
 
     void RunContext::exceptionEarlyReported() {
@@ -430,7 +461,7 @@ namespace Catch {
 
     void RunContext::handleFatalErrorCondition( StringRef message ) {
         // First notify reporter that bad things happened
-        m_reporter->fatalErrorEncountered(message);
+        m_impl->reporter->fatalErrorEncountered(message);
 
         // Don't rebuild the result -- the stringification itself can cause more fatal errors
         // Instead, fake a result data.
@@ -449,20 +480,20 @@ namespace Catch {
         Counts assertions;
         assertions.failed = 1;
         SectionStats testCaseSectionStats(CATCH_MOVE(testCaseSection), assertions, 0, false);
-        m_reporter->sectionEnded(testCaseSectionStats);
+        m_impl->reporter->sectionEnded(testCaseSectionStats);
 
         auto const& testInfo = m_activeTestCase->getTestCaseInfo();
 
         Totals deltaTotals;
         deltaTotals.testCases.failed = 1;
         deltaTotals.assertions.failed = 1;
-        m_reporter->testCaseEnded(TestCaseStats(testInfo,
+        m_impl->reporter->testCaseEnded(TestCaseStats(testInfo,
                                   deltaTotals,
                                   std::string(),
                                   std::string(),
                                   false));
         m_totals.testCases.failed++;
-        m_reporter->testRunEnded(TestRunStats(m_runInfo, m_totals, false));
+        m_impl->reporter->testRunEnded(TestRunStats(m_runInfo, m_totals, false));
     }
 
     bool RunContext::lastAssertionPassed() {
@@ -473,7 +504,7 @@ namespace Catch {
         m_lastAssertionPassed = true;
         ++m_totals.assertions.passed;
         resetAssertionInfo();
-        m_messageScopes.clear();
+        m_impl->messageScopes.clear();
     }
 
     bool RunContext::aborting() const {
@@ -483,7 +514,7 @@ namespace Catch {
     void RunContext::runCurrentTest(std::string & redirectedCout, std::string & redirectedCerr) {
         auto const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
         SectionInfo testCaseSection(testCaseInfo.lineInfo, testCaseInfo.name);
-        m_reporter->sectionStarting(testCaseSection);
+        m_impl->reporter->sectionStarting(testCaseSection);
         Counts prevAssertions = m_totals.assertions;
         double duration = 0;
         m_shouldReportUnexpected = true;
@@ -491,7 +522,7 @@ namespace Catch {
 
         Timer timer;
         CATCH_TRY {
-            if (m_reporter->getPreferences().shouldRedirectStdOut) {
+            if (m_impl->reporter->getPreferences().shouldRedirectStdOut) {
 #if !defined(CATCH_CONFIG_EXPERIMENTAL_REDIRECT)
                 RedirectedStreams redirectedStreams(redirectedCout, redirectedCerr);
 
@@ -524,18 +555,18 @@ namespace Catch {
 
         m_testCaseTracker->close();
         handleUnfinishedSections();
-        m_messages.clear();
-        m_messageScopes.clear();
+        m_impl->messages.clear();
+        m_impl->messageScopes.clear();
 
         SectionStats testCaseSectionStats(CATCH_MOVE(testCaseSection), assertions, duration, missingAssertions);
-        m_reporter->sectionEnded(testCaseSectionStats);
+        m_impl->reporter->sectionEnded(testCaseSectionStats);
     }
 
     void RunContext::invokeActiveTestCase() {
         // We need to engage a handler for signals/structured exceptions
         // before running the tests themselves, or the binary can crash
         // without failed test being reported.
-        FatalConditionHandlerGuard _(&m_fatalConditionhandler);
+        FatalConditionHandlerGuard _(&m_impl->fatalConditionhandler);
         // We keep having issue where some compilers warn about an unused
         // variable, even though the type has non-trivial constructor and
         // destructor. This is annoying and ugly, but it makes them stfu.
@@ -547,12 +578,12 @@ namespace Catch {
     void RunContext::handleUnfinishedSections() {
         // If sections ended prematurely due to an exception we stored their
         // infos here so we can tear them down outside the unwind process.
-        for (auto it = m_unfinishedSections.rbegin(),
-             itEnd = m_unfinishedSections.rend();
+        for (auto it = m_impl->unfinishedSections.rbegin(),
+             itEnd = m_impl->unfinishedSections.rend();
              it != itEnd;
              ++it)
             sectionEnded(CATCH_MOVE(*it));
-        m_unfinishedSections.clear();
+        m_impl->unfinishedSections.clear();
     }
 
     void RunContext::handleExpr(
@@ -560,7 +591,7 @@ namespace Catch {
         ITransientExpression const& expr,
         AssertionReaction& reaction
     ) {
-        m_reporter->assertionStarting( info );
+        m_impl->reporter->assertionStarting( info );
 
         bool negated = isFalseTest( info.resultDisposition );
         bool result = expr.getResult() != negated;
@@ -599,7 +630,7 @@ namespace Catch {
             StringRef message,
             AssertionReaction& reaction
     ) {
-        m_reporter->assertionStarting( info );
+        m_impl->reporter->assertionStarting( info );
 
         m_lastAssertionInfo = info;
 
@@ -669,7 +700,7 @@ namespace Catch {
     }
 
 
-    IResultCapture& getResultCapture() {
+    RunContext& getResultCapture() {
         if (auto* capture = getCurrentContext().getResultCapture())
             return *capture;
         else

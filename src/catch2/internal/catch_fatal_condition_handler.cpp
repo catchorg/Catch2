@@ -28,7 +28,7 @@
 
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/internal/catch_enforce.hpp>
-#include <catch2/interfaces/catch_interfaces_capture.hpp>
+#include <catch2/internal/catch_run_context.hpp>
 #include <catch2/internal/catch_windows_h_proxy.hpp>
 #include <catch2/internal/catch_stdstreams.hpp>
 

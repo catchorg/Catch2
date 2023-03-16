@@ -27,7 +27,7 @@ namespace Catch {
         return *Context::currentContext;
     }
 
-    void Context::setResultCapture( IResultCapture* resultCapture ) {
+    void Context::setResultCapture( RunContext* resultCapture ) {
         m_resultCapture = resultCapture;
     }
 

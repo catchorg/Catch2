@@ -55,6 +55,7 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/catch_template_test_macros.hpp
   ${SOURCES_DIR}/catch_test_case_info.hpp
   ${SOURCES_DIR}/catch_test_macros.hpp
+  ${SOURCES_DIR}/catch_test_run_info.hpp
   ${SOURCES_DIR}/catch_test_spec.hpp
   ${SOURCES_DIR}/catch_timer.hpp
   ${SOURCES_DIR}/catch_tostring.hpp
@@ -63,6 +64,7 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/catch_version.hpp
   ${SOURCES_DIR}/catch_version_macros.hpp
   ${SOURCES_DIR}/internal/catch_assertion_handler.hpp
+  ${SOURCES_DIR}/internal/catch_benchmark_stats_fwd.hpp
   ${SOURCES_DIR}/internal/catch_case_insensitive_comparisons.hpp
   ${SOURCES_DIR}/internal/catch_case_sensitive.hpp
   ${SOURCES_DIR}/internal/catch_clara.hpp
@@ -210,7 +212,6 @@ set(INTERNAL_FILES ${IMPL_SOURCES} ${IMPL_HEADERS})
 
 set(INTERFACE_HEADERS
   ${SOURCES_DIR}/interfaces/catch_interfaces_all.hpp
-  ${SOURCES_DIR}/interfaces/catch_interfaces_capture.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_config.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_exception.hpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_generatortracker.hpp
@@ -219,7 +220,6 @@ set(INTERFACE_HEADERS
   ${SOURCES_DIR}/interfaces/catch_interfaces_testcase.hpp
 )
 set(INTERFACE_SOURCES
-  ${SOURCES_DIR}/interfaces/catch_interfaces_capture.cpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_config.cpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_exception.cpp
   ${SOURCES_DIR}/interfaces/catch_interfaces_generatortracker.cpp

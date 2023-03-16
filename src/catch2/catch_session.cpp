@@ -25,7 +25,8 @@
 #include <catch2/internal/catch_stdstreams.hpp>
 #include <catch2/internal/catch_istream.hpp>
 #include <catch2/internal/catch_test_case_registry_impl.hpp>
-
+#include <catch2/internal/catch_registry_hub.hpp>
+#include <catch2/catch_test_case_info.hpp>
 
 #include <algorithm>
 #include <cassert>

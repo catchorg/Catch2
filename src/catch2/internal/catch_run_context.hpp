@@ -8,36 +8,60 @@
 #ifndef CATCH_RUN_CONTEXT_HPP_INCLUDED
 #define CATCH_RUN_CONTEXT_HPP_INCLUDED
 
-#include <catch2/interfaces/catch_interfaces_reporter.hpp>
-#include <catch2/internal/catch_test_registry.hpp>
-#include <catch2/internal/catch_fatal_condition_handler.hpp>
-#include <catch2/catch_test_case_info.hpp>
-#include <catch2/catch_message.hpp>
+#include <catch2/catch_test_run_info.hpp>
 #include <catch2/catch_totals.hpp>
-#include <catch2/internal/catch_test_case_tracker.hpp>
 #include <catch2/catch_assertion_info.hpp>
-#include <catch2/catch_assertion_result.hpp>
-#include <catch2/internal/catch_optional.hpp>
-#include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_benchmark_stats_fwd.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 #include <string>
+#include <chrono>
 
 namespace Catch {
 
+    class TestCaseHandle;
+    class AssertionResult;
+    struct AssertionInfo;
+    struct SectionInfo;
+    struct SectionEndInfo;
+    struct MessageInfo;
+    struct MessageBuilder;
+    struct Counts;
+    struct AssertionReaction;
+    struct SourceLineInfo;
+
+    class ITransientExpression;
+    class IGeneratorTracker;
+
+    struct BenchmarkInfo;
+
+    namespace Generators {
+        class GeneratorUntypedBase;
+        using GeneratorBasePtr = Catch::Detail::unique_ptr<GeneratorUntypedBase>;
+    }
+
+
     class IGeneratorTracker;
     class IConfig;
+    // Fixme: Take out the namespace?
+    namespace TestCaseTracking {
+        class ITracker;
+    }
+    using TestCaseTracking::ITracker;
 
-    ///////////////////////////////////////////////////////////////////////////
+    class IEventListener;
+    using IEventListenerPtr = Detail::unique_ptr<IEventListener>;
 
-    class RunContext final : public IResultCapture {
-
+    class RunContext {
+        struct RunContextImpl;
+        Detail::unique_ptr<RunContextImpl> m_impl;
     public:
         RunContext( RunContext const& ) = delete;
         RunContext& operator =( RunContext const& ) = delete;
 
         explicit RunContext( IConfig const* _config, IEventListenerPtr&& reporter );
 
-        ~RunContext() override;
+        ~RunContext();
 
         Totals runTest(TestCaseHandle const& testCase);
 
@@ -47,63 +71,63 @@ namespace Catch {
         void handleExpr
                 (   AssertionInfo const& info,
                     ITransientExpression const& expr,
-                    AssertionReaction& reaction ) override;
+                    AssertionReaction& reaction );
         void handleMessage
                 (   AssertionInfo const& info,
                     ResultWas::OfType resultType,
                     StringRef message,
-                    AssertionReaction& reaction ) override;
+                    AssertionReaction& reaction );
         void handleUnexpectedExceptionNotThrown
                 (   AssertionInfo const& info,
-                    AssertionReaction& reaction ) override;
+                    AssertionReaction& reaction );
         void handleUnexpectedInflightException
                 (   AssertionInfo const& info,
                     std::string&& message,
-                    AssertionReaction& reaction ) override;
+                    AssertionReaction& reaction );
         void handleIncomplete
-                (   AssertionInfo const& info ) override;
+                (   AssertionInfo const& info );
         void handleNonExpr
                 (   AssertionInfo const &info,
                     ResultWas::OfType resultType,
-                    AssertionReaction &reaction ) override;
+                    AssertionReaction &reaction );
 
         bool sectionStarted( StringRef sectionName,
                              SourceLineInfo const& sectionLineInfo,
-                             Counts& assertions ) override;
+                             Counts& assertions );
 
-        void sectionEnded( SectionEndInfo&& endInfo ) override;
-        void sectionEndedEarly( SectionEndInfo&& endInfo ) override;
+        void sectionEnded( SectionEndInfo&& endInfo );
+        void sectionEndedEarly( SectionEndInfo&& endInfo );
 
         IGeneratorTracker*
         acquireGeneratorTracker( StringRef generatorName,
-                                 SourceLineInfo const& lineInfo ) override;
+                                 SourceLineInfo const& lineInfo );
         IGeneratorTracker* createGeneratorTracker(
             StringRef generatorName,
             SourceLineInfo lineInfo,
-            Generators::GeneratorBasePtr&& generator ) override;
+            Generators::GeneratorBasePtr&& generator );
 
 
-        void benchmarkPreparing( StringRef name ) override;
-        void benchmarkStarting( BenchmarkInfo const& info ) override;
-        void benchmarkEnded( BenchmarkStats<> const& stats ) override;
-        void benchmarkFailed( StringRef error ) override;
+        void benchmarkPreparing( StringRef name );
+        void benchmarkStarting( BenchmarkInfo const& info );
+        void benchmarkEnded( BenchmarkStats<> const& stats );
+        void benchmarkFailed( StringRef error );
 
-        void pushScopedMessage( MessageInfo const& message ) override;
-        void popScopedMessage( MessageInfo const& message ) override;
+        void pushScopedMessage( MessageInfo const& message );
+        void popScopedMessage( MessageInfo const& message );
 
-        void emplaceUnscopedMessage( MessageBuilder&& builder ) override;
+        void emplaceUnscopedMessage( MessageBuilder&& builder );
 
-        std::string getCurrentTestName() const override;
+        std::string getCurrentTestName() const;
 
-        const AssertionResult* getLastResult() const override;
+        const AssertionResult* getLastResult() const;
 
-        void exceptionEarlyReported() override;
+        void exceptionEarlyReported();
 
-        void handleFatalErrorCondition( StringRef message ) override;
+        void handleFatalErrorCondition( StringRef message );
 
-        bool lastAssertionPassed() override;
+        bool lastAssertionPassed();
 
-        void assertionPassed() override;
+        void assertionPassed();
 
     public:
         // !TBD We need to do this another way!
@@ -133,18 +157,10 @@ namespace Catch {
         TestRunInfo m_runInfo;
         TestCaseHandle const* m_activeTestCase = nullptr;
         ITracker* m_testCaseTracker = nullptr;
-        Optional<AssertionResult> m_lastResult;
 
         IConfig const* m_config;
         Totals m_totals;
-        IEventListenerPtr m_reporter;
-        std::vector<MessageInfo> m_messages;
-        std::vector<ScopedMessage> m_messageScopes; /* Keeps owners of so-called unscoped messages. */
         AssertionInfo m_lastAssertionInfo;
-        std::vector<SectionEndInfo> m_unfinishedSections;
-        std::vector<ITracker*> m_activeSections;
-        TrackerContext m_trackerContext;
-        FatalConditionHandler m_fatalConditionhandler;
         bool m_lastAssertionPassed = false;
         bool m_shouldReportUnexpected = true;
         bool m_includeSuccessfulResults;
@@ -152,6 +168,9 @@ namespace Catch {
 
     void seedRng(IConfig const& config);
     unsigned int rngSeed();
+
+    RunContext& getResultCapture();
+
 } // end namespace Catch
 
 #endif // CATCH_RUN_CONTEXT_HPP_INCLUDED

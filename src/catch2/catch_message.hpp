@@ -12,7 +12,7 @@
 #include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_stream_end_stop.hpp>
 #include <catch2/internal/catch_message_info.hpp>
-#include <catch2/interfaces/catch_interfaces_capture.hpp>
+#include <catch2/internal/catch_run_context.hpp>
 #include <catch2/catch_tostring.hpp>
 
 #include <string>
@@ -61,7 +61,7 @@ namespace Catch {
 
     class Capturer {
         std::vector<MessageInfo> m_messages;
-        IResultCapture& m_resultCapture = getResultCapture();
+        RunContext& m_resultCapture = getResultCapture();
         size_t m_captured = 0;
     public:
         Capturer( StringRef macroName, SourceLineInfo const& lineInfo, ResultWas::OfType resultType, StringRef names );

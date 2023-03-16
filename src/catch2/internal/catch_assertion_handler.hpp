@@ -10,14 +10,14 @@
 
 #include <catch2/catch_assertion_info.hpp>
 #include <catch2/internal/catch_decomposer.hpp>
-#include <catch2/interfaces/catch_interfaces_capture.hpp>
+#include <catch2/internal/catch_run_context.hpp>
 #include <catch2/internal/catch_lazy_expr.hpp>
 
 #include <string>
 
 namespace Catch {
 
-    class IResultCapture;
+    class RunContext;
 
     struct AssertionReaction {
         bool shouldDebugBreak = false;
@@ -29,7 +29,7 @@ namespace Catch {
         AssertionInfo m_assertionInfo;
         AssertionReaction m_reaction;
         bool m_completed = false;
-        IResultCapture& m_resultCapture;
+        RunContext& m_resultCapture;
 
     public:
         AssertionHandler

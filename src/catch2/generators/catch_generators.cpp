@@ -9,7 +9,7 @@
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/generators/catch_generator_exception.hpp>
-#include <catch2/interfaces/catch_interfaces_capture.hpp>
+#include <catch2/internal/catch_run_context.hpp>
 
 namespace Catch {
 

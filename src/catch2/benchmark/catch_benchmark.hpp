@@ -11,9 +11,10 @@
 #define CATCH_BENCHMARK_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_config.hpp>
+#include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_context.hpp>
-#include <catch2/interfaces/catch_interfaces_reporter.hpp>
+#include <catch2/internal/catch_run_context.hpp>
 #include <catch2/internal/catch_registry_hub.hpp>
 #include <catch2/internal/catch_unique_name.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>

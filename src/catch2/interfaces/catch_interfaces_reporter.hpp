@@ -9,6 +9,7 @@
 #define CATCH_INTERFACES_REPORTER_HPP_INCLUDED
 
 #include <catch2/catch_section_info.hpp>
+#include <catch2/catch_test_run_info.hpp>
 #include <catch2/catch_totals.hpp>
 #include <catch2/catch_assertion_result.hpp>
 #include <catch2/internal/catch_message_info.hpp>
@@ -17,14 +18,17 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/benchmark/catch_estimate.hpp>
 #include <catch2/benchmark/catch_outlier_classification.hpp>
-
+#include <catch2/internal/catch_benchmark_stats_fwd.hpp>
 
 #include <map>
 #include <string>
 #include <vector>
 #include <iosfwd>
+#include <chrono>
 
 namespace Catch {
+
+    struct BenchmarkInfo;
 
     struct ReporterDescription;
     struct ListenerDescription;
@@ -55,11 +59,6 @@ namespace Catch {
         IConfig const* m_fullConfig;
         ColourMode m_colourMode;
         std::map<std::string, std::string> m_customOptions;
-    };
-
-    struct TestRunInfo {
-        constexpr TestRunInfo(StringRef _name) : name(_name) {}
-        StringRef name;
     };
 
     struct AssertionStats {

@@ -12,12 +12,12 @@
 
 namespace Catch {
 
-    class IResultCapture;
+    class RunContext;
     class IConfig;
 
     class Context {
         IConfig const* m_config = nullptr;
-        IResultCapture* m_resultCapture = nullptr;
+        RunContext* m_resultCapture = nullptr;
 
         CATCH_EXPORT static Context* currentContext;
         friend Context& getCurrentMutableContext();
@@ -26,9 +26,9 @@ namespace Catch {
         friend void cleanUpContext();
 
     public:
-        IResultCapture* getResultCapture() const { return m_resultCapture; }
+        RunContext* getResultCapture() const { return m_resultCapture; }
         IConfig const* getConfig() const { return m_config; }
-        void setResultCapture( IResultCapture* resultCapture );
+        void setResultCapture( RunContext* resultCapture );
         void setConfig( IConfig const* config );
     };
 
