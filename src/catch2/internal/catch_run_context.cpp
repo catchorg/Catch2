@@ -26,135 +26,143 @@
 namespace Catch {
 
     namespace Generators {
-        struct GeneratorTracker : TestCaseTracking::TrackerBase, IGeneratorTracker {
-            GeneratorBasePtr m_generator;
+        namespace {
+            struct GeneratorTracker : TestCaseTracking::TrackerBase,
+                                      IGeneratorTracker {
+                GeneratorBasePtr m_generator;
 
-            GeneratorTracker( TestCaseTracking::NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent )
-            :   TrackerBase( CATCH_MOVE(nameAndLocation), ctx, parent )
-            {}
-            ~GeneratorTracker() override;
+                GeneratorTracker(
+                    TestCaseTracking::NameAndLocation&& nameAndLocation,
+                    TrackerContext& ctx,
+                    ITracker* parent ):
+                    TrackerBase( CATCH_MOVE( nameAndLocation ), ctx, parent ) {}
+                ~GeneratorTracker() override;
 
-            static GeneratorTracker* acquire( TrackerContext& ctx, TestCaseTracking::NameAndLocationRef const& nameAndLocation ) {
-                GeneratorTracker* tracker;
+                static GeneratorTracker*
+                acquire( TrackerContext& ctx,
+                         TestCaseTracking::NameAndLocationRef const&
+                             nameAndLocation ) {
+                    GeneratorTracker* tracker;
 
-                ITracker& currentTracker = ctx.currentTracker();
-                // Under specific circumstances, the generator we want
-                // to acquire is also the current tracker. If this is
-                // the case, we have to avoid looking through current
-                // tracker's children, and instead return the current
-                // tracker.
-                // A case where this check is important is e.g.
-                //     for (int i = 0; i < 5; ++i) {
-                //         int n = GENERATE(1, 2);
-                //     }
-                //
-                // without it, the code above creates 5 nested generators.
-                if ( currentTracker.nameAndLocation() == nameAndLocation ) {
-                    auto thisTracker =
-                        currentTracker.parent()->findChild( nameAndLocation );
-                    assert( thisTracker );
-                    assert( thisTracker->isGeneratorTracker() );
-                    tracker = static_cast<GeneratorTracker*>( thisTracker );
-                } else if ( ITracker* childTracker =
-                                currentTracker.findChild( nameAndLocation ) ) {
-                    assert( childTracker );
-                    assert( childTracker->isGeneratorTracker() );
-                    tracker = static_cast<GeneratorTracker*>( childTracker );
-                } else {
-                    return nullptr;
+                    ITracker& currentTracker = ctx.currentTracker();
+                    // Under specific circumstances, the generator we want
+                    // to acquire is also the current tracker. If this is
+                    // the case, we have to avoid looking through current
+                    // tracker's children, and instead return the current
+                    // tracker.
+                    // A case where this check is important is e.g.
+                    //     for (int i = 0; i < 5; ++i) {
+                    //         int n = GENERATE(1, 2);
+                    //     }
+                    //
+                    // without it, the code above creates 5 nested generators.
+                    if ( currentTracker.nameAndLocation() == nameAndLocation ) {
+                        auto thisTracker = currentTracker.parent()->findChild(
+                            nameAndLocation );
+                        assert( thisTracker );
+                        assert( thisTracker->isGeneratorTracker() );
+                        tracker = static_cast<GeneratorTracker*>( thisTracker );
+                    } else if ( ITracker* childTracker =
+                                    currentTracker.findChild(
+                                        nameAndLocation ) ) {
+                        assert( childTracker );
+                        assert( childTracker->isGeneratorTracker() );
+                        tracker =
+                            static_cast<GeneratorTracker*>( childTracker );
+                    } else {
+                        return nullptr;
+                    }
+
+                    if ( !tracker->isComplete() ) { tracker->open(); }
+
+                    return tracker;
                 }
 
-                if( !tracker->isComplete() ) {
-                    tracker->open();
+                // TrackerBase interface
+                bool isGeneratorTracker() const override { return true; }
+                auto hasGenerator() const -> bool override {
+                    return !!m_generator;
                 }
-
-                return tracker;
-            }
-
-            // TrackerBase interface
-            bool isGeneratorTracker() const override { return true; }
-            auto hasGenerator() const -> bool override {
-                return !!m_generator;
-            }
-            void close() override {
-                TrackerBase::close();
-                // If a generator has a child (it is followed by a section)
-                // and none of its children have started, then we must wait
-                // until later to start consuming its values.
-                // This catches cases where `GENERATE` is placed between two
-                // `SECTION`s.
-                // **The check for m_children.empty cannot be removed**.
-                // doing so would break `GENERATE` _not_ followed by `SECTION`s.
-                const bool should_wait_for_child = [&]() {
-                    // No children -> nobody to wait for
-                    if ( m_children.empty() ) {
-                        return false;
-                    }
-                    // If at least one child started executing, don't wait
-                    if ( std::find_if(
-                             m_children.begin(),
-                             m_children.end(),
-                             []( TestCaseTracking::ITrackerPtr const& tracker ) {
-                                 return tracker->hasStarted();
-                             } ) != m_children.end() ) {
-                        return false;
-                    }
-
-                    // No children have started. We need to check if they _can_
-                    // start, and thus we should wait for them, or they cannot
-                    // start (due to filters), and we shouldn't wait for them
-                    ITracker* parent = m_parent;
-                    // This is safe: there is always at least one section
-                    // tracker in a test case tracking tree
-                    while ( !parent->isSectionTracker() ) {
-                        parent = parent->parent();
-                    }
-                    assert( parent &&
-                            "Missing root (test case) level section" );
-
-                    auto const& parentSection =
-                        static_cast<SectionTracker const&>( *parent );
-                    auto const& filters = parentSection.getFilters();
-                    // No filters -> no restrictions on running sections
-                    if ( filters.empty() ) {
-                        return true;
-                    }
-
-                    for ( auto const& child : m_children ) {
-                        if ( child->isSectionTracker() &&
-                             std::find(
-                                 filters.begin(),
-                                 filters.end(),
-                                 static_cast<SectionTracker const&>( *child )
-                                     .trimmedName() ) != filters.end() ) {
-                            return true;
+                void close() override {
+                    TrackerBase::close();
+                    // If a generator has a child (it is followed by a section)
+                    // and none of its children have started, then we must wait
+                    // until later to start consuming its values.
+                    // This catches cases where `GENERATE` is placed between two
+                    // `SECTION`s.
+                    // **The check for m_children.empty cannot be removed**.
+                    // doing so would break `GENERATE` _not_ followed by
+                    // `SECTION`s.
+                    const bool should_wait_for_child = [&]() {
+                        // No children -> nobody to wait for
+                        if ( m_children.empty() ) { return false; }
+                        // If at least one child started executing, don't wait
+                        if ( std::find_if(
+                                 m_children.begin(),
+                                 m_children.end(),
+                                 []( TestCaseTracking::ITrackerPtr const&
+                                         tracker ) {
+                                     return tracker->hasStarted();
+                                 } ) != m_children.end() ) {
+                            return false;
                         }
+
+                        // No children have started. We need to check if they
+                        // _can_ start, and thus we should wait for them, or
+                        // they cannot start (due to filters), and we shouldn't
+                        // wait for them
+                        ITracker* parent = m_parent;
+                        // This is safe: there is always at least one section
+                        // tracker in a test case tracking tree
+                        while ( !parent->isSectionTracker() ) {
+                            parent = parent->parent();
+                        }
+                        assert( parent &&
+                                "Missing root (test case) level section" );
+
+                        auto const& parentSection =
+                            static_cast<SectionTracker const&>( *parent );
+                        auto const& filters = parentSection.getFilters();
+                        // No filters -> no restrictions on running sections
+                        if ( filters.empty() ) { return true; }
+
+                        for ( auto const& child : m_children ) {
+                            if ( child->isSectionTracker() &&
+                                 std::find( filters.begin(),
+                                            filters.end(),
+                                            static_cast<SectionTracker const&>(
+                                                *child )
+                                                .trimmedName() ) !=
+                                     filters.end() ) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }();
+
+                    // This check is a bit tricky, because m_generator->next()
+                    // has a side-effect, where it consumes generator's current
+                    // value, but we do not want to invoke the side-effect if
+                    // this generator is still waiting for any child to start.
+                    assert( m_generator && "Tracker without generator" );
+                    if ( should_wait_for_child ||
+                         ( m_runState == CompletedSuccessfully &&
+                           m_generator->countedNext() ) ) {
+                        m_children.clear();
+                        m_runState = Executing;
                     }
-                    return false;
-                }();
-
-                // This check is a bit tricky, because m_generator->next()
-                // has a side-effect, where it consumes generator's current
-                // value, but we do not want to invoke the side-effect if
-                // this generator is still waiting for any child to start.
-                assert( m_generator && "Tracker without generator" );
-                if ( should_wait_for_child ||
-                     ( m_runState == CompletedSuccessfully &&
-                       m_generator->countedNext() ) ) {
-                    m_children.clear();
-                    m_runState = Executing;
                 }
-            }
 
-            // IGeneratorTracker interface
-            auto getGenerator() const -> GeneratorBasePtr const& override {
-                return m_generator;
-            }
-            void setGenerator( GeneratorBasePtr&& generator ) override {
-                m_generator = CATCH_MOVE( generator );
-            }
-        };
-        GeneratorTracker::~GeneratorTracker() = default;
+                // IGeneratorTracker interface
+                auto getGenerator() const -> GeneratorBasePtr const& override {
+                    return m_generator;
+                }
+                void setGenerator( GeneratorBasePtr&& generator ) override {
+                    m_generator = CATCH_MOVE( generator );
+                }
+            };
+            GeneratorTracker::~GeneratorTracker() = default;
+        } // namespace
     }
 
     RunContext::RunContext(IConfig const* _config, IEventListenerPtr&& reporter)
