@@ -27,7 +27,7 @@ namespace Catch {
 
     namespace Generators {
         namespace {
-            struct GeneratorTracker : TestCaseTracking::TrackerBase,
+            struct GeneratorTracker final : TestCaseTracking::TrackerBase,
                                       IGeneratorTracker {
                 GeneratorBasePtr m_generator;
 
@@ -36,7 +36,7 @@ namespace Catch {
                     TrackerContext& ctx,
                     ITracker* parent ):
                     TrackerBase( CATCH_MOVE( nameAndLocation ), ctx, parent ) {}
-                ~GeneratorTracker() override;
+                ~GeneratorTracker() override = default;
 
                 static GeneratorTracker*
                 acquire( TrackerContext& ctx,
@@ -161,7 +161,6 @@ namespace Catch {
                     m_generator = CATCH_MOVE( generator );
                 }
             };
-            GeneratorTracker::~GeneratorTracker() = default;
         } // namespace
     }
 

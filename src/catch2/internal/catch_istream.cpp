@@ -24,7 +24,7 @@ namespace Catch {
 namespace Detail {
     namespace {
         template<typename WriterF, std::size_t bufferSize=256>
-        class StreamBufImpl : public std::streambuf {
+        class StreamBufImpl final : public std::streambuf {
             char data[bufferSize];
             WriterF m_writer;
 
@@ -72,7 +72,7 @@ namespace Detail {
 
         ///////////////////////////////////////////////////////////////////////////
 
-        class FileStream : public IStream {
+        class FileStream final : public IStream {
             std::ofstream m_ofs;
         public:
             FileStream( std::string const& filename ) {
@@ -89,7 +89,7 @@ namespace Detail {
 
         ///////////////////////////////////////////////////////////////////////////
 
-        class CoutStream : public IStream {
+        class CoutStream final : public IStream {
             std::ostream m_os;
         public:
             // Store the streambuf from cout up-front because
@@ -118,7 +118,7 @@ namespace Detail {
 
         ///////////////////////////////////////////////////////////////////////////
 
-        class DebugOutStream : public IStream {
+        class DebugOutStream final : public IStream {
             Detail::unique_ptr<StreamBufImpl<OutputDebugWriter>> m_streamBuf;
             std::ostream m_os;
         public:

@@ -29,7 +29,7 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    class RunContext : public IResultCapture {
+    class RunContext final : public IResultCapture {
 
     public:
         RunContext( RunContext const& ) = delete;
