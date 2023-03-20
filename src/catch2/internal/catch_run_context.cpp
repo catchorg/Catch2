@@ -167,13 +167,12 @@ namespace Catch {
 
     RunContext::RunContext(IConfig const* _config, IEventListenerPtr&& reporter)
     :   m_runInfo(_config->name()),
-        m_context(getCurrentMutableContext()),
         m_config(_config),
         m_reporter(CATCH_MOVE(reporter)),
         m_lastAssertionInfo{ StringRef(), SourceLineInfo("",0), StringRef(), ResultDisposition::Normal },
         m_includeSuccessfulResults( m_config->includeSuccessfulResults() || m_reporter->getPreferences().shouldReportAllAssertions )
     {
-        m_context.setResultCapture(this);
+        getCurrentMutableContext().setResultCapture( this );
         m_reporter->testRunStarting(m_runInfo);
     }
 

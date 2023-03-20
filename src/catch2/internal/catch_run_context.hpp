@@ -24,7 +24,6 @@
 
 namespace Catch {
 
-    class IMutableContext;
     class IGeneratorTracker;
     class IConfig;
 
@@ -132,7 +131,6 @@ namespace Catch {
         void handleUnfinishedSections();
 
         TestRunInfo m_runInfo;
-        IMutableContext& m_context;
         TestCaseHandle const* m_activeTestCase = nullptr;
         ITracker* m_testCaseTracker = nullptr;
         Optional<AssertionResult> m_lastResult;
