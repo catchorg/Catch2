@@ -5262,8 +5262,7 @@ namespace Catch {
         using Detail::ParserResult;
 
         namespace Detail {
-            template <typename DerivedT>
-            template <typename T>
+            template <typename DerivedT, typename T>
             Parser
                 ComposableParserImpl<DerivedT>::operator|(T const& other) const {
                 return Parser() | static_cast<DerivedT const&>(*this) | other;
