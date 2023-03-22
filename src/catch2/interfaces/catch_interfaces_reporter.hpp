@@ -17,7 +17,7 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/benchmark/catch_estimate.hpp>
 #include <catch2/benchmark/catch_outlier_classification.hpp>
-
+#include <catch2/interfaces/catch_interfaces_capture.hpp>
 
 #include <map>
 #include <string>

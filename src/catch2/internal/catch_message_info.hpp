@@ -10,7 +10,7 @@
 
 #include <catch2/internal/catch_result_type.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
-#include <catch2/interfaces/catch_interfaces_capture.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 
 #include <string>
 
