@@ -260,6 +260,7 @@ internal_sources = files(
   'catch_timer.cpp',
   'catch_tostring.cpp',
   'catch_totals.cpp',
+  'catch_translate_exception.cpp',
   'catch_version.cpp',
 )
 

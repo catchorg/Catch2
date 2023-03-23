@@ -8,8 +8,6 @@
 #ifndef CATCH_REPORTER_REGISTRARS_HPP_INCLUDED
 #define CATCH_REPORTER_REGISTRARS_HPP_INCLUDED
 
-#include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
-#include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_unique_name.hpp>
