@@ -21,7 +21,6 @@ namespace Catch {
         ~ExceptionTranslatorRegistry() override;
         void registerTranslator( Detail::unique_ptr<IExceptionTranslator>&& translator );
         std::string translateActiveException() const override;
-        std::string tryTranslators() const;
 
     private:
         ExceptionTranslators m_translators;
