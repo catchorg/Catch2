@@ -10,23 +10,26 @@
 #ifndef CATCH_BENCHMARK_HPP_INCLUDED
 #define CATCH_BENCHMARK_HPP_INCLUDED
 
-#include <catch2/interfaces/catch_interfaces_config.hpp>
+#include <catch2/catch_user_config.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_context.hpp>
-#include <catch2/interfaces/catch_interfaces_reporter.hpp>
-#include <catch2/internal/catch_unique_name.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
-#include <catch2/benchmark/catch_chronometer.hpp>
+#include <catch2/internal/catch_test_failure_exception.hpp>
+#include <catch2/internal/catch_unique_name.hpp>
+#include <catch2/interfaces/catch_interfaces_capture.hpp>
+#include <catch2/interfaces/catch_interfaces_config.hpp>
+#include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
+#include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/catch_environment.hpp>
 #include <catch2/benchmark/catch_execution_plan.hpp>
 #include <catch2/benchmark/detail/catch_estimate_clock.hpp>
-#include <catch2/benchmark/detail/catch_complete_invoke.hpp>
 #include <catch2/benchmark/detail/catch_analyse.hpp>
 #include <catch2/benchmark/detail/catch_benchmark_function.hpp>
 #include <catch2/benchmark/detail/catch_run_for_at_least.hpp>
 
 #include <algorithm>
+#include <chrono>
 #include <functional>
 #include <string>
 #include <vector>
@@ -82,7 +85,7 @@ namespace Catch {
                     auto analysis = Detail::analyse(*cfg, env, samples.begin(), samples.end());
                     BenchmarkStats<FloatDuration<Clock>> stats{ CATCH_MOVE(info), CATCH_MOVE(analysis.samples), analysis.mean, analysis.standard_deviation, analysis.outliers, analysis.outlier_variance };
                     getResultCapture().benchmarkEnded(stats);
-                } CATCH_CATCH_ANON (TestFailureException) {
+                } CATCH_CATCH_ANON (TestFailureException const&) {
                     getResultCapture().benchmarkFailed("Benchmark failed due to failed assertion"_sr);
                 } CATCH_CATCH_ALL{
                     getResultCapture().benchmarkFailed(translateActiveException());

@@ -10,7 +10,6 @@
 #ifndef CATCH_ANALYSE_HPP_INCLUDED
 #define CATCH_ANALYSE_HPP_INCLUDED
 
-#include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/catch_environment.hpp>
 #include <catch2/benchmark/catch_sample_analysis.hpp>
 #include <catch2/benchmark/detail/catch_stats.hpp>

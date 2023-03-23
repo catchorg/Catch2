@@ -7,8 +7,9 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <catch2/benchmark/detail/catch_run_for_at_least.hpp>
-#include <exception>
 #include <catch2/internal/catch_enforce.hpp>
+
+#include <exception>
 
 namespace Catch {
     namespace Benchmark {
