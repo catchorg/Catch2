@@ -16,6 +16,7 @@
 #include <iterator>
 
 namespace Catch {
+    ITestInvoker::~ITestInvoker() = default;
 
     namespace {
         static StringRef extractClassName( StringRef classOrMethodName ) {

@@ -65,6 +65,7 @@ internal_headers = [
   'interfaces/catch_interfaces_reporter.hpp',
   'interfaces/catch_interfaces_reporter_factory.hpp',
   'interfaces/catch_interfaces_tag_alias_registry.hpp',
+  'interfaces/catch_interfaces_test_invoker.hpp',
   'interfaces/catch_interfaces_testcase.hpp',
   'internal/catch_assertion_handler.hpp',
   'internal/catch_case_insensitive_comparisons.hpp',

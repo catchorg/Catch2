@@ -14,13 +14,6 @@ namespace Catch {
 
     class TestSpec;
     struct TestCaseInfo;
-
-    class ITestInvoker {
-    public:
-        virtual void invoke () const = 0;
-        virtual ~ITestInvoker(); // = default
-    };
-
     class TestCaseHandle;
     class IConfig;
 

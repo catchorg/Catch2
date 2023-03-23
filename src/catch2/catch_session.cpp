@@ -13,6 +13,7 @@
 #include <catch2/internal/catch_run_context.hpp>
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/catch_version.hpp>
+#include <catch2/interfaces/catch_interfaces_testcase.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/internal/catch_startup_exception_registry.hpp>
 #include <catch2/internal/catch_sharding.hpp>

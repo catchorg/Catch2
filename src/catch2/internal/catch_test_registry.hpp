@@ -10,7 +10,7 @@
 
 #include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
-#include <catch2/interfaces/catch_interfaces_testcase.hpp>
+#include <catch2/interfaces/catch_interfaces_test_invoker.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_unique_name.hpp>
