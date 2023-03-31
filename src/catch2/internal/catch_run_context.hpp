@@ -8,8 +8,9 @@
 #ifndef CATCH_RUN_CONTEXT_HPP_INCLUDED
 #define CATCH_RUN_CONTEXT_HPP_INCLUDED
 
-#include <catch2/interfaces/catch_interfaces_reporter.hpp>
+#include <catch2/interfaces/catch_interfaces_capture.hpp>
 #include <catch2/internal/catch_test_registry.hpp>
+#include <catch2/internal/catch_test_run_info.hpp>
 #include <catch2/internal/catch_fatal_condition_handler.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/catch_message.hpp>
@@ -26,6 +27,8 @@ namespace Catch {
 
     class IGeneratorTracker;
     class IConfig;
+    class IEventListener;
+    using IEventListenerPtr = Detail::unique_ptr<IEventListener>;
 
     ///////////////////////////////////////////////////////////////////////////
 

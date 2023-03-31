@@ -13,11 +13,10 @@
 #include <catch2/catch_assertion_result.hpp>
 #include <catch2/internal/catch_message_info.hpp>
 #include <catch2/internal/catch_stringref.hpp>
+#include <catch2/internal/catch_test_run_info.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
-#include <catch2/benchmark/catch_estimate.hpp>
-#include <catch2/benchmark/catch_outlier_classification.hpp>
-#include <catch2/interfaces/catch_interfaces_capture.hpp>
+#include <catch2/benchmark/detail/catch_benchmark_stats.hpp>
 
 #include <map>
 #include <string>
@@ -55,11 +54,6 @@ namespace Catch {
         IConfig const* m_fullConfig;
         ColourMode m_colourMode;
         std::map<std::string, std::string> m_customOptions;
-    };
-
-    struct TestRunInfo {
-        constexpr TestRunInfo(StringRef _name) : name(_name) {}
-        StringRef name;
     };
 
     struct AssertionStats {
@@ -111,45 +105,6 @@ namespace Catch {
         TestRunInfo runInfo;
         Totals totals;
         bool aborting;
-    };
-
-
-    struct BenchmarkInfo {
-        std::string name;
-        double estimatedDuration;
-        int iterations;
-        unsigned int samples;
-        unsigned int resamples;
-        double clockResolution;
-        double clockCost;
-    };
-
-    template <class Duration>
-    struct BenchmarkStats {
-        BenchmarkInfo info;
-
-        std::vector<Duration> samples;
-        Benchmark::Estimate<Duration> mean;
-        Benchmark::Estimate<Duration> standardDeviation;
-        Benchmark::OutlierClassification outliers;
-        double outlierVariance;
-
-        template <typename Duration2>
-        operator BenchmarkStats<Duration2>() const {
-            std::vector<Duration2> samples2;
-            samples2.reserve(samples.size());
-            for (auto const& sample : samples) {
-                samples2.push_back(Duration2(sample));
-            }
-            return {
-                info,
-                CATCH_MOVE(samples2),
-                mean,
-                standardDeviation,
-                outliers,
-                outlierVariance,
-            };
-        }
     };
 
     //! By setting up its preferences, a reporter can modify Catch2's behaviour

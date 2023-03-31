@@ -19,7 +19,7 @@
 #include <catch2/interfaces/catch_interfaces_capture.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
-#include <catch2/interfaces/catch_interfaces_reporter.hpp>
+#include <catch2/benchmark/detail/catch_benchmark_stats.hpp>
 #include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/catch_environment.hpp>
 #include <catch2/benchmark/catch_execution_plan.hpp>

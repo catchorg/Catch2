@@ -21,6 +21,8 @@ set(BENCHMARK_HEADERS
   ${SOURCES_DIR}/benchmark/catch_sample_analysis.hpp
   ${SOURCES_DIR}/benchmark/detail/catch_analyse.hpp
   ${SOURCES_DIR}/benchmark/detail/catch_benchmark_function.hpp
+  ${SOURCES_DIR}/benchmark/detail/catch_benchmark_stats.hpp
+  ${SOURCES_DIR}/benchmark/detail/catch_benchmark_stats_fwd.hpp
   ${SOURCES_DIR}/benchmark/detail/catch_complete_invoke.hpp
   ${SOURCES_DIR}/benchmark/detail/catch_estimate_clock.hpp
   ${SOURCES_DIR}/benchmark/detail/catch_measure.hpp
@@ -128,6 +130,7 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/internal/catch_test_failure_exception.hpp
   ${SOURCES_DIR}/internal/catch_test_macro_impl.hpp
   ${SOURCES_DIR}/internal/catch_test_registry.hpp
+  ${SOURCES_DIR}/internal/catch_test_run_info.hpp
   ${SOURCES_DIR}/internal/catch_test_spec_parser.hpp
   ${SOURCES_DIR}/internal/catch_textflow.hpp
   ${SOURCES_DIR}/internal/catch_to_string.hpp
