@@ -35,7 +35,7 @@ same as the Catch name; see also ``TEST_PREFIX`` and ``TEST_SUFFIX``.
                          [TEST_LIST var]
                          [REPORTER reporter]
                          [OUTPUT_DIR dir]
-                         [OUTPUT_PREFIX prefix}
+                         [OUTPUT_PREFIX prefix]
                          [OUTPUT_SUFFIX suffix]
     )
 
