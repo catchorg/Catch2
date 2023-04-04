@@ -66,30 +66,30 @@ endif()
 
 string(REPLACE "\n" ";" output "${output}")
 
-# Run test executable to get list of available reporters
-execute_process(
-  COMMAND ${TEST_EXECUTOR} "${TEST_EXECUTABLE}" ${spec} --list-reporters
-  OUTPUT_VARIABLE reporters_output
-  RESULT_VARIABLE reporters_result
-  WORKING_DIRECTORY "${TEST_WORKING_DIR}"
-)
-if(NOT ${reporters_result} EQUAL 0)
-  message(FATAL_ERROR
-    "Error running test executable '${TEST_EXECUTABLE}':\n"
-    "  Result: ${reporters_result}\n"
-    "  Output: ${reporters_output}\n"
-  )
-endif()
-string(FIND "${reporters_output}" "${reporter}" reporter_is_valid)
-if(reporter AND ${reporter_is_valid} EQUAL -1)
-  message(FATAL_ERROR
-    "\"${reporter}\" is not a valid reporter!\n"
-  )
-endif()
-
 # Prepare reporter
 if(reporter)
   set(reporter_arg "--reporter ${reporter}")
+
+  # Run test executable to check whether reporter is available
+  # note that the use of --list-reporters is not the important part,
+  # we only want to check whether the execution succeeds with ${reporter_arg}
+  execute_process(
+    COMMAND ${TEST_EXECUTOR} "${TEST_EXECUTABLE}" ${spec} ${reporter_arg} --list-reporters
+    OUTPUT_VARIABLE reporter_check_output
+    RESULT_VARIABLE reporter_check_result
+    WORKING_DIRECTORY "${TEST_WORKING_DIR}"
+  )
+  if(${reporter_check_result} EQUAL 255)
+    message(FATAL_ERROR
+      "\"${reporter}\" is not a valid reporter!\n"
+    )
+  elseif(NOT ${reporter_check_result} EQUAL 0)
+    message(FATAL_ERROR
+      "Error running test executable '${TEST_EXECUTABLE}':\n"
+      "  Result: ${reporter_check_result}\n"
+      "  Output: ${reporter_check_output}\n"
+    )
+  endif()
 endif()
 
 # Prepare output dir
