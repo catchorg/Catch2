@@ -77,10 +77,10 @@
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="#1238" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
       uarr := "123"
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
       sarr := "456"
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
@@ -91,10 +91,10 @@
         0 == 0
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
       uarr := "123"
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
       sarr := "456"
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
@@ -128,11 +128,11 @@
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="#1455 - INFO and WARN can start with a linebreak" tags="[.][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
 
 This info message starts with a linebreak
     </Info>
-    <Warning>
+    <Warning filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
 
 This warning message starts with a linebreak
     </Warning>
@@ -384,91 +384,91 @@ Nor would this
     <Section name="A" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       i := 1
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       j := 3
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       k := 5
     </Info>
     <Section name="B" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       i := 1
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       j := 3
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       k := 6
     </Info>
     <Section name="B" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       i := 1
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       j := 4
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       k := 5
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       i := 1
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       j := 4
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       k := 6
     </Info>
     <Section name="A" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       i := 2
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       j := 3
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       k := 5
     </Info>
     <Section name="B" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       i := 2
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       j := 3
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       k := 6
     </Info>
     <Section name="B" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       i := 2
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       j := 4
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       k := 5
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       i := 2
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       j := 4
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       k := 6
     </Info>
     <OverallResult success="true" skips="0"/>
@@ -675,7 +675,7 @@ Nor would this
   </TestCase>
   <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws][.][failing]" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
     <Section name="outside assertions" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
         answer := 42
       </Info>
       <Exception filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
@@ -684,7 +684,7 @@ Nor would this
       <OverallResults successes="0" failures="0" expectedFailures="1" skipped="false"/>
     </Section>
     <Section name="inside REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
         answer := 42
       </Info>
       <Expression success="false" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
@@ -701,7 +701,7 @@ Nor would this
       <OverallResults successes="0" failures="0" expectedFailures="1" skipped="false"/>
     </Section>
     <Section name="inside REQUIRE_THROWS" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
         answer := 42
       </Info>
       <Expression success="true" type="REQUIRE_THROWS" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
@@ -806,7 +806,7 @@ Nor would this
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="#872" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
       dummy := 0
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
@@ -2886,92 +2886,92 @@ Nor would this
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="CAPTURE can deal with complex expressions" tags="[capture][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       a := 1
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       b := 2
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       c := 3
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       a + b := 3
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       a+b := 3
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       c > b := true
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       a == 1 := true
     </Info>
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="CAPTURE can deal with complex expressions involving commas" tags="[capture][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       std::vector&lt;int>{1, 2, 3}[0, 1, 2] := 3
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       std::vector&lt;int>{1, 2, 3}[(0, 1)] := 2
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       std::vector&lt;int>{1, 2, 3}[0] := 1
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       (helper_1436&lt;int, int>{12, -12}) := { 12, -12 }
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       (helper_1436&lt;int, int>(-12, 12)) := { -12, 12 }
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       (1, 2) := 2
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       (2, 3) := 3
     </Info>
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="CAPTURE parses string and character constants" tags="[capture][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       ("comma, in string", "escaped, \", ") := "escaped, ", "
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       "single quote in string,'," := "single quote in string,',"
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       "some escapes, \\,\\\\" := "some escapes, \,\\"
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       "some, ), unmatched, } prenheses {[&lt;" := "some, ), unmatched, } prenheses {[&lt;"
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       '"' := '"'
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       '\'' := '''
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       ',' := ','
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       '}' := '}'
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       ')' := ')'
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       '(' := '('
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       '{' := '{'
     </Info>
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="Capture and info messages" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
     <Section name="Capture should stringify like assertions" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
         i := 2
       </Info>
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
@@ -2985,7 +2985,7 @@ Nor would this
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Info should NOT stringify the way assertions do" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
         3
       </Info>
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
@@ -4977,7 +4977,7 @@ C
     <Failure filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       This is a failure
     </Failure>
-    <Warning>
+    <Warning filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       This message appears in the output
     </Warning>
     <OverallResult success="false" skips="0"/>
@@ -7246,7 +7246,7 @@ C
       <Section name="Positive manual step" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
         <Section name="Floating Point" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
           <Section name="Exact" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7257,7 +7257,7 @@ C
                 -1.0 == Approx( -1.0 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7268,7 +7268,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.9
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7279,7 +7279,7 @@ C
                 -0.9 == Approx( -0.9 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.9
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7290,7 +7290,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.8
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7301,7 +7301,7 @@ C
                 -0.8 == Approx( -0.8 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.8
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7312,7 +7312,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.7
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7323,7 +7323,7 @@ C
                 -0.7 == Approx( -0.7 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.7
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7334,7 +7334,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.6
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7345,7 +7345,7 @@ C
                 -0.6 == Approx( -0.6 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.6
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7356,7 +7356,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.5
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7367,7 +7367,7 @@ C
                 -0.5 == Approx( -0.5 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.5
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7378,7 +7378,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.4
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7389,7 +7389,7 @@ C
                 -0.4 == Approx( -0.4 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.4
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7400,7 +7400,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.3
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7411,7 +7411,7 @@ C
                 -0.3 == Approx( -0.3 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.3
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7422,7 +7422,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.2
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7433,7 +7433,7 @@ C
                 -0.2 == Approx( -0.2 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.2
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7444,7 +7444,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7455,7 +7455,7 @@ C
                 -0.1 == Approx( -0.1 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7466,7 +7466,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -1.38778e-16
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7477,7 +7477,7 @@ C
                 -0.0 == Approx( -0.0 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -1.38778e-16
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7488,7 +7488,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7499,7 +7499,7 @@ C
                 0.1 == Approx( 0.1 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7510,7 +7510,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.2
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7521,7 +7521,7 @@ C
                 0.2 == Approx( 0.2 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.2
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7532,7 +7532,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.3
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7543,7 +7543,7 @@ C
                 0.3 == Approx( 0.3 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.3
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7554,7 +7554,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.4
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7565,7 +7565,7 @@ C
                 0.4 == Approx( 0.4 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.4
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7576,7 +7576,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.5
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7587,7 +7587,7 @@ C
                 0.5 == Approx( 0.5 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.5
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7598,7 +7598,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.6
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7609,7 +7609,7 @@ C
                 0.6 == Approx( 0.6 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.6
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7620,7 +7620,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.7
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7631,7 +7631,7 @@ C
                 0.7 == Approx( 0.7 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.7
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7642,7 +7642,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.8
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7653,7 +7653,7 @@ C
                 0.8 == Approx( 0.8 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.8
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7664,7 +7664,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.9
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7675,7 +7675,7 @@ C
                 0.9 == Approx( 0.9 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.9
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7714,7 +7714,7 @@ C
       <Section name="Positive manual step" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
         <Section name="Floating Point" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
           <Section name="Slightly over end" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7725,7 +7725,7 @@ C
                 -1.0 == Approx( -1.0 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7736,7 +7736,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.7
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7747,7 +7747,7 @@ C
                 -0.7 == Approx( -0.7 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.7
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7758,7 +7758,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.4
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7769,7 +7769,7 @@ C
                 -0.4 == Approx( -0.4 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.4
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7780,7 +7780,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7791,7 +7791,7 @@ C
                 -0.1 == Approx( -0.1 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7802,7 +7802,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.2
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7813,7 +7813,7 @@ C
                 0.2 == Approx( 0.2 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.2
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7824,7 +7824,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.5
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7835,7 +7835,7 @@ C
                 0.5 == Approx( 0.5 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.5
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7866,7 +7866,7 @@ C
       <Section name="Positive manual step" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
         <Section name="Floating Point" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
           <Section name="Slightly under end" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7877,7 +7877,7 @@ C
                 -1.0 == Approx( -1.0 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7888,7 +7888,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.7
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7899,7 +7899,7 @@ C
                 -0.7 == Approx( -0.7 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.7
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7910,7 +7910,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.4
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7921,7 +7921,7 @@ C
                 -0.4 == Approx( -0.4 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.4
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7932,7 +7932,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7943,7 +7943,7 @@ C
                 -0.1 == Approx( -0.1 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is -0.1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7954,7 +7954,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.2
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7965,7 +7965,7 @@ C
                 0.2 == Approx( 0.2 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.2
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7976,7 +7976,7 @@ C
                 true
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.5
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -7987,7 +7987,7 @@ C
                 0.5 == Approx( 0.5 )
               </Expanded>
             </Expression>
-            <Info>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               Current expected value is 0.5
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -8377,19 +8377,19 @@ C
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="INFO and WARN do not abort tests" tags="[.][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this is a message
     </Info>
-    <Warning>
+    <Warning filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this is a warning
     </Warning>
     <OverallResult success="false" skips="0"/>
   </TestCase>
   <TestCase name="INFO gets logged on failure" tags="[.][failing][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this message should be logged
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       so should this
     </Info>
     <Expression success="false" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -8403,7 +8403,7 @@ C
     <OverallResult success="false" skips="0"/>
   </TestCase>
   <TestCase name="INFO gets logged on failure, even if captured before successful assertions" tags="[.][failing][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this message may be logged later
     </Info>
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -8414,10 +8414,10 @@ C
         2 == 2
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this message may be logged later
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this message should be logged
     </Info>
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -8428,13 +8428,13 @@ C
         2 == 1
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this message may be logged later
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this message should be logged
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       and this, but later
     </Info>
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -8445,16 +8445,16 @@ C
         2 == 0
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this message may be logged later
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this message should be logged
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       and this, but later
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       but not this
     </Info>
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -8468,10 +8468,10 @@ C
     <OverallResult success="false" skips="0"/>
   </TestCase>
   <TestCase name="INFO is reset for each loop" tags="[.][failing][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       current counter 0
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       i := 0
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -8482,10 +8482,10 @@ C
         0 &lt; 10
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       current counter 1
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       i := 1
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -8496,10 +8496,10 @@ C
         1 &lt; 10
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       current counter 2
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       i := 2
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -8510,10 +8510,10 @@ C
         2 &lt; 10
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       current counter 3
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       i := 3
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -8524,10 +8524,10 @@ C
         3 &lt; 10
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       current counter 4
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       i := 4
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -8538,10 +8538,10 @@ C
         4 &lt; 10
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       current counter 5
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       i := 5
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -8552,10 +8552,10 @@ C
         5 &lt; 10
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       current counter 6
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       i := 6
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -8566,10 +8566,10 @@ C
         6 &lt; 10
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       current counter 7
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       i := 7
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -8580,10 +8580,10 @@ C
         7 &lt; 10
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       current counter 8
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       i := 8
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -8594,10 +8594,10 @@ C
         8 &lt; 10
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       current counter 9
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       i := 9
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -8608,10 +8608,10 @@ C
         9 &lt; 10
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       current counter 10
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       i := 10
     </Info>
     <Expression success="false" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -9219,7 +9219,7 @@ C
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="Nice descriptive name" tags="[.][tag1][tag2][tag3]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
-    <Warning>
+    <Warning filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       This one ran
     </Warning>
     <OverallResult success="false" skips="0"/>
@@ -10005,7 +10005,7 @@ C
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="Parsing tags with non-alphabetical characters is pass-through" tags="[test-spec][test-spec-parser]" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
       tagString := "[tag with spaces]"
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
@@ -10016,7 +10016,7 @@ C
         true
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
       tagString := "[tag with spaces]"
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
@@ -10027,7 +10027,7 @@ C
         true
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
       tagString := "[tag with spaces]"
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
@@ -10038,7 +10038,7 @@ C
         true
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
       tagString := "[I said "good day" sir!]"
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
@@ -10049,7 +10049,7 @@ C
         true
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
       tagString := "[I said "good day" sir!]"
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
@@ -10060,7 +10060,7 @@ C
         true
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
       tagString := "[I said "good day" sir!]"
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
@@ -10471,7 +10471,7 @@ C
     </Section>
     <Section name="reporter" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Section name="-r/console" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Info>
+        <Info filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           result.errorMessage() := ""
         </Info>
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -10482,7 +10482,7 @@ C
             {?}
           </Expanded>
         </Expression>
-        <Info>
+        <Info filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           result.errorMessage() := ""
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -10499,7 +10499,7 @@ C
     </Section>
     <Section name="reporter" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Section name="-r/xml" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Info>
+        <Info filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           result.errorMessage() := ""
         </Info>
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -10510,7 +10510,7 @@ C
             {?}
           </Expanded>
         </Expression>
-        <Info>
+        <Info filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           result.errorMessage() := ""
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -10527,7 +10527,7 @@ C
     </Section>
     <Section name="reporter" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Section name="--reporter/junit" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Info>
+        <Info filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           result.errorMessage() := ""
         </Info>
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -10538,7 +10538,7 @@ C
             {?}
           </Expanded>
         </Expression>
-        <Info>
+        <Info filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           result.errorMessage() := ""
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -10577,7 +10577,7 @@ C
     </Section>
     <Section name="reporter" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Section name="With output file" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Info>
+        <Info filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           result.errorMessage() := ""
         </Info>
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -10588,7 +10588,7 @@ C
             {?}
           </Expanded>
         </Expression>
-        <Info>
+        <Info filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           result.errorMessage() := ""
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -10605,7 +10605,7 @@ C
     </Section>
     <Section name="reporter" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Section name="With Windows-like absolute path as output file" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Info>
+        <Info filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           result.errorMessage() := ""
         </Info>
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -10616,7 +10616,7 @@ C
             {?}
           </Expanded>
         </Expression>
-        <Info>
+        <Info filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           result.errorMessage() := ""
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -11441,7 +11441,7 @@ C
       </Expanded>
     </Expression>
     <Section name="Automake reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: Automake
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11467,7 +11467,7 @@ C
       </Expanded>
     </Expression>
     <Section name="Automake reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: Automake
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11492,7 +11492,7 @@ C
       </Expanded>
     </Expression>
     <Section name="Automake reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: Automake
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11519,7 +11519,7 @@ C
       </Expanded>
     </Expression>
     <Section name="compact reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: compact
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11545,7 +11545,7 @@ C
       </Expanded>
     </Expression>
     <Section name="compact reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: compact
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11570,7 +11570,7 @@ C
       </Expanded>
     </Expression>
     <Section name="compact reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: compact
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11597,7 +11597,7 @@ C
       </Expanded>
     </Expression>
     <Section name="console reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: console
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11623,7 +11623,7 @@ C
       </Expanded>
     </Expression>
     <Section name="console reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: console
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11648,7 +11648,7 @@ C
       </Expanded>
     </Expression>
     <Section name="console reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: console
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11675,7 +11675,7 @@ C
       </Expanded>
     </Expression>
     <Section name="JUnit reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: JUnit
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11702,7 +11702,7 @@ All available tags:
       </Expanded>
     </Expression>
     <Section name="JUnit reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: JUnit
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11728,7 +11728,7 @@ Available reporters:
       </Expanded>
     </Expression>
     <Section name="JUnit reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: JUnit
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11756,7 +11756,7 @@ All available test cases:
       </Expanded>
     </Expression>
     <Section name="SonarQube reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: SonarQube
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11783,7 +11783,7 @@ All available tags:
       </Expanded>
     </Expression>
     <Section name="SonarQube reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: SonarQube
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11809,7 +11809,7 @@ Available reporters:
       </Expanded>
     </Expression>
     <Section name="SonarQube reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: SonarQube
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11837,7 +11837,7 @@ All available test cases:
       </Expanded>
     </Expression>
     <Section name="TAP reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: TAP
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11863,7 +11863,7 @@ All available test cases:
       </Expanded>
     </Expression>
     <Section name="TAP reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: TAP
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11888,7 +11888,7 @@ All available test cases:
       </Expanded>
     </Expression>
     <Section name="TAP reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: TAP
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11915,7 +11915,7 @@ All available test cases:
       </Expanded>
     </Expression>
     <Section name="TeamCity reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: TeamCity
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11941,7 +11941,7 @@ All available test cases:
       </Expanded>
     </Expression>
     <Section name="TeamCity reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: TeamCity
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11966,7 +11966,7 @@ All available test cases:
       </Expanded>
     </Expression>
     <Section name="TeamCity reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: TeamCity
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -11993,7 +11993,7 @@ All available test cases:
       </Expanded>
     </Expression>
     <Section name="XML reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: XML
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -12023,7 +12023,7 @@ All available test cases:
       </Expanded>
     </Expression>
     <Section name="XML reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: XML
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -12051,7 +12051,7 @@ All available test cases:
       </Expanded>
     </Expression>
     <Section name="XML reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
-      <Info>
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: XML
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
@@ -18766,7 +18766,7 @@ loose text artifact
     <OverallResult success="false" skips="0"/>
   </TestCase>
   <TestCase name="looped tests" tags="[.][failing]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       Testing if fib[0] (1) is even
     </Info>
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -18777,7 +18777,7 @@ loose text artifact
         1 == 0
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       Testing if fib[1] (1) is even
     </Info>
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -18788,7 +18788,7 @@ loose text artifact
         1 == 0
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       Testing if fib[2] (2) is even
     </Info>
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -18799,7 +18799,7 @@ loose text artifact
         0 == 0
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       Testing if fib[3] (3) is even
     </Info>
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -18810,7 +18810,7 @@ loose text artifact
         1 == 0
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       Testing if fib[4] (5) is even
     </Info>
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -18821,7 +18821,7 @@ loose text artifact
         1 == 0
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       Testing if fib[5] (8) is even
     </Info>
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -18832,7 +18832,7 @@ loose text artifact
         0 == 0
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       Testing if fib[6] (13) is even
     </Info>
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -18843,7 +18843,7 @@ loose text artifact
         1 == 0
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       Testing if fib[7] (21) is even
     </Info>
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -18982,22 +18982,22 @@ loose text artifact
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="mix info, unscoped info and warning" tags="[info][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       info
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       unscoped info
     </Info>
-    <Warning>
+    <Warning filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       and warn may mix
     </Warning>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       info
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       unscoped info
     </Info>
-    <Warning>
+    <Warning filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       they are not cleared after warnings
     </Warning>
     <OverallResult success="false" skips="0"/>
@@ -19204,7 +19204,7 @@ b1!
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="not prints unscoped info from previous failures" tags="[.][failing][info][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this MAY be seen only for the FIRST assertion IF info is printed for passing assertions
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -19215,7 +19215,7 @@ b1!
         true
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this MAY be seen only for the SECOND assertion IF info is printed for passing assertions
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -19226,7 +19226,7 @@ b1!
         true
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this SHOULD be seen
     </Info>
     <Expression success="false" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -19362,7 +19362,7 @@ b1!
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="print unscoped info if passing unscoped info is printed" tags="[info][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this MAY be seen IF info is printed for passing assertions
     </Info>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -19376,10 +19376,10 @@ b1!
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="prints unscoped info on failure" tags="[.][failing][info][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this SHOULD be seen
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this SHOULD also be seen
     </Info>
     <Expression success="false" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -19393,7 +19393,7 @@ b1!
     <OverallResult success="false" skips="0"/>
   </TestCase>
   <TestCase name="prints unscoped info only for the first assertion" tags="[.][failing][info][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this SHOULD be seen only ONCE
     </Info>
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -19412,7 +19412,7 @@ b1!
         true
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this MAY also be seen only ONCE IF info is printed for passing assertions
     </Info>
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -19895,7 +19895,7 @@ b1!
     <OverallResult success="true" skips="1"/>
   </TestCase>
   <TestCase name="send a single char to INFO" tags="[.][failing]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       3
     </Info>
     <Expression success="false" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -19909,10 +19909,10 @@ b1!
     <OverallResult success="false" skips="0"/>
   </TestCase>
   <TestCase name="sends information to INFO" tags="[.][failing]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       hi
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       i := 7
     </Info>
     <Expression success="false" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -19970,16 +19970,16 @@ b1!
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="stacks unscoped info in loops" tags="[.][failing][info][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       Count 1 to 3...
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       1
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       2
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       3
     </Info>
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -19990,16 +19990,16 @@ b1!
         false
       </Expanded>
     </Expression>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       Count 4 to 6...
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       4
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       5
     </Info>
-    <Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       6
     </Info>
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >

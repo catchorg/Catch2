@@ -98,11 +98,13 @@ namespace Catch {
             // Print any info messages in <Info> tags.
             for( auto const& msg : assertionStats.infoMessages ) {
                 if( msg.type == ResultWas::Info && includeResults ) {
-                    m_xml.scopedElement( "Info" )
-                            .writeText( msg.message );
+                    auto t = m_xml.scopedElement( "Info" );
+                    writeSourceInfo( msg.lineInfo );
+                    t.writeText( msg.message );
                 } else if ( msg.type == ResultWas::Warning ) {
-                    m_xml.scopedElement( "Warning" )
-                            .writeText( msg.message );
+                    auto t = m_xml.scopedElement( "Warning" );
+                    writeSourceInfo( msg.lineInfo );
+                    t.writeText( msg.message );
                 }
             }
         }
