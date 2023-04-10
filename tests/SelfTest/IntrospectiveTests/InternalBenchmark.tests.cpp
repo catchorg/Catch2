@@ -22,6 +22,8 @@
 #include <catch2/benchmark/detail/catch_benchmark_function.hpp>
 #include <catch2/benchmark/detail/catch_estimate_clock.hpp>
 
+#include <numeric>
+
 namespace {
     struct manual_clock {
     public:

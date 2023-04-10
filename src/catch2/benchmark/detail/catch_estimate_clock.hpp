@@ -19,7 +19,6 @@
 #include <catch2/internal/catch_unique_ptr.hpp>
 
 #include <algorithm>
-#include <iterator>
 #include <vector>
 #include <cmath>
 
@@ -30,13 +29,16 @@ namespace Catch {
             std::vector<double> resolution(int k) {
                 std::vector<TimePoint<Clock>> times;
                 times.reserve(static_cast<size_t>(k + 1));
-                std::generate_n(std::back_inserter(times), k + 1, now<Clock>{});
+                for ( int i = 0; i < k + 1; ++i ) {
+                    times.push_back( Clock::now() );
+                }
 
                 std::vector<double> deltas;
                 deltas.reserve(static_cast<size_t>(k));
-                std::transform(std::next(times.begin()), times.end(), times.begin(),
-                    std::back_inserter(deltas),
-                    [](TimePoint<Clock> a, TimePoint<Clock> b) { return static_cast<double>((a - b).count()); });
+                for ( size_t idx = 1; idx < times.size(); ++idx ) {
+                    deltas.push_back( static_cast<double>(
+                        ( times[idx] - times[idx - 1] ).count() ) );
+                }
 
                 return deltas;
             }
@@ -84,9 +86,11 @@ namespace Catch {
                 std::vector<double> times;
                 int nsamples = static_cast<int>(std::ceil(time_limit / r.elapsed));
                 times.reserve(static_cast<size_t>(nsamples));
-                std::generate_n(std::back_inserter(times), nsamples, [time_clock, &r] {
-                    return static_cast<double>((time_clock(r.iterations) / r.iterations).count());
-                });
+                for ( int s = 0; s < nsamples; ++s ) {
+                    times.push_back( static_cast<double>(
+                        ( time_clock( r.iterations ) / r.iterations )
+                            .count() ) );
+                }
                 return {
                     FloatDuration<Clock>(mean(times.begin(), times.end())),
                     classify_outliers(times.begin(), times.end()),

@@ -13,7 +13,7 @@
 
 #include <cassert>
 #include <cstddef>
-#include <iterator>
+#include <numeric>
 #include <random>
 
 
@@ -35,12 +35,19 @@ using Catch::Benchmark::Detail::sample;
 
          sample out;
          out.reserve(resamples);
-         std::generate_n(std::back_inserter(out), resamples, [n, first, &estimator, &dist, &rng] {
-             std::vector<double> resampled;
-             resampled.reserve(n);
-             std::generate_n(std::back_inserter(resampled), n, [first, &dist, &rng] { return first[static_cast<std::ptrdiff_t>(dist(rng))]; });
-             return estimator(resampled.begin(), resampled.end());
-         });
+         // We allocate the vector outside the loop to avoid realloc per resample
+         std::vector<double> resampled;
+         resampled.reserve( n );
+         for ( size_t i = 0; i < resamples; ++i ) {
+             resampled.clear();
+             for ( size_t s = 0; s < n; ++s ) {
+                 resampled.push_back(
+                     first[static_cast<std::ptrdiff_t>( dist( rng ) )] );
+             }
+             const auto estimate =
+                 estimator( resampled.begin(), resampled.end() );
+             out.push_back( estimate );
+         }
          std::sort(out.begin(), out.end());
          return out;
      }

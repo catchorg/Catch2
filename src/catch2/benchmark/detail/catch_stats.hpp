@@ -15,8 +15,6 @@
 
 #include <algorithm>
 #include <vector>
-#include <numeric>
-#include <tuple>
 #include <cmath>
 
 namespace Catch {
@@ -77,13 +75,13 @@ namespace Catch {
 
                 sample jack = jackknife(estimator, first, last);
                 double jack_mean = mean(jack.begin(), jack.end());
-                double sum_squares, sum_cubes;
-                std::tie(sum_squares, sum_cubes) = std::accumulate(jack.begin(), jack.end(), std::make_pair(0., 0.), [jack_mean](std::pair<double, double> sqcb, double x) -> std::pair<double, double> {
-                    auto d = jack_mean - x;
-                    auto d2 = d * d;
-                    auto d3 = d2 * d;
-                    return { sqcb.first + d2, sqcb.second + d3 };
-                });
+                double sum_squares = 0, sum_cubes = 0;
+                for (double x : jack) {
+                    auto difference = jack_mean - x;
+                    auto square = difference * difference;
+                    auto cube = square * difference;
+                    sum_squares += square; sum_cubes += cube;
+                }
 
                 double accel = sum_cubes / (6 * std::pow(sum_squares, 1.5));
                 long n = static_cast<long>(resample.size());
