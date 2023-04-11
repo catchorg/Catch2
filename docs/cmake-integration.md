@@ -126,6 +126,7 @@ catch_discover_tests(target
                      [OUTPUT_DIR dir]
                      [OUTPUT_PREFIX prefix]
                      [OUTPUT_SUFFIX suffix]
+                     [DISCOVERY_MODE <POST_BUILD|PRE_TEST>]
 )
 ```
 
@@ -198,6 +199,16 @@ If specified, `suffix` is added to each output file name, like so
 `--out dir/<test_name>suffix`. This can be used to add a file extension to
 the output file name e.g. ".xml".
 
+* `DISCOVERY_MODE mode`
+
+If specified allows control over when test discovery is performed.
+For a value of `POST_BUILD` (default) test discovery is performed at build time.
+For a a value of `PRE_TEST` test discovery is delayed until just prior to test
+execution (useful e.g. in cross-compilation environments).
+``DISCOVERY_MODE`` defaults to the value of the
+``CMAKE_CATCH_DISCOVER_TESTS_DISCOVERY_MODE`` variable if it is not passed when
+calling ``catch_discover_tests``. This provides a mechanism for globally
+selecting a preferred test discovery behavior.
 
 ### `ParseAndAddCatchTests.cmake`
 
