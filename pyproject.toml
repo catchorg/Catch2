@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "catch2"
+version = "0.1.0"
+description = "Dependency management for docs and python scripts."
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "tools/scripts"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+mkdocs-material = "^9.0.5"
+pygments = "^2.14.0"
+mike = "^1.1.2"
+
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

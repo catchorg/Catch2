@@ -1,0 +1,31 @@
+name: 📖 docs
+
+on:
+  push:
+    branches: [devel]
+  pull_request:
+    branches: [devel]
+
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
+    - name: Install Poetry
+      uses: abatilo/actions-poetry@v2
+
+    - name: Install dependencies
+      run: poetry install
+
+    - name: build docs
+      run: poetry run mkdocs build
+
+    - name: deploy
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      run: poetry run mkdocs gh-deploy --force
+
