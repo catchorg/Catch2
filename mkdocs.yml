@@ -25,8 +25,8 @@ theme:
   font:
     text: Open Sans
     code: Fira Code
-  logo: data/artwork/catch2-c-logo.png
-  favicon: data/artwork/catch2-c-logo.png
+  logo: assets/catch2_logo_with_bg.png
+  favicon: assets/c2_hand_logo.png
 
 
 plugins:
