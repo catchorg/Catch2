@@ -83,7 +83,7 @@ function(add_warnings_to_targets targets)
           "-Wundef"
           "-Wuninitialized"
           "-Wunneeded-internal-declaration"
-          "-Wunreachable-code"
+          "-Wunreachable-code-aggressive"
           "-Wunused"
           "-Wunused-function"
           "-Wunused-parameter"
