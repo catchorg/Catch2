@@ -74,6 +74,10 @@ function(catch_discover_tests_impl)
     )
   endif()
 
+  # Make sure to escape ; (semicolons) in test names first, because
+  # that'd break the foreach loop for "Parse output" later and create
+  # wrongly splitted and thus failing test cases (false positives)
+  string(REPLACE ";" "\;" output "${output}")
   string(REPLACE "\n" ";" output "${output}")
 
   # Prepare reporter
@@ -119,15 +123,16 @@ function(catch_discover_tests_impl)
 
   # Parse output
   foreach(line ${output})
-    set(test ${line})
+    set(test "${line}")
     # Escape characters in test case names that would be parsed by Catch2
-    set(test_name ${test})
-    foreach(char , [ ])
-      string(REPLACE ${char} "\\${char}" test_name ${test_name})
+    # Note that the \ escaping must happen FIRST! Do not change the order.
+    set(test_name "${test}")
+    foreach(char \\ , [ ])
+      string(REPLACE ${char} "\\${char}" test_name "${test_name}")
     endforeach(char)
     # ...add output dir
     if(output_dir)
-      string(REGEX REPLACE "[^A-Za-z0-9_]" "_" test_name_clean ${test_name})
+      string(REGEX REPLACE "[^A-Za-z0-9_]" "_" test_name_clean "${test_name}")
       set(output_dir_arg "--out ${output_dir}/${output_prefix}${test_name_clean}${output_suffix}")
     endif()
 
