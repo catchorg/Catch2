@@ -26,7 +26,10 @@ namespace {
 using Catch::Benchmark::Detail::sample;
 
      template <typename URng, typename Estimator>
-     sample resample(URng& rng, unsigned int resamples, std::vector<double>::iterator first, std::vector<double>::iterator last, Estimator& estimator) {
+     static sample resample(URng& rng, unsigned int resamples,
+                            std::vector<double>::const_iterator first,
+                            std::vector<double>::const_iterator last,
+                            Estimator& estimator) {
          auto n = static_cast<size_t>(last - first);
          std::uniform_int_distribution<decltype(n)> dist(0, n - 1);
 
@@ -118,7 +121,8 @@ using Catch::Benchmark::Detail::sample;
         return p * x;
     }
 
-    double standard_deviation(std::vector<double>::iterator first, std::vector<double>::iterator last) {
+    double standard_deviation(std::vector<double>::const_iterator first,
+                              std::vector<double>::const_iterator last) {
         auto m = Catch::Benchmark::Detail::mean(first, last);
         double variance = std::accumulate( first,
                                            last,
@@ -159,6 +163,47 @@ namespace Catch {
 
                 auto xj1 = *std::min_element(first + (j + 1), last);
                 return xj + g * (xj1 - xj);
+            }
+
+            OutlierClassification
+            classify_outliers( std::vector<double>::const_iterator first,
+                               std::vector<double>::const_iterator last ) {
+                std::vector<double> copy( first, last );
+
+                auto q1 = weighted_average_quantile( 1, 4, copy.begin(), copy.end() );
+                auto q3 = weighted_average_quantile( 3, 4, copy.begin(), copy.end() );
+                auto iqr = q3 - q1;
+                auto los = q1 - ( iqr * 3. );
+                auto lom = q1 - ( iqr * 1.5 );
+                auto him = q3 + ( iqr * 1.5 );
+                auto his = q3 + ( iqr * 3. );
+
+                OutlierClassification o;
+                for ( ; first != last; ++first ) {
+                    const double t = *first;
+                    if ( t < los ) {
+                        ++o.low_severe;
+                    } else if ( t < lom ) {
+                        ++o.low_mild;
+                    } else if ( t > his ) {
+                        ++o.high_severe;
+                    } else if ( t > him ) {
+                        ++o.high_mild;
+                    }
+                    ++o.samples_seen;
+                }
+                return o;
+            }
+
+            double mean( std::vector<double>::const_iterator first,
+                         std::vector<double>::const_iterator last ) {
+                auto count = last - first;
+                double sum = 0.;
+                while (first != last) {
+                    sum += *first;
+                    ++first;
+                }
+                return sum / static_cast<double>(count);
             }
 
 
@@ -210,7 +255,10 @@ namespace Catch {
             }
 
 
-            bootstrap_analysis analyse_samples(double confidence_level, unsigned int n_resamples, std::vector<double>::iterator first, std::vector<double>::iterator last) {
+            bootstrap_analysis analyse_samples(double confidence_level,
+                                               unsigned int n_resamples,
+                                               std::vector<double>::iterator first,
+                                               std::vector<double>::iterator last) {
                 CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
                 CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
                 static std::random_device entropy;
@@ -218,11 +266,12 @@ namespace Catch {
 
                 auto n = static_cast<int>(last - first); // seriously, one can't use integral types without hell in C++
 
-                auto mean = &Detail::mean<std::vector<double>::iterator>;
+                auto mean = &Detail::mean;
                 auto stddev = &standard_deviation;
 
 #if defined(CATCH_CONFIG_USE_ASYNC)
-                auto Estimate = [=](double(*f)(std::vector<double>::iterator, std::vector<double>::iterator)) {
+                auto Estimate = [=](double(*f)(std::vector<double>::const_iterator,
+                                               std::vector<double>::const_iterator)) {
                     auto seed = entropy();
                     return std::async(std::launch::async, [=] {
                         std::mt19937 rng(seed);
@@ -237,7 +286,8 @@ namespace Catch {
                 auto mean_estimate = mean_future.get();
                 auto stddev_estimate = stddev_future.get();
 #else
-                auto Estimate = [=](double(*f)(std::vector<double>::iterator, std::vector<double>::iterator)) {
+                auto Estimate = [=](double(*f)(std::vector<double>::const_iterator,
+                                               std::vector<double>::const_iterator)) {
                     auto seed = entropy();
                     std::mt19937 rng(seed);
                     auto resampled = resample(rng, n_resamples, first, last, f);
