@@ -41,15 +41,15 @@ namespace Catch {
                 return deltas;
             }
 
-            const auto warmup_iterations = 10000;
-            const auto warmup_time = std::chrono::milliseconds(100);
-            const auto minimum_ticks = 1000;
-            const auto warmup_seed = 10000;
-            const auto clock_resolution_estimation_time = std::chrono::milliseconds(500);
-            const auto clock_cost_estimation_time_limit = std::chrono::seconds(1);
-            const auto clock_cost_estimation_tick_limit = 100000;
-            const auto clock_cost_estimation_time = std::chrono::milliseconds(10);
-            const auto clock_cost_estimation_iterations = 10000;
+            constexpr auto warmup_iterations = 10000;
+            constexpr auto warmup_time = std::chrono::milliseconds(100);
+            constexpr auto minimum_ticks = 1000;
+            constexpr auto warmup_seed = 10000;
+            constexpr auto clock_resolution_estimation_time = std::chrono::milliseconds(500);
+            constexpr auto clock_cost_estimation_time_limit = std::chrono::seconds(1);
+            constexpr auto clock_cost_estimation_tick_limit = 100000;
+            constexpr auto clock_cost_estimation_time = std::chrono::milliseconds(10);
+            constexpr auto clock_cost_estimation_iterations = 10000;
 
             template <typename Clock>
             int warmup() {
