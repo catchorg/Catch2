@@ -171,7 +171,7 @@
 
 // ------
 // Simple toggle defines
-// their value is never used and they cannot be overriden
+// their value is never used and they cannot be overridden
 // ------
 
 

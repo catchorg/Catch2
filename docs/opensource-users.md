@@ -143,7 +143,7 @@ Newsbeuter is an open-source RSS/Atom feed reader for text terminals.
 A 2D, Zombie, RPG game which is being made on our own engine.
 
 ### [raspigcd](https://github.com/pantadeusz/raspigcd)
-Low level CLI app and library for execution of GCODE on Raspberry Pi without any additional microcontrolers (just RPi + Stepsticks).
+Low level CLI app and library for execution of GCODE on Raspberry Pi without any additional microcontrollers (just RPi + Stepsticks).
 
 ### [SpECTRE](https://github.com/sxs-collaboration/spectre)
 SpECTRE is a code for multi-scale, multi-physics problems in astrophysics and gravitational physics.

@@ -28,7 +28,7 @@ depending on how often the cleanup needs to happen.
 ## Why cannot I derive from the built-in reporters?
 
 They are not made to be overridden, in that we do not attempt to maintain
-a consistent internal state if a member function is overriden, and by
+a consistent internal state if a member function is overridden, and by
 forbidding users from using them as a base class, we can refactor them
 as needed later.
 

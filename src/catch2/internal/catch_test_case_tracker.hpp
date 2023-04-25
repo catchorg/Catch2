@@ -113,7 +113,7 @@ namespace TestCaseTracking {
 
         //! Returns true if tracker run to completion (successfully or not)
         virtual bool isComplete() const = 0;
-        //! Returns true if tracker run to completion succesfully
+        //! Returns true if tracker run to completion successfully
         bool isSuccessfullyCompleted() const {
             return m_runState == CompletedSuccessfully;
         }

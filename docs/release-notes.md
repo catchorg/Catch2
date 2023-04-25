@@ -149,7 +149,7 @@
 
 ### Fixes
 * Cleaned out some warnings and static analysis issues
-  * Suppressed `-Wcomma` warning rarely occuring in templated test cases (#2543)
+  * Suppressed `-Wcomma` warning rarely occurring in templated test cases (#2543)
   * Constified implementation details in `INFO` (#2564)
   * Made `MatcherGenericBase` copy constructor const (#2566)
 * Fixed serialization of test filters so the output roundtrips
@@ -517,7 +517,7 @@ v3 releases.
   * The `SECTION`(s) before the `GENERATE` will not be run multiple times, the following ones will.
 * Added `-D`/`--min-duration` command line flag (#1910)
   * If a test takes longer to finish than the provided value, its name and duration will be printed.
-  * This flag is overriden by setting `-d`/`--duration`.
+  * This flag is overridden by setting `-d`/`--duration`.
 
 ### Fixes
 * `TAPReporter` no longer skips successful assertions (#1983)
@@ -585,7 +585,7 @@ v3 releases.
 ### Fixes
 * Fixed computation of benchmarking column widths in ConsoleReporter (#1885, #1886)
 * Suppressed clang-tidy's `cppcoreguidelines-pro-type-vararg` in assertions (#1901)
-  * It was a false positive trigered by the new warning support workaround
+  * It was a false positive triggered by the new warning support workaround
 * Fixed bug in test specification parser handling of OR'd patterns using escaping (#1905)
 
 ### Miscellaneous
@@ -922,7 +922,7 @@ v3 releases.
 
 ### Contrib
 * `ParseAndAddCatchTests` has learned how to use `DISABLED` CTest property (#1452)
-* `ParseAndAddCatchTests` now works when there is a whitspace before the test name (#1493)
+* `ParseAndAddCatchTests` now works when there is a whitespace before the test name (#1493)
 
 
 ### Miscellaneous
