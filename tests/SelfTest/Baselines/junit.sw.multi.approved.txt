@@ -1400,10 +1400,10 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Usage of AllMatch range matcher/Shortcircuiting/Short-circuited" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Basic usage/All true evaluates to true" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Basic usage/Empty evaluates to true" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Basic usage/One false evalutes to false" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Basic usage/One false evaluates to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Basic usage/All false evaluates to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Contained type is convertible to bool/All true evaluates to true" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Contained type is convertible to bool/One false evalutes to false" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Contained type is convertible to bool/One false evaluates to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Contained type is convertible to bool/All false evaluates to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Shortcircuiting/All are read" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Shortcircuiting/Short-circuited" time="{duration}" status="run"/>
@@ -1413,10 +1413,10 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Usage of AnyMatch range matcher/Shortcircuiting/Short-circuited" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Basic usage/All true evaluates to true" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Basic usage/Empty evaluates to false" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Basic usage/One true evalutes to true" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Basic usage/One true evaluates to true" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Basic usage/All false evaluates to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Contained type is convertible to bool/All true evaluates to true" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Contained type is convertible to bool/One true evalutes to true" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Contained type is convertible to bool/One true evaluates to true" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Contained type is convertible to bool/All false evaluates to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Shortcircuiting/All are read" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Shortcircuiting/Short-circuited" time="{duration}" status="run"/>
@@ -1426,10 +1426,10 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Usage of NoneMatch range matcher/Shortcircuiting/Short-circuited" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Basic usage/All true evaluates to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Basic usage/Empty evaluates to true" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Basic usage/One true evalutes to false" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Basic usage/One true evaluates to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Basic usage/All false evaluates to true" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Contained type is convertible to bool/All true evaluates to false" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Contained type is convertible to bool/One true evalutes to false" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Contained type is convertible to bool/One true evaluates to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Contained type is convertible to bool/All false evaluates to true" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Shortcircuiting/All are read" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Shortcircuiting/Short-circuited" time="{duration}" status="run"/>

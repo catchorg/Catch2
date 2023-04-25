@@ -1389,10 +1389,10 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Usage of AllMatch range matcher/Shortcircuiting/Short-circuited" duration="{duration}"/>
     <testCase name="Usage of AllTrue range matcher/Basic usage/All true evaluates to true" duration="{duration}"/>
     <testCase name="Usage of AllTrue range matcher/Basic usage/Empty evaluates to true" duration="{duration}"/>
-    <testCase name="Usage of AllTrue range matcher/Basic usage/One false evalutes to false" duration="{duration}"/>
+    <testCase name="Usage of AllTrue range matcher/Basic usage/One false evaluates to false" duration="{duration}"/>
     <testCase name="Usage of AllTrue range matcher/Basic usage/All false evaluates to false" duration="{duration}"/>
     <testCase name="Usage of AllTrue range matcher/Contained type is convertible to bool/All true evaluates to true" duration="{duration}"/>
-    <testCase name="Usage of AllTrue range matcher/Contained type is convertible to bool/One false evalutes to false" duration="{duration}"/>
+    <testCase name="Usage of AllTrue range matcher/Contained type is convertible to bool/One false evaluates to false" duration="{duration}"/>
     <testCase name="Usage of AllTrue range matcher/Contained type is convertible to bool/All false evaluates to false" duration="{duration}"/>
     <testCase name="Usage of AllTrue range matcher/Shortcircuiting/All are read" duration="{duration}"/>
     <testCase name="Usage of AllTrue range matcher/Shortcircuiting/Short-circuited" duration="{duration}"/>
@@ -1402,10 +1402,10 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Usage of AnyMatch range matcher/Shortcircuiting/Short-circuited" duration="{duration}"/>
     <testCase name="Usage of AnyTrue range matcher/Basic usage/All true evaluates to true" duration="{duration}"/>
     <testCase name="Usage of AnyTrue range matcher/Basic usage/Empty evaluates to false" duration="{duration}"/>
-    <testCase name="Usage of AnyTrue range matcher/Basic usage/One true evalutes to true" duration="{duration}"/>
+    <testCase name="Usage of AnyTrue range matcher/Basic usage/One true evaluates to true" duration="{duration}"/>
     <testCase name="Usage of AnyTrue range matcher/Basic usage/All false evaluates to false" duration="{duration}"/>
     <testCase name="Usage of AnyTrue range matcher/Contained type is convertible to bool/All true evaluates to true" duration="{duration}"/>
-    <testCase name="Usage of AnyTrue range matcher/Contained type is convertible to bool/One true evalutes to true" duration="{duration}"/>
+    <testCase name="Usage of AnyTrue range matcher/Contained type is convertible to bool/One true evaluates to true" duration="{duration}"/>
     <testCase name="Usage of AnyTrue range matcher/Contained type is convertible to bool/All false evaluates to false" duration="{duration}"/>
     <testCase name="Usage of AnyTrue range matcher/Shortcircuiting/All are read" duration="{duration}"/>
     <testCase name="Usage of AnyTrue range matcher/Shortcircuiting/Short-circuited" duration="{duration}"/>
@@ -1415,10 +1415,10 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Usage of NoneMatch range matcher/Shortcircuiting/Short-circuited" duration="{duration}"/>
     <testCase name="Usage of NoneTrue range matcher/Basic usage/All true evaluates to false" duration="{duration}"/>
     <testCase name="Usage of NoneTrue range matcher/Basic usage/Empty evaluates to true" duration="{duration}"/>
-    <testCase name="Usage of NoneTrue range matcher/Basic usage/One true evalutes to false" duration="{duration}"/>
+    <testCase name="Usage of NoneTrue range matcher/Basic usage/One true evaluates to false" duration="{duration}"/>
     <testCase name="Usage of NoneTrue range matcher/Basic usage/All false evaluates to true" duration="{duration}"/>
     <testCase name="Usage of NoneTrue range matcher/Contained type is convertible to bool/All true evaluates to false" duration="{duration}"/>
-    <testCase name="Usage of NoneTrue range matcher/Contained type is convertible to bool/One true evalutes to false" duration="{duration}"/>
+    <testCase name="Usage of NoneTrue range matcher/Contained type is convertible to bool/One true evaluates to false" duration="{duration}"/>
     <testCase name="Usage of NoneTrue range matcher/Contained type is convertible to bool/All false evaluates to true" duration="{duration}"/>
     <testCase name="Usage of NoneTrue range matcher/Shortcircuiting/All are read" duration="{duration}"/>
     <testCase name="Usage of NoneTrue range matcher/Shortcircuiting/Short-circuited" duration="{duration}"/>

@@ -381,7 +381,7 @@ TEST_CASE("Usage of AllTrue range matcher", "[matchers][templated][quantifiers]"
             std::array<bool, 0> const data{};
             REQUIRE_THAT( data, AllTrue() );
         }
-        SECTION( "One false evalutes to false" ) {
+        SECTION( "One false evaluates to false" ) {
             std::array<bool, 5> const data{ { true, true, false, true, true } };
             REQUIRE_THAT( data, !AllTrue() );
         }
@@ -398,7 +398,7 @@ TEST_CASE("Usage of AllTrue range matcher", "[matchers][templated][quantifiers]"
                 { { true }, { true }, { true }, { true }, { true } } };
             REQUIRE_THAT( data, AllTrue() );
         }
-        SECTION( "One false evalutes to false" ) {
+        SECTION( "One false evaluates to false" ) {
             std::array<ConvertibleToBool, 5> const data{
                 { { true }, { true }, { false }, { true }, { true } } };
             REQUIRE_THAT( data, !AllTrue() );
@@ -446,7 +446,7 @@ TEST_CASE( "Usage of NoneTrue range matcher", "[matchers][templated][quantifiers
             std::array<bool, 0> const data{};
             REQUIRE_THAT( data, NoneTrue() );
         }
-        SECTION( "One true evalutes to false" ) {
+        SECTION( "One true evaluates to false" ) {
             std::array<bool, 5> const data{
                 { false, false, true, false, false } };
             REQUIRE_THAT( data, !NoneTrue() );
@@ -464,7 +464,7 @@ TEST_CASE( "Usage of NoneTrue range matcher", "[matchers][templated][quantifiers
                 { { true }, { true }, { true }, { true }, { true } } };
             REQUIRE_THAT( data, !NoneTrue() );
         }
-        SECTION( "One true evalutes to false" ) {
+        SECTION( "One true evaluates to false" ) {
             std::array<ConvertibleToBool, 5> const data{
                 { { false }, { false }, { true }, { false }, { false } } };
             REQUIRE_THAT( data, !NoneTrue() );
@@ -512,7 +512,7 @@ TEST_CASE( "Usage of AnyTrue range matcher", "[matchers][templated][quantifiers]
             std::array<bool, 0> const data{};
             REQUIRE_THAT( data, !AnyTrue() );
         }
-        SECTION( "One true evalutes to true" ) {
+        SECTION( "One true evaluates to true" ) {
             std::array<bool, 5> const data{
                 { false, false, true, false, false } };
             REQUIRE_THAT( data, AnyTrue() );
@@ -530,7 +530,7 @@ TEST_CASE( "Usage of AnyTrue range matcher", "[matchers][templated][quantifiers]
                 { { true }, { true }, { true }, { true }, { true } } };
             REQUIRE_THAT( data, AnyTrue() );
         }
-        SECTION( "One true evalutes to true" ) {
+        SECTION( "One true evaluates to true" ) {
             std::array<ConvertibleToBool, 5> const data{
                 { { false }, { false }, { true }, { false }, { false } } };
             REQUIRE_THAT( data, AnyTrue() );

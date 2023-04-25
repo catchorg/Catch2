@@ -15670,7 +15670,7 @@ There is no extra whitespace here
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="One false evalutes to false" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="One false evaluates to false" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
             data, !AllTrue()
@@ -15712,7 +15712,7 @@ There is no extra whitespace here
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Contained type is convertible to bool" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="One false evalutes to false" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="One false evaluates to false" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
             data, !AllTrue()
@@ -16020,7 +16020,7 @@ There is no extra whitespace here
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="One true evalutes to true" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="One true evaluates to true" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
             data, AnyTrue()
@@ -16062,7 +16062,7 @@ There is no extra whitespace here
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Contained type is convertible to bool" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="One true evalutes to true" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="One true evaluates to true" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
             data, AnyTrue()
@@ -16370,7 +16370,7 @@ There is no extra whitespace here
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="One true evalutes to false" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="One true evaluates to false" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
             data, !NoneTrue()
@@ -16412,7 +16412,7 @@ There is no extra whitespace here
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Contained type is convertible to bool" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="One true evalutes to false" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="One true evaluates to false" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
             data, !NoneTrue()

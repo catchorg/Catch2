@@ -134,7 +134,7 @@ type, making their usage much nicer. These are
 * `map<T>(func, GeneratorWrapper<U>&&)` for `MapGenerator<T, U, Func>` (map `U` to `T`)
 * `chunk(chunk-size, GeneratorWrapper<T>&&)` for `ChunkGenerator<T>`
 * `random(IntegerOrFloat a, IntegerOrFloat b)` for `RandomIntegerGenerator` or `RandomFloatGenerator`
-* `range(Arithemtic start, Arithmetic end)` for `RangeGenerator<Arithmetic>` with a step size of `1`
+* `range(Arithmetic start, Arithmetic end)` for `RangeGenerator<Arithmetic>` with a step size of `1`
 * `range(Arithmetic start, Arithmetic end, Arithmetic step)` for `RangeGenerator<Arithmetic>` with a custom step size
 * `from_range(InputIterator from, InputIterator to)` for `IteratorGenerator<T>`
 * `from_range(Container const&)` for `IteratorGenerator<T>`

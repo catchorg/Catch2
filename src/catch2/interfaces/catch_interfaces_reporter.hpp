@@ -205,7 +205,7 @@ namespace Catch {
          */
         virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
 
-        //! Called if a fatal error (signal/structured exception) occured
+        //! Called if a fatal error (signal/structured exception) occurred
         virtual void fatalErrorEncountered( StringRef error ) = 0;
 
         //! Writes out information about provided reporters using reporter-specific format
