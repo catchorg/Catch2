@@ -171,7 +171,7 @@ private:
             return;
 
         const auto itEnd = messages.cend();
-        const auto N = static_cast<std::size_t>(std::distance(itMessage, itEnd));
+        const auto N = static_cast<std::size_t>(itEnd - itMessage);
 
         stream << colourImpl->guardColour( colour ) << " with "
                << pluralise( N, "message"_sr ) << ':';
