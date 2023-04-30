@@ -108,8 +108,6 @@ namespace Catch {
                 return { point, resample[lo], resample[hi], confidence_level };
             }
 
-            double outlier_variance(Estimate<double> mean, Estimate<double> stddev, int n);
-
             struct bootstrap_analysis {
                 Estimate<double> mean;
                 Estimate<double> standard_deviation;
