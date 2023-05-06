@@ -121,7 +121,7 @@ namespace Catch {
         void resetAssertionInfo();
         bool testForMissingAssertions( Counts& assertions );
 
-        void assertionEnded( AssertionResult const& result );
+        void assertionEnded( AssertionResult&& result );
         void reportExpr
                 (   AssertionInfo const &info,
                     ResultWas::OfType resultType,

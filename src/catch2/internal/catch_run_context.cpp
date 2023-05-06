@@ -267,7 +267,7 @@ namespace Catch {
     }
 
 
-    void RunContext::assertionEnded(AssertionResult const & result) {
+    void RunContext::assertionEnded(AssertionResult&& result) {
         if (result.getResultType() == ResultWas::Ok) {
             m_totals.assertions.passed++;
             m_lastAssertionPassed = true;
@@ -289,12 +289,13 @@ namespace Catch {
 
         m_reporter->assertionEnded(AssertionStats(result, m_messages, m_totals));
 
-        if (result.getResultType() != ResultWas::Warning)
+        if ( result.getResultType() != ResultWas::Warning ) {
             m_messageScopes.clear();
+        }
 
         // Reset working state
         resetAssertionInfo();
-        m_lastResult = result;
+        m_lastResult = CATCH_MOVE( result );
     }
     void RunContext::resetAssertionInfo() {
         m_lastAssertionInfo.macroName = StringRef();
@@ -445,7 +446,7 @@ namespace Catch {
         tempResult.message = static_cast<std::string>(message);
         AssertionResult result(m_lastAssertionInfo, CATCH_MOVE(tempResult));
 
-        assertionEnded(result);
+        assertionEnded(CATCH_MOVE(result) );
 
         handleUnfinishedSections();
 
@@ -595,7 +596,7 @@ namespace Catch {
         AssertionResult assertionResult{ info, CATCH_MOVE( data ) };
         assertionResult.m_resultData.lazyExpression.m_transientExpression = expr;
 
-        assertionEnded( assertionResult );
+        assertionEnded( CATCH_MOVE(assertionResult) );
     }
 
     void RunContext::handleMessage(
@@ -610,8 +611,10 @@ namespace Catch {
         data.message = static_cast<std::string>(message);
         AssertionResult assertionResult{ m_lastAssertionInfo,
                                          CATCH_MOVE( data ) };
-        assertionEnded( assertionResult );
-        if ( !assertionResult.isOk() ) {
+
+        const auto isOk = assertionResult.isOk();
+        assertionEnded( CATCH_MOVE(assertionResult) );
+        if ( !isOk ) {
             populateReaction( reaction );
         } else if ( resultType == ResultWas::ExplicitSkip ) {
             // TODO: Need to handle this explicitly, as ExplicitSkip is
@@ -636,7 +639,7 @@ namespace Catch {
         AssertionResultData data( ResultWas::ThrewException, LazyExpression( false ) );
         data.message = CATCH_MOVE(message);
         AssertionResult assertionResult{ info, CATCH_MOVE(data) };
-        assertionEnded( assertionResult );
+        assertionEnded( CATCH_MOVE(assertionResult) );
         populateReaction( reaction );
     }
 
@@ -654,7 +657,7 @@ namespace Catch {
         AssertionResultData data( ResultWas::ThrewException, LazyExpression( false ) );
         data.message = "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE"s;
         AssertionResult assertionResult{ info, CATCH_MOVE( data ) };
-        assertionEnded( assertionResult );
+        assertionEnded( CATCH_MOVE(assertionResult) );
     }
     void RunContext::handleNonExpr(
             AssertionInfo const &info,
@@ -665,10 +668,10 @@ namespace Catch {
 
         AssertionResultData data( resultType, LazyExpression( false ) );
         AssertionResult assertionResult{ info, CATCH_MOVE( data ) };
-        assertionEnded( assertionResult );
 
-        if( !assertionResult.isOk() )
-            populateReaction( reaction );
+        const auto isOk = assertionResult.isOk();
+        assertionEnded( CATCH_MOVE(assertionResult) );
+        if ( !isOk ) { populateReaction( reaction ); }
     }
 
 
