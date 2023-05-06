@@ -8,6 +8,8 @@
 #ifndef CATCH_OPTIONAL_HPP_INCLUDED
 #define CATCH_OPTIONAL_HPP_INCLUDED
 
+#include <catch2/internal/catch_move_and_forward.hpp>
+
 #include <cassert>
 
 namespace Catch {
@@ -16,35 +18,50 @@ namespace Catch {
     template<typename T>
     class Optional {
     public:
-        Optional() : nullableValue( nullptr ) {}
-        Optional( T const& _value )
-        : nullableValue( new( storage ) T( _value ) )
-        {}
-        Optional( Optional const& _other )
-        : nullableValue( _other ? new( storage ) T( *_other ) : nullptr )
-        {}
+        Optional(): nullableValue( nullptr ) {}
+        ~Optional() { reset(); }
 
-        ~Optional() {
+        Optional( T const& _value ):
+            nullableValue( new ( storage ) T( _value ) ) {}
+        Optional( T&& _value ):
+            nullableValue( new ( storage ) T( CATCH_MOVE( _value ) ) ) {}
+
+        Optional& operator=( T const& _value ) {
             reset();
+            nullableValue = new ( storage ) T( _value );
+            return *this;
+        }
+        Optional& operator=( T&& _value ) {
+            reset();
+            nullableValue = new ( storage ) T( CATCH_MOVE( _value ) );
+            return *this;
         }
 
-        Optional& operator= ( Optional const& _other ) {
-            if( &_other != this ) {
+        Optional( Optional const& _other ):
+            nullableValue( _other ? new ( storage ) T( *_other ) : nullptr ) {}
+        Optional( Optional&& _other ):
+            nullableValue( _other ? new ( storage ) T( CATCH_MOVE( *_other ) )
+                                  : nullptr ) {}
+
+        Optional& operator=( Optional const& _other ) {
+            if ( &_other != this ) {
                 reset();
-                if( _other )
-                    nullableValue = new( storage ) T( *_other );
+                if ( _other ) { nullableValue = new ( storage ) T( *_other ); }
             }
             return *this;
         }
-        Optional& operator = ( T const& _value ) {
-            reset();
-            nullableValue = new( storage ) T( _value );
+        Optional& operator=( Optional&& _other ) {
+            if ( &_other != this ) {
+                reset();
+                if ( _other ) {
+                    nullableValue = new ( storage ) T( CATCH_MOVE( *_other ) );
+                }
+            }
             return *this;
         }
 
         void reset() {
-            if( nullableValue )
-                nullableValue->~T();
+            if ( nullableValue ) { nullableValue->~T(); }
             nullableValue = nullptr;
         }
 
@@ -91,7 +108,7 @@ namespace Catch {
         }
 
     private:
-        T *nullableValue;
+        T* nullableValue;
         alignas(alignof(T)) char storage[sizeof(T)];
     };
 

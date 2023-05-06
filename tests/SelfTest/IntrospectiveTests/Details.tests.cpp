@@ -89,6 +89,47 @@ TEST_CASE("Optional comparison ops", "[optional][approvals]") {
     }
 }
 
+namespace {
+    struct MoveChecker {
+        bool has_moved = false;
+        MoveChecker() = default;
+        MoveChecker( MoveChecker const& rhs ) = default;
+        MoveChecker& operator=( MoveChecker const& rhs ) = default;
+        MoveChecker( MoveChecker&& rhs ) { rhs.has_moved = true; }
+        MoveChecker& operator=( MoveChecker&& rhs ) {
+            rhs.has_moved = true;
+            return *this;
+        }
+    };
+}
+
+TEST_CASE( "Optional supports move ops", "[optional][approvals]" ) {
+    using Catch::Optional;
+    MoveChecker a;
+    Optional<MoveChecker> opt_A( a );
+    REQUIRE_FALSE( a.has_moved );
+    REQUIRE_FALSE( opt_A->has_moved );
+
+    SECTION( "Move construction from element" ) {
+        Optional<MoveChecker> opt_B( CATCH_MOVE( a ) );
+        REQUIRE( a.has_moved );
+    }
+    SECTION( "Move assignment from element" ) {
+        opt_A = CATCH_MOVE( a );
+        REQUIRE( a.has_moved );
+    }
+    SECTION( "Move construction from optional" ) {
+        Optional<MoveChecker> opt_B( CATCH_MOVE( opt_A ) );
+        REQUIRE( opt_A->has_moved );
+    }
+    SECTION( "Move assignment from optional" ) {
+        Optional<MoveChecker> opt_B( opt_A );
+        REQUIRE_FALSE( opt_A->has_moved );
+        opt_B = CATCH_MOVE( opt_A );
+        REQUIRE( opt_A->has_moved );
+    }
+}
+
 TEST_CASE( "Decomposer checks that the argument is 0 when handling "
            "only-0-comparable types",
            "[decomposition][approvals]" ) {
