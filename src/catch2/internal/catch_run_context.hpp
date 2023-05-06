@@ -70,6 +70,7 @@ namespace Catch {
                     ResultWas::OfType resultType,
                     AssertionReaction &reaction ) override;
 
+        void notifyAssertionStarted( AssertionInfo const& info ) override;
         bool sectionStarted( StringRef sectionName,
                              SourceLineInfo const& sectionLineInfo,
                              Counts& assertions ) override;

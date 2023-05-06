@@ -301,7 +301,13 @@ namespace Catch {
         m_lastAssertionInfo.capturedExpression = "{Unknown expression after the reported line}"_sr;
     }
 
-    bool RunContext::sectionStarted(StringRef sectionName, SourceLineInfo const& sectionLineInfo, Counts & assertions) {
+    void RunContext::notifyAssertionStarted( AssertionInfo const& info ) {
+        m_reporter->assertionStarting( info );
+    }
+
+    bool RunContext::sectionStarted( StringRef sectionName,
+                                     SourceLineInfo const& sectionLineInfo,
+                                     Counts& assertions ) {
         ITracker& sectionTracker =
             SectionTracker::acquire( m_trackerContext,
                                      TestCaseTracking::NameAndLocationRef(
@@ -561,8 +567,6 @@ namespace Catch {
         ITransientExpression const& expr,
         AssertionReaction& reaction
     ) {
-        m_reporter->assertionStarting( info );
-
         bool negated = isFalseTest( info.resultDisposition );
         bool result = expr.getResult() != negated;
 
@@ -600,8 +604,6 @@ namespace Catch {
             StringRef message,
             AssertionReaction& reaction
     ) {
-        m_reporter->assertionStarting( info );
-
         m_lastAssertionInfo = info;
 
         AssertionResultData data( resultType, LazyExpression( false ) );
