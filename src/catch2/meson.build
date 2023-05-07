@@ -110,6 +110,7 @@ internal_headers = [
   'internal/catch_platform.hpp',
   'internal/catch_polyfills.hpp',
   'internal/catch_preprocessor.hpp',
+  'internal/catch_preprocessor_internal_stringify.hpp',
   'internal/catch_preprocessor_remove_parens.hpp',
   'internal/catch_random_number_generator.hpp',
   'internal/catch_random_seed_generation.hpp',

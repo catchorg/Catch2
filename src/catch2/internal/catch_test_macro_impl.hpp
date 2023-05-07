@@ -10,6 +10,7 @@
 
 #include <catch2/catch_user_config.hpp>
 #include <catch2/internal/catch_assertion_handler.hpp>
+#include <catch2/internal/catch_preprocessor_internal_stringify.hpp>
 #include <catch2/interfaces/catch_interfaces_capture.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
@@ -21,12 +22,6 @@
 #endif
 
 #if !defined(CATCH_CONFIG_DISABLE)
-
-#if !defined(CATCH_CONFIG_DISABLE_STRINGIFICATION)
-  #define CATCH_INTERNAL_STRINGIFY(...) #__VA_ARGS__##_catch_sr
-#else
-  #define CATCH_INTERNAL_STRINGIFY(...) "Disabled by CATCH_CONFIG_DISABLE_STRINGIFICATION"_catch_sr
-#endif
 
 #if defined(CATCH_CONFIG_FAST_COMPILE) || defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
 

@@ -8,8 +8,13 @@
 #ifndef CATCH_MATCHERS_IMPL_HPP_INCLUDED
 #define CATCH_MATCHERS_IMPL_HPP_INCLUDED
 
-#include <catch2/internal/catch_test_macro_impl.hpp>
+#include <catch2/internal/catch_assertion_handler.hpp>
+#include <catch2/internal/catch_source_line_info.hpp>
+#include <catch2/internal/catch_decomposer.hpp>
+#include <catch2/internal/catch_preprocessor_internal_stringify.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+
+#include <string>
 
 namespace Catch {
 
