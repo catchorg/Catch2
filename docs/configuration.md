@@ -15,6 +15,7 @@
 [Enabling stringification](#enabling-stringification)<br>
 [Disabling exceptions](#disabling-exceptions)<br>
 [Overriding Catch's debug break (`-b`)](#overriding-catchs-debug-break--b)<br>
+[Static analysis support](#static-analysis-support)<br>
 
 Catch2 is designed to "just work" as much as possible, and most of the
 configuration options below are changed automatically during compilation,
@@ -262,6 +263,31 @@ not know your platform, or your platform is misdetected.
 
 The macro will be used as is, that is, `CATCH_BREAK_INTO_DEBUGGER();`
 must compile and must break into debugger.
+
+
+## Static analysis support
+
+> Introduced in Catch2 X.Y.Z.
+
+Some parts of Catch2, e.g. `SECTION`s, can be hard for static analysis
+tools to reason about. Catch2 can change its internals to help static
+analysis tools reason about the tests.
+
+Catch2 automatically detects some static analysis tools (initial
+implementation checks for clang-tidy and Coverity), but you can override
+its detection (in either direction) via
+
+```
+CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT     // force enables static analysis help
+CATCH_CONFIG_NO_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT  // force disables static analysis help
+```
+
+_As the name suggests, this is currently experimental, and thus we provide
+no backwards compatibility guarantees._
+
+**DO NOT ENABLE THIS FOR BUILDS YOU INTEND TO RUN.** The changed internals
+are not meant to be runnable, only "scannable".
+
 
 
 ---

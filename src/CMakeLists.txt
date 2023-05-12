@@ -73,6 +73,7 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/internal/catch_compiler_capabilities.hpp
   ${SOURCES_DIR}/internal/catch_config_android_logwrite.hpp
   ${SOURCES_DIR}/internal/catch_config_counter.hpp
+  ${SOURCES_DIR}/internal/catch_config_static_analysis_support.hpp
   ${SOURCES_DIR}/internal/catch_config_uncaught_exceptions.hpp
   ${SOURCES_DIR}/internal/catch_config_wchar.hpp
   ${SOURCES_DIR}/internal/catch_console_colour.hpp
