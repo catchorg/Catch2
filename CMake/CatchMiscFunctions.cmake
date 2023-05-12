@@ -74,6 +74,7 @@ function(add_warnings_to_targets targets)
           "-Woverloaded-virtual"
           "-Wparentheses"
           "-Wpedantic"
+          "-Wredundant-decls"
           "-Wreorder"
           "-Wreturn-std-move"
           "-Wshadow"

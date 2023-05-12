@@ -7,6 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/interfaces/catch_interfaces_testcase.hpp>
+#include <catch2/internal/catch_test_case_registry_impl.hpp>
 #include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_test_case_info.hpp>

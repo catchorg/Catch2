@@ -24,6 +24,38 @@
 
 namespace Catch {
 
+    namespace {
+        static void enforceNoDuplicateTestCases(
+            std::vector<TestCaseHandle> const& tests ) {
+            auto testInfoCmp = []( TestCaseInfo const* lhs,
+                                   TestCaseInfo const* rhs ) {
+                return *lhs < *rhs;
+            };
+            std::set<TestCaseInfo const*, decltype( testInfoCmp )&> seenTests(
+                testInfoCmp );
+            for ( auto const& test : tests ) {
+                const auto infoPtr = &test.getTestCaseInfo();
+                const auto prev = seenTests.insert( infoPtr );
+                CATCH_ENFORCE( prev.second,
+                               "error: test case \""
+                                   << infoPtr->name << "\", with tags \""
+                                   << infoPtr->tagsAsString()
+                                   << "\" already defined.\n"
+                                   << "\tFirst seen at "
+                                   << ( *prev.first )->lineInfo << "\n"
+                                   << "\tRedefined at " << infoPtr->lineInfo );
+            }
+        }
+
+        static bool matchTest( TestCaseHandle const& testCase,
+                               TestSpec const& testSpec,
+                               IConfig const& config ) {
+            return testSpec.matches( testCase.getTestCaseInfo() ) &&
+                   isThrowSafe( testCase, config );
+        }
+
+    } // end unnamed namespace
+
     std::vector<TestCaseHandle> sortTests( IConfig const& config, std::vector<TestCaseHandle> const& unsortedTestCases ) {
         switch (config.runOrder()) {
         case TestRunOrder::Declared:
@@ -78,29 +110,6 @@ namespace Catch {
 
     bool isThrowSafe( TestCaseHandle const& testCase, IConfig const& config ) {
         return !testCase.getTestCaseInfo().throws() || config.allowThrows();
-    }
-
-    bool matchTest( TestCaseHandle const& testCase, TestSpec const& testSpec, IConfig const& config ) {
-        return testSpec.matches( testCase.getTestCaseInfo() ) && isThrowSafe( testCase, config );
-    }
-
-    void
-    enforceNoDuplicateTestCases( std::vector<TestCaseHandle> const& tests ) {
-        auto testInfoCmp = []( TestCaseInfo const* lhs,
-                               TestCaseInfo const* rhs ) {
-            return *lhs < *rhs;
-        };
-        std::set<TestCaseInfo const*, decltype(testInfoCmp) &> seenTests(testInfoCmp);
-        for ( auto const& test : tests ) {
-            const auto infoPtr = &test.getTestCaseInfo();
-            const auto prev = seenTests.insert( infoPtr );
-            CATCH_ENFORCE(
-                prev.second,
-                "error: test case \"" << infoPtr->name << "\", with tags \""
-                    << infoPtr->tagsAsString() << "\" already defined.\n"
-                    << "\tFirst seen at " << ( *prev.first )->lineInfo << "\n"
-                    << "\tRedefined at " << infoPtr->lineInfo );
-        }
     }
 
     std::vector<TestCaseHandle> filterTests( std::vector<TestCaseHandle> const& testCases, TestSpec const& testSpec, IConfig const& config ) {
