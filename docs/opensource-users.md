@@ -95,6 +95,9 @@ A C++ client library for Consul. Consul is a distributed tool for discovering an
 ### [Reactive-Extensions/ RxCpp](https://github.com/Reactive-Extensions/RxCpp)
 A library of algorithms for values-distributed-in-time.
 
+### [SFML](https://github.com/SFML/SFML)
+Simple and Fast Multimedia Library.
+
 ### [SOCI](https://github.com/SOCI/soci)
 The C++ Database Access Library.
 
