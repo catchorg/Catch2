@@ -11,6 +11,8 @@
 #include <catch2/internal/catch_test_failure_exception.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
+#include <exception>
+
 namespace Catch {
 
     namespace {

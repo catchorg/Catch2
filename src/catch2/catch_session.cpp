@@ -27,6 +27,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <exception>
 #include <iomanip>
 #include <set>
 
