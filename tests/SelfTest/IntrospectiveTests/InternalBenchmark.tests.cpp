@@ -444,6 +444,6 @@ TEST_CASE("Failing benchmarks", "[!benchmark][.approvals]") {
 }
 
 TEST_CASE( "Failing benchmark respects should-fail",
-           "[!shouldfail][!benchmark][.approvals]" ) {
+           "[!shouldfail][!benchmark][approvals]" ) {
     BENCHMARK( "Asserting benchmark" ) { REQUIRE( 1 == 2 ); };
 }
