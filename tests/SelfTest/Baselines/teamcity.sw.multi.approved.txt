@@ -301,8 +301,6 @@
 ##teamcity[testFinished name='Directly creating an EnumInfo' duration="{duration}"]
 ##teamcity[testStarted name='Empty stream name opens cout stream']
 ##teamcity[testFinished name='Empty stream name opens cout stream' duration="{duration}"]
-##teamcity[testStarted name='Empty tag is not allowed']
-##teamcity[testFinished name='Empty tag is not allowed' duration="{duration}"]
 ##teamcity[testStarted name='EndsWith string matcher']
 ##teamcity[testFailed name='EndsWith string matcher' message='Matchers.tests.cpp:<line number>|n...............................................................................|n|nMatchers.tests.cpp:<line number>|nexpression failed|n  CHECK_THAT( testStringForMatching(), EndsWith( "Substring" ) )|nwith expansion:|n  "this string contains |'abc|' as a substring" ends with: "Substring"|n']
 ##teamcity[testFailed name='EndsWith string matcher' message='Matchers.tests.cpp:<line number>|nexpression failed|n  CHECK_THAT( testStringForMatching(), EndsWith( "this", Catch::CaseSensitive::No ) )|nwith expansion:|n  "this string contains |'abc|' as a substring" ends with: "this" (case insensitive)|n']

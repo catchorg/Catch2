@@ -1533,6 +1533,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  409 |  323 passed |  69 failed | 6 skipped | 11 failed as expected
-assertions: 2209 | 2049 passed | 128 failed | 32 failed as expected
+test cases:  408 |  322 passed |  69 failed | 6 skipped | 11 failed as expected
+assertions: 2208 | 2048 passed | 128 failed | 32 failed as expected
 

@@ -3966,15 +3966,6 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
-Empty tag is not allowed
--------------------------------------------------------------------------------
-Tag.tests.cpp:<line number>
-...............................................................................
-
-Tag.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS( Catch::TestCaseInfo( "", { "fake test name", "[]" }, dummySourceLineInfo ) )
-
--------------------------------------------------------------------------------
 EndsWith string matcher
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
@@ -18220,6 +18211,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  409 |  309 passed |  84 failed | 5 skipped | 11 failed as expected
-assertions: 2226 | 2049 passed | 145 failed | 32 failed as expected
+test cases:  408 |  308 passed |  84 failed | 5 skipped | 11 failed as expected
+assertions: 2225 | 2048 passed | 145 failed | 32 failed as expected
 

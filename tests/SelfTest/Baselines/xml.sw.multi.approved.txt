@@ -4375,17 +4375,6 @@ C
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <TestCase name="Empty tag is not allowed" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
-    <Expression success="true" type="REQUIRE_THROWS" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
-      <Original>
-        Catch::TestCaseInfo( "", { "fake test name", "[]" }, dummySourceLineInfo )
-      </Original>
-      <Expanded>
-        Catch::TestCaseInfo( "", { "fake test name", "[]" }, dummySourceLineInfo )
-      </Expanded>
-    </Expression>
-    <OverallResult success="true" skips="0"/>
-  </TestCase>
   <TestCase name="EndsWith string matcher" tags="[.][failing][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
     <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
@@ -21202,6 +21191,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2049" failures="145" expectedFailures="32" skips="11"/>
-  <OverallResultsCases successes="309" failures="84" expectedFailures="11" skips="5"/>
+  <OverallResults successes="2048" failures="145" expectedFailures="32" skips="11"/>
+  <OverallResultsCases successes="308" failures="84" expectedFailures="11" skips="5"/>
 </Catch2TestRun>
