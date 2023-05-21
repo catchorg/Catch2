@@ -61,7 +61,7 @@ function(catch_discover_tests_impl)
   endif()
 
   execute_process(
-    COMMAND ${_TEST_EXECUTOR} "${_TEST_EXECUTABLE}" ${spec} --list-tests --verbosity quiet
+    COMMAND ${_TEST_EXECUTOR} "${_TEST_EXECUTABLE}" ${spec} --list-tests --verbosity normal
     OUTPUT_VARIABLE output
     RESULT_VARIABLE result
     WORKING_DIRECTORY "${_TEST_WORKING_DIR}"
@@ -78,7 +78,11 @@ function(catch_discover_tests_impl)
   # that'd break the foreach loop for "Parse output" later and create
   # wrongly splitted and thus failing test cases (false positives)
   string(REPLACE ";" "\;" output "${output}")
+  string(STRIP "${output}" output)
   string(REPLACE "\n" ";" output "${output}")
+  list(LENGTH output length)
+  math(EXPR length "${length} - 2")
+  list(SUBLIST output 1 "${length}" output)
 
   # Prepare reporter
   if(reporter)
@@ -123,44 +127,57 @@ function(catch_discover_tests_impl)
 
   # Parse output
   foreach(line ${output})
-    set(test "${line}")
-    # Escape characters in test case names that would be parsed by Catch2
-    # Note that the \ escaping must happen FIRST! Do not change the order.
-    set(test_name "${test}")
-    foreach(char \\ , [ ])
-      string(REPLACE ${char} "\\${char}" test_name "${test_name}")
-    endforeach(char)
-    # ...add output dir
-    if(output_dir)
-      string(REGEX REPLACE "[^A-Za-z0-9_]" "_" test_name_clean "${test_name}")
-      set(output_dir_arg "--out ${output_dir}/${output_prefix}${test_name_clean}${output_suffix}")
-    endif()
+    if(line MATCHES "^  ([^ ].*)$")
+      set(test ${line})
+      # Escape characters in test case names that would be parsed by Catch2
+      # Note that the \ escaping must happen FIRST! Do not change the order.
+      set(test_name ${test})
+      foreach(char \\ , [ ])
+        string(REPLACE ${char} "\\${char}" test_name ${test_name})
+      endforeach(char)
+      # ...add output dir
+      if(output_dir)
+        string(REGEX REPLACE "[^A-Za-z0-9_]" "_" test_name_clean ${test_name})
+        set(output_dir_arg "--out ${output_dir}/${output_prefix}${test_name_clean}${output_suffix}")
+      endif()
 
-    # ...and add to script
-    add_command(add_test
-      "${prefix}${test}${suffix}"
-      ${_TEST_EXECUTOR}
-      "${_TEST_EXECUTABLE}"
-      "${test_name}"
-      ${extra_args}
-      "${reporter_arg}"
-      "${output_dir_arg}"
-    )
-    add_command(set_tests_properties
-      "${prefix}${test}${suffix}"
-      PROPERTIES
-      WORKING_DIRECTORY "${_TEST_WORKING_DIR}"
-      ${properties}
-    )
-
-    if(environment_modifications)
+      # ...and add to script
+      add_command(add_test
+        "${prefix}${test}${suffix}"
+        ${_TEST_EXECUTOR}
+        "${_TEST_EXECUTABLE}"
+        "${test_name}"
+        ${extra_args}
+        "${reporter_arg}"
+        "${output_dir_arg}"
+        )
       add_command(set_tests_properties
         "${prefix}${test}${suffix}"
         PROPERTIES
-        ENVIRONMENT_MODIFICATION "${environment_modifications}")
-    endif()
+        WORKING_DIRECTORY "${_TEST_WORKING_DIR}"
+        ${properties}
+        )
 
-    list(APPEND tests "${prefix}${test}${suffix}")
+      if(environment_modifications)
+        add_command(set_tests_properties
+          "${prefix}${test}${suffix}"
+          PROPERTIES
+          ENVIRONMENT_MODIFICATION "${environment_modifications}")
+      endif()
+
+      list(APPEND tests "${prefix}${test}${suffix}")
+    elseif(line MATCHES "^      (.*)$")
+      set(tags "${CMAKE_MATCH_1}")
+      string(REGEX REPLACE "^\\[" "" tags "${tags}")
+      string(REGEX REPLACE "\\]$" "" tags "${tags}")
+      string(REPLACE "][" ";" tags "${tags}")
+
+      add_command(set_tests_properties
+        "${prefix}${test}${suffix}"
+        PROPERTIES
+        LABELS "${tags}"
+        )
+    endif()
   endforeach()
 
   # Create a list of all discovered tests, which users may use to e.g. set
