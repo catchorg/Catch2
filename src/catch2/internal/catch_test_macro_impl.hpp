@@ -90,6 +90,7 @@
         if( catchAssertionHandler.allowThrows() ) \
             try { \
                 CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
+                CATCH_INTERNAL_SUPPRESS_UNUSED_RESULT \
                 CATCH_INTERNAL_SUPPRESS_USELESS_CAST_WARNINGS \
                 static_cast<void>(__VA_ARGS__); \
                 CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
@@ -110,6 +111,7 @@
         if( catchAssertionHandler.allowThrows() ) \
             try { \
                 CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
+                CATCH_INTERNAL_SUPPRESS_UNUSED_RESULT \
                 CATCH_INTERNAL_SUPPRESS_USELESS_CAST_WARNINGS \
                 static_cast<void>(expr); \
                 CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
@@ -136,6 +138,7 @@
         if( catchAssertionHandler.allowThrows() ) \
             try { \
                 CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
+                CATCH_INTERNAL_SUPPRESS_UNUSED_RESULT \
                 CATCH_INTERNAL_SUPPRESS_USELESS_CAST_WARNINGS \
                 static_cast<void>(__VA_ARGS__); \
                 CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
