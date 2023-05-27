@@ -14,4 +14,6 @@ project(
 )
 
 subdir('src/catch2')
-subdir('tests')
+if get_option('tests')
+  subdir('tests')
+endif
