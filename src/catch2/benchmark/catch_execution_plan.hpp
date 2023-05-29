@@ -17,8 +17,7 @@
 #include <catch2/benchmark/detail/catch_repeat.hpp>
 #include <catch2/benchmark/detail/catch_run_for_at_least.hpp>
 
-#include <algorithm>
-#include <iterator>
+#include <vector>
 
 namespace Catch {
     namespace Benchmark {
@@ -41,14 +40,17 @@ namespace Catch {
                 Detail::run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(warmup_time), warmup_iterations, Detail::repeat(now<Clock>{}));
 
                 std::vector<FloatDuration<Clock>> times;
-                times.reserve(cfg.benchmarkSamples());
-                std::generate_n(std::back_inserter(times), cfg.benchmarkSamples(), [this, env] {
+                const auto num_samples = cfg.benchmarkSamples();
+                times.reserve( num_samples );
+                for ( size_t i = 0; i < num_samples; ++i ) {
                     Detail::ChronometerModel<Clock> model;
-                    this->benchmark(Chronometer(model, iterations_per_sample));
+                    this->benchmark( Chronometer( model, iterations_per_sample ) );
                     auto sample_time = model.elapsed() - env.clock_cost.mean;
-                    if (sample_time < FloatDuration<Clock>::zero()) sample_time = FloatDuration<Clock>::zero();
-                    return sample_time / iterations_per_sample;
-                });
+                    if ( sample_time < FloatDuration<Clock>::zero() ) {
+                        sample_time = FloatDuration<Clock>::zero();
+                    }
+                    times.push_back(sample_time / iterations_per_sample);
+                }
                 return times;
             }
         };

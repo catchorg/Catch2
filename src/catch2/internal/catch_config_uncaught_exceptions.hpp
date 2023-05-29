@@ -17,6 +17,8 @@
 #ifndef CATCH_CONFIG_UNCAUGHT_EXCEPTIONS_HPP_INCLUDED
 #define CATCH_CONFIG_UNCAUGHT_EXCEPTIONS_HPP_INCLUDED
 
+#include <catch2/catch_user_config.hpp>
+
 #if defined(_MSC_VER)
 #  if _MSC_VER >= 1900 // Visual Studio 2015 or newer
 #    define CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS

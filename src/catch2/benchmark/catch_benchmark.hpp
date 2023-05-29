@@ -30,6 +30,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <exception>
 #include <functional>
 #include <string>
 #include <vector>

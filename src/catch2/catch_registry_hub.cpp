@@ -22,6 +22,8 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_reporter_registry.hpp>
 
+#include <exception>
+
 namespace Catch {
 
     namespace {

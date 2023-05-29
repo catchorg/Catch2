@@ -105,7 +105,7 @@ namespace Catch {
             elem = trim(elem);
         }
 
-        // Insert the default reporter if user hasn't asked for a specfic one
+        // Insert the default reporter if user hasn't asked for a specific one
         if ( m_data.reporterSpecifications.empty() ) {
             m_data.reporterSpecifications.push_back( {
 #if defined( CATCH_CONFIG_DEFAULT_REPORTER )

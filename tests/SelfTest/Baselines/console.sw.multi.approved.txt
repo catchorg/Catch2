@@ -3966,15 +3966,6 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
-Empty tag is not allowed
--------------------------------------------------------------------------------
-Tag.tests.cpp:<line number>
-...............................................................................
-
-Tag.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS( Catch::TestCaseInfo( "", { "fake test name", "[]" }, dummySourceLineInfo ) )
-
--------------------------------------------------------------------------------
 EndsWith string matcher
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
@@ -13453,7 +13444,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Usage of AllTrue range matcher
   Basic usage
-  One false evalutes to false
+  One false evaluates to false
 -------------------------------------------------------------------------------
 MatchersRanges.tests.cpp:<line number>
 ...............................................................................
@@ -13492,7 +13483,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Usage of AllTrue range matcher
   Contained type is convertible to bool
-  One false evalutes to false
+  One false evaluates to false
 -------------------------------------------------------------------------------
 MatchersRanges.tests.cpp:<line number>
 ...............................................................................
@@ -13728,7 +13719,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Usage of AnyTrue range matcher
   Basic usage
-  One true evalutes to true
+  One true evaluates to true
 -------------------------------------------------------------------------------
 MatchersRanges.tests.cpp:<line number>
 ...............................................................................
@@ -13767,7 +13758,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Usage of AnyTrue range matcher
   Contained type is convertible to bool
-  One true evalutes to true
+  One true evaluates to true
 -------------------------------------------------------------------------------
 MatchersRanges.tests.cpp:<line number>
 ...............................................................................
@@ -14003,7 +13994,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Usage of NoneTrue range matcher
   Basic usage
-  One true evalutes to false
+  One true evaluates to false
 -------------------------------------------------------------------------------
 MatchersRanges.tests.cpp:<line number>
 ...............................................................................
@@ -14042,7 +14033,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Usage of NoneTrue range matcher
   Contained type is convertible to bool
-  One true evalutes to false
+  One true evaluates to false
 -------------------------------------------------------------------------------
 MatchersRanges.tests.cpp:<line number>
 ...............................................................................
@@ -18220,6 +18211,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  409 |  309 passed |  84 failed | 5 skipped | 11 failed as expected
-assertions: 2226 | 2049 passed | 145 failed | 32 failed as expected
+test cases:  408 |  308 passed |  84 failed | 5 skipped | 11 failed as expected
+assertions: 2225 | 2048 passed | 145 failed | 32 failed as expected
 

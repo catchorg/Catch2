@@ -17,6 +17,8 @@
 #ifndef CATCH_CONFIG_WCHAR_HPP_INCLUDED
 #define CATCH_CONFIG_WCHAR_HPP_INCLUDED
 
+#include <catch2/catch_user_config.hpp>
+
 // We assume that WCHAR should be enabled by default, and only disabled
 // for a shortlist (so far only DJGPP) of compilers.
 

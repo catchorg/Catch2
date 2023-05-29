@@ -43,6 +43,7 @@ namespace Catch {
     public:
         virtual ~IResultCapture();
 
+        virtual void notifyAssertionStarted( AssertionInfo const& info ) = 0;
         virtual bool sectionStarted( StringRef sectionName,
                                      SourceLineInfo const& sectionLineInfo,
                                      Counts& assertions ) = 0;

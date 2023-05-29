@@ -50,11 +50,17 @@
 #    define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
          _Pragma( "GCC diagnostic ignored \"-Wparentheses\"" )
 
+#    define CATCH_INTERNAL_SUPPRESS_UNUSED_RESULT \
+         _Pragma( "GCC diagnostic ignored \"-Wunused-result\"" )
+
 #    define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
          _Pragma( "GCC diagnostic ignored \"-Wunused-variable\"" )
 
 #    define CATCH_INTERNAL_SUPPRESS_USELESS_CAST_WARNINGS \
          _Pragma( "GCC diagnostic ignored \"-Wuseless-cast\"" )
+
+#    define CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS \
+         _Pragma( "GCC diagnostic ignored \"-Wshadow\"" )
 
 #    define CATCH_INTERNAL_IGNORE_BUT_WARN(...) (void)__builtin_constant_p(__VA_ARGS__)
 
@@ -127,6 +133,9 @@
 
 #    define CATCH_INTERNAL_SUPPRESS_COMMA_WARNINGS \
         _Pragma( "clang diagnostic ignored \"-Wcomma\"" )
+
+#    define CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS \
+        _Pragma( "clang diagnostic ignored \"-Wshadow\"" )
 
 #endif // __clang__
 
@@ -365,6 +374,9 @@
 #if !defined(CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
 #endif
+#if !defined(CATCH_INTERNAL_SUPPRESS_UNUSED_RESULT)
+#   define CATCH_INTERNAL_SUPPRESS_UNUSED_RESULT
+#endif
 #if !defined(CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS
 #endif
@@ -374,6 +386,16 @@
 #if !defined(CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS
 #endif
+#if !defined( CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS )
+#    define CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS
+#endif
+#if !defined( CATCH_INTERNAL_SUPPRESS_COMMA_WARNINGS )
+#    define CATCH_INTERNAL_SUPPRESS_COMMA_WARNINGS
+#endif
+#if !defined( CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS )
+#    define CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS
+#endif
+
 
 // The goal of this macro is to avoid evaluation of the arguments, but
 // still have the compiler warn on problems inside...
@@ -387,13 +409,6 @@
 #   undef CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS
 #endif
 
-#if !defined(CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS)
-#   define CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS
-#endif
-
-#if !defined(CATCH_INTERNAL_SUPPRESS_COMMA_WARNINGS)
-#   define CATCH_INTERNAL_SUPPRESS_COMMA_WARNINGS
-#endif
 
 #if defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
 #define CATCH_TRY if ((true))

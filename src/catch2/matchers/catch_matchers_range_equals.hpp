@@ -129,7 +129,7 @@ namespace Catch {
 
         /**
          * Creates a matcher that checks if all elements in a range are equal
-         * to all elements in another range, in some permuation.
+         * to all elements in another range, in some permutation.
          *
          * Uses to provided predicate `predicate` to do the comparisons
          */

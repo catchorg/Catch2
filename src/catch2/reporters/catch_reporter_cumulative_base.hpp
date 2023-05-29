@@ -124,7 +124,7 @@ namespace Catch {
         void skipTest(TestCaseInfo const&) override {}
 
     protected:
-        //! Should the cumulative base store the assertion expansion for succesful assertions?
+        //! Should the cumulative base store the assertion expansion for successful assertions?
         bool m_shouldStoreSuccesfulAssertions = true;
         //! Should the cumulative base store the assertion expansion for failed assertions?
         bool m_shouldStoreFailedAssertions = true;

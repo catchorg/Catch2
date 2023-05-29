@@ -10,8 +10,10 @@ project(
   'cpp',
   version: '3.3.2', # CML version placeholder, don't delete
   license: 'BSL-1.0',
-  meson_version: '>=0.50.0',
+  meson_version: '>=0.54.1',
 )
 
 subdir('src/catch2')
-subdir('tests')
+if get_option('tests')
+  subdir('tests')
+endif

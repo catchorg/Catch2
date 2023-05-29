@@ -468,6 +468,17 @@ set_tests_properties(
 )
 
 
+add_executable(AssertionStartingEventGoesBeforeAssertionIsEvaluated
+  X20-AssertionStartingEventGoesBeforeAssertionIsEvaluated.cpp
+)
+target_link_libraries(AssertionStartingEventGoesBeforeAssertionIsEvaluated
+  PRIVATE Catch2::Catch2WithMain
+)
+add_test(
+  NAME ReporterEvents::AssertionStartingHappensBeforeAssertionIsEvaluated
+  COMMAND $<TARGET_FILE:AssertionStartingEventGoesBeforeAssertionIsEvaluated>
+)
+
 #add_executable(DebugBreakMacros ${TESTS_DIR}/X12-CustomDebugBreakMacro.cpp)
 #target_link_libraries(DebugBreakMacros Catch2)
 #add_test(NAME DebugBreakMacros COMMAND DebugBreakMacros --break)

@@ -14,7 +14,6 @@
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 
 #include <algorithm>
-#include <iterator>
 #include <ostream>
 
 namespace Catch {
@@ -165,7 +164,7 @@ namespace Catch {
 
                 // using messages.end() directly (or auto) yields compilation error:
                 std::vector<MessageInfo>::const_iterator itEnd = messages.end();
-                const std::size_t N = static_cast<std::size_t>(std::distance(itMessage, itEnd));
+                const std::size_t N = static_cast<std::size_t>(itEnd - itMessage);
 
                 stream << colourImpl->guardColour( colour ) << " with "
                        << pluralise( N, "message"_sr ) << ':';

@@ -12,7 +12,6 @@
 
 namespace Catch {
 
-    class TestSpec;
     struct TestCaseInfo;
     class TestCaseHandle;
     class IConfig;
@@ -25,11 +24,6 @@ namespace Catch {
         virtual std::vector<TestCaseHandle> const& getAllTests() const = 0;
         virtual std::vector<TestCaseHandle> const& getAllTestsSorted( IConfig const& config ) const = 0;
     };
-
-    bool isThrowSafe( TestCaseHandle const& testCase, IConfig const& config );
-    bool matchTest( TestCaseHandle const& testCase, TestSpec const& testSpec, IConfig const& config );
-    std::vector<TestCaseHandle> filterTests( std::vector<TestCaseHandle> const& testCases, TestSpec const& testSpec, IConfig const& config );
-    std::vector<TestCaseHandle> const& getAllTestCasesSorted( IConfig const& config );
 
 }
 

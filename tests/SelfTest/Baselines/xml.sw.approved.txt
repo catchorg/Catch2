@@ -4375,17 +4375,6 @@ C
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <TestCase name="Empty tag is not allowed" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
-    <Expression success="true" type="REQUIRE_THROWS" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
-      <Original>
-        Catch::TestCaseInfo( "", { "fake test name", "[]" }, dummySourceLineInfo )
-      </Original>
-      <Expanded>
-        Catch::TestCaseInfo( "", { "fake test name", "[]" }, dummySourceLineInfo )
-      </Expanded>
-    </Expression>
-    <OverallResult success="true" skips="0"/>
-  </TestCase>
   <TestCase name="EndsWith string matcher" tags="[.][failing][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
     <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
@@ -15670,7 +15659,7 @@ There is no extra whitespace here
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="One false evalutes to false" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="One false evaluates to false" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
             data, !AllTrue()
@@ -15712,7 +15701,7 @@ There is no extra whitespace here
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Contained type is convertible to bool" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="One false evalutes to false" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="One false evaluates to false" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
             data, !AllTrue()
@@ -16020,7 +16009,7 @@ There is no extra whitespace here
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="One true evalutes to true" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="One true evaluates to true" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
             data, AnyTrue()
@@ -16062,7 +16051,7 @@ There is no extra whitespace here
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Contained type is convertible to bool" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="One true evalutes to true" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="One true evaluates to true" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
             data, AnyTrue()
@@ -16370,7 +16359,7 @@ There is no extra whitespace here
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Basic usage" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="One true evalutes to false" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="One true evaluates to false" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
             data, !NoneTrue()
@@ -16412,7 +16401,7 @@ There is no extra whitespace here
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Contained type is convertible to bool" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
-      <Section name="One true evalutes to false" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="One true evaluates to false" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
             data, !NoneTrue()
@@ -21203,6 +21192,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2049" failures="145" expectedFailures="32" skips="11"/>
-  <OverallResultsCases successes="309" failures="84" expectedFailures="11" skips="5"/>
+  <OverallResults successes="2048" failures="145" expectedFailures="32" skips="11"/>
+  <OverallResultsCases successes="308" failures="84" expectedFailures="11" skips="5"/>
 </Catch2TestRun>

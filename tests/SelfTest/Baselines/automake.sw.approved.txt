@@ -131,7 +131,6 @@ Nor would this
 :test-result: PASS Default scale is invisible to comparison
 :test-result: PASS Directly creating an EnumInfo
 :test-result: PASS Empty stream name opens cout stream
-:test-result: PASS Empty tag is not allowed
 :test-result: FAIL EndsWith string matcher
 :test-result: PASS Enums can quickly have stringification enabled using REGISTER_ENUM
 :test-result: PASS Enums in namespaces can quickly have stringification enabled using REGISTER_ENUM

@@ -44,11 +44,11 @@ TEST_CASE("Table allows pre-computed test inputs and outputs", "[example][genera
 
 /* Possible simplifications where less legacy toolchain support is needed:
  *
- * - With libstdc++6 or newer, the make_tuple() calls can be ommitted
+ * - With libstdc++6 or newer, the make_tuple() calls can be omitted
  * (technically C++17 but does not require -std in GCC/Clang). See
  *   https://stackoverflow.com/questions/12436586/tuple-vector-and-initializer-list
  *
- * - In C++17 mode std::tie() and the preceding variable delcarations can be
+ * - In C++17 mode std::tie() and the preceding variable declarations can be
  * replaced by structured bindings: auto [test_input, expected] = GENERATE(
  * table<std::string, size_t>({ ...
  */

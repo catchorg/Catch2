@@ -57,8 +57,6 @@ namespace Catch {
         auto it = m_impl->factories.find( name );
         if ( it == m_impl->factories.end() ) return nullptr;
         return it->second->create( CATCH_MOVE( config ) );
-
-        return IEventListenerPtr();
     }
 
     void ReporterRegistry::registerReporter( std::string const& name,

@@ -986,8 +986,6 @@ ok {test-number} - enumInfo->lookup(1) == "Value2" for: Value2 == "Value2"
 ok {test-number} - enumInfo->lookup(3) == "{** unexpected enum value **}" for: {** unexpected enum value **} == "{** unexpected enum value **}"
 # Empty stream name opens cout stream
 ok {test-number} - Catch::makeStream( "" )->isConsole() for: true
-# Empty tag is not allowed
-ok {test-number} - Catch::TestCaseInfo( "", { "fake test name", "[]" }, dummySourceLineInfo )
 # EndsWith string matcher
 not ok {test-number} - testStringForMatching(), EndsWith( "Substring" ) for: "this string contains 'abc' as a substring" ends with: "Substring"
 # EndsWith string matcher
@@ -4477,5 +4475,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2237
+1..2236
 
