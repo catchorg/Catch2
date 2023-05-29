@@ -170,6 +170,4 @@ or Windows SE handler is called into with a fatal signal/exception.
 `noMatchingTestCases` is sent for each user provided test specification
 that did not match any registered tests.
 
----
 
-[Home](Readme.md#top)

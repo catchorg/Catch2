@@ -1659,6 +1659,4 @@ Other:
 ## Even Older versions
 Release notes were not maintained prior to v1.6.0, but you should be able to work them out from the Git history
 
----
 
-[Home](Readme.md#top)

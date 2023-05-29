@@ -18,6 +18,4 @@ with you sharing this fact.
  - [King](https://king.com)
 
 
----
 
-[Home](Readme.md#top)

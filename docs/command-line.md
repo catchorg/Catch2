@@ -583,6 +583,4 @@ ignored.
 Verbosity defaults to _normal_.
 
 
----
 
-[Home](Readme.md#top)

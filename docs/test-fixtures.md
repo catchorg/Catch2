@@ -157,6 +157,4 @@ TEMPLATE_LIST_TEST_CASE_METHOD(Template_Fixture,
 }
 ```
 
----
 
-[Home](Readme.md#top)

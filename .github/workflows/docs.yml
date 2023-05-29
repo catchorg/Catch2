@@ -26,6 +26,6 @@ jobs:
       run: poetry run mkdocs build
 
     - name: deploy
-      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/devel' }}
       run: poetry run mkdocs gh-deploy --force
 

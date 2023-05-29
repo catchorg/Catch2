@@ -25,16 +25,13 @@ theme:
   font:
     text: Open Sans
     code: Fira Code
-  logo: assets/catch2_logo_with_bg.png
-  favicon: assets/c2_hand_logo.png
+  logo: https://github.com/catchorg/Catch2/blob/devel/data/artwork/catch2-logo-small-with-background.png?raw=true
+  favicon: https://github.com/catchorg/Catch2/blob/devel/data/artwork/catch2-hand-logo.png?raw=true
 
 
 plugins:
   - search
   - mike
-
-
-
 
 
 markdown_extensions:
@@ -51,6 +48,9 @@ markdown_extensions:
   - pymdownx.details
   - admonition
   - tables
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
   - toc:
       permalink: "#"
 

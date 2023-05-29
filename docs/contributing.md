@@ -152,9 +152,7 @@ should use. It provides you with the top anchor mentioned to link to
 Text that explains how to use the cool feature.
 
 
----
 
-[Home](Readme.md#top)
 ```
 
 * Crosslinks to different pages should target the `top` anchor, like this
@@ -338,6 +336,4 @@ while contributing to Catch2.
 _This documentation will always be in-progress as new information comes
 up, but we are trying to keep it as up to date as possible._
 
----
 
-[Home](Readme.md#top)

@@ -154,6 +154,4 @@ to enclose the expression inside parentheses:
 `CAPTURE( (std::pair<int, int>{1, 2}) );`
 
 
----
 
-[Home](Readme.md#top)

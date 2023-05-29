@@ -264,6 +264,4 @@ The macro will be used as is, that is, `CATCH_BREAK_INTO_DEBUGGER();`
 must compile and must break into debugger.
 
 
----
 
-[Home](Readme.md#top)

@@ -39,6 +39,4 @@ _Note that you should not use any assertion macros within a Listener!_
 own page](reporter-events.md#top).
 
 
----
 
-[Home](Readme.md#top)

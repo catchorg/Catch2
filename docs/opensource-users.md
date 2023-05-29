@@ -154,6 +154,4 @@ SpECTRE is a code for multi-scale, multi-physics problems in astrophysics and gr
 ### [Standardese](https://github.com/foonathan/standardese)
 Standardese aims to be a nextgen Doxygen.
 
----
 
-[Home](Readme.md#top)

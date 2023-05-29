@@ -89,6 +89,4 @@ above what your platform does. **Important: `<random>`'s distributions
 are not specified to be repeatable across different platforms.**
 
 
----
 
-[Home](Readme.md#top)
