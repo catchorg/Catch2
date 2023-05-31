@@ -84,6 +84,12 @@ exit code, same as it does if no test cases have run. This behaviour can
 be overridden using the [--allow-running-no-tests](command-line.md#no-tests-override)
 flag.
 
+### `SKIP` inside generators
+
+You can also use the `SKIP` macro inside generator's constructor to handle
+cases where the generator is empty, but you do not want to fail the test
+case.
+
 
 ## Passing and failing test cases
 

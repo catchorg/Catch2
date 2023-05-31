@@ -71,3 +71,30 @@ TEST_CASE( "failing for some generator values causes entire test case to fail",
         FAIL();
     }
 }
+
+namespace {
+    class test_skip_generator : public Catch::Generators::IGenerator<int> {
+    public:
+        explicit test_skip_generator() { SKIP( "This generator is empty" ); }
+
+        auto get() const -> int const& override {
+            static constexpr int value = 1;
+            return value;
+        }
+
+        auto next() -> bool override { return false; }
+    };
+
+    static auto make_test_skip_generator()
+        -> Catch::Generators::GeneratorWrapper<int> {
+        return { new test_skip_generator() };
+    }
+
+} // namespace
+
+TEST_CASE( "Empty generators can SKIP in constructor", "[skipping]" ) {
+    // The generator signals emptiness with `SKIP`
+    auto sample = GENERATE( make_test_skip_generator() );
+    // This assertion would fail, but shouldn't trigger
+    REQUIRE( sample == 0 );
+}

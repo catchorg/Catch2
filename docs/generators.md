@@ -221,3 +221,21 @@ For full example of implementing your own generator, look into Catch2's
 examples, specifically
 [Generators: Create your own generator](../examples/300-Gen-OwnGenerator.cpp).
 
+
+### Handling empty generators
+
+The generator interface assumes that a generator always has at least one
+element. This is not always true, e.g. if the generator depends on an external
+datafile, the file might be missing.
+
+There are two ways to handle this, depending on whether you want this
+to be an error or not.
+
+ * If empty generator **is** an error, throw an exception in constructor.
+ * If empty generator **is not** an error, use the [`SKIP`](skipping-passing-failing.md#skipping-test-cases-at-runtime) in constructor.
+
+
+
+---
+
+[Home](Readme.md#top)

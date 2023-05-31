@@ -128,6 +128,7 @@
 :test-result: FAIL Custom std-exceptions can be custom translated
 :test-result: PASS Default scale is invisible to comparison
 :test-result: PASS Directly creating an EnumInfo
+:test-result: SKIP Empty generators can SKIP in constructor
 :test-result: PASS Empty stream name opens cout stream
 :test-result: FAIL EndsWith string matcher
 :test-result: PASS Enums can quickly have stringification enabled using REGISTER_ENUM

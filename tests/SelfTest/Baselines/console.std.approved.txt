@@ -384,6 +384,16 @@ due to unexpected exception with message:
   custom std exception
 
 -------------------------------------------------------------------------------
+Empty generators can SKIP in constructor
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+explicitly with message:
+  This generator is empty
+
+-------------------------------------------------------------------------------
 EndsWith string matcher
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
@@ -1533,6 +1543,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  408 |  322 passed |  69 failed | 6 skipped | 11 failed as expected
+test cases:  409 |  322 passed |  69 failed | 7 skipped | 11 failed as expected
 assertions: 2208 | 2048 passed | 128 failed | 32 failed as expected
 

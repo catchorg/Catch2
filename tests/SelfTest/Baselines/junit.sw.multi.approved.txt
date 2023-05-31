@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="128" skipped="11" tests="2236" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="128" skipped="12" tests="2237" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -461,6 +461,13 @@ at Exception.tests.cpp:<line number>
     </testcase>
     <testcase classname="<exe-name>.global" name="Default scale is invisible to comparison" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Directly creating an EnumInfo" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Empty generators can SKIP in constructor" time="{duration}" status="run">
+      <skipped type="SKIP">
+SKIPPED
+This generator is empty
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testcase>
     <testcase classname="<exe-name>.global" name="Empty stream name opens cout stream" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="EndsWith string matcher" time="{duration}" status="run">
       <failure message="testStringForMatching(), EndsWith( &quot;Substring&quot; )" type="CHECK_THAT">
