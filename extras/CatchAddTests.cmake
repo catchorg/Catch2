@@ -131,6 +131,22 @@ function(catch_discover_tests_impl)
       set(output_dir_arg "--out ${output_dir}/${output_prefix}${test_name_clean}${output_suffix}")
     endif()
 
+    # Get the tags for the current test
+    execute_process(
+      COMMAND ${TEST_EXECUTOR} "${TEST_EXECUTABLE}" ${spec} --list-tags --verbosity quiet "${line}"
+      OUTPUT_VARIABLE tags_output
+      RESULT_VARIABLE tags_result
+      WORKING_DIRECTORY "${TEST_WORKING_DIR}"
+    )
+    if(NOT ${tags_result} EQUAL 0)
+      message(FATAL_ERROR
+        "Error running test executable '${TEST_EXECUTABLE}':\n"
+        "  Result: ${tags_result}\n"
+        "  Output: ${tags_output}\n"
+      )
+    endif()
+    string(REPLACE "\n" ";" tags_output "${tags_output}")
+
     # ...and add to script
     add_command(add_test
       "${prefix}${test}${suffix}"
@@ -145,6 +161,7 @@ function(catch_discover_tests_impl)
       "${prefix}${test}${suffix}"
       PROPERTIES
       WORKING_DIRECTORY "${_TEST_WORKING_DIR}"
+      LABELS ${tags_output}
       ${properties}
     )
 
