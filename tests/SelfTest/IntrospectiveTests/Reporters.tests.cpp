@@ -54,7 +54,7 @@ TEST_CASE( "The default listing implementation write to provided stream",
     SECTION( "Listing tags" ) {
         std::vector<Catch::TagInfo> tags(1);
         tags[0].add("fakeTag"_catch_sr);
-        Catch::defaultListTags(sstream.stream(), tags, false);
+        Catch::defaultListTags(sstream.stream(), tags, false, Catch::Verbosity::Normal);
 
         auto listingString = sstream.str();
         REQUIRE_THAT(listingString, ContainsSubstring("[fakeTag]"s));

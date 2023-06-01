@@ -64,7 +64,10 @@ namespace Catch {
      * bases. The output should be backwards compatible with the output of
      * Catch2 v2 binaries.
      */
-    void defaultListTags( std::ostream& out, std::vector<TagInfo> const& tags, bool isFiltered );
+    void defaultListTags( std::ostream& out,
+                          std::vector<TagInfo> const& tags,
+                          bool isFiltered,
+                          Verbosity verbosity );
 
     /**
      * Lists test case information to the provided stream in user-friendly

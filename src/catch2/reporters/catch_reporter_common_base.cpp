@@ -42,8 +42,9 @@ namespace Catch {
                          m_config->verbosity());
     }
 
-    void ReporterBase::listTags(std::vector<TagInfo> const& tags) {
-        defaultListTags( m_stream, tags, m_config->hasTestFilters() );
+    void ReporterBase::listTags( std::vector<TagInfo> const& tags ) {
+        defaultListTags(
+            m_stream, tags, m_config->hasTestFilters(), m_config->verbosity() );
     }
 
 } // namespace Catch
