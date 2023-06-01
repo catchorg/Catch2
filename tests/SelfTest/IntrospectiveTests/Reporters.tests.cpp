@@ -48,6 +48,7 @@ namespace {
 TEST_CASE( "The default listing implementation write to provided stream",
            "[reporters][reporter-helpers]" ) {
     using Catch::Matchers::ContainsSubstring;
+    using Catch::Matchers::Equals;
     using namespace std::string_literals;
 
     StringIStream sstream;
@@ -58,6 +59,14 @@ TEST_CASE( "The default listing implementation write to provided stream",
 
         auto listingString = sstream.str();
         REQUIRE_THAT(listingString, ContainsSubstring("[fakeTag]"s));
+    }
+    SECTION( "Listing tags quietly " ) {
+        std::vector<Catch::TagInfo> tags(1);
+        tags[0].add("fakeTag"_catch_sr);
+        Catch::defaultListTags(sstream.stream(), tags, false, Catch::Verbosity::Quiet);
+
+        auto listingString = sstream.str();
+        REQUIRE_THAT(listingString, Equals("[fakeTag]\n"s));
     }
     SECTION( "Listing reporters" ) {
         std::vector<Catch::ReporterDescription> reporters(
