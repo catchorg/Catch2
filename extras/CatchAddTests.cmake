@@ -145,6 +145,7 @@ function(catch_discover_tests_impl)
         "  Output: ${tags_output}\n"
       )
     endif()
+    string(STRIP "${tags_output}" tags_output)
     string(REPLACE "\n" ";" tags_output "${tags_output}")
 
     # ...and add to script
@@ -161,7 +162,7 @@ function(catch_discover_tests_impl)
       "${prefix}${test}${suffix}"
       PROPERTIES
       WORKING_DIRECTORY "${_TEST_WORKING_DIR}"
-      LABELS ${tags_output}
+      LABELS "${tags_output}"
       ${properties}
     )
 
