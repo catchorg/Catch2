@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="128" skipped="12" tests="2237" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="128" skipped="12" tests="2238" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -420,8 +420,7 @@ at Exception.tests.cpp:<line number>
 FAILED:
   CHECK_THAT( testStringForMatching(), ContainsSubstring( "not there", Catch::CaseSensitive::No ) )
 with expansion:
-  "this string contains 'abc' as a substring" contains: "not there" (case
-  insensitive)
+  "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
 at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="testStringForMatching(), ContainsSubstring( &quot;STRING&quot; )" type="CHECK_THAT">
@@ -481,8 +480,7 @@ at Matchers.tests.cpp:<line number>
 FAILED:
   CHECK_THAT( testStringForMatching(), EndsWith( "this", Catch::CaseSensitive::No ) )
 with expansion:
-  "this string contains 'abc' as a substring" ends with: "this" (case
-  insensitive)
+  "this string contains 'abc' as a substring" ends with: "this" (case insensitive)
 at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
@@ -590,16 +588,14 @@ at Condition.tests.cpp:<line number>
 FAILED:
   CHECK_THAT( testStringForMatching(), Equals( "this string contains 'ABC' as a substring" ) )
 with expansion:
-  "this string contains 'abc' as a substring" equals: "this string contains
-  'ABC' as a substring"
+  "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring"
 at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="testStringForMatching(), Equals( &quot;something else&quot;, Catch::CaseSensitive::No )" type="CHECK_THAT">
 FAILED:
   CHECK_THAT( testStringForMatching(), Equals( "something else", Catch::CaseSensitive::No ) )
 with expansion:
-  "this string contains 'abc' as a substring" equals: "something else" (case
-  insensitive)
+  "this string contains 'abc' as a substring" equals: "something else" (case insensitive)
 at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
@@ -845,8 +841,8 @@ at Condition.tests.cpp:<line number>
 FAILED:
   CHECK_THAT( testStringForMatching(), ( ContainsSubstring( "string" ) || ContainsSubstring( "different" ) ) &amp;&amp; ContainsSubstring( "random" ) )
 with expansion:
-  "this string contains 'abc' as a substring" ( ( contains: "string" or
-  contains: "different" ) and contains: "random" )
+  "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "random"
+  )
 at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
@@ -1138,24 +1134,21 @@ at Decomposition.tests.cpp:<line number>
 FAILED:
   CHECK_THAT( testStringForMatching(), Matches( "this STRING contains 'abc' as a substring" ) )
 with expansion:
-  "this string contains 'abc' as a substring" matches "this STRING contains
-  'abc' as a substring" case sensitively
+  "this string contains 'abc' as a substring" matches "this STRING contains 'abc' as a substring" case sensitively
 at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="testStringForMatching(), Matches( &quot;contains 'abc' as a substring&quot; )" type="CHECK_THAT">
 FAILED:
   CHECK_THAT( testStringForMatching(), Matches( "contains 'abc' as a substring" ) )
 with expansion:
-  "this string contains 'abc' as a substring" matches "contains 'abc' as a
-  substring" case sensitively
+  "this string contains 'abc' as a substring" matches "contains 'abc' as a substring" case sensitively
 at Matchers.tests.cpp:<line number>
       </failure>
       <failure message="testStringForMatching(), Matches( &quot;this string contains 'abc' as a&quot; )" type="CHECK_THAT">
 FAILED:
   CHECK_THAT( testStringForMatching(), Matches( "this string contains 'abc' as a" ) )
 with expansion:
-  "this string contains 'abc' as a substring" matches "this string contains
-  'abc' as a" case sensitively
+  "this string contains 'abc' as a substring" matches "this string contains 'abc' as a" case sensitively
 at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
@@ -1226,8 +1219,7 @@ at Matchers.tests.cpp:<line number>
 FAILED:
   CHECK_THAT( testStringForMatching(), StartsWith( "string", Catch::CaseSensitive::No ) )
 with expansion:
-  "this string contains 'abc' as a substring" starts with: "string" (case
-  insensitive)
+  "this string contains 'abc' as a substring" starts with: "string" (case insensitive)
 at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
@@ -1361,6 +1353,7 @@ at Misc.tests.cpp:<line number>
     </testcase>
     <testcase classname="<exe-name>.global" name="The NO_FAIL macro reports a failure but does not fail the test" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing tags quietly" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing reporters" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing tests" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing listeners" time="{duration}" status="run"/>

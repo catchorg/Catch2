@@ -14574,6 +14574,19 @@ Message from section two
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
+    <Section name="Listing tags quietly" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          listingString, Equals("[fakeTag]\n"s)
+        </Original>
+        <Expanded>
+          "[fakeTag]
+" equals: "[fakeTag]
+"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
     <Section name="Listing reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -21198,6 +21211,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2048" failures="145" expectedFailures="32" skips="12"/>
+  <OverallResults successes="2049" failures="145" expectedFailures="32" skips="12"/>
   <OverallResultsCases successes="308" failures="84" expectedFailures="11" skips="6"/>
 </Catch2TestRun>
