@@ -19,11 +19,11 @@ def build_project(sources_dir, output_base_path, catch2_path):
                   '-S', sources_dir,
                   f'-DCATCH2_PATH={catch2_path}',
                   '-DCMAKE_BUILD_TYPE=Debug']
-                  
+
     build_cmd = ['cmake',
                  '--build', build_dir,
                  '--config', 'Debug']
-    
+
     try:
         subprocess.run(config_cmd,
                        capture_output = True,
@@ -39,9 +39,9 @@ def build_project(sources_dir, output_base_path, catch2_path):
         print(f'stderr: {err.stderr}')
         print(f'stdout: {err.stdout}')
         exit(3)
-    
+
     return build_dir
-    
+
 
 
 def get_test_names(build_path):
@@ -104,14 +104,16 @@ if __name__ == '__main__':
     catch_test_names = get_test_names(build_path)
     ctest_test_names = list_ctest_tests(build_path)
 
-    if len(catch_test_names) != len(ctest_test_names):
-        print("Mismatch between catch test names and ctest test names!")
-        for catch_test in catch_test_names:
-            if catch_test not in ctest_test_names:
-                print(f"Catch2 test '{catch_test}' not found in CTest")
-        for ctest_test in ctest_test_names:
-            if ctest_test not in catch_test_names:
-                print(f"CTest test '{ctest_test}' not found in Catch2")
+    mismatched = 0
+    for catch_test in catch_test_names:
+        if catch_test not in ctest_test_names:
+            print(f"Catch2 test '{catch_test}' not found in CTest")
+            mismatched += 1
+    for ctest_test in ctest_test_names:
+        if ctest_test not in catch_test_names:
+            print(f"CTest test '{ctest_test}' not found in Catch2")
+            mismatched += 1
 
+    if mismatched:
+        print(f"Found {mismatched} mismatched tests catch test names and ctest test commands!")
         exit(1)
-
