@@ -90,6 +90,10 @@ def list_ctest_tests(build_path):
 
     return test_names
 
+def escape_catch2_test_name(name):
+    for char in ('\\', ',', '[', ']'):
+        name = name.replace(char, f"\\{char}")
+    return name
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
@@ -101,7 +105,7 @@ if __name__ == '__main__':
 
     build_path = build_project(sources_dir, output_base_path, catch2_path)
 
-    catch_test_names = get_test_names(build_path)
+    catch_test_names = [escape_catch2_test_name(name) for name in get_test_names(build_path)]
     ctest_test_names = list_ctest_tests(build_path)
 
     mismatched = 0
