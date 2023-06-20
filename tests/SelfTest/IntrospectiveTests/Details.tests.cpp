@@ -95,8 +95,8 @@ namespace {
         MoveChecker() = default;
         MoveChecker( MoveChecker const& rhs ) = default;
         MoveChecker& operator=( MoveChecker const& rhs ) = default;
-        MoveChecker( MoveChecker&& rhs ) { rhs.has_moved = true; }
-        MoveChecker& operator=( MoveChecker&& rhs ) {
+        MoveChecker( MoveChecker&& rhs ) noexcept { rhs.has_moved = true; }
+        MoveChecker& operator=( MoveChecker&& rhs ) noexcept {
             rhs.has_moved = true;
             return *this;
         }

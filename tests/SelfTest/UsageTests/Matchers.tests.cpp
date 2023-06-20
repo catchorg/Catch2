@@ -890,7 +890,7 @@ struct MatcherA : Catch::Matchers::MatcherGenericBase {
         return "equals: (int) 1 or (string) \"1\"";
     }
     bool match( int i ) const { return i == 1; }
-    bool match( std::string s ) const { return s == "1"; }
+    bool match( std::string const& s ) const { return s == "1"; }
 };
 
 struct MatcherB : Catch::Matchers::MatcherGenericBase {

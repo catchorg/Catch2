@@ -15,6 +15,7 @@
 [Enabling stringification](#enabling-stringification)<br>
 [Disabling exceptions](#disabling-exceptions)<br>
 [Overriding Catch's debug break (`-b`)](#overriding-catchs-debug-break--b)<br>
+[Static analysis support](#static-analysis-support)<br>
 
 Catch2 is designed to "just work" as much as possible, and most of the
 configuration options below are changed automatically during compilation,

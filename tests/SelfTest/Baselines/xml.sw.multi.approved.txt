@@ -4364,6 +4364,12 @@ C
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="Empty generators can SKIP in constructor" tags="[skipping]" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+    <Skip filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+      This generator is empty
+    </Skip>
+    <OverallResult success="true" skips="1"/>
+  </TestCase>
   <TestCase name="Empty stream name opens cout stream" tags="[streams]" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
       <Original>
@@ -21191,6 +21197,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2048" failures="145" expectedFailures="32" skips="11"/>
-  <OverallResultsCases successes="308" failures="84" expectedFailures="11" skips="5"/>
+  <OverallResults successes="2048" failures="145" expectedFailures="32" skips="12"/>
+  <OverallResultsCases successes="308" failures="84" expectedFailures="11" skips="6"/>
 </Catch2TestRun>

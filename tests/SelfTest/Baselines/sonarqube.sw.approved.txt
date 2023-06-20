@@ -1870,6 +1870,13 @@ at Misc.tests.cpp:<line number>
     <testCase name="xmlentitycheck/encoded chars: these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/UsageTests/Skip.tests.cpp">
+    <testCase name="Empty generators can SKIP in constructor" duration="{duration}">
+      <skipped message="SKIP()">
+SKIPPED
+This generator is empty
+at Skip.tests.cpp:<line number>
+      </skipped>
+    </testCase>
     <testCase name="a succeeding test can still be skipped" duration="{duration}">
       <skipped message="SKIP()">
 SKIPPED

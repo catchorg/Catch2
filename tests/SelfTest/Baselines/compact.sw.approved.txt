@@ -520,6 +520,7 @@ ToString.tests.cpp:<line number>: passed: enumInfo->lookup(1) == "Value2" for: V
 ToString.tests.cpp:<line number>: passed: enumInfo->lookup(3) == "{** unexpected enum value **}" for: {** unexpected enum value **}
 ==
 "{** unexpected enum value **}"
+Skip.tests.cpp:<line number>: skipped: 'This generator is empty'
 Stream.tests.cpp:<line number>: passed: Catch::makeStream( "" )->isConsole() for: true
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), EndsWith( "Substring" ) for: "this string contains 'abc' as a substring" ends with: "Substring"
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), EndsWith( "this", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" ends with: "this" (case insensitive)
@@ -2537,7 +2538,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  408 |  308 passed |  84 failed | 5 skipped | 11 failed as expected
+test cases:  409 |  308 passed |  84 failed | 6 skipped | 11 failed as expected
 assertions: 2225 | 2048 passed | 145 failed | 32 failed as expected
 
 

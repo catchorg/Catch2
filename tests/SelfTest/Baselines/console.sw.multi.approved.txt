@@ -3955,6 +3955,16 @@ with expansion:
   "{** unexpected enum value **}"
 
 -------------------------------------------------------------------------------
+Empty generators can SKIP in constructor
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+explicitly with message:
+  This generator is empty
+
+-------------------------------------------------------------------------------
 Empty stream name opens cout stream
 -------------------------------------------------------------------------------
 Stream.tests.cpp:<line number>
@@ -18211,6 +18221,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  408 |  308 passed |  84 failed | 5 skipped | 11 failed as expected
+test cases:  409 |  308 passed |  84 failed | 6 skipped | 11 failed as expected
 assertions: 2225 | 2048 passed | 145 failed | 32 failed as expected
 
