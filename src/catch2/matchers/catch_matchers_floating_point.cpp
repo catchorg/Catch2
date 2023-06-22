@@ -186,7 +186,7 @@ WithinUlpsMatcher WithinULP(double target, uint64_t maxUlpDiff) {
 }
 
 WithinUlpsMatcher WithinULP(float target, uint64_t maxUlpDiff) {
-    return WithinUlpsMatcher(target, maxUlpDiff, Detail::FloatingPointKind::Float);
+    return WithinUlpsMatcher(static_cast<double>(target), maxUlpDiff, Detail::FloatingPointKind::Float);
 }
 
 WithinAbsMatcher WithinAbs(double target, double margin) {
@@ -202,11 +202,11 @@ WithinRelMatcher WithinRel(double target) {
 }
 
 WithinRelMatcher WithinRel(float target, float eps) {
-    return WithinRelMatcher(target, eps);
+    return WithinRelMatcher(static_cast<double>(target), eps);
 }
 
 WithinRelMatcher WithinRel(float target) {
-    return WithinRelMatcher(target, std::numeric_limits<float>::epsilon() * 100);
+    return WithinRelMatcher(static_cast<double>(target), std::numeric_limits<float>::epsilon() * 100);
 }
 
 
