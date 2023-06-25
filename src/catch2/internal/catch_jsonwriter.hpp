@@ -61,6 +61,9 @@ namespace Catch {
         JsonObjectWriter( std::ostream& os );
         JsonObjectWriter( std::ostream& os, std::uint64_t indent_level );
 
+        JsonObjectWriter( JsonObjectWriter&& source );
+        JsonObjectWriter& operator=( JsonObjectWriter&& source ) = delete;
+
         ~JsonObjectWriter();
 
         JsonValueWriter write( std::string const& key );
@@ -69,12 +72,18 @@ namespace Catch {
         std::ostream& m_os;
         std::uint64_t m_indent_level;
         bool m_should_comma = false;
+        bool m_active = true;
     };
 
     class JsonArrayWriter {
     public:
         JsonArrayWriter( std::ostream& os );
         JsonArrayWriter( std::ostream& os, std::uint64_t indent_level );
+
+        JsonArrayWriter( JsonArrayWriter&& source );
+        JsonArrayWriter& operator=( JsonArrayWriter&& source ) = delete;
+
+        ~JsonArrayWriter();
 
         JsonObjectWriter writeObject();
         JsonArrayWriter writeArray();
@@ -87,8 +96,6 @@ namespace Catch {
         JsonArrayWriter& write( bool value );
         JsonArrayWriter& write( StringRef value );
         JsonArrayWriter& write( char const* value );
-
-        ~JsonArrayWriter();
 
     private:
         template <typename T>
@@ -103,6 +110,7 @@ namespace Catch {
         std::ostream& m_os;
         std::uint64_t m_indent_level;
         bool m_should_comma = false;
+        bool m_active = true;
     };
 
 } // namespace Catch

@@ -106,4 +106,25 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
   ]
 ])json" );
     }
+
+    SECTION(
+        "Moved from JsonObjectWriter shall not insert superfluous brace" ) {
+        {
+            auto writer = Catch::JsonObjectWriter{ stream };
+            auto another_writer = std::move( writer );
+        }
+        REQUIRE( stream.str() == R"json(
+{
+})json" );
+    }
+    SECTION(
+        "Moved from JsonArrayWriter shall not insert superfluous bracket" ) {
+        {
+            auto writer = Catch::JsonArrayWriter{ stream };
+            auto another_writer = std::move( writer );
+        }
+        REQUIRE( stream.str() == R"json(
+[
+])json" );
+    }
 }
