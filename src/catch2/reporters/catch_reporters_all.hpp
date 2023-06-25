@@ -28,6 +28,7 @@
 #include <catch2/reporters/catch_reporter_cumulative_base.hpp>
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
 #include <catch2/reporters/catch_reporter_helpers.hpp>
+#include <catch2/reporters/catch_reporter_json.hpp>
 #include <catch2/reporters/catch_reporter_junit.hpp>
 #include <catch2/reporters/catch_reporter_multi.hpp>
 #include <catch2/reporters/catch_reporter_registrars.hpp>

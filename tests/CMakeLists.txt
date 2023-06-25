@@ -643,7 +643,8 @@ foreach (reporterName # "Automake" - the simple .trs format does not support any
                       "SonarQube"
                       "TAP"
                       # "TeamCity" - does not seem to support test suite-level metadata/comments
-                      "XML")
+                      "XML"
+                      "JSON")
 
     add_test(NAME "Reporters:Filters:${reporterName}"
       COMMAND
