@@ -27,10 +27,8 @@ namespace Catch {
 
     class JsonValueWriter {
     public:
-        friend JsonObjectWriter;
-        friend JsonArrayWriter;
-
         JsonValueWriter( std::ostream& os );
+        JsonValueWriter( std::ostream& os, std::uint64_t indent_level );
 
         JsonObjectWriter writeObject() &&;
         JsonArrayWriter writeArray() &&;
@@ -47,8 +45,6 @@ namespace Catch {
         void write( char const* value ) &&;
 
     private:
-        JsonValueWriter( std::ostream& os, std::uint64_t indent_level );
-
         template <typename T>
         void writeImpl( T const& value, bool quote_value ) {
             if ( quote_value ) { m_os << '"'; }
@@ -62,18 +58,14 @@ namespace Catch {
 
     class JsonObjectWriter {
     public:
-        friend JsonValueWriter;
-        friend JsonArrayWriter;
-
         JsonObjectWriter( std::ostream& os );
+        JsonObjectWriter( std::ostream& os, std::uint64_t indent_level );
 
         ~JsonObjectWriter();
 
         JsonValueWriter write( std::string const& key );
 
     private:
-        JsonObjectWriter( std::ostream& os, std::uint64_t indent_level );
-
         std::ostream& m_os;
         std::uint64_t m_indent_level;
         bool m_should_comma = false;
@@ -81,10 +73,8 @@ namespace Catch {
 
     class JsonArrayWriter {
     public:
-        friend JsonValueWriter;
-        friend JsonObjectWriter;
-
         JsonArrayWriter( std::ostream& os );
+        JsonArrayWriter( std::ostream& os, std::uint64_t indent_level );
 
         JsonObjectWriter writeObject();
         JsonArrayWriter writeArray();
@@ -101,8 +91,6 @@ namespace Catch {
         ~JsonArrayWriter();
 
     private:
-        JsonArrayWriter( std::ostream& os, std::uint64_t indent_level );
-
         template <typename T>
         JsonArrayWriter& writeImpl( T const& value ) {
             JsonUtils::appendCommaNewline(
@@ -117,9 +105,6 @@ namespace Catch {
         bool m_should_comma = false;
     };
 
-    struct JsonWriter : JsonValueWriter {
-        using JsonValueWriter::JsonValueWriter;
-    };
 } // namespace Catch
 
 #endif // CATCH_JSONWRITER_HPP_INCLUDED

@@ -16,13 +16,13 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
     std::stringstream stream{};
     stream << "\n"; // Make the expected json nicer to look at
     SECTION( "Newly constructed JsonWriter does nothing" ) {
-        Catch::JsonWriter writer{ stream };
+        Catch::JsonValueWriter writer{ stream };
         REQUIRE( stream.str() == R"json(
 )json" );
     }
 
     SECTION( "Calling writeObject will create an empty pair of braces" ) {
-        { auto writer = Catch::JsonWriter{ stream }.writeObject(); }
+        { auto writer = Catch::JsonValueWriter{ stream }.writeObject(); }
         REQUIRE( stream.str() == R"json(
 {
 })json" );
@@ -73,7 +73,7 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
     }
 
     SECTION( "Calling writeArray will create an empty pair of braces" ) {
-        { auto writer = Catch::JsonWriter{ stream }.writeArray(); }
+        { auto writer = Catch::JsonValueWriter{ stream }.writeArray(); }
         REQUIRE( stream.str() == R"json(
 [
 ])json" );
