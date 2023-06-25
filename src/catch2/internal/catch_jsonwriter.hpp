@@ -15,21 +15,85 @@
 #include <vector>
 
 namespace Catch {
-    class JsonWriter {
+    class JsonObjectWriter;
+    class JsonArrayWriter;
+
+    class JsonValueWriter {
     public:
-        JsonWriter( std::ostream& os );
-        ~JsonWriter();
+        friend JsonObjectWriter;
+        friend JsonArrayWriter;
 
-        JsonWriter( JsonWriter const& ) = delete;
-        JsonWriter& operator=( JsonWriter const& ) = delete;
+        JsonValueWriter( std::ostream& os );
 
-        JsonWriter& startObject();
-        JsonWriter& endObject();
+        JsonObjectWriter writeObject() &&;
+        JsonArrayWriter writeArray() &&;
+
+        void write( int value ) &&;
+        void write( double value ) &&;
+        void write( bool value ) &&;
+        void write( StringRef value ) &&;
+        void write( char const* value ) &&;
 
     private:
-        std::uint64_t m_object_level = 0;
+        JsonValueWriter( std::ostream& os, std::uint64_t indent_level );
+
+        template <typename T>
+        void writeImpl( T const& value, bool quote_value );
 
         std::ostream& m_os;
+        std::uint64_t m_indent_level;
+    };
+
+    class JsonObjectWriter {
+    public:
+        friend JsonValueWriter;
+        friend JsonArrayWriter;
+
+        JsonObjectWriter( std::ostream& os );
+
+        ~JsonObjectWriter();
+
+        JsonValueWriter write( std::string const& key );
+
+    private:
+        JsonObjectWriter( std::ostream& os, std::uint64_t indent_level );
+
+        std::ostream& m_os;
+        std::uint64_t m_indent_level;
+        bool m_should_comma = false;
+    };
+
+    class JsonArrayWriter {
+    public:
+        friend JsonValueWriter;
+        friend JsonObjectWriter;
+
+        JsonArrayWriter( std::ostream& os );
+
+        JsonObjectWriter writeObject();
+        JsonArrayWriter writeArray();
+
+        JsonArrayWriter& write( int value );
+        JsonArrayWriter& write( double value );
+        JsonArrayWriter& write( bool value );
+        JsonArrayWriter& write( StringRef value );
+        JsonArrayWriter& write( char const* value );
+
+        ~JsonArrayWriter();
+
+    private:
+        JsonArrayWriter( std::ostream& os, std::uint64_t indent_level );
+
+        template <typename T>
+        JsonArrayWriter& writeImpl( T const& value );
+
+        std::ostream& m_os;
+        std::uint64_t m_indent_level;
+        bool m_should_comma = false;
+    };
+
+    struct JsonWriter : JsonValueWriter {
+        using JsonValueWriter::JsonValueWriter;
     };
 } // namespace Catch
 
