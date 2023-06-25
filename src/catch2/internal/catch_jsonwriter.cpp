@@ -11,23 +11,21 @@
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_jsonwriter.hpp>
 
-namespace {
-    void indent( std::ostream& os, std::uint64_t level ) {
+namespace Catch {
+    void JsonUtils::indent( std::ostream& os, std::uint64_t level ) {
         for ( std::uint64_t i = 0; i < level; ++i ) {
             os << "  ";
         }
     }
-    void appendCommaNewline( std::ostream& os,
-                             bool& should_comma,
-                             std::uint64_t level ) {
+    void JsonUtils::appendCommaNewline( std::ostream& os,
+                                        bool& should_comma,
+                                        std::uint64_t level ) {
         if ( should_comma ) { os << ','; }
         should_comma = true;
         os << '\n';
         indent( os, level );
     }
-} // namespace
 
-namespace Catch {
     JsonObjectWriter::JsonObjectWriter( std::ostream& os ):
         JsonObjectWriter{ os, 0 } {}
 
@@ -39,12 +37,13 @@ namespace Catch {
 
     JsonObjectWriter::~JsonObjectWriter() {
         m_os << '\n';
-        indent( m_os, m_indent_level );
+        JsonUtils::indent( m_os, m_indent_level );
         m_os << '}';
     }
 
     JsonValueWriter JsonObjectWriter::write( std::string const& key ) {
-        appendCommaNewline( m_os, m_should_comma, m_indent_level + 1 );
+        JsonUtils::appendCommaNewline(
+            m_os, m_should_comma, m_indent_level + 1 );
 
         m_os << '"' << key << '"' << ": ";
         return JsonValueWriter{ m_os, m_indent_level + 1 };
@@ -59,34 +58,22 @@ namespace Catch {
     }
     JsonArrayWriter::~JsonArrayWriter() {
         m_os << '\n';
-        indent( m_os, m_indent_level );
+        JsonUtils::indent( m_os, m_indent_level );
         m_os << ']';
     }
 
     JsonObjectWriter JsonArrayWriter::writeObject() {
-        appendCommaNewline( m_os, m_should_comma, m_indent_level + 1 );
+        JsonUtils::appendCommaNewline(
+            m_os, m_should_comma, m_indent_level + 1 );
         return JsonObjectWriter{ m_os, m_indent_level + 1 };
     }
 
     JsonArrayWriter JsonArrayWriter::writeArray() {
-        appendCommaNewline( m_os, m_should_comma, m_indent_level + 1 );
+        JsonUtils::appendCommaNewline(
+            m_os, m_should_comma, m_indent_level + 1 );
         return JsonArrayWriter{ m_os, m_indent_level + 1 };
     }
 
-    template <typename T>
-    JsonArrayWriter& JsonArrayWriter::writeImpl( T const& value ) {
-        appendCommaNewline( m_os, m_should_comma, m_indent_level + 1 );
-        JsonValueWriter{ m_os }.write( value );
-
-        return *this;
-    }
-
-    JsonArrayWriter& JsonArrayWriter::write( int value ) {
-        return writeImpl( value );
-    }
-    JsonArrayWriter& JsonArrayWriter::write( double value ) {
-        return writeImpl( value );
-    }
     JsonArrayWriter& JsonArrayWriter::write( bool value ) {
         return writeImpl( value );
     }
@@ -104,13 +91,6 @@ namespace Catch {
                                       std::uint64_t indent_level ):
         m_os{ os }, m_indent_level{ indent_level } {}
 
-    template <typename T>
-    void JsonValueWriter::writeImpl( T const& value, bool quote_value ) {
-        if ( quote_value ) { m_os << '"'; }
-        m_os << value;
-        if ( quote_value ) { m_os << '"'; }
-    }
-
     JsonObjectWriter JsonValueWriter::writeObject() && {
         return JsonObjectWriter{ m_os, m_indent_level };
     }
@@ -119,10 +99,6 @@ namespace Catch {
         return JsonArrayWriter{ m_os, m_indent_level };
     }
 
-    void JsonValueWriter::write( int value ) && { writeImpl( value, false ); }
-    void JsonValueWriter::write( double value ) && {
-        writeImpl( value, false );
-    }
     void JsonValueWriter::write( bool value ) && {
         writeImpl( value ? "true" : "false", false );
     }

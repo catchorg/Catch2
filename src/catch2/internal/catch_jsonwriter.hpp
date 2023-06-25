@@ -18,6 +18,13 @@ namespace Catch {
     class JsonObjectWriter;
     class JsonArrayWriter;
 
+    struct JsonUtils {
+        static void indent( std::ostream& os, std::uint64_t level );
+        static void appendCommaNewline( std::ostream& os,
+                                        bool& should_comma,
+                                        std::uint64_t level );
+    };
+
     class JsonValueWriter {
     public:
         friend JsonObjectWriter;
@@ -28,8 +35,13 @@ namespace Catch {
         JsonObjectWriter writeObject() &&;
         JsonArrayWriter writeArray() &&;
 
-        void write( int value ) &&;
-        void write( double value ) &&;
+        template <
+            typename T,
+            typename = typename std::enable_if_t<std::is_arithmetic<T>::value>>
+        void write( T value ) && {
+            writeImpl( value, false );
+        }
+
         void write( bool value ) &&;
         void write( StringRef value ) &&;
         void write( char const* value ) &&;
@@ -38,7 +50,11 @@ namespace Catch {
         JsonValueWriter( std::ostream& os, std::uint64_t indent_level );
 
         template <typename T>
-        void writeImpl( T const& value, bool quote_value );
+        void writeImpl( T const& value, bool quote_value ) {
+            if ( quote_value ) { m_os << '"'; }
+            m_os << value;
+            if ( quote_value ) { m_os << '"'; }
+        }
 
         std::ostream& m_os;
         std::uint64_t m_indent_level;
@@ -73,8 +89,13 @@ namespace Catch {
         JsonObjectWriter writeObject();
         JsonArrayWriter writeArray();
 
-        JsonArrayWriter& write( int value );
-        JsonArrayWriter& write( double value );
+        template <
+            typename T,
+            typename = typename std::enable_if_t<std::is_arithmetic<T>::value>>
+        JsonArrayWriter& write( T value ) {
+            return writeImpl( value );
+        }
+
         JsonArrayWriter& write( bool value );
         JsonArrayWriter& write( StringRef value );
         JsonArrayWriter& write( char const* value );
@@ -85,7 +106,13 @@ namespace Catch {
         JsonArrayWriter( std::ostream& os, std::uint64_t indent_level );
 
         template <typename T>
-        JsonArrayWriter& writeImpl( T const& value );
+        JsonArrayWriter& writeImpl( T const& value ) {
+            JsonUtils::appendCommaNewline(
+                m_os, m_should_comma, m_indent_level + 1 );
+            JsonValueWriter{ m_os }.write( value );
+
+            return *this;
+        }
 
         std::ostream& m_os;
         std::uint64_t m_indent_level;
