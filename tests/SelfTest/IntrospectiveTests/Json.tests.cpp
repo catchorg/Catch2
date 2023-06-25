@@ -139,4 +139,9 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
         REQUIRE( stream.str() == R"json(
 "custom")json" );
     }
+    SECTION( "String with a quote shall be espaced" ) {
+        Catch::JsonValueWriter{ stream }.write( "\"" );
+        REQUIRE( stream.str() == R"json(
+"\"")json" );
+    }
 }

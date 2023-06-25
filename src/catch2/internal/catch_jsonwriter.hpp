@@ -11,8 +11,7 @@
 #include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
-#include <iosfwd>
-#include <vector>
+#include <sstream>
 
 namespace Catch {
     class JsonObjectWriter;
@@ -48,11 +47,22 @@ namespace Catch {
         template <typename T>
         void writeImpl( T const& value, bool quote_value ) {
             if ( quote_value ) { m_os << '"'; }
-            m_os << value;
+            m_sstream << value;
+            while ( true ) {
+                char c = m_sstream.get();
+
+                if ( m_sstream.eof() ) { break; }
+                if ( c == '"' ) {
+                    m_os << '\\' << '"';
+                } else {
+                    m_os << c;
+                }
+            }
             if ( quote_value ) { m_os << '"'; }
         }
 
         std::ostream& m_os;
+        std::stringstream m_sstream{};
         std::uint64_t m_indent_level;
     };
 
