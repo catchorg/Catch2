@@ -95,12 +95,6 @@ namespace Catch {
     JsonArrayWriter& JsonArrayWriter::write( bool value ) {
         return writeImpl( value );
     }
-    JsonArrayWriter& JsonArrayWriter::write( StringRef value ) {
-        return writeImpl( value );
-    }
-    JsonArrayWriter& JsonArrayWriter::write( char const* value ) {
-        return writeImpl( value );
-    }
 
     JsonValueWriter::JsonValueWriter( std::ostream& os ):
         JsonValueWriter{ os, 0 } {}
@@ -119,12 +113,6 @@ namespace Catch {
 
     void JsonValueWriter::write( bool value ) && {
         writeImpl( value ? "true" : "false", false );
-    }
-    void JsonValueWriter::write( StringRef value ) && {
-        writeImpl( value, true );
-    }
-    void JsonValueWriter::write( char const* value ) && {
-        writeImpl( value, true );
     }
 
 } // namespace Catch
