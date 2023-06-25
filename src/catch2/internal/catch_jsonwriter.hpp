@@ -35,11 +35,11 @@ namespace Catch {
         JsonObjectWriter writeObject() &&;
         JsonArrayWriter writeArray() &&;
 
-        template <
-            typename T,
-            typename = typename std::enable_if_t<std::is_arithmetic<T>::value>>
-        void write( T value ) && {
-            writeImpl( value, false );
+        template <typename T,
+                  typename = typename std::enable_if_t<
+                      !std::is_convertible<T, StringRef>::value>>
+        void write( T const& value ) && {
+            writeImpl( value, std::is_arithmetic<T>::value );
         }
 
         void write( bool value ) &&;
@@ -89,10 +89,8 @@ namespace Catch {
         JsonObjectWriter writeObject();
         JsonArrayWriter writeArray();
 
-        template <
-            typename T,
-            typename = typename std::enable_if_t<std::is_arithmetic<T>::value>>
-        JsonArrayWriter& write( T value ) {
+        template <typename T>
+        JsonArrayWriter& write( T const& value ) {
             return writeImpl( value );
         }
 
