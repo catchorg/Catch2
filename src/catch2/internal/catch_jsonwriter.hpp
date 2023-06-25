@@ -37,7 +37,7 @@ namespace Catch {
                   typename = typename std::enable_if_t<
                       !std::is_convertible<T, StringRef>::value>>
         void write( T const& value ) && {
-            writeImpl( value, std::is_arithmetic<T>::value );
+            writeImpl( value, !std::is_arithmetic<T>::value );
         }
 
         void write( bool value ) &&;
