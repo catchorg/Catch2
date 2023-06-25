@@ -11,6 +11,13 @@
 
 #include <sstream>
 
+namespace {
+    struct Custom {};
+    std::ostream& operator<<( std::ostream& os, Custom const& ) {
+        return os << "custom";
+    }
+} // namespace
+
 TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
 
     std::stringstream stream{};
@@ -126,5 +133,10 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
         REQUIRE( stream.str() == R"json(
 [
 ])json" );
+    }
+    SECTION( "Custom class shall be quoted" ) {
+        Catch::JsonValueWriter{ stream }.write( Custom{} );
+        REQUIRE( stream.str() == R"json(
+"custom")json" );
     }
 }
