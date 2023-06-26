@@ -20,30 +20,52 @@ namespace Catch {
         m_writers.emplace( Writer::Object );
     }
 
-    JsonReporter::~JsonReporter() = default;
+    JsonReporter::~JsonReporter() {
+        while ( !m_writers.empty() ) {
+            switch ( m_writers.top() ) {
+            case Writer::Object:
+                endObject();
+                break;
+            case Writer::Array:
+                endArray();
+                break;
+            }
+        }
+    }
 
-    void JsonReporter::pushArray() {
+    void JsonReporter::startArray() {
         if ( !isInside( Writer::Array ) ) { return; }
         m_arrayWriters.emplace( m_arrayWriters.top().writeArray() );
         m_writers.emplace( Writer::Array );
     }
-    void JsonReporter::pushArray( std::string const& key ) {
+    void JsonReporter::startArray( std::string const& key ) {
         if ( !isInside( Writer::Object ) ) { return; }
         m_arrayWriters.emplace(
             m_objectWriters.top().write( key ).writeArray() );
         m_writers.emplace( Writer::Array );
     }
 
-    void JsonReporter::pushObject() {
+    void JsonReporter::startObject() {
         if ( !isInside( Writer::Array ) ) { return; }
         m_objectWriters.emplace( m_arrayWriters.top().writeObject() );
         m_writers.emplace( Writer::Object );
     }
-    void JsonReporter::pushObject( std::string const& key ) {
+    void JsonReporter::startObject( std::string const& key ) {
         if ( !isInside( Writer::Object ) ) { return; }
         m_objectWriters.emplace(
             m_objectWriters.top().write( key ).writeObject() );
         m_writers.emplace( Writer::Object );
+    }
+
+    void JsonReporter::endObject() {
+        if ( !isInside( Writer::Object ) ) { return; }
+        m_objectWriters.pop();
+        m_writers.pop();
+    }
+    void JsonReporter::endArray() {
+        if ( !isInside( Writer::Array ) ) { return; }
+        m_arrayWriters.pop();
+        m_writers.pop();
     }
 
     bool JsonReporter::isInside( Writer writer ) {
@@ -62,10 +84,25 @@ namespace Catch {
         writer.write( "line" ).write( sourceInfo.line );
     }
 
-    void JsonReporter::testRunStarting( TestRunInfo const& testInfo ) {
+    void JsonReporter::writeCounts( std::string const& key,
+                                    Counts const& counts ) {
         if ( !isInside( Writer::Object ) ) { return; }
 
+        startObject( key );
+
+        auto& writer = m_objectWriters.top();
+        writer.write( "passed" ).write( counts.passed );
+        writer.write( "failed" ).write( counts.failed );
+        writer.write( "fail-but-ok" ).write( counts.failedButOk );
+        writer.write( "skipped" ).write( counts.skipped );
+
+        endObject();
+    }
+
+    void JsonReporter::testRunStarting( TestRunInfo const& testInfo ) {
         StreamingReporterBase::testRunStarting( testInfo );
+
+        if ( !isInside( Writer::Object ) ) { return; }
 
         auto& writer = m_objectWriters.top();
 
@@ -77,15 +114,15 @@ namespace Catch {
             writer.write( "filters" ).write( m_config->testSpec() );
         }
 
-        pushArray( "test-cases" );
+        startArray( "test-cases" );
     }
 
     void JsonReporter::testCaseStarting( TestCaseInfo const& testInfo ) {
-        if ( !isInside( Writer::Array ) ) { return; }
-
         StreamingReporterBase::testCaseStarting( testInfo );
 
-        pushObject();
+        if ( !isInside( Writer::Array ) ) { return; }
+
+        startObject();
 
         auto& writer = m_objectWriters.top();
         writer.write( "name" ).write( trim( StringRef( testInfo.name ) ) );
@@ -102,10 +139,11 @@ namespace Catch {
         if ( m_config->showDurations() == ShowDurations::Always ) {
             m_testCaseTimer.start();
         }
+        startArray( "sections" );
     }
 
     void JsonReporter::sectionStarting( SectionInfo const& sectionInfo ) {
-        (void)sectionInfo;
+        StreamingReporterBase::sectionStarting( sectionInfo );
     }
 
     void JsonReporter::assertionStarting( AssertionInfo const& ) {}
@@ -115,13 +153,28 @@ namespace Catch {
     }
 
     void JsonReporter::sectionEnded( SectionStats const& sectionStats ) {
-        (void)sectionStats;
+        StreamingReporterBase::sectionEnded( sectionStats );
+
+        if ( !isInside( Writer::Array ) ) { return; }
+
+        startObject();
+
+        auto& writer = m_objectWriters.top();
+        writer.write( "name" ).write( sectionStats.sectionInfo.name );
+        writeSourceInfo( sectionStats.sectionInfo.lineInfo );
+        writeCounts( "assertions", sectionStats.assertions );
+
+        endObject();
     }
 
     void JsonReporter::testCaseEnded( TestCaseStats const& testCaseStats ) {
-        if ( !isInside( Writer::Object ) ) { return; }
-
         StreamingReporterBase::testCaseEnded( testCaseStats );
+
+        if ( !isInside( Writer::Array ) ) { return; }
+
+        endArray();
+
+        if ( !isInside( Writer::Object ) ) { return; }
 
         if ( m_config->showDurations() == ShowDurations::Always ) {
             // TODO: Handle this
@@ -134,36 +187,13 @@ namespace Catch {
             .write( testCaseStats.testInfo->okToFail() );
         writer.write( "expected-to-fail" )
             .write( testCaseStats.testInfo->expectedToFail() );
-        {
-            auto totalsWriter = writer.write( "totals" ).writeObject();
-            {
-                auto assertionsWriter =
-                    totalsWriter.write( "assertions" ).writeObject();
-                assertionsWriter.write( "passed" )
-                    .write( testCaseStats.totals.assertions.passed );
-                assertionsWriter.write( "failed" )
-                    .write( testCaseStats.totals.assertions.failed );
-                assertionsWriter.write( "fail-but-ok" )
-                    .write( testCaseStats.totals.assertions.failedButOk );
-                assertionsWriter.write( "skipped" )
-                    .write( testCaseStats.totals.assertions.skipped );
-            }
-            {
-                auto testsCasesWriter =
-                    totalsWriter.write( "test-cases" ).writeObject();
-                testsCasesWriter.write( "passed" )
-                    .write( testCaseStats.totals.testCases.passed );
-                testsCasesWriter.write( "failed" )
-                    .write( testCaseStats.totals.testCases.failed );
-                testsCasesWriter.write( "fail-but-ok" )
-                    .write( testCaseStats.totals.testCases.failedButOk );
-                testsCasesWriter.write( "skipped" )
-                    .write( testCaseStats.totals.testCases.skipped );
-            }
-        }
 
-        m_objectWriters.pop();
-        m_writers.pop();
+        startObject( "totals" );
+        writeCounts( "assertion", testCaseStats.totals.assertions );
+        writeCounts( "test-cases", testCaseStats.totals.testCases );
+        endObject();
+
+        endObject();
     }
 
     void JsonReporter::testRunEnded( TestRunStats const& testRunStats ) {

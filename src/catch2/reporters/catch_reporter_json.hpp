@@ -25,6 +25,7 @@ namespace Catch {
         static std::string getDescription();
 
         void writeSourceInfo( SourceLineInfo const& sourceInfo );
+        void writeCounts(std::string const & key,  Counts const &counts );
 
     public: // StreamingReporterBase
         void testRunStarting( TestRunInfo const& testInfo ) override;
@@ -62,11 +63,14 @@ namespace Catch {
             Array
         };
 
-        void pushArray();
-        void pushArray( std::string const& key );
+        void startArray();
+        void startArray( std::string const& key );
 
-        void pushObject();
-        void pushObject( std::string const& key );
+        void startObject();
+        void startObject( std::string const& key );
+
+        void endObject();
+        void endArray();
 
         bool isInside( Writer writer );
 
