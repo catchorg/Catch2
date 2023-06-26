@@ -654,6 +654,8 @@ foreach (reporterName # "Automake" - the simple .trs format does not support any
     # Different regex for these two reporters, because the commas end up xml-escaped
     if (reporterName MATCHES "JUnit|XML")
       set(testCaseNameFormat "&quot;CaseInsensitiveLess is case insensitive&quot;")
+    elseif(reporterName MATCHES "JSON")
+      set(testCaseNameFormat "\\\\\"CaseInsensitiveLess is case insensitive\\\\\"")
     else()
       set(testCaseNameFormat "\"CaseInsensitiveLess is case insensitive\"")
     endif()
