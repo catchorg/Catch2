@@ -10,5 +10,6 @@ titlesonly: true
 caption: Contents
 glob: true
 ---
+developer_api/index
 /*
 :::
