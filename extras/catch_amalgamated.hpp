@@ -1603,7 +1603,7 @@ namespace Catch {
          */
         virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
 
-        //! Called if a fatal error (signal/structured exception) occured
+        //! Called if a fatal error (signal/structured exception) occurred
         virtual void fatalErrorEncountered( StringRef error ) = 0;
 
         //! Writes out information about provided reporters using reporter-specific format
@@ -9448,7 +9448,7 @@ namespace TestCaseTracking {
 
         //! Returns true if tracker run to completion (successfully or not)
         virtual bool isComplete() const = 0;
-        //! Returns true if tracker run to completion succesfully
+        //! Returns true if tracker run to completion successfully
         bool isSuccessfullyCompleted() const {
             return m_runState == CompletedSuccessfully;
         }
@@ -10132,7 +10132,7 @@ namespace Catch {
                 // Calculates the length of the current line
                 void calcLength();
 
-                // Returns current indention width
+                // Returns current indentation width
                 size_t indentSize() const;
 
                 // Creates an indented and (optionally) suffixed string from
@@ -11680,7 +11680,7 @@ namespace Catch {
 
         /**
          * Creates a matcher that checks if all elements in a range are equal
-         * to all elements in another range, in some permuation.
+         * to all elements in another range, in some permutation.
          *
          * Uses to provided predicate `predicate` to do the comparisons
          */
@@ -12358,7 +12358,7 @@ namespace Catch {
         void skipTest(TestCaseInfo const&) override {}
 
     protected:
-        //! Should the cumulative base store the assertion expansion for succesful assertions?
+        //! Should the cumulative base store the assertion expansion for successfull assertions?
         bool m_shouldStoreSuccesfulAssertions = true;
         //! Should the cumulative base store the assertion expansion for failed assertions?
         bool m_shouldStoreFailedAssertions = true;
