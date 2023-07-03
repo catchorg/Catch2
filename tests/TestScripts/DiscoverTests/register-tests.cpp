@@ -10,3 +10,7 @@
 
 TEST_CASE("@Script[C:\\EPM1A]=x;\"SCALA_ZERO:\"", "[script regressions]"){}
 TEST_CASE("Some test") {}
+TEST_CASE( "Let's have a test case with a long name. Longer. No, even longer. "
+           "Really looooooooooooong. Even longer than that. Multiple lines "
+           "worth of test name. Yep, like this." ) {}
+TEST_CASE( "And now a test case with weird tags.", "[tl;dr][tl;dw][foo,bar]" ) {}
