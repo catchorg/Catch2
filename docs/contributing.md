@@ -135,6 +135,20 @@ other people can use it as well. This section collects some technical
 information that you will need for updating Catch2's documentation, and
 possibly some generic advise as well.
 
+We use mkdocs for documentation and poetry for python environment.
+first install poetry (you'll need python...)
+```console
+pip install poetry
+```
+Poetry will install our docs dependencies
+```console
+poetry install
+```
+serve the docs locally to see your changes
+```console
+poetry run mkdocs serve
+```
+
 
 ### Technicalities
 
@@ -152,9 +166,7 @@ should use. It provides you with the top anchor mentioned to link to
 Text that explains how to use the cool feature.
 
 
----
 
-[Home](Readme.md#top)
 ```
 
 * Crosslinks to different pages should target the `top` anchor, like this
@@ -338,6 +350,4 @@ while contributing to Catch2.
 _This documentation will always be in-progress as new information comes
 up, but we are trying to keep it as up to date as possible._
 
----
 
-[Home](Readme.md#top)

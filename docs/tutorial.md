@@ -222,6 +222,4 @@ about these as you go, in the ever-growing [reference section](Readme.md#top)
 of the documentation.
 
 
----
 
-[Home](Readme.md#top)

@@ -435,6 +435,4 @@ and new style matchers arbitrarily.
 > `MatcherGenericBase` lives in `catch2/matchers/catch_matchers_templated.hpp`
 
 
----
 
-[Home](Readme.md#top)

@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+site_name: Catch2
+site_description: A modern, C++-native, test framework.
+site_url: https://catch2.github.io/Catch2/
+site_author: Comunity
+repo_name: catchorg/Catch2
+repo_url: https://github.com/catchorg/Catch2
+
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: red
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - scheme: slate
+      primary: green
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+  font:
+    text: Open Sans
+    code: Fira Code
+  logo: https://github.com/catchorg/Catch2/blob/devel/data/artwork/catch2-logo-small-with-background.png?raw=true
+  favicon: https://github.com/catchorg/Catch2/blob/devel/data/artwork/catch2-hand-logo.png?raw=true
+
+
+plugins:
+  - search
+  - mike
+
+
+markdown_extensions:
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - attr_list
+  - md_in_html
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.details
+  - admonition
+  - tables
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: "#"
+
+
+copyright: catchorg <a href="https://github/nrbnlulu.com>Nir</a>
+
+extra:
+  version:
+    provider: mike
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/catchorg/Catch2
+
+watch:
+  - .

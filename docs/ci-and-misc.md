@@ -105,6 +105,4 @@ when stepping through code.
 integration with CMake has been moved to its own page.](cmake-integration.md#top)
 
 
----
 
-[Home](Readme.md#top)

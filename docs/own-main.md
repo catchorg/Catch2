@@ -127,6 +127,4 @@ part of the version. As an example, given single header version v2.3.4,
 the macros would expand into `2`, `3`, and `4` respectively.
 
 
----
 
-[Home](Readme.md#top)

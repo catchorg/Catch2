@@ -35,6 +35,4 @@ being aborted (when using `--abort` or `--abortx`). It is however
 **NOT** invoked for test cases that are [explicitly skipped using the `SKIP`
 macro](skipping-passing-failing.md#top).
 
----
 
-[Home](Readme.md#top)

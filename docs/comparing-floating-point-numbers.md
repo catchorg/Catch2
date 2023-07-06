@@ -187,6 +187,4 @@ to Approx's value when computing the allowed relative margin from the
 Approx's value.
 
 
----
 
-[Home](Readme.md#top)

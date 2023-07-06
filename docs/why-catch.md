@@ -54,6 +54,4 @@ for some idea on who else also uses Catch2.
 See the [tutorial](tutorial.md#top) to get more of a taste of using
 Catch2 in practice.
 
----
 
-[Home](Readme.md#top)

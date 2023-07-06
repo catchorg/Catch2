@@ -93,6 +93,4 @@ the [interfaces](reporters.md#top) and the [events](reporter-events.md#top)
 are now documented.
 
 
----
 
-[Home](Readme.md#top)

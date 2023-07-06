@@ -208,6 +208,4 @@ important for the reporter to work _nicely_.
 
 
 
----
 
-[Home](Readme.md#top)
