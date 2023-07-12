@@ -7,11 +7,10 @@
 // SPDX-License-Identifier: BSL-1.0
 
 /**\file
- * TODO: FIXES Registers custom reporter that reports testCase* events
+ * Registers an event listener to increments counter of assertionStarting events.
  *
- * The resulting executable can then be used by an external Python script
- * to verify that testCase{Starting,Ended} and testCasePartial{Starting,Ended}
- * events are properly nested.
+ * Different assertion macros then check that the counter is at expected
+ * value when they are evaluated.
  */
 
 #include <catch2/catch_test_macros.hpp>
@@ -22,9 +21,6 @@
 namespace {
 
     static size_t assertion_starting_events_seen = 0;
-
-    // TODO: custom matcher to check that "assertion_starting_events_seen" has
-    // the right number of checks
 
     class AssertionStartingListener : public Catch::EventListenerBase {
     public:
