@@ -267,7 +267,7 @@ must compile and must break into debugger.
 
 ## Static analysis support
 
-> Introduced in Catch2 X.Y.Z.
+> Introduced in Catch2 3.4.0.
 
 Some parts of Catch2, e.g. `SECTION`s, can be hard for static analysis
 tools to reason about. Catch2 can change its internals to help static

@@ -57,6 +57,34 @@
 
 
 
+## 3.4.0
+
+### Improvements
+* `VectorEquals` supports elements that provide only `==` and not `!=` (#2648)
+* Catch2 supports compiling with IAR compiler (#2651)
+* Various small internal performance improvements
+* Various small internal compilation time improvements
+* XMLReporter now reports location info for INFO and WARN (#1251)
+  * This bumps up the xml format version to 3
+* Documented that `SKIP` in generator constructor can be used to handle empty  generator (#1593)
+* Added experimental static analysis support to `TEST_CASE` and `SECTION` macros (#2681)
+  * The two macros are redefined in a way that helps the SA tools reason about the possible paths through a test case with sections.
+  * The support is controlled by the `CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT` option and autodetects clang-tidy and Coverity.
+* `*_THROWS`, `*_THROWS_AS`, etc now suppress warning coming from `__attribute__((warn_unused_result))` on GCC  (#2691)
+  * Unlike plain `[[nodiscard]]`, this warning is not silenced by void cast. WTF GCC?
+
+### Fixes
+* Fixed `assertionStarting` events being sent after the expr is evaluated (#2678)
+* Errors in `TEST_CASE` tags are now reported nicely (#2650)
+
+### Miscellaneous
+* Bunch of improvements to `catch_discover_tests`
+  * Added DISCOVERY_MODE option, so the discovery can happen either post build or pre-run.
+  * Fixed handling of semicolons and backslashes in test names (#2674, #2676)
+* meson build can disable building tests (#2693)
+* meson build properly sets meson version 0.54.1 as the minimal supported version (#2688)
+
+
 ## 3.3.2
 
 ### Improvements
