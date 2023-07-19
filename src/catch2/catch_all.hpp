@@ -54,6 +54,7 @@
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_config_android_logwrite.hpp>
 #include <catch2/internal/catch_config_counter.hpp>
+#include <catch2/internal/catch_config_prefix_messages.hpp>
 #include <catch2/internal/catch_config_static_analysis_support.hpp>
 #include <catch2/internal/catch_config_uncaught_exceptions.hpp>
 #include <catch2/internal/catch_config_wchar.hpp>
