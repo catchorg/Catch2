@@ -26,7 +26,8 @@ with the same name.
 
 ## Prefixing Catch macros
 
-    CATCH_CONFIG_PREFIX_ALL
+    CATCH_CONFIG_PREFIX_ALL       // Prefix all macros with CATCH_
+    CATCH_CONFIG_PREFIX_MESSAGES  // Prefix only INFO, UNSCOPED_INFO, WARN and CAPTURE
 
 To keep test code clean and uncluttered Catch uses short macro names (e.g. ```TEST_CASE``` and ```REQUIRE```). Occasionally these may conflict with identifiers from platform headers or the system under test. In this case the above identifier can be defined. This will cause all the Catch user macros to be prefixed with ```CATCH_``` (e.g. ```CATCH_TEST_CASE``` and ```CATCH_REQUIRE```).
 

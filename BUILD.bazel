@@ -49,6 +49,7 @@ expand_template(
         "#cmakedefine CATCH_CONFIG_NOSTDOUT": "",
         "#cmakedefine CATCH_CONFIG_POSIX_SIGNALS": "",
         "#cmakedefine CATCH_CONFIG_PREFIX_ALL": "",
+        "#cmakedefine CATCH_CONFIG_PREFIX_MESSAGES": "",
         "#cmakedefine CATCH_CONFIG_SHARED_LIBRARY": "",
         "#cmakedefine CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT": "",
         "#cmakedefine CATCH_CONFIG_USE_ASYNC": "",
