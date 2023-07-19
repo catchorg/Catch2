@@ -11,7 +11,23 @@
 #include <catch2/internal/catch_test_failure_exception.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
+#include <exception>
+
 namespace Catch {
+
+    namespace {
+        static std::string tryTranslators(
+            std::vector<
+                Detail::unique_ptr<IExceptionTranslator const>> const& translators ) {
+            if ( translators.empty() ) {
+                std::rethrow_exception( std::current_exception() );
+            } else {
+                return translators[0]->translate( translators.begin() + 1,
+                                                  translators.end() );
+            }
+        }
+
+    }
 
     ExceptionTranslatorRegistry::~ExceptionTranslatorRegistry() {
     }
@@ -37,11 +53,14 @@ namespace Catch {
         // First we try user-registered translators. If none of them can
         // handle the exception, it will be rethrown handled by our defaults.
         try {
-            return tryTranslators();
+            return tryTranslators(m_translators);
         }
         // To avoid having to handle TFE explicitly everywhere, we just
         // rethrow it so that it goes back up the caller.
         catch( TestFailureException& ) {
+            std::rethrow_exception(std::current_exception());
+        }
+        catch( TestSkipException& ) {
             std::rethrow_exception(std::current_exception());
         }
         catch( std::exception const& ex ) {
@@ -58,23 +77,10 @@ namespace Catch {
         }
     }
 
-    std::string ExceptionTranslatorRegistry::tryTranslators() const {
-        if (m_translators.empty()) {
-            std::rethrow_exception(std::current_exception());
-        } else {
-            return m_translators[0]->translate(m_translators.begin() + 1, m_translators.end());
-        }
-    }
-
 #else // ^^ Exceptions are enabled // Exceptions are disabled vv
     std::string ExceptionTranslatorRegistry::translateActiveException() const {
         CATCH_INTERNAL_ERROR("Attempted to translate active exception under CATCH_CONFIG_DISABLE_EXCEPTIONS!");
     }
-
-    std::string ExceptionTranslatorRegistry::tryTranslators() const {
-        CATCH_INTERNAL_ERROR("Attempted to use exception translators under CATCH_CONFIG_DISABLE_EXCEPTIONS!");
-    }
 #endif
-
 
 }

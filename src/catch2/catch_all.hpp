@@ -54,6 +54,7 @@
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_config_android_logwrite.hpp>
 #include <catch2/internal/catch_config_counter.hpp>
+#include <catch2/internal/catch_config_static_analysis_support.hpp>
 #include <catch2/internal/catch_config_uncaught_exceptions.hpp>
 #include <catch2/internal/catch_config_wchar.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
@@ -70,6 +71,7 @@
 #include <catch2/internal/catch_fatal_condition_handler.hpp>
 #include <catch2/internal/catch_floating_point_helpers.hpp>
 #include <catch2/internal/catch_getenv.hpp>
+#include <catch2/internal/catch_is_permutation.hpp>
 #include <catch2/internal/catch_istream.hpp>
 #include <catch2/internal/catch_lazy_expr.hpp>
 #include <catch2/internal/catch_leak_detector.hpp>
@@ -85,6 +87,7 @@
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_polyfills.hpp>
 #include <catch2/internal/catch_preprocessor.hpp>
+#include <catch2/internal/catch_preprocessor_internal_stringify.hpp>
 #include <catch2/internal/catch_preprocessor_remove_parens.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
 #include <catch2/internal/catch_random_seed_generation.hpp>
@@ -110,6 +113,7 @@
 #include <catch2/internal/catch_test_failure_exception.hpp>
 #include <catch2/internal/catch_test_macro_impl.hpp>
 #include <catch2/internal/catch_test_registry.hpp>
+#include <catch2/internal/catch_test_run_info.hpp>
 #include <catch2/internal/catch_test_spec_parser.hpp>
 #include <catch2/internal/catch_textflow.hpp>
 #include <catch2/internal/catch_to_string.hpp>

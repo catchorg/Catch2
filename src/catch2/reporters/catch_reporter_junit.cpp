@@ -33,6 +33,8 @@ namespace Catch {
             gmtime_s(&timeInfo, &rawtime);
 #elif defined (CATCH_PLATFORM_PLAYSTATION)
             gmtime_s(&rawtime, &timeInfo);
+#elif defined (__IAR_SYSTEMS_ICC__)
+            timeInfo = *std::gmtime(&rawtime);
 #else
             gmtime_r(&rawtime, &timeInfo);
 #endif
@@ -132,6 +134,7 @@ namespace Catch {
         xml.writeAttribute( "name"_sr, stats.runInfo.name );
         xml.writeAttribute( "errors"_sr, unexpectedExceptions );
         xml.writeAttribute( "failures"_sr, stats.totals.assertions.failed-unexpectedExceptions );
+        xml.writeAttribute( "skipped"_sr, stats.totals.assertions.skipped );
         xml.writeAttribute( "tests"_sr, stats.totals.assertions.total() );
         xml.writeAttribute( "hostname"_sr, "tbd"_sr ); // !TBD
         if( m_config->showDurations() == ShowDurations::Never )
@@ -244,7 +247,8 @@ namespace Catch {
 
     void JunitReporter::writeAssertion( AssertionStats const& stats ) {
         AssertionResult const& result = stats.assertionResult;
-        if( !result.isOk() ) {
+        if ( !result.isOk() ||
+             result.getResultType() == ResultWas::ExplicitSkip ) {
             std::string elementName;
             switch( result.getResultType() ) {
                 case ResultWas::ThrewException:
@@ -256,7 +260,9 @@ namespace Catch {
                 case ResultWas::DidntThrowException:
                     elementName = "failure";
                     break;
-
+                case ResultWas::ExplicitSkip:
+                    elementName = "skipped";
+                    break;
                 // We should never see these here:
                 case ResultWas::Info:
                 case ResultWas::Warning:
@@ -274,7 +280,9 @@ namespace Catch {
             xml.writeAttribute( "type"_sr, result.getTestMacroName() );
 
             ReusableStringStream rss;
-            if (stats.totals.assertions.total() > 0) {
+            if ( result.getResultType() == ResultWas::ExplicitSkip ) {
+                rss << "SKIPPED\n";
+            } else {
                 rss << "FAILED" << ":\n";
                 if (result.hasExpression()) {
                     rss << "  ";
@@ -285,11 +293,9 @@ namespace Catch {
                     rss << "with expansion:\n";
                     rss << TextFlow::Column(result.getExpandedExpression()).indent(2) << '\n';
                 }
-            } else {
-                rss << '\n';
             }
 
-            if( !result.getMessage().empty() )
+            if( result.hasMessage() )
                 rss << result.getMessage() << '\n';
             for( auto const& msg : stats.infoMessages )
                 if( msg.type == ResultWas::Info )

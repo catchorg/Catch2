@@ -16,6 +16,7 @@
 #include <catch2/generators/catch_generators_adapters.hpp>
 #include <catch2/generators/catch_generators_random.hpp>
 #include <catch2/generators/catch_generators_range.hpp>
+#include <catch2/generators/catch_generator_exception.hpp>
 
 // Tests of generator implementation details
 TEST_CASE("Generators internals", "[generators][internals]") {
@@ -411,6 +412,7 @@ TEST_CASE("GENERATE handles function (pointers)", "[generators][compilation][app
 
 TEST_CASE("GENERATE decays arrays", "[generators][compilation][approvals]") {
     auto str = GENERATE("abc", "def", "gh");
+    (void)str;
     STATIC_REQUIRE(std::is_same<decltype(str), const char*>::value);
 }
 
@@ -533,4 +535,13 @@ TEST_CASE( "Random generators can be seeded", "[generators][approvals]" ) {
             rng2.next();
         }
     }
+}
+
+TEST_CASE("Filter generator throws exception for empty generator",
+          "[generators]") {
+    using namespace Catch::Generators;
+
+    REQUIRE_THROWS_AS(
+        filter( []( int ) { return false; }, value( 3 ) ),
+        Catch::GeneratorException );
 }

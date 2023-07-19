@@ -12,7 +12,6 @@
 #include <catch2/catch_config.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
-#include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_list.hpp>
@@ -164,7 +163,7 @@ namespace {
                       std::vector<std::string>& recorder,
                       Catch::IConfig const* config ):
             EventListenerBase( config ),
-            m_witness( witness ),
+            m_witness( CATCH_MOVE(witness) ),
             m_recorder( recorder )
         {}
 
@@ -182,7 +181,7 @@ namespace {
                       std::vector<std::string>& recorder,
                       Catch::ReporterConfig&& config ):
             StreamingReporterBase( CATCH_MOVE(config) ),
-            m_witness( witness ),
+            m_witness( CATCH_MOVE(witness) ),
             m_recorder( recorder )
         {}
 

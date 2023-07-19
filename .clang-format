@@ -4,16 +4,15 @@ Standard: c++14
 
 # Note that we cannot use IncludeIsMainRegex functionality, because it
 # does not support includes in angle brackets (<>)
-SortIncludes: True
+SortIncludes: true
 IncludeBlocks: Regroup
 IncludeCategories:
-  - Regex: '<catch2/.*\.hpp>'
+  - Regex: <catch2/.*\.hpp>
     Priority: 1
-  - Regex: '<.*/.*\.hpp>'
+  - Regex: <.*/.*\.hpp>
     Priority: 2
-  - Regex: '<.*>'
+  - Regex: <.*>
     Priority: 3
-
 
 AllowShortBlocksOnASingleLine: Always
 AllowShortEnumsOnASingleLine: false
@@ -21,24 +20,26 @@ AllowShortFunctionsOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: WithoutElse
 AllowShortLambdasOnASingleLine: Inline
 
-AccessModifierOffset: '-4'
+AccessModifierOffset: "-4"
 AlignEscapedNewlines: Left
-AllowAllConstructorInitializersOnNextLine: 'true'
-BinPackArguments: 'false'
-BinPackParameters: 'false'
+AllowAllConstructorInitializersOnNextLine: "true"
+BinPackArguments: "false"
+BinPackParameters: "false"
 BreakConstructorInitializers: AfterColon
-ConstructorInitializerAllOnOneLineOrOnePerLine: 'true'
-DerivePointerAlignment: 'false'
-FixNamespaceComments: 'true'
-IndentCaseLabels: 'false'
+ConstructorInitializerAllOnOneLineOrOnePerLine: "true"
+DerivePointerAlignment: "false"
+FixNamespaceComments: "true"
+IndentCaseLabels: "false"
 IndentPPDirectives: AfterHash
-IndentWidth: '4'
+IndentWidth: "4"
 NamespaceIndentation: All
 PointerAlignment: Left
-SpaceBeforeCtorInitializerColon: 'false'
-SpaceInEmptyParentheses: 'false'
-SpacesInParentheses: 'true'
-TabWidth: '4'
+SpaceBeforeCtorInitializerColon: "false"
+SpaceInEmptyParentheses: "false"
+SpacesInParentheses: "true"
+TabWidth: "4"
 UseTab: Never
-
-...
+AlwaysBreakTemplateDeclarations: Yes
+SpaceAfterTemplateKeyword: true
+SortUsingDeclarations: true
+ReflowComments: true

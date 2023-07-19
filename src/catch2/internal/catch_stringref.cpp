@@ -17,10 +17,6 @@ namespace Catch {
     : StringRef( rawChars, std::strlen(rawChars) )
     {}
 
-    auto StringRef::operator == ( StringRef other ) const noexcept -> bool {
-        return m_size == other.m_size
-            && (std::memcmp( m_start, other.m_start, m_size ) == 0);
-    }
 
     bool StringRef::operator<(StringRef rhs) const noexcept {
         if (m_size < rhs.m_size) {

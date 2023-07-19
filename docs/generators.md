@@ -134,7 +134,7 @@ type, making their usage much nicer. These are
 * `map<T>(func, GeneratorWrapper<U>&&)` for `MapGenerator<T, U, Func>` (map `U` to `T`)
 * `chunk(chunk-size, GeneratorWrapper<T>&&)` for `ChunkGenerator<T>`
 * `random(IntegerOrFloat a, IntegerOrFloat b)` for `RandomIntegerGenerator` or `RandomFloatGenerator`
-* `range(Arithemtic start, Arithmetic end)` for `RangeGenerator<Arithmetic>` with a step size of `1`
+* `range(Arithmetic start, Arithmetic end)` for `RangeGenerator<Arithmetic>` with a step size of `1`
 * `range(Arithmetic start, Arithmetic end, Arithmetic step)` for `RangeGenerator<Arithmetic>` with a custom step size
 * `from_range(InputIterator from, InputIterator to)` for `IteratorGenerator<T>`
 * `from_range(Container const&)` for `IteratorGenerator<T>`
@@ -205,15 +205,37 @@ struct IGenerator : GeneratorUntypedBase {
     // Precondition:
     // The generator is either freshly constructed or the last call to next() returned true
     virtual T const& get() const = 0;
+
+    // Returns user-friendly string showing the current generator element
+    // Does not have to be overridden, IGenerator provides default implementation
+    virtual std::string stringifyImpl() const;
 };
 ```
 
 However, to be able to use your custom generator inside `GENERATE`, it
 will need to be wrapped inside a `GeneratorWrapper<T>`.
 `GeneratorWrapper<T>` is a value wrapper around a
-`std::unique_ptr<IGenerator<T>>`.
+`Catch::Detail::unique_ptr<IGenerator<T>>`.
 
 For full example of implementing your own generator, look into Catch2's
 examples, specifically
 [Generators: Create your own generator](../examples/300-Gen-OwnGenerator.cpp).
 
+
+### Handling empty generators
+
+The generator interface assumes that a generator always has at least one
+element. This is not always true, e.g. if the generator depends on an external
+datafile, the file might be missing.
+
+There are two ways to handle this, depending on whether you want this
+to be an error or not.
+
+ * If empty generator **is** an error, throw an exception in constructor.
+ * If empty generator **is not** an error, use the [`SKIP`](skipping-passing-failing.md#skipping-test-cases-at-runtime) in constructor.
+
+
+
+---
+
+[Home](Readme.md#top)

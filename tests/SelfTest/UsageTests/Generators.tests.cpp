@@ -261,6 +261,10 @@ TEST_CASE("Copy and then generate a range", "[generators]") {
     }
 }
 
+#if defined( __clang__ )
+#    pragma clang diagnostic pop
+#endif
+
 TEST_CASE("#1913 - GENERATE inside a for loop should not keep recreating the generator", "[regression][generators]") {
     static int counter = 0;
     for (int i = 0; i < 3; ++i) {
@@ -277,6 +281,33 @@ TEST_CASE("#1913 - GENERATEs can share a line", "[regression][generators]") {
     REQUIRE(i != j);
 }
 
-#if defined(__clang__)
-#pragma clang diagnostic pop
-#endif
+namespace {
+    class test_generator : public Catch::Generators::IGenerator<int> {
+    public:
+        [[noreturn]] explicit test_generator() {
+            // removing the following line will cause the program to terminate
+            // gracefully.
+            throw Catch::GeneratorException( "failure to init" );
+        }
+
+        auto get() const -> int const& override {
+            static constexpr int value = 1;
+            return value;
+        }
+
+        auto next() -> bool override { return false; }
+    };
+
+    static auto make_test_generator()
+        -> Catch::Generators::GeneratorWrapper<int> {
+        return { new test_generator() };
+    }
+
+} // namespace
+
+TEST_CASE( "#2615 - Throwing in constructor generator fails test case but does not abort", "[!shouldfail]" ) {
+    // this should fail the test case, but not abort the application
+    auto sample = GENERATE( make_test_generator() );
+    // this assertion shouldn't trigger
+    REQUIRE( sample == 0 );
+}

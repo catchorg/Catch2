@@ -18,6 +18,8 @@
 #ifndef CATCH_CONFIG_COUNTER_HPP_INCLUDED
 #define CATCH_CONFIG_COUNTER_HPP_INCLUDED
 
+#include <catch2/catch_user_config.hpp>
+
 #if ( !defined(__JETBRAINS_IDE__) || __JETBRAINS_IDE__ >= 20170300L )
     #define CATCH_INTERNAL_CONFIG_COUNTER
 #endif

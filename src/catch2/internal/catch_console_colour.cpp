@@ -85,7 +85,7 @@ namespace Catch {
     namespace {
         //! A do-nothing implementation of colour, used as fallback for unknown
         //! platforms, and when the user asks to deactivate all colours.
-        class NoColourImpl : public ColourImpl {
+        class NoColourImpl final : public ColourImpl {
         public:
             NoColourImpl( IStream* stream ): ColourImpl( stream ) {}
 
@@ -103,7 +103,7 @@ namespace Catch {
 namespace Catch {
 namespace {
 
-    class Win32ColourImpl : public ColourImpl {
+    class Win32ColourImpl final : public ColourImpl {
     public:
         Win32ColourImpl(IStream* stream):
             ColourImpl(stream) {
@@ -169,7 +169,7 @@ namespace {
 namespace Catch {
 namespace {
 
-    class ANSIColourImpl : public ColourImpl {
+    class ANSIColourImpl final : public ColourImpl {
     public:
         ANSIColourImpl( IStream* stream ): ColourImpl( stream ) {}
 

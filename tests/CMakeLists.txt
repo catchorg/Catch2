@@ -77,6 +77,7 @@ endif(MSVC) #Temporary workaround
 # Please keep these ordered alphabetically
 set(TEST_SOURCES
         ${SELF_TEST_DIR}/TestRegistrations.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/Algorithms.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Clara.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/CmdLine.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/CmdLineHelpers.tests.cpp
@@ -116,6 +117,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/UsageTests/Generators.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Message.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Misc.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/Skip.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringByte.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringChrono.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringGeneral.tests.cpp
@@ -133,6 +135,7 @@ set(TEST_SOURCES
 
 set(TEST_HEADERS
   ${SELF_TEST_DIR}/helpers/parse_test_spec.hpp
+  ${SELF_TEST_DIR}/helpers/range_test_helpers.hpp
   ${SELF_TEST_DIR}/helpers/type_with_lit_0_comparisons.hpp
 )
 
@@ -270,6 +273,10 @@ set_tests_properties(TestSpecs::NoMatchedTestsFail
 )
 add_test(NAME TestSpecs::OverrideFailureWithNoMatchedTests
   COMMAND $<TARGET_FILE:SelfTest> "___nonexistent_test___" --allow-running-no-tests
+)
+
+add_test(NAME TestSpecs::OverrideAllSkipFailure
+  COMMAND $<TARGET_FILE:SelfTest> "tests can be skipped dynamically at runtime" --allow-running-no-tests
 )
 
 add_test(NAME TestSpecs::NonMatchingTestSpecIsRoundTrippable
@@ -613,6 +620,18 @@ if (CATCH_ENABLE_CONFIGURE_TESTS)
         )
 
     endforeach()
+endif()
+
+if (CATCH_ENABLE_CMAKE_HELPER_TESTS)
+    add_test(NAME "CMakeHelper::DiscoverTests"
+      COMMAND
+        "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/TestScripts/DiscoverTests/VerifyRegistration.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
+    )
+    set_tests_properties("CMakeHelper::DiscoverTests"
+      PROPERTIES
+        COST 240
+        LABELS "uses-python"
+    )
 endif()
 
 foreach (reporterName # "Automake" - the simple .trs format does not support any kind of comments/metadata

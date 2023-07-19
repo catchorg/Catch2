@@ -23,6 +23,7 @@ namespace Catch {
         std::uint64_t passed = 0;
         std::uint64_t failed = 0;
         std::uint64_t failedButOk = 0;
+        std::uint64_t skipped = 0;
     };
 
     struct Totals {

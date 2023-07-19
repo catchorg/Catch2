@@ -8,7 +8,6 @@
 #include <catch2/internal/catch_test_registry.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/catch_test_case_info.hpp>
-#include <catch2/internal/catch_test_case_registry_impl.hpp>
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
@@ -17,9 +16,10 @@
 #include <iterator>
 
 namespace Catch {
+    ITestInvoker::~ITestInvoker() = default;
 
     namespace {
-        StringRef extractClassName( StringRef classOrMethodName ) {
+        static StringRef extractClassName( StringRef classOrMethodName ) {
             if ( !startsWith( classOrMethodName, '&' ) ) {
                 return classOrMethodName;
             }
@@ -46,6 +46,18 @@ namespace Catch {
                 static_cast<std::size_t>( startIdx ),
                 static_cast<std::size_t>( classNameSize ) );
         }
+
+        class TestInvokerAsFunction final : public ITestInvoker {
+            using TestType = void ( * )();
+            TestType m_testAsFunction;
+
+        public:
+            TestInvokerAsFunction( TestType testAsFunction ) noexcept:
+                m_testAsFunction( testAsFunction ) {}
+
+            void invoke() const override { m_testAsFunction(); }
+        };
+
     } // namespace
 
     Detail::unique_ptr<ITestInvoker> makeTestInvoker( void(*testAsFunction)() ) {

@@ -12,6 +12,8 @@ namespace Catch {
 
     //! Used to signal that an assertion macro failed
     struct TestFailureException{};
+    //! Used to signal that the remainder of a test should be skipped
+    struct TestSkipException {};
 
     /**
      * Outlines throwing of `TestFailureException` into a single TU
@@ -19,6 +21,13 @@ namespace Catch {
      * Also handles `CATCH_CONFIG_DISABLE_EXCEPTIONS` for callers.
      */
     [[noreturn]] void throw_test_failure_exception();
+
+    /**
+     * Outlines throwing of `TestSkipException` into a single TU
+     *
+     * Also handles `CATCH_CONFIG_DISABLE_EXCEPTIONS` for callers.
+     */
+    [[noreturn]] void throw_test_skip_exception();
 
 } // namespace Catch
 

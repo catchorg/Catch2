@@ -10,14 +10,11 @@
 #ifndef CATCH_SAMPLE_ANALYSIS_HPP_INCLUDED
 #define CATCH_SAMPLE_ANALYSIS_HPP_INCLUDED
 
-#include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/catch_estimate.hpp>
 #include <catch2/benchmark/catch_outlier_classification.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <algorithm>
 #include <vector>
-#include <iterator>
 
 namespace Catch {
     namespace Benchmark {
@@ -33,7 +30,9 @@ namespace Catch {
             operator SampleAnalysis<Duration2>() const {
                 std::vector<Duration2> samples2;
                 samples2.reserve(samples.size());
-                std::transform(samples.begin(), samples.end(), std::back_inserter(samples2), [](Duration d) { return Duration2(d); });
+                for (auto const& d : samples) {
+                    samples2.push_back(Duration2(d));
+                }
                 return {
                     CATCH_MOVE(samples2),
                     mean,

@@ -8,7 +8,6 @@
 #ifndef CATCH_REPORTER_STREAMING_BASE_HPP_INCLUDED
 #define CATCH_REPORTER_STREAMING_BASE_HPP_INCLUDED
 
-#include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/reporters/catch_reporter_common_base.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 

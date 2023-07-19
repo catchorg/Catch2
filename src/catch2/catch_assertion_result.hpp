@@ -35,7 +35,7 @@ namespace Catch {
     class AssertionResult {
     public:
         AssertionResult() = delete;
-        AssertionResult( AssertionInfo const& info, AssertionResultData const& data );
+        AssertionResult( AssertionInfo const& info, AssertionResultData&& data );
 
         bool isOk() const;
         bool succeeded() const;

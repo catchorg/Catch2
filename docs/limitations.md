@@ -88,8 +88,8 @@ because only one thread passes the `REQUIRE` macro and this is not
     REQUIRE(cnt == 16);
 ```
 
-Because C++11 provides the necessary tools to do this, we are planning
-to remove this limitation in the future.
+We currently do not plan to support thread-safe assertions.
+
 
 ### Process isolation in a test
 Catch does not support running tests in isolated (forked) processes. While this might in the future, the fact that Windows does not support forking and only allows full-on process creation and the desire to keep code as similar as possible across platforms, mean that this is likely to take significant development time, that is not currently available.

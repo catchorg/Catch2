@@ -105,6 +105,11 @@ public:
             printIssue("explicitly");
             printRemainingMessages(Colour::None);
             break;
+        case ResultWas::ExplicitSkip:
+            printResultType(Colour::Skip, "skipped"_sr);
+            printMessage();
+            printRemainingMessages();
+            break;
             // These cases are here to prevent compiler warnings
         case ResultWas::Unknown:
         case ResultWas::FailureBit:
@@ -166,7 +171,7 @@ private:
             return;
 
         const auto itEnd = messages.cend();
-        const auto N = static_cast<std::size_t>(std::distance(itMessage, itEnd));
+        const auto N = static_cast<std::size_t>(itEnd - itMessage);
 
         stream << colourImpl->guardColour( colour ) << " with "
                << pluralise( N, "message"_sr ) << ':';
@@ -187,7 +192,7 @@ private:
 private:
     std::ostream& stream;
     AssertionResult const& result;
-    std::vector<MessageInfo> messages;
+    std::vector<MessageInfo> const& messages;
     std::vector<MessageInfo>::const_iterator itMessage;
     bool printInfoMessages;
     ColourImpl* colourImpl;
@@ -220,7 +225,7 @@ private:
 
             // Drop out if result was successful and we're not printing those
             if( !m_config->includeSuccessfulResults() && result.isOk() ) {
-                if( result.getResultType() != ResultWas::Warning )
+                if( result.getResultType() != ResultWas::Warning && result.getResultType() != ResultWas::ExplicitSkip )
                     return;
                 printInfoMessages = false;
             }

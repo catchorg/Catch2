@@ -13,6 +13,8 @@
 
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_result_type.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/benchmark/detail/catch_benchmark_stats_fwd.hpp>
 
 namespace Catch {
 
@@ -30,19 +32,31 @@ namespace Catch {
     class IGeneratorTracker;
 
     struct BenchmarkInfo;
-    template <typename Duration = std::chrono::duration<double, std::nano>>
-    struct BenchmarkStats;
+
+    namespace Generators {
+        class GeneratorUntypedBase;
+        using GeneratorBasePtr = Catch::Detail::unique_ptr<GeneratorUntypedBase>;
+    }
+
 
     class IResultCapture {
     public:
         virtual ~IResultCapture();
 
-        virtual bool sectionStarted(    SectionInfo const& sectionInfo,
-                                        Counts& assertions ) = 0;
-        virtual void sectionEnded( SectionEndInfo const& endInfo ) = 0;
-        virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) = 0;
+        virtual void notifyAssertionStarted( AssertionInfo const& info ) = 0;
+        virtual bool sectionStarted( StringRef sectionName,
+                                     SourceLineInfo const& sectionLineInfo,
+                                     Counts& assertions ) = 0;
+        virtual void sectionEnded( SectionEndInfo&& endInfo ) = 0;
+        virtual void sectionEndedEarly( SectionEndInfo&& endInfo ) = 0;
 
-        virtual auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& = 0;
+        virtual IGeneratorTracker*
+        acquireGeneratorTracker( StringRef generatorName,
+                                 SourceLineInfo const& lineInfo ) = 0;
+        virtual IGeneratorTracker*
+        createGeneratorTracker( StringRef generatorName,
+                                SourceLineInfo lineInfo,
+                                Generators::GeneratorBasePtr&& generator ) = 0;
 
         virtual void benchmarkPreparing( StringRef name ) = 0;
         virtual void benchmarkStarting( BenchmarkInfo const& info ) = 0;
@@ -52,7 +66,7 @@ namespace Catch {
         virtual void pushScopedMessage( MessageInfo const& message ) = 0;
         virtual void popScopedMessage( MessageInfo const& message ) = 0;
 
-        virtual void emplaceUnscopedMessage( MessageBuilder const& builder ) = 0;
+        virtual void emplaceUnscopedMessage( MessageBuilder&& builder ) = 0;
 
         virtual void handleFatalErrorCondition( StringRef message ) = 0;
 
@@ -70,7 +84,7 @@ namespace Catch {
                     AssertionReaction& reaction ) = 0;
         virtual void handleUnexpectedInflightException
                 (   AssertionInfo const& info,
-                    std::string const& message,
+                    std::string&& message,
                     AssertionReaction& reaction ) = 0;
         virtual void handleIncomplete
                 (   AssertionInfo const& info ) = 0;

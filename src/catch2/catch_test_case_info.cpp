@@ -139,12 +139,20 @@ namespace Catch {
         for (size_t idx = 0; idx < originalTags.size(); ++idx) {
             auto c = originalTags[idx];
             if (c == '[') {
-                assert(!inTag);
+                CATCH_ENFORCE(
+                    !inTag,
+                    "Found '[' inside a tag while registering test case '"
+                        << _nameAndTags.name << "' at " << _lineInfo );
+
                 inTag = true;
                 tagStart = idx;
             }
             if (c == ']') {
-                assert(inTag);
+                CATCH_ENFORCE(
+                    inTag,
+                    "Found unmatched ']' while registering test case '"
+                        << _nameAndTags.name << "' at " << _lineInfo );
+
                 inTag = false;
                 tagEnd = idx;
                 assert(tagStart < tagEnd);
@@ -153,7 +161,11 @@ namespace Catch {
                 // it over to backing storage and actually reference the
                 // backing storage in the saved tags
                 StringRef tagStr = originalTags.substr(tagStart+1, tagEnd - tagStart - 1);
-                CATCH_ENFORCE(!tagStr.empty(), "Empty tags are not allowed");
+                CATCH_ENFORCE( !tagStr.empty(),
+                               "Found an empty tag while registering test case '"
+                                   << _nameAndTags.name << "' at "
+                                   << _lineInfo );
+
                 enforceNotReservedTag(tagStr, lineInfo);
                 properties |= parseSpecialTag(tagStr);
                 // When copying a tag to the backing storage, we need to
@@ -167,8 +179,12 @@ namespace Catch {
                 // the tags.
                 internalAppendTag(tagStr);
             }
-            (void)inTag; // Silence "set-but-unused" warning in release mode.
         }
+        CATCH_ENFORCE( !inTag,
+                       "Found an unclosed tag while registering test case '"
+                           << _nameAndTags.name << "' at " << _lineInfo );
+
+
         // Add [.] if relevant
         if (isHidden()) {
             internalAppendTag("."_sr);

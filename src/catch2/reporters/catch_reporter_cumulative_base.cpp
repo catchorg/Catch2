@@ -70,7 +70,8 @@ namespace Catch {
 
     void
     CumulativeReporterBase::sectionStarting( SectionInfo const& sectionInfo ) {
-        SectionStats incompleteStats( sectionInfo, Counts(), 0, false );
+        // We need a copy, because SectionStats expect to take ownership
+        SectionStats incompleteStats( SectionInfo(sectionInfo), Counts(), 0, false );
         SectionNode* node;
         if ( m_sectionStack.empty() ) {
             if ( !m_rootSection ) {

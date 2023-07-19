@@ -8,8 +8,6 @@
 #ifndef CATCH_REPORTER_REGISTRARS_HPP_INCLUDED
 #define CATCH_REPORTER_REGISTRARS_HPP_INCLUDED
 
-#include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
-#include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_unique_name.hpp>
@@ -36,7 +34,8 @@ namespace Catch {
         //! independent on the reporter's concrete type
         void registerReporterImpl( std::string const& name,
                                    IReporterFactoryPtr reporterPtr );
-
+        //! Actually registers the factory, independent on listener's concrete type
+        void registerListenerImpl( Detail::unique_ptr<EventListenerFactory> listenerFactory );
     } // namespace Detail
 
     class IEventListener;
@@ -97,7 +96,7 @@ namespace Catch {
 
     public:
         ListenerRegistrar(StringRef listenerName) {
-            getMutableRegistryHub().registerListener( Detail::make_unique<TypedListenerFactory>(listenerName) );
+            registerListenerImpl( Detail::make_unique<TypedListenerFactory>(listenerName) );
         }
     };
 }
@@ -118,7 +117,7 @@ namespace Catch {
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                               \
         namespace {                                                            \
             Catch::ListenerRegistrar<listenerType> INTERNAL_CATCH_UNIQUE_NAME( \
-                catch_internal_RegistrarFor )( #listenerType );                \
+                catch_internal_RegistrarFor )( #listenerType##_catch_sr );     \
         }                                                                      \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 

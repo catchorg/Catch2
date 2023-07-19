@@ -6,3 +6,6 @@ A string sent to stderr via clog
 Message from section one
 Message from section two
 loose text artifact
+a!
+b1!
+!

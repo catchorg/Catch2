@@ -8,6 +8,7 @@
 
 #include <catch2/reporters/catch_reporter_registrars.hpp>
 
+#include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 
 namespace Catch {
@@ -25,6 +26,11 @@ namespace Catch {
                 getMutableRegistryHub().registerStartupException();
             }
         }
+
+        void registerListenerImpl( Detail::unique_ptr<EventListenerFactory> listenerFactory ) {
+            getMutableRegistryHub().registerListener( CATCH_MOVE(listenerFactory) );
+        }
+
 
     } // namespace Detail
 } // namespace Catch

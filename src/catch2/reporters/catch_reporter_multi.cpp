@@ -114,7 +114,6 @@ namespace Catch {
         }
     }
 
-    // The return value indicates if the messages buffer should be cleared:
     void MultiReporter::assertionEnded( AssertionStats const& assertionStats ) {
         const bool reportByDefault =
             assertionStats.assertionResult.getResultType() != ResultWas::Ok ||

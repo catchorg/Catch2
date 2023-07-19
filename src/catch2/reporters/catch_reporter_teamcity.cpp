@@ -59,7 +59,8 @@ namespace Catch {
 
     void TeamCityReporter::assertionEnded(AssertionStats const& assertionStats) {
         AssertionResult const& result = assertionStats.assertionResult;
-        if (!result.isOk()) {
+        if ( !result.isOk() ||
+             result.getResultType() == ResultWas::ExplicitSkip ) {
 
             ReusableStringStream msg;
             if (!m_headerPrintedForThisSection)
@@ -83,6 +84,9 @@ namespace Catch {
                 break;
             case ResultWas::ExplicitFailure:
                 msg << "explicit failure";
+                break;
+            case ResultWas::ExplicitSkip:
+                msg << "explicit skip";
                 break;
 
                 // We shouldn't get here because of the isOk() test
@@ -111,18 +115,16 @@ namespace Catch {
                     "  " << result.getExpandedExpression() << '\n';
             }
 
-            if (currentTestCaseInfo->okToFail()) {
+            if ( result.getResultType() == ResultWas::ExplicitSkip ) {
+                m_stream << "##teamcity[testIgnored";
+            } else if ( currentTestCaseInfo->okToFail() ) {
                 msg << "- failure ignore as test marked as 'ok to fail'\n";
-                m_stream << "##teamcity[testIgnored"
-                    << " name='" << escape(currentTestCaseInfo->name) << '\''
-                    << " message='" << escape(msg.str()) << '\''
-                    << "]\n";
+                m_stream << "##teamcity[testIgnored";
             } else {
-                m_stream << "##teamcity[testFailed"
-                    << " name='" << escape(currentTestCaseInfo->name) << '\''
-                    << " message='" << escape(msg.str()) << '\''
-                    << "]\n";
+                m_stream << "##teamcity[testFailed";
             }
+            m_stream << " name='" << escape( currentTestCaseInfo->name ) << '\''
+                     << " message='" << escape( msg.str() ) << '\'' << "]\n";
         }
         m_stream.flush();
     }

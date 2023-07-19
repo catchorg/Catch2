@@ -29,13 +29,13 @@ jobs:
             build_type: Debug
             std: 14
             other_pkgs: g++-7
-            cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_BUILD_EXAMPLES=ON
+            cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_BUILD_EXAMPLES=ON -DCATCH_ENABLE_CMAKE_HELPER_TESTS=ON
           - cxx: g++-7
             build_description: Extras + Examples
             build_type: Release
             std: 14
             other_pkgs: g++-7
-            cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_BUILD_EXAMPLES=ON
+            cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_BUILD_EXAMPLES=ON -DCATCH_ENABLE_CMAKE_HELPER_TESTS=ON
 
           # Extras and examples with Clang-10
           - cxx: clang++-10
@@ -43,13 +43,13 @@ jobs:
             build_type: Debug
             std: 17
             other_pkgs: clang-10
-            cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_BUILD_EXAMPLES=ON
+            cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_BUILD_EXAMPLES=ON -DCATCH_ENABLE_CMAKE_HELPER_TESTS=ON
           - cxx: clang++-10
             build_description: Extras + Examples
             build_type: Release
             std: 17
             other_pkgs: clang-10
-            cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_BUILD_EXAMPLES=ON
+            cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_BUILD_EXAMPLES=ON -DCATCH_ENABLE_CMAKE_HELPER_TESTS=ON
 
           # Configure tests with Clang-10
           - cxx: clang++-10

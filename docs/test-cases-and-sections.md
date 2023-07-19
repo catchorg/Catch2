@@ -25,7 +25,8 @@ _section description_ can be used to provide long form description
 of a section while keeping the _section name_ short for use with the
 [`-c` command line parameter](command-line.md#specify-the-section-to-run).
 
-**Test names must be unique within the Catch executable.**
+**The combination of test names and tags must be unique within the Catch2
+executable.**
 
 For examples see the [Tutorial](tutorial.md#top)
 
@@ -68,7 +69,8 @@ All tag names beginning with non-alphanumeric characters are reserved by Catch. 
 
 * `[!nonportable]` - Indicates that behaviour may vary between platforms or compilers.
 
-* `[#<filename>]` - running with `-#` or `--filenames-as-tags` causes Catch to add the filename, prefixed with `#` (and with any extension stripped), as a tag to all contained tests, e.g. tests in testfile.cpp would all be tagged `[#testfile]`.
+* `[#<filename>]` - these tags are added to test cases when you run Catch2
+                    with [`-#` or `--filenames-as-tags`](command-line.md#filenames-as-tags).
 
 * `[@<alias>]` - tag aliases all begin with `@` (see below).
 
@@ -167,7 +169,11 @@ Other than the additional prefixes and the formatting in the console reporter th
 
 In addition to `TEST_CASE`s, Catch2 also supports test cases parametrised
 by types, in the form of `TEMPLATE_TEST_CASE`,
-`TEMPLATE_PRODUCT_TEST_CASE` and `TEMPLATE_LIST_TEST_CASE`.
+`TEMPLATE_PRODUCT_TEST_CASE` and `TEMPLATE_LIST_TEST_CASE`. These macros
+are defined in the `catch_template_test_macros.hpp` header, so compiling
+the code examples below also requires
+`#include <catch2/catch_template_test_macros.hpp>`.
+
 
 * **TEMPLATE_TEST_CASE(** _test name_ , _tags_,  _type1_, _type2_, ..., _typen_ **)**
 
@@ -289,7 +295,9 @@ TEMPLATE_LIST_TEST_CASE("Template test case with test types specified inside std
 In addition to [type parametrised test cases](#type-parametrised-test-cases) Catch2 also supports
 signature base parametrised test cases, in form of `TEMPLATE_TEST_CASE_SIG` and `TEMPLATE_PRODUCT_TEST_CASE_SIG`.
 These test cases have similar syntax like [type parametrised test cases](#type-parametrised-test-cases), with one
-additional positional argument which specifies the signature.
+additional positional argument which specifies the signature. These macros are defined in the
+`catch_template_test_macros.hpp` header, so compiling the code examples below also requires
+`#include <catch2/catch_template_test_macros.hpp>`.
 
 ### Signature
 Signature has some strict rules for these tests cases to work properly:

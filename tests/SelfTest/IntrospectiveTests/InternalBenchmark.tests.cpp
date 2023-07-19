@@ -22,6 +22,8 @@
 #include <catch2/benchmark/detail/catch_benchmark_function.hpp>
 #include <catch2/benchmark/detail/catch_estimate_clock.hpp>
 
+#include <numeric>
+
 namespace {
     struct manual_clock {
     public:
@@ -442,6 +444,6 @@ TEST_CASE("Failing benchmarks", "[!benchmark][.approvals]") {
 }
 
 TEST_CASE( "Failing benchmark respects should-fail",
-           "[!shouldfail][!benchmark][.approvals]" ) {
+           "[!shouldfail][!benchmark][approvals]" ) {
     BENCHMARK( "Asserting benchmark" ) { REQUIRE( 1 == 2 ); };
 }

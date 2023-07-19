@@ -7,6 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/catch_assertion_result.hpp>
 #include <catch2/internal/catch_reusable_string_stream.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
 
@@ -26,9 +27,9 @@ namespace Catch {
         return reconstructedExpression;
     }
 
-    AssertionResult::AssertionResult( AssertionInfo const& info, AssertionResultData const& data )
+    AssertionResult::AssertionResult( AssertionInfo const& info, AssertionResultData&& data )
     :   m_info( info ),
-        m_resultData( data )
+        m_resultData( CATCH_MOVE(data) )
     {}
 
     // Result was a success
@@ -67,16 +68,15 @@ namespace Catch {
     }
 
     std::string AssertionResult::getExpressionInMacro() const {
-        std::string expr;
-        if( m_info.macroName.empty() )
-            expr = static_cast<std::string>(m_info.capturedExpression);
-        else {
-            expr.reserve( m_info.macroName.size() + m_info.capturedExpression.size() + 4 );
-            expr += m_info.macroName;
-            expr += "( ";
-            expr += m_info.capturedExpression;
-            expr += " )";
+        if ( m_info.macroName.empty() ) {
+            return static_cast<std::string>( m_info.capturedExpression );
         }
+        std::string expr;
+        expr.reserve( m_info.macroName.size() + m_info.capturedExpression.size() + 4 );
+        expr += m_info.macroName;
+        expr += "( ";
+        expr += m_info.capturedExpression;
+        expr += " )";
         return expr;
     }
 

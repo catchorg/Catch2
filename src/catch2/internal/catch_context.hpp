@@ -15,38 +15,31 @@ namespace Catch {
     class IResultCapture;
     class IConfig;
 
-    class IContext {
-    public:
-        virtual ~IContext(); // = default
+    class Context {
+        IConfig const* m_config = nullptr;
+        IResultCapture* m_resultCapture = nullptr;
 
-        virtual IResultCapture* getResultCapture() = 0;
-        virtual IConfig const* getConfig() const = 0;
-    };
-
-    class IMutableContext : public IContext {
-    public:
-        ~IMutableContext() override; // = default
-        virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
-        virtual void setConfig( IConfig const* config ) = 0;
-
-    private:
-        CATCH_EXPORT static IMutableContext* currentContext;
-        friend IMutableContext& getCurrentMutableContext();
-        friend void cleanUpContext();
+        CATCH_EXPORT static Context* currentContext;
+        friend Context& getCurrentMutableContext();
+        friend Context const& getCurrentContext();
         static void createContext();
+        friend void cleanUpContext();
+
+    public:
+        IResultCapture* getResultCapture() const { return m_resultCapture; }
+        IConfig const* getConfig() const { return m_config; }
+        void setResultCapture( IResultCapture* resultCapture );
+        void setConfig( IConfig const* config );
     };
 
-    inline IMutableContext& getCurrentMutableContext()
-    {
-        if( !IMutableContext::currentContext )
-            IMutableContext::createContext();
-        // NOLINTNEXTLINE(clang-analyzer-core.uninitialized.UndefReturn)
-        return *IMutableContext::currentContext;
-    }
+    Context& getCurrentMutableContext();
 
-    inline IContext& getCurrentContext()
-    {
-        return getCurrentMutableContext();
+    inline Context const& getCurrentContext() {
+        // We duplicate the logic from `getCurrentMutableContext` here,
+        // to avoid paying the call overhead in debug mode.
+        if ( !Context::currentContext ) { Context::createContext(); }
+        // NOLINTNEXTLINE(clang-analyzer-core.uninitialized.UndefReturn)
+        return *Context::currentContext;
     }
 
     void cleanUpContext();

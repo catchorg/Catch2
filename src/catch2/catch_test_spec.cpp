@@ -6,6 +6,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/catch_test_spec.hpp>
+#include <catch2/interfaces/catch_interfaces_testcase.hpp>
+#include <catch2/internal/catch_test_case_registry_impl.hpp>
 #include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_test_case_info.hpp>
@@ -106,16 +108,18 @@ namespace Catch {
         return std::any_of( m_filters.begin(), m_filters.end(), [&]( Filter const& f ){ return f.matches( testCase ); } );
     }
 
-    TestSpec::Matches TestSpec::matchesByFilter( std::vector<TestCaseHandle> const& testCases, IConfig const& config ) const
-    {
-        Matches matches( m_filters.size() );
-        std::transform( m_filters.begin(), m_filters.end(), matches.begin(), [&]( Filter const& filter ){
+    TestSpec::Matches TestSpec::matchesByFilter( std::vector<TestCaseHandle> const& testCases, IConfig const& config ) const {
+        Matches matches;
+        matches.reserve( m_filters.size() );
+        for ( auto const& filter : m_filters ) {
             std::vector<TestCaseHandle const*> currentMatches;
-            for( auto const& test : testCases )
-                if( isThrowSafe( test, config ) && filter.matches( test.getTestCaseInfo() ) )
+            for ( auto const& test : testCases )
+                if ( isThrowSafe( test, config ) &&
+                     filter.matches( test.getTestCaseInfo() ) )
                     currentMatches.emplace_back( &test );
-            return FilterMatch{ extractFilterName(filter), currentMatches };
-        } );
+            matches.push_back(
+                FilterMatch{ extractFilterName( filter ), currentMatches } );
+        }
         return matches;
     }
 

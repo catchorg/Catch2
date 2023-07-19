@@ -10,7 +10,6 @@
 #ifndef CATCH_MEASURE_HPP_INCLUDED
 #define CATCH_MEASURE_HPP_INCLUDED
 
-#include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/detail/catch_complete_invoke.hpp>
 #include <catch2/benchmark/detail/catch_timing.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>

@@ -14,8 +14,8 @@
 using namespace Catch;
 
 namespace {
-Catch::TestCaseTracking::NameAndLocation makeNAL( std::string const& name ) {
-    return Catch::TestCaseTracking::NameAndLocation( name, Catch::SourceLineInfo("",0) );
+Catch::TestCaseTracking::NameAndLocationRef makeNAL( StringRef name ) {
+    return Catch::TestCaseTracking::NameAndLocationRef( name, Catch::SourceLineInfo("",0) );
 }
 }
 

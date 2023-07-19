@@ -20,4 +20,12 @@ namespace Catch {
 #endif
     }
 
+    void throw_test_skip_exception() {
+#if !defined( CATCH_CONFIG_DISABLE_EXCEPTIONS )
+        throw Catch::TestSkipException();
+#else
+        CATCH_ERROR( "Explicitly skipping tests during runtime requires exceptions" );
+#endif
+    }
+
 } // namespace Catch

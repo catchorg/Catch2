@@ -95,6 +95,9 @@ A C++ client library for Consul. Consul is a distributed tool for discovering an
 ### [Reactive-Extensions/ RxCpp](https://github.com/Reactive-Extensions/RxCpp)
 A library of algorithms for values-distributed-in-time.
 
+### [SFML](https://github.com/SFML/SFML)
+Simple and Fast Multimedia Library.
+
 ### [SOCI](https://github.com/SOCI/soci)
 The C++ Database Access Library.
 
@@ -109,6 +112,12 @@ A header-only TOML parser and serializer for modern C++.
 
 ### [Trompeloeil](https://github.com/rollbear/trompeloeil)
 A thread-safe header-only mocking framework for C++14.
+
+### [wxWidgets](https://www.wxwidgets.org/)
+Cross-Platform C++ GUI Library.
+
+### [xmlwrapp](https://github.com/vslavik/xmlwrapp)
+C++ XML parsing library using libxml2.
 
 ## Applications & Tools
 
@@ -137,7 +146,7 @@ Newsbeuter is an open-source RSS/Atom feed reader for text terminals.
 A 2D, Zombie, RPG game which is being made on our own engine.
 
 ### [raspigcd](https://github.com/pantadeusz/raspigcd)
-Low level CLI app and library for execution of GCODE on Raspberry Pi without any additional microcontrolers (just RPi + Stepsticks).
+Low level CLI app and library for execution of GCODE on Raspberry Pi without any additional microcontrollers (just RPi + Stepsticks).
 
 ### [SpECTRE](https://github.com/sxs-collaboration/spectre)
 SpECTRE is a code for multi-scale, multi-physics problems in astrophysics and gravitational physics.

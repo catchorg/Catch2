@@ -21,6 +21,7 @@ cmake_dependent_option(CATCH_ENABLE_COVERAGE "Generate coverage for codecov.io" 
 cmake_dependent_option(CATCH_ENABLE_WERROR "Enables Werror during build" ON "CATCH_DEVELOPMENT_BUILD" OFF)
 cmake_dependent_option(CATCH_BUILD_SURROGATES "Enable generating and building surrogate TUs for the main headers" OFF "CATCH_DEVELOPMENT_BUILD" OFF)
 cmake_dependent_option(CATCH_ENABLE_CONFIGURE_TESTS "Enable CMake configuration tests. WARNING: VERY EXPENSIVE" OFF "CATCH_DEVELOPMENT_BUILD" OFF)
+cmake_dependent_option(CATCH_ENABLE_CMAKE_HELPER_TESTS "Enable CMake helper tests. WARNING: VERY EXPENSIVE" OFF "CATCH_DEVELOPMENT_BUILD" OFF)
 
 
 # Catch2's build breaks if done in-tree. You probably should not build
@@ -31,7 +32,7 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 endif()
 
 project(Catch2
-  VERSION 3.2.1 # CML version placeholder, don't delete
+  VERSION 3.4.0 # CML version placeholder, don't delete
   LANGUAGES CXX
   # HOMEPAGE_URL is not supported until CMake version 3.12, which
   # we do not target yet.
@@ -148,6 +149,8 @@ if (NOT_SUBPROJECT)
             "extras/ParseAndAddCatchTests.cmake"
             "extras/Catch.cmake"
             "extras/CatchAddTests.cmake"
+            "extras/CatchShardTests.cmake"
+            "extras/CatchShardTestsImpl.cmake"
           DESTINATION
             ${CATCH_CMAKE_CONFIG_DESTINATION}
         )

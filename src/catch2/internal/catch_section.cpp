@@ -15,7 +15,7 @@ namespace Catch {
     Section::Section( SectionInfo&& info ):
         m_info( CATCH_MOVE( info ) ),
         m_sectionIncluded(
-            getResultCapture().sectionStarted( m_info, m_assertions ) ) {
+            getResultCapture().sectionStarted( m_info.name, m_info.lineInfo, m_assertions ) ) {
         // Non-"included" sections will not use the timing information
         // anyway, so don't bother with the potential syscall.
         if (m_sectionIncluded) {
@@ -23,13 +23,31 @@ namespace Catch {
         }
     }
 
+    Section::Section( SourceLineInfo const& _lineInfo,
+                      StringRef _name,
+                      const char* const ):
+        m_info( { "invalid", static_cast<std::size_t>( -1 ) }, std::string{} ),
+        m_sectionIncluded(
+            getResultCapture().sectionStarted( _name, _lineInfo, m_assertions ) ) {
+        // We delay initialization the SectionInfo member until we know
+        // this section needs it, so we avoid allocating std::string for name.
+        // We also delay timer start to avoid the potential syscall unless we
+        // will actually use the result.
+        if ( m_sectionIncluded ) {
+            m_info.name = static_cast<std::string>( _name );
+            m_info.lineInfo = _lineInfo;
+            m_timer.start();
+        }
+    }
+
     Section::~Section() {
         if( m_sectionIncluded ) {
-            SectionEndInfo endInfo{ m_info, m_assertions, m_timer.getElapsedSeconds() };
-            if( uncaught_exceptions() )
-                getResultCapture().sectionEndedEarly( endInfo );
-            else
-                getResultCapture().sectionEnded( endInfo );
+            SectionEndInfo endInfo{ CATCH_MOVE(m_info), m_assertions, m_timer.getElapsedSeconds() };
+            if ( uncaught_exceptions() ) {
+                getResultCapture().sectionEndedEarly( CATCH_MOVE(endInfo) );
+            } else {
+                getResultCapture().sectionEnded( CATCH_MOVE( endInfo ) );
+            }
         }
     }
 

@@ -11,6 +11,7 @@ Once you're up and running consider the following reference material.
 * [Logging macros](logging.md#top)
 * [Test cases and sections](test-cases-and-sections.md#top)
 * [Test fixtures](test-fixtures.md#top)
+* [Explicitly skipping, passing, and failing tests at runtime](skipping-passing-failing.md#top)
 * [Reporters (output customization)](reporters.md#top)
 * [Event Listeners](event-listeners.md#top)
 * [Data Generators (value parameterized tests)](generators.md#top)

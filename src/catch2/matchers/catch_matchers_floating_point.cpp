@@ -225,5 +225,17 @@ WithinRelMatcher WithinRel(float target) {
 }
 
 
-} // namespace Matchers
+
+bool IsNaNMatcher::match( double const& matchee ) const {
+    return std::isnan( matchee );
+}
+
+std::string IsNaNMatcher::describe() const {
+    using namespace std::string_literals;
+    return "is NaN"s;
+}
+
+IsNaNMatcher IsNaN() { return IsNaNMatcher(); }
+
+    } // namespace Matchers
 } // namespace Catch

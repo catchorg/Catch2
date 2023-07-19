@@ -10,15 +10,12 @@
 #ifndef CATCH_ANALYSE_HPP_INCLUDED
 #define CATCH_ANALYSE_HPP_INCLUDED
 
-#include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/catch_environment.hpp>
 #include <catch2/benchmark/catch_sample_analysis.hpp>
 #include <catch2/benchmark/detail/catch_stats.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <algorithm>
-#include <iterator>
 #include <vector>
 
 namespace Catch {
@@ -29,7 +26,9 @@ namespace Catch {
                 if (!cfg.benchmarkNoAnalysis()) {
                     std::vector<double> samples;
                     samples.reserve(static_cast<size_t>(last - first));
-                    std::transform(first, last, std::back_inserter(samples), [](Duration d) { return d.count(); });
+                    for (auto current = first; current != last; ++current) {
+                        samples.push_back( current->count() );
+                    }
 
                     auto analysis = Catch::Benchmark::Detail::analyse_samples(cfg.benchmarkConfidenceInterval(), cfg.benchmarkResamples(), samples.begin(), samples.end());
                     auto outliers = Catch::Benchmark::Detail::classify_outliers(samples.begin(), samples.end());
@@ -44,7 +43,10 @@ namespace Catch {
                     };
                     std::vector<Duration> samples2;
                     samples2.reserve(samples.size());
-                    std::transform(samples.begin(), samples.end(), std::back_inserter(samples2), [](double d) { return Duration(d); });
+                    for (auto s : samples) {
+                        samples2.push_back( Duration( s ) );
+                    }
+
                     return {
                         CATCH_MOVE(samples2),
                         wrap_estimate(analysis.mean),

@@ -48,11 +48,11 @@ def get_unapprovedResultsPath(baseName):
 
 langFilenameParser = re.compile(r'(.+\.[ch]pp)')
 filelocParser = re.compile(r'''
-    .*/
-    (.+\.[ch]pp)  # filename
-    (?::|\()      # : is starting separator between filename and line number on Linux, ( on Windows
-    ([0-9]*)      # line number
-    \)?           # Windows also has an ending separator, )
+    (?P<path_prefix>tests/SelfTest/(?:\w+/)*)  # We separate prefix and fname, so that
+    (?P<filename>\w+\.tests\.[ch]pp)           # we can keep only filename
+    (?::|\()                                   # Linux has : as separator between fname and line number, Windows uses (
+    (\d*)                                      # line number
+    \)?                                        # Windows also uses an ending separator, )
 ''', re.VERBOSE)
 lineNumberParser = re.compile(r' line="[0-9]*"')
 hexParser = re.compile(r'\b(0[xX][0-9a-fA-F]+)\b')
@@ -119,14 +119,11 @@ def filterLine(line, isCompact):
     line = normalizeFilepath(line)
 
     # strip source line numbers
-    m = filelocParser.match(line)
-    if m:
-        # note that this also strips directories, leaving only the filename
-        filename, lnum = m.groups()
-        lnum = ":<line number>" if lnum else ""
-        line = filename + lnum + line[m.end():]
-    else:
-        line = lineNumberParser.sub(" ", line)
+    # Note that this parser assumes an already normalized filepath from above,
+    # and might break terribly if it is moved around before the normalization.
+    line = filelocParser.sub('\g<filename>:<line number>', line)
+
+    line = lineNumberParser.sub(" ", line)
 
     if isCompact:
         line = line.replace(': FAILED', ': failed')

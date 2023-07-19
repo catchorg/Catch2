@@ -17,10 +17,10 @@ namespace Catch {
     // as well as
     //    << stuff +StreamEndStop
     struct StreamEndStop {
-        StringRef operator+() const { return StringRef(); }
+        constexpr StringRef operator+() const { return StringRef(); }
 
         template <typename T>
-        friend T const& operator+( T const& value, StreamEndStop ) {
+        constexpr friend T const& operator+( T const& value, StreamEndStop ) {
             return value;
         }
     };

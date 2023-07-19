@@ -59,7 +59,7 @@ namespace Catch {
                 // Calculates the length of the current line
                 void calcLength();
 
-                // Returns current indention width
+                // Returns current indentation width
                 size_t indentSize() const;
 
                 // Creates an indented and (optionally) suffixed string from

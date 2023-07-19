@@ -46,7 +46,7 @@ function(catch_add_sharded_tests TARGET)
     APPEND PROPERTY TEST_INCLUDE_FILES "${ctest_include_file}"
   )
 
-  set(shard_impl_script_file "${CMAKE_CURRENT_LIST_DIR}/CatchShardTestsImpl.cmake")
+  set(shard_impl_script_file "${_CATCH_DISCOVER_SHARD_TESTS_IMPL_SCRIPT}")
 
   add_custom_command(
     TARGET ${TARGET} POST_BUILD
@@ -64,3 +64,11 @@ function(catch_add_sharded_tests TARGET)
 
 
 endfunction()
+
+
+###############################################################################
+
+set(_CATCH_DISCOVER_SHARD_TESTS_IMPL_SCRIPT
+    ${CMAKE_CURRENT_LIST_DIR}/CatchShardTestsImpl.cmake
+  CACHE INTERNAL "Catch2 full path to CatchShardTestsImpl.cmake helper file"
+)

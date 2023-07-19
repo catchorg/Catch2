@@ -9,6 +9,7 @@
 # Please keep these ordered alphabetically
 self_test_sources = files(
   'SelfTest/helpers/parse_test_spec.cpp',
+  'SelfTest/IntrospectiveTests/Algorithms.tests.cpp',
   'SelfTest/IntrospectiveTests/Clara.tests.cpp',
   'SelfTest/IntrospectiveTests/CmdLine.tests.cpp',
   'SelfTest/IntrospectiveTests/CmdLineHelpers.tests.cpp',

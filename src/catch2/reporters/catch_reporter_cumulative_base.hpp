@@ -8,7 +8,6 @@
 #ifndef CATCH_REPORTER_CUMULATIVE_BASE_HPP_INCLUDED
 #define CATCH_REPORTER_CUMULATIVE_BASE_HPP_INCLUDED
 
-#include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/reporters/catch_reporter_common_base.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
@@ -125,7 +124,7 @@ namespace Catch {
         void skipTest(TestCaseInfo const&) override {}
 
     protected:
-        //! Should the cumulative base store the assertion expansion for succesful assertions?
+        //! Should the cumulative base store the assertion expansion for successful assertions?
         bool m_shouldStoreSuccesfulAssertions = true;
         //! Should the cumulative base store the assertion expansion for failed assertions?
         bool m_shouldStoreFailedAssertions = true;

@@ -22,10 +22,49 @@ namespace TestCaseTracking {
         std::string name;
         SourceLineInfo location;
 
-        NameAndLocation( std::string const& _name, SourceLineInfo const& _location );
+        NameAndLocation( std::string&& _name, SourceLineInfo const& _location );
         friend bool operator==(NameAndLocation const& lhs, NameAndLocation const& rhs) {
-            return lhs.name == rhs.name
-                && lhs.location == rhs.location;
+            // This is a very cheap check that should have a very high hit rate.
+            // If we get to SourceLineInfo::operator==, we will redo it, but the
+            // cost of repeating is trivial at that point (we will be paying
+            // multiple strcmp/memcmps at that point).
+            if ( lhs.location.line != rhs.location.line ) { return false; }
+            return lhs.name == rhs.name && lhs.location == rhs.location;
+        }
+        friend bool operator!=(NameAndLocation const& lhs,
+                               NameAndLocation const& rhs) {
+            return !( lhs == rhs );
+        }
+    };
+
+    /**
+     * This is a variant of `NameAndLocation` that does not own the name string
+     *
+     * This avoids extra allocations when trying to locate a tracker by its
+     * name and location, as long as we make sure that trackers only keep
+     * around the owning variant.
+     */
+    struct NameAndLocationRef {
+        StringRef name;
+        SourceLineInfo location;
+
+        constexpr NameAndLocationRef( StringRef name_,
+                                      SourceLineInfo location_ ):
+            name( name_ ), location( location_ ) {}
+
+        friend bool operator==( NameAndLocation const& lhs,
+                                NameAndLocationRef const& rhs ) {
+            // This is a very cheap check that should have a very high hit rate.
+            // If we get to SourceLineInfo::operator==, we will redo it, but the
+            // cost of repeating is trivial at that point (we will be paying
+            // multiple strcmp/memcmps at that point).
+            if ( lhs.location.line != rhs.location.line ) { return false; }
+            return StringRef( lhs.name ) == rhs.name &&
+                   lhs.location == rhs.location;
+        }
+        friend bool operator==( NameAndLocationRef const& lhs,
+                                NameAndLocation const& rhs ) {
+            return rhs == lhs;
         }
     };
 
@@ -53,8 +92,8 @@ namespace TestCaseTracking {
         CycleState m_runState = NotStarted;
 
     public:
-        ITracker( NameAndLocation const& nameAndLoc, ITracker* parent ):
-            m_nameAndLocation( nameAndLoc ),
+        ITracker( NameAndLocation&& nameAndLoc, ITracker* parent ):
+            m_nameAndLocation( CATCH_MOVE(nameAndLoc) ),
             m_parent( parent )
         {}
 
@@ -74,8 +113,10 @@ namespace TestCaseTracking {
 
         //! Returns true if tracker run to completion (successfully or not)
         virtual bool isComplete() const = 0;
-        //! Returns true if tracker run to completion succesfully
-        bool isSuccessfullyCompleted() const;
+        //! Returns true if tracker run to completion successfully
+        bool isSuccessfullyCompleted() const {
+            return m_runState == CompletedSuccessfully;
+        }
         //! Returns true if tracker has started but hasn't been completed
         bool isOpen() const;
         //! Returns true iff tracker has started
@@ -93,7 +134,7 @@ namespace TestCaseTracking {
          *
          * Returns nullptr if not found.
          */
-        ITracker* findChild( NameAndLocation const& nameAndLocation );
+        ITracker* findChild( NameAndLocationRef const& nameAndLocation );
         //! Have any children been added?
         bool hasChildren() const {
             return !m_children.empty();
@@ -134,13 +175,15 @@ namespace TestCaseTracking {
     public:
 
         ITracker& startRun();
-        void endRun();
 
-        void startCycle();
+        void startCycle() {
+            m_currentTracker = m_rootTracker.get();
+            m_runState = Executing;
+        }
         void completeCycle();
 
         bool completedCycle() const;
-        ITracker& currentTracker();
+        ITracker& currentTracker() { return *m_currentTracker; }
         void setCurrentTracker( ITracker* tracker );
     };
 
@@ -150,7 +193,7 @@ namespace TestCaseTracking {
         TrackerContext& m_ctx;
 
     public:
-        TrackerBase( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent );
+        TrackerBase( NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent );
 
         bool isComplete() const override;
 
@@ -166,22 +209,26 @@ namespace TestCaseTracking {
 
     class SectionTracker : public TrackerBase {
         std::vector<StringRef> m_filters;
-        std::string m_trimmed_name;
+        // Note that lifetime-wise we piggy back off the name stored in the `ITracker` parent`.
+        // Currently it allocates owns the name, so this is safe. If it is later refactored
+        // to not own the name, the name still has to outlive the `ITracker` parent, so
+        // this should still be safe.
+        StringRef m_trimmed_name;
     public:
-        SectionTracker( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent );
+        SectionTracker( NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent );
 
         bool isSectionTracker() const override;
 
         bool isComplete() const override;
 
-        static SectionTracker& acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation );
+        static SectionTracker& acquire( TrackerContext& ctx, NameAndLocationRef const& nameAndLocation );
 
         void tryOpen();
 
         void addInitialFilters( std::vector<std::string> const& filters );
         void addNextFilters( std::vector<StringRef> const& filters );
         //! Returns filters active in this tracker
-        std::vector<StringRef> const& getFilters() const;
+        std::vector<StringRef> const& getFilters() const { return m_filters; }
         //! Returns whitespace-trimmed name of the tracked section
         StringRef trimmedName() const;
     };

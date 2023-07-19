@@ -41,7 +41,7 @@
 
 // Only GCC compiler should be used in this block, so other compilers trying to
 // mask themselves as GCC should be ignored.
-#if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC) && !defined(__CUDACC__) && !defined(__LCC__)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC) && !defined(__CUDACC__) && !defined(__LCC__) && !defined(__NVCOMPILER)
 #    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "GCC diagnostic push" )
 #    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "GCC diagnostic pop" )
 
@@ -50,20 +50,37 @@
 #    define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
          _Pragma( "GCC diagnostic ignored \"-Wparentheses\"" )
 
+#    define CATCH_INTERNAL_SUPPRESS_UNUSED_RESULT \
+         _Pragma( "GCC diagnostic ignored \"-Wunused-result\"" )
+
 #    define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
          _Pragma( "GCC diagnostic ignored \"-Wunused-variable\"" )
 
 #    define CATCH_INTERNAL_SUPPRESS_USELESS_CAST_WARNINGS \
          _Pragma( "GCC diagnostic ignored \"-Wuseless-cast\"" )
 
+#    define CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS \
+         _Pragma( "GCC diagnostic ignored \"-Wshadow\"" )
+
 #    define CATCH_INTERNAL_IGNORE_BUT_WARN(...) (void)__builtin_constant_p(__VA_ARGS__)
 
 #endif
 
+#if defined(__NVCOMPILER)
+#    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "diag push" )
+#    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "diag pop" )
+#    define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS _Pragma( "diag_suppress declared_but_not_referenced" )
+#endif
+
 #if defined(__CUDACC__) && !defined(__clang__)
+#  ifdef __NVCC_DIAG_PRAGMA_SUPPORT__
+// New pragmas introduced in CUDA 11.5+
 #    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "nv_diagnostic push" )
 #    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "nv_diagnostic pop" )
 #    define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS _Pragma( "nv_diag_suppress 177" )
+#  else
+#    define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS _Pragma( "diag_suppress 177" )
+#  endif
 #endif
 
 // clang-cl defines _MSC_VER as well as __clang__, which could cause the
@@ -116,6 +133,9 @@
 
 #    define CATCH_INTERNAL_SUPPRESS_COMMA_WARNINGS \
         _Pragma( "clang diagnostic ignored \"-Wcomma\"" )
+
+#    define CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS \
+        _Pragma( "clang diagnostic ignored \"-Wshadow\"" )
 
 #endif // __clang__
 
@@ -181,8 +201,14 @@
 // Visual C++
 #if defined(_MSC_VER)
 
-#  define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION __pragma( warning(push) )
-#  define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  __pragma( warning(pop) )
+// We want to defer to nvcc-specific warning suppression if we are compiled
+// with nvcc masquerading for MSVC.
+#    if !defined( __CUDACC__ )
+#        define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
+            __pragma( warning( push ) )
+#        define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
+            __pragma( warning( pop ) )
+#    endif
 
 // Universal Windows platform does not support SEH
 // Or console colours (or console at all...)
@@ -348,6 +374,9 @@
 #if !defined(CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
 #endif
+#if !defined(CATCH_INTERNAL_SUPPRESS_UNUSED_RESULT)
+#   define CATCH_INTERNAL_SUPPRESS_UNUSED_RESULT
+#endif
 #if !defined(CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS
 #endif
@@ -357,6 +386,16 @@
 #if !defined(CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS
 #endif
+#if !defined( CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS )
+#    define CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS
+#endif
+#if !defined( CATCH_INTERNAL_SUPPRESS_COMMA_WARNINGS )
+#    define CATCH_INTERNAL_SUPPRESS_COMMA_WARNINGS
+#endif
+#if !defined( CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS )
+#    define CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS
+#endif
+
 
 // The goal of this macro is to avoid evaluation of the arguments, but
 // still have the compiler warn on problems inside...
@@ -370,13 +409,6 @@
 #   undef CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS
 #endif
 
-#if !defined(CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS)
-#   define CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS
-#endif
-
-#if !defined(CATCH_INTERNAL_SUPPRESS_COMMA_WARNINGS)
-#   define CATCH_INTERNAL_SUPPRESS_COMMA_WARNINGS
-#endif
 
 #if defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
 #define CATCH_TRY if ((true))

@@ -27,6 +27,11 @@ namespace Matchers {
         double m_margin;
     };
 
+    //! Creates a matcher that accepts numbers within certain range of target
+    WithinAbsMatcher WithinAbs( double target, double margin );
+
+
+
     class WithinUlpsMatcher final : public MatcherBase<double> {
     public:
         WithinUlpsMatcher( double target,
@@ -39,6 +44,13 @@ namespace Matchers {
         uint64_t m_ulps;
         Detail::FloatingPointKind m_type;
     };
+
+    //! Creates a matcher that accepts doubles within certain ULP range of target
+    WithinUlpsMatcher WithinULP(double target, uint64_t maxUlpDiff);
+    //! Creates a matcher that accepts floats within certain ULP range of target
+    WithinUlpsMatcher WithinULP(float target, uint64_t maxUlpDiff);
+
+
 
     // Given IEEE-754 format for floats and doubles, we can assume
     // that float -> double promotion is lossless. Given this, we can
@@ -56,13 +68,6 @@ namespace Matchers {
         double m_epsilon;
     };
 
-    //! Creates a matcher that accepts doubles within certain ULP range of target
-    WithinUlpsMatcher WithinULP(double target, uint64_t maxUlpDiff);
-    //! Creates a matcher that accepts floats within certain ULP range of target
-    WithinUlpsMatcher WithinULP(float target, uint64_t maxUlpDiff);
-    //! Creates a matcher that accepts numbers within certain range of target
-    WithinAbsMatcher WithinAbs(double target, double margin);
-
     //! Creates a matcher that accepts doubles within certain relative range of target
     WithinRelMatcher WithinRel(double target, double eps);
     //! Creates a matcher that accepts doubles within 100*DBL_EPS relative range of target
@@ -71,6 +76,17 @@ namespace Matchers {
     WithinRelMatcher WithinRel(float target, float eps);
     //! Creates a matcher that accepts floats within 100*FLT_EPS relative range of target
     WithinRelMatcher WithinRel(float target);
+
+
+
+    class IsNaNMatcher final : public MatcherBase<double> {
+    public:
+        IsNaNMatcher() = default;
+        bool match( double const& matchee ) const override;
+        std::string describe() const override;
+    };
+
+    IsNaNMatcher IsNaN();
 
 } // namespace Matchers
 } // namespace Catch

@@ -15,6 +15,10 @@
 #include <exception>
 
 namespace Catch {
+    namespace Detail {
+        void registerTranslatorImpl(
+            Detail::unique_ptr<IExceptionTranslator>&& translator );
+    }
 
     class ExceptionTranslatorRegistrar {
         template<typename T>
@@ -48,9 +52,9 @@ namespace Catch {
     public:
         template<typename T>
         ExceptionTranslatorRegistrar( std::string(*translateFunction)( T const& ) ) {
-            getMutableRegistryHub().registerTranslator(
-                Detail::make_unique<ExceptionTranslator<T>>(translateFunction)
-            );
+            Detail::registerTranslatorImpl(
+                Detail::make_unique<ExceptionTranslator<T>>(
+                    translateFunction ) );
         }
     };
 

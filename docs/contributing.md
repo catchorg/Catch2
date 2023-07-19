@@ -55,6 +55,15 @@ tests from `SelfTest` through a specific reporter and then compare the
 generated output with a known good output ("Baseline"). By default, new
 tests should be placed here.
 
+To configure a Catch2 build with just the basic tests, use the `basic-tests`
+preset, like so:
+
+```
+# Assuming you are in Catch2's root folder
+
+cmake -B basic-test-build -S . -DCMAKE_BUILD_TYPE=Debug --preset basic-tests
+```
+
 However, not all tests can be written as plain unit tests. For example,
 checking that Catch2 orders tests randomly when asked to, and that this
 random ordering is subset-invariant, is better done as an integration
@@ -76,21 +85,23 @@ configuration and require separate compilation.
 Finally, CMake config tests test that you set Catch2's compile-time
 configuration options through CMake, using CMake options of the same name.
 
-None of these tests are enabled by default. To enable them, add
+These test categories can be enabled one by one, by passing
 `-DCATCH_BUILD_EXAMPLES=ON`, `-DCATCH_BUILD_EXTRA_TESTS=ON`, and
-`-DCATCH_ENABLE_CONFIGURE_TESTS=ON` when configuration the CMake build.
+`-DCATCH_ENABLE_CONFIGURE_TESTS=ON` when configuring the build.
 
-Bringing this all together, the steps below should configure, build,
-and run all tests in the `Debug` compilation.
+Catch2 also provides a preset that promises to enable _all_ test types,
+`all-tests`.
+
+The snippet below will build & run all tests, in `Debug` compilation mode.
 
 <!-- snippet: catch2-build-and-test -->
 <a id='snippet-catch2-build-and-test'></a>
 ```sh
-# 1. Regenerate the amalgamated distribution
+# 1. Regenerate the amalgamated distribution (some tests are built against it)
 ./tools/scripts/generateAmalgamatedFiles.py
 
 # 2. Configure the full test build
-cmake -Bdebug-build -H. -DCMAKE_BUILD_TYPE=Debug -DCATCH_DEVELOPMENT_BUILD=ON -DCATCH_BUILD_EXAMPLES=ON -DCATCH_BUILD_EXTRA_TESTS=ON
+cmake -B debug-build -S . -DCMAKE_BUILD_TYPE=Debug --preset all-tests
 
 # 3. Run the actual build
 cmake --build debug-build

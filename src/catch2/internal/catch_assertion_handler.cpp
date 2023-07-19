@@ -12,7 +12,6 @@
 #include <catch2/internal/catch_debugger.hpp>
 #include <catch2/internal/catch_test_failure_exception.hpp>
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
-#include <catch2/internal/catch_run_context.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 
 namespace Catch {
@@ -24,7 +23,9 @@ namespace Catch {
             ResultDisposition::Flags resultDisposition )
     :   m_assertionInfo{ macroName, lineInfo, capturedExpression, resultDisposition },
         m_resultCapture( getResultCapture() )
-    {}
+    {
+        m_resultCapture.notifyAssertionStarted( m_assertionInfo );
+    }
 
     void AssertionHandler::handleExpr( ITransientExpression const& expr ) {
         m_resultCapture.handleExpr( m_assertionInfo, expr, m_reaction );
@@ -38,7 +39,7 @@ namespace Catch {
     }
 
     void AssertionHandler::complete() {
-        setCompleted();
+        m_completed = true;
         if( m_reaction.shouldDebugBreak ) {
 
             // If you find your debugger stopping you here then go one level up on the
@@ -50,9 +51,9 @@ namespace Catch {
         if (m_reaction.shouldThrow) {
             throw_test_failure_exception();
         }
-    }
-    void AssertionHandler::setCompleted() {
-        m_completed = true;
+        if ( m_reaction.shouldSkip ) {
+            throw_test_skip_exception();
+        }
     }
 
     void AssertionHandler::handleUnexpectedInflightException() {

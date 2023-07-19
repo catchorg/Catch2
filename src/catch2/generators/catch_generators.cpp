@@ -27,8 +27,15 @@ namespace Detail {
 
     GeneratorUntypedBase::~GeneratorUntypedBase() = default;
 
-    auto acquireGeneratorTracker(StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& {
+    IGeneratorTracker* acquireGeneratorTracker(StringRef generatorName, SourceLineInfo const& lineInfo ) {
         return getResultCapture().acquireGeneratorTracker( generatorName, lineInfo );
+    }
+
+    IGeneratorTracker* createGeneratorTracker( StringRef generatorName,
+                                 SourceLineInfo lineInfo,
+                                 GeneratorBasePtr&& generator ) {
+        return getResultCapture().createGeneratorTracker(
+            generatorName, lineInfo, CATCH_MOVE( generator ) );
     }
 
 } // namespace Generators

@@ -56,7 +56,7 @@ namespace Catch {
         m_xml.startElement("Catch2TestRun")
              .writeAttribute("name"_sr, m_config->name())
              .writeAttribute("rng-seed"_sr, m_config->rngSeed())
-             .writeAttribute("xml-format-version"_sr, 2)
+             .writeAttribute("xml-format-version"_sr, 3)
              .writeAttribute("catch2-version"_sr, libraryVersion());
         if ( m_config->testSpec().hasFilters() ) {
             m_xml.writeAttribute( "filters"_sr, m_config->testSpec() );
@@ -66,7 +66,7 @@ namespace Catch {
     void XmlReporter::testCaseStarting( TestCaseInfo const& testInfo ) {
         StreamingReporterBase::testCaseStarting(testInfo);
         m_xml.startElement( "TestCase" )
-            .writeAttribute( "name"_sr, trim( testInfo.name ) )
+            .writeAttribute( "name"_sr, trim( StringRef(testInfo.name) ) )
             .writeAttribute( "tags"_sr, testInfo.tagsAsString() );
 
         writeSourceInfo( testInfo.lineInfo );
@@ -80,7 +80,7 @@ namespace Catch {
         StreamingReporterBase::sectionStarting( sectionInfo );
         if( m_sectionDepth++ > 0 ) {
             m_xml.startElement( "Section" )
-                .writeAttribute( "name"_sr, trim( sectionInfo.name ) );
+                .writeAttribute( "name"_sr, trim( StringRef(sectionInfo.name) ) );
             writeSourceInfo( sectionInfo.lineInfo );
             m_xml.ensureTagClosed();
         }
@@ -98,19 +98,22 @@ namespace Catch {
             // Print any info messages in <Info> tags.
             for( auto const& msg : assertionStats.infoMessages ) {
                 if( msg.type == ResultWas::Info && includeResults ) {
-                    m_xml.scopedElement( "Info" )
-                            .writeText( msg.message );
+                    auto t = m_xml.scopedElement( "Info" );
+                    writeSourceInfo( msg.lineInfo );
+                    t.writeText( msg.message );
                 } else if ( msg.type == ResultWas::Warning ) {
-                    m_xml.scopedElement( "Warning" )
-                            .writeText( msg.message );
+                    auto t = m_xml.scopedElement( "Warning" );
+                    writeSourceInfo( msg.lineInfo );
+                    t.writeText( msg.message );
                 }
             }
         }
 
         // Drop out if result was successful but we're not printing them.
-        if( !includeResults && result.getResultType() != ResultWas::Warning )
+        if ( !includeResults && result.getResultType() != ResultWas::Warning &&
+             result.getResultType() != ResultWas::ExplicitSkip ) {
             return;
-
+        }
 
         // Print the expression if there is one.
         if( result.hasExpression() ) {
@@ -153,6 +156,12 @@ namespace Catch {
                 m_xml.writeText( result.getMessage() );
                 m_xml.endElement();
                 break;
+            case ResultWas::ExplicitSkip:
+                m_xml.startElement( "Skip" );
+                writeSourceInfo( result.getSourceInfo() );
+                m_xml.writeText( result.getMessage() );
+                m_xml.endElement();
+                break;
             default:
                 break;
         }
@@ -163,15 +172,18 @@ namespace Catch {
 
     void XmlReporter::sectionEnded( SectionStats const& sectionStats ) {
         StreamingReporterBase::sectionEnded( sectionStats );
-        if( --m_sectionDepth > 0 ) {
-            XmlWriter::ScopedElement e = m_xml.scopedElement( "OverallResults" );
-            e.writeAttribute( "successes"_sr, sectionStats.assertions.passed );
-            e.writeAttribute( "failures"_sr, sectionStats.assertions.failed );
-            e.writeAttribute( "expectedFailures"_sr, sectionStats.assertions.failedButOk );
+        if ( --m_sectionDepth > 0 ) {
+            {
+                XmlWriter::ScopedElement e = m_xml.scopedElement( "OverallResults" );
+                e.writeAttribute( "successes"_sr, sectionStats.assertions.passed );
+                e.writeAttribute( "failures"_sr, sectionStats.assertions.failed );
+                e.writeAttribute( "expectedFailures"_sr, sectionStats.assertions.failedButOk );
+                e.writeAttribute( "skipped"_sr, sectionStats.assertions.skipped > 0 );
 
-            if ( m_config->showDurations() == ShowDurations::Always )
-                e.writeAttribute( "durationInSeconds"_sr, sectionStats.durationInSeconds );
-
+                if ( m_config->showDurations() == ShowDurations::Always )
+                    e.writeAttribute( "durationInSeconds"_sr, sectionStats.durationInSeconds );
+            }
+            // Ends assertion tag
             m_xml.endElement();
         }
     }
@@ -180,14 +192,14 @@ namespace Catch {
         StreamingReporterBase::testCaseEnded( testCaseStats );
         XmlWriter::ScopedElement e = m_xml.scopedElement( "OverallResult" );
         e.writeAttribute( "success"_sr, testCaseStats.totals.assertions.allOk() );
+        e.writeAttribute( "skips"_sr, testCaseStats.totals.assertions.skipped );
 
         if ( m_config->showDurations() == ShowDurations::Always )
             e.writeAttribute( "durationInSeconds"_sr, m_testCaseTimer.getElapsedSeconds() );
-
         if( !testCaseStats.stdOut.empty() )
-            m_xml.scopedElement( "StdOut" ).writeText( trim( testCaseStats.stdOut ), XmlFormatting::Newline );
+            m_xml.scopedElement( "StdOut" ).writeText( trim( StringRef(testCaseStats.stdOut) ), XmlFormatting::Newline );
         if( !testCaseStats.stdErr.empty() )
-            m_xml.scopedElement( "StdErr" ).writeText( trim( testCaseStats.stdErr ), XmlFormatting::Newline );
+            m_xml.scopedElement( "StdErr" ).writeText( trim( StringRef(testCaseStats.stdErr) ), XmlFormatting::Newline );
 
         m_xml.endElement();
     }
@@ -197,11 +209,13 @@ namespace Catch {
         m_xml.scopedElement( "OverallResults" )
             .writeAttribute( "successes"_sr, testRunStats.totals.assertions.passed )
             .writeAttribute( "failures"_sr, testRunStats.totals.assertions.failed )
-            .writeAttribute( "expectedFailures"_sr, testRunStats.totals.assertions.failedButOk );
+            .writeAttribute( "expectedFailures"_sr, testRunStats.totals.assertions.failedButOk )
+            .writeAttribute( "skips"_sr, testRunStats.totals.assertions.skipped );
         m_xml.scopedElement( "OverallResultsCases")
             .writeAttribute( "successes"_sr, testRunStats.totals.testCases.passed )
             .writeAttribute( "failures"_sr, testRunStats.totals.testCases.failed )
-            .writeAttribute( "expectedFailures"_sr, testRunStats.totals.testCases.failedButOk );
+            .writeAttribute( "expectedFailures"_sr, testRunStats.totals.testCases.failedButOk )
+            .writeAttribute( "skips"_sr, testRunStats.totals.testCases.skipped );
         m_xml.endElement();
     }
 

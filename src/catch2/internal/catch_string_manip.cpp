@@ -8,7 +8,6 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
-#include <algorithm>
 #include <ostream>
 #include <cstring>
 #include <cctype>
@@ -32,9 +31,9 @@ namespace Catch {
         return s.find( infix ) != std::string::npos;
     }
     void toLowerInPlace( std::string& s ) {
-        std::transform( s.begin(), s.end(), s.begin(), []( char c ) {
-            return toLower( c );
-        } );
+        for ( char& c : s ) {
+            c = toLower( c );
+        }
     }
     std::string toLower( std::string const& s ) {
         std::string lc = s;

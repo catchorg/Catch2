@@ -13,6 +13,8 @@
 #include <iosfwd>
 #include <cassert>
 
+#include <cstring>
+
 namespace Catch {
 
     /// A non-owning string class (similar to the forthcoming std::string_view)
@@ -49,7 +51,10 @@ namespace Catch {
         }
 
     public: // operators
-        auto operator == ( StringRef other ) const noexcept -> bool;
+        auto operator == ( StringRef other ) const noexcept -> bool {
+            return m_size == other.m_size
+                && (std::memcmp( m_start, other.m_start, m_size ) == 0);
+        }
         auto operator != (StringRef other) const noexcept -> bool {
             return !(*this == other);
         }

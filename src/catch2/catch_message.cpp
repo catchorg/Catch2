@@ -19,8 +19,8 @@ namespace Catch {
     ////////////////////////////////////////////////////////////////////////////
 
 
-    ScopedMessage::ScopedMessage( MessageBuilder const& builder ):
-        m_info( builder.m_info ) {
+    ScopedMessage::ScopedMessage( MessageBuilder&& builder ):
+        m_info( CATCH_MOVE(builder.m_info) ) {
         m_info.message = builder.m_stream.str();
         getResultCapture().pushScopedMessage( m_info );
     }
@@ -37,7 +37,11 @@ namespace Catch {
     }
 
 
-    Capturer::Capturer( StringRef macroName, SourceLineInfo const& lineInfo, ResultWas::OfType resultType, StringRef names ) {
+    Capturer::Capturer( StringRef macroName,
+                        SourceLineInfo const& lineInfo,
+                        ResultWas::OfType resultType,
+                        StringRef names ):
+        m_resultCapture( getResultCapture() ) {
         auto trimmed = [&] (size_t start, size_t end) {
             while (names[start] == ',' || isspace(static_cast<unsigned char>(names[start]))) {
                 ++start;

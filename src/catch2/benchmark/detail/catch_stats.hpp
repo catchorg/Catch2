@@ -15,8 +15,6 @@
 
 #include <algorithm>
 #include <vector>
-#include <numeric>
-#include <tuple>
 #include <cmath>
 
 namespace Catch {
@@ -30,39 +28,17 @@ namespace Catch {
 
             double weighted_average_quantile(int k, int q, std::vector<double>::iterator first, std::vector<double>::iterator last);
 
-            template <typename Iterator>
-            OutlierClassification classify_outliers(Iterator first, Iterator last) {
-                std::vector<double> copy(first, last);
+            OutlierClassification
+            classify_outliers( std::vector<double>::const_iterator first,
+                               std::vector<double>::const_iterator last );
 
-                auto q1 = weighted_average_quantile(1, 4, copy.begin(), copy.end());
-                auto q3 = weighted_average_quantile(3, 4, copy.begin(), copy.end());
-                auto iqr = q3 - q1;
-                auto los = q1 - (iqr * 3.);
-                auto lom = q1 - (iqr * 1.5);
-                auto him = q3 + (iqr * 1.5);
-                auto his = q3 + (iqr * 3.);
+            double mean( std::vector<double>::const_iterator first,
+                         std::vector<double>::const_iterator last );
 
-                OutlierClassification o;
-                for (; first != last; ++first) {
-                    auto&& t = *first;
-                    if (t < los) ++o.low_severe;
-                    else if (t < lom) ++o.low_mild;
-                    else if (t > his) ++o.high_severe;
-                    else if (t > him) ++o.high_mild;
-                    ++o.samples_seen;
-                }
-                return o;
-            }
-
-            template <typename Iterator>
-            double mean(Iterator first, Iterator last) {
-                auto count = last - first;
-                double sum = std::accumulate(first, last, 0.);
-                return sum / static_cast<double>(count);
-            }
-
-            template <typename Estimator, typename Iterator>
-            sample jackknife(Estimator&& estimator, Iterator first, Iterator last) {
+            template <typename Estimator>
+            sample jackknife(Estimator&& estimator,
+                             std::vector<double>::iterator first,
+                             std::vector<double>::iterator last) {
                 auto n = static_cast<size_t>(last - first);
                 auto second = first;
                 ++second;
@@ -85,8 +61,12 @@ namespace Catch {
 
             double normal_quantile(double p);
 
-            template <typename Iterator, typename Estimator>
-            Estimate<double> bootstrap(double confidence_level, Iterator first, Iterator last, sample const& resample, Estimator&& estimator) {
+            template <typename Estimator>
+            Estimate<double> bootstrap( double confidence_level,
+                                        std::vector<double>::iterator first,
+                                        std::vector<double>::iterator last,
+                                        sample const& resample,
+                                        Estimator&& estimator ) {
                 auto n_samples = last - first;
 
                 double point = estimator(first, last);
@@ -95,13 +75,13 @@ namespace Catch {
 
                 sample jack = jackknife(estimator, first, last);
                 double jack_mean = mean(jack.begin(), jack.end());
-                double sum_squares, sum_cubes;
-                std::tie(sum_squares, sum_cubes) = std::accumulate(jack.begin(), jack.end(), std::make_pair(0., 0.), [jack_mean](std::pair<double, double> sqcb, double x) -> std::pair<double, double> {
-                    auto d = jack_mean - x;
-                    auto d2 = d * d;
-                    auto d3 = d2 * d;
-                    return { sqcb.first + d2, sqcb.second + d3 };
-                });
+                double sum_squares = 0, sum_cubes = 0;
+                for (double x : jack) {
+                    auto difference = jack_mean - x;
+                    auto square = difference * difference;
+                    auto cube = square * difference;
+                    sum_squares += square; sum_cubes += cube;
+                }
 
                 double accel = sum_cubes / (6 * std::pow(sum_squares, 1.5));
                 long n = static_cast<long>(resample.size());
@@ -128,15 +108,16 @@ namespace Catch {
                 return { point, resample[lo], resample[hi], confidence_level };
             }
 
-            double outlier_variance(Estimate<double> mean, Estimate<double> stddev, int n);
-
             struct bootstrap_analysis {
                 Estimate<double> mean;
                 Estimate<double> standard_deviation;
                 double outlier_variance;
             };
 
-            bootstrap_analysis analyse_samples(double confidence_level, unsigned int n_resamples, std::vector<double>::iterator first, std::vector<double>::iterator last);
+            bootstrap_analysis analyse_samples(double confidence_level,
+                                               unsigned int n_resamples,
+                                               std::vector<double>::iterator first,
+                                               std::vector<double>::iterator last);
         } // namespace Detail
     } // namespace Benchmark
 } // namespace Catch

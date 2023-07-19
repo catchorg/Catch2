@@ -54,24 +54,21 @@ namespace Catch {
         infoMessages( _infoMessages ),
         totals( _totals )
     {
-        assertionResult.m_resultData.lazyExpression.m_transientExpression = _assertionResult.m_resultData.lazyExpression.m_transientExpression;
-
         if( assertionResult.hasMessage() ) {
             // Copy message into messages list.
             // !TBD This should have been done earlier, somewhere
             MessageBuilder builder( assertionResult.getTestMacroName(), assertionResult.getSourceInfo(), assertionResult.getResultType() );
-            builder << assertionResult.getMessage();
-            builder.m_info.message = builder.m_stream.str();
+            builder.m_info.message = static_cast<std::string>(assertionResult.getMessage());
 
-            infoMessages.push_back( builder.m_info );
+            infoMessages.push_back( CATCH_MOVE(builder.m_info) );
         }
     }
 
-    SectionStats::SectionStats(  SectionInfo const& _sectionInfo,
+    SectionStats::SectionStats(  SectionInfo&& _sectionInfo,
                                  Counts const& _assertions,
                                  double _durationInSeconds,
                                  bool _missingAssertions )
-    :   sectionInfo( _sectionInfo ),
+    :   sectionInfo( CATCH_MOVE(_sectionInfo) ),
         assertions( _assertions ),
         durationInSeconds( _durationInSeconds ),
         missingAssertions( _missingAssertions )
@@ -80,13 +77,13 @@ namespace Catch {
 
     TestCaseStats::TestCaseStats(  TestCaseInfo const& _testInfo,
                                    Totals const& _totals,
-                                   std::string const& _stdOut,
-                                   std::string const& _stdErr,
+                                   std::string&& _stdOut,
+                                   std::string&& _stdErr,
                                    bool _aborting )
     : testInfo( &_testInfo ),
         totals( _totals ),
-        stdOut( _stdOut ),
-        stdErr( _stdErr ),
+        stdOut( CATCH_MOVE(_stdOut) ),
+        stdErr( CATCH_MOVE(_stdErr) ),
         aborting( _aborting )
     {}
 

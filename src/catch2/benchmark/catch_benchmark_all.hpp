@@ -33,6 +33,8 @@
 #include <catch2/benchmark/catch_sample_analysis.hpp>
 #include <catch2/benchmark/detail/catch_analyse.hpp>
 #include <catch2/benchmark/detail/catch_benchmark_function.hpp>
+#include <catch2/benchmark/detail/catch_benchmark_stats.hpp>
+#include <catch2/benchmark/detail/catch_benchmark_stats_fwd.hpp>
 #include <catch2/benchmark/detail/catch_complete_invoke.hpp>
 #include <catch2/benchmark/detail/catch_estimate_clock.hpp>
 #include <catch2/benchmark/detail/catch_measure.hpp>

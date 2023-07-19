@@ -6,8 +6,11 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-#include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
+#include <catch2/catch_test_macros.hpp>
 
-namespace Catch {
-    IReporterRegistry::~IReporterRegistry() = default;
+TEST_CASE( "this test case is being skipped" ) { SKIP(); }
+
+TEST_CASE( "all sections in this test case are being skipped" ) {
+    SECTION( "A" ) { SKIP(); }
+    SECTION( "B" ) { SKIP(); }
 }

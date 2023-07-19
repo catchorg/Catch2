@@ -6,7 +6,7 @@ rem 1. Regenerate the amalgamated distribution
 python tools\scripts\generateAmalgamatedFiles.py
 
 rem 2. Configure the full test build
-cmake -Bdebug-build -H. -DCMAKE_BUILD_TYPE=Debug -DCATCH_DEVELOPMENT_BUILD=ON -DCATCH_BUILD_EXAMPLES=ON -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_ENABLE_CONFIGURE_TESTS=ON
+cmake -B debug-build -S . -DCMAKE_BUILD_TYPE=Debug --preset all-tests
 
 rem 3. Run the actual build
 cmake --build debug-build

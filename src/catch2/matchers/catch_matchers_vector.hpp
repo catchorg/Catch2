@@ -85,11 +85,10 @@ namespace Matchers {
             // - a more general approach would be via a compare template that defaults
             // to using !=. but could be specialised for, e.g. std::vector<T> etc
             // - then just call that directly
-            if (m_comparator.size() != v.size())
-                return false;
-            for (std::size_t i = 0; i < v.size(); ++i)
-                if (m_comparator[i] != v[i])
-                    return false;
+            if ( m_comparator.size() != v.size() ) { return false; }
+            for ( std::size_t i = 0; i < v.size(); ++i ) {
+                if ( !( m_comparator[i] == v[i] ) ) { return false; }
+            }
             return true;
         }
         std::string describe() const override {
