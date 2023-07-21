@@ -20,6 +20,7 @@
 #include <catch2/internal/catch_output_redirect.hpp>
 #include <catch2/internal/catch_assertion_handler.hpp>
 #include <catch2/internal/catch_test_failure_exception.hpp>
+#include <catch2/internal/catch_result_type.hpp>
 
 #include <cassert>
 #include <algorithm>
@@ -293,13 +294,14 @@ namespace Catch {
             m_messageScopes.clear();
         }
 
-        // Reset working state
-        resetAssertionInfo();
+        // Reset working state. assertion info will be reset after
+        // populateReaction is run if it is needed
         m_lastResult = CATCH_MOVE( result );
     }
     void RunContext::resetAssertionInfo() {
         m_lastAssertionInfo.macroName = StringRef();
         m_lastAssertionInfo.capturedExpression = "{Unknown expression after the reported line}"_sr;
+        m_lastAssertionInfo.resultDisposition = ResultDisposition::Normal;
     }
 
     void RunContext::notifyAssertionStarted( AssertionInfo const& info ) {
@@ -447,6 +449,7 @@ namespace Catch {
         AssertionResult result(m_lastAssertionInfo, CATCH_MOVE(tempResult));
 
         assertionEnded(CATCH_MOVE(result) );
+        resetAssertionInfo();
 
         handleUnfinishedSections();
 
@@ -583,6 +586,7 @@ namespace Catch {
             reportExpr(info, ResultWas::ExpressionFailed, &expr, negated );
             populateReaction( reaction );
         }
+        resetAssertionInfo();
     }
     void RunContext::reportExpr(
             AssertionInfo const &info,
@@ -621,6 +625,7 @@ namespace Catch {
             // considered "OK"
             reaction.shouldSkip = true;
         }
+        resetAssertionInfo();
     }
     void RunContext::handleUnexpectedExceptionNotThrown(
             AssertionInfo const& info,
@@ -641,6 +646,7 @@ namespace Catch {
         AssertionResult assertionResult{ info, CATCH_MOVE(data) };
         assertionEnded( CATCH_MOVE(assertionResult) );
         populateReaction( reaction );
+        resetAssertionInfo();
     }
 
     void RunContext::populateReaction( AssertionReaction& reaction ) {
@@ -658,6 +664,7 @@ namespace Catch {
         data.message = "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE"s;
         AssertionResult assertionResult{ info, CATCH_MOVE( data ) };
         assertionEnded( CATCH_MOVE(assertionResult) );
+        resetAssertionInfo();
     }
     void RunContext::handleNonExpr(
             AssertionInfo const &info,
@@ -672,6 +679,7 @@ namespace Catch {
         const auto isOk = assertionResult.isOk();
         assertionEnded( CATCH_MOVE(assertionResult) );
         if ( !isOk ) { populateReaction( reaction ); }
+        resetAssertionInfo();
     }
 
 
