@@ -12523,6 +12523,34 @@ Misc.tests.cpp:<line number>: FAILED - but was ok:
 Misc.tests.cpp:<line number>: FAILED:
 
 -------------------------------------------------------------------------------
+Testing checked-if 4
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  CHECKED_ELSE( true )
+
+Misc.tests.cpp:<line number>: FAILED:
+  {Unknown expression after the reported line}
+due to unexpected exception with message:
+  std::exception
+
+-------------------------------------------------------------------------------
+Testing checked-if 5
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: FAILED - but was ok:
+  CHECKED_ELSE( false )
+
+Misc.tests.cpp:<line number>: FAILED:
+  {Unknown expression after the reported line}
+due to unexpected exception with message:
+  std::exception
+
+-------------------------------------------------------------------------------
 The NO_FAIL macro reports a failure but does not fail the test
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -18232,6 +18260,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  409 |  308 passed |  84 failed | 6 skipped | 11 failed as expected
-assertions: 2225 | 2048 passed | 145 failed | 32 failed as expected
+test cases:  411 |  308 passed |  84 failed | 6 skipped | 13 failed as expected
+assertions: 2228 | 2049 passed | 145 failed | 34 failed as expected
 

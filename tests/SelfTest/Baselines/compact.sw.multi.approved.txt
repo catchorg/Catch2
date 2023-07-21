@@ -1743,6 +1743,10 @@ Misc.tests.cpp:<line number>: passed: true
 Misc.tests.cpp:<line number>: failed: explicitly
 Misc.tests.cpp:<line number>: failed - but was ok: false
 Misc.tests.cpp:<line number>: failed: explicitly
+Misc.tests.cpp:<line number>: passed: true
+Misc.tests.cpp:<line number>: failed: unexpected exception with message: 'std::exception'; expression was: {Unknown expression after the reported line}
+Misc.tests.cpp:<line number>: failed - but was ok: false
+Misc.tests.cpp:<line number>: failed: unexpected exception with message: 'std::exception'; expression was: {Unknown expression after the reported line}
 Message.tests.cpp:<line number>: failed - but was ok: 1 == 2
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("[fakeTag]"s) for: "All available tags:
    1  [fakeTag]
@@ -2527,7 +2531,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  409 |  308 passed |  84 failed | 6 skipped | 11 failed as expected
-assertions: 2225 | 2048 passed | 145 failed | 32 failed as expected
+test cases:  411 |  308 passed |  84 failed | 6 skipped | 13 failed as expected
+assertions: 2228 | 2049 passed | 145 failed | 34 failed as expected
 
 

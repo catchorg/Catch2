@@ -998,6 +998,28 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: FAILED:
 
 -------------------------------------------------------------------------------
+Testing checked-if 4
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: FAILED:
+  {Unknown expression after the reported line}
+due to unexpected exception with message:
+  std::exception
+
+-------------------------------------------------------------------------------
+Testing checked-if 5
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: FAILED:
+  {Unknown expression after the reported line}
+due to unexpected exception with message:
+  std::exception
+
+-------------------------------------------------------------------------------
 Thrown string literals are translated
 -------------------------------------------------------------------------------
 Exception.tests.cpp:<line number>
@@ -1543,6 +1565,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  409 |  322 passed |  69 failed | 7 skipped | 11 failed as expected
-assertions: 2208 | 2048 passed | 128 failed | 32 failed as expected
+test cases:  411 |  322 passed |  69 failed | 7 skipped | 13 failed as expected
+assertions: 2211 | 2049 passed | 128 failed | 34 failed as expected
 
