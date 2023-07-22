@@ -660,6 +660,17 @@ with messages:
   i := 10
 
 -------------------------------------------------------------------------------
+Incomplete AssertionHandler
+-------------------------------------------------------------------------------
+AssertionHandler.tests.cpp:<line number>
+...............................................................................
+
+AssertionHandler.tests.cpp:<line number>: FAILED:
+  REQUIRE( Dummy )
+due to unexpected exception with message:
+  Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE
+
+-------------------------------------------------------------------------------
 Inequality checks that should fail
 -------------------------------------------------------------------------------
 Condition.tests.cpp:<line number>
@@ -1565,6 +1576,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  411 |  322 passed |  69 failed | 7 skipped | 13 failed as expected
-assertions: 2211 | 2049 passed | 128 failed | 34 failed as expected
+test cases:  412 |  322 passed |  69 failed | 7 skipped | 14 failed as expected
+assertions: 2212 | 2049 passed | 128 failed | 35 failed as expected
 

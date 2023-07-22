@@ -78,6 +78,7 @@ endif(MSVC) #Temporary workaround
 set(TEST_SOURCES
         ${SELF_TEST_DIR}/TestRegistrations.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Algorithms.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/AssertionHandler.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Clara.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/CmdLine.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/CmdLineHelpers.tests.cpp

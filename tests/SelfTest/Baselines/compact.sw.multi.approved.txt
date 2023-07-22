@@ -959,6 +959,7 @@ Message.tests.cpp:<line number>: passed: i < 10 for: 7 < 10 with 2 messages: 'cu
 Message.tests.cpp:<line number>: passed: i < 10 for: 8 < 10 with 2 messages: 'current counter 8' and 'i := 8'
 Message.tests.cpp:<line number>: passed: i < 10 for: 9 < 10 with 2 messages: 'current counter 9' and 'i := 9'
 Message.tests.cpp:<line number>: failed: i < 10 for: 10 < 10 with 2 messages: 'current counter 10' and 'i := 10'
+AssertionHandler.tests.cpp:<line number>: failed: unexpected exception with message: 'Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE'; expression was: Dummy
 Condition.tests.cpp:<line number>: failed: data.int_seven != 7 for: 7 != 7
 Condition.tests.cpp:<line number>: failed: data.float_nine_point_one != Approx( 9.1f ) for: 9.1f != Approx( 9.1000003815 )
 Condition.tests.cpp:<line number>: failed: data.double_pi != Approx( 3.1415926535 ) for: 3.1415926535 != Approx( 3.1415926535 )
@@ -2531,7 +2532,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  411 |  308 passed |  84 failed | 6 skipped | 13 failed as expected
-assertions: 2228 | 2049 passed | 145 failed | 34 failed as expected
+test cases:  412 |  308 passed |  84 failed | 6 skipped | 14 failed as expected
+assertions: 2229 | 2049 passed | 145 failed | 35 failed as expected
 
 

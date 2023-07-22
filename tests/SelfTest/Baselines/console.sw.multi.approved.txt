@@ -7142,6 +7142,17 @@ with messages:
   i := 10
 
 -------------------------------------------------------------------------------
+Incomplete AssertionHandler
+-------------------------------------------------------------------------------
+AssertionHandler.tests.cpp:<line number>
+...............................................................................
+
+AssertionHandler.tests.cpp:<line number>: FAILED:
+  REQUIRE( Dummy )
+due to unexpected exception with message:
+  Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE
+
+-------------------------------------------------------------------------------
 Inequality checks that should fail
 -------------------------------------------------------------------------------
 Condition.tests.cpp:<line number>
@@ -18249,6 +18260,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  411 |  308 passed |  84 failed | 6 skipped | 13 failed as expected
-assertions: 2228 | 2049 passed | 145 failed | 34 failed as expected
+test cases:  412 |  308 passed |  84 failed | 6 skipped | 14 failed as expected
+assertions: 2229 | 2049 passed | 145 failed | 35 failed as expected
 
