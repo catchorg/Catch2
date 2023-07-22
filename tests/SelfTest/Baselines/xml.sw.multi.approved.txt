@@ -14564,7 +14564,7 @@ Message from section two
         {Unknown expression after the reported line}
       </Expanded>
       <Exception filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
-        std::exception
+        Uncaught exception should fail!
       </Exception>
     </Expression>
     <OverallResult success="true" skips="0"/>
@@ -14586,7 +14586,7 @@ Message from section two
         {Unknown expression after the reported line}
       </Expanded>
       <Exception filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
-        std::exception
+        Uncaught exception should fail!
       </Exception>
     </Expression>
     <OverallResult success="true" skips="0"/>

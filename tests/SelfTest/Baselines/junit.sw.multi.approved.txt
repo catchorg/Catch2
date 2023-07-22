@@ -1364,7 +1364,7 @@ at Misc.tests.cpp:<line number>
       <error message="{Unknown expression after the reported line}">
 FAILED:
   {Unknown expression after the reported line}
-std::exception
+Uncaught exception should fail!
 at Misc.tests.cpp:<line number>
       </error>
     </testcase>
@@ -1373,7 +1373,7 @@ at Misc.tests.cpp:<line number>
       <error message="{Unknown expression after the reported line}">
 FAILED:
   {Unknown expression after the reported line}
-std::exception
+Uncaught exception should fail!
 at Misc.tests.cpp:<line number>
       </error>
     </testcase>

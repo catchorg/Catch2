@@ -12534,7 +12534,7 @@ Misc.tests.cpp:<line number>: PASSED:
 Misc.tests.cpp:<line number>: FAILED:
   {Unknown expression after the reported line}
 due to unexpected exception with message:
-  std::exception
+  Uncaught exception should fail!
 
 -------------------------------------------------------------------------------
 Testing checked-if 5
@@ -12548,7 +12548,7 @@ Misc.tests.cpp:<line number>: FAILED - but was ok:
 Misc.tests.cpp:<line number>: FAILED:
   {Unknown expression after the reported line}
 due to unexpected exception with message:
-  std::exception
+  Uncaught exception should fail!
 
 -------------------------------------------------------------------------------
 The NO_FAIL macro reports a failure but does not fail the test

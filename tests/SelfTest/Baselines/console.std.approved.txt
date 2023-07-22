@@ -1006,7 +1006,7 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: FAILED:
   {Unknown expression after the reported line}
 due to unexpected exception with message:
-  std::exception
+  Uncaught exception should fail!
 
 -------------------------------------------------------------------------------
 Testing checked-if 5
@@ -1017,7 +1017,7 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: FAILED:
   {Unknown expression after the reported line}
 due to unexpected exception with message:
-  std::exception
+  Uncaught exception should fail!
 
 -------------------------------------------------------------------------------
 Thrown string literals are translated

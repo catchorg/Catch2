@@ -1733,7 +1733,7 @@ at Misc.tests.cpp:<line number>
       <skipped message="({Unknown expression after the reported line})">
 FAILED:
 	{Unknown expression after the reported line}
-std::exception
+Uncaught exception should fail!
 at Misc.tests.cpp:<line number>
       </skipped>
     </testCase>
@@ -1741,7 +1741,7 @@ at Misc.tests.cpp:<line number>
       <skipped message="({Unknown expression after the reported line})">
 FAILED:
 	{Unknown expression after the reported line}
-std::exception
+Uncaught exception should fail!
 at Misc.tests.cpp:<line number>
       </skipped>
     </testCase>

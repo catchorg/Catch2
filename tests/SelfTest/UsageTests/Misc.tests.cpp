@@ -220,13 +220,13 @@ TEST_CASE("Testing checked-if 3", "[checked-if][!shouldfail]") {
 [[noreturn]]
 TEST_CASE("Testing checked-if 4", "[checked-if][!shouldfail]") {
     CHECKED_ELSE(true) {}
-    throw std::exception();
+    throw std::runtime_error("Uncaught exception should fail!");
 }
 
 [[noreturn]]
 TEST_CASE("Testing checked-if 5", "[checked-if][!shouldfail]") {
     CHECKED_ELSE(false) {}
-    throw std::exception();
+    throw std::runtime_error("Uncaught exception should fail!");
 }
 
 TEST_CASE( "xmlentitycheck" ) {

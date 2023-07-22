@@ -1751,9 +1751,9 @@ Misc.tests.cpp:<line number>: failed: explicitly
 Misc.tests.cpp:<line number>: failed - but was ok: false
 Misc.tests.cpp:<line number>: failed: explicitly
 Misc.tests.cpp:<line number>: passed: true
-Misc.tests.cpp:<line number>: failed: unexpected exception with message: 'std::exception'; expression was: {Unknown expression after the reported line}
+Misc.tests.cpp:<line number>: failed: unexpected exception with message: 'Uncaught exception should fail!'; expression was: {Unknown expression after the reported line}
 Misc.tests.cpp:<line number>: failed - but was ok: false
-Misc.tests.cpp:<line number>: failed: unexpected exception with message: 'std::exception'; expression was: {Unknown expression after the reported line}
+Misc.tests.cpp:<line number>: failed: unexpected exception with message: 'Uncaught exception should fail!'; expression was: {Unknown expression after the reported line}
 Message.tests.cpp:<line number>: failed - but was ok: 1 == 2
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("[fakeTag]"s) for: "All available tags:
    1  [fakeTag]

@@ -3070,11 +3070,11 @@ not ok {test-number} - explicitly
 # Testing checked-if 4
 ok {test-number} - true
 # Testing checked-if 4
-not ok {test-number} - unexpected exception with message: 'std::exception'; expression was: {Unknown expression after the reported line}
+not ok {test-number} - unexpected exception with message: 'Uncaught exception should fail!'; expression was: {Unknown expression after the reported line}
 # Testing checked-if 5
 ok {test-number} - false  # TODO
 # Testing checked-if 5
-not ok {test-number} - unexpected exception with message: 'std::exception'; expression was: {Unknown expression after the reported line}
+not ok {test-number} - unexpected exception with message: 'Uncaught exception should fail!'; expression was: {Unknown expression after the reported line}
 # The NO_FAIL macro reports a failure but does not fail the test
 ok {test-number} - 1 == 2  # TODO
 # The default listing implementation write to provided stream
