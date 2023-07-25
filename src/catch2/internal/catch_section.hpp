@@ -78,7 +78,7 @@ namespace Catch {
         CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                           \
         CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS                    \
         CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS                             \
-        if ( [[maybe_unused]] int catchInternalPreviousSectionHint =        \
+        if ( [[maybe_unused]] const int catchInternalPreviousSectionHint =  \
                  catchInternalSectionHint,                                  \
              catchInternalSectionHint = Catch::Detail::GetNewSectionHint(); \
              catchInternalPreviousSectionHint == __LINE__ )                 \
@@ -88,7 +88,7 @@ namespace Catch {
         CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                           \
         CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS                    \
         CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS                             \
-        if ( [[maybe_unused]] int catchInternalPreviousSectionHint =        \
+        if ( [[maybe_unused]] const int catchInternalPreviousSectionHint =  \
                  catchInternalSectionHint,                                  \
              catchInternalSectionHint = Catch::Detail::GetNewSectionHint(); \
              catchInternalPreviousSectionHint == __LINE__ )                 \
