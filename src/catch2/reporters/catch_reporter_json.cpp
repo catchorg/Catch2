@@ -106,12 +106,17 @@ namespace Catch {
 
         auto& writer = m_objectWriters.top();
 
-        writer.write( "name" ).write( m_config->name() );
-        writer.write( "rng-seed" ).write( m_config->rngSeed() );
-        writer.write( "catch2-version" ).write( libraryVersion() );
+        writer.write( "version" ).write( 1 );
 
-        if ( m_config->testSpec().hasFilters() ) {
-            writer.write( "filters" ).write( m_config->testSpec() );
+        {
+            auto metadata_writer = writer.write( "metadata" ).writeObject();
+            metadata_writer.write( "name" ).write( m_config->name() );
+            metadata_writer.write( "rng-seed" ).write( m_config->rngSeed() );
+            metadata_writer.write( "catch2-version" ).write( libraryVersion() );
+            if ( m_config->testSpec().hasFilters() ) {
+                metadata_writer.write( "filters" )
+                    .write( m_config->testSpec() );
+            }
         }
 
         startArray( "test-cases" );
