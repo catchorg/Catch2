@@ -69,7 +69,7 @@ namespace Catch {
     }
 
     bool JsonReporter::isInside( Writer writer ) {
-        return not m_writers.empty() && m_writers.top() == writer;
+        return !m_writers.empty() && m_writers.top() == writer;
     }
 
     std::string JsonReporter::getDescription() {
