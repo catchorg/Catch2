@@ -89,15 +89,11 @@ namespace Catch {
                                     Counts const& counts ) {
         if ( !isInside( Writer::Object ) ) { return; }
 
-        startObject( key );
-
-        auto& writer = m_objectWriters.top();
+        auto writer = m_objectWriters.top().write( key ).writeObject();
         writer.write( "passed" ).write( counts.passed );
         writer.write( "failed" ).write( counts.failed );
         writer.write( "fail-but-ok" ).write( counts.failedButOk );
         writer.write( "skipped" ).write( counts.skipped );
-
-        endObject();
     }
 
     void JsonReporter::testRunStarting( TestRunInfo const& testInfo ) {
@@ -163,14 +159,10 @@ namespace Catch {
 
         if ( !isInside( Writer::Array ) ) { return; }
 
-        startObject();
-
-        auto& writer = m_objectWriters.top();
+        auto writer = m_arrayWriters.top().writeObject();
         writer.write( "name" ).write( sectionStats.sectionInfo.name );
         writeSourceInfo( sectionStats.sectionInfo.lineInfo );
         writeCounts( "assertions", sectionStats.assertions );
-
-        endObject();
     }
 
     void JsonReporter::testCaseEnded( TestCaseStats const& testCaseStats ) {
