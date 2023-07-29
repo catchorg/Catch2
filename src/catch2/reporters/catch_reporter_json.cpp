@@ -10,6 +10,7 @@
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/catch_version.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
+#include <catch2/internal/catch_list.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/reporters/catch_reporter_json.hpp>
 
@@ -212,16 +213,66 @@ namespace Catch {
 
     void JsonReporter::listReporters(
         std::vector<ReporterDescription> const& descriptions ) {
-        (void)descriptions;
+        if ( !isInside( Writer::Object ) ) { return; }
+
+        auto writer = m_objectWriters.top().write( "reporters" ).writeArray();
+        for ( auto const& desc : descriptions ) {
+            auto desc_writer = writer.writeObject();
+            desc_writer.write( "name" ).write( desc.name );
+            desc_writer.write( "description" ).write( desc.description );
+        }
     }
     void JsonReporter::listListeners(
         std::vector<ListenerDescription> const& descriptions ) {
-        (void)descriptions;
+        if ( !isInside( Writer::Object ) ) { return; }
+
+        auto writer = m_objectWriters.top().write( "listeners" ).writeArray();
+
+        for ( auto const& desc : descriptions ) {
+            auto desc_writer = writer.writeObject();
+            desc_writer.write( "name" ).write( desc.name );
+            desc_writer.write( "description" ).write( desc.description );
+        }
     }
     void JsonReporter::listTests( std::vector<TestCaseHandle> const& tests ) {
-        (void)tests;
+        if ( !isInside( Writer::Object ) ) { return; }
+
+        auto writer = m_objectWriters.top().write( "tests" ).writeArray();
+
+        for ( auto const& test : tests ) {
+            auto desc_writer = writer.writeObject();
+            auto const& info = test.getTestCaseInfo();
+
+            desc_writer.write( "name" ).write( info.name );
+            desc_writer.write( "class-name" ).write( info.className );
+            {
+                auto tag_writer = desc_writer.write( "tags" ).writeArray();
+                for ( auto const& tag : info.tags ) {
+                    tag_writer.write( tag.original );
+                }
+            }
+            {
+                auto source_writer =
+                    desc_writer.write( "source-info" ).writeObject();
+                source_writer.write( "file" ).write( info.lineInfo.file );
+                source_writer.write( "line" ).write( info.lineInfo.line );
+            }
+        }
     }
     void JsonReporter::listTags( std::vector<TagInfo> const& tags ) {
-        (void)tags;
+        if ( !isInside( Writer::Object ) ) { return; }
+
+        auto writer = m_objectWriters.top().write( "tags" ).writeArray();
+        for ( auto const& tag : tags ) {
+            auto tag_writer = writer.writeObject();
+            {
+                auto aliases_writer =
+                    tag_writer.write( "aliases" ).writeArray();
+                for ( auto alias : tag.spellings ) {
+                    aliases_writer.write( alias );
+                }
+            }
+            tag_writer.write( "count" ).write( tag.count );
+        }
     }
 } // namespace Catch
