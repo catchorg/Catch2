@@ -141,6 +141,6 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
     }
     SECTION( "String with a quote shall be espaced" ) {
         Catch::JsonValueWriter{ stream }.write( "\"" );
-        REQUIRE( stream.str() == "\"\\\"\"" );
+        REQUIRE( stream.str() == "\n\"\\\"\"" );
     }
 }
