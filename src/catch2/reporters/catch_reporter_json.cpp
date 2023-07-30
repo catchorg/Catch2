@@ -22,6 +22,10 @@ namespace {
         writer.write( "filename" ).write( sourceInfo.file );
         writer.write( "line" ).write( sourceInfo.line );
     }
+    void writeSourceInfo( JsonObjectWriter&& writer,
+                          SourceLineInfo const& sourceInfo ) {
+        writeSourceInfo( writer, sourceInfo );
+    }
 
     void writeCounts( JsonObjectWriter writer, Counts const& counts ) {
         writer.write( "passed" ).write( counts.passed );
@@ -115,7 +119,7 @@ namespace Catch {
             }
         }
 
-        startArray( "test-cases" );
+        startArray( "test-results" );
     }
 
     void JsonReporter::testCaseStarting( TestCaseInfo const& testInfo ) {
@@ -247,12 +251,8 @@ namespace Catch {
                     tag_writer.write( tag.original );
                 }
             }
-            {
-                auto source_writer =
-                    desc_writer.write( "source-info" ).writeObject();
-                source_writer.write( "file" ).write( info.lineInfo.file );
-                source_writer.write( "line" ).write( info.lineInfo.line );
-            }
+            writeSourceInfo( desc_writer.write( "source-info" ).writeObject(),
+                             info.lineInfo );
         }
     }
     void JsonReporter::listTags( std::vector<TagInfo> const& tags ) {
