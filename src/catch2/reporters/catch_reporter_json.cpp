@@ -180,8 +180,15 @@ namespace Catch {
         auto writer = m_arrayWriters.top().writeObject();
         writer.write( "name" ).write( sectionStats.sectionInfo.name );
         writeSourceInfo( writer, sectionStats.sectionInfo.lineInfo );
-        writeCounts( writer.write( "assertions" ).writeObject(),
-                     sectionStats.assertions );
+
+        auto const& counts = sectionStats.assertions;
+        {
+            auto stat_writer = writer.write( "assertion-stats" ).writeObject();
+            stat_writer.write( "passed" ).write( counts.passed );
+            stat_writer.write( "failed" ).write( counts.failed );
+            stat_writer.write( "failed-but-ok" ).write( counts.failedButOk );
+        }
+        writer.write( "skipped" ).write( counts.skipped != 0 );
     }
 
     void JsonReporter::testCaseEnded( TestCaseStats const& testCaseStats ) {
