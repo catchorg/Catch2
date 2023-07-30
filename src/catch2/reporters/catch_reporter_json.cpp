@@ -14,6 +14,24 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/reporters/catch_reporter_json.hpp>
 
+namespace {
+    using namespace Catch;
+
+    void writeSourceInfo( JsonObjectWriter& writer,
+                          SourceLineInfo const& sourceInfo ) {
+        writer.write( "filename" ).write( sourceInfo.file );
+        writer.write( "line" ).write( sourceInfo.line );
+    }
+
+    void writeCounts( JsonObjectWriter writer, Counts const& counts ) {
+        writer.write( "passed" ).write( counts.passed );
+        writer.write( "failed" ).write( counts.failed );
+        writer.write( "fail-but-ok" ).write( counts.failedButOk );
+        writer.write( "skipped" ).write( counts.skipped );
+    }
+
+} // namespace
+
 namespace Catch {
     JsonReporter::JsonReporter( ReporterConfig&& config ):
         StreamingReporterBase{ CATCH_MOVE( config ) } {
@@ -77,25 +95,6 @@ namespace Catch {
         return "Reports test results as a JSON document";
     }
 
-    void JsonReporter::writeSourceInfo( SourceLineInfo const& sourceInfo ) {
-        if ( !isInside( Writer::Object ) ) { return; }
-
-        auto& writer = m_objectWriters.top();
-        writer.write( "filename" ).write( sourceInfo.file );
-        writer.write( "line" ).write( sourceInfo.line );
-    }
-
-    void JsonReporter::writeCounts( std::string const& key,
-                                    Counts const& counts ) {
-        if ( !isInside( Writer::Object ) ) { return; }
-
-        auto writer = m_objectWriters.top().write( key ).writeObject();
-        writer.write( "passed" ).write( counts.passed );
-        writer.write( "failed" ).write( counts.failed );
-        writer.write( "fail-but-ok" ).write( counts.failedButOk );
-        writer.write( "skipped" ).write( counts.skipped );
-    }
-
     void JsonReporter::testRunStarting( TestRunInfo const& testInfo ) {
         StreamingReporterBase::testRunStarting( testInfo );
 
@@ -136,7 +135,7 @@ namespace Catch {
             }
         }
 
-        writeSourceInfo( testInfo.lineInfo );
+        writeSourceInfo( writer, testInfo.lineInfo );
 
         if ( m_config->showDurations() == ShowDurations::Always ) {
             m_testCaseTimer.start();
@@ -161,8 +160,9 @@ namespace Catch {
 
         auto writer = m_arrayWriters.top().writeObject();
         writer.write( "name" ).write( sectionStats.sectionInfo.name );
-        writeSourceInfo( sectionStats.sectionInfo.lineInfo );
-        writeCounts( "assertions", sectionStats.assertions );
+        writeSourceInfo( writer, sectionStats.sectionInfo.lineInfo );
+        writeCounts( writer.write( "assertions" ).writeObject(),
+                     sectionStats.assertions );
     }
 
     void JsonReporter::testCaseEnded( TestCaseStats const& testCaseStats ) {
@@ -187,8 +187,10 @@ namespace Catch {
             .write( testCaseStats.testInfo->expectedToFail() );
 
         startObject( "totals" );
-        writeCounts( "assertion", testCaseStats.totals.assertions );
-        writeCounts( "test-cases", testCaseStats.totals.testCases );
+        writeCounts( writer.write( "assertions" ).writeObject(),
+                     testCaseStats.totals.assertions );
+        writeCounts( writer.write( "test-cases" ).writeObject(),
+                     testCaseStats.totals.testCases );
         endObject();
 
         endObject();

@@ -24,9 +24,6 @@ namespace Catch {
 
         static std::string getDescription();
 
-        void writeSourceInfo( SourceLineInfo const& sourceInfo );
-        void writeCounts(std::string const & key,  Counts const &counts );
-
     public: // StreamingReporterBase
         void testRunStarting( TestRunInfo const& testInfo ) override;
 
