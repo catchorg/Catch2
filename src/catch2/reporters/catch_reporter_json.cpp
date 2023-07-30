@@ -19,8 +19,10 @@ namespace {
 
     void writeSourceInfo( JsonObjectWriter& writer,
                           SourceLineInfo const& sourceInfo ) {
-        writer.write( "filename" ).write( sourceInfo.file );
-        writer.write( "line" ).write( sourceInfo.line );
+        auto source_location_writer =
+            writer.write( "source-location" ).writeObject();
+        source_location_writer.write( "filename" ).write( sourceInfo.file );
+        source_location_writer.write( "line" ).write( sourceInfo.line );
     }
     void writeSourceInfo( JsonObjectWriter&& writer,
                           SourceLineInfo const& sourceInfo ) {
@@ -140,6 +142,19 @@ namespace Catch {
         }
 
         writeSourceInfo( writer, testInfo.lineInfo );
+        {
+            auto properties_writer = writer.write( "properties" ).writeArray();
+            if ( testInfo.isHidden() ) {
+                properties_writer.write( "is-hidden" );
+            }
+            if ( testInfo.okToFail() ) {
+                properties_writer.write( "ok-to-fail" );
+            }
+            if ( testInfo.expectedToFail() ) {
+                properties_writer.write( "expected-to-fail" );
+            }
+            if ( testInfo.throws() ) { properties_writer.write( "throws" ); }
+        }
 
         if ( m_config->showDurations() == ShowDurations::Always ) {
             m_testCaseTimer.start();
@@ -183,13 +198,6 @@ namespace Catch {
         }
 
         auto& writer = m_objectWriters.top();
-        writer.write( "is-hidden" ).write( testCaseStats.testInfo->isHidden() );
-        writer.write( "throws" ).write( testCaseStats.testInfo->throws() );
-        writer.write( "ok-to-fail" )
-            .write( testCaseStats.testInfo->okToFail() );
-        writer.write( "expected-to-fail" )
-            .write( testCaseStats.testInfo->expectedToFail() );
-
         {
 
             auto totals_writer = writer.write( "totals" ).writeObject();
