@@ -186,12 +186,14 @@ namespace Catch {
         writer.write( "expected-to-fail" )
             .write( testCaseStats.testInfo->expectedToFail() );
 
-        startObject( "totals" );
-        writeCounts( writer.write( "assertions" ).writeObject(),
-                     testCaseStats.totals.assertions );
-        writeCounts( writer.write( "test-cases" ).writeObject(),
-                     testCaseStats.totals.testCases );
-        endObject();
+        {
+
+            auto totals_writer = writer.write( "totals" ).writeObject();
+            writeCounts( totals_writer.write( "assertions" ).writeObject(),
+                         testCaseStats.totals.assertions );
+            writeCounts( totals_writer.write( "test-cases" ).writeObject(),
+                         testCaseStats.totals.testCases );
+        }
 
         endObject();
     }
