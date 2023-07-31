@@ -15,6 +15,7 @@
 
 namespace Catch {
 
+#if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
     namespace {
         static std::string tryTranslators(
             std::vector<
@@ -28,6 +29,7 @@ namespace Catch {
         }
 
     }
+#endif //!defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
 
     ExceptionTranslatorRegistry::~ExceptionTranslatorRegistry() {
     }
