@@ -13,7 +13,7 @@
 
 namespace Catch {
 
-    TagAliasRegistry::~TagAliasRegistry() {}
+    TagAliasRegistry::~TagAliasRegistry() = default;
 
     TagAlias const* TagAliasRegistry::find( std::string const& alias ) const {
         auto it = m_registry.find( alias );

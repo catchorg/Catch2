@@ -45,7 +45,7 @@ namespace Catch {
     } // end anonymous namespace
 
 
-    TeamCityReporter::~TeamCityReporter() {}
+    TeamCityReporter::~TeamCityReporter() = default;
 
     void TeamCityReporter::testRunStarting( TestRunInfo const& runInfo ) {
         m_stream << "##teamcity[testSuiteStarted name='" << escape( runInfo.name )

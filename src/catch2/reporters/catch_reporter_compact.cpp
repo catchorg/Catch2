@@ -249,6 +249,6 @@ private:
             StreamingReporterBase::testRunEnded( _testRunStats );
         }
 
-        CompactReporter::~CompactReporter() {}
+        CompactReporter::~CompactReporter() = default;
 
 } // end namespace Catch

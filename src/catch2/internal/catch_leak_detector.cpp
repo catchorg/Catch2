@@ -29,7 +29,7 @@ namespace Catch {
 
 #else // ^^ Windows crt debug heap enabled // Windows crt debug heap disabled vv
 
-    Catch::LeakDetector::LeakDetector() {}
+    Catch::LeakDetector::LeakDetector() = default;
 
 #endif // CATCH_CONFIG_WINDOWS_CRTDBG
 

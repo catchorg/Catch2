@@ -12,7 +12,7 @@
 
 namespace Catch {
 
-    AutomakeReporter::~AutomakeReporter() {}
+    AutomakeReporter::~AutomakeReporter() = default;
 
     void AutomakeReporter::testCaseEnded(TestCaseStats const& _testCaseStats) {
         // Possible values to emit are PASS, XFAIL, SKIP, FAIL, XPASS and ERROR.
