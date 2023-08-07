@@ -7142,6 +7142,17 @@ with messages:
   i := 10
 
 -------------------------------------------------------------------------------
+Incomplete AssertionHandler
+-------------------------------------------------------------------------------
+AssertionHandler.tests.cpp:<line number>
+...............................................................................
+
+AssertionHandler.tests.cpp:<line number>: FAILED:
+  REQUIRE( Dummy )
+due to unexpected exception with message:
+  Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE
+
+-------------------------------------------------------------------------------
 Inequality checks that should fail
 -------------------------------------------------------------------------------
 Condition.tests.cpp:<line number>
@@ -12514,6 +12525,34 @@ Misc.tests.cpp:<line number>: FAILED - but was ok:
   CHECKED_ELSE( false )
 
 Misc.tests.cpp:<line number>: FAILED:
+
+-------------------------------------------------------------------------------
+Testing checked-if 4
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  CHECKED_ELSE( true )
+
+Misc.tests.cpp:<line number>: FAILED:
+  {Unknown expression after the reported line}
+due to unexpected exception with message:
+  Uncaught exception should fail!
+
+-------------------------------------------------------------------------------
+Testing checked-if 5
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: FAILED - but was ok:
+  CHECKED_ELSE( false )
+
+Misc.tests.cpp:<line number>: FAILED:
+  {Unknown expression after the reported line}
+due to unexpected exception with message:
+  Uncaught exception should fail!
 
 -------------------------------------------------------------------------------
 The NO_FAIL macro reports a failure but does not fail the test
@@ -18221,6 +18260,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  409 |  308 passed |  84 failed | 6 skipped | 11 failed as expected
-assertions: 2225 | 2048 passed | 145 failed | 32 failed as expected
+test cases:  412 |  308 passed |  84 failed | 6 skipped | 14 failed as expected
+assertions: 2229 | 2049 passed | 145 failed | 35 failed as expected
 

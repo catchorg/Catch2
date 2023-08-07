@@ -1830,6 +1830,8 @@ ok {test-number} - i < 10 for: 8 < 10 with 2 messages: 'current counter 8' and '
 ok {test-number} - i < 10 for: 9 < 10 with 2 messages: 'current counter 9' and 'i := 9'
 # INFO is reset for each loop
 not ok {test-number} - i < 10 for: 10 < 10 with 2 messages: 'current counter 10' and 'i := 10'
+# Incomplete AssertionHandler
+not ok {test-number} - unexpected exception with message: 'Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE'; expression was: Dummy
 # Inequality checks that should fail
 not ok {test-number} - data.int_seven != 7 for: 7 != 7
 # Inequality checks that should fail
@@ -3067,6 +3069,14 @@ not ok {test-number} - explicitly
 ok {test-number} - false  # TODO
 # Testing checked-if 3
 not ok {test-number} - explicitly
+# Testing checked-if 4
+ok {test-number} - true
+# Testing checked-if 4
+not ok {test-number} - unexpected exception with message: 'Uncaught exception should fail!'; expression was: {Unknown expression after the reported line}
+# Testing checked-if 5
+ok {test-number} - false  # TODO
+# Testing checked-if 5
+not ok {test-number} - unexpected exception with message: 'Uncaught exception should fail!'; expression was: {Unknown expression after the reported line}
 # The NO_FAIL macro reports a failure but does not fail the test
 ok {test-number} - 1 == 2  # TODO
 # The default listing implementation write to provided stream
@@ -4477,5 +4487,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2237
+1..2241
 

@@ -8619,6 +8619,20 @@ C
     </Expression>
     <OverallResult success="false" skips="0"/>
   </TestCase>
+  <TestCase name="Incomplete AssertionHandler" tags="[!shouldfail][assertion-handler]" filename="tests/<exe-name>/IntrospectiveTests/AssertionHandler.tests.cpp" >
+    <Expression success="false" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/AssertionHandler.tests.cpp" >
+      <Original>
+        Dummy
+      </Original>
+      <Expanded>
+        Dummy
+      </Expanded>
+      <Exception filename="tests/<exe-name>/IntrospectiveTests/AssertionHandler.tests.cpp" >
+        Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE
+      </Exception>
+    </Expression>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="Inequality checks that should fail" tags="[!shouldfail][.][failing]" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
       <Original>
@@ -14545,6 +14559,50 @@ Message from section two
       </Expanded>
     </Expression>
     <Failure filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" />
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Testing checked-if 4" tags="[!shouldfail][checked-if]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+    <Expression success="true" type="CHECKED_ELSE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Original>
+        true
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Expression success="false" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Original>
+        {Unknown expression after the reported line}
+      </Original>
+      <Expanded>
+        {Unknown expression after the reported line}
+      </Expanded>
+      <Exception filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+        Uncaught exception should fail!
+      </Exception>
+    </Expression>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Testing checked-if 5" tags="[!shouldfail][checked-if]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+    <Expression success="false" type="CHECKED_ELSE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Original>
+        false
+      </Original>
+      <Expanded>
+        false
+      </Expanded>
+    </Expression>
+    <Expression success="false" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Original>
+        {Unknown expression after the reported line}
+      </Original>
+      <Expanded>
+        {Unknown expression after the reported line}
+      </Expanded>
+      <Exception filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+        Uncaught exception should fail!
+      </Exception>
+    </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="The NO_FAIL macro reports a failure but does not fail the test" tags="[messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -21198,6 +21256,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2048" failures="145" expectedFailures="32" skips="12"/>
-  <OverallResultsCases successes="308" failures="84" expectedFailures="11" skips="6"/>
+  <OverallResults successes="2049" failures="145" expectedFailures="35" skips="12"/>
+  <OverallResultsCases successes="308" failures="84" expectedFailures="14" skips="6"/>
 </Catch2TestRun>

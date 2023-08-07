@@ -2,6 +2,16 @@
 <!-- filters='"*" ~[!nonportable] ~[!benchmark] ~[approvals]' rng-seed=1 -->
 <testExecutions version="1"loose text artifact
 >
+  <file path="tests/<exe-name>/IntrospectiveTests/AssertionHandler.tests.cpp">
+    <testCase name="Incomplete AssertionHandler" duration="{duration}">
+      <skipped message="REQUIRE(Dummy)">
+FAILED:
+	REQUIRE( Dummy )
+Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE
+at AssertionHandler.tests.cpp:<line number>
+      </skipped>
+    </testCase>
+  </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp">
     <testCase name="Clara::Arg supports single-arg parse the way Opt does" duration="{duration}"/>
     <testCase name="Clara::Opt supports accept-many lambdas/Parsing fails on multiple options without accept_many" duration="{duration}"/>
@@ -1727,6 +1737,22 @@ at Misc.tests.cpp:<line number>
     <testCase name="Testing checked-if 3" duration="{duration}">
       <skipped message="FAIL()">
 FAILED:
+at Misc.tests.cpp:<line number>
+      </skipped>
+    </testCase>
+    <testCase name="Testing checked-if 4" duration="{duration}">
+      <skipped message="({Unknown expression after the reported line})">
+FAILED:
+	{Unknown expression after the reported line}
+Uncaught exception should fail!
+at Misc.tests.cpp:<line number>
+      </skipped>
+    </testCase>
+    <testCase name="Testing checked-if 5" duration="{duration}">
+      <skipped message="({Unknown expression after the reported line})">
+FAILED:
+	{Unknown expression after the reported line}
+Uncaught exception should fail!
 at Misc.tests.cpp:<line number>
       </skipped>
     </testCase>

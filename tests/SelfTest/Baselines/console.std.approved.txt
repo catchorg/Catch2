@@ -660,6 +660,17 @@ with messages:
   i := 10
 
 -------------------------------------------------------------------------------
+Incomplete AssertionHandler
+-------------------------------------------------------------------------------
+AssertionHandler.tests.cpp:<line number>
+...............................................................................
+
+AssertionHandler.tests.cpp:<line number>: FAILED:
+  REQUIRE( Dummy )
+due to unexpected exception with message:
+  Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE
+
+-------------------------------------------------------------------------------
 Inequality checks that should fail
 -------------------------------------------------------------------------------
 Condition.tests.cpp:<line number>
@@ -996,6 +1007,28 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: FAILED:
+
+-------------------------------------------------------------------------------
+Testing checked-if 4
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: FAILED:
+  {Unknown expression after the reported line}
+due to unexpected exception with message:
+  Uncaught exception should fail!
+
+-------------------------------------------------------------------------------
+Testing checked-if 5
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: FAILED:
+  {Unknown expression after the reported line}
+due to unexpected exception with message:
+  Uncaught exception should fail!
 
 -------------------------------------------------------------------------------
 Thrown string literals are translated
@@ -1543,6 +1576,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  409 |  322 passed |  69 failed | 7 skipped | 11 failed as expected
-assertions: 2208 | 2048 passed | 128 failed | 32 failed as expected
+test cases:  412 |  322 passed |  69 failed | 7 skipped | 14 failed as expected
+assertions: 2212 | 2049 passed | 128 failed | 35 failed as expected
 

@@ -961,6 +961,7 @@ Message.tests.cpp:<line number>: passed: i < 10 for: 7 < 10 with 2 messages: 'cu
 Message.tests.cpp:<line number>: passed: i < 10 for: 8 < 10 with 2 messages: 'current counter 8' and 'i := 8'
 Message.tests.cpp:<line number>: passed: i < 10 for: 9 < 10 with 2 messages: 'current counter 9' and 'i := 9'
 Message.tests.cpp:<line number>: failed: i < 10 for: 10 < 10 with 2 messages: 'current counter 10' and 'i := 10'
+AssertionHandler.tests.cpp:<line number>: failed: unexpected exception with message: 'Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE'; expression was: Dummy
 Condition.tests.cpp:<line number>: failed: data.int_seven != 7 for: 7 != 7
 Condition.tests.cpp:<line number>: failed: data.float_nine_point_one != Approx( 9.1f ) for: 9.1f != Approx( 9.1000003815 )
 Condition.tests.cpp:<line number>: failed: data.double_pi != Approx( 3.1415926535 ) for: 3.1415926535 != Approx( 3.1415926535 )
@@ -1750,6 +1751,10 @@ Misc.tests.cpp:<line number>: passed: true
 Misc.tests.cpp:<line number>: failed: explicitly
 Misc.tests.cpp:<line number>: failed - but was ok: false
 Misc.tests.cpp:<line number>: failed: explicitly
+Misc.tests.cpp:<line number>: passed: true
+Misc.tests.cpp:<line number>: failed: unexpected exception with message: 'Uncaught exception should fail!'; expression was: {Unknown expression after the reported line}
+Misc.tests.cpp:<line number>: failed - but was ok: false
+Misc.tests.cpp:<line number>: failed: unexpected exception with message: 'Uncaught exception should fail!'; expression was: {Unknown expression after the reported line}
 Message.tests.cpp:<line number>: failed - but was ok: 1 == 2
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("[fakeTag]"s) for: "All available tags:
    1  [fakeTag]
@@ -2538,7 +2543,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  409 |  308 passed |  84 failed | 6 skipped | 11 failed as expected
-assertions: 2225 | 2048 passed | 145 failed | 32 failed as expected
+test cases:  412 |  308 passed |  84 failed | 6 skipped | 14 failed as expected
+assertions: 2229 | 2049 passed | 145 failed | 35 failed as expected
 
 

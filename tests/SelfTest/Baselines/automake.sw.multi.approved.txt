@@ -164,6 +164,7 @@
 :test-result: FAIL INFO gets logged on failure
 :test-result: FAIL INFO gets logged on failure, even if captured before successful assertions
 :test-result: FAIL INFO is reset for each loop
+:test-result: XFAIL Incomplete AssertionHandler
 :test-result: XFAIL Inequality checks that should fail
 :test-result: PASS Inequality checks that should succeed
 :test-result: PASS Lambdas in assertions
@@ -258,6 +259,8 @@
 :test-result: PASS Testing checked-if
 :test-result: XFAIL Testing checked-if 2
 :test-result: XFAIL Testing checked-if 3
+:test-result: XFAIL Testing checked-if 4
+:test-result: XFAIL Testing checked-if 5
 :test-result: FAIL The NO_FAIL macro reports a failure but does not fail the test
 :test-result: PASS The default listing implementation write to provided stream
 :test-result: FAIL This test 'should' fail but doesn't

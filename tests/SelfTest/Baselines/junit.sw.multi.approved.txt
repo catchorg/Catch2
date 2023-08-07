@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="128" skipped="12" tests="2237" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="128" skipped="12" tests="2241" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -795,6 +795,15 @@ i := 10
 at Message.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Incomplete AssertionHandler" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
+      <error message="Dummy" type="REQUIRE">
+FAILED:
+  REQUIRE( Dummy )
+Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE
+at AssertionHandler.tests.cpp:<line number>
+      </error>
+    </testcase>
     <testcase classname="<exe-name>.global" name="Inequality checks that should fail" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure message="data.int_seven != 7" type="CHECK">
@@ -1358,6 +1367,24 @@ at Misc.tests.cpp:<line number>
 FAILED:
 at Misc.tests.cpp:<line number>
       </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="Testing checked-if 4" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
+      <error message="{Unknown expression after the reported line}">
+FAILED:
+  {Unknown expression after the reported line}
+Uncaught exception should fail!
+at Misc.tests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="Testing checked-if 5" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
+      <error message="{Unknown expression after the reported line}">
+FAILED:
+  {Unknown expression after the reported line}
+Uncaught exception should fail!
+at Misc.tests.cpp:<line number>
+      </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="The NO_FAIL macro reports a failure but does not fail the test" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing tags" time="{duration}" status="run"/>

@@ -217,6 +217,18 @@ TEST_CASE("Testing checked-if 3", "[checked-if][!shouldfail]") {
     SUCCEED();
 }
 
+[[noreturn]]
+TEST_CASE("Testing checked-if 4", "[checked-if][!shouldfail]") {
+    CHECKED_ELSE(true) {}
+    throw std::runtime_error("Uncaught exception should fail!");
+}
+
+[[noreturn]]
+TEST_CASE("Testing checked-if 5", "[checked-if][!shouldfail]") {
+    CHECKED_ELSE(false) {}
+    throw std::runtime_error("Uncaught exception should fail!");
+}
+
 TEST_CASE( "xmlentitycheck" ) {
     SECTION( "embedded xml: <test>it should be possible to embed xml characters, such as <, \" or &, or even whole <xml>documents</xml> within an attribute</test>" ) {
         SUCCEED(); // We need this here to stop it failing due to no tests
