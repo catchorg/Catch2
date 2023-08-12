@@ -58,28 +58,30 @@ namespace Catch {
         }
     }
 
-    void JsonReporter::startArray() {
-        if ( !isInside( Writer::Array ) ) { return; }
-        m_arrayWriters.emplace( m_arrayWriters.top().writeArray() );
+    JsonArrayWriter& JsonReporter::startArray() {
+        auto& result =
+            m_arrayWriters.emplace( m_arrayWriters.top().writeArray() );
         m_writers.emplace( Writer::Array );
+        return result;
     }
-    void JsonReporter::startArray( std::string const& key ) {
-        if ( !isInside( Writer::Object ) ) { return; }
-        m_arrayWriters.emplace(
+    JsonArrayWriter& JsonReporter::startArray( std::string const& key ) {
+        auto& result = m_arrayWriters.emplace(
             m_objectWriters.top().write( key ).writeArray() );
         m_writers.emplace( Writer::Array );
+        return result;
     }
 
-    void JsonReporter::startObject() {
-        if ( !isInside( Writer::Array ) ) { return; }
-        m_objectWriters.emplace( m_arrayWriters.top().writeObject() );
+    JsonObjectWriter& JsonReporter::startObject() {
+        auto& result =
+            m_objectWriters.emplace( m_arrayWriters.top().writeObject() );
         m_writers.emplace( Writer::Object );
+        return result;
     }
-    void JsonReporter::startObject( std::string const& key ) {
-        if ( !isInside( Writer::Object ) ) { return; }
-        m_objectWriters.emplace(
+    JsonObjectWriter& JsonReporter::startObject( std::string const& key ) {
+        auto& result = m_objectWriters.emplace(
             m_objectWriters.top().write( key ).writeObject() );
         m_writers.emplace( Writer::Object );
+        return result;
     }
 
     void JsonReporter::endObject() {
@@ -129,9 +131,7 @@ namespace Catch {
 
         if ( !isInside( Writer::Array ) ) { return; }
 
-        startObject();
-
-        auto& writer = m_objectWriters.top();
+        auto& writer = startObject();
         writer.write( "name" ).write( trim( StringRef( testInfo.name ) ) );
 
         {
@@ -159,11 +159,17 @@ namespace Catch {
         if ( m_config->showDurations() == ShowDurations::Always ) {
             m_testCaseTimer.start();
         }
-        startArray( "sections" );
     }
 
     void JsonReporter::sectionStarting( SectionInfo const& sectionInfo ) {
         StreamingReporterBase::sectionStarting( sectionInfo );
+
+        if ( !isInside( Writer::Array ) ) { return; }
+
+        auto& writer = startObject();
+
+        writer.write( "name" ).write( sectionInfo.name );
+        writeSourceInfo( writer, sectionInfo.lineInfo );
     }
 
     void JsonReporter::assertionStarting( AssertionInfo const& ) {}
@@ -175,11 +181,7 @@ namespace Catch {
     void JsonReporter::sectionEnded( SectionStats const& sectionStats ) {
         StreamingReporterBase::sectionEnded( sectionStats );
 
-        if ( !isInside( Writer::Array ) ) { return; }
-
-        auto writer = m_arrayWriters.top().writeObject();
-        writer.write( "name" ).write( sectionStats.sectionInfo.name );
-        writeSourceInfo( writer, sectionStats.sectionInfo.lineInfo );
+        auto& writer = m_objectWriters.top();
 
         auto const& counts = sectionStats.assertions;
         {
@@ -189,6 +191,8 @@ namespace Catch {
             stat_writer.write( "failed-but-ok" ).write( counts.failedButOk );
         }
         writer.write( "skipped" ).write( counts.skipped != 0 );
+
+        endObject();
     }
 
     void JsonReporter::testCaseEnded( TestCaseStats const& testCaseStats ) {
