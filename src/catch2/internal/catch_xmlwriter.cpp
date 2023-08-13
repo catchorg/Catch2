@@ -14,6 +14,7 @@
 #include <cstdint>
 #include <iomanip>
 #include <type_traits>
+#include <cstdint>
 
 namespace Catch {
 

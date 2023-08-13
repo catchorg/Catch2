@@ -18,6 +18,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <cstdint>
 
 #ifdef __clang__
 #pragma clang diagnostic push

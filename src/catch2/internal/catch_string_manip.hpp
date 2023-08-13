@@ -14,6 +14,7 @@
 #include <string>
 #include <iosfwd>
 #include <vector>
+#include <cstdint>
 
 namespace Catch {
 
