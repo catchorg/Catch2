@@ -234,25 +234,22 @@ namespace Catch {
     }
 
     void XmlReporter::benchmarkEnded(BenchmarkStats<> const& benchmarkStats) {
-        m_xml.startElement("mean")
+        m_xml.scopedElement("mean")
             .writeAttribute("value"_sr, benchmarkStats.mean.point.count())
             .writeAttribute("lowerBound"_sr, benchmarkStats.mean.lower_bound.count())
             .writeAttribute("upperBound"_sr, benchmarkStats.mean.upper_bound.count())
             .writeAttribute("ci"_sr, benchmarkStats.mean.confidence_interval);
-        m_xml.endElement();
-        m_xml.startElement("standardDeviation")
+        m_xml.scopedElement("standardDeviation")
             .writeAttribute("value"_sr, benchmarkStats.standardDeviation.point.count())
             .writeAttribute("lowerBound"_sr, benchmarkStats.standardDeviation.lower_bound.count())
             .writeAttribute("upperBound"_sr, benchmarkStats.standardDeviation.upper_bound.count())
             .writeAttribute("ci"_sr, benchmarkStats.standardDeviation.confidence_interval);
-        m_xml.endElement();
-        m_xml.startElement("outliers")
+        m_xml.scopedElement("outliers")
             .writeAttribute("variance"_sr, benchmarkStats.outlierVariance)
             .writeAttribute("lowMild"_sr, benchmarkStats.outliers.low_mild)
             .writeAttribute("lowSevere"_sr, benchmarkStats.outliers.low_severe)
             .writeAttribute("highMild"_sr, benchmarkStats.outliers.high_mild)
             .writeAttribute("highSevere"_sr, benchmarkStats.outliers.high_severe);
-        m_xml.endElement();
         m_xml.endElement();
     }
 
