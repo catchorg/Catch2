@@ -395,7 +395,7 @@ ConsoleReporter::ConsoleReporter(ReporterConfig&& config):
                 { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH - 43, Justification::Left },
                 { "samples      mean       std dev", 14, Justification::Right },
                 { "iterations   low mean   low std dev", 14, Justification::Right },
-                { "estimated    high mean  high std dev", 14, Justification::Right }
+                { "est run time high mean  high std dev", 14, Justification::Right }
             };
         }
     }())) {}
