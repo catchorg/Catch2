@@ -113,7 +113,7 @@ static int catchInternalSectionHint = 0;
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                           \
         CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS                   \
         static const Catch::Detail::DummyUse INTERNAL_CATCH_UNIQUE_NAME(   \
-            dummyUser )( &fname );                                         \
+            dummyUser )( &(fname) );                                       \
         CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS                            \
         static void fname( [[maybe_unused]] int catchInternalSectionHint ) \
             CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
