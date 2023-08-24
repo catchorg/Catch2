@@ -31,6 +31,7 @@ copyright_lines = [
 # The header of the amalgamated file: copyright information + explanation
 # what this file is.
 file_header = '''\
+
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
 //   (See accompanying file LICENSE.txt or copy at

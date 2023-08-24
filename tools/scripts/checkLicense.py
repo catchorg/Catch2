@@ -33,7 +33,8 @@ def check_licences_in_path(path: str) -> int:
 
 def check_licences():
     failed = 0
-    roots = ['src/catch2', 'tests']
+    # Add 'extras' after the amalgamted files are regenerated with the new script (past 3.4.0)
+    roots = ['src/catch2', 'tests', 'examples', 'fuzzing']
     for root in roots:
         failed += check_licences_in_path(root)
     
