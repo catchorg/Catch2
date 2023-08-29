@@ -10,6 +10,8 @@
 #    pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif
 
+#include <helpers/range_test_helpers.hpp>
+
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generator_exception.hpp>
@@ -544,4 +546,31 @@ TEST_CASE("Filter generator throws exception for empty generator",
     REQUIRE_THROWS_AS(
         filter( []( int ) { return false; }, value( 3 ) ),
         Catch::GeneratorException );
+}
+
+TEST_CASE("from_range(container) supports ADL begin/end and arrays", "[generators][from-range][approvals]") {
+    using namespace Catch::Generators;
+
+    SECTION("C array") {
+        int arr[3]{ 5, 6, 7 };
+        auto gen = from_range( arr );
+        REQUIRE( gen.get() == 5 );
+        REQUIRE( gen.next() );
+        REQUIRE( gen.get() == 6 );
+        REQUIRE( gen.next() );
+        REQUIRE( gen.get() == 7 );
+        REQUIRE_FALSE( gen.next() );
+    }
+
+    SECTION( "ADL range" ) {
+        unrelated::needs_ADL_begin<int> range{ 1, 2, 3 };
+        auto gen = from_range( range );
+        REQUIRE( gen.get() == 1 );
+        REQUIRE( gen.next() );
+        REQUIRE( gen.get() == 2 );
+        REQUIRE( gen.next() );
+        REQUIRE( gen.get() == 3 );
+        REQUIRE_FALSE( gen.next() );
+    }
+
 }

@@ -96,10 +96,11 @@ GeneratorWrapper<ResultType> from_range(InputIterator from, InputSentinel to) {
     return GeneratorWrapper<ResultType>(Catch::Detail::make_unique<IteratorGenerator<ResultType>>(from, to));
 }
 
-template <typename Container,
-          typename ResultType = typename Container::value_type>
-GeneratorWrapper<ResultType> from_range(Container const& cnt) {
-    return GeneratorWrapper<ResultType>(Catch::Detail::make_unique<IteratorGenerator<ResultType>>(cnt.begin(), cnt.end()));
+template <typename Container>
+auto from_range(Container const& cnt) {
+    using std::begin;
+    using std::end;
+    return from_range( begin( cnt ), end( cnt ) );
 }
 
 
