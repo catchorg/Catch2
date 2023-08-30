@@ -398,6 +398,12 @@ namespace Catch {
             }
         }
     };
+    template <>
+    struct StringMaker<std::nullopt_t> {
+        static std::string convert(const std::nullopt_t&) {
+            return "{ }";
+        }
+    };
 }
 #endif // CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER
 

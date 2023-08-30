@@ -28,4 +28,8 @@ TEST_CASE( "std::vector<std::optional<int> > -> toString", "[toString][optional]
     REQUIRE( "{ 0, { }, 2 }" == ::Catch::Detail::stringify( type{ 0, {}, 2 } ) );
 }
 
+TEST_CASE( "std::nullopt -> toString", "[toString][optional][approvals]" ) {
+    REQUIRE( "{ }" == ::Catch::Detail::stringify( std::nullopt ) );
+}
+
 #endif // CATCH_INTERNAL_CONFIG_CPP17_OPTIONAL
