@@ -27,7 +27,6 @@ namespace Catch {
         };
         template <typename Clock>
         struct Environment {
-            using clock_type = Clock;
             EnvironmentEstimate<FloatDuration<Clock>> clock_resolution;
             EnvironmentEstimate<FloatDuration<Clock>> clock_cost;
         };
