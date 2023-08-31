@@ -93,7 +93,7 @@ Fibonacci
 -------------------------------------------------------------------------------
 C:\path\to\Catch2\Benchmark.tests.cpp(10)
 ...............................................................................
-benchmark name                                  samples       iterations    estimated
+benchmark name                                  samples       iterations    est run time
                                                 mean          low mean      high mean
                                                 std dev       low std dev   high std dev
 -------------------------------------------------------------------------------
