@@ -32,7 +32,10 @@ namespace Catch {
                 void start() override { started = Clock::now(); }
                 void finish() override { finished = Clock::now(); }
 
-                ClockDuration<Clock> elapsed() const { return finished - started; }
+                IDuration elapsed() const {
+                    return std::chrono::duration_cast<std::chrono::nanoseconds>(
+                        finished - started );
+                }
 
                 TimePoint<Clock> started;
                 TimePoint<Clock> finished;

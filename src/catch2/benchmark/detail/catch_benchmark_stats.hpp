@@ -8,7 +8,6 @@
 #ifndef CATCH_BENCHMARK_STATS_HPP_INCLUDED
 #define CATCH_BENCHMARK_STATS_HPP_INCLUDED
 
-#include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/benchmark/catch_estimate.hpp>
 #include <catch2/benchmark/catch_outlier_classification.hpp>
 // The fwd decl & default specialization needs to be seen by VS2017 before
@@ -30,32 +29,17 @@ namespace Catch {
         double clockCost;
     };
 
-    template <class Duration>
+    // We need to keep template parameter for backwards compatibility,
+    // but we also do not want to use the template paraneter.
+    template <class Dummy>
     struct BenchmarkStats {
         BenchmarkInfo info;
 
-        std::vector<Duration> samples;
-        Benchmark::Estimate<Duration> mean;
-        Benchmark::Estimate<Duration> standardDeviation;
+        std::vector<Benchmark::FDuration> samples;
+        Benchmark::Estimate<Benchmark::FDuration> mean;
+        Benchmark::Estimate<Benchmark::FDuration> standardDeviation;
         Benchmark::OutlierClassification outliers;
         double outlierVariance;
-
-        template <typename Duration2>
-        operator BenchmarkStats<Duration2>() const {
-            std::vector<Duration2> samples2;
-            samples2.reserve(samples.size());
-            for (auto const& sample : samples) {
-                samples2.push_back(Duration2(sample));
-            }
-            return {
-                info,
-                CATCH_MOVE(samples2),
-                mean,
-                standardDeviation,
-                outliers,
-                outlierVariance,
-            };
-        }
     };
 
 

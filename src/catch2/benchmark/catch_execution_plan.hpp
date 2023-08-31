@@ -21,33 +21,31 @@
 
 namespace Catch {
     namespace Benchmark {
-        template <typename Duration>
         struct ExecutionPlan {
             int iterations_per_sample;
-            Duration estimated_duration;
+            FDuration estimated_duration;
             Detail::BenchmarkFunction benchmark;
-            Duration warmup_time;
+            FDuration warmup_time;
             int warmup_iterations;
 
-            template <typename Duration2>
-            operator ExecutionPlan<Duration2>() const {
-                return { iterations_per_sample, estimated_duration, benchmark, warmup_time, warmup_iterations };
-            }
-
             template <typename Clock>
-            std::vector<FloatDuration<Clock>> run(const IConfig &cfg, Environment<FloatDuration<Clock>> env) const {
+            std::vector<FDuration> run(const IConfig &cfg, Environment env) const {
                 // warmup a bit
-                Detail::run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(warmup_time), warmup_iterations, Detail::repeat(now<Clock>{}));
+                Detail::run_for_at_least<Clock>(
+                    std::chrono::duration_cast<IDuration>( warmup_time ),
+                    warmup_iterations,
+                    Detail::repeat( []() { return Clock::now(); } )
+                );
 
-                std::vector<FloatDuration<Clock>> times;
+                std::vector<FDuration> times;
                 const auto num_samples = cfg.benchmarkSamples();
                 times.reserve( num_samples );
                 for ( size_t i = 0; i < num_samples; ++i ) {
                     Detail::ChronometerModel<Clock> model;
                     this->benchmark( Chronometer( model, iterations_per_sample ) );
                     auto sample_time = model.elapsed() - env.clock_cost.mean;
-                    if ( sample_time < FloatDuration<Clock>::zero() ) {
-                        sample_time = FloatDuration<Clock>::zero();
+                    if ( sample_time < FDuration::zero() ) {
+                        sample_time = FDuration::zero();
                     }
                     times.push_back(sample_time / iterations_per_sample);
                 }

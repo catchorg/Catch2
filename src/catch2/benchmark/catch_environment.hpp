@@ -15,20 +15,13 @@
 
 namespace Catch {
     namespace Benchmark {
-        template <typename Duration>
         struct EnvironmentEstimate {
-            Duration mean;
+            FDuration mean;
             OutlierClassification outliers;
-
-            template <typename Duration2>
-            operator EnvironmentEstimate<Duration2>() const {
-                return { mean, outliers };
-            }
         };
-        template <typename Clock>
         struct Environment {
-            EnvironmentEstimate<FloatDuration<Clock>> clock_resolution;
-            EnvironmentEstimate<FloatDuration<Clock>> clock_cost;
+            EnvironmentEstimate clock_resolution;
+            EnvironmentEstimate clock_cost;
         };
     } // namespace Benchmark
 } // namespace Catch

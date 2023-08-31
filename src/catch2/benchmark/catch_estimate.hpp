@@ -12,17 +12,12 @@
 
 namespace Catch {
     namespace Benchmark {
-        template <typename Duration>
+        template <typename Type>
         struct Estimate {
-            Duration point;
-            Duration lower_bound;
-            Duration upper_bound;
+            Type point;
+            Type lower_bound;
+            Type upper_bound;
             double confidence_interval;
-
-            template <typename Duration2>
-            operator Estimate<Duration2>() const {
-                return { point, lower_bound, upper_bound, confidence_interval };
-            }
         };
     } // namespace Benchmark
 } // namespace Catch

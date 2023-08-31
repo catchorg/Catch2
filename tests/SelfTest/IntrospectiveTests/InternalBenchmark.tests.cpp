@@ -292,15 +292,13 @@ TEST_CASE("analyse", "[approvals][benchmark]") {
     data.benchmarkSamples = 99;
     Catch::Config config{data};
 
-    using Duration = Catch::Benchmark::FloatDuration<Catch::Benchmark::default_clock>;
-
-    Catch::Benchmark::Environment<Duration> env;
-    std::vector<Duration> samples(99);
+    using FDuration = Catch::Benchmark::FDuration;
+    std::vector<FDuration> samples(99);
     for (size_t i = 0; i < samples.size(); ++i) {
-        samples[i] = Duration(23 + (i % 3 - 1));
+        samples[i] = FDuration(23 + (i % 3 - 1));
     }
 
-    auto analysis = Catch::Benchmark::Detail::analyse(config, env, samples.begin(), samples.end());
+    auto analysis = Catch::Benchmark::Detail::analyse(config, samples.data(), samples.data() + samples.size());
     CHECK( analysis.mean.point.count() == 23 );
     CHECK( analysis.mean.lower_bound.count() < 23 );
     CHECK(analysis.mean.lower_bound.count() > 22);
@@ -333,15 +331,13 @@ TEST_CASE("analyse no analysis", "[benchmark]") {
     data.benchmarkSamples = 99;
     Catch::Config config{ data };
 
-    using Duration = Catch::Benchmark::FloatDuration<Catch::Benchmark::default_clock>;
-
-    Catch::Benchmark::Environment<Duration> env;
-    std::vector<Duration> samples(99);
+    using FDuration = Catch::Benchmark::FDuration;
+    std::vector<FDuration> samples(99);
     for (size_t i = 0; i < samples.size(); ++i) {
-        samples[i] = Duration(23 + (i % 3 - 1));
+        samples[i] = FDuration(23 + (i % 3 - 1));
     }
 
-    auto analysis = Catch::Benchmark::Detail::analyse(config, env, samples.begin(), samples.end());
+    auto analysis = Catch::Benchmark::Detail::analyse(config, samples.data(), samples.data() + samples.size());
     CHECK(analysis.mean.point.count() == 23);
     CHECK(analysis.mean.lower_bound.count() == 23);
     CHECK(analysis.mean.upper_bound.count() == 23);

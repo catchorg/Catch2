@@ -45,6 +45,7 @@ benchmark_headers = [
 
 benchmark_sources = files(
   'benchmark/catch_chronometer.cpp',
+  'benchmark/detail/catch_analyse.cpp',
   'benchmark/detail/catch_benchmark_function.cpp',
   'benchmark/detail/catch_run_for_at_least.cpp',
   'benchmark/detail/catch_stats.cpp',

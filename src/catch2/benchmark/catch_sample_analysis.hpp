@@ -12,35 +12,18 @@
 
 #include <catch2/benchmark/catch_estimate.hpp>
 #include <catch2/benchmark/catch_outlier_classification.hpp>
-#include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/benchmark/catch_clock.hpp>
 
 #include <vector>
 
 namespace Catch {
     namespace Benchmark {
-        template <typename Duration>
         struct SampleAnalysis {
-            std::vector<Duration> samples;
-            Estimate<Duration> mean;
-            Estimate<Duration> standard_deviation;
+            std::vector<FDuration> samples;
+            Estimate<FDuration> mean;
+            Estimate<FDuration> standard_deviation;
             OutlierClassification outliers;
             double outlier_variance;
-
-            template <typename Duration2>
-            operator SampleAnalysis<Duration2>() const {
-                std::vector<Duration2> samples2;
-                samples2.reserve(samples.size());
-                for (auto const& d : samples) {
-                    samples2.push_back(Duration2(d));
-                }
-                return {
-                    CATCH_MOVE(samples2),
-                    mean,
-                    standard_deviation,
-                    outliers,
-                    outlier_variance,
-                };
-            }
         };
     } // namespace Benchmark
 } // namespace Catch

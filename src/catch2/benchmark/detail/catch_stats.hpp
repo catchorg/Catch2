@@ -13,9 +13,7 @@
 #include <catch2/benchmark/catch_estimate.hpp>
 #include <catch2/benchmark/catch_outlier_classification.hpp>
 
-#include <algorithm>
 #include <vector>
-#include <cmath>
 
 namespace Catch {
     namespace Benchmark {
@@ -36,78 +34,23 @@ namespace Catch {
 
             double mean( double const* first, double const* last );
 
-            template <typename Estimator>
-            sample jackknife(Estimator&& estimator,
-                             double* first,
-                             double* last) {
-                auto n = static_cast<size_t>(last - first);
-                auto second = first;
-                ++second;
-                sample results;
-                results.reserve(n);
+            sample jackknife( double ( *estimator )( double const*,
+                                                     double const* ),
+                              double* first,
+                              double* last );
 
-                for (auto it = first; it != last; ++it) {
-                    std::iter_swap(it, first);
-                    results.push_back(estimator(second, last));
-                }
-
-                return results;
-            }
-
-            inline double normal_cdf(double x) {
-                return std::erfc(-x / std::sqrt(2.0)) / 2.0;
-            }
+            double normal_cdf( double x );
 
             double erfc_inv(double x);
 
             double normal_quantile(double p);
 
-            template <typename Estimator>
-            Estimate<double> bootstrap( double confidence_level,
-                                        double* first,
-                                        double* last,
-                                        sample const& resample,
-                                        Estimator&& estimator ) {
-                auto n_samples = last - first;
-
-                double point = estimator(first, last);
-                // Degenerate case with a single sample
-                if (n_samples == 1) return { point, point, point, confidence_level };
-
-                sample jack = jackknife(estimator, first, last);
-                double jack_mean = mean(jack.data(), jack.data() + jack.size());
-                double sum_squares = 0, sum_cubes = 0;
-                for (double x : jack) {
-                    auto difference = jack_mean - x;
-                    auto square = difference * difference;
-                    auto cube = square * difference;
-                    sum_squares += square; sum_cubes += cube;
-                }
-
-                double accel = sum_cubes / (6 * std::pow(sum_squares, 1.5));
-                long n = static_cast<long>(resample.size());
-                double prob_n = std::count_if(resample.begin(), resample.end(), [point](double x) { return x < point; }) / static_cast<double>(n);
-                // degenerate case with uniform samples
-                if ( directCompare( prob_n, 0. ) ) {
-                    return { point, point, point, confidence_level };
-                }
-
-                double bias = normal_quantile(prob_n);
-                double z1 = normal_quantile((1. - confidence_level) / 2.);
-
-                auto cumn = [n]( double x ) -> long {
-                    return std::lround( normal_cdf( x ) * static_cast<double>(n) );
-                };
-                auto a = [bias, accel](double b) { return bias + b / (1. - accel * b); };
-                double b1 = bias + z1;
-                double b2 = bias - z1;
-                double a1 = a(b1);
-                double a2 = a(b2);
-                auto lo = static_cast<size_t>((std::max)(cumn(a1), 0l));
-                auto hi = static_cast<size_t>((std::min)(cumn(a2), n - 1));
-
-                return { point, resample[lo], resample[hi], confidence_level };
-            }
+            Estimate<double>
+            bootstrap( double confidence_level,
+                       double* first,
+                       double* last,
+                       sample const& resample,
+                       double ( *estimator )( double const*, double const* ) );
 
             struct bootstrap_analysis {
                 Estimate<double> mean;

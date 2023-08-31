@@ -24,11 +24,11 @@ namespace Catch {
     namespace Benchmark {
         namespace Detail {
             template <typename Clock, typename Fun>
-            TimingOf<Clock, Fun, int> measure_one(Fun&& fun, int iters, std::false_type) {
+            TimingOf<Fun, int> measure_one(Fun&& fun, int iters, std::false_type) {
                 return Detail::measure<Clock>(fun, iters);
             }
             template <typename Clock, typename Fun>
-            TimingOf<Clock, Fun, Chronometer> measure_one(Fun&& fun, int iters, std::true_type) {
+            TimingOf<Fun, Chronometer> measure_one(Fun&& fun, int iters, std::true_type) {
                 Detail::ChronometerModel<Clock> meter;
                 auto&& result = Detail::complete_invoke(fun, Chronometer(meter, iters));
 
@@ -43,8 +43,8 @@ namespace Catch {
             void throw_optimized_away_error();
 
             template <typename Clock, typename Fun>
-            TimingOf<Clock, Fun, run_for_at_least_argument_t<Clock, Fun>>
-                run_for_at_least(ClockDuration<Clock> how_long,
+            TimingOf<Fun, run_for_at_least_argument_t<Clock, Fun>>
+                run_for_at_least(IDuration how_long,
                                  const int initial_iterations,
                                  Fun&& fun) {
                 auto iters = initial_iterations;
