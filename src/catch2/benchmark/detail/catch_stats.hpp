@@ -26,19 +26,20 @@ namespace Catch {
             // to centralize warning suppression
             bool directCompare( double lhs, double rhs );
 
-            double weighted_average_quantile(int k, int q, std::vector<double>::iterator first, std::vector<double>::iterator last);
+            double weighted_average_quantile( int k,
+                                              int q,
+                                              double* first,
+                                              double* last );
 
             OutlierClassification
-            classify_outliers( std::vector<double>::const_iterator first,
-                               std::vector<double>::const_iterator last );
+            classify_outliers( double const* first, double const* last );
 
-            double mean( std::vector<double>::const_iterator first,
-                         std::vector<double>::const_iterator last );
+            double mean( double const* first, double const* last );
 
             template <typename Estimator>
             sample jackknife(Estimator&& estimator,
-                             std::vector<double>::iterator first,
-                             std::vector<double>::iterator last) {
+                             double* first,
+                             double* last) {
                 auto n = static_cast<size_t>(last - first);
                 auto second = first;
                 ++second;
@@ -63,8 +64,8 @@ namespace Catch {
 
             template <typename Estimator>
             Estimate<double> bootstrap( double confidence_level,
-                                        std::vector<double>::iterator first,
-                                        std::vector<double>::iterator last,
+                                        double* first,
+                                        double* last,
                                         sample const& resample,
                                         Estimator&& estimator ) {
                 auto n_samples = last - first;
@@ -74,7 +75,7 @@ namespace Catch {
                 if (n_samples == 1) return { point, point, point, confidence_level };
 
                 sample jack = jackknife(estimator, first, last);
-                double jack_mean = mean(jack.begin(), jack.end());
+                double jack_mean = mean(jack.data(), jack.data() + jack.size());
                 double sum_squares = 0, sum_cubes = 0;
                 for (double x : jack) {
                     auto difference = jack_mean - x;
@@ -116,8 +117,8 @@ namespace Catch {
 
             bootstrap_analysis analyse_samples(double confidence_level,
                                                unsigned int n_resamples,
-                                               std::vector<double>::iterator first,
-                                               std::vector<double>::iterator last);
+                                               double* first,
+                                               double* last);
         } // namespace Detail
     } // namespace Benchmark
 } // namespace Catch

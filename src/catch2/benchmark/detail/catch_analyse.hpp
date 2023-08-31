@@ -30,8 +30,13 @@ namespace Catch {
                         samples.push_back( current->count() );
                     }
 
-                    auto analysis = Catch::Benchmark::Detail::analyse_samples(cfg.benchmarkConfidenceInterval(), cfg.benchmarkResamples(), samples.begin(), samples.end());
-                    auto outliers = Catch::Benchmark::Detail::classify_outliers(samples.begin(), samples.end());
+                    auto analysis = Catch::Benchmark::Detail::analyse_samples(
+                        cfg.benchmarkConfidenceInterval(),
+                        cfg.benchmarkResamples(),
+                        samples.data(),
+                        samples.data() + samples.size() );
+                    auto outliers = Catch::Benchmark::Detail::classify_outliers(
+                        samples.data(), samples.data() + samples.size() );
 
                     auto wrap_estimate = [](Estimate<double> e) {
                         return Estimate<Duration> {

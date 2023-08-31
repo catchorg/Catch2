@@ -63,8 +63,8 @@ namespace Catch {
                 auto r = run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(clock_resolution_estimation_time), iterations, &resolution<Clock>)
                     .result;
                 return {
-                    FloatDuration<Clock>(mean(r.begin(), r.end())),
-                    classify_outliers(r.begin(), r.end()),
+                    FloatDuration<Clock>(mean(r.data(), r.data() + r.size())),
+                    classify_outliers(r.data(), r.data() + r.size()),
                 };
             }
             template <typename Clock>
@@ -92,8 +92,8 @@ namespace Catch {
                             .count() ) );
                 }
                 return {
-                    FloatDuration<Clock>(mean(times.begin(), times.end())),
-                    classify_outliers(times.begin(), times.end()),
+                    FloatDuration<Clock>(mean(times.data(), times.data() + times.size())),
+                    classify_outliers(times.data(), times.data() + times.size()),
                 };
             }
 
