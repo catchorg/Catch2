@@ -252,7 +252,6 @@ internal_sources = files(
   'matchers/catch_matchers_floating_point.cpp',
   'matchers/catch_matchers_predicate.cpp',
   'matchers/catch_matchers_quantifiers.cpp',
-  'matchers/catch_matchers_range_equals.cpp',
   'matchers/catch_matchers_string.cpp',
   'matchers/catch_matchers_templated.cpp',
   'matchers/internal/catch_matchers_impl.cpp',
