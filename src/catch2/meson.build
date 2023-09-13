@@ -157,6 +157,7 @@ internal_headers = [
   'matchers/catch_matchers_floating_point.hpp',
   'matchers/catch_matchers_predicate.hpp',
   'matchers/catch_matchers_quantifiers.hpp',
+  'matchers/catch_matchers_range_equals.hpp',
   'matchers/catch_matchers_string.hpp',
   'matchers/catch_matchers_templated.hpp',
   'matchers/catch_matchers_vector.hpp',
