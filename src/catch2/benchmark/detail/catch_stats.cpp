@@ -197,6 +197,24 @@ namespace Catch {
 #    pragma GCC diagnostic pop
 #endif
 
+
+                static sample jackknife( double ( *estimator )( double const*,
+                                                                double const* ),
+                                         double* first,
+                                         double* last ) {
+                    const auto second = first + 1;
+                    sample results;
+                    results.reserve( static_cast<size_t>( last - first ) );
+
+                    for ( auto it = first; it != last; ++it ) {
+                        std::iter_swap( it, first );
+                        results.push_back( estimator( second, last ) );
+                    }
+
+                    return results;
+                }
+
+
             } // namespace
         }     // namespace Detail
     }         // namespace Benchmark
@@ -261,24 +279,6 @@ namespace Catch {
                     ++first;
                 }
                 return sum / static_cast<double>(count);
-            }
-
-            sample jackknife( double ( *estimator )( double const*,
-                                                     double const* ),
-                              double* first,
-                              double* last ) {
-                auto n = static_cast<size_t>( last - first );
-                auto second = first;
-                ++second;
-                sample results;
-                results.reserve( n );
-
-                for ( auto it = first; it != last; ++it ) {
-                    std::iter_swap( it, first );
-                    results.push_back( estimator( second, last ) );
-                }
-
-                return results;
             }
 
             double normal_cdf( double x ) {

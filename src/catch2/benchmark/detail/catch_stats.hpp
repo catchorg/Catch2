@@ -30,11 +30,6 @@ namespace Catch {
 
             double mean( double const* first, double const* last );
 
-            sample jackknife( double ( *estimator )( double const*,
-                                                     double const* ),
-                              double* first,
-                              double* last );
-
             double normal_cdf( double x );
 
             double erfc_inv(double x);
