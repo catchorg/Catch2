@@ -184,6 +184,19 @@ namespace Catch {
                     return std::sqrt( variance );
                 }
 
+#if defined( __GNUC__ ) || defined( __clang__ )
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
+                // Used when we know we want == comparison of two doubles
+                // to centralize warning suppression
+                static bool directCompare( double lhs, double rhs ) {
+                    return lhs == rhs;
+                }
+#if defined( __GNUC__ ) || defined( __clang__ )
+#    pragma GCC diagnostic pop
+#endif
+
             } // namespace
         }     // namespace Detail
     }         // namespace Benchmark
@@ -192,15 +205,6 @@ namespace Catch {
 namespace Catch {
     namespace Benchmark {
         namespace Detail {
-
-#if defined( __GNUC__ ) || defined( __clang__ )
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wfloat-equal"
-#endif
-            bool directCompare( double lhs, double rhs ) { return lhs == rhs; }
-#if defined( __GNUC__ ) || defined( __clang__ )
-#    pragma GCC diagnostic pop
-#endif
 
             double weighted_average_quantile( int k,
                                               int q,

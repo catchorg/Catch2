@@ -20,10 +20,6 @@ namespace Catch {
         namespace Detail {
             using sample = std::vector<double>;
 
-            // Used when we know we want == comparison of two doubles
-            // to centralize warning suppression
-            bool directCompare( double lhs, double rhs );
-
             double weighted_average_quantile( int k,
                                               int q,
                                               double* first,
