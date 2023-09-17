@@ -160,6 +160,7 @@
 :test-result: PASS Hashers with same seed produce same hash
 :test-result: PASS Hashing different test cases produces different result
 :test-result: PASS Hashing test case produces same hash across multiple calls
+:test-result: FAIL INFO and UNSCOPED_INFO can stream multiple arguments
 :test-result: FAIL INFO and WARN do not abort tests
 :test-result: FAIL INFO gets logged on failure
 :test-result: FAIL INFO gets logged on failure, even if captured before successful assertions

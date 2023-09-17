@@ -285,3 +285,14 @@ TEST_CASE("CAPTURE parses string and character constants", "[messages][capture]"
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif
+
+TEST_CASE( "INFO and UNSCOPED_INFO can stream multiple arguments",
+           "[messages][info][.failing]" ) {
+    INFO( "This info"
+          << " has multiple"
+          << " parts." );
+    UNSCOPED_INFO( "This unscoped info"
+                   << " has multiple"
+                   << " parts." );
+    FAIL( "Show infos!" );
+}

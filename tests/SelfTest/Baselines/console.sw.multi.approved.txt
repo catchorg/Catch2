@@ -6981,6 +6981,18 @@ with expansion:
   3422778688 (0x<hex digits>)
 
 -------------------------------------------------------------------------------
+INFO and UNSCOPED_INFO can stream multiple arguments
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: FAILED:
+explicitly with messages:
+  This info has multiple parts.
+  This unscoped info has multiple parts.
+  Show infos!
+
+-------------------------------------------------------------------------------
 INFO and WARN do not abort tests
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -18260,6 +18272,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  412 |  308 passed |  84 failed | 6 skipped | 14 failed as expected
-assertions: 2229 | 2049 passed | 145 failed | 35 failed as expected
+test cases:  413 |  308 passed |  85 failed | 6 skipped | 14 failed as expected
+assertions: 2230 | 2049 passed | 146 failed | 35 failed as expected
 

@@ -8371,6 +8371,18 @@ C
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="INFO and UNSCOPED_INFO can stream multiple arguments" tags="[.][failing][info][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      This info has multiple parts.
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      This unscoped info has multiple parts.
+    </Info>
+    <Failure filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      Show infos!
+    </Failure>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
   <TestCase name="INFO and WARN do not abort tests" tags="[.][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       this is a message
@@ -21255,6 +21267,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2049" failures="145" expectedFailures="35" skips="12"/>
-  <OverallResultsCases successes="308" failures="84" expectedFailures="14" skips="6"/>
+  <OverallResults successes="2049" failures="146" expectedFailures="35" skips="12"/>
+  <OverallResultsCases successes="308" failures="85" expectedFailures="14" skips="6"/>
 </Catch2TestRun>

@@ -1796,6 +1796,8 @@ ok {test-number} - h( dummy1 ) != h( dummy2 ) for: 2673152918 (0x<hex digits>) !
 ok {test-number} - h( dummy1 ) != h( dummy2 ) for: 2074929312 (0x<hex digits>) != 3429949824 (0x<hex digits>)
 # Hashing test case produces same hash across multiple calls
 ok {test-number} - h( dummy ) == h( dummy ) for: 3422778688 (0x<hex digits>) == 3422778688 (0x<hex digits>)
+# INFO and UNSCOPED_INFO can stream multiple arguments
+not ok {test-number} - explicitly with 3 messages: 'This info has multiple parts.' and 'This unscoped info has multiple parts.' and 'Show infos!'
 # INFO and WARN do not abort tests
 warning {test-number} - 'this is a message' with 1 message: 'this is a warning'
 # INFO gets logged on failure
@@ -4487,5 +4489,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2241
+1..2242
 

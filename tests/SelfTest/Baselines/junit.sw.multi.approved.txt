@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="128" skipped="12" tests="2241" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="129" skipped="12" tests="2242" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -751,6 +751,15 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Hashing different test cases produces different result/Different classname" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Hashing different test cases produces different result/Different tags" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Hashing test case produces same hash across multiple calls" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="INFO and UNSCOPED_INFO can stream multiple arguments" time="{duration}" status="run">
+      <failure type="FAIL">
+FAILED:
+Show infos!
+This info has multiple parts.
+This unscoped info has multiple parts.
+at Message.tests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="<exe-name>.global" name="INFO and WARN do not abort tests" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="INFO gets logged on failure" time="{duration}" status="run">
       <failure message="a == 1" type="REQUIRE">

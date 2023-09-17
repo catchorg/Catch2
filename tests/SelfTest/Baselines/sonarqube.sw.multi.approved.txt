@@ -1479,6 +1479,15 @@ This is a failure
 at Message.tests.cpp:<line number>
       </failure>
     </testCase>
+    <testCase name="INFO and UNSCOPED_INFO can stream multiple arguments" duration="{duration}">
+      <failure message="FAIL()">
+FAILED:
+Show infos!
+This info has multiple parts.
+This unscoped info has multiple parts.
+at Message.tests.cpp:<line number>
+      </failure>
+    </testCase>
     <testCase name="INFO and WARN do not abort tests" duration="{duration}"/>
     <testCase name="INFO gets logged on failure" duration="{duration}">
       <failure message="REQUIRE(a == 1)">

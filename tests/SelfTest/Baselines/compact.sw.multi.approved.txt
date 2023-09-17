@@ -942,6 +942,7 @@ TestCaseInfoHasher.tests.cpp:<line number>: passed: h( dummy1 ) != h( dummy2 ) f
 TestCaseInfoHasher.tests.cpp:<line number>: passed: h( dummy ) == h( dummy ) for: 3422778688 (0x<hex digits>)
 ==
 3422778688 (0x<hex digits>)
+Message.tests.cpp:<line number>: failed: explicitly with 3 messages: 'This info has multiple parts.' and 'This unscoped info has multiple parts.' and 'Show infos!'
 Message.tests.cpp:<line number>: warning: 'this is a message' with 1 message: 'this is a warning'
 Message.tests.cpp:<line number>: failed: a == 1 for: 2 == 1 with 2 messages: 'this message should be logged' and 'so should this'
 Message.tests.cpp:<line number>: passed: a == 2 for: 2 == 2 with 1 message: 'this message may be logged later'
@@ -2532,7 +2533,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  412 |  308 passed |  84 failed | 6 skipped | 14 failed as expected
-assertions: 2229 | 2049 passed | 145 failed | 35 failed as expected
+test cases:  413 |  308 passed |  85 failed | 6 skipped | 14 failed as expected
+assertions: 2230 | 2049 passed | 146 failed | 35 failed as expected
 
 

@@ -600,6 +600,18 @@ Message.tests.cpp:<line number>: warning:
   This message appears in the output
 
 -------------------------------------------------------------------------------
+INFO and UNSCOPED_INFO can stream multiple arguments
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: FAILED:
+explicitly with messages:
+  This info has multiple parts.
+  This unscoped info has multiple parts.
+  Show infos!
+
+-------------------------------------------------------------------------------
 INFO and WARN do not abort tests
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -1576,6 +1588,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  412 |  322 passed |  69 failed | 7 skipped | 14 failed as expected
-assertions: 2212 | 2049 passed | 128 failed | 35 failed as expected
+test cases:  413 |  322 passed |  70 failed | 7 skipped | 14 failed as expected
+assertions: 2213 | 2049 passed | 129 failed | 35 failed as expected
 
