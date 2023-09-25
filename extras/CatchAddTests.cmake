@@ -88,10 +88,10 @@ function(catch_discover_tests_impl)
     # note that the use of --list-reporters is not the important part,
     # we only want to check whether the execution succeeds with ${reporter_arg}
     execute_process(
-      COMMAND ${TEST_EXECUTOR} "${TEST_EXECUTABLE}" ${spec} ${reporter_arg} --list-reporters
+      COMMAND ${_TEST_EXECUTOR} "${_TEST_EXECUTABLE}" ${spec} ${reporter_arg} --list-reporters
       OUTPUT_VARIABLE reporter_check_output
       RESULT_VARIABLE reporter_check_result
-      WORKING_DIRECTORY "${TEST_WORKING_DIR}"
+      WORKING_DIRECTORY "${_TEST_WORKING_DIR}"
     )
     if(${reporter_check_result} EQUAL 255)
       message(FATAL_ERROR
@@ -99,7 +99,7 @@ function(catch_discover_tests_impl)
       )
     elseif(NOT ${reporter_check_result} EQUAL 0)
       message(FATAL_ERROR
-        "Error running test executable '${TEST_EXECUTABLE}':\n"
+        "Error running test executable '${_TEST_EXECUTABLE}':\n"
         "  Result: ${reporter_check_result}\n"
         "  Output: ${reporter_check_output}\n"
       )
