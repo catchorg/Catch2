@@ -176,8 +176,10 @@ function(catch_discover_tests TARGET)
   string(SUBSTRING ${args_hash} 0 7 args_hash)
 
   # Define rule to generate test list for aforementioned test executable
-  set(ctest_include_file "${CMAKE_CURRENT_BINARY_DIR}/${TARGET}_include-${args_hash}.cmake")
-  set(ctest_tests_file "${CMAKE_CURRENT_BINARY_DIR}/${TARGET}_tests-${args_hash}.cmake")
+  set(ctest_file_base "${CMAKE_CURRENT_BINARY_DIR}/${TARGET}-${args_hash}")
+  set(ctest_include_file "${ctest_file_base}_include.cmake")
+  set(ctest_tests_file "${ctest_file_base}_tests.cmake")
+
   get_property(crosscompiling_emulator
     TARGET ${TARGET}
     PROPERTY CROSSCOMPILING_EMULATOR
@@ -218,6 +220,14 @@ function(catch_discover_tests TARGET)
 
   elseif(_DISCOVERY_MODE STREQUAL "PRE_TEST")
 
+    get_property(GENERATOR_IS_MULTI_CONFIG GLOBAL
+        PROPERTY GENERATOR_IS_MULTI_CONFIG
+    )
+
+    if(GENERATOR_IS_MULTI_CONFIG)
+      set(ctest_tests_file "${ctest_file_base}_tests-$<CONFIG>.cmake")
+    endif()
+
     string(CONCAT ctest_include_content
       "if(EXISTS \"$<TARGET_FILE:${TARGET}>\")"                                    "\n"
       "  if(NOT EXISTS \"${ctest_tests_file}\" OR"                                 "\n"
@@ -249,7 +259,22 @@ function(catch_discover_tests TARGET)
       "endif()"                                                                    "\n"
     )
 
-    file(GENERATE OUTPUT "${ctest_include_file}" CONTENT "${ctest_include_content}")
+    if(GENERATOR_IS_MULTI_CONFIG)
+      foreach(_config ${CMAKE_CONFIGURATION_TYPES})
+        file(GENERATE OUTPUT "${ctest_file_base}_include-${_config}.cmake" CONTENT "${ctest_include_content}" CONDITION $<CONFIG:${_config}>)
+      endforeach()
+      string(CONCAT ctest_include_multi_content
+        "if(NOT CTEST_CONFIGURATION_TYPE)"                                              "\n"
+        "  message(\"No configuration for testing specified, use '-C <cfg>'.\")"        "\n"
+        "else()"                                                                        "\n"
+        "  include(\"${ctest_file_base}_include-\${CTEST_CONFIGURATION_TYPE}.cmake\")"  "\n"
+        "endif()"                                                                       "\n"
+      )
+      file(GENERATE OUTPUT "${ctest_include_file}" CONTENT "${ctest_include_multi_content}")
+    else()
+      file(GENERATE OUTPUT "${ctest_file_base}_include.cmake" CONTENT "${ctest_include_content}")
+      file(WRITE "${ctest_include_file}" "include(\"${ctest_file_base}_include.cmake\")")
+    endif()
   endif()
 
   if(NOT ${CMAKE_VERSION} VERSION_LESS "3.10.0")
