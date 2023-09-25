@@ -119,7 +119,7 @@ This is best explained through an example ([code](../examples/100-Fix-Section.cp
 
 ```c++
 TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
-
+    // This setup will be done 4 times in total, once for each section
     std::vector<int> v( 5 );
 
     REQUIRE( v.size() == 5 );
@@ -152,7 +152,7 @@ TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
 }
 ```
 
-For each `SECTION` the `TEST_CASE` is executed from the start. This means
+For each `SECTION` the `TEST_CASE` is **executed from the start**. This means
 that each section is entered with a freshly constructed vector `v`, that
 we know has size 5 and capacity at least 5, because the two assertions
 are also checked before the section is entered. Each run through a test
