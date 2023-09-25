@@ -263,7 +263,14 @@ function(catch_discover_tests TARGET)
       foreach(_config ${CMAKE_CONFIGURATION_TYPES})
         file(GENERATE OUTPUT "${ctest_file_base}_include-${_config}.cmake" CONTENT "${ctest_include_content}" CONDITION $<CONFIG:${_config}>)
       endforeach()
-      file(WRITE "${ctest_include_file}" "include(\"${ctest_file_base}_include-\${CTEST_CONFIGURATION_TYPE}.cmake\")")
+      string(CONCAT ctest_include_multi_content
+        "if(NOT CTEST_CONFIGURATION_TYPE)"                                              "\n"
+        "  message(\"No configuration for testing specified, use '-C <cfg>'.\")"        "\n"
+        "else()"                                                                        "\n"
+        "  include(\"${ctest_file_base}_include-\${CTEST_CONFIGURATION_TYPE}.cmake\")"  "\n"
+        "endif()"                                                                       "\n"
+      )
+      file(GENERATE OUTPUT "${ctest_include_file}" CONTENT "${ctest_include_multi_content}")
     else()
       file(GENERATE OUTPUT "${ctest_file_base}_include.cmake" CONTENT "${ctest_include_content}")
       file(WRITE "${ctest_include_file}" "include(\"${ctest_file_base}_include.cmake\")")
