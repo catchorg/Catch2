@@ -78,6 +78,9 @@ namespace Catch {
         std::stack<JsonObjectWriter> m_objectWriters{};
         std::stack<JsonArrayWriter> m_arrayWriters{};
         std::stack<Writer> m_writers{};
+
+        bool m_sectionAdded = false;
+        int m_sectionDepth = 0;
     };
 } // namespace Catch
 

@@ -20,7 +20,7 @@ namespace {
     void writeSourceInfo( JsonObjectWriter& writer,
                           SourceLineInfo const& sourceInfo ) {
         auto source_location_writer =
-            writer.write( "source-info" ).writeObject();
+            writer.write( "source-location" ).writeObject();
         source_location_writer.write( "filename" ).write( sourceInfo.file );
         source_location_writer.write( "line" ).write( sourceInfo.line );
     }
@@ -125,6 +125,7 @@ namespace Catch {
 
         if ( !isInside( Writer::Array ) ) { return; }
 
+        m_sectionAdded = false;
         auto& writer = startObject();
         writer.write( "name" ).write( trim( StringRef( testInfo.name ) ) );
 
@@ -158,43 +159,36 @@ namespace Catch {
     void JsonReporter::sectionStarting( SectionInfo const& sectionInfo ) {
         StreamingReporterBase::sectionStarting( sectionInfo );
 
-        if ( !isInside( Writer::Array ) ) { return; }
-
-        auto& writer = startObject();
-
-        writer.write( "name" ).write( sectionInfo.name );
-        writeSourceInfo( writer, sectionInfo.lineInfo );
+        if ( m_sectionDepth++ > 0 ) { startArray( "sections" ); }
     }
 
     void JsonReporter::assertionStarting( AssertionInfo const& ) {}
 
-    void JsonReporter::assertionEnded( AssertionStats const& assertionStats ) {
-        (void)assertionStats;
-    }
+    void JsonReporter::assertionEnded( AssertionStats const& ) {}
 
     void JsonReporter::sectionEnded( SectionStats const& sectionStats ) {
         StreamingReporterBase::sectionEnded( sectionStats );
+        if ( --m_sectionDepth < 1 ) { return; }
 
-        auto& writer = m_objectWriters.top();
+        auto writer = m_arrayWriters.top().writeObject();
+
+        auto const& info = sectionStats.sectionInfo;
+        writer.write( "name" ).write( info.name );
+        writer.write( "filename" ).write( info.lineInfo.file );
+        writer.write( "line" ).write( info.lineInfo.line );
 
         auto const& counts = sectionStats.assertions;
-        {
-            auto stat_writer = writer.write( "assertion-stats" ).writeObject();
-            stat_writer.write( "passed" ).write( counts.passed );
-            stat_writer.write( "failed" ).write( counts.failed );
-            stat_writer.write( "failed-but-ok" ).write( counts.failedButOk );
-        }
-        writer.write( "skipped" ).write( counts.skipped != 0 );
-
-        endObject();
+        auto assertionsWriter = writer.write( "assertions" ).writeObject();
+        assertionsWriter.write( "passed" ).write( counts.passed );
+        assertionsWriter.write( "failed" ).write( counts.failed );
+        assertionsWriter.write( "failed-but-ok" ).write( counts.failedButOk );
+        assertionsWriter.write( "skipped" ).write( counts.skipped );
     }
 
     void JsonReporter::testCaseEnded( TestCaseStats const& testCaseStats ) {
         StreamingReporterBase::testCaseEnded( testCaseStats );
 
-        if ( !isInside( Writer::Array ) ) { return; }
-
-        endArray();
+        if ( isInside( Writer::Array ) ) { endArray(); }
 
         if ( !isInside( Writer::Object ) ) { return; }
 
