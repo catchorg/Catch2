@@ -14,29 +14,64 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/reporters/catch_reporter_json.hpp>
 
-namespace {
-    using namespace Catch;
-
-    void writeSourceInfo( JsonObjectWriter& writer,
-                          SourceLineInfo const& sourceInfo ) {
-        auto source_location_writer =
-            writer.write( "source-location" ).writeObject();
-        source_location_writer.write( "filename" ).write( sourceInfo.file );
-        source_location_writer.write( "line" ).write( sourceInfo.line );
-    }
-
-    void writeCounts( JsonObjectWriter writer, Counts const& counts ) {
-        writer.write( "passed" ).write( counts.passed );
-        writer.write( "failed" ).write( counts.failed );
-        writer.write( "fail-but-ok" ).write( counts.failedButOk );
-        writer.write( "skipped" ).write( counts.skipped );
-    }
-
-} // namespace
-
 namespace Catch {
+    namespace {
+        void writeSourceInfo( JsonObjectWriter& writer,
+                              SourceLineInfo const& sourceInfo ) {
+            auto source_location_writer =
+                writer.write( "source-location" ).writeObject();
+            source_location_writer.write( "filename" ).write( sourceInfo.file );
+            source_location_writer.write( "line" ).write( sourceInfo.line );
+        }
+
+        void writeTags( JsonArrayWriter writer, std::vector<Tag> const& tags ) {
+            for ( auto const& tag : tags ) {
+                writer.write( tag.original );
+            }
+        }
+
+        void writeProperties( JsonArrayWriter writer,
+                              TestCaseInfo const& info ) {
+            if ( info.isHidden() ) { writer.write( "is-hidden" ); }
+            if ( info.okToFail() ) { writer.write( "ok-to-fail" ); }
+            if ( info.expectedToFail() ) { writer.write( "expected-to-fail" ); }
+            if ( info.throws() ) { writer.write( "throws" ); }
+        }
+
+        void writeCounts( JsonObjectWriter writer, Counts const& counts ) {
+            writer.write( "passed" ).write( counts.passed );
+            writer.write( "failed" ).write( counts.failed );
+            writer.write( "fail-but-ok" ).write( counts.failedButOk );
+            writer.write( "skipped" ).write( counts.skipped );
+        }
+
+        void writeTestInfo( JsonObjectWriter writer,
+                            TestCaseInfo const& info ) {
+            writer.write( "name" ).write( info.name );
+            writeTags( writer.write( "tags" ).writeArray(), info.tags );
+            writeSourceInfo( writer, info.lineInfo );
+            writeProperties( writer.write( "properties" ).writeArray(), info );
+        }
+
+        void writeSection( JsonObjectWriter& writer,
+                           CumulativeReporterBase::SectionNode const& section,
+                           bool selfWrite ) {
+            if ( selfWrite ) {
+                writer.write( "name" ).write( section.stats.sectionInfo.name );
+                writeSourceInfo( writer, section.stats.sectionInfo.lineInfo );
+                writeCounts( writer.write( "assertions-stats" ).writeObject(),
+                             section.stats.assertions );
+            }
+            if ( section.childSections.empty() ) { return; }
+            auto sectionsWriter = writer.write( "sections" ).writeArray();
+            for ( auto const& childPtr : section.childSections ) {
+                auto childSectionWriter = sectionsWriter.writeObject();
+                writeSection( childSectionWriter, *childPtr, true );
+            }
+        }
+    } // namespace
     JsonReporter::JsonReporter( ReporterConfig&& config ):
-        StreamingReporterBase{ CATCH_MOVE( config ) } {
+        CumulativeReporterBase{ CATCH_MOVE( config ) } {
         m_objectWriters.emplace( m_stream );
         m_writers.emplace( Writer::Object );
     }
@@ -98,7 +133,7 @@ namespace Catch {
     }
 
     void JsonReporter::testRunStarting( TestRunInfo const& testInfo ) {
-        StreamingReporterBase::testRunStarting( testInfo );
+        CumulativeReporterBase::testRunStarting( testInfo );
 
         if ( !isInside( Writer::Object ) ) { return; }
 
@@ -117,100 +152,21 @@ namespace Catch {
             }
         }
 
-        startArray( "test-results" );
+        startArray( "test-cases" );
     }
 
-    void JsonReporter::testCaseStarting( TestCaseInfo const& testInfo ) {
-        StreamingReporterBase::testCaseStarting( testInfo );
+    void JsonReporter::testRunEndedCumulative() {
+        for ( auto const& testCase : m_testRun->children ) {
+            assert( testCase->children.size() == 1 );
 
-        if ( !isInside( Writer::Array ) ) { return; }
+            auto writer = m_arrayWriters.top().writeObject();
 
-        m_sectionAdded = false;
-        auto& writer = startObject();
-        writer.write( "name" ).write( trim( StringRef( testInfo.name ) ) );
-
-        {
-            auto array_writer = writer.write( "tags" ).writeArray();
-            for ( const auto& tag : testInfo.tags ) {
-                array_writer.write( tag.original );
-            }
+            writeTestInfo( writer.write( "test-info" ).writeObject(),
+                           *testCase->value.testInfo );
+            writeCounts( writer.write( "totals" ).writeObject(),
+                         testCase->value.totals.assertions );
+            writeSection( writer, *testCase->children.front(), false );
         }
-
-        writeSourceInfo( writer, testInfo.lineInfo );
-        {
-            auto properties_writer = writer.write( "properties" ).writeArray();
-            if ( testInfo.isHidden() ) {
-                properties_writer.write( "is-hidden" );
-            }
-            if ( testInfo.okToFail() ) {
-                properties_writer.write( "ok-to-fail" );
-            }
-            if ( testInfo.expectedToFail() ) {
-                properties_writer.write( "expected-to-fail" );
-            }
-            if ( testInfo.throws() ) { properties_writer.write( "throws" ); }
-        }
-
-        if ( m_config->showDurations() == ShowDurations::Always ) {
-            m_testCaseTimer.start();
-        }
-    }
-
-    void JsonReporter::sectionStarting( SectionInfo const& sectionInfo ) {
-        StreamingReporterBase::sectionStarting( sectionInfo );
-
-        if ( m_sectionDepth++ > 0 ) { startArray( "sections" ); }
-    }
-
-    void JsonReporter::assertionStarting( AssertionInfo const& ) {}
-
-    void JsonReporter::assertionEnded( AssertionStats const& ) {}
-
-    void JsonReporter::sectionEnded( SectionStats const& sectionStats ) {
-        StreamingReporterBase::sectionEnded( sectionStats );
-        if ( --m_sectionDepth < 1 ) { return; }
-
-        auto writer = m_arrayWriters.top().writeObject();
-
-        auto const& info = sectionStats.sectionInfo;
-        writer.write( "name" ).write( info.name );
-        writer.write( "filename" ).write( info.lineInfo.file );
-        writer.write( "line" ).write( info.lineInfo.line );
-
-        auto const& counts = sectionStats.assertions;
-        auto assertionsWriter = writer.write( "assertions" ).writeObject();
-        assertionsWriter.write( "passed" ).write( counts.passed );
-        assertionsWriter.write( "failed" ).write( counts.failed );
-        assertionsWriter.write( "failed-but-ok" ).write( counts.failedButOk );
-        assertionsWriter.write( "skipped" ).write( counts.skipped );
-    }
-
-    void JsonReporter::testCaseEnded( TestCaseStats const& testCaseStats ) {
-        StreamingReporterBase::testCaseEnded( testCaseStats );
-
-        if ( isInside( Writer::Array ) ) { endArray(); }
-
-        if ( !isInside( Writer::Object ) ) { return; }
-
-        if ( m_config->showDurations() == ShowDurations::Always ) {
-            // TODO: Handle this
-        }
-
-        auto& writer = m_objectWriters.top();
-        {
-
-            auto totals_writer = writer.write( "totals" ).writeObject();
-            writeCounts( totals_writer.write( "assertions" ).writeObject(),
-                         testCaseStats.totals.assertions );
-            writeCounts( totals_writer.write( "test-cases" ).writeObject(),
-                         testCaseStats.totals.testCases );
-        }
-
-        endObject();
-    }
-
-    void JsonReporter::testRunEnded( TestRunStats const& testRunStats ) {
-        (void)testRunStats;
     }
 
     void JsonReporter::benchmarkPreparing( StringRef name ) { (void)name; }

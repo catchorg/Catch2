@@ -11,12 +11,12 @@
 
 #include <catch2/catch_timer.hpp>
 #include <catch2/internal/catch_jsonwriter.hpp>
-#include <catch2/reporters/catch_reporter_streaming_base.hpp>
+#include <catch2/reporters/catch_reporter_cumulative_base.hpp>
 
 #include <stack>
 
 namespace Catch {
-    class JsonReporter : public StreamingReporterBase {
+    class JsonReporter : public CumulativeReporterBase {
     public:
         JsonReporter( ReporterConfig&& config );
 
@@ -27,19 +27,7 @@ namespace Catch {
     public: // StreamingReporterBase
         void testRunStarting( TestRunInfo const& testInfo ) override;
 
-        void testCaseStarting( TestCaseInfo const& testInfo ) override;
-
-        void sectionStarting( SectionInfo const& sectionInfo ) override;
-
-        void assertionStarting( AssertionInfo const& ) override;
-
-        void assertionEnded( AssertionStats const& assertionStats ) override;
-
-        void sectionEnded( SectionStats const& sectionStats ) override;
-
-        void testCaseEnded( TestCaseStats const& testCaseStats ) override;
-
-        void testRunEnded( TestRunStats const& testRunStats ) override;
+        void testRunEndedCumulative() override;
 
         void benchmarkPreparing( StringRef name ) override;
         void benchmarkStarting( BenchmarkInfo const& ) override;
@@ -79,8 +67,8 @@ namespace Catch {
         std::stack<JsonArrayWriter> m_arrayWriters{};
         std::stack<Writer> m_writers{};
 
-        bool m_sectionAdded = false;
-        int m_sectionDepth = 0;
+        // std::size_t m_sectionDepth = 0;
+        // std::size_t m_sectionStarted = 0;
     };
 } // namespace Catch
 
