@@ -20,13 +20,9 @@ namespace {
     void writeSourceInfo( JsonObjectWriter& writer,
                           SourceLineInfo const& sourceInfo ) {
         auto source_location_writer =
-            writer.write( "source-location" ).writeObject();
+            writer.write( "source-info" ).writeObject();
         source_location_writer.write( "filename" ).write( sourceInfo.file );
         source_location_writer.write( "line" ).write( sourceInfo.line );
-    }
-    void writeSourceInfo( JsonObjectWriter&& writer,
-                          SourceLineInfo const& sourceInfo ) {
-        writeSourceInfo( writer, sourceInfo );
     }
 
     void writeCounts( JsonObjectWriter writer, Counts const& counts ) {
@@ -59,29 +55,27 @@ namespace Catch {
     }
 
     JsonArrayWriter& JsonReporter::startArray() {
-        auto& result =
-            m_arrayWriters.emplace( m_arrayWriters.top().writeArray() );
+        m_arrayWriters.emplace( m_arrayWriters.top().writeArray() );
         m_writers.emplace( Writer::Array );
-        return result;
+        return m_arrayWriters.top();
     }
     JsonArrayWriter& JsonReporter::startArray( std::string const& key ) {
-        auto& result = m_arrayWriters.emplace(
+        m_arrayWriters.emplace(
             m_objectWriters.top().write( key ).writeArray() );
         m_writers.emplace( Writer::Array );
-        return result;
+        return m_arrayWriters.top();
     }
 
     JsonObjectWriter& JsonReporter::startObject() {
-        auto& result =
-            m_objectWriters.emplace( m_arrayWriters.top().writeObject() );
+        m_objectWriters.emplace( m_arrayWriters.top().writeObject() );
         m_writers.emplace( Writer::Object );
-        return result;
+        return m_objectWriters.top();
     }
     JsonObjectWriter& JsonReporter::startObject( std::string const& key ) {
-        auto& result = m_objectWriters.emplace(
+        m_objectWriters.emplace(
             m_objectWriters.top().write( key ).writeObject() );
         m_writers.emplace( Writer::Object );
-        return result;
+        return m_objectWriters.top();
     }
 
     void JsonReporter::endObject() {
@@ -270,8 +264,7 @@ namespace Catch {
                     tag_writer.write( tag.original );
                 }
             }
-            writeSourceInfo( desc_writer.write( "source-info" ).writeObject(),
-                             info.lineInfo );
+            writeSourceInfo( desc_writer, info.lineInfo );
         }
     }
     void JsonReporter::listTags( std::vector<TagInfo> const& tags ) {
