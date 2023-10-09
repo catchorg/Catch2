@@ -156,7 +156,7 @@ For each `SECTION` the `TEST_CASE` is **executed from the start**. This means
 that each section is entered with a freshly constructed vector `v`, that
 we know has size 5 and capacity at least 5, because the two assertions
 are also checked before the section is entered. This behaviour may not be
-ideal for tess where setup is expensive. Each run through a test case will
+ideal for tests where setup is expensive. Each run through a test case will
 execute one, and only one, leaf section.
 
 Section can also be nested, in which case the parent section can be
