@@ -74,6 +74,20 @@ namespace Catch {
         CumulativeReporterBase{ CATCH_MOVE( config ) } {
         m_objectWriters.emplace( m_stream );
         m_writers.emplace( Writer::Object );
+        auto& writer = m_objectWriters.top();
+
+        writer.write( "version" ).write( 1 );
+
+        {
+            auto metadata_writer = writer.write( "metadata" ).writeObject();
+            metadata_writer.write( "name" ).write( m_config->name() );
+            metadata_writer.write( "rng-seed" ).write( m_config->rngSeed() );
+            metadata_writer.write( "catch2-version" ).write( libraryVersion() );
+            if ( m_config->testSpec().hasFilters() ) {
+                metadata_writer.write( "filters" )
+                    .write( m_config->testSpec() );
+            }
+        }
     }
 
     JsonReporter::~JsonReporter() {
@@ -87,6 +101,7 @@ namespace Catch {
                 break;
             }
         }
+        m_stream << std::endl;
     }
 
     JsonArrayWriter& JsonReporter::startArray() {
@@ -128,29 +143,18 @@ namespace Catch {
         return !m_writers.empty() && m_writers.top() == writer;
     }
 
+    void JsonReporter::startListing() {
+        m_startedListing = true;
+        startObject( "listings" );
+    }
+
     std::string JsonReporter::getDescription() {
         return "Reports test results as a JSON document";
     }
 
-    void JsonReporter::testRunStarting( TestRunInfo const& testInfo ) {
-        CumulativeReporterBase::testRunStarting( testInfo );
-
+    void JsonReporter::testRunStarting( TestRunInfo const& /*testInfo*/ ) {
         if ( !isInside( Writer::Object ) ) { return; }
-
-        auto& writer = m_objectWriters.top();
-
-        writer.write( "version" ).write( 1 );
-
-        {
-            auto metadata_writer = writer.write( "metadata" ).writeObject();
-            metadata_writer.write( "name" ).write( m_config->name() );
-            metadata_writer.write( "rng-seed" ).write( m_config->rngSeed() );
-            metadata_writer.write( "catch2-version" ).write( libraryVersion() );
-            if ( m_config->testSpec().hasFilters() ) {
-                metadata_writer.write( "filters" )
-                    .write( m_config->testSpec() );
-            }
-        }
+        if ( m_startedListing ) { endObject(); }
 
         startArray( "test-cases" );
     }
@@ -176,6 +180,11 @@ namespace Catch {
 
     void JsonReporter::listReporters(
         std::vector<ReporterDescription> const& descriptions ) {
+        if ( !m_startedListing ) {
+            startListing();
+            m_startedListing = true;
+        }
+
         if ( !isInside( Writer::Object ) ) { return; }
 
         auto writer = m_objectWriters.top().write( "reporters" ).writeArray();
@@ -187,6 +196,10 @@ namespace Catch {
     }
     void JsonReporter::listListeners(
         std::vector<ListenerDescription> const& descriptions ) {
+        if ( !m_startedListing) {
+            startListing();
+            m_startedListing = true;
+        }
         if ( !isInside( Writer::Object ) ) { return; }
 
         auto writer = m_objectWriters.top().write( "listeners" ).writeArray();
@@ -198,6 +211,12 @@ namespace Catch {
         }
     }
     void JsonReporter::listTests( std::vector<TestCaseHandle> const& tests ) {
+        if ( !m_startedListing ) {
+            startListing();
+            m_startedListing = true;
+        }
+
+        // TODO: Why? This should just assert. If the object is not there, there is a bug.
         if ( !isInside( Writer::Object ) ) { return; }
 
         auto writer = m_objectWriters.top().write( "tests" ).writeArray();
@@ -218,6 +237,10 @@ namespace Catch {
         }
     }
     void JsonReporter::listTags( std::vector<TagInfo> const& tags ) {
+        if ( !m_startedListing ) {
+            startListing();
+            m_startedListing = true;
+        }
         if ( !isInside( Writer::Object ) ) { return; }
 
         auto writer = m_objectWriters.top().write( "tags" ).writeArray();

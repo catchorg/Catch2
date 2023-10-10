@@ -59,6 +59,8 @@ namespace Catch {
 
         bool isInside( Writer writer );
 
+        void startListing();
+
         // Invariant:
         // When m_writers is not empty and its top element is
         // - Writer::Object, then m_objectWriters is not be empty
@@ -66,6 +68,8 @@ namespace Catch {
         std::stack<JsonObjectWriter> m_objectWriters{};
         std::stack<JsonArrayWriter> m_arrayWriters{};
         std::stack<Writer> m_writers{};
+
+        bool m_startedListing = false;
 
         // std::size_t m_sectionDepth = 0;
         // std::size_t m_sectionStarted = 0;
