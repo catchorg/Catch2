@@ -186,7 +186,6 @@ namespace Catch {
         std::vector<ReporterDescription> const& descriptions ) {
         if ( !m_startedListing ) {
             startListing();
-            m_startedListing = true;
         }
 
         if ( !isInside( Writer::Object ) ) { return; }
@@ -202,7 +201,6 @@ namespace Catch {
         std::vector<ListenerDescription> const& descriptions ) {
         if ( !m_startedListing) {
             startListing();
-            m_startedListing = true;
         }
         if ( !isInside( Writer::Object ) ) { return; }
 
@@ -217,7 +215,6 @@ namespace Catch {
     void JsonReporter::listTests( std::vector<TestCaseHandle> const& tests ) {
         if ( !m_startedListing ) {
             startListing();
-            m_startedListing = true;
         }
 
         // TODO: Why? This should just assert. If the object is not there, there is a bug.
@@ -243,7 +240,6 @@ namespace Catch {
     void JsonReporter::listTags( std::vector<TagInfo> const& tags ) {
         if ( !m_startedListing ) {
             startListing();
-            m_startedListing = true;
         }
         if ( !isInside( Writer::Object ) ) { return; }
 
