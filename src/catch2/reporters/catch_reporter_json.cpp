@@ -70,8 +70,12 @@ namespace Catch {
             }
         }
     } // namespace
+
     JsonReporter::JsonReporter( ReporterConfig&& config ):
         CumulativeReporterBase{ CATCH_MOVE( config ) } {
+
+        m_preferences.shouldRedirectStdOut = true;
+
         m_objectWriters.emplace( m_stream );
         m_writers.emplace( Writer::Object );
         auto& writer = m_objectWriters.top();
