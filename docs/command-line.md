@@ -95,46 +95,46 @@ complex specs:
 
   * Full test name, e.g. `"Test 1"`.
 
-This allows only test cases whose name is "Test 1".
+    This allows only test cases whose name is "Test 1".
 
   * Wildcarded test name, e.g. `"*Test"`, or `"Test*"`, or `"*Test*"`.
 
-This allows any test case whose name ends with, starts with, or contains
-in the middle the string "Test". Note that the wildcard can only be at
-the start or end.
+    This allows any test case whose name ends with, starts with, or contains
+    in the middle the string "Test". Note that the wildcard can only be at
+    the start or end.
 
   * Tag name, e.g. `[some-tag]`.
 
-This allows any test case tagged with "[some-tag]". Remember that some
-tags are special, e.g. those that start with "." or with "!".
+    This allows any test case tagged with "[some-tag]". Remember that some
+    tags are special, e.g. those that start with "." or with "!".
 
 
 You can also combine the basic test specs to create more complex test
-specs. You can
+specs. You can:
 
   * Concatenate specs to apply all of them, e.g. `[some-tag][other-tag]`.
 
-This allows test cases that are tagged with **both** "[some-tag]" **and**
-"[other-tag]". A test case with just "[some-tag]" will not pass the filter,
-nor will test case with just "[other-tag]".
+    This allows test cases that are tagged with **both** "[some-tag]" **and**
+    "[other-tag]". A test case with just "[some-tag]" will not pass the filter,
+    nor will test case with just "[other-tag]".
 
   * Comma-join specs to apply any of them, e.g. `[some-tag],[other-tag]`.
 
-This allows test cases that are tagged with **either** "[some-tag]" **or**
-"[other-tag]". A test case with both will obviously also pass the filter.
+    This allows test cases that are tagged with **either** "[some-tag]" **or**
+    "[other-tag]". A test case with both will obviously also pass the filter.
 
-Note that commas take precendence over simple concatenation. This means
-that `[a][b],[c]` accepts tests that are tagged with either both "[a]" and
-"[b]", or tests that are tagged with just "[c]".
+    Note that commas take precendence over simple concatenation. This means
+    that `[a][b],[c]` accepts tests that are tagged with either both "[a]" and
+    "[b]", or tests that are tagged with just "[c]".
 
   * Negate the spec by prepending it with `~`, e.g. `~[some-tag]`.
 
-This rejects any test case that is tagged with "[some-tag]". Note that
-rejection takes precedence over other filters.
+    This rejects any test case that is tagged with "[some-tag]". Note that
+    rejection takes precedence over other filters.
 
-Note that negations always binds to the following _basic_ test spec.
-This means that `~[foo][bar]` negates only the "[foo]" tag and not the
-"[bar]" tag.
+    Note that negations always binds to the following _basic_ test spec.
+    This means that `~[foo][bar]` negates only the "[foo]" tag and not the
+    "[bar]" tag.
 
 Note that when Catch2 is deciding whether to include a test, first it
 checks whether the test matches any negative filters. If it does,
