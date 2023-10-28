@@ -177,7 +177,7 @@ TEST_CASE("StringRef at compilation time", "[Strings][StringRef][constexpr]") {
         STATIC_REQUIRE_FALSE(sr1.empty());
         STATIC_REQUIRE(sr1.size() == 3);
 
-        using Catch::operator"" _sr;
+        using Catch::operator""_sr;
         constexpr auto sr2 = ""_sr;
         STATIC_REQUIRE(sr2.empty());
         STATIC_REQUIRE(sr2.size() == 0);

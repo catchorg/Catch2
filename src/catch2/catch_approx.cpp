@@ -70,10 +70,10 @@ namespace Catch {
     }
 
 namespace literals {
-    Approx operator "" _a(long double val) {
+    Approx operator ""_a(long double val) {
         return Approx(val);
     }
-    Approx operator "" _a(unsigned long long val) {
+    Approx operator ""_a(unsigned long long val) {
         return Approx(val);
     }
 } // end namespace literals
