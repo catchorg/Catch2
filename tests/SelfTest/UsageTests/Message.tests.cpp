@@ -255,10 +255,24 @@ std::ostream& operator<<(std::ostream& out, helper_1436<T1, T2> const& helper) {
 #pragma clang diagnostic ignored "-Wunused-value"
 #endif
 
+namespace {
+    template <typename T>
+    struct custom_index_op {
+        constexpr custom_index_op( std::initializer_list<T> ) {}
+        constexpr T operator[]( size_t ) { return T{}; }
+#if defined( __cpp_multidimensional_subscript ) && \
+    __cpp_multidimensional_subscript >= 202110L
+        constexpr T operator[]( size_t, size_t, size_t ) const noexcept {
+            return T{};
+        }
+#endif
+    };
+}
+
 TEST_CASE("CAPTURE can deal with complex expressions involving commas", "[messages][capture]") {
-    CAPTURE(std::vector<int>{1, 2, 3}[0, 1, 2],
-            std::vector<int>{1, 2, 3}[(0, 1)],
-            std::vector<int>{1, 2, 3}[0]);
+    CAPTURE(custom_index_op<int>{1, 2, 3}[0, 1, 2],
+            custom_index_op<int>{1, 2, 3}[(0, 1)],
+            custom_index_op<int>{1, 2, 3}[0]);
     CAPTURE((helper_1436<int, int>{12, -12}),
             (helper_1436<int, int>(-12, 12)));
     CAPTURE( (1, 2), (2, 3) );

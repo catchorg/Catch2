@@ -2738,9 +2738,9 @@ Message.tests.cpp:<line number>
 
 Message.tests.cpp:<line number>: PASSED:
 with messages:
-  std::vector<int>{1, 2, 3}[0, 1, 2] := 3
-  std::vector<int>{1, 2, 3}[(0, 1)] := 2
-  std::vector<int>{1, 2, 3}[0] := 1
+  custom_index_op<int>{1, 2, 3}[0, 1, 2] := 0
+  custom_index_op<int>{1, 2, 3}[(0, 1)] := 0
+  custom_index_op<int>{1, 2, 3}[0] := 0
   (helper_1436<int, int>{12, -12}) := { 12, -12 }
   (helper_1436<int, int>(-12, 12)) := { -12, 12 }
   (1, 2) := 2

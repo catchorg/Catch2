@@ -2911,13 +2911,13 @@ Nor would this
   </TestCase>
   <TestCase name="CAPTURE can deal with complex expressions involving commas" tags="[capture][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      std::vector&lt;int>{1, 2, 3}[0, 1, 2] := 3
+      custom_index_op&lt;int>{1, 2, 3}[0, 1, 2] := 0
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      std::vector&lt;int>{1, 2, 3}[(0, 1)] := 2
+      custom_index_op&lt;int>{1, 2, 3}[(0, 1)] := 0
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      std::vector&lt;int>{1, 2, 3}[0] := 1
+      custom_index_op&lt;int>{1, 2, 3}[0] := 0
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       (helper_1436&lt;int, int>{12, -12}) := { 12, -12 }

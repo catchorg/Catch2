@@ -331,7 +331,7 @@ MatchersRanges.tests.cpp:<line number>: passed: inner_lists_are_empty.front(), I
 MatchersRanges.tests.cpp:<line number>: passed: has_empty{}, !IsEmpty() for: {?} not is empty
 MatchersRanges.tests.cpp:<line number>: passed: unrelated::ADL_empty{}, IsEmpty() for: {?} is empty
 Message.tests.cpp:<line number>: passed: with 7 messages: 'a := 1' and 'b := 2' and 'c := 3' and 'a + b := 3' and 'a+b := 3' and 'c > b := true' and 'a == 1 := true'
-Message.tests.cpp:<line number>: passed: with 7 messages: 'std::vector<int>{1, 2, 3}[0, 1, 2] := 3' and 'std::vector<int>{1, 2, 3}[(0, 1)] := 2' and 'std::vector<int>{1, 2, 3}[0] := 1' and '(helper_1436<int, int>{12, -12}) := { 12, -12 }' and '(helper_1436<int, int>(-12, 12)) := { -12, 12 }' and '(1, 2) := 2' and '(2, 3) := 3'
+Message.tests.cpp:<line number>: passed: with 7 messages: 'custom_index_op<int>{1, 2, 3}[0, 1, 2] := 0' and 'custom_index_op<int>{1, 2, 3}[(0, 1)] := 0' and 'custom_index_op<int>{1, 2, 3}[0] := 0' and '(helper_1436<int, int>{12, -12}) := { 12, -12 }' and '(helper_1436<int, int>(-12, 12)) := { -12, 12 }' and '(1, 2) := 2' and '(2, 3) := 3'
 Message.tests.cpp:<line number>: passed: with 11 messages: '("comma, in string", "escaped, \", ") := "escaped, ", "' and '"single quote in string,'," := "single quote in string,',"' and '"some escapes, \\,\\\\" := "some escapes, \,\\"' and '"some, ), unmatched, } prenheses {[<" := "some, ), unmatched, } prenheses {[<"' and ''"' := '"'' and ''\'' := '''' and '',' := ','' and ''}' := '}'' and '')' := ')'' and ''(' := '('' and ''{' := '{''
 ToStringGeneral.tests.cpp:<line number>: passed: true with 1 message: 'i := 2'
 ToStringGeneral.tests.cpp:<line number>: passed: true with 1 message: '3'
