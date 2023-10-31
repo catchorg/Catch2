@@ -61,7 +61,7 @@ function(catch_discover_tests_impl)
   endif()
 
   execute_process(
-    COMMAND ${_TEST_EXECUTOR} "${_TEST_EXECUTABLE}" ${spec} --list-tests --verbosity normal
+    COMMAND ${_TEST_EXECUTOR} "${_TEST_EXECUTABLE}" ${spec} --list-tests --reporter JSON
     OUTPUT_VARIABLE output
     RESULT_VARIABLE result
     WORKING_DIRECTORY "${_TEST_WORKING_DIR}"
@@ -73,16 +73,6 @@ function(catch_discover_tests_impl)
       "  Output: ${output}\n"
     )
   endif()
-
-  # Make sure to escape ; (semicolons) in test names first, because
-  # that'd break the foreach loop for "Parse output" later and create
-  # wrongly splitted and thus failing test cases (false positives)
-  string(REPLACE ";" "\;" output "${output}")
-  string(STRIP "${output}" output)
-  string(REPLACE "\n" ";" output "${output}")
-  list(LENGTH output length)
-  math(EXPR length "${length} - 2")
-  list(SUBLIST output 1 "${length}" output)
 
   # Prepare reporter
   if(reporter)
@@ -125,58 +115,71 @@ function(catch_discover_tests_impl)
     endforeach()
   endif()
 
+  # Catch2 string escape logic is a bit funky, double quotes are escaped but single
+  # slash is not, the following line of code tries to handle it but it can be brittle.
+  string(REGEX REPLACE [[\\([^"])]] [[\\\\\1]] output "${output}")
+  string(JSON listings GET "${output}" "listings")
+  string(JSON tests GET "${listings}" "tests")
+  string(JSON tests_length LENGTH "${tests}")
+  # CMake foreach loop is inclusive
+  math(EXPR test_end "${tests_length} - 1")
   # Parse output
-  foreach(line ${output})
-    if(line MATCHES "^  ([^ ].*)$")
-      set(test ${line})
-      # Escape characters in test case names that would be parsed by Catch2
-      # Note that the \ escaping must happen FIRST! Do not change the order.
-      set(test_name ${test})
-      foreach(char \\ , [ ])
-        string(REPLACE ${char} "\\${char}" test_name ${test_name})
-      endforeach(char)
-      # ...add output dir
-      if(output_dir)
-        string(REGEX REPLACE "[^A-Za-z0-9_]" "_" test_name_clean ${test_name})
-        set(output_dir_arg "--out ${output_dir}/${output_prefix}${test_name_clean}${output_suffix}")
-      endif()
+  foreach(index RANGE "${test_end}")
+    string(JSON test_spec GET "${tests}" "${index}")
+    string(JSON test GET "${test_spec}" "name")
+    # Escape characters in test case names that would be parsed by Catch2
+    # Note that the \ escaping must happen FIRST! Do not change the order.
+    set(test_name "${test}")
+    foreach(char \\ , [ ])
+      string(REPLACE ${char} "\\${char}" test_name "${test_name}")
+    endforeach(char)
+    # ...add output dir
+    if(output_dir)
+      string(REGEX REPLACE "[^A-Za-z0-9_]" "_" test_name_clean ${test_name})
+      set(output_dir_arg "--out ${output_dir}/${output_prefix}${test_name_clean}${output_suffix}")
+    endif()
 
-      # ...and add to script
-      add_command(add_test
-        "${prefix}${test}${suffix}"
-        ${_TEST_EXECUTOR}
-        "${_TEST_EXECUTABLE}"
-        "${test_name}"
-        ${extra_args}
-        "${reporter_arg}"
-        "${output_dir_arg}"
-        )
+    # ...and add to script
+    add_command(add_test
+      "${prefix}${test}${suffix}"
+      ${_TEST_EXECUTOR}
+      "${_TEST_EXECUTABLE}"
+      "${test_name}"
+      ${extra_args}
+      "${reporter_arg}"
+      "${output_dir_arg}"
+    )
+    add_command(set_tests_properties
+      "${prefix}${test}${suffix}"
+      PROPERTIES
+      WORKING_DIRECTORY "${_TEST_WORKING_DIR}"
+      ${properties}
+    )
+
+    if(environment_modifications)
       add_command(set_tests_properties
         "${prefix}${test}${suffix}"
         PROPERTIES
-        WORKING_DIRECTORY "${_TEST_WORKING_DIR}"
-        ${properties}
-        )
+        ENVIRONMENT_MODIFICATION "${environment_modifications}"
+      )
+    endif()
 
-      if(environment_modifications)
+    list(APPEND tests "${prefix}${test}${suffix}")
+
+    string(JSON tags GET "${test_spec}" "tags")
+    string(JSON tags_length LENGTH "${tags}")
+
+    if("${tags_length}" GREATER 0)
+      math(EXPR tag_end "${tags_length} - 1")
+
+      foreach(tag_index RANGE "${tag_end}")
+        string(JSON tag GET "${tags}" "${tag_index}")
         add_command(set_tests_properties
           "${prefix}${test}${suffix}"
           PROPERTIES
-          ENVIRONMENT_MODIFICATION "${environment_modifications}")
-      endif()
-
-      list(APPEND tests "${prefix}${test}${suffix}")
-    elseif(line MATCHES "^      (.*)$")
-      set(tags "${CMAKE_MATCH_1}")
-      string(REGEX REPLACE "^\\[" "" tags "${tags}")
-      string(REGEX REPLACE "\\]$" "" tags "${tags}")
-      string(REPLACE "][" ";" tags "${tags}")
-
-      add_command(set_tests_properties
-        "${prefix}${test}${suffix}"
-        PROPERTIES
-        LABELS "${tags}"
+            LABELS "${tags}"
         )
+      endforeach()
     endif()
   endforeach()
 
