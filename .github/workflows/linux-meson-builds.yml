@@ -18,7 +18,7 @@ jobs:
             other_pkgs: clang-11
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Prepare environment
       run: sudo apt-get install -y meson ninja-build ${{matrix.other_pkgs}}
