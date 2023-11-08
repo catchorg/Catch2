@@ -11,7 +11,7 @@ jobs:
         compilation_mode: [fastbuild, dbg, opt]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Mount bazel cache
       uses: actions/cache@v3
