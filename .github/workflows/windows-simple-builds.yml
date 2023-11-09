@@ -13,7 +13,7 @@ jobs:
         build_type: [Debug, Release]
         std: [14, 17]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Configure build
         working-directory: ${{runner.workspace}}
