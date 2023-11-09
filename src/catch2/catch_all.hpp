@@ -22,109 +22,109 @@
 #ifndef CATCH_ALL_HPP_INCLUDED
 #define CATCH_ALL_HPP_INCLUDED
 
-#include <catch2/benchmark/catch_benchmark_all.hpp>
-#include <catch2/catch_approx.hpp>
-#include <catch2/catch_assertion_info.hpp>
-#include <catch2/catch_assertion_result.hpp>
-#include <catch2/catch_config.hpp>
-#include <catch2/catch_get_random_seed.hpp>
-#include <catch2/catch_message.hpp>
-#include <catch2/catch_section_info.hpp>
-#include <catch2/catch_session.hpp>
-#include <catch2/catch_tag_alias.hpp>
-#include <catch2/catch_tag_alias_autoregistrar.hpp>
-#include <catch2/catch_template_test_macros.hpp>
-#include <catch2/catch_test_case_info.hpp>
-#include <catch2/catch_test_macros.hpp>
-#include <catch2/catch_test_spec.hpp>
-#include <catch2/catch_timer.hpp>
-#include <catch2/catch_tostring.hpp>
-#include <catch2/catch_totals.hpp>
-#include <catch2/catch_translate_exception.hpp>
-#include <catch2/catch_version.hpp>
-#include <catch2/catch_version_macros.hpp>
-#include <catch2/generators/catch_generators_all.hpp>
-#include <catch2/interfaces/catch_interfaces_all.hpp>
-#include <catch2/internal/catch_assertion_handler.hpp>
-#include <catch2/internal/catch_case_insensitive_comparisons.hpp>
-#include <catch2/internal/catch_case_sensitive.hpp>
-#include <catch2/internal/catch_clara.hpp>
-#include <catch2/internal/catch_commandline.hpp>
-#include <catch2/internal/catch_compare_traits.hpp>
-#include <catch2/internal/catch_compiler_capabilities.hpp>
-#include <catch2/internal/catch_config_android_logwrite.hpp>
-#include <catch2/internal/catch_config_counter.hpp>
-#include <catch2/internal/catch_config_prefix_messages.hpp>
-#include <catch2/internal/catch_config_static_analysis_support.hpp>
-#include <catch2/internal/catch_config_uncaught_exceptions.hpp>
-#include <catch2/internal/catch_config_wchar.hpp>
-#include <catch2/internal/catch_console_colour.hpp>
-#include <catch2/internal/catch_console_width.hpp>
-#include <catch2/internal/catch_container_nonmembers.hpp>
-#include <catch2/internal/catch_context.hpp>
-#include <catch2/internal/catch_debug_console.hpp>
-#include <catch2/internal/catch_debugger.hpp>
-#include <catch2/internal/catch_decomposer.hpp>
-#include <catch2/internal/catch_enforce.hpp>
-#include <catch2/internal/catch_enum_values_registry.hpp>
-#include <catch2/internal/catch_errno_guard.hpp>
-#include <catch2/internal/catch_exception_translator_registry.hpp>
-#include <catch2/internal/catch_fatal_condition_handler.hpp>
-#include <catch2/internal/catch_floating_point_helpers.hpp>
-#include <catch2/internal/catch_getenv.hpp>
-#include <catch2/internal/catch_is_permutation.hpp>
-#include <catch2/internal/catch_istream.hpp>
-#include <catch2/internal/catch_lazy_expr.hpp>
-#include <catch2/internal/catch_leak_detector.hpp>
-#include <catch2/internal/catch_list.hpp>
-#include <catch2/internal/catch_logical_traits.hpp>
-#include <catch2/internal/catch_message_info.hpp>
-#include <catch2/internal/catch_meta.hpp>
-#include <catch2/internal/catch_move_and_forward.hpp>
-#include <catch2/internal/catch_noncopyable.hpp>
-#include <catch2/internal/catch_optional.hpp>
-#include <catch2/internal/catch_output_redirect.hpp>
-#include <catch2/internal/catch_parse_numbers.hpp>
-#include <catch2/internal/catch_platform.hpp>
-#include <catch2/internal/catch_polyfills.hpp>
-#include <catch2/internal/catch_preprocessor.hpp>
-#include <catch2/internal/catch_preprocessor_internal_stringify.hpp>
-#include <catch2/internal/catch_preprocessor_remove_parens.hpp>
-#include <catch2/internal/catch_random_number_generator.hpp>
-#include <catch2/internal/catch_random_seed_generation.hpp>
-#include <catch2/internal/catch_reporter_registry.hpp>
-#include <catch2/internal/catch_reporter_spec_parser.hpp>
-#include <catch2/internal/catch_result_type.hpp>
-#include <catch2/internal/catch_reusable_string_stream.hpp>
-#include <catch2/internal/catch_run_context.hpp>
-#include <catch2/internal/catch_section.hpp>
-#include <catch2/internal/catch_sharding.hpp>
-#include <catch2/internal/catch_singletons.hpp>
-#include <catch2/internal/catch_source_line_info.hpp>
-#include <catch2/internal/catch_startup_exception_registry.hpp>
-#include <catch2/internal/catch_stdstreams.hpp>
-#include <catch2/internal/catch_stream_end_stop.hpp>
-#include <catch2/internal/catch_string_manip.hpp>
-#include <catch2/internal/catch_stringref.hpp>
-#include <catch2/internal/catch_tag_alias_registry.hpp>
-#include <catch2/internal/catch_template_test_registry.hpp>
-#include <catch2/internal/catch_test_case_info_hasher.hpp>
-#include <catch2/internal/catch_test_case_registry_impl.hpp>
-#include <catch2/internal/catch_test_case_tracker.hpp>
-#include <catch2/internal/catch_test_failure_exception.hpp>
-#include <catch2/internal/catch_test_macro_impl.hpp>
-#include <catch2/internal/catch_test_registry.hpp>
-#include <catch2/internal/catch_test_run_info.hpp>
-#include <catch2/internal/catch_test_spec_parser.hpp>
-#include <catch2/internal/catch_textflow.hpp>
-#include <catch2/internal/catch_to_string.hpp>
-#include <catch2/internal/catch_uncaught_exceptions.hpp>
-#include <catch2/internal/catch_unique_name.hpp>
-#include <catch2/internal/catch_unique_ptr.hpp>
-#include <catch2/internal/catch_void_type.hpp>
-#include <catch2/internal/catch_wildcard_pattern.hpp>
-#include <catch2/internal/catch_xmlwriter.hpp>
-#include <catch2/matchers/catch_matchers_all.hpp>
-#include <catch2/reporters/catch_reporters_all.hpp>
+#include <catch2/benchmark/catch_benchmark_all.hpp>  // IWYU pragma: export
+#include <catch2/catch_approx.hpp>  // IWYU pragma: export
+#include <catch2/catch_assertion_info.hpp>  // IWYU pragma: export
+#include <catch2/catch_assertion_result.hpp>  // IWYU pragma: export
+#include <catch2/catch_config.hpp>  // IWYU pragma: export
+#include <catch2/catch_get_random_seed.hpp>  // IWYU pragma: export
+#include <catch2/catch_message.hpp>  // IWYU pragma: export
+#include <catch2/catch_section_info.hpp>  // IWYU pragma: export
+#include <catch2/catch_session.hpp>  // IWYU pragma: export
+#include <catch2/catch_tag_alias.hpp>  // IWYU pragma: export
+#include <catch2/catch_tag_alias_autoregistrar.hpp>  // IWYU pragma: export
+#include <catch2/catch_template_test_macros.hpp>  // IWYU pragma: export
+#include <catch2/catch_test_case_info.hpp>  // IWYU pragma: export
+#include <catch2/catch_test_macros.hpp>  // IWYU pragma: export
+#include <catch2/catch_test_spec.hpp>  // IWYU pragma: export
+#include <catch2/catch_timer.hpp>  // IWYU pragma: export
+#include <catch2/catch_tostring.hpp>  // IWYU pragma: export
+#include <catch2/catch_totals.hpp>  // IWYU pragma: export
+#include <catch2/catch_translate_exception.hpp>  // IWYU pragma: export
+#include <catch2/catch_version.hpp>  // IWYU pragma: export
+#include <catch2/catch_version_macros.hpp>  // IWYU pragma: export
+#include <catch2/generators/catch_generators_all.hpp>  // IWYU pragma: export
+#include <catch2/interfaces/catch_interfaces_all.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_assertion_handler.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_case_insensitive_comparisons.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_case_sensitive.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_clara.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_commandline.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_compare_traits.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_compiler_capabilities.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_config_android_logwrite.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_config_counter.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_config_prefix_messages.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_config_static_analysis_support.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_config_uncaught_exceptions.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_config_wchar.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_console_colour.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_console_width.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_container_nonmembers.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_context.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_debug_console.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_debugger.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_decomposer.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_enforce.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_enum_values_registry.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_errno_guard.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_exception_translator_registry.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_fatal_condition_handler.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_floating_point_helpers.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_getenv.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_is_permutation.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_istream.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_lazy_expr.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_leak_detector.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_list.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_logical_traits.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_message_info.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_meta.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_move_and_forward.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_noncopyable.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_optional.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_output_redirect.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_parse_numbers.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_platform.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_polyfills.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_preprocessor.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_preprocessor_internal_stringify.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_preprocessor_remove_parens.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_random_number_generator.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_random_seed_generation.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_reporter_registry.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_reporter_spec_parser.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_result_type.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_reusable_string_stream.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_run_context.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_section.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_sharding.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_singletons.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_source_line_info.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_startup_exception_registry.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_stdstreams.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_stream_end_stop.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_string_manip.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_stringref.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_tag_alias_registry.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_template_test_registry.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_test_case_info_hasher.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_test_case_registry_impl.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_test_case_tracker.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_test_failure_exception.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_test_macro_impl.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_test_registry.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_test_run_info.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_test_spec_parser.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_textflow.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_to_string.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_uncaught_exceptions.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_unique_name.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_unique_ptr.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_void_type.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_wildcard_pattern.hpp>  // IWYU pragma: export
+#include <catch2/internal/catch_xmlwriter.hpp>  // IWYU pragma: export
+#include <catch2/matchers/catch_matchers_all.hpp>  // IWYU pragma: export
+#include <catch2/reporters/catch_reporters_all.hpp>  // IWYU pragma: export
 
 #endif // CATCH_ALL_HPP_INCLUDED
