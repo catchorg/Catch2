@@ -38,43 +38,47 @@ namespace Catch {
             if ( info.throws() ) { writer.write( "throws" ); }
         }
 
-        void writeCounts( JsonObjectWriter writer, Counts const& counts ) {
-            writer.write( "passed" ).write( counts.passed );
-            writer.write( "failed" ).write( counts.failed );
-            writer.write( "fail-but-ok" ).write( counts.failedButOk );
-            writer.write( "skipped" ).write( counts.skipped );
-        }
+        //void writeCounts( JsonObjectWriter writer, Counts const& counts ) {
+        //    writer.write( "passed" ).write( counts.passed );
+        //    writer.write( "failed" ).write( counts.failed );
+        //    writer.write( "fail-but-ok" ).write( counts.failedButOk );
+        //    writer.write( "skipped" ).write( counts.skipped );
+        //}
 
-        void writeTestInfo( JsonObjectWriter writer,
-                            TestCaseInfo const& info ) {
-            writer.write( "name" ).write( info.name );
-            writeTags( writer.write( "tags" ).writeArray(), info.tags );
-            writeSourceInfo( writer, info.lineInfo );
-            writeProperties( writer.write( "properties" ).writeArray(), info );
-        }
+        //void writeTestInfo( JsonObjectWriter writer,
+        //                    TestCaseInfo const& info ) {
+        //    writer.write( "name" ).write( info.name );
+        //    writeTags( writer.write( "tags" ).writeArray(), info.tags );
+        //    writeSourceInfo( writer, info.lineInfo );
+        //    writeProperties( writer.write( "properties" ).writeArray(), info );
+        //}
 
-        void writeSection( JsonObjectWriter& writer,
-                           CumulativeReporterBase::SectionNode const& section,
-                           bool selfWrite ) {
-            if ( selfWrite ) {
-                writer.write( "name" ).write( section.stats.sectionInfo.name );
-                writeSourceInfo( writer, section.stats.sectionInfo.lineInfo );
-                writeCounts( writer.write( "assertions-stats" ).writeObject(),
-                             section.stats.assertions );
-            }
-            if ( section.childSections.empty() ) { return; }
-            auto sectionsWriter = writer.write( "sections" ).writeArray();
-            for ( auto const& childPtr : section.childSections ) {
-                auto childSectionWriter = sectionsWriter.writeObject();
-                writeSection( childSectionWriter, *childPtr, true );
-            }
-        }
+        //void writeSection( JsonObjectWriter& writer,
+        //                   CumulativeReporterBase::SectionNode const& section,
+        //                   bool selfWrite ) {
+        //    if ( selfWrite ) {
+        //        writer.write( "name" ).write( section.stats.sectionInfo.name );
+        //        writeSourceInfo( writer, section.stats.sectionInfo.lineInfo );
+        //        writeCounts( writer.write( "assertions-stats" ).writeObject(),
+        //                     section.stats.assertions );
+        //    }
+        //    if ( section.childSections.empty() ) { return; }
+        //    auto sectionsWriter = writer.write( "sections" ).writeArray();
+        //    for ( auto const& childPtr : section.childSections ) {
+        //        auto childSectionWriter = sectionsWriter.writeObject();
+        //        writeSection( childSectionWriter, *childPtr, true );
+        //    }
+        //}
     } // namespace
 
     JsonReporter::JsonReporter( ReporterConfig&& config ):
-        CumulativeReporterBase{ CATCH_MOVE( config ) } {
+        StreamingReporterBase{ CATCH_MOVE( config ) } {
 
         m_preferences.shouldRedirectStdOut = true;
+        // TBD: Do we want to report all assertions? XML reporter does
+        //      not, but for machine-parseable reporters I think the answer
+        //      should be yes.
+        m_preferences.shouldReportAllAssertions = true;
 
         m_objectWriters.emplace( m_stream );
         m_writers.emplace( Writer::Object );
@@ -95,17 +99,13 @@ namespace Catch {
     }
 
     JsonReporter::~JsonReporter() {
-        while ( !m_writers.empty() ) {
-            switch ( m_writers.top() ) {
-            case Writer::Object:
-                endObject();
-                break;
-            case Writer::Array:
-                endArray();
-                break;
-            }
-        }
-        m_stream << std::endl;
+        endListing();
+        // TODO: Ensure this closes the top level object, add asserts
+        assert( m_writers.size() == 1 && "Only the top level object should be open" );
+        assert( m_writers.top() == Writer::Object );
+        endObject();
+        m_stream << '\n' << std::flush;
+        assert( m_writers.empty() );
     }
 
     JsonArrayWriter& JsonReporter::startArray() {
@@ -133,12 +133,12 @@ namespace Catch {
     }
 
     void JsonReporter::endObject() {
-        if ( !isInside( Writer::Object ) ) { return; }
+        assert( isInside( Writer::Object ) );
         m_objectWriters.pop();
         m_writers.pop();
     }
     void JsonReporter::endArray() {
-        if ( !isInside( Writer::Array ) ) { return; }
+        assert( isInside( Writer::Array ) );
         m_arrayWriters.pop();
         m_writers.pop();
     }
@@ -148,34 +148,185 @@ namespace Catch {
     }
 
     void JsonReporter::startListing() {
+        if ( !m_startedListing ) { startObject( "listings" ); }
         m_startedListing = true;
-        startObject( "listings" );
+    }
+    void JsonReporter::endListing() {
+        if ( m_startedListing ) { endObject(); }
+        m_startedListing = false;
     }
 
     std::string JsonReporter::getDescription() {
-        return "Reports test results as a JSON document";
+        return "WIP! Reports test results as a JSON document. WIP!";
     }
 
-    void JsonReporter::testRunStarting( TestRunInfo const& /*testInfo*/ ) {
-        if ( !isInside( Writer::Object ) ) { return; }
-        if ( m_startedListing ) { endObject(); }
+    void JsonReporter::testRunStarting( TestRunInfo const& testInfo ) {
+        StreamingReporterBase::testRunStarting( testInfo );
+        endListing();
 
+        assert( isInside( Writer::Object ) );
+        startObject( "test-run" );
         startArray( "test-cases" );
     }
 
-    void JsonReporter::testRunEndedCumulative() {
-        for ( auto const& testCase : m_testRun->children ) {
-            assert( testCase->children.size() == 1 );
-
-            auto writer = m_arrayWriters.top().writeObject();
-
-            writeTestInfo( writer.write( "test-info" ).writeObject(),
-                           *testCase->value.testInfo );
-            writeCounts( writer.write( "totals" ).writeObject(),
-                         testCase->value.totals.assertions );
-            writeSection( writer, *testCase->children.front(), false );
-        }
+     static void writeCounts( JsonObjectWriter&& writer, Counts const& counts ) {
+        writer.write( "passed" ).write( counts.passed );
+        writer.write( "failed" ).write( counts.failed );
+        writer.write( "fail-but-ok" ).write( counts.failedButOk );
+        writer.write( "skipped" ).write( counts.skipped );
     }
+
+    void JsonReporter::testRunEnded(TestRunStats const& runStats) {
+        assert( isInside( Writer::Array ) );
+        // End "test-cases"
+        endArray();
+
+        {
+            auto totals = m_objectWriters.top().write( "totals" ).writeObject();
+            writeCounts( totals.write( "assertions" ).writeObject(),
+                         runStats.totals.assertions );
+            writeCounts( totals.write( "test-cases" ).writeObject(),
+                         runStats.totals.testCases );
+        }
+
+        // End the "test-run" object
+        endObject();
+    }
+
+    void JsonReporter::testCaseStarting( TestCaseInfo const& tcInfo ) {
+        StreamingReporterBase::testCaseStarting( tcInfo );
+
+        assert( isInside( Writer::Array ) &&
+                "We should be in the 'test-cases' array" );
+        startObject();
+        // "test-info" prelude
+        {
+            auto testInfo =
+                m_objectWriters.top().write( "test-info" ).writeObject();
+            // TODO: handle testName vs className!!
+            testInfo.write( "name" ).write( tcInfo.name );
+            writeSourceInfo(testInfo, tcInfo.lineInfo);
+            writeTags( testInfo.write( "tags" ).writeArray(), tcInfo.tags );
+            writeProperties( testInfo.write( "properties" ).writeArray(),
+                             tcInfo );
+        }
+
+
+        // Start the array for individual test runs (testCasePartial pairs)
+        startArray( "runs" );
+    }
+
+    void JsonReporter::testCaseEnded( TestCaseStats const& tcStats ) {
+        StreamingReporterBase::testCaseEnded( tcStats );
+
+        // We need to close the 'runs' array before finishing the test case
+        assert( isInside( Writer::Array ) );
+        endArray();
+
+        {
+            auto totals = m_objectWriters.top().write( "totals" ).writeObject();
+            writeCounts( totals.write( "assertions" ).writeObject(),
+                         tcStats.totals.assertions );
+            // We do not write the test case totals, because there will always be just one test case here.
+            // TODO: overall "result" -> success, skip, fail here? Or in partial result?
+        }
+        // We do not write out stderr/stdout, because we instead wrote those out in partial runs
+
+        // TODO: aborting?
+
+        // And we also close this test case's object
+        assert( isInside( Writer::Object ) );
+        endObject();
+    }
+
+    void JsonReporter::testCasePartialStarting( TestCaseInfo const& /*tcInfo*/,
+                                                size_t index ) {
+        startObject();
+        m_objectWriters.top().write( "run-idx" ).write( index );
+        startArray( "path" );
+        //startObject( "path" );
+        // TODO: we want to delay most of the printing to the 'root' section
+        // TODO: childSection key name?
+    }
+
+    void JsonReporter::testCasePartialEnded( TestCaseStats const& tcStats,
+                                             size_t /*index*/ ) {
+        // Fixme: the top level section handles this.
+        //// path object
+        endArray();
+        if ( !tcStats.stdOut.empty() ) {
+            m_objectWriters.top()
+                .write( "captured-stdout" )
+                .write( tcStats.stdOut );
+        }
+        if ( !tcStats.stdErr.empty() ) {
+            m_objectWriters.top()
+                .write( "captured-stderr" )
+                .write( tcStats.stdErr );
+        }
+        {
+            auto totals = m_objectWriters.top().write( "totals" ).writeObject();
+            writeCounts( totals.write( "assertions" ).writeObject(),
+                         tcStats.totals.assertions );
+            // We do not write the test case totals, because there will
+            // always be just one test case here.
+            // TODO: overall "result" -> success, skip, fail here? Or in
+            // partial result?
+        }
+        // TODO: aborting?
+        // run object
+        endObject();
+    }
+
+    void JsonReporter::sectionStarting( SectionInfo const& sectionInfo ) {
+        assert( isInside( Writer::Array ) &&
+                "Section should always start inside an object" );
+        // We want to nest top level sections, even though it shares name
+        // and source loc with the TEST_CASE
+        auto& sectionObject = startObject();
+        sectionObject.write( "kind" ).write( "section" );
+        sectionObject.write( "name" ).write( sectionInfo.name );
+        writeSourceInfo( m_objectWriters.top(), sectionInfo.lineInfo );
+
+
+        // TBD: Do we want to create this event lazily? It would become
+        //      rather complex, but we could do it, and it would look
+        //      better for empty sections. OTOH, empty sections should
+        //      be rare.
+        startArray( "path" );
+    }
+    void JsonReporter::sectionEnded( SectionStats const& /*sectionStats */) {
+        // End the subpath array
+        endArray();
+        // TODO: metadata
+        // TODO: what info do we have here?
+
+        // End the section object
+        endObject();
+    }
+
+    void JsonReporter::assertionStarting( AssertionInfo const& /*assertionInfo*/ ) {}
+    void JsonReporter::assertionEnded( AssertionStats const& assertionStats ) {
+        // TODO: There is lot of different things to handle here, but
+        //       we can fill it in later, after we show that the basic
+        //       outline and streaming reporter impl works well enough.
+        //if ( !m_config->includeSuccessfulResults()
+        //    && assertionStats.assertionResult.isOk() ) {
+        //    return;
+        //}
+        assert( isInside( Writer::Array ) );
+        auto assertionObject = m_arrayWriters.top().writeObject();
+
+        assertionObject.write( "kind" ).write( "assertion" );
+        writeSourceInfo( assertionObject,
+                         assertionStats.assertionResult.getSourceInfo() );
+        assertionObject.write( "status" )
+            .write( assertionStats.assertionResult.isOk() );
+        // TODO: handling of result.
+        // TODO: messages
+        // TODO: totals?
+    }
+
 
     void JsonReporter::benchmarkPreparing( StringRef name ) { (void)name; }
     void JsonReporter::benchmarkStarting( BenchmarkInfo const& ) {}
@@ -184,11 +335,7 @@ namespace Catch {
 
     void JsonReporter::listReporters(
         std::vector<ReporterDescription> const& descriptions ) {
-        if ( !m_startedListing ) {
-            startListing();
-        }
-
-        if ( !isInside( Writer::Object ) ) { return; }
+        startListing();
 
         auto writer = m_objectWriters.top().write( "reporters" ).writeArray();
         for ( auto const& desc : descriptions ) {
@@ -199,10 +346,7 @@ namespace Catch {
     }
     void JsonReporter::listListeners(
         std::vector<ListenerDescription> const& descriptions ) {
-        if ( !m_startedListing) {
-            startListing();
-        }
-        if ( !isInside( Writer::Object ) ) { return; }
+        startListing();
 
         auto writer = m_objectWriters.top().write( "listeners" ).writeArray();
 
@@ -213,12 +357,7 @@ namespace Catch {
         }
     }
     void JsonReporter::listTests( std::vector<TestCaseHandle> const& tests ) {
-        if ( !m_startedListing ) {
-            startListing();
-        }
-
-        // TODO: Why? This should just assert. If the object is not there, there is a bug.
-        if ( !isInside( Writer::Object ) ) { return; }
+        startListing();
 
         auto writer = m_objectWriters.top().write( "tests" ).writeArray();
 
@@ -238,10 +377,7 @@ namespace Catch {
         }
     }
     void JsonReporter::listTags( std::vector<TagInfo> const& tags ) {
-        if ( !m_startedListing ) {
-            startListing();
-        }
-        if ( !isInside( Writer::Object ) ) { return; }
+        startListing();
 
         auto writer = m_objectWriters.top().write( "tags" ).writeArray();
         for ( auto const& tag : tags ) {

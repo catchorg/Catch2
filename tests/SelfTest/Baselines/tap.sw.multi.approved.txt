@@ -1864,6 +1864,68 @@ ok {test-number} - data.str_hello != "hell" for: "hello" != "hell"
 ok {test-number} - data.str_hello != "hello1" for: "hello" != "hello1"
 # Inequality checks that should succeed
 ok {test-number} - data.str_hello.size() != 6 for: 5 != 6
+# JsonWriter
+ok {test-number} - stream.str() == R"json(
+)json" for: " " == " "
+# JsonWriter
+ok {test-number} - stream.str() == R"json(
+{
+})json" for: " { }" == " { }"
+# JsonWriter
+ok {test-number} - stream.str() == R"json(
+{
+  "int": 1,
+  "double": 1.5,
+  "true": true,
+  "false": false,
+  "string": "this is a string",
+  "array": [
+    1,
+    2
+  ]
+})json" for: " {   "int": 1,   "double": 1.5,   "true": true,   "false": false,   "string": "this is a string",   "array": [     1,     2   ] }" == " {   "int": 1,   "double": 1.5,   "true": true,   "false": false,   "string": "this is a string",   "array": [     1,     2   ] }"
+# JsonWriter
+ok {test-number} - stream.str() == R"json(
+{
+  "empty_object": {
+  },
+  "fully_object": {
+    "key": 1
+  }
+})json" for: " {   "empty_object": {   },   "fully_object": {     "key": 1   } }" == " {   "empty_object": {   },   "fully_object": {     "key": 1   } }"
+# JsonWriter
+ok {test-number} - stream.str() == R"json(
+[
+])json" for: " [ ]" == " [ ]"
+# JsonWriter
+ok {test-number} - stream.str() == R"json(
+[
+  1,
+  1.5,
+  true,
+  false,
+  "this is a string",
+  {
+    "object": 42
+  },
+  [
+    "array",
+    42.5
+  ]
+])json" for: " [   1,   1.5,   true,   false,   "this is a string",   {     "object": 42   },   [     "array",     42.5   ] ]" == " [   1,   1.5,   true,   false,   "this is a string",   {     "object": 42   },   [     "array",     42.5   ] ]"
+# JsonWriter
+ok {test-number} - stream.str() == R"json(
+{
+})json" for: " { }" == " { }"
+# JsonWriter
+ok {test-number} - stream.str() == R"json(
+[
+])json" for: " [ ]" == " [ ]"
+# JsonWriter
+ok {test-number} - stream.str() == R"json(
+"custom")json" for: " "custom"" == " "custom""
+# JsonWriter
+ok {test-number} - stream.str() == "\n\"\\\"\"" for: " "\""" == " "\"""
 # Lambdas in assertions
 ok {test-number} - []() { return true; }() for: true
 # Less-than inequalities with different epsilons
@@ -2454,6 +2516,18 @@ ok {test-number} - listingString, ContainsSubstring("fake reporter"s) for: "Avai
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
 ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: console'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, ContainsSubstring("fakeTag"s) for: "{   "version": 1,   "metadata": {     "name": "",     "rng-seed": 3063158779,     "catch2-version": "<version>"   },   "listings": {     "tags": [       {         "aliases": [           "fakeTag"         ],         "count": 1       }     ]" contains: "fakeTag" with 1 message: 'Tested reporter: JSON'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, ContainsSubstring("fake reporter"s) for: "{   "version": 1,   "metadata": {     "name": "",     "rng-seed": 4167192188,     "catch2-version": "<version>"   },   "listings": {     "reporters": [       {         "name": "fake reporter",         "description": "fake description"       }     ]" contains: "fake reporter" with 1 message: 'Tested reporter: JSON'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "{   "version": 1,   "metadata": {     "name": "",     "rng-seed": 2012246564,     "catch2-version": "<version>"   },   "listings": {     "tests": [       {         "name": "fake test name",         "class-name": "",         "tags": [           "fakeTestTag"         ],         "source-location": {           "filename": "fake-file.cpp",           "line": 123456789         }       }     ]" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: JSON'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
@@ -4478,5 +4552,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2242
+1..2258
 

@@ -130,6 +130,18 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="warmup" duration="{duration}"/>
     <testCase name="weighted_average_quantile" duration="{duration}"/>
   </file>
+  <file path="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp">
+    <testCase name="JsonWriter/Newly constructed JsonWriter does nothing" duration="{duration}"/>
+    <testCase name="JsonWriter/Calling writeObject will create an empty pair of braces" duration="{duration}"/>
+    <testCase name="JsonWriter/Calling writeObject with key will create an object to write the value" duration="{duration}"/>
+    <testCase name="JsonWriter/nesting objects" duration="{duration}"/>
+    <testCase name="JsonWriter/Calling writeArray will create an empty pair of braces" duration="{duration}"/>
+    <testCase name="JsonWriter/Calling writeArray creates array to write the values to" duration="{duration}"/>
+    <testCase name="JsonWriter/Moved from JsonObjectWriter shall not insert superfluous brace" duration="{duration}"/>
+    <testCase name="JsonWriter/Moved from JsonArrayWriter shall not insert superfluous bracket" duration="{duration}"/>
+    <testCase name="JsonWriter/Custom class shall be quoted" duration="{duration}"/>
+    <testCase name="JsonWriter/String with a quote shall be espaced" duration="{duration}"/>
+  </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp">
     <testCase name="Parse uints/proper inputs" duration="{duration}"/>
     <testCase name="Parse uints/Bad inputs" duration="{duration}"/>
@@ -178,6 +190,9 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="Reporter's write listings to provided stream/console reporter lists tags" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/console reporter lists reporters" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/console reporter lists tests" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/JSON reporter lists tags" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/JSON reporter lists reporters" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/JSON reporter lists tests" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/JUnit reporter lists tags" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/JUnit reporter lists reporters" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/JUnit reporter lists tests" duration="{duration}"/>

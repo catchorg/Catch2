@@ -11,12 +11,12 @@
 
 #include <catch2/catch_timer.hpp>
 #include <catch2/internal/catch_jsonwriter.hpp>
-#include <catch2/reporters/catch_reporter_cumulative_base.hpp>
+#include <catch2/reporters/catch_reporter_streaming_base.hpp>
 
 #include <stack>
 
 namespace Catch {
-    class JsonReporter : public CumulativeReporterBase {
+    class JsonReporter : public StreamingReporterBase {
     public:
         JsonReporter( ReporterConfig&& config );
 
@@ -25,9 +25,23 @@ namespace Catch {
         static std::string getDescription();
 
     public: // StreamingReporterBase
-        void testRunStarting( TestRunInfo const& testInfo ) override;
+        void testRunStarting( TestRunInfo const& runInfo ) override;
+        void testRunEnded( TestRunStats const& runStats ) override;
 
-        void testRunEndedCumulative() override;
+        void testCaseStarting( TestCaseInfo const& tcInfo ) override;
+        void testCaseEnded( TestCaseStats const& tcStats ) override;
+
+        void testCasePartialStarting( TestCaseInfo const& tcInfo, size_t index ) override;
+        void testCasePartialEnded( TestCaseStats const& tcStats,
+                                   size_t index ) override;
+
+        void sectionStarting( SectionInfo const& sectionInfo ) override;
+        void sectionEnded( SectionStats const& sectionStats ) override;
+
+        void assertionStarting( AssertionInfo const& assertionInfo ) override;
+        void assertionEnded( AssertionStats const& assertionStats ) override;
+
+        //void testRunEndedCumulative() override;
 
         void benchmarkPreparing( StringRef name ) override;
         void benchmarkStarting( BenchmarkInfo const& ) override;
@@ -60,6 +74,7 @@ namespace Catch {
         bool isInside( Writer writer );
 
         void startListing();
+        void endListing();
 
         // Invariant:
         // When m_writers is not empty and its top element is

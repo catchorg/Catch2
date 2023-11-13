@@ -979,6 +979,164 @@ Condition.tests.cpp:<line number>: passed: data.str_hello != "goodbye" for: "hel
 Condition.tests.cpp:<line number>: passed: data.str_hello != "hell" for: "hello" != "hell"
 Condition.tests.cpp:<line number>: passed: data.str_hello != "hello1" for: "hello" != "hello1"
 Condition.tests.cpp:<line number>: passed: data.str_hello.size() != 6 for: 5 != 6
+Json.tests.cpp:<line number>: passed: stream.str() == R"json(
+)json" for: "
+"
+==
+"
+"
+Json.tests.cpp:<line number>: passed: stream.str() == R"json(
+{
+})json" for: "
+{
+}"
+==
+"
+{
+}"
+Json.tests.cpp:<line number>: passed: stream.str() == R"json(
+{
+  "int": 1,
+  "double": 1.5,
+  "true": true,
+  "false": false,
+  "string": "this is a string",
+  "array": [
+    1,
+    2
+  ]
+})json" for: "
+{
+  "int": 1,
+  "double": 1.5,
+  "true": true,
+  "false": false,
+  "string": "this is a string",
+  "array": [
+    1,
+    2
+  ]
+}"
+==
+"
+{
+  "int": 1,
+  "double": 1.5,
+  "true": true,
+  "false": false,
+  "string": "this is a string",
+  "array": [
+    1,
+    2
+  ]
+}"
+Json.tests.cpp:<line number>: passed: stream.str() == R"json(
+{
+  "empty_object": {
+  },
+  "fully_object": {
+    "key": 1
+  }
+})json" for: "
+{
+  "empty_object": {
+  },
+  "fully_object": {
+    "key": 1
+  }
+}"
+==
+"
+{
+  "empty_object": {
+  },
+  "fully_object": {
+    "key": 1
+  }
+}"
+Json.tests.cpp:<line number>: passed: stream.str() == R"json(
+[
+])json" for: "
+[
+]"
+==
+"
+[
+]"
+Json.tests.cpp:<line number>: passed: stream.str() == R"json(
+[
+  1,
+  1.5,
+  true,
+  false,
+  "this is a string",
+  {
+    "object": 42
+  },
+  [
+    "array",
+    42.5
+  ]
+])json" for: "
+[
+  1,
+  1.5,
+  true,
+  false,
+  "this is a string",
+  {
+    "object": 42
+  },
+  [
+    "array",
+    42.5
+  ]
+]"
+==
+"
+[
+  1,
+  1.5,
+  true,
+  false,
+  "this is a string",
+  {
+    "object": 42
+  },
+  [
+    "array",
+    42.5
+  ]
+]"
+Json.tests.cpp:<line number>: passed: stream.str() == R"json(
+{
+})json" for: "
+{
+}"
+==
+"
+{
+}"
+Json.tests.cpp:<line number>: passed: stream.str() == R"json(
+[
+])json" for: "
+[
+]"
+==
+"
+[
+]"
+Json.tests.cpp:<line number>: passed: stream.str() == R"json(
+"custom")json" for: "
+"custom""
+==
+"
+"custom""
+Json.tests.cpp:<line number>: passed: stream.str() == "\n\"\\\"\"" for: "
+"\"""
+==
+"
+"\"""
 Compilation.tests.cpp:<line number>: passed: []() { return true; }() for: true
 Approx.tests.cpp:<line number>: passed: d <= Approx( 1.24 ) for: 1.23 <= Approx( 1.24 )
 Approx.tests.cpp:<line number>: passed: d <= Approx( 1.23 ) for: 1.23 <= Approx( 1.23 )
@@ -1342,6 +1500,60 @@ Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fa
 1 test case
 
 " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: console'
+Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "{
+  "version": 1,
+  "metadata": {
+    "name": "",
+    "rng-seed": 1165749983,
+    "catch2-version": "<version>"
+  },
+  "listings": {
+    "tags": [
+      {
+        "aliases": [
+          "fakeTag"
+        ],
+        "count": 1
+      }
+    ]" contains: "fakeTag" with 1 message: 'Tested reporter: JSON'
+Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "{
+  "version": 1,
+  "metadata": {
+    "name": "",
+    "rng-seed": 1746012198,
+    "catch2-version": "<version>"
+  },
+  "listings": {
+    "reporters": [
+      {
+        "name": "fake reporter",
+        "description": "fake description"
+      }
+    ]" contains: "fake reporter" with 1 message: 'Tested reporter: JSON'
+Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "{
+  "version": 1,
+  "metadata": {
+    "name": "",
+    "rng-seed": 2024462101,
+    "catch2-version": "<version>"
+  },
+  "listings": {
+    "tests": [
+      {
+        "name": "fake test name",
+        "class-name": "",
+        "tags": [
+          "fakeTestTag"
+        ],
+        "source-location": {
+          "filename": "fake-file.cpp",
+          "line": 123456789
+        }
+      }
+    ]" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: JSON'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?>
 All available tags:
@@ -2544,7 +2756,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  413 |  308 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2230 | 2049 passed | 146 failed | 35 failed as expected
+test cases:  414 |  309 passed |  85 failed | 6 skipped | 14 failed as expected
+assertions: 2246 | 2065 passed | 146 failed | 35 failed as expected
 
 

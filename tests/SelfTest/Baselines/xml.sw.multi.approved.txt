@@ -8779,6 +8779,267 @@ C
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="JsonWriter" tags="[JSON][JsonWriter]" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+    <Section name="Newly constructed JsonWriter does nothing" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          stream.str() == R"json(
+)json"
+        </Original>
+        <Expanded>
+          "
+"
+==
+"
+"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Calling writeObject will create an empty pair of braces" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          stream.str() == R"json(
+{
+})json"
+        </Original>
+        <Expanded>
+          "
+{
+}"
+==
+"
+{
+}"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Calling writeObject with key will create an object to write the value" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          stream.str() == R"json(
+{
+  "int": 1,
+  "double": 1.5,
+  "true": true,
+  "false": false,
+  "string": "this is a string",
+  "array": [
+    1,
+    2
+  ]
+})json"
+        </Original>
+        <Expanded>
+          "
+{
+  "int": 1,
+  "double": 1.5,
+  "true": true,
+  "false": false,
+  "string": "this is a string",
+  "array": [
+    1,
+    2
+  ]
+}"
+==
+"
+{
+  "int": 1,
+  "double": 1.5,
+  "true": true,
+  "false": false,
+  "string": "this is a string",
+  "array": [
+    1,
+    2
+  ]
+}"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="nesting objects" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          stream.str() == R"json(
+{
+  "empty_object": {
+  },
+  "fully_object": {
+    "key": 1
+  }
+})json"
+        </Original>
+        <Expanded>
+          "
+{
+  "empty_object": {
+  },
+  "fully_object": {
+    "key": 1
+  }
+}"
+==
+"
+{
+  "empty_object": {
+  },
+  "fully_object": {
+    "key": 1
+  }
+}"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Calling writeArray will create an empty pair of braces" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          stream.str() == R"json(
+[
+])json"
+        </Original>
+        <Expanded>
+          "
+[
+]"
+==
+"
+[
+]"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Calling writeArray creates array to write the values to" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          stream.str() == R"json(
+[
+  1,
+  1.5,
+  true,
+  false,
+  "this is a string",
+  {
+    "object": 42
+  },
+  [
+    "array",
+    42.5
+  ]
+])json"
+        </Original>
+        <Expanded>
+          "
+[
+  1,
+  1.5,
+  true,
+  false,
+  "this is a string",
+  {
+    "object": 42
+  },
+  [
+    "array",
+    42.5
+  ]
+]"
+==
+"
+[
+  1,
+  1.5,
+  true,
+  false,
+  "this is a string",
+  {
+    "object": 42
+  },
+  [
+    "array",
+    42.5
+  ]
+]"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Moved from JsonObjectWriter shall not insert superfluous brace" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          stream.str() == R"json(
+{
+})json"
+        </Original>
+        <Expanded>
+          "
+{
+}"
+==
+"
+{
+}"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Moved from JsonArrayWriter shall not insert superfluous bracket" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          stream.str() == R"json(
+[
+])json"
+        </Original>
+        <Expanded>
+          "
+[
+]"
+==
+"
+[
+]"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Custom class shall be quoted" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          stream.str() == R"json(
+"custom")json"
+        </Original>
+        <Expanded>
+          "
+"custom""
+==
+"
+"custom""
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="String with a quote shall be espaced" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          stream.str() == "\n\"\\\"\""
+        </Original>
+        <Expanded>
+          "
+"\"""
+==
+"
+"\"""
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="Lambdas in assertions" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
       <Original>
@@ -11683,6 +11944,120 @@ C
 1 test case
 
 " ( contains: "fake test name" and contains: "fakeTestTag" )
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Original>
+        !(factories.empty())
+      </Original>
+      <Expanded>
+        !false
+      </Expanded>
+    </Expression>
+    <Section name="JSON reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        Tested reporter: JSON
+      </Info>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          listingString, ContainsSubstring("fakeTag"s)
+        </Original>
+        <Expanded>
+          "{
+  "version": 1,
+  "metadata": {
+    "name": "",
+    "rng-seed": 3063158779,
+    "catch2-version": "<version>"
+  },
+  "listings": {
+    "tags": [
+      {
+        "aliases": [
+          "fakeTag"
+        ],
+        "count": 1
+      }
+    ]" contains: "fakeTag"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Original>
+        !(factories.empty())
+      </Original>
+      <Expanded>
+        !false
+      </Expanded>
+    </Expression>
+    <Section name="JSON reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        Tested reporter: JSON
+      </Info>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          listingString, ContainsSubstring("fake reporter"s)
+        </Original>
+        <Expanded>
+          "{
+  "version": 1,
+  "metadata": {
+    "name": "",
+    "rng-seed": 4167192188,
+    "catch2-version": "<version>"
+  },
+  "listings": {
+    "reporters": [
+      {
+        "name": "fake reporter",
+        "description": "fake description"
+      }
+    ]" contains: "fake reporter"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Original>
+        !(factories.empty())
+      </Original>
+      <Expanded>
+        !false
+      </Expanded>
+    </Expression>
+    <Section name="JSON reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        Tested reporter: JSON
+      </Info>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          listingString, ContainsSubstring( "fake test name"s ) &amp;&amp; ContainsSubstring( "fakeTestTag"s )
+        </Original>
+        <Expanded>
+          "{
+  "version": 1,
+  "metadata": {
+    "name": "",
+    "rng-seed": 2012246564,
+    "catch2-version": "<version>"
+  },
+  "listings": {
+    "tests": [
+      {
+        "name": "fake test name",
+        "class-name": "",
+        "tags": [
+          "fakeTestTag"
+        ],
+        "source-location": {
+          "filename": "fake-file.cpp",
+          "line": 123456789
+        }
+      }
+    ]" ( contains: "fake test name" and contains: "fakeTestTag" )
         </Expanded>
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
@@ -21267,6 +21642,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2049" failures="146" expectedFailures="35" skips="12"/>
-  <OverallResultsCases successes="308" failures="85" expectedFailures="14" skips="6"/>
+  <OverallResults successes="2065" failures="146" expectedFailures="35" skips="12"/>
+  <OverallResultsCases successes="309" failures="85" expectedFailures="14" skips="6"/>
 </Catch2TestRun>
