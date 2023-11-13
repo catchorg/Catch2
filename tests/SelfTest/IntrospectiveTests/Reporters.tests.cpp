@@ -109,7 +109,9 @@ TEST_CASE( "Reporter's write listings to provided stream", "[reporters]" ) {
         auto sstream = Catch::Detail::make_unique<StringIStream>();
         auto& sstreamRef = *sstream.get();
 
-        Catch::Config config( Catch::ConfigData{} );
+        Catch::ConfigData cfg_data;
+        cfg_data.rngSeed = 1234;
+        Catch::Config config( cfg_data );
         auto reporter = factory.second->create( Catch::ReporterConfig{
             &config, CATCH_MOVE( sstream ), Catch::ColourMode::None, {} } );
 

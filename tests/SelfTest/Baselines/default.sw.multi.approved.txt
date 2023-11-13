@@ -1,5 +1,11 @@
 This would not be caught previously
 Nor would this
-<exe-name>: src/catch2/reporters/catch_reporter_json.cpp:103: virtual Catch::JsonReporter::~JsonReporter(): Assertion `m_writers.size() == 1 && "Only the top level object should be open"' failed.
-terminate called after throwing an instance of 'std::domain_error'
-  what():  A partial test case has not ended
+A string sent directly to stdout
+A string sent directly to stderr
+A string sent to stderr via clog
+Message from section one
+Message from section two
+loose text artifact
+a!
+b1!
+!
