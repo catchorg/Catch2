@@ -240,7 +240,7 @@ namespace Catch {
     }
 
     void JsonReporter::testCasePartialStarting( TestCaseInfo const& /*tcInfo*/,
-                                                size_t index ) {
+                                                uint64_t index ) {
         startObject();
         m_objectWriters.top().write( "run-idx" ).write( index );
         startArray( "path" );
@@ -250,7 +250,7 @@ namespace Catch {
     }
 
     void JsonReporter::testCasePartialEnded( TestCaseStats const& tcStats,
-                                             size_t /*index*/ ) {
+                                             uint64_t /*index*/ ) {
         // Fixme: the top level section handles this.
         //// path object
         endArray();

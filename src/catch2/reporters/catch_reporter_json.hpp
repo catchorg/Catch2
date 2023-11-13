@@ -31,9 +31,10 @@ namespace Catch {
         void testCaseStarting( TestCaseInfo const& tcInfo ) override;
         void testCaseEnded( TestCaseStats const& tcStats ) override;
 
-        void testCasePartialStarting( TestCaseInfo const& tcInfo, size_t index ) override;
+        void testCasePartialStarting( TestCaseInfo const& tcInfo,
+                                      uint64_t index ) override;
         void testCasePartialEnded( TestCaseStats const& tcStats,
-                                   size_t index ) override;
+                                   uint64_t index ) override;
 
         void sectionStarting( SectionInfo const& sectionInfo ) override;
         void sectionEnded( SectionStats const& sectionStats ) override;
