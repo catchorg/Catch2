@@ -11,6 +11,7 @@
 #include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
+#include <cstdint>
 #include <sstream>
 
 namespace Catch {
