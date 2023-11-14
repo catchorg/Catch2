@@ -7257,6 +7257,195 @@ with expansion:
   5 != 6
 
 -------------------------------------------------------------------------------
+JsonWriter
+  Newly constructed JsonWriter does nothing
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( stream.str() == "" )
+with expansion:
+  "" == ""
+
+-------------------------------------------------------------------------------
+JsonWriter
+  Calling writeObject will create an empty pair of braces
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( stream.str() == "{\n}" )
+with expansion:
+  "{
+  }"
+  ==
+  "{
+  }"
+
+-------------------------------------------------------------------------------
+JsonWriter
+  Calling writeObject with key will create an object to write the value
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( stream.str(), ContainsSubstring( "\"int\": 1," ) && ContainsSubstring( "\"double\": 1.5," ) && ContainsSubstring( "\"true\": true," ) && ContainsSubstring( "\"false\": false," ) && ContainsSubstring( "\"string\": \"this is a string\"," ) && ContainsSubstring( "\"array\": [\n    1,\n    2\n  ]\n}" ) )
+with expansion:
+  "{
+    "int": 1,
+    "double": 1.5,
+    "true": true,
+    "false": false,
+    "string": "this is a string",
+    "array": [
+      1,
+      2
+    ]
+  }" ( contains: ""int": 1," and contains: ""double": 1.5," and contains:
+  ""true": true," and contains: ""false": false," and contains: ""string":
+  "this is a string"," and contains: ""array": [
+      1,
+      2
+    ]
+  }" )
+
+-------------------------------------------------------------------------------
+JsonWriter
+  nesting objects
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( stream.str(), ContainsSubstring( "\"empty_object\": {\n  }," ) && ContainsSubstring( "\"fully_object\": {\n    \"key\": 1\n  }" ) )
+with expansion:
+  "{
+    "empty_object": {
+    },
+    "fully_object": {
+      "key": 1
+    }
+  }" ( contains: ""empty_object": {
+    }," and contains: ""fully_object": {
+      "key": 1
+    }" )
+
+-------------------------------------------------------------------------------
+JsonWriter
+  Calling writeArray will create an empty pair of braces
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( stream.str() == "[\n]" )
+with expansion:
+  "[
+  ]"
+  ==
+  "[
+  ]"
+
+-------------------------------------------------------------------------------
+JsonWriter
+  Calling writeArray creates array to write the values to
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( stream.str() == "[\n  1,\n  1.5,\n  true,\n  false,\n  \"this is a string\",\n  {\n    \"object\": 42\n  },\n  [\n    \"array\",\n    42.5\n  ]\n]" )
+with expansion:
+  "[
+    1,
+    1.5,
+    true,
+    false,
+    "this is a string",
+    {
+      "object": 42
+    },
+    [
+      "array",
+      42.5
+    ]
+  ]"
+  ==
+  "[
+    1,
+    1.5,
+    true,
+    false,
+    "this is a string",
+    {
+      "object": 42
+    },
+    [
+      "array",
+      42.5
+    ]
+  ]"
+
+-------------------------------------------------------------------------------
+JsonWriter
+  Moved from JsonObjectWriter shall not insert superfluous brace
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( stream.str() == "{\n}" )
+with expansion:
+  "{
+  }"
+  ==
+  "{
+  }"
+
+-------------------------------------------------------------------------------
+JsonWriter
+  Moved from JsonArrayWriter shall not insert superfluous bracket
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( stream.str() == "[\n]" )
+with expansion:
+  "[
+  ]"
+  ==
+  "[
+  ]"
+
+-------------------------------------------------------------------------------
+JsonWriter
+  Custom class shall be quoted
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( stream.str() == "\"custom\"" )
+with expansion:
+  ""custom"" == ""custom""
+
+-------------------------------------------------------------------------------
+JsonWriter
+  String with a quote shall be espaced
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( stream.str() == "\"\\\"\"" )
+with expansion:
+  ""\""" == ""\"""
+
+-------------------------------------------------------------------------------
 Lambdas in assertions
 -------------------------------------------------------------------------------
 Compilation.tests.cpp:<line number>
@@ -9747,6 +9936,129 @@ with expansion:
 " ( contains: "fake test name" and contains: "fakeTestTag" )
 with message:
   Tested reporter: console
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  JSON reporter lists tags
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, ContainsSubstring("fakeTag"s) )
+with expansion:
+  "{
+    "version": 1,
+    "metadata": {
+      "name": "",
+      "rng-seed": 1234,
+      "catch2-version": "<version>"
+    },
+    "listings": {
+      "tags": [
+        {
+          "aliases": [
+            "fakeTag"
+          ],
+          "count": 1
+        }
+      ]" contains: "fakeTag"
+with message:
+  Tested reporter: JSON
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  JSON reporter lists reporters
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, ContainsSubstring("fake reporter"s) )
+with expansion:
+  "{
+    "version": 1,
+    "metadata": {
+      "name": "",
+      "rng-seed": 1234,
+      "catch2-version": "<version>"
+    },
+    "listings": {
+      "reporters": [
+        {
+          "name": "fake reporter",
+          "description": "fake description"
+        }
+      ]" contains: "fake reporter"
+with message:
+  Tested reporter: JSON
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  JSON reporter lists tests
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) )
+with expansion:
+  "{
+    "version": 1,
+    "metadata": {
+      "name": "",
+      "rng-seed": 1234,
+      "catch2-version": "<version>"
+    },
+    "listings": {
+      "tests": [
+        {
+          "name": "fake test name",
+          "class-name": "",
+          "tags": [
+            "fakeTestTag"
+          ],
+          "source-location": {
+            "filename": "fake-file.cpp",
+            "line": 123456789
+          }
+        }
+      ]" ( contains: "fake test name" and contains: "fakeTestTag" )
+with message:
+  Tested reporter: JSON
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -18272,6 +18584,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  413 |  308 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2230 | 2049 passed | 146 failed | 35 failed as expected
+test cases:  414 |  309 passed |  85 failed | 6 skipped | 14 failed as expected
+assertions: 2246 | 2065 passed | 146 failed | 35 failed as expected
 

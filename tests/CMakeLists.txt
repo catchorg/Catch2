@@ -87,6 +87,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/IntrospectiveTests/FloatingPoint.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/GeneratorsImpl.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/InternalBenchmark.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/Json.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Parse.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/PartTracker.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/RandomNumberGeneration.tests.cpp
@@ -642,7 +643,8 @@ foreach (reporterName # "Automake" - the simple .trs format does not support any
                       "SonarQube"
                       "TAP"
                       # "TeamCity" - does not seem to support test suite-level metadata/comments
-                      "XML")
+                      "XML"
+                      "JSON")
 
     add_test(NAME "Reporters:Filters:${reporterName}"
       COMMAND
@@ -652,6 +654,8 @@ foreach (reporterName # "Automake" - the simple .trs format does not support any
     # Different regex for these two reporters, because the commas end up xml-escaped
     if (reporterName MATCHES "JUnit|XML")
       set(testCaseNameFormat "&quot;CaseInsensitiveLess is case insensitive&quot;")
+    elseif(reporterName MATCHES "JSON")
+      set(testCaseNameFormat "\\\\\"CaseInsensitiveLess is case insensitive\\\\\"")
     else()
       set(testCaseNameFormat "\"CaseInsensitiveLess is case insensitive\"")
     endif()

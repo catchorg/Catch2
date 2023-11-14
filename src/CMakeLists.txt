@@ -93,6 +93,7 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/internal/catch_getenv.hpp
   ${SOURCES_DIR}/internal/catch_istream.hpp
   ${SOURCES_DIR}/internal/catch_is_permutation.hpp
+  ${SOURCES_DIR}/internal/catch_jsonwriter.hpp
   ${SOURCES_DIR}/internal/catch_lazy_expr.hpp
   ${SOURCES_DIR}/internal/catch_leak_detector.hpp
   ${SOURCES_DIR}/internal/catch_list.hpp
@@ -177,6 +178,7 @@ set(IMPL_SOURCES
   ${SOURCES_DIR}/internal/catch_floating_point_helpers.cpp
   ${SOURCES_DIR}/internal/catch_getenv.cpp
   ${SOURCES_DIR}/internal/catch_istream.cpp
+  ${SOURCES_DIR}/internal/catch_jsonwriter.cpp
   ${SOURCES_DIR}/internal/catch_lazy_expr.cpp
   ${SOURCES_DIR}/internal/catch_leak_detector.cpp
   ${SOURCES_DIR}/internal/catch_list.cpp
@@ -289,6 +291,7 @@ set(REPORTER_HEADERS
   ${SOURCES_DIR}/reporters/catch_reporter_cumulative_base.hpp
   ${SOURCES_DIR}/reporters/catch_reporter_event_listener.hpp
   ${SOURCES_DIR}/reporters/catch_reporter_helpers.hpp
+  ${SOURCES_DIR}/reporters/catch_reporter_json.hpp
   ${SOURCES_DIR}/reporters/catch_reporter_junit.hpp
   ${SOURCES_DIR}/reporters/catch_reporter_multi.hpp
   ${SOURCES_DIR}/reporters/catch_reporter_registrars.hpp
@@ -307,6 +310,7 @@ set(REPORTER_SOURCES
   ${SOURCES_DIR}/reporters/catch_reporter_cumulative_base.cpp
   ${SOURCES_DIR}/reporters/catch_reporter_event_listener.cpp
   ${SOURCES_DIR}/reporters/catch_reporter_helpers.cpp
+  ${SOURCES_DIR}/reporters/catch_reporter_json.cpp
   ${SOURCES_DIR}/reporters/catch_reporter_junit.cpp
   ${SOURCES_DIR}/reporters/catch_reporter_multi.cpp
   ${SOURCES_DIR}/reporters/catch_reporter_registrars.cpp

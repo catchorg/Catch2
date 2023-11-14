@@ -74,6 +74,7 @@
 #include <catch2/internal/catch_getenv.hpp>
 #include <catch2/internal/catch_is_permutation.hpp>
 #include <catch2/internal/catch_istream.hpp>
+#include <catch2/internal/catch_jsonwriter.hpp>
 #include <catch2/internal/catch_lazy_expr.hpp>
 #include <catch2/internal/catch_leak_detector.hpp>
 #include <catch2/internal/catch_list.hpp>

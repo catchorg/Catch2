@@ -6,13 +6,14 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-#include <catch2/internal/catch_reporter_registry.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_reporter_registry.hpp>
 #include <catch2/reporters/catch_reporter_automake.hpp>
 #include <catch2/reporters/catch_reporter_compact.hpp>
 #include <catch2/reporters/catch_reporter_console.hpp>
+#include <catch2/reporters/catch_reporter_json.hpp>
 #include <catch2/reporters/catch_reporter_junit.hpp>
 #include <catch2/reporters/catch_reporter_registrars.hpp>
 #include <catch2/reporters/catch_reporter_sonarqube.hpp>
@@ -47,6 +48,8 @@ namespace Catch {
             Detail::make_unique<ReporterFactory<TeamCityReporter>>();
         m_impl->factories["XML"] =
             Detail::make_unique<ReporterFactory<XmlReporter>>();
+        m_impl->factories["JSON"] =
+            Detail::make_unique<ReporterFactory<JsonReporter>>();
     }
 
     ReporterRegistry::~ReporterRegistry() = default;
