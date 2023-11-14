@@ -7266,14 +7266,9 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"(
-)" )
+  REQUIRE( stream.str() == "" )
 with expansion:
-  "
-  "
-  ==
-  "
-  "
+  "" == ""
 
 -------------------------------------------------------------------------------
 JsonWriter
@@ -7283,16 +7278,12 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"(
-{
-})" )
+  REQUIRE( stream.str() == "{\n}" )
 with expansion:
-  "
-  {
+  "{
   }"
   ==
-  "
-  {
+  "{
   }"
 
 -------------------------------------------------------------------------------
@@ -7303,21 +7294,9 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"(
-{
-  "int": 1,
-  "double": 1.5,
-  "true": true,
-  "false": false,
-  "string": "this is a string",
-  "array": [
-    1,
-    2
-  ]
-})" )
+  REQUIRE_THAT( stream.str(), ContainsSubstring( "\"int\": 1," ) && ContainsSubstring( "\"double\": 1.5," ) && ContainsSubstring( "\"true\": true," ) && ContainsSubstring( "\"false\": false," ) && ContainsSubstring( "\"string\": \"this is a string\"," ) && ContainsSubstring( "\"array\": [\n    1,\n    2\n  ]\n}" ) )
 with expansion:
-  "
-  {
+  "{
     "int": 1,
     "double": 1.5,
     "true": true,
@@ -7327,20 +7306,13 @@ with expansion:
       1,
       2
     ]
-  }"
-  ==
-  "
-  {
-    "int": 1,
-    "double": 1.5,
-    "true": true,
-    "false": false,
-    "string": "this is a string",
-    "array": [
+  }" ( contains: ""int": 1," and contains: ""double": 1.5," and contains:
+  ""true": true," and contains: ""false": false," and contains: ""string":
+  "this is a string"," and contains: ""array": [
       1,
       2
     ]
-  }"
+  }" )
 
 -------------------------------------------------------------------------------
 JsonWriter
@@ -7350,32 +7322,18 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"(
-{
-  "empty_object": {
-  },
-  "fully_object": {
-    "key": 1
-  }
-})" )
+  REQUIRE_THAT( stream.str(), ContainsSubstring( "\"empty_object\": {\n  }," ) && ContainsSubstring( "\"fully_object\": {\n    \"key\": 1\n  }" ) )
 with expansion:
-  "
-  {
+  "{
     "empty_object": {
     },
     "fully_object": {
       "key": 1
     }
-  }"
-  ==
-  "
-  {
-    "empty_object": {
-    },
-    "fully_object": {
+  }" ( contains: ""empty_object": {
+    }," and contains: ""fully_object": {
       "key": 1
-    }
-  }"
+    }" )
 
 -------------------------------------------------------------------------------
 JsonWriter
@@ -7385,16 +7343,12 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"(
-[
-])" )
+  REQUIRE( stream.str() == "[\n]" )
 with expansion:
-  "
-  [
+  "[
   ]"
   ==
-  "
-  [
+  "[
   ]"
 
 -------------------------------------------------------------------------------
@@ -7405,8 +7359,7 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"(
-[
+  REQUIRE( stream.str() == R"([
   1,
   1.5,
   true,
@@ -7421,8 +7374,7 @@ Json.tests.cpp:<line number>: PASSED:
   ]
 ])" )
 with expansion:
-  "
-  [
+  "[
     1,
     1.5,
     true,
@@ -7437,8 +7389,7 @@ with expansion:
     ]
   ]"
   ==
-  "
-  [
+  "[
     1,
     1.5,
     true,
@@ -7461,16 +7412,12 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"(
-{
-})" )
+  REQUIRE( stream.str() == "{\n}" )
 with expansion:
-  "
-  {
+  "{
   }"
   ==
-  "
-  {
+  "{
   }"
 
 -------------------------------------------------------------------------------
@@ -7481,16 +7428,12 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"(
-[
-])" )
+  REQUIRE( stream.str() == "[\n]" )
 with expansion:
-  "
-  [
+  "[
   ]"
   ==
-  "
-  [
+  "[
   ]"
 
 -------------------------------------------------------------------------------
@@ -7501,14 +7444,9 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"(
-"custom")" )
+  REQUIRE( stream.str() == "\"custom\"" )
 with expansion:
-  "
-  "custom""
-  ==
-  "
-  "custom""
+  ""custom"" == ""custom""
 
 -------------------------------------------------------------------------------
 JsonWriter
@@ -7518,13 +7456,9 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == "\n\"\\\"\"" )
+  REQUIRE( stream.str() == "\"\\\"\"" )
 with expansion:
-  "
-  "\"""
-  ==
-  "
-  "\"""
+  ""\""" == ""\"""
 
 -------------------------------------------------------------------------------
 Lambdas in assertions

@@ -8783,15 +8783,10 @@ C
     <Section name="Newly constructed JsonWriter does nothing" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"(
-)"
+          stream.str() == ""
         </Original>
         <Expanded>
-          "
-"
-==
-"
-"
+          "" == ""
         </Expanded>
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
@@ -8799,41 +8794,25 @@ C
     <Section name="Calling writeObject will create an empty pair of braces" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"(
-{
-})"
+          stream.str() == "{\n}"
         </Original>
         <Expanded>
-          "
-{
+          "{
 }"
 ==
-"
-{
+"{
 }"
         </Expanded>
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Calling writeObject with key will create an object to write the value" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"(
-{
-  "int": 1,
-  "double": 1.5,
-  "true": true,
-  "false": false,
-  "string": "this is a string",
-  "array": [
-    1,
-    2
-  ]
-})"
+          stream.str(), ContainsSubstring( "\"int\": 1," ) &amp;&amp; ContainsSubstring( "\"double\": 1.5," ) &amp;&amp; ContainsSubstring( "\"true\": true," ) &amp;&amp; ContainsSubstring( "\"false\": false," ) &amp;&amp; ContainsSubstring( "\"string\": \"this is a string\"," ) &amp;&amp; ContainsSubstring( "\"array\": [\n    1,\n    2\n  ]\n}" )
         </Original>
         <Expanded>
-          "
-{
+          "{
   "int": 1,
   "double": 1.5,
   "true": true,
@@ -8843,54 +8822,31 @@ C
     1,
     2
   ]
-}"
-==
-"
-{
-  "int": 1,
-  "double": 1.5,
-  "true": true,
-  "false": false,
-  "string": "this is a string",
-  "array": [
+}" ( contains: ""int": 1," and contains: ""double": 1.5," and contains: ""true": true," and contains: ""false": false," and contains: ""string": "this is a string"," and contains: ""array": [
     1,
     2
   ]
-}"
+}" )
         </Expanded>
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="nesting objects" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"(
-{
-  "empty_object": {
-  },
-  "fully_object": {
-    "key": 1
-  }
-})"
+          stream.str(), ContainsSubstring( "\"empty_object\": {\n  }," ) &amp;&amp; ContainsSubstring( "\"fully_object\": {\n    \"key\": 1\n  }" )
         </Original>
         <Expanded>
-          "
-{
+          "{
   "empty_object": {
   },
   "fully_object": {
     "key": 1
   }
-}"
-==
-"
-{
-  "empty_object": {
-  },
-  "fully_object": {
+}" ( contains: ""empty_object": {
+  }," and contains: ""fully_object": {
     "key": 1
-  }
-}"
+  }" )
         </Expanded>
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
@@ -8898,17 +8854,13 @@ C
     <Section name="Calling writeArray will create an empty pair of braces" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"(
-[
-])"
+          stream.str() == "[\n]"
         </Original>
         <Expanded>
-          "
-[
+          "[
 ]"
 ==
-"
-[
+"[
 ]"
         </Expanded>
       </Expression>
@@ -8917,8 +8869,7 @@ C
     <Section name="Calling writeArray creates array to write the values to" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"(
-[
+          stream.str() == R"([
   1,
   1.5,
   true,
@@ -8934,8 +8885,7 @@ C
 ])"
         </Original>
         <Expanded>
-          "
-[
+          "[
   1,
   1.5,
   true,
@@ -8950,8 +8900,7 @@ C
   ]
 ]"
 ==
-"
-[
+"[
   1,
   1.5,
   true,
@@ -8972,17 +8921,13 @@ C
     <Section name="Moved from JsonObjectWriter shall not insert superfluous brace" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"(
-{
-})"
+          stream.str() == "{\n}"
         </Original>
         <Expanded>
-          "
-{
+          "{
 }"
 ==
-"
-{
+"{
 }"
         </Expanded>
       </Expression>
@@ -8991,17 +8936,13 @@ C
     <Section name="Moved from JsonArrayWriter shall not insert superfluous bracket" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"(
-[
-])"
+          stream.str() == "[\n]"
         </Original>
         <Expanded>
-          "
-[
+          "[
 ]"
 ==
-"
-[
+"[
 ]"
         </Expanded>
       </Expression>
@@ -9010,15 +8951,10 @@ C
     <Section name="Custom class shall be quoted" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"(
-"custom")"
+          stream.str() == "\"custom\""
         </Original>
         <Expanded>
-          "
-"custom""
-==
-"
-"custom""
+          ""custom"" == ""custom""
         </Expanded>
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
@@ -9026,14 +8962,10 @@ C
     <Section name="String with a quote shall be espaced" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == "\n\"\\\"\""
+          stream.str() == "\"\\\"\""
         </Original>
         <Expanded>
-          "
-"\"""
-==
-"
-"\"""
+          ""\""" == ""\"""
         </Expanded>
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>

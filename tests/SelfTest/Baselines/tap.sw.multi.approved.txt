@@ -1865,41 +1865,17 @@ ok {test-number} - data.str_hello != "hello1" for: "hello" != "hello1"
 # Inequality checks that should succeed
 ok {test-number} - data.str_hello.size() != 6 for: 5 != 6
 # JsonWriter
-ok {test-number} - stream.str() == R"(
-)" for: " " == " "
+ok {test-number} - stream.str() == "" for: "" == ""
 # JsonWriter
-ok {test-number} - stream.str() == R"(
-{
-})" for: " { }" == " { }"
+ok {test-number} - stream.str() == "{\n}" for: "{ }" == "{ }"
 # JsonWriter
-ok {test-number} - stream.str() == R"(
-{
-  "int": 1,
-  "double": 1.5,
-  "true": true,
-  "false": false,
-  "string": "this is a string",
-  "array": [
-    1,
-    2
-  ]
-})" for: " {   "int": 1,   "double": 1.5,   "true": true,   "false": false,   "string": "this is a string",   "array": [     1,     2   ] }" == " {   "int": 1,   "double": 1.5,   "true": true,   "false": false,   "string": "this is a string",   "array": [     1,     2   ] }"
+ok {test-number} - stream.str(), ContainsSubstring( "\"int\": 1," ) && ContainsSubstring( "\"double\": 1.5," ) && ContainsSubstring( "\"true\": true," ) && ContainsSubstring( "\"false\": false," ) && ContainsSubstring( "\"string\": \"this is a string\"," ) && ContainsSubstring( "\"array\": [\n    1,\n    2\n  ]\n}" ) for: "{   "int": 1,   "double": 1.5,   "true": true,   "false": false,   "string": "this is a string",   "array": [     1,     2   ] }" ( contains: ""int": 1," and contains: ""double": 1.5," and contains: ""true": true," and contains: ""false": false," and contains: ""string": "this is a string"," and contains: ""array": [     1,     2   ] }" )
 # JsonWriter
-ok {test-number} - stream.str() == R"(
-{
-  "empty_object": {
-  },
-  "fully_object": {
-    "key": 1
-  }
-})" for: " {   "empty_object": {   },   "fully_object": {     "key": 1   } }" == " {   "empty_object": {   },   "fully_object": {     "key": 1   } }"
+ok {test-number} - stream.str(), ContainsSubstring( "\"empty_object\": {\n  }," ) && ContainsSubstring( "\"fully_object\": {\n    \"key\": 1\n  }" ) for: "{   "empty_object": {   },   "fully_object": {     "key": 1   } }" ( contains: ""empty_object": {   }," and contains: ""fully_object": {     "key": 1   }" )
 # JsonWriter
-ok {test-number} - stream.str() == R"(
-[
-])" for: " [ ]" == " [ ]"
+ok {test-number} - stream.str() == "[\n]" for: "[ ]" == "[ ]"
 # JsonWriter
-ok {test-number} - stream.str() == R"(
-[
+ok {test-number} - stream.str() == R"([
   1,
   1.5,
   true,
@@ -1912,20 +1888,15 @@ ok {test-number} - stream.str() == R"(
     "array",
     42.5
   ]
-])" for: " [   1,   1.5,   true,   false,   "this is a string",   {     "object": 42   },   [     "array",     42.5   ] ]" == " [   1,   1.5,   true,   false,   "this is a string",   {     "object": 42   },   [     "array",     42.5   ] ]"
+])" for: "[   1,   1.5,   true,   false,   "this is a string",   {     "object": 42   },   [     "array",     42.5   ] ]" == "[   1,   1.5,   true,   false,   "this is a string",   {     "object": 42   },   [     "array",     42.5   ] ]"
 # JsonWriter
-ok {test-number} - stream.str() == R"(
-{
-})" for: " { }" == " { }"
+ok {test-number} - stream.str() == "{\n}" for: "{ }" == "{ }"
 # JsonWriter
-ok {test-number} - stream.str() == R"(
-[
-])" for: " [ ]" == " [ ]"
+ok {test-number} - stream.str() == "[\n]" for: "[ ]" == "[ ]"
 # JsonWriter
-ok {test-number} - stream.str() == R"(
-"custom")" for: " "custom"" == " "custom""
+ok {test-number} - stream.str() == "\"custom\"" for: ""custom"" == ""custom""
 # JsonWriter
-ok {test-number} - stream.str() == "\n\"\\\"\"" for: " "\""" == " "\"""
+ok {test-number} - stream.str() == "\"\\\"\"" for: ""\""" == ""\"""
 # Lambdas in assertions
 ok {test-number} - []() { return true; }() for: true
 # Less-than inequalities with different epsilons

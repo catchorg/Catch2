@@ -979,23 +979,13 @@ Condition.tests.cpp:<line number>: passed: data.str_hello != "goodbye" for: "hel
 Condition.tests.cpp:<line number>: passed: data.str_hello != "hell" for: "hello" != "hell"
 Condition.tests.cpp:<line number>: passed: data.str_hello != "hello1" for: "hello" != "hello1"
 Condition.tests.cpp:<line number>: passed: data.str_hello.size() != 6 for: 5 != 6
-Json.tests.cpp:<line number>: passed: stream.str() == R"(
-)" for: "
-"
-==
-"
-"
-Json.tests.cpp:<line number>: passed: stream.str() == R"(
-{
-})" for: "
-{
+Json.tests.cpp:<line number>: passed: stream.str() == "" for: "" == ""
+Json.tests.cpp:<line number>: passed: stream.str() == "{\n}" for: "{
 }"
 ==
-"
-{
+"{
 }"
-Json.tests.cpp:<line number>: passed: stream.str() == R"(
-{
+Json.tests.cpp:<line number>: passed: stream.str(), ContainsSubstring( "\"int\": 1," ) && ContainsSubstring( "\"double\": 1.5," ) && ContainsSubstring( "\"true\": true," ) && ContainsSubstring( "\"false\": false," ) && ContainsSubstring( "\"string\": \"this is a string\"," ) && ContainsSubstring( "\"array\": [\n    1,\n    2\n  ]\n}" ) for: "{
   "int": 1,
   "double": 1.5,
   "true": true,
@@ -1005,66 +995,27 @@ Json.tests.cpp:<line number>: passed: stream.str() == R"(
     1,
     2
   ]
-})" for: "
-{
-  "int": 1,
-  "double": 1.5,
-  "true": true,
-  "false": false,
-  "string": "this is a string",
-  "array": [
+}" ( contains: ""int": 1," and contains: ""double": 1.5," and contains: ""true": true," and contains: ""false": false," and contains: ""string": "this is a string"," and contains: ""array": [
     1,
     2
   ]
-}"
-==
-"
-{
-  "int": 1,
-  "double": 1.5,
-  "true": true,
-  "false": false,
-  "string": "this is a string",
-  "array": [
-    1,
-    2
-  ]
-}"
-Json.tests.cpp:<line number>: passed: stream.str() == R"(
-{
+}" )
+Json.tests.cpp:<line number>: passed: stream.str(), ContainsSubstring( "\"empty_object\": {\n  }," ) && ContainsSubstring( "\"fully_object\": {\n    \"key\": 1\n  }" ) for: "{
   "empty_object": {
   },
   "fully_object": {
     "key": 1
   }
-})" for: "
-{
-  "empty_object": {
-  },
-  "fully_object": {
+}" ( contains: ""empty_object": {
+  }," and contains: ""fully_object": {
     "key": 1
-  }
-}"
-==
-"
-{
-  "empty_object": {
-  },
-  "fully_object": {
-    "key": 1
-  }
-}"
-Json.tests.cpp:<line number>: passed: stream.str() == R"(
-[
-])" for: "
-[
+  }" )
+Json.tests.cpp:<line number>: passed: stream.str() == "[\n]" for: "[
 ]"
 ==
-"
-[
+"[
 ]"
-Json.tests.cpp:<line number>: passed: stream.str() == R"(
-[
+Json.tests.cpp:<line number>: passed: stream.str() == R"([
   1,
   1.5,
   true,
@@ -1077,8 +1028,7 @@ Json.tests.cpp:<line number>: passed: stream.str() == R"(
     "array",
     42.5
   ]
-])" for: "
-[
+])" for: "[
   1,
   1.5,
   true,
@@ -1093,8 +1043,7 @@ Json.tests.cpp:<line number>: passed: stream.str() == R"(
   ]
 ]"
 ==
-"
-[
+"[
   1,
   1.5,
   true,
@@ -1108,35 +1057,18 @@ Json.tests.cpp:<line number>: passed: stream.str() == R"(
     42.5
   ]
 ]"
-Json.tests.cpp:<line number>: passed: stream.str() == R"(
-{
-})" for: "
-{
+Json.tests.cpp:<line number>: passed: stream.str() == "{\n}" for: "{
 }"
 ==
-"
-{
+"{
 }"
-Json.tests.cpp:<line number>: passed: stream.str() == R"(
-[
-])" for: "
-[
+Json.tests.cpp:<line number>: passed: stream.str() == "[\n]" for: "[
 ]"
 ==
-"
-[
+"[
 ]"
-Json.tests.cpp:<line number>: passed: stream.str() == R"(
-"custom")" for: "
-"custom""
-==
-"
-"custom""
-Json.tests.cpp:<line number>: passed: stream.str() == "\n\"\\\"\"" for: "
-"\"""
-==
-"
-"\"""
+Json.tests.cpp:<line number>: passed: stream.str() == "\"custom\"" for: ""custom"" == ""custom""
+Json.tests.cpp:<line number>: passed: stream.str() == "\"\\\"\"" for: ""\""" == ""\"""
 Compilation.tests.cpp:<line number>: passed: []() { return true; }() for: true
 Approx.tests.cpp:<line number>: passed: d <= Approx( 1.24 ) for: 1.23 <= Approx( 1.24 )
 Approx.tests.cpp:<line number>: passed: d <= Approx( 1.23 ) for: 1.23 <= Approx( 1.23 )

@@ -714,6 +714,38 @@ with expansion:
   5 != 5
 
 -------------------------------------------------------------------------------
+JsonWriter
+  Newly constructed JsonWriter does nothing
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: FAILED:
+  REQUIRE( stream.str() == "" )
+with expansion:
+  "
+  "
+  ==
+  ""
+
+-------------------------------------------------------------------------------
+JsonWriter
+  Calling writeObject will create an empty pair of braces
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: FAILED:
+  REQUIRE( stream.str() == "{\n}" )
+with expansion:
+  "
+  {
+  }"
+  ==
+  "{
+  }"
+
+-------------------------------------------------------------------------------
 Matchers can be composed with both && and || - failing
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
@@ -1588,6 +1620,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  414 |  323 passed |  70 failed | 7 skipped | 14 failed as expected
-assertions: 2229 | 2065 passed | 129 failed | 35 failed as expected
+test cases:  414 |  322 passed |  71 failed | 7 skipped | 14 failed as expected
+assertions: 2229 | 2063 passed | 131 failed | 35 failed as expected
 

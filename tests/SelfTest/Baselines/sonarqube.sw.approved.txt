@@ -131,8 +131,32 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="weighted_average_quantile" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp">
-    <testCase name="JsonWriter/Newly constructed JsonWriter does nothing" duration="{duration}"/>
-    <testCase name="JsonWriter/Calling writeObject will create an empty pair of braces" duration="{duration}"/>
+    <testCase name="JsonWriter/Newly constructed JsonWriter does nothing" duration="{duration}">
+      <failure message="REQUIRE(stream.str() == &quot;&quot;)">
+FAILED:
+	REQUIRE( stream.str() == "" )
+with expansion:
+	"
+"
+==
+""
+at Json.tests.cpp:<line number>
+      </failure>
+    </testCase>
+    <testCase name="JsonWriter/Calling writeObject will create an empty pair of braces" duration="{duration}">
+      <failure message="REQUIRE(stream.str() == &quot;{\n}&quot;)">
+FAILED:
+	REQUIRE( stream.str() == "{\n}" )
+with expansion:
+	"
+{
+}"
+==
+"{
+}"
+at Json.tests.cpp:<line number>
+      </failure>
+    </testCase>
     <testCase name="JsonWriter/Calling writeObject with key will create an object to write the value" duration="{duration}"/>
     <testCase name="JsonWriter/nesting objects" duration="{duration}"/>
     <testCase name="JsonWriter/Calling writeArray will create an empty pair of braces" duration="{duration}"/>
