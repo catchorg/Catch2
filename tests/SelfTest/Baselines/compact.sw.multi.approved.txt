@@ -1503,7 +1503,7 @@ Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fak
   "version": 1,
   "metadata": {
     "name": "",
-    "rng-seed": 3700371135,
+    "rng-seed": 1234,
     "catch2-version": "<version>"
   },
   "listings": {
@@ -1520,7 +1520,7 @@ Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fak
   "version": 1,
   "metadata": {
     "name": "",
-    "rng-seed": 2644048754,
+    "rng-seed": 1234,
     "catch2-version": "<version>"
   },
   "listings": {
@@ -1535,7 +1535,7 @@ Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fa
   "version": 1,
   "metadata": {
     "name": "",
-    "rng-seed": 961334686,
+    "rng-seed": 1234,
     "catch2-version": "<version>"
   },
   "listings": {
