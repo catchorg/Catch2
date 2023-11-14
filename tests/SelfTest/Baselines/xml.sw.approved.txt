@@ -8783,8 +8783,8 @@ C
     <Section name="Newly constructed JsonWriter does nothing" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"json(
-)json"
+          stream.str() == R"(
+)"
         </Original>
         <Expanded>
           "
@@ -8799,9 +8799,9 @@ C
     <Section name="Calling writeObject will create an empty pair of braces" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"json(
+          stream.str() == R"(
 {
-})json"
+})"
         </Original>
         <Expanded>
           "
@@ -8818,7 +8818,7 @@ C
     <Section name="Calling writeObject with key will create an object to write the value" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"json(
+          stream.str() == R"(
 {
   "int": 1,
   "double": 1.5,
@@ -8829,7 +8829,7 @@ C
     1,
     2
   ]
-})json"
+})"
         </Original>
         <Expanded>
           "
@@ -8864,14 +8864,14 @@ C
     <Section name="nesting objects" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"json(
+          stream.str() == R"(
 {
   "empty_object": {
   },
   "fully_object": {
     "key": 1
   }
-})json"
+})"
         </Original>
         <Expanded>
           "
@@ -8898,9 +8898,9 @@ C
     <Section name="Calling writeArray will create an empty pair of braces" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"json(
+          stream.str() == R"(
 [
-])json"
+])"
         </Original>
         <Expanded>
           "
@@ -8917,7 +8917,7 @@ C
     <Section name="Calling writeArray creates array to write the values to" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"json(
+          stream.str() == R"(
 [
   1,
   1.5,
@@ -8931,7 +8931,7 @@ C
     "array",
     42.5
   ]
-])json"
+])"
         </Original>
         <Expanded>
           "
@@ -8972,9 +8972,9 @@ C
     <Section name="Moved from JsonObjectWriter shall not insert superfluous brace" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"json(
+          stream.str() == R"(
 {
-})json"
+})"
         </Original>
         <Expanded>
           "
@@ -8991,9 +8991,9 @@ C
     <Section name="Moved from JsonArrayWriter shall not insert superfluous bracket" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"json(
+          stream.str() == R"(
 [
-])json"
+])"
         </Original>
         <Expanded>
           "
@@ -9010,8 +9010,8 @@ C
     <Section name="Custom class shall be quoted" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"json(
-"custom")json"
+          stream.str() == R"(
+"custom")"
         </Original>
         <Expanded>
           "

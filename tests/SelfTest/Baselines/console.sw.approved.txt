@@ -7266,8 +7266,8 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"json(
-)json" )
+  REQUIRE( stream.str() == R"(
+)" )
 with expansion:
   "
   "
@@ -7283,9 +7283,9 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"json(
+  REQUIRE( stream.str() == R"(
 {
-})json" )
+})" )
 with expansion:
   "
   {
@@ -7303,7 +7303,7 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"json(
+  REQUIRE( stream.str() == R"(
 {
   "int": 1,
   "double": 1.5,
@@ -7314,7 +7314,7 @@ Json.tests.cpp:<line number>: PASSED:
     1,
     2
   ]
-})json" )
+})" )
 with expansion:
   "
   {
@@ -7350,14 +7350,14 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"json(
+  REQUIRE( stream.str() == R"(
 {
   "empty_object": {
   },
   "fully_object": {
     "key": 1
   }
-})json" )
+})" )
 with expansion:
   "
   {
@@ -7385,9 +7385,9 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"json(
+  REQUIRE( stream.str() == R"(
 [
-])json" )
+])" )
 with expansion:
   "
   [
@@ -7405,7 +7405,7 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"json(
+  REQUIRE( stream.str() == R"(
 [
   1,
   1.5,
@@ -7419,7 +7419,7 @@ Json.tests.cpp:<line number>: PASSED:
     "array",
     42.5
   ]
-])json" )
+])" )
 with expansion:
   "
   [
@@ -7461,9 +7461,9 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"json(
+  REQUIRE( stream.str() == R"(
 {
-})json" )
+})" )
 with expansion:
   "
   {
@@ -7481,9 +7481,9 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"json(
+  REQUIRE( stream.str() == R"(
 [
-])json" )
+])" )
 with expansion:
   "
   [
@@ -7501,8 +7501,8 @@ Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == R"json(
-"custom")json" )
+  REQUIRE( stream.str() == R"(
+"custom")" )
 with expansion:
   "
   "custom""

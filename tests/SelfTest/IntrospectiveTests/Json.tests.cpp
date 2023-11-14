@@ -24,15 +24,15 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
     stream << "\n"; // Make the expected json nicer to look at
     SECTION( "Newly constructed JsonWriter does nothing" ) {
         Catch::JsonValueWriter writer{ stream };
-        REQUIRE( stream.str() == R"json(
-)json" );
+        REQUIRE( stream.str() == R"(
+)" );
     }
 
     SECTION( "Calling writeObject will create an empty pair of braces" ) {
         { auto writer = Catch::JsonValueWriter{ stream }.writeObject(); }
-        REQUIRE( stream.str() == R"json(
+        REQUIRE( stream.str() == R"(
 {
-})json" );
+})" );
     }
 
     SECTION( "Calling writeObject with key will create an object to write the "
@@ -46,7 +46,7 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
             writer.write( "string" ).write( "this is a string" );
             writer.write( "array" ).writeArray().write( 1 ).write( 2 );
         }
-        REQUIRE( stream.str() == R"json(
+        REQUIRE( stream.str() == R"(
 {
   "int": 1,
   "double": 1.5,
@@ -57,7 +57,7 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
     1,
     2
   ]
-})json" );
+})" );
     }
 
     SECTION( "nesting objects" ) {
@@ -69,21 +69,21 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
                 .write( "key" )
                 .write( 1 );
         }
-        REQUIRE( stream.str() == R"json(
+        REQUIRE( stream.str() == R"(
 {
   "empty_object": {
   },
   "fully_object": {
     "key": 1
   }
-})json" );
+})" );
     }
 
     SECTION( "Calling writeArray will create an empty pair of braces" ) {
         { auto writer = Catch::JsonValueWriter{ stream }.writeArray(); }
-        REQUIRE( stream.str() == R"json(
+        REQUIRE( stream.str() == R"(
 [
-])json" );
+])" );
     }
 
     SECTION( "Calling writeArray creates array to write the values to" ) {
@@ -97,7 +97,7 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
             writer.writeObject().write( "object" ).write( 42 );
             writer.writeArray().write( "array" ).write( 42.5 );
         }
-        REQUIRE( stream.str() == R"json(
+        REQUIRE( stream.str() == R"(
 [
   1,
   1.5,
@@ -111,7 +111,7 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
     "array",
     42.5
   ]
-])json" );
+])" );
     }
 
     SECTION(
@@ -120,9 +120,9 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
             auto writer = Catch::JsonObjectWriter{ stream };
             auto another_writer = std::move( writer );
         }
-        REQUIRE( stream.str() == R"json(
+        REQUIRE( stream.str() == R"(
 {
-})json" );
+})" );
     }
     SECTION(
         "Moved from JsonArrayWriter shall not insert superfluous bracket" ) {
@@ -130,14 +130,14 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
             auto writer = Catch::JsonArrayWriter{ stream };
             auto another_writer = std::move( writer );
         }
-        REQUIRE( stream.str() == R"json(
+        REQUIRE( stream.str() == R"(
 [
-])json" );
+])" );
     }
     SECTION( "Custom class shall be quoted" ) {
         Catch::JsonValueWriter{ stream }.write( Custom{} );
-        REQUIRE( stream.str() == R"json(
-"custom")json" );
+        REQUIRE( stream.str() == R"(
+"custom")" );
     }
     SECTION( "String with a quote shall be espaced" ) {
         Catch::JsonValueWriter{ stream }.write( "\"" );
