@@ -8869,20 +8869,7 @@ C
     <Section name="Calling writeArray creates array to write the values to" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == R"([
-  1,
-  1.5,
-  true,
-  false,
-  "this is a string",
-  {
-    "object": 42
-  },
-  [
-    "array",
-    42.5
-  ]
-])"
+          stream.str() == "[\n  1,\n  1.5,\n  true,\n  false,\n  \"this is a string\",\n  {\n    \"object\": 42\n  },\n  [\n    \"array\",\n    42.5\n  ]\n]"
         </Original>
         <Expanded>
           "[

@@ -86,20 +86,7 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
             writer.writeObject().write( "object" ).write( 42 );
             writer.writeArray().write( "array" ).write( 42.5 );
         }
-        REQUIRE( stream.str() == R"([
-  1,
-  1.5,
-  true,
-  false,
-  "this is a string",
-  {
-    "object": 42
-  },
-  [
-    "array",
-    42.5
-  ]
-])" );
+        REQUIRE( stream.str() == "[\n  1,\n  1.5,\n  true,\n  false,\n  \"this is a string\",\n  {\n    \"object\": 42\n  },\n  [\n    \"array\",\n    42.5\n  ]\n]" );
     }
 
     SECTION(

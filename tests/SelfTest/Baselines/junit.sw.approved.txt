@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="131" skipped="12" tests="2258" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="129" skipped="12" tests="2258" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -853,32 +853,8 @@ at Condition.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Inequality checks that should succeed" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="JsonWriter/Newly constructed JsonWriter does nothing" time="{duration}" status="run">
-      <failure message="stream.str() == &quot;&quot;" type="REQUIRE">
-FAILED:
-  REQUIRE( stream.str() == "" )
-with expansion:
-  "
-  "
-  ==
-  ""
-at Json.tests.cpp:<line number>
-      </failure>
-    </testcase>
-    <testcase classname="<exe-name>.global" name="JsonWriter/Calling writeObject will create an empty pair of braces" time="{duration}" status="run">
-      <failure message="stream.str() == &quot;{\n}&quot;" type="REQUIRE">
-FAILED:
-  REQUIRE( stream.str() == "{\n}" )
-with expansion:
-  "
-  {
-  }"
-  ==
-  "{
-  }"
-at Json.tests.cpp:<line number>
-      </failure>
-    </testcase>
+    <testcase classname="<exe-name>.global" name="JsonWriter/Newly constructed JsonWriter does nothing" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="JsonWriter/Calling writeObject will create an empty pair of braces" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter/Calling writeObject with key will create an object to write the value" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter/nesting objects" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter/Calling writeArray will create an empty pair of braces" time="{duration}" status="run"/>

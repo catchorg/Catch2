@@ -421,8 +421,6 @@
 ##teamcity[testStarted name='Inequality checks that should succeed']
 ##teamcity[testFinished name='Inequality checks that should succeed' duration="{duration}"]
 ##teamcity[testStarted name='JsonWriter']
-##teamcity[testFailed name='JsonWriter' message='-------------------------------------------------------------------------------|nNewly constructed JsonWriter does nothing|n-------------------------------------------------------------------------------|nJson.tests.cpp:<line number>|n...............................................................................|n|nJson.tests.cpp:<line number>|nexpression failed|n  REQUIRE( stream.str() == "" )|nwith expansion:|n  "|n"|n==|n""|n']
-##teamcity[testFailed name='JsonWriter' message='-------------------------------------------------------------------------------|nCalling writeObject will create an empty pair of braces|n-------------------------------------------------------------------------------|nJson.tests.cpp:<line number>|n...............................................................................|n|nJson.tests.cpp:<line number>|nexpression failed|n  REQUIRE( stream.str() == "{\n}" )|nwith expansion:|n  "|n{|n}"|n==|n"{|n}"|n']
 ##teamcity[testFinished name='JsonWriter' duration="{duration}"]
 ##teamcity[testStarted name='Lambdas in assertions']
 ##teamcity[testFinished name='Lambdas in assertions' duration="{duration}"]

@@ -1877,20 +1877,7 @@ ok {test-number} - stream.str(), ContainsSubstring( "\"empty_object\": {\n  }," 
 # JsonWriter
 ok {test-number} - stream.str() == "[\n]" for: "[ ]" == "[ ]"
 # JsonWriter
-ok {test-number} - stream.str() == R"([
-  1,
-  1.5,
-  true,
-  false,
-  "this is a string",
-  {
-    "object": 42
-  },
-  [
-    "array",
-    42.5
-  ]
-])" for: "[   1,   1.5,   true,   false,   "this is a string",   {     "object": 42   },   [     "array",     42.5   ] ]" == "[   1,   1.5,   true,   false,   "this is a string",   {     "object": 42   },   [     "array",     42.5   ] ]"
+ok {test-number} - stream.str() == "[\n  1,\n  1.5,\n  true,\n  false,\n  \"this is a string\",\n  {\n    \"object\": 42\n  },\n  [\n    \"array\",\n    42.5\n  ]\n]" for: "[   1,   1.5,   true,   false,   "this is a string",   {     "object": 42   },   [     "array",     42.5   ] ]" == "[   1,   1.5,   true,   false,   "this is a string",   {     "object": 42   },   [     "array",     42.5   ] ]"
 # JsonWriter
 ok {test-number} - stream.str() == "{\n}" for: "{ }" == "{ }"
 # JsonWriter
