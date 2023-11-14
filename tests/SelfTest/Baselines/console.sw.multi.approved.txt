@@ -7434,16 +7434,112 @@ with expansion:
   ""custom"" == ""custom""
 
 -------------------------------------------------------------------------------
-JsonWriter
-  String with a quote shall be espaced
+JsonWriter escapes charaters in strings properly
+  Quote in a string is escaped
 -------------------------------------------------------------------------------
 Json.tests.cpp:<line number>
 ...............................................................................
 
 Json.tests.cpp:<line number>: PASSED:
-  REQUIRE( stream.str() == "\"\\\"\"" )
+  REQUIRE( sstream.str() == "\"\\\"\"" )
 with expansion:
   ""\""" == ""\"""
+
+-------------------------------------------------------------------------------
+JsonWriter escapes charaters in strings properly
+  Backslash in a string is escaped
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( sstream.str() == "\"\\\\\"" )
+with expansion:
+  ""\\"" == ""\\""
+
+-------------------------------------------------------------------------------
+JsonWriter escapes charaters in strings properly
+  Forward slash in a string is **not** escaped
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( sstream.str() == "\"/\"" )
+with expansion:
+  ""/"" == ""/""
+
+-------------------------------------------------------------------------------
+JsonWriter escapes charaters in strings properly
+  Backspace in a string is escaped
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( sstream.str() == "\"\\b\"" )
+with expansion:
+  ""\b"" == ""\b""
+
+-------------------------------------------------------------------------------
+JsonWriter escapes charaters in strings properly
+  Formfeed in a string is escaped
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( sstream.str() == "\"\\f\"" )
+with expansion:
+  ""\f"" == ""\f""
+
+-------------------------------------------------------------------------------
+JsonWriter escapes charaters in strings properly
+  linefeed in a string is escaped
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( sstream.str() == "\"\\n\"" )
+with expansion:
+  ""\n"" == ""\n""
+
+-------------------------------------------------------------------------------
+JsonWriter escapes charaters in strings properly
+  carriage return in a string is escaped
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( sstream.str() == "\"\\r\"" )
+with expansion:
+  ""\r"" == ""\r""
+
+-------------------------------------------------------------------------------
+JsonWriter escapes charaters in strings properly
+  tab in a string is escaped
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( sstream.str() == "\"\\t\"" )
+with expansion:
+  ""\t"" == ""\t""
+
+-------------------------------------------------------------------------------
+JsonWriter escapes charaters in strings properly
+  combination of characters is escaped
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( sstream.str() == "\"\\\\/\\t\\r\\n\"" )
+with expansion:
+  ""\\/\t\r\n"" == ""\\/\t\r\n""
 
 -------------------------------------------------------------------------------
 Lambdas in assertions
@@ -18584,6 +18680,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  414 |  309 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2246 | 2065 passed | 146 failed | 35 failed as expected
+test cases:  415 |  310 passed |  85 failed | 6 skipped | 14 failed as expected
+assertions: 2254 | 2073 passed | 146 failed | 35 failed as expected
 

@@ -14,14 +14,14 @@
 
 namespace {
     struct Custom {};
-    std::ostream& operator<<( std::ostream& os, Custom const& ) {
+    static std::ostream& operator<<( std::ostream& os, Custom const& ) {
         return os << "custom";
     }
 } // namespace
 
 TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
 
-    std::stringstream stream{};
+    std::stringstream stream;
     SECTION( "Newly constructed JsonWriter does nothing" ) {
         Catch::JsonValueWriter writer{ stream };
         REQUIRE( stream.str() == "" );
@@ -109,8 +109,44 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
         Catch::JsonValueWriter{ stream }.write( Custom{} );
         REQUIRE( stream.str() == "\"custom\"" );
     }
-    SECTION( "String with a quote shall be espaced" ) {
-        Catch::JsonValueWriter{ stream }.write( "\"" );
-        REQUIRE( stream.str() == "\"\\\"\"" );
+}
+
+TEST_CASE( "JsonWriter escapes charaters in strings properly", "[JsonWriter]" ) {
+    std::stringstream sstream;
+    SECTION( "Quote in a string is escaped" ) {
+        Catch::JsonValueWriter{ sstream }.write( "\"" );
+        REQUIRE( sstream.str() == "\"\\\"\"" );
+    }
+    SECTION("Backslash in a string is escaped") {
+        Catch::JsonValueWriter{ sstream }.write( "\\" );
+        REQUIRE( sstream.str() == "\"\\\\\"" );
+    }
+    SECTION( "Forward slash in a string is **not** escaped" ) {
+        Catch::JsonValueWriter{ sstream }.write( "/" );
+        REQUIRE( sstream.str() == "\"/\"" );
+    }
+    SECTION( "Backspace in a string is escaped" ) {
+        Catch::JsonValueWriter{ sstream }.write( "\b" );
+        REQUIRE( sstream.str() == "\"\\b\"" );
+    }
+    SECTION( "Formfeed in a string is escaped" ) {
+        Catch::JsonValueWriter{ sstream }.write( "\f" );
+        REQUIRE( sstream.str() == "\"\\f\"" );
+    }
+    SECTION( "linefeed in a string is escaped" ) {
+        Catch::JsonValueWriter{ sstream }.write( "\n" );
+        REQUIRE( sstream.str() == "\"\\n\"" );
+    }
+    SECTION( "carriage return in a string is escaped" ) {
+        Catch::JsonValueWriter{ sstream }.write( "\r" );
+        REQUIRE( sstream.str() == "\"\\r\"" );
+    }
+    SECTION( "tab in a string is escaped" ) {
+        Catch::JsonValueWriter{ sstream }.write( "\t" );
+        REQUIRE( sstream.str() == "\"\\t\"" );
+    }
+    SECTION( "combination of characters is escaped" ) {
+        Catch::JsonValueWriter{ sstream }.write( "\\/\t\r\n" );
+        REQUIRE( sstream.str() == "\"\\\\/\\t\\r\\n\"" );
     }
 }

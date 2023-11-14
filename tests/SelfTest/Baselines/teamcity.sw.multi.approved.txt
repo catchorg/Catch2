@@ -422,6 +422,8 @@
 ##teamcity[testFinished name='Inequality checks that should succeed' duration="{duration}"]
 ##teamcity[testStarted name='JsonWriter']
 ##teamcity[testFinished name='JsonWriter' duration="{duration}"]
+##teamcity[testStarted name='JsonWriter escapes charaters in strings properly']
+##teamcity[testFinished name='JsonWriter escapes charaters in strings properly' duration="{duration}"]
 ##teamcity[testStarted name='Lambdas in assertions']
 ##teamcity[testFinished name='Lambdas in assertions' duration="{duration}"]
 ##teamcity[testStarted name='Less-than inequalities with different epsilons']

@@ -1882,8 +1882,24 @@ ok {test-number} - stream.str() == "{\n}" for: "{ }" == "{ }"
 ok {test-number} - stream.str() == "[\n]" for: "[ ]" == "[ ]"
 # JsonWriter
 ok {test-number} - stream.str() == "\"custom\"" for: ""custom"" == ""custom""
-# JsonWriter
-ok {test-number} - stream.str() == "\"\\\"\"" for: ""\""" == ""\"""
+# JsonWriter escapes charaters in strings properly
+ok {test-number} - sstream.str() == "\"\\\"\"" for: ""\""" == ""\"""
+# JsonWriter escapes charaters in strings properly
+ok {test-number} - sstream.str() == "\"\\\\\"" for: ""\\"" == ""\\""
+# JsonWriter escapes charaters in strings properly
+ok {test-number} - sstream.str() == "\"/\"" for: ""/"" == ""/""
+# JsonWriter escapes charaters in strings properly
+ok {test-number} - sstream.str() == "\"\\b\"" for: ""\b"" == ""\b""
+# JsonWriter escapes charaters in strings properly
+ok {test-number} - sstream.str() == "\"\\f\"" for: ""\f"" == ""\f""
+# JsonWriter escapes charaters in strings properly
+ok {test-number} - sstream.str() == "\"\\n\"" for: ""\n"" == ""\n""
+# JsonWriter escapes charaters in strings properly
+ok {test-number} - sstream.str() == "\"\\r\"" for: ""\r"" == ""\r""
+# JsonWriter escapes charaters in strings properly
+ok {test-number} - sstream.str() == "\"\\t\"" for: ""\t"" == ""\t""
+# JsonWriter escapes charaters in strings properly
+ok {test-number} - sstream.str() == "\"\\\\/\\t\\r\\n\"" for: ""\\/\t\r\n"" == ""\\/\t\r\n""
 # Lambdas in assertions
 ok {test-number} - []() { return true; }() for: true
 # Less-than inequalities with different epsilons
@@ -4510,5 +4526,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2258
+1..2266
 

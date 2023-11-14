@@ -1055,7 +1055,15 @@ Json.tests.cpp:<line number>: passed: stream.str() == "[\n]" for: "[
 "[
 ]"
 Json.tests.cpp:<line number>: passed: stream.str() == "\"custom\"" for: ""custom"" == ""custom""
-Json.tests.cpp:<line number>: passed: stream.str() == "\"\\\"\"" for: ""\""" == ""\"""
+Json.tests.cpp:<line number>: passed: sstream.str() == "\"\\\"\"" for: ""\""" == ""\"""
+Json.tests.cpp:<line number>: passed: sstream.str() == "\"\\\\\"" for: ""\\"" == ""\\""
+Json.tests.cpp:<line number>: passed: sstream.str() == "\"/\"" for: ""/"" == ""/""
+Json.tests.cpp:<line number>: passed: sstream.str() == "\"\\b\"" for: ""\b"" == ""\b""
+Json.tests.cpp:<line number>: passed: sstream.str() == "\"\\f\"" for: ""\f"" == ""\f""
+Json.tests.cpp:<line number>: passed: sstream.str() == "\"\\n\"" for: ""\n"" == ""\n""
+Json.tests.cpp:<line number>: passed: sstream.str() == "\"\\r\"" for: ""\r"" == ""\r""
+Json.tests.cpp:<line number>: passed: sstream.str() == "\"\\t\"" for: ""\t"" == ""\t""
+Json.tests.cpp:<line number>: passed: sstream.str() == "\"\\\\/\\t\\r\\n\"" for: ""\\/\t\r\n"" == ""\\/\t\r\n""
 Compilation.tests.cpp:<line number>: passed: []() { return true; }() for: true
 Approx.tests.cpp:<line number>: passed: d <= Approx( 1.24 ) for: 1.23 <= Approx( 1.24 )
 Approx.tests.cpp:<line number>: passed: d <= Approx( 1.23 ) for: 1.23 <= Approx( 1.23 )
@@ -2675,7 +2683,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  414 |  309 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2246 | 2065 passed | 146 failed | 35 failed as expected
+test cases:  415 |  310 passed |  85 failed | 6 skipped | 14 failed as expected
+assertions: 2254 | 2073 passed | 146 failed | 35 failed as expected
 
 

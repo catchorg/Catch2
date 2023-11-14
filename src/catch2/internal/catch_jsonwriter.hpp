@@ -47,10 +47,26 @@ namespace Catch {
             m_sstream << value;
             while ( true ) {
                 char c = m_sstream.get();
-
                 if ( m_sstream.eof() ) { break; }
+
+                // see https://www.json.org/json-en.html, string definition for the escape list
                 if ( c == '"' ) {
-                    m_os << '\\' << '"';
+                    m_os << "\\\"";
+                } else if ( c == '\\' ) {
+                    m_os << "\\\\";
+                // Note that while forward slash _can_ be escaped, it
+                // does not have to be, if JSON is not further embedded
+                // somewhere where forward slash is meaningful.
+                } else if ( c == '\b' ) {
+                    m_os << "\\b";
+                } else if ( c == '\f' ) {
+                    m_os << "\\f";
+                } else if ( c == '\n' ) {
+                    m_os << "\\n";
+                } else if ( c == '\r' ) {
+                    m_os << "\\r";
+                } else if ( c == '\t') {
+                    m_os << "\\t";
                 } else {
                     m_os << c;
                 }

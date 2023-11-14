@@ -8946,13 +8946,104 @@ C
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="String with a quote shall be espaced" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="JsonWriter escapes charaters in strings properly" tags="[JsonWriter]" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+    <Section name="Quote in a string is escaped" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
-          stream.str() == "\"\\\"\""
+          sstream.str() == "\"\\\"\""
         </Original>
         <Expanded>
           ""\""" == ""\"""
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Backslash in a string is escaped" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          sstream.str() == "\"\\\\\""
+        </Original>
+        <Expanded>
+          ""\\"" == ""\\""
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Forward slash in a string is **not** escaped" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          sstream.str() == "\"/\""
+        </Original>
+        <Expanded>
+          ""/"" == ""/""
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Backspace in a string is escaped" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          sstream.str() == "\"\\b\""
+        </Original>
+        <Expanded>
+          ""\b"" == ""\b""
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Formfeed in a string is escaped" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          sstream.str() == "\"\\f\""
+        </Original>
+        <Expanded>
+          ""\f"" == ""\f""
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="linefeed in a string is escaped" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          sstream.str() == "\"\\n\""
+        </Original>
+        <Expanded>
+          ""\n"" == ""\n""
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="carriage return in a string is escaped" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          sstream.str() == "\"\\r\""
+        </Original>
+        <Expanded>
+          ""\r"" == ""\r""
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="tab in a string is escaped" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          sstream.str() == "\"\\t\""
+        </Original>
+        <Expanded>
+          ""\t"" == ""\t""
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="combination of characters is escaped" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          sstream.str() == "\"\\\\/\\t\\r\\n\""
+        </Original>
+        <Expanded>
+          ""\\/\t\r\n"" == ""\\/\t\r\n""
         </Expanded>
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
@@ -21561,6 +21652,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2065" failures="146" expectedFailures="35" skips="12"/>
-  <OverallResultsCases successes="309" failures="85" expectedFailures="14" skips="6"/>
+  <OverallResults successes="2073" failures="146" expectedFailures="35" skips="12"/>
+  <OverallResultsCases successes="310" failures="85" expectedFailures="14" skips="6"/>
 </Catch2TestRun>

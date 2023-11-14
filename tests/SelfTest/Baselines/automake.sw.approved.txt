@@ -171,6 +171,7 @@ Nor would this
 :test-result: XFAIL Inequality checks that should fail
 :test-result: PASS Inequality checks that should succeed
 :test-result: PASS JsonWriter
+:test-result: PASS JsonWriter escapes charaters in strings properly
 :test-result: PASS Lambdas in assertions
 :test-result: PASS Less-than inequalities with different epsilons
 :test-result: PASS ManuallyRegistered
