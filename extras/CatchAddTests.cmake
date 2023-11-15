@@ -115,9 +115,6 @@ function(catch_discover_tests_impl)
     endforeach()
   endif()
 
-  # Catch2 string escape logic is a bit funky, double quotes are escaped but single
-  # slash is not, the following line of code tries to handle it but it can be brittle.
-  string(REGEX REPLACE [[\\([^"])]] [[\\\\\1]] output "${output}")
   string(JSON listings GET "${output}" "listings")
   string(JSON tests GET "${listings}" "tests")
   string(JSON tests_length LENGTH "${tests}")
