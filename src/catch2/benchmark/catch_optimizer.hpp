@@ -70,7 +70,7 @@ namespace Catch {
 
         template <typename Fn, typename... Args>
         inline auto invoke_deoptimized(Fn&& fn, Args&&... args) -> std::enable_if_t<std::is_same<void, decltype(fn(args...))>::value> {
-            CATCH_FORWARD(fn) (CATCH_FORWARD(args)...);
+            CATCH_FORWARD((fn)) (CATCH_FORWARD(args)...);
         }
     } // namespace Benchmark
 } // namespace Catch
