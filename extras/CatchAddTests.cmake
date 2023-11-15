@@ -132,7 +132,7 @@ function(catch_discover_tests_impl)
     endforeach(char)
     # ...add output dir
     if(output_dir)
-      string(REGEX REPLACE "[^A-Za-z0-9_]" "_" test_name_clean ${test_name})
+      string(REGEX REPLACE "[^A-Za-z0-9_]" "_" test_name_clean "${test_name}")
       set(output_dir_arg "--out ${output_dir}/${output_prefix}${test_name_clean}${output_suffix}")
     endif()
 
@@ -157,8 +157,7 @@ function(catch_discover_tests_impl)
       add_command(set_tests_properties
         "${prefix}${test}${suffix}"
         PROPERTIES
-        ENVIRONMENT_MODIFICATION "${environment_modifications}"
-      )
+        ENVIRONMENT_MODIFICATION "${environment_modifications}")
     endif()
 
     list(APPEND tests "${prefix}${test}${suffix}")
