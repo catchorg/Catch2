@@ -64,10 +64,10 @@ namespace Catch {
         };
 
         JsonArrayWriter& startArray();
-        JsonArrayWriter& startArray( std::string const& key );
+        JsonArrayWriter& startArray( StringRef key );
 
         JsonObjectWriter& startObject();
-        JsonObjectWriter& startObject( std::string const& key );
+        JsonObjectWriter& startObject( StringRef key );
 
         void endObject();
         void endArray();

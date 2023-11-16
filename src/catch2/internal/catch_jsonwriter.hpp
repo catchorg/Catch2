@@ -37,45 +37,26 @@ namespace Catch {
         void write( T const& value ) && {
             writeImpl( value, !std::is_arithmetic<T>::value );
         }
-
+        void write( StringRef value ) &&;
         void write( bool value ) &&;
 
     private:
-        template <typename T>
-        void writeImpl( T const& value, bool quote_value ) {
-            if ( quote_value ) { m_os << '"'; }
-            m_sstream << value;
-            while ( true ) {
-                char c = m_sstream.get();
-                if ( m_sstream.eof() ) { break; }
+        void writeImpl( StringRef value, bool quote );
 
-                // see https://www.json.org/json-en.html, string definition for the escape list
-                if ( c == '"' ) {
-                    m_os << "\\\"";
-                } else if ( c == '\\' ) {
-                    m_os << "\\\\";
-                // Note that while forward slash _can_ be escaped, it
-                // does not have to be, if JSON is not further embedded
-                // somewhere where forward slash is meaningful.
-                } else if ( c == '\b' ) {
-                    m_os << "\\b";
-                } else if ( c == '\f' ) {
-                    m_os << "\\f";
-                } else if ( c == '\n' ) {
-                    m_os << "\\n";
-                } else if ( c == '\r' ) {
-                    m_os << "\\r";
-                } else if ( c == '\t') {
-                    m_os << "\\t";
-                } else {
-                    m_os << c;
-                }
-            }
-            if ( quote_value ) { m_os << '"'; }
+        // Without this SFINAE, this overload is a better match
+        // for `std::string`, `char const*`, `char const[N]` args.
+        // While it would still work, it would cause code bloat
+        // and multiple iteration over the strings
+        template <typename T,
+                  typename = typename std::enable_if_t<
+                      !std::is_convertible<T, StringRef>::value>>
+        void writeImpl( T const& value, bool quote_value ) {
+            m_sstream << value;
+            writeImpl( m_sstream.str(), quote_value );
         }
 
         std::ostream& m_os;
-        std::stringstream m_sstream{};
+        std::stringstream m_sstream;
         std::uint64_t m_indent_level;
     };
 
@@ -89,7 +70,7 @@ namespace Catch {
 
         ~JsonObjectWriter();
 
-        JsonValueWriter write( std::string const& key );
+        JsonValueWriter write( StringRef key );
 
     private:
         std::ostream& m_os;

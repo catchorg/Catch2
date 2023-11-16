@@ -29,7 +29,7 @@ namespace Catch {
     JsonObjectWriter::JsonObjectWriter( std::ostream& os,
                                         std::uint64_t indent_level ):
         m_os{ os }, m_indent_level{ indent_level } {
-        m_os << "{";
+        m_os << '{';
     }
     JsonObjectWriter::JsonObjectWriter( JsonObjectWriter&& source ):
         m_os{ source.m_os },
@@ -47,11 +47,11 @@ namespace Catch {
         m_os << '}';
     }
 
-    JsonValueWriter JsonObjectWriter::write( std::string const& key ) {
+    JsonValueWriter JsonObjectWriter::write( StringRef key ) {
         JsonUtils::appendCommaNewline(
             m_os, m_should_comma, m_indent_level + 1 );
 
-        m_os << '"' << key << '"' << ": ";
+        m_os << '"' << key << "\": ";
         return JsonValueWriter{ m_os, m_indent_level + 1 };
     }
 
@@ -60,7 +60,7 @@ namespace Catch {
     JsonArrayWriter::JsonArrayWriter( std::ostream& os,
                                       std::uint64_t indent_level ):
         m_os{ os }, m_indent_level{ indent_level } {
-        m_os << "[";
+        m_os << '[';
     }
     JsonArrayWriter::JsonArrayWriter( JsonArrayWriter&& source ):
         m_os{ source.m_os },
@@ -108,8 +108,41 @@ namespace Catch {
         return JsonArrayWriter{ m_os, m_indent_level };
     }
 
+    void JsonValueWriter::write( Catch::StringRef value ) && {
+        writeImpl( value, true );
+    }
+
     void JsonValueWriter::write( bool value ) && {
-        writeImpl( value ? "true" : "false", false );
+        writeImpl( value ? "true"_sr : "false"_sr, false );
+    }
+
+    void JsonValueWriter::writeImpl( Catch::StringRef value, bool quote ) {
+        if ( quote ) { m_os << '"'; }
+        for (char c : value) {
+            // Escape list taken from https://www.json.org/json-en.html,
+            // string definition.
+            // Note that while forward slash _can_ be escaped, it does
+            // not have to be, if JSON is not further embedded somewhere
+            // where forward slash is meaningful.
+            if ( c == '"' ) {
+                m_os << "\\\"";
+            } else if ( c == '\\' ) {
+                m_os << "\\\\";
+            } else if ( c == '\b' ) {
+                m_os << "\\b";
+            } else if ( c == '\f' ) {
+                m_os << "\\f";
+            } else if ( c == '\n' ) {
+                m_os << "\\n";
+            } else if ( c == '\r' ) {
+                m_os << "\\r";
+            } else if ( c == '\t' ) {
+                m_os << "\\t";
+            } else {
+                m_os << c;
+            }
+        }
+        if ( quote ) { m_os << '"'; }
     }
 
 } // namespace Catch

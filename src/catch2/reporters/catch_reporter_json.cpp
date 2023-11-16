@@ -19,9 +19,10 @@ namespace Catch {
         void writeSourceInfo( JsonObjectWriter& writer,
                               SourceLineInfo const& sourceInfo ) {
             auto source_location_writer =
-                writer.write( "source-location" ).writeObject();
-            source_location_writer.write( "filename" ).write( sourceInfo.file );
-            source_location_writer.write( "line" ).write( sourceInfo.line );
+                writer.write( "source-location"_sr ).writeObject();
+            source_location_writer.write( "filename"_sr )
+                .write( sourceInfo.file );
+            source_location_writer.write( "line"_sr ).write( sourceInfo.line );
         }
 
         void writeTags( JsonArrayWriter writer, std::vector<Tag> const& tags ) {
@@ -32,43 +33,14 @@ namespace Catch {
 
         void writeProperties( JsonArrayWriter writer,
                               TestCaseInfo const& info ) {
-            if ( info.isHidden() ) { writer.write( "is-hidden" ); }
-            if ( info.okToFail() ) { writer.write( "ok-to-fail" ); }
-            if ( info.expectedToFail() ) { writer.write( "expected-to-fail" ); }
-            if ( info.throws() ) { writer.write( "throws" ); }
+            if ( info.isHidden() ) { writer.write( "is-hidden"_sr ); }
+            if ( info.okToFail() ) { writer.write( "ok-to-fail"_sr ); }
+            if ( info.expectedToFail() ) {
+                writer.write( "expected-to-fail"_sr );
+            }
+            if ( info.throws() ) { writer.write( "throws"_sr ); }
         }
 
-        //void writeCounts( JsonObjectWriter writer, Counts const& counts ) {
-        //    writer.write( "passed" ).write( counts.passed );
-        //    writer.write( "failed" ).write( counts.failed );
-        //    writer.write( "fail-but-ok" ).write( counts.failedButOk );
-        //    writer.write( "skipped" ).write( counts.skipped );
-        //}
-
-        //void writeTestInfo( JsonObjectWriter writer,
-        //                    TestCaseInfo const& info ) {
-        //    writer.write( "name" ).write( info.name );
-        //    writeTags( writer.write( "tags" ).writeArray(), info.tags );
-        //    writeSourceInfo( writer, info.lineInfo );
-        //    writeProperties( writer.write( "properties" ).writeArray(), info );
-        //}
-
-        //void writeSection( JsonObjectWriter& writer,
-        //                   CumulativeReporterBase::SectionNode const& section,
-        //                   bool selfWrite ) {
-        //    if ( selfWrite ) {
-        //        writer.write( "name" ).write( section.stats.sectionInfo.name );
-        //        writeSourceInfo( writer, section.stats.sectionInfo.lineInfo );
-        //        writeCounts( writer.write( "assertions-stats" ).writeObject(),
-        //                     section.stats.assertions );
-        //    }
-        //    if ( section.childSections.empty() ) { return; }
-        //    auto sectionsWriter = writer.write( "sections" ).writeArray();
-        //    for ( auto const& childPtr : section.childSections ) {
-        //        auto childSectionWriter = sectionsWriter.writeObject();
-        //        writeSection( childSectionWriter, *childPtr, true );
-        //    }
-        //}
     } // namespace
 
     JsonReporter::JsonReporter( ReporterConfig&& config ):
@@ -84,15 +56,16 @@ namespace Catch {
         m_writers.emplace( Writer::Object );
         auto& writer = m_objectWriters.top();
 
-        writer.write( "version" ).write( 1 );
+        writer.write( "version"_sr ).write( 1 );
 
         {
-            auto metadata_writer = writer.write( "metadata" ).writeObject();
-            metadata_writer.write( "name" ).write( m_config->name() );
-            metadata_writer.write( "rng-seed" ).write( m_config->rngSeed() );
-            metadata_writer.write( "catch2-version" ).write( libraryVersion() );
+            auto metadata_writer = writer.write( "metadata"_sr ).writeObject();
+            metadata_writer.write( "name"_sr ).write( m_config->name() );
+            metadata_writer.write( "rng-seed"_sr ).write( m_config->rngSeed() );
+            metadata_writer.write( "catch2-version"_sr )
+                .write( libraryVersion() );
             if ( m_config->testSpec().hasFilters() ) {
-                metadata_writer.write( "filters" )
+                metadata_writer.write( "filters"_sr )
                     .write( m_config->testSpec() );
             }
         }
@@ -113,7 +86,7 @@ namespace Catch {
         m_writers.emplace( Writer::Array );
         return m_arrayWriters.top();
     }
-    JsonArrayWriter& JsonReporter::startArray( std::string const& key ) {
+    JsonArrayWriter& JsonReporter::startArray( StringRef key ) {
         m_arrayWriters.emplace(
             m_objectWriters.top().write( key ).writeArray() );
         m_writers.emplace( Writer::Array );
@@ -125,7 +98,7 @@ namespace Catch {
         m_writers.emplace( Writer::Object );
         return m_objectWriters.top();
     }
-    JsonObjectWriter& JsonReporter::startObject( std::string const& key ) {
+    JsonObjectWriter& JsonReporter::startObject( StringRef key ) {
         m_objectWriters.emplace(
             m_objectWriters.top().write( key ).writeObject() );
         m_writers.emplace( Writer::Object );
@@ -148,7 +121,7 @@ namespace Catch {
     }
 
     void JsonReporter::startListing() {
-        if ( !m_startedListing ) { startObject( "listings" ); }
+        if ( !m_startedListing ) { startObject( "listings"_sr ); }
         m_startedListing = true;
     }
     void JsonReporter::endListing() {
@@ -165,15 +138,15 @@ namespace Catch {
         endListing();
 
         assert( isInside( Writer::Object ) );
-        startObject( "test-run" );
-        startArray( "test-cases" );
+        startObject( "test-run"_sr );
+        startArray( "test-cases"_sr );
     }
 
      static void writeCounts( JsonObjectWriter&& writer, Counts const& counts ) {
-        writer.write( "passed" ).write( counts.passed );
-        writer.write( "failed" ).write( counts.failed );
-        writer.write( "fail-but-ok" ).write( counts.failedButOk );
-        writer.write( "skipped" ).write( counts.skipped );
+        writer.write( "passed"_sr ).write( counts.passed );
+        writer.write( "failed"_sr ).write( counts.failed );
+        writer.write( "fail-but-ok"_sr ).write( counts.failedButOk );
+        writer.write( "skipped"_sr ).write( counts.skipped );
     }
 
     void JsonReporter::testRunEnded(TestRunStats const& runStats) {
@@ -182,10 +155,11 @@ namespace Catch {
         endArray();
 
         {
-            auto totals = m_objectWriters.top().write( "totals" ).writeObject();
-            writeCounts( totals.write( "assertions" ).writeObject(),
+            auto totals =
+                m_objectWriters.top().write( "totals"_sr ).writeObject();
+            writeCounts( totals.write( "assertions"_sr ).writeObject(),
                          runStats.totals.assertions );
-            writeCounts( totals.write( "test-cases" ).writeObject(),
+            writeCounts( totals.write( "test-cases"_sr ).writeObject(),
                          runStats.totals.testCases );
         }
 
@@ -202,18 +176,18 @@ namespace Catch {
         // "test-info" prelude
         {
             auto testInfo =
-                m_objectWriters.top().write( "test-info" ).writeObject();
+                m_objectWriters.top().write( "test-info"_sr ).writeObject();
             // TODO: handle testName vs className!!
-            testInfo.write( "name" ).write( tcInfo.name );
+            testInfo.write( "name"_sr ).write( tcInfo.name );
             writeSourceInfo(testInfo, tcInfo.lineInfo);
-            writeTags( testInfo.write( "tags" ).writeArray(), tcInfo.tags );
-            writeProperties( testInfo.write( "properties" ).writeArray(),
+            writeTags( testInfo.write( "tags"_sr ).writeArray(), tcInfo.tags );
+            writeProperties( testInfo.write( "properties"_sr ).writeArray(),
                              tcInfo );
         }
 
 
         // Start the array for individual test runs (testCasePartial pairs)
-        startArray( "runs" );
+        startArray( "runs"_sr );
     }
 
     void JsonReporter::testCaseEnded( TestCaseStats const& tcStats ) {
@@ -224,8 +198,9 @@ namespace Catch {
         endArray();
 
         {
-            auto totals = m_objectWriters.top().write( "totals" ).writeObject();
-            writeCounts( totals.write( "assertions" ).writeObject(),
+            auto totals =
+                m_objectWriters.top().write( "totals"_sr ).writeObject();
+            writeCounts( totals.write( "assertions"_sr ).writeObject(),
                          tcStats.totals.assertions );
             // We do not write the test case totals, because there will always be just one test case here.
             // TODO: overall "result" -> success, skip, fail here? Or in partial result?
@@ -242,9 +217,8 @@ namespace Catch {
     void JsonReporter::testCasePartialStarting( TestCaseInfo const& /*tcInfo*/,
                                                 uint64_t index ) {
         startObject();
-        m_objectWriters.top().write( "run-idx" ).write( index );
-        startArray( "path" );
-        //startObject( "path" );
+        m_objectWriters.top().write( "run-idx"_sr ).write( index );
+        startArray( "path"_sr );
         // TODO: we want to delay most of the printing to the 'root' section
         // TODO: childSection key name?
     }
@@ -256,17 +230,18 @@ namespace Catch {
         endArray();
         if ( !tcStats.stdOut.empty() ) {
             m_objectWriters.top()
-                .write( "captured-stdout" )
+                .write( "captured-stdout"_sr )
                 .write( tcStats.stdOut );
         }
         if ( !tcStats.stdErr.empty() ) {
             m_objectWriters.top()
-                .write( "captured-stderr" )
+                .write( "captured-stderr"_sr )
                 .write( tcStats.stdErr );
         }
         {
-            auto totals = m_objectWriters.top().write( "totals" ).writeObject();
-            writeCounts( totals.write( "assertions" ).writeObject(),
+            auto totals =
+                m_objectWriters.top().write( "totals"_sr ).writeObject();
+            writeCounts( totals.write( "assertions"_sr ).writeObject(),
                          tcStats.totals.assertions );
             // We do not write the test case totals, because there will
             // always be just one test case here.
@@ -284,8 +259,8 @@ namespace Catch {
         // We want to nest top level sections, even though it shares name
         // and source loc with the TEST_CASE
         auto& sectionObject = startObject();
-        sectionObject.write( "kind" ).write( "section" );
-        sectionObject.write( "name" ).write( sectionInfo.name );
+        sectionObject.write( "kind"_sr ).write( "section"_sr );
+        sectionObject.write( "name"_sr ).write( sectionInfo.name );
         writeSourceInfo( m_objectWriters.top(), sectionInfo.lineInfo );
 
 
@@ -293,7 +268,7 @@ namespace Catch {
         //      rather complex, but we could do it, and it would look
         //      better for empty sections. OTOH, empty sections should
         //      be rare.
-        startArray( "path" );
+        startArray( "path"_sr );
     }
     void JsonReporter::sectionEnded( SectionStats const& /*sectionStats */) {
         // End the subpath array
@@ -317,10 +292,10 @@ namespace Catch {
         assert( isInside( Writer::Array ) );
         auto assertionObject = m_arrayWriters.top().writeObject();
 
-        assertionObject.write( "kind" ).write( "assertion" );
+        assertionObject.write( "kind"_sr ).write( "assertion"_sr );
         writeSourceInfo( assertionObject,
                          assertionStats.assertionResult.getSourceInfo() );
-        assertionObject.write( "status" )
+        assertionObject.write( "status"_sr )
             .write( assertionStats.assertionResult.isOk() );
         // TODO: handling of result.
         // TODO: messages
@@ -337,38 +312,40 @@ namespace Catch {
         std::vector<ReporterDescription> const& descriptions ) {
         startListing();
 
-        auto writer = m_objectWriters.top().write( "reporters" ).writeArray();
+        auto writer =
+            m_objectWriters.top().write( "reporters"_sr ).writeArray();
         for ( auto const& desc : descriptions ) {
             auto desc_writer = writer.writeObject();
-            desc_writer.write( "name" ).write( desc.name );
-            desc_writer.write( "description" ).write( desc.description );
+            desc_writer.write( "name"_sr ).write( desc.name );
+            desc_writer.write( "description"_sr ).write( desc.description );
         }
     }
     void JsonReporter::listListeners(
         std::vector<ListenerDescription> const& descriptions ) {
         startListing();
 
-        auto writer = m_objectWriters.top().write( "listeners" ).writeArray();
+        auto writer =
+            m_objectWriters.top().write( "listeners"_sr ).writeArray();
 
         for ( auto const& desc : descriptions ) {
             auto desc_writer = writer.writeObject();
-            desc_writer.write( "name" ).write( desc.name );
-            desc_writer.write( "description" ).write( desc.description );
+            desc_writer.write( "name"_sr ).write( desc.name );
+            desc_writer.write( "description"_sr ).write( desc.description );
         }
     }
     void JsonReporter::listTests( std::vector<TestCaseHandle> const& tests ) {
         startListing();
 
-        auto writer = m_objectWriters.top().write( "tests" ).writeArray();
+        auto writer = m_objectWriters.top().write( "tests"_sr ).writeArray();
 
         for ( auto const& test : tests ) {
             auto desc_writer = writer.writeObject();
             auto const& info = test.getTestCaseInfo();
 
-            desc_writer.write( "name" ).write( info.name );
-            desc_writer.write( "class-name" ).write( info.className );
+            desc_writer.write( "name"_sr ).write( info.name );
+            desc_writer.write( "class-name"_sr ).write( info.className );
             {
-                auto tag_writer = desc_writer.write( "tags" ).writeArray();
+                auto tag_writer = desc_writer.write( "tags"_sr ).writeArray();
                 for ( auto const& tag : info.tags ) {
                     tag_writer.write( tag.original );
                 }
@@ -379,17 +356,17 @@ namespace Catch {
     void JsonReporter::listTags( std::vector<TagInfo> const& tags ) {
         startListing();
 
-        auto writer = m_objectWriters.top().write( "tags" ).writeArray();
+        auto writer = m_objectWriters.top().write( "tags"_sr ).writeArray();
         for ( auto const& tag : tags ) {
             auto tag_writer = writer.writeObject();
             {
                 auto aliases_writer =
-                    tag_writer.write( "aliases" ).writeArray();
+                    tag_writer.write( "aliases"_sr ).writeArray();
                 for ( auto alias : tag.spellings ) {
                     aliases_writer.write( alias );
                 }
             }
-            tag_writer.write( "count" ).write( tag.count );
+            tag_writer.write( "count"_sr ).write( tag.count );
         }
     }
 } // namespace Catch
