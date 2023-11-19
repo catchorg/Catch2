@@ -27,6 +27,17 @@ namespace Catch {
             return i;
         }
 
+#if defined( __GNUC__ ) || defined( __clang__ )
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
+        bool directCompare( float lhs, float rhs ) { return lhs == rhs; }
+        bool directCompare( double lhs, double rhs ) { return lhs == rhs; }
+#if defined( __GNUC__ ) || defined( __clang__ )
+#    pragma GCC diagnostic pop
+#endif
+
+
     } // end namespace Detail
 } // end namespace Catch
 

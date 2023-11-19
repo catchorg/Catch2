@@ -115,6 +115,7 @@ internal_headers = [
   'internal/catch_preprocessor.hpp',
   'internal/catch_preprocessor_internal_stringify.hpp',
   'internal/catch_preprocessor_remove_parens.hpp',
+  'internal/catch_random_floating_point_helpers.hpp',
   'internal/catch_random_number_generator.hpp',
   'internal/catch_random_seed_generation.hpp',
   'internal/catch_reporter_registry.hpp',

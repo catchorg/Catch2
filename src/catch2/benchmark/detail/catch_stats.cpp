@@ -10,6 +10,7 @@
 #include <catch2/benchmark/detail/catch_stats.hpp>
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_floating_point_helpers.hpp>
 
 #include <algorithm>
 #include <cassert>
@@ -184,20 +185,6 @@ namespace Catch {
                     return std::sqrt( variance );
                 }
 
-#if defined( __GNUC__ ) || defined( __clang__ )
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wfloat-equal"
-#endif
-                // Used when we know we want == comparison of two doubles
-                // to centralize warning suppression
-                static bool directCompare( double lhs, double rhs ) {
-                    return lhs == rhs;
-                }
-#if defined( __GNUC__ ) || defined( __clang__ )
-#    pragma GCC diagnostic pop
-#endif
-
-
                 static sample jackknife( double ( *estimator )( double const*,
                                                                 double const* ),
                                          double* first,
@@ -234,7 +221,7 @@ namespace Catch {
                 double g = idx - j;
                 std::nth_element(first, first + j, last);
                 auto xj = first[j];
-                if ( directCompare( g, 0 ) ) {
+                if ( Catch::Detail::directCompare( g, 0 ) ) {
                     return xj;
                 }
 
@@ -338,7 +325,7 @@ namespace Catch {
                                    [point]( double x ) { return x < point; } ) /
                     static_cast<double>( n );
                 // degenerate case with uniform samples
-                if ( directCompare( prob_n, 0. ) ) {
+                if ( Catch::Detail::directCompare( prob_n, 0. ) ) {
                     return { point, point, point, confidence_level };
                 }
 
