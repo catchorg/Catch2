@@ -139,6 +139,7 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/internal/catch_textflow.hpp
   ${SOURCES_DIR}/internal/catch_to_string.hpp
   ${SOURCES_DIR}/internal/catch_uncaught_exceptions.hpp
+  ${SOURCES_DIR}/internal/catch_uniform_floating_point_distribution.hpp
   ${SOURCES_DIR}/internal/catch_unique_name.hpp
   ${SOURCES_DIR}/internal/catch_unique_ptr.hpp
   ${SOURCES_DIR}/internal/catch_void_type.hpp

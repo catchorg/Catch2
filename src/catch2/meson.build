@@ -145,6 +145,7 @@ internal_headers = [
   'internal/catch_textflow.hpp',
   'internal/catch_to_string.hpp',
   'internal/catch_uncaught_exceptions.hpp',
+  'internal/catch_uniform_floating_point_distribution.hpp',
   'internal/catch_unique_name.hpp',
   'internal/catch_unique_ptr.hpp',
   'internal/catch_void_type.hpp',

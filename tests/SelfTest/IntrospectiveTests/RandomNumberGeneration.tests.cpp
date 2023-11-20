@@ -7,8 +7,10 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_template_test_macros.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
 #include <catch2/internal/catch_random_seed_generation.hpp>
+#include <catch2/internal/catch_uniform_floating_point_distribution.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
 TEST_CASE("Our PCG implementation provides expected results for known seeds", "[rng]") {
@@ -59,4 +61,19 @@ TEST_CASE("Random seed generation accepts known methods", "[rng][seed]") {
     );
 
     REQUIRE_NOTHROW(Catch::generateRandomSeed(method));
+}
+
+TEMPLATE_TEST_CASE("uniform_floating_point_distribution never returns infs from finite range",
+          "[rng][distribution][floating-point][approvals]", float, double) {
+    std::random_device rd{};
+    Catch::SimplePcg32 pcg( rd() );
+    Catch::uniform_floating_point_distribution<TestType> dist(
+        -std::numeric_limits<TestType>::max(),
+        std::numeric_limits<TestType>::max() );
+
+    for (size_t i = 0; i < 10'000; ++i) {
+        auto ret = dist( pcg );
+        REQUIRE_FALSE( std::isinf( ret ) );
+        REQUIRE_FALSE( std::isnan( ret ) );
+    }
 }
