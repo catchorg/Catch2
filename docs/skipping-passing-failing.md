@@ -9,7 +9,7 @@ In some situations it may not be possible to meaningfully execute a test case,
 for example when the system under test is missing certain hardware capabilities.
 If the required conditions can only be determined at runtime, it often
 doesn't make sense to consider such a test case as either passed or failed,
-because it simply can not run at all.
+because it simply cannot run at all.
 
 To properly express such scenarios, Catch2 provides a way to explicitly
 _skip_ test cases, using the `SKIP` macro:
