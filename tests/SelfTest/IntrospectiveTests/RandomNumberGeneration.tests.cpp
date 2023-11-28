@@ -8,6 +8,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/catch_template_test_macros.hpp>
+#include <catch2/internal/catch_random_integer_helpers.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
 #include <catch2/internal/catch_random_seed_generation.hpp>
 #include <catch2/internal/catch_uniform_floating_point_distribution.hpp>
@@ -75,5 +76,31 @@ TEMPLATE_TEST_CASE("uniform_floating_point_distribution never returns infs from 
         auto ret = dist( pcg );
         REQUIRE_FALSE( std::isinf( ret ) );
         REQUIRE_FALSE( std::isnan( ret ) );
+    }
+}
+
+TEST_CASE( "fillBitsFrom - shortening and stretching", "[rng][approvals]" ) {
+    using Catch::Detail::fillBitsFrom;
+
+    // The seed is not important, but the numbers below have to be repeatable.
+    // They should also exhibit the same general pattern of being prefixes
+    Catch::SimplePcg32 pcg( 0xaabb'ccdd );
+
+    SECTION( "Shorten to 8 bits" ) {
+        // We cast the result to avoid dealing with char-like type in uint8_t
+        auto shortened = static_cast<uint32_t>( fillBitsFrom<uint8_t>( pcg ) );
+        REQUIRE( shortened == 0xcc );
+    }
+    SECTION( "Shorten to 16 bits" ) {
+        auto shortened = fillBitsFrom<uint16_t>( pcg );
+        REQUIRE( shortened == 0xccbe );
+    }
+    SECTION( "Keep at 32 bits" ) {
+        auto n = fillBitsFrom<uint32_t>( pcg );
+        REQUIRE( n == 0xccbe'5f04 );
+    }
+    SECTION( "Stretch to 64 bits" ) {
+        auto stretched = fillBitsFrom<uint64_t>( pcg );
+        REQUIRE( stretched == 0xccbe'5f04'a424'a486 );
     }
 }

@@ -110,6 +110,7 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/internal/catch_preprocessor.hpp
   ${SOURCES_DIR}/internal/catch_preprocessor_remove_parens.hpp
   ${SOURCES_DIR}/internal/catch_random_floating_point_helpers.hpp
+  ${SOURCES_DIR}/internal/catch_random_integer_helpers.hpp
   ${SOURCES_DIR}/internal/catch_random_number_generator.hpp
   ${SOURCES_DIR}/internal/catch_random_seed_generation.hpp
   ${SOURCES_DIR}/internal/catch_reporter_registry.hpp

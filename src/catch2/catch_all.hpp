@@ -92,6 +92,7 @@
 #include <catch2/internal/catch_preprocessor_internal_stringify.hpp>
 #include <catch2/internal/catch_preprocessor_remove_parens.hpp>
 #include <catch2/internal/catch_random_floating_point_helpers.hpp>
+#include <catch2/internal/catch_random_integer_helpers.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
 #include <catch2/internal/catch_random_seed_generation.hpp>
 #include <catch2/internal/catch_reporter_registry.hpp>

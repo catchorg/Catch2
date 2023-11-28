@@ -17,6 +17,7 @@ self_test_sources = files(
   'SelfTest/IntrospectiveTests/Details.tests.cpp',
   'SelfTest/IntrospectiveTests/FloatingPoint.tests.cpp',
   'SelfTest/IntrospectiveTests/GeneratorsImpl.tests.cpp',
+  'SelfTest/IntrospectiveTests/Integer.tests.cpp',
   'SelfTest/IntrospectiveTests/InternalBenchmark.tests.cpp',
   'SelfTest/IntrospectiveTests/Parse.tests.cpp',
   'SelfTest/IntrospectiveTests/PartTracker.tests.cpp',
