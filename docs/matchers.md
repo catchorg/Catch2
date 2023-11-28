@@ -286,7 +286,7 @@ comparable. (e.g. you may compare `std::vector<int>` to `std::array<char>`).
 `UnorderedRangeEquals` is similar to `RangeEquals`, but the order
 does not matter. For example "1, 2, 3" would match "3, 2, 1", but not
 "1, 1, 2, 3" As with `RangeEquals`, `UnorderedRangeEquals` compares
-the individual elements using using `operator==` by default.
+the individual elements using `operator==` by default.
 
 Both `RangeEquals` and `UnorderedRangeEquals` optionally accept a
 predicate which can be used to compare the containers element-wise.
