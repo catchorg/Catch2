@@ -30,7 +30,7 @@ So what does Catch2 bring to the party that differentiates it from these? Apart 
 * Output is through modular reporter objects. Basic textual and XML reporters are included. Custom reporters can easily be added.
 * JUnit xml output is supported for integration with third-party tools, such as CI servers.
 * A default main() function is provided, but you can supply your own for complete control (e.g. integration into your own test runner GUI).
-* A command line parser is provided and can still be used if you choose to provided your own main() function.
+* A command line parser is provided and can still be used if you choose to provide your own main() function.
 * Alternative assertion macro(s) report failures but don't abort the test case
 * Good set of facilities for floating point comparisons (`Catch::Approx` and full set of matchers)
 * Internal and friendly macros are isolated so name clashes can be managed
