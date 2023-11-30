@@ -13710,6 +13710,39 @@ Message from section two
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="Template list test case with specialized IndexedTestTypeName--NamedTypes--A" tags="[class][indexedtesttypename][list][template]" filename="tests/<exe-name>/UsageTests/CustomNaming.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/CustomNaming.tests.cpp" >
+      <Original>
+        Template_Foo&lt;TestType>{}.size() == 0
+      </Original>
+      <Expanded>
+        0 == 0
+      </Expanded>
+    </Expression>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Template list test case with specialized IndexedTestTypeName--NamedTypes--B" tags="[class][indexedtesttypename][list][template]" filename="tests/<exe-name>/UsageTests/CustomNaming.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/CustomNaming.tests.cpp" >
+      <Original>
+        Template_Foo&lt;TestType>{}.size() == 0
+      </Original>
+      <Expanded>
+        0 == 0
+      </Expanded>
+    </Expression>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Template list test case with specialized IndexedTestTypeName--NamedTypes--C" tags="[class][indexedtesttypename][list][template]" filename="tests/<exe-name>/UsageTests/CustomNaming.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/CustomNaming.tests.cpp" >
+      <Original>
+        Template_Foo&lt;TestType>{}.size() == 0
+      </Original>
+      <Expanded>
+        0 == 0
+      </Expanded>
+    </Expression>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="Template test case method with test types specified inside std::tuple - MyTypes - 0" tags="[class][list][template]" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
       <Original>
@@ -21893,6 +21926,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2096" failures="146" expectedFailures="35" skips="12"/>
-  <OverallResultsCases successes="329" failures="85" expectedFailures="14" skips="6"/>
+  <OverallResults successes="2099" failures="146" expectedFailures="35" skips="12"/>
+  <OverallResultsCases successes="332" failures="85" expectedFailures="14" skips="6"/>
 </Catch2TestRun>

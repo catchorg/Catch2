@@ -2826,6 +2826,12 @@ ok {test-number} - registry.add( "[@no square bracket at end", "", Catch::Source
 ok {test-number} - testCase.tags.size() == 2 for: 2 == 2
 # Tags with spaces and non-alphanumerical characters are accepted
 ok {test-number} - testCase.tags, VectorContains( Tag( "tag with spaces" ) ) && VectorContains( Tag( "I said \"good day\" sir!"_catch_sr ) ) for: { {?}, {?} } ( Contains: {?} and Contains: {?} )
+# Template list test case with specialized IndexedTestTypeName--NamedTypes--A
+ok {test-number} - Template_Foo<TestType>{}.size() == 0 for: 0 == 0
+# Template list test case with specialized IndexedTestTypeName--NamedTypes--B
+ok {test-number} - Template_Foo<TestType>{}.size() == 0 for: 0 == 0
+# Template list test case with specialized IndexedTestTypeName--NamedTypes--C
+ok {test-number} - Template_Foo<TestType>{}.size() == 0 for: 0 == 0
 # Template test case method with test types specified inside std::tuple - MyTypes - 0
 ok {test-number} - Template_Fixture<TestType>::m_a == 1 for: 1 == 1
 # Template test case method with test types specified inside std::tuple - MyTypes - 1
@@ -4572,5 +4578,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2289
+1..2292
 

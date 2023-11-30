@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="129" skipped="12" tests="2289" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="129" skipped="12" tests="2292" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1336,6 +1336,9 @@ at Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Tag alias can be registered against tag patterns/The same tag alias can only be registered once" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Tag alias can be registered against tag patterns/Tag aliases must be of the form [@name]" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Tags with spaces and non-alphanumerical characters are accepted" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.Template_Foo" name="Template list test case with specialized IndexedTestTypeName--NamedTypes--A" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.Template_Foo" name="Template list test case with specialized IndexedTestTypeName--NamedTypes--B" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.Template_Foo" name="Template list test case with specialized IndexedTestTypeName--NamedTypes--C" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.Template_Fixture" name="Template test case method with test types specified inside std::tuple - MyTypes - 0" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.Template_Fixture" name="Template test case method with test types specified inside std::tuple - MyTypes - 1" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.Template_Fixture" name="Template test case method with test types specified inside std::tuple - MyTypes - 2" time="{duration}" status="run"/>

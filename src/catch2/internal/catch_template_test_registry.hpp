@@ -185,9 +185,10 @@
         template<typename... Types>                               \
         struct TestName {                                         \
             void reg_tests() {                                          \
+                using Catch::IndexedTestTypeName;                    \
                 size_t index = 0;                                    \
                 using expander = size_t[];                           \
-                (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestFunc<Types> ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ Name INTERNAL_CATCH_CONFIG_NAME_SEPARATOR INTERNAL_CATCH_STRINGIZE(TmplList) INTERNAL_CATCH_CONFIG_NAME_SEPARATOR + std::to_string(index), Tags } ), index++)... };/* NOLINT */\
+                (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestFunc<Types> ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ Name INTERNAL_CATCH_CONFIG_NAME_SEPARATOR INTERNAL_CATCH_STRINGIZE(TmplList) INTERNAL_CATCH_CONFIG_NAME_SEPARATOR + IndexedTestTypeName<Types>{}(index), Tags } ), index++)... };/* NOLINT */\
             }                                                     \
         };\
         static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){ \
@@ -320,9 +321,10 @@
             template<typename...Types>\
             struct TestNameClass{\
                 void reg_tests(){\
+                    using Catch::IndexedTestTypeName;\
                     size_t index = 0;\
                     using expander = size_t[];\
-                    (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestName<Types>::test ), CATCH_INTERNAL_LINEINFO, #ClassName##_catch_sr, Catch::NameAndTags{ Name INTERNAL_CATCH_CONFIG_NAME_SEPARATOR INTERNAL_CATCH_STRINGIZE(TmplList) INTERNAL_CATCH_CONFIG_NAME_SEPARATOR + std::to_string(index), Tags } ), index++)... };/* NOLINT */ \
+                    (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestName<Types>::test ), CATCH_INTERNAL_LINEINFO, #ClassName##_catch_sr, Catch::NameAndTags{ Name INTERNAL_CATCH_CONFIG_NAME_SEPARATOR INTERNAL_CATCH_STRINGIZE(TmplList) INTERNAL_CATCH_CONFIG_NAME_SEPARATOR + IndexedTestTypeName<Types>{}(index), Tags } ), index++)... };/* NOLINT */ \
                 }\
             };\
             static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){\
@@ -339,5 +341,13 @@
 #define INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_METHOD(ClassName, Name, Tags, TmplList) \
         INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_METHOD_2( INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEMPLATE_TEST_ ), INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEMPLATE_TEST_ ), ClassName, Name, Tags, TmplList )
 
+namespace Catch {
+    template <typename T>
+    struct IndexedTestTypeName {
+        std::string operator()(size_t index) const {
+            return std::to_string(index);
+        }
+    };
+}
 
 #endif // CATCH_TEMPLATE_TEST_REGISTRY_HPP_INCLUDED

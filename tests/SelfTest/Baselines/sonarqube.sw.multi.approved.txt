@@ -904,6 +904,9 @@ at Condition.tests.cpp:<line number>
     <testCase name="A TEMPLATE_TEST_CASE_METHOD_SIG based test with a custom separator--1" duration="{duration}"/>
     <testCase name="A TEMPLATE_TEST_CASE_METHOD_SIG based test with a custom separator--3" duration="{duration}"/>
     <testCase name="A TEMPLATE_TEST_CASE_METHOD_SIG based test with a custom separator--6" duration="{duration}"/>
+    <testCase name="Template list test case with specialized IndexedTestTypeName--NamedTypes--A" duration="{duration}"/>
+    <testCase name="Template list test case with specialized IndexedTestTypeName--NamedTypes--B" duration="{duration}"/>
+    <testCase name="Template list test case with specialized IndexedTestTypeName--NamedTypes--C" duration="{duration}"/>
     <testCase name="Template test case method with test types specified inside std::tuple with a custom separator--MyTypes--0" duration="{duration}"/>
     <testCase name="Template test case method with test types specified inside std::tuple with a custom separator--MyTypes--1" duration="{duration}"/>
     <testCase name="Template test case method with test types specified inside std::tuple with a custom separator--MyTypes--2" duration="{duration}"/>

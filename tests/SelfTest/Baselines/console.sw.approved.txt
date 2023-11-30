@@ -11794,6 +11794,39 @@ with expansion:
   { {?}, {?} } ( Contains: {?} and Contains: {?} )
 
 -------------------------------------------------------------------------------
+Template list test case with specialized IndexedTestTypeName--NamedTypes--A
+-------------------------------------------------------------------------------
+CustomNaming.tests.cpp:<line number>
+...............................................................................
+
+CustomNaming.tests.cpp:<line number>: PASSED:
+  REQUIRE( Template_Foo<TestType>{}.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Template list test case with specialized IndexedTestTypeName--NamedTypes--B
+-------------------------------------------------------------------------------
+CustomNaming.tests.cpp:<line number>
+...............................................................................
+
+CustomNaming.tests.cpp:<line number>: PASSED:
+  REQUIRE( Template_Foo<TestType>{}.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Template list test case with specialized IndexedTestTypeName--NamedTypes--C
+-------------------------------------------------------------------------------
+CustomNaming.tests.cpp:<line number>
+...............................................................................
+
+CustomNaming.tests.cpp:<line number>: PASSED:
+  REQUIRE( Template_Foo<TestType>{}.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
 Template test case method with test types specified inside std::tuple - MyTypes
 - 0
 -------------------------------------------------------------------------------
@@ -18949,6 +18982,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  434 |  329 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2277 | 2096 passed | 146 failed | 35 failed as expected
+test cases:  437 |  332 passed |  85 failed | 6 skipped | 14 failed as expected
+assertions: 2280 | 2099 passed | 146 failed | 35 failed as expected
 

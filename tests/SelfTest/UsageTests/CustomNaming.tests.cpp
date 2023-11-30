@@ -67,3 +67,20 @@ TEMPLATE_LIST_TEST_CASE_METHOD(Template_Fixture, "Template test case method with
 {
     REQUIRE( Template_Fixture<TestType>::m_a == 1 );
 }
+
+
+// Creating an IndextTestTypeName specialization should alter how template list tests are named.
+template<char C> struct NamedType {};
+namespace Catch {
+    template <char C>
+    struct IndexedTestTypeName<NamedType<C>> {
+        std::string operator()(size_t) const {
+            return {C};
+        }
+    };
+}
+using NamedTypes = std::tuple<NamedType<'A'>, NamedType<'B'>, NamedType<'C'>>;
+TEMPLATE_LIST_TEST_CASE_METHOD(Template_Foo, "Template list test case with specialized IndexedTestTypeName", "[class][template][list][indexedtesttypename]", NamedTypes)
+{
+    REQUIRE( Template_Foo<TestType>{}.size() == 0 );
+}

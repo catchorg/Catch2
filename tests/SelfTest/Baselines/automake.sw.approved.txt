@@ -259,6 +259,9 @@ Message from section two
 :test-result: FAIL Tabs and newlines show in output
 :test-result: PASS Tag alias can be registered against tag patterns
 :test-result: PASS Tags with spaces and non-alphanumerical characters are accepted
+:test-result: PASS Template list test case with specialized IndexedTestTypeName--NamedTypes--A
+:test-result: PASS Template list test case with specialized IndexedTestTypeName--NamedTypes--B
+:test-result: PASS Template list test case with specialized IndexedTestTypeName--NamedTypes--C
 :test-result: PASS Template test case method with test types specified inside std::tuple - MyTypes - 0
 :test-result: PASS Template test case method with test types specified inside std::tuple - MyTypes - 1
 :test-result: PASS Template test case method with test types specified inside std::tuple - MyTypes - 2
