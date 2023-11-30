@@ -114,6 +114,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/UsageTests/Class.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Compilation.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Condition.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/CustomNaming.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Decomposition.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/EnumToString.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Exception.tests.cpp

@@ -889,6 +889,25 @@ at Condition.tests.cpp:<line number>
     <testCase name="comparisons between const int variables" duration="{duration}"/>
     <testCase name="comparisons between int variables" duration="{duration}"/>
   </file>
+  <file path="tests/<exe-name>/UsageTests/CustomNaming.tests.cpp">
+    <testCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test with a custom separator--Template_Foo&lt;float>" duration="{duration}"/>
+    <testCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test with a custom separator--Template_Foo&lt;int>" duration="{duration}"/>
+    <testCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test with a custom separator--std::vector&lt;float>" duration="{duration}"/>
+    <testCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test with a custom separator--std::vector&lt;int>" duration="{duration}"/>
+    <testCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test with a custom separator--Template_Foo_2&lt;float,6>" duration="{duration}"/>
+    <testCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test with a custom separator--Template_Foo_2&lt;int,2>" duration="{duration}"/>
+    <testCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test with a custom separator--std::array&lt;float,6>" duration="{duration}"/>
+    <testCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test with a custom separator--std::array&lt;int,2>" duration="{duration}"/>
+    <testCase name="A TEMPLATE_TEST_CASE_METHOD based test with a custom separator--double" duration="{duration}"/>
+    <testCase name="A TEMPLATE_TEST_CASE_METHOD based test with a custom separator--float" duration="{duration}"/>
+    <testCase name="A TEMPLATE_TEST_CASE_METHOD based test with a custom separator--int" duration="{duration}"/>
+    <testCase name="A TEMPLATE_TEST_CASE_METHOD_SIG based test with a custom separator--1" duration="{duration}"/>
+    <testCase name="A TEMPLATE_TEST_CASE_METHOD_SIG based test with a custom separator--3" duration="{duration}"/>
+    <testCase name="A TEMPLATE_TEST_CASE_METHOD_SIG based test with a custom separator--6" duration="{duration}"/>
+    <testCase name="Template test case method with test types specified inside std::tuple with a custom separator--MyTypes--0" duration="{duration}"/>
+    <testCase name="Template test case method with test types specified inside std::tuple with a custom separator--MyTypes--1" duration="{duration}"/>
+    <testCase name="Template test case method with test types specified inside std::tuple with a custom separator--MyTypes--2" duration="{duration}"/>
+  </file>
   <file path="tests/<exe-name>/UsageTests/Decomposition.tests.cpp">
     <testCase name="Reconstruction should be based on stringification: #914" duration="{duration}">
       <failure message="CHECK(truthy(false))">
