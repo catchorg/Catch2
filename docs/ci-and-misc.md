@@ -82,7 +82,7 @@ variable set to "1".
 
 ### CodeCoverage module (GCOV, LCOV...)
 
-If you are using GCOV tool to get testing coverage of your code, and are not sure how to integrate it with CMake and Catch, there should be an external example over at https://github.com/fkromer/catch_cmake_coverage
+If you are using GCOV tool to get testing coverage of your code, and are not sure how to integrate it with CMake and Catch, there should be an external example over at https://github.com/claremacrae/catch_cmake_coverage
 
 
 ### pkg-config
