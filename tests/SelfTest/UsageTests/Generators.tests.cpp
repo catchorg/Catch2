@@ -26,7 +26,7 @@ TEST_CASE("Generators -- simple", "[generators]") {
     SECTION("two") {
         // You can also explicitly set type for generators via Catch::Generators::as
         auto str = GENERATE(as<std::string>{}, "a", "bb", "ccc");
-        REQUIRE(4u * i > str.size());
+        REQUIRE(4u * static_cast<unsigned int>(i) > str.size());
     }
 }
 
