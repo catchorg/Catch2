@@ -17,16 +17,16 @@ namespace Catch {
         const hash_t prime = 1099511628211u;
         hash_t hash = 14695981039346656037u;
         for ( const char c : t.name ) {
-            hash ^= c;
+            hash ^= static_cast<hash_t>(c);
             hash *= prime;
         }
         for ( const char c : t.className ) {
-            hash ^= c;
+            hash ^= static_cast<hash_t>(c);
             hash *= prime;
         }
         for ( const Tag& tag : t.tags ) {
             for ( const char c : tag.original ) {
-                hash ^= c;
+                hash ^= static_cast<hash_t>(c);
                 hash *= prime;
             }
         }
