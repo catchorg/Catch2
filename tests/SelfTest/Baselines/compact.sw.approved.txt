@@ -704,21 +704,21 @@ Generators.tests.cpp:<line number>: passed: chunk(2, value(1)), Catch::Generator
 Generators.tests.cpp:<line number>: passed: j < i for: -3 < 1
 Generators.tests.cpp:<line number>: passed: j < i for: -2 < 1
 Generators.tests.cpp:<line number>: passed: j < i for: -1 < 1
-Generators.tests.cpp:<line number>: passed: 4u * i > str.size() for: 4 > 1
-Generators.tests.cpp:<line number>: passed: 4u * i > str.size() for: 4 > 2
-Generators.tests.cpp:<line number>: passed: 4u * i > str.size() for: 4 > 3
+Generators.tests.cpp:<line number>: passed: 4u * static_cast<std::size_t>(i) > str.size() for: 4 > 1
+Generators.tests.cpp:<line number>: passed: 4u * static_cast<std::size_t>(i) > str.size() for: 4 > 2
+Generators.tests.cpp:<line number>: passed: 4u * static_cast<std::size_t>(i) > str.size() for: 4 > 3
 Generators.tests.cpp:<line number>: passed: j < i for: -3 < 2
 Generators.tests.cpp:<line number>: passed: j < i for: -2 < 2
 Generators.tests.cpp:<line number>: passed: j < i for: -1 < 2
-Generators.tests.cpp:<line number>: passed: 4u * i > str.size() for: 8 > 1
-Generators.tests.cpp:<line number>: passed: 4u * i > str.size() for: 8 > 2
-Generators.tests.cpp:<line number>: passed: 4u * i > str.size() for: 8 > 3
+Generators.tests.cpp:<line number>: passed: 4u * static_cast<std::size_t>(i) > str.size() for: 8 > 1
+Generators.tests.cpp:<line number>: passed: 4u * static_cast<std::size_t>(i) > str.size() for: 8 > 2
+Generators.tests.cpp:<line number>: passed: 4u * static_cast<std::size_t>(i) > str.size() for: 8 > 3
 Generators.tests.cpp:<line number>: passed: j < i for: -3 < 3
 Generators.tests.cpp:<line number>: passed: j < i for: -2 < 3
 Generators.tests.cpp:<line number>: passed: j < i for: -1 < 3
-Generators.tests.cpp:<line number>: passed: 4u * i > str.size() for: 12 > 1
-Generators.tests.cpp:<line number>: passed: 4u * i > str.size() for: 12 > 2
-Generators.tests.cpp:<line number>: passed: 4u * i > str.size() for: 12 > 3
+Generators.tests.cpp:<line number>: passed: 4u * static_cast<std::size_t>(i) > str.size() for: 12 > 1
+Generators.tests.cpp:<line number>: passed: 4u * static_cast<std::size_t>(i) > str.size() for: 12 > 2
+Generators.tests.cpp:<line number>: passed: 4u * static_cast<std::size_t>(i) > str.size() for: 12 > 3
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 123 for: 123 == 123
 GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 1 for: 1 == 1

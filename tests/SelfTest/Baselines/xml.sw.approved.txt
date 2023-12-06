@@ -6086,7 +6086,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast<std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           4 > 1
@@ -6097,7 +6097,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast<std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           4 > 2
@@ -6108,7 +6108,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast<std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           4 > 3
@@ -6152,7 +6152,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast<std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           8 > 1
@@ -6163,7 +6163,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast<std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           8 > 2
@@ -6174,7 +6174,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast<std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           8 > 3
@@ -6218,7 +6218,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast<std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           12 > 1
@@ -6229,7 +6229,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast<std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           12 > 2
@@ -6240,7 +6240,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast<std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           12 > 3

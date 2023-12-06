@@ -5356,7 +5356,7 @@ Generators.tests.cpp:<line number>
 ...............................................................................
 
 Generators.tests.cpp:<line number>: PASSED:
-  REQUIRE( 4u * i > str.size() )
+  REQUIRE( 4u * static_cast<std::size_t>(i) > str.size() )
 with expansion:
   4 > 1
 
