@@ -2605,7 +2605,7 @@ MatchersRanges.tests.cpp:<line number>
 ...............................................................................
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( a, Contains(4, [](auto&& lhs, size_t sz) { return lhs.size() == sz; }) )
+  REQUIRE_THAT( a, Contains(4u, [](auto&& lhs, size_t sz) { return lhs.size() == sz; }) )
 with expansion:
   { "abc", "abcd", "abcde" } contains element 4
 

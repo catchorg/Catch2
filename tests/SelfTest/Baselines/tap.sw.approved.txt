@@ -629,7 +629,7 @@ ok {test-number} - b, Contains(0, close_enough) for: { 0, 1, 2 } contains elemen
 # Basic use of the Contains range matcher
 ok {test-number} - c, !Contains(0, close_enough) for: { 4, 5, 6 } not contains element 0
 # Basic use of the Contains range matcher
-ok {test-number} - a, Contains(4, [](auto&& lhs, size_t sz) { return lhs.size() == sz; }) for: { "abc", "abcd", "abcde" } contains element 4
+ok {test-number} - a, Contains(4u, [](auto&& lhs, size_t sz) { return lhs.size() == sz; }) for: { "abc", "abcd", "abcde" } contains element 4
 # Basic use of the Contains range matcher
 ok {test-number} - in, Contains(1) for: { 1, 2, 3, 4, 5 } contains element 1
 # Basic use of the Contains range matcher

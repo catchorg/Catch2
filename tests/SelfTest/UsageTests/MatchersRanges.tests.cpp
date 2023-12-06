@@ -75,7 +75,7 @@ TEST_CASE("Basic use of the Contains range matcher", "[matchers][templated][cont
     SECTION("Different element type, custom comparisons") {
         std::array<std::string, 3> a{ { "abc", "abcd" , "abcde" } };
 
-        REQUIRE_THAT(a, Contains(4, [](auto&& lhs, size_t sz) {
+        REQUIRE_THAT(a, Contains(4u, [](auto&& lhs, size_t sz) {
             return lhs.size() == sz;
         }));
     }

@@ -316,7 +316,7 @@ MatchersRanges.tests.cpp:<line number>: passed: c, !Contains(1) for: { 4, 5, 6 }
 MatchersRanges.tests.cpp:<line number>: passed: a, Contains(0, close_enough) for: { 1, 2, 3 } contains element 0
 MatchersRanges.tests.cpp:<line number>: passed: b, Contains(0, close_enough) for: { 0, 1, 2 } contains element 0
 MatchersRanges.tests.cpp:<line number>: passed: c, !Contains(0, close_enough) for: { 4, 5, 6 } not contains element 0
-MatchersRanges.tests.cpp:<line number>: passed: a, Contains(4, [](auto&& lhs, size_t sz) { return lhs.size() == sz; }) for: { "abc", "abcd", "abcde" } contains element 4
+MatchersRanges.tests.cpp:<line number>: passed: a, Contains(4u, [](auto&& lhs, size_t sz) { return lhs.size() == sz; }) for: { "abc", "abcd", "abcde" } contains element 4
 MatchersRanges.tests.cpp:<line number>: passed: in, Contains(1) for: { 1, 2, 3, 4, 5 } contains element 1
 MatchersRanges.tests.cpp:<line number>: passed: in, !Contains(8) for: { 1, 2, 3, 4, 5 } not contains element 8
 MatchersRanges.tests.cpp:<line number>: passed: in, Contains(MoveOnlyTestElement{ 2 }) for: { 1, 2, 3 } contains element 2
