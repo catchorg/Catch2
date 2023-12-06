@@ -62,8 +62,8 @@ TEST_CASE("Benchmark containers", "[!benchmark]") {
         // test optimizer control
         BENCHMARK("Add up a vector's content") {
             uint64_t add = 0;
-            for (int i = 0; i < size; ++i)
-                add += v[i];
+            for (std::size_t i = 0; i < size; ++i)
+                add += static_cast<std::size_t>(v[i]);
             return add;
         };
 
@@ -86,7 +86,7 @@ TEST_CASE("Benchmark containers", "[!benchmark]") {
             v = std::vector<int>();
             v.resize(size);
             for (int i = 0; i < size; ++i)
-                v[i] = i;
+                v[static_cast<std::size_t>(i)] = i;
         };
         REQUIRE(v.size() == size);
 
@@ -116,7 +116,7 @@ TEST_CASE("Benchmark containers", "[!benchmark]") {
             BENCHMARK("Fill vector indexed", benchmarkIndex) {
                 v = std::vector<int>();
                 v.resize(size);
-                for (int i = 0; i < size; ++i)
+                for (std::size_t i = 0; i < size; ++i)
                     v[i] = benchmarkIndex;
                 runs = benchmarkIndex;
             };
@@ -132,7 +132,7 @@ TEST_CASE("Benchmark containers", "[!benchmark]") {
         BENCHMARK("Fill vector generated") {
             v = std::vector<int>();
             v.resize(size);
-            for (int i = 0; i < size; ++i)
+            for (std::size_t i = 0; i < size; ++i)
                 v[i] = generated;
         };
         for (size_t i = 0; i < v.size(); ++i) {
@@ -142,15 +142,15 @@ TEST_CASE("Benchmark containers", "[!benchmark]") {
 
     SECTION("construct and destroy example") {
         BENCHMARK_ADVANCED("construct")(Catch::Benchmark::Chronometer meter) {
-            std::vector<Catch::Benchmark::storage_for<std::string>> storage(meter.runs());
-            meter.measure([&](int i) { storage[i].construct("thing"); });
+            std::vector<Catch::Benchmark::storage_for<std::string>> storage(static_cast<std::size_t>(meter.runs()));
+            meter.measure([&](int i) { storage[static_cast<std::size_t>(i)].construct("thing"); });
         };
 
         BENCHMARK_ADVANCED("destroy")(Catch::Benchmark::Chronometer meter) {
-            std::vector<Catch::Benchmark::destructable_object<std::string>> storage(meter.runs());
+            std::vector<Catch::Benchmark::destructable_object<std::string>> storage(static_cast<std::size_t>(meter.runs()));
             for(auto&& o : storage)
                 o.construct("thing");
-            meter.measure([&](int i) { storage[i].destruct(); });
+            meter.measure([&](int i) { storage[static_cast<std::size_t>(i)].destruct(); });
         };
     }
 }
@@ -166,8 +166,8 @@ TEST_CASE("Skip benchmark macros", "[!benchmark]") {
 
     std::size_t counter{0};
     BENCHMARK_ADVANCED("construct vector")(Catch::Benchmark::Chronometer meter) {
-        std::vector<Catch::Benchmark::storage_for<std::string>> storage(meter.runs());
-        meter.measure([&](int i) { storage[i].construct("thing"); counter++; });
+        std::vector<Catch::Benchmark::storage_for<std::string>> storage(static_cast<std::size_t>(meter.runs()));
+        meter.measure([&](int i) { storage[static_cast<std::size_t>(i)].construct("thing"); counter++; });
     };
     REQUIRE(counter == 0);
 }
