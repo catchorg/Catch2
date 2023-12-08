@@ -70,14 +70,3 @@ environment:
       additional_flags: "/permissive- /std:c++latest"
       platform: x64
       configuration: Debug
-
-    - FLAVOR: VS 2017 x64 Debug
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      platform: x64
-      configuration: Debug
-
-    - FLAVOR: VS 2017 x64 Release Coverage
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      coverage: 1
-      platform: x64
-      configuration: Debug
