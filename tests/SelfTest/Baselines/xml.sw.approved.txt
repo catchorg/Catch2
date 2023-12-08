@@ -21134,6 +21134,25 @@ b1!
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="uniform_integer_distribution can return the bounds" tags="[distribution][rng]" filename="tests/<exe-name>/IntrospectiveTests/RandomNumberGeneration.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/RandomNumberGeneration.tests.cpp" >
+      <Original>
+        dist.a() == -10
+      </Original>
+      <Expanded>
+        -10 == -10
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/RandomNumberGeneration.tests.cpp" >
+      <Original>
+        dist.b() == 10
+      </Original>
+      <Expanded>
+        10 == 10
+      </Expanded>
+    </Expression>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="unique_ptr reimplementation: basic functionality" tags="[internals][unique-ptr]" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
     <Section name="Default constructed unique_ptr is empty" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
       <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
@@ -21688,6 +21707,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2077" failures="146" expectedFailures="35" skips="12"/>
-  <OverallResultsCases successes="311" failures="85" expectedFailures="14" skips="6"/>
+  <OverallResults successes="2079" failures="146" expectedFailures="35" skips="12"/>
+  <OverallResultsCases successes="312" failures="85" expectedFailures="14" skips="6"/>
 </Catch2TestRun>

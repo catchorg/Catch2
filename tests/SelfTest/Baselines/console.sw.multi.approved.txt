@@ -18238,6 +18238,22 @@ with expansion:
   0.95 == 0.95
 
 -------------------------------------------------------------------------------
+uniform_integer_distribution can return the bounds
+-------------------------------------------------------------------------------
+RandomNumberGeneration.tests.cpp:<line number>
+...............................................................................
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( dist.a() == -10 )
+with expansion:
+  -10 == -10
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( dist.b() == 10 )
+with expansion:
+  10 == 10
+
+-------------------------------------------------------------------------------
 unique_ptr reimplementation: basic functionality
   Default constructed unique_ptr is empty
 -------------------------------------------------------------------------------
@@ -18724,6 +18740,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  416 |  311 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2258 | 2077 passed | 146 failed | 35 failed as expected
+test cases:  417 |  312 passed |  85 failed | 6 skipped | 14 failed as expected
+assertions: 2260 | 2079 passed | 146 failed | 35 failed as expected
 

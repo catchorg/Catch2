@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="129" skipped="12" tests="2270" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="129" skipped="12" tests="2272" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -2074,6 +2074,7 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="tuple&lt;string,string>" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="uniform samples" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="uniform_integer_distribution can return the bounds" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/Default constructed unique_ptr is empty" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/Take ownership of allocation" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/Take ownership of allocation/Plain reset deallocates" time="{duration}" status="run"/>

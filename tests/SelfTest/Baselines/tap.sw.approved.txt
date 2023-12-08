@@ -4423,6 +4423,10 @@ ok {test-number} - e.upper_bound == 23 for: 23.0 == 23
 ok {test-number} - e.lower_bound == 23 for: 23.0 == 23
 # uniform samples
 ok {test-number} - e.confidence_interval == 0.95 for: 0.95 == 0.95
+# uniform_integer_distribution can return the bounds
+ok {test-number} - dist.a() == -10 for: -10 == -10
+# uniform_integer_distribution can return the bounds
+ok {test-number} - dist.b() == 10 for: 10 == 10
 # unique_ptr reimplementation: basic functionality
 ok {test-number} - !(ptr) for: !{?}
 # unique_ptr reimplementation: basic functionality
@@ -4545,5 +4549,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2270
+1..2272
 
