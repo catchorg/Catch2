@@ -17,7 +17,7 @@ namespace Catch {
 
     std::string AssertionResultData::reconstructExpression() const {
 
-        if( reconstructedExpression.empty() ) {
+        if( reconstructedExpression == "" ) {
             if( lazyExpression ) {
                 ReusableStringStream rss;
                 rss << lazyExpression;

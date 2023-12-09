@@ -24,9 +24,7 @@
 
 #include <exception>
 
-namespace Catch {
-
-    namespace {
+namespace Catch { namespace {
 
         class RegistryHub : public IRegistryHub,
                             public IMutableRegistryHub,

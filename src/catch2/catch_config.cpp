@@ -18,9 +18,7 @@
 
 #include <fstream>
 
-namespace Catch {
-
-    namespace {
+namespace Catch { namespace {
         static bool enableBazelEnvSupport() {
 #if defined( CATCH_CONFIG_BAZEL_SUPPORT )
             return true;

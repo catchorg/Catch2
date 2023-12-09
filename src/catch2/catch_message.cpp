@@ -15,10 +15,6 @@
 #include <stack>
 
 namespace Catch {
-
-    ////////////////////////////////////////////////////////////////////////////
-
-
     ScopedMessage::ScopedMessage( MessageBuilder&& builder ):
         m_info( CATCH_MOVE(builder.m_info) ) {
         m_info.message = builder.m_stream.str();

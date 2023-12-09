@@ -31,9 +31,7 @@
 #include <iomanip>
 #include <set>
 
-namespace Catch {
-
-    namespace {
+namespace Catch { namespace {
         const int MaxExitCode = 255;
 
         IEventListenerPtr createReporter(std::string const& reporterName, ReporterConfig&& config) {
