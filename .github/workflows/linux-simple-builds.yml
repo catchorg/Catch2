@@ -92,7 +92,9 @@ jobs:
       if: ${{ matrix.cxx == 'g++-5' || matrix.cxx == 'g++-6' }}
 
     - name: Prepare environment
-      run: sudo apt-get install -y ninja-build ${{matrix.other_pkgs}}
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ninja-build ${{matrix.other_pkgs}}
 
     - name: Configure build
       working-directory: ${{runner.workspace}}

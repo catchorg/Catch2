@@ -21,7 +21,9 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Prepare environment
-      run: sudo apt-get install -y meson ninja-build ${{matrix.other_pkgs}}
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y meson ninja-build ${{matrix.other_pkgs}}
 
     - name: Configure build
       env:
