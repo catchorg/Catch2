@@ -189,6 +189,31 @@ TEST_CASE("type conversion", "[generators]") {
 }
 ```
 
+
+### Random number generators: details
+
+> This section applies from Catch2 vX.Y.Z. Before that, random generators
+> were a thin wrapper around distributions from `<random>`.
+
+All of the `random(a, b)` generators in Catch2 currently generate uniformly
+distributed number in closed interval \[a; b\]. This  is different from
+`std::uniform_real_distribution`, which should return numbers in interval
+\[a; b) (but due to rounding can end up returning b anyway), but the
+difference is intentional, so that `random(a, a)` makes sense. If there is
+enough interest from users, we can provide API to pick any of CC, CO, OC,
+or OO ranges.
+
+Unlike `std::uniform_int_distribution`, Catch2's generators also support
+various single-byte integral types, such as `char` or `bool`.
+
+Given the same seed, the output from the integral generators is
+reproducible across different platforms. For floating point generators,
+we only promise reproducibility on platforms that obey the IEEE 754
+standard, and where `float` is 4 bytes and `double` is 8 bytes. We provide
+no guarantees for `long double`, as the internals of `long double` can
+vary wildly across different platforms.
+
+
 ## Generator interface
 
 You can also implement your own generators, by deriving from the

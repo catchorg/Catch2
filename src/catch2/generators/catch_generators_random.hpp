@@ -11,8 +11,9 @@
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
-
-#include <random>
+#include <catch2/internal/catch_uniform_integer_distribution.hpp>
+#include <catch2/internal/catch_uniform_floating_point_distribution.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 namespace Catch {
 namespace Generators {
@@ -26,7 +27,7 @@ namespace Detail {
 template <typename Float>
 class RandomFloatingGenerator final : public IGenerator<Float> {
     Catch::SimplePcg32 m_rng;
-    std::uniform_real_distribution<Float> m_dist;
+    Catch::uniform_floating_point_distribution<Float> m_dist;
     Float m_current_number;
 public:
     RandomFloatingGenerator( Float a, Float b, std::uint32_t seed ):
@@ -44,10 +45,27 @@ public:
     }
 };
 
+template <>
+class RandomFloatingGenerator<long double> final : public IGenerator<long double> {
+    // We still rely on <random> for this specialization, but we don't
+    // want to drag it into the header.
+    struct PImpl;
+    Catch::Detail::unique_ptr<PImpl> m_pimpl;
+    long double m_current_number;
+
+public:
+    RandomFloatingGenerator( long double a, long double b, std::uint32_t seed );
+
+    long double const& get() const override { return m_current_number; }
+    bool next() override;
+
+    ~RandomFloatingGenerator() override; // = default
+};
+
 template <typename Integer>
 class RandomIntegerGenerator final : public IGenerator<Integer> {
     Catch::SimplePcg32 m_rng;
-    std::uniform_int_distribution<Integer> m_dist;
+    Catch::uniform_integer_distribution<Integer> m_dist;
     Integer m_current_number;
 public:
     RandomIntegerGenerator( Integer a, Integer b, std::uint32_t seed ):
@@ -68,14 +86,6 @@ public:
 template <typename T>
 std::enable_if_t<std::is_integral<T>::value, GeneratorWrapper<T>>
 random(T a, T b) {
-    static_assert(
-        !std::is_same<T, char>::value &&
-        !std::is_same<T, int8_t>::value &&
-        !std::is_same<T, uint8_t>::value &&
-        !std::is_same<T, signed char>::value &&
-        !std::is_same<T, unsigned char>::value &&
-        !std::is_same<T, bool>::value,
-        "The requested type is not supported by the underlying random distributions from std" );
     return GeneratorWrapper<T>(
         Catch::Detail::make_unique<RandomIntegerGenerator<T>>(a, b, Detail::getSeed())
     );

@@ -84,9 +84,14 @@ and it is also generally repeatable across versions, but we might break
 it from time to time. E.g. we broke repeatability with previous versions
 in v2.13.4 so that test cases with similar names are shuffled better.
 
-Random generators currently rely on platform's stdlib, specifically
-the distributions from `<random>`. We thus provide no extra guarantee
-above what your platform does. **Important: `<random>`'s distributions
+Since Catch2 vX.Y.Z the random generators use custom distributions,
+that should be repeatable across different platforms, with few caveats.
+For details see the section on random generators in the [Generator
+documentation](generators.md#random-number-generators-details).
+
+Before this version, random generators relied on distributions from
+platform's stdlib. We thus can provide no extra guarantee on top of the
+ones given by your platform. **Important: `<random>`'s distributions
 are not specified to be repeatable across different platforms.**
 
 
