@@ -114,8 +114,8 @@ def updateVersionDefine(version):
 def updateVersionPlaceholder(filename, version):
     with open(filename, 'rb') as file:
         lines = file.readlines()
-    placeholderRegex = re.compile(b'in Catch[0-9]? X.Y.Z')
-    replacement = 'in Catch2 {}.{}.{}'.format(version.majorVersion, version.minorVersion, version.patchNumber).encode('ascii')
+    placeholderRegex = re.compile(b'Catch[0-9]? X.Y.Z')
+    replacement = 'Catch2 {}.{}.{}'.format(version.majorVersion, version.minorVersion, version.patchNumber).encode('ascii')
     with open(filename, 'wb') as file:
         for line in lines:
             file.write(placeholderRegex.sub(replacement, line))
