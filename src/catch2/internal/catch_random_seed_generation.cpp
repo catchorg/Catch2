@@ -9,6 +9,7 @@
 #include <catch2/internal/catch_random_seed_generation.hpp>
 
 #include <catch2/internal/catch_enforce.hpp>
+#include <catch2/internal/catch_random_integer_helpers.hpp>
 
 #include <ctime>
 #include <random>
@@ -21,10 +22,10 @@ namespace Catch {
             return static_cast<std::uint32_t>( std::time( nullptr ) );
 
         case GenerateFrom::Default:
-        case GenerateFrom::RandomDevice:
-            // In theory, a platform could have random_device that returns just
-            // 16 bits. That is still some randomness, so we don't care too much
-            return static_cast<std::uint32_t>( std::random_device{}() );
+        case GenerateFrom::RandomDevice: {
+            std::random_device rd;
+            return Detail::fillBitsFrom<std::uint32_t>( rd );
+        }
 
         default:
             CATCH_ERROR("Unknown generation method");
