@@ -173,13 +173,3 @@ TEST_CASE("b") {
 
 If you are seeing a problem like this, i.e. weird test paths that trigger only under Clang with `libc++`, or only under very specific version of `libstdc++`, it is very likely you are seeing this. The only known workaround is to use a fixed version of your standard library.
 
-
-### libstdc++, `_GLIBCXX_DEBUG` macro and random ordering of tests
-
-Running a Catch2 binary compiled against libstdc++ with `_GLIBCXX_DEBUG`
-macro defined with `--order rand` will cause a debug check to trigger and
-abort the run due to self-assignment.
-[This is a known bug inside libstdc++](https://stackoverflow.com/questions/22915325/avoiding-self-assignment-in-stdshuffle/23691322)
-
-Workaround: Don't use `--order rand` when compiling against debug-enabled
-libstdc++.
