@@ -10,10 +10,10 @@
 #define CATCH_UNIFORM_FLOATING_POINT_DISTRIBUTION_HPP_INCLUDED
 
 #include <catch2/internal/catch_random_floating_point_helpers.hpp>
+#include <catch2/internal/catch_uniform_integer_distribution.hpp>
 
 #include <cmath>
 #include <type_traits>
-#include <random>
 
 namespace Catch {
 
@@ -76,8 +76,7 @@ class uniform_floating_point_distribution {
     FloatType m_a, m_b;
     FloatType m_ulp_magnitude;
     WidthType m_floats_in_range;
-    // TODO: we want to eventually replace this distribution with our own for reproducibility
-    std::uniform_int_distribution<WidthType> m_int_dist;
+    uniform_integer_distribution<WidthType> m_int_dist;
 
     // In specific cases, we can overflow into `inf` when computing the
     // `steps * g` offset. To avoid this, we don't offset by more than this

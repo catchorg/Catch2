@@ -16,6 +16,8 @@
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/matchers/catch_matchers_range_equals.hpp>
 
+#include <random>
+
 TEST_CASE("Our PCG implementation provides expected results for known seeds", "[rng]") {
     Catch::SimplePcg32 rng;
     SECTION("Default seeded") {
@@ -488,4 +490,81 @@ TEMPLATE_TEST_CASE( "uniform_integer_distribution is reproducible",
     }
 
     REQUIRE_THAT(generated, Catch::Matchers::RangeEquals(uniform_integer_test_params<TestType>::expected));
+}
+
+
+namespace {
+    template <typename T>
+    struct uniform_fp_test_params;
+
+    template<>
+    struct uniform_fp_test_params<float> {
+        // These are exactly representable
+        static constexpr float lowest = -256.125f;
+        static constexpr float highest = 385.125f;
+        // These are just round-trip formatted
+        static constexpr float expected[] = { 92.56961f,
+                                              -23.170044f,
+                                              310.81833f,
+                                              -53.023132f,
+                                              105.03287f,
+                                              198.77591f,
+                                              -172.72931f,
+                                              51.805176f,
+                                              -241.10156f,
+                                              64.66101f,
+                                              212.12509f,
+                                              -49.24292f,
+                                              -177.1399f,
+                                              245.23679f,
+                                              173.22421f };
+    };
+    template <>
+    struct uniform_fp_test_params<double> {
+        // These are exactly representable
+        static constexpr double lowest = -234582.9921875;
+        static constexpr double highest = 261238.015625;
+        // These are just round-trip formatted
+        static constexpr double expected[] = { 35031.207052832615,
+                                               203783.3401838024,
+                                               44667.940405848756,
+                                               -170100.5877224467,
+                                               -222966.7418051684,
+                                               127472.72630072923,
+                                               -173510.88209096913,
+                                               97394.16172239158,
+                                               119123.6921592663,
+                                               22595.741022785165,
+                                               8988.68409120926,
+                                               136906.86520606978,
+                                               33369.19104222473,
+                                               60912.7615841752,
+                                               -149060.05936760217 };
+    };
+
+// We need these definitions for C++14 and earlier, but
+// GCC will complain about them in newer C++ standards
+#if __cplusplus <= 201402L
+    constexpr float uniform_fp_test_params<float>::expected[];
+    constexpr double uniform_fp_test_params<double>::expected[];
+#endif
+} // namespace
+
+TEMPLATE_TEST_CASE( "uniform_floating_point_distribution is reproducible",
+                    "[rng][distribution][floating-point][approvals]",
+                    float,
+                    double ) {
+    Catch::SimplePcg32 pcg( 0xaabb'aabb );
+
+    const auto lowest = uniform_fp_test_params<TestType>::lowest;
+    const auto highest = uniform_fp_test_params<TestType>::highest;
+    Catch::uniform_floating_point_distribution<TestType> dist( lowest, highest );
+
+    constexpr auto iters = 15;
+    std::array<TestType, iters> generated;
+    for ( int i = 0; i < iters; ++i ) {
+        generated[i] = dist( pcg );
+    }
+
+    REQUIRE_THAT( generated, Catch::Matchers::RangeEquals( uniform_fp_test_params<TestType>::expected ) );
 }
