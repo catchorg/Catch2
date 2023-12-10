@@ -192,7 +192,7 @@ TEST_CASE("type conversion", "[generators]") {
 
 ### Random number generators: details
 
-> This section applies from Catch2 vX.Y.Z. Before that, random generators
+> This section applies from Catch2 3.5.0. Before that, random generators
 > were a thin wrapper around distributions from `<random>`.
 
 All of the `random(a, b)` generators in Catch2 currently generate uniformly

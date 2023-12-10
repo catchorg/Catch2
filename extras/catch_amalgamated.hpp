@@ -1,3 +1,4 @@
+
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
 //   (See accompanying file LICENSE.txt or copy at
@@ -5,8 +6,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.4.0
-//  Generated: 2023-07-13 13:23:07.577770
+//  Catch v3.5.0
+//  Generated: 2023-12-11 00:51:06.770598
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -240,7 +241,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Assume that some platforms do not support getenv.
-#if defined(CATCH_PLATFORM_WINDOWS_UWP) || defined(CATCH_PLATFORM_PLAYSTATION)
+#if defined( CATCH_PLATFORM_WINDOWS_UWP ) ||                                   \
+    defined( CATCH_PLATFORM_PLAYSTATION ) ||                                   \
+    defined( _GAMING_XBOX )
 #    define CATCH_INTERNAL_CONFIG_NO_GETENV
 #else
 #    define CATCH_INTERNAL_CONFIG_GETENV
@@ -950,14 +953,35 @@ namespace Detail {
 #ifndef CATCH_BENCHMARK_STATS_FWD_HPP_INCLUDED
 #define CATCH_BENCHMARK_STATS_FWD_HPP_INCLUDED
 
+
+
+// Adapted from donated nonius code.
+
+#ifndef CATCH_CLOCK_HPP_INCLUDED
+#define CATCH_CLOCK_HPP_INCLUDED
+
 #include <chrono>
+
+namespace Catch {
+    namespace Benchmark {
+        using IDuration = std::chrono::nanoseconds;
+        using FDuration = std::chrono::duration<double, std::nano>;
+
+        template <typename Clock>
+        using TimePoint = typename Clock::time_point;
+
+        using default_clock = std::chrono::steady_clock;
+    } // namespace Benchmark
+} // namespace Catch
+
+#endif // CATCH_CLOCK_HPP_INCLUDED
 
 namespace Catch {
 
     // We cannot forward declare the type with default template argument
     // multiple times, so it is split out into a separate header so that
     // we can prevent multiple declarations in dependees
-    template <typename Duration = std::chrono::duration<double, std::nano>>
+    template <typename Duration = Benchmark::FDuration>
     struct BenchmarkStats;
 
 } // end namespace Catch
@@ -1246,17 +1270,12 @@ namespace Catch {
 
 namespace Catch {
     namespace Benchmark {
-        template <typename Duration>
+        template <typename Type>
         struct Estimate {
-            Duration point;
-            Duration lower_bound;
-            Duration upper_bound;
+            Type point;
+            Type lower_bound;
+            Type upper_bound;
             double confidence_interval;
-
-            template <typename Duration2>
-            operator Estimate<Duration2>() const {
-                return { point, lower_bound, upper_bound, confidence_interval };
-            }
         };
     } // namespace Benchmark
 } // namespace Catch
@@ -1304,32 +1323,17 @@ namespace Catch {
         double clockCost;
     };
 
-    template <class Duration>
+    // We need to keep template parameter for backwards compatibility,
+    // but we also do not want to use the template paraneter.
+    template <class Dummy>
     struct BenchmarkStats {
         BenchmarkInfo info;
 
-        std::vector<Duration> samples;
-        Benchmark::Estimate<Duration> mean;
-        Benchmark::Estimate<Duration> standardDeviation;
+        std::vector<Benchmark::FDuration> samples;
+        Benchmark::Estimate<Benchmark::FDuration> mean;
+        Benchmark::Estimate<Benchmark::FDuration> standardDeviation;
         Benchmark::OutlierClassification outliers;
         double outlierVariance;
-
-        template <typename Duration2>
-        operator BenchmarkStats<Duration2>() const {
-            std::vector<Duration2> samples2;
-            samples2.reserve(samples.size());
-            for (auto const& sample : samples) {
-                samples2.push_back(Duration2(sample));
-            }
-            return {
-                info,
-                CATCH_MOVE(samples2),
-                mean,
-                standardDeviation,
-                outliers,
-                outlierVariance,
-            };
-        }
     };
 
 
@@ -1340,61 +1344,19 @@ namespace Catch {
 
 // Adapted from donated nonius code.
 
-#ifndef CATCH_CLOCK_HPP_INCLUDED
-#define CATCH_CLOCK_HPP_INCLUDED
-
-#include <chrono>
-#include <ratio>
-
-namespace Catch {
-    namespace Benchmark {
-        template <typename Clock>
-        using ClockDuration = typename Clock::duration;
-        template <typename Clock>
-        using FloatDuration = std::chrono::duration<double, typename Clock::period>;
-
-        template <typename Clock>
-        using TimePoint = typename Clock::time_point;
-
-        using default_clock = std::chrono::steady_clock;
-
-        template <typename Clock>
-        struct now {
-            TimePoint<Clock> operator()() const {
-                return Clock::now();
-            }
-        };
-
-        using fp_seconds = std::chrono::duration<double, std::ratio<1>>;
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_CLOCK_HPP_INCLUDED
-
-
-// Adapted from donated nonius code.
-
 #ifndef CATCH_ENVIRONMENT_HPP_INCLUDED
 #define CATCH_ENVIRONMENT_HPP_INCLUDED
 
 
 namespace Catch {
     namespace Benchmark {
-        template <typename Duration>
         struct EnvironmentEstimate {
-            Duration mean;
+            FDuration mean;
             OutlierClassification outliers;
-
-            template <typename Duration2>
-            operator EnvironmentEstimate<Duration2>() const {
-                return { mean, outliers };
-            }
         };
-        template <typename Clock>
         struct Environment {
-            using clock_type = Clock;
-            EnvironmentEstimate<FloatDuration<Clock>> clock_resolution;
-            EnvironmentEstimate<FloatDuration<Clock>> clock_cost;
+            EnvironmentEstimate clock_resolution;
+            EnvironmentEstimate clock_cost;
         };
     } // namespace Benchmark
 } // namespace Catch
@@ -1487,7 +1449,7 @@ namespace Catch {
 
         template <typename Fn, typename... Args>
         inline auto invoke_deoptimized(Fn&& fn, Args&&... args) -> std::enable_if_t<std::is_same<void, decltype(fn(args...))>::value> {
-            CATCH_FORWARD(fn) (CATCH_FORWARD(args)...);
+            CATCH_FORWARD((fn)) (CATCH_FORWARD(args)...);
         }
     } // namespace Benchmark
 } // namespace Catch
@@ -1553,7 +1515,10 @@ namespace Catch {
                 void start() override { started = Clock::now(); }
                 void finish() override { finished = Clock::now(); }
 
-                ClockDuration<Clock> elapsed() const { return finished - started; }
+                IDuration elapsed() const {
+                    return std::chrono::duration_cast<std::chrono::nanoseconds>(
+                        finished - started );
+                }
 
                 TimePoint<Clock> started;
                 TimePoint<Clock> finished;
@@ -1791,14 +1756,14 @@ namespace Catch {
 
 namespace Catch {
     namespace Benchmark {
-        template <typename Duration, typename Result>
+        template <typename Result>
         struct Timing {
-            Duration elapsed;
+            IDuration elapsed;
             Result result;
             int iterations;
         };
-        template <typename Clock, typename Func, typename... Args>
-        using TimingOf = Timing<ClockDuration<Clock>, Detail::CompleteType_t<FunctionReturnType<Func, Args...>>>;
+        template <typename Func, typename... Args>
+        using TimingOf = Timing<Detail::CompleteType_t<FunctionReturnType<Func, Args...>>>;
     } // namespace Benchmark
 } // namespace Catch
 
@@ -1808,7 +1773,7 @@ namespace Catch {
     namespace Benchmark {
         namespace Detail {
             template <typename Clock, typename Fun, typename... Args>
-            TimingOf<Clock, Fun, Args...> measure(Fun&& fun, Args&&... args) {
+            TimingOf<Fun, Args...> measure(Fun&& fun, Args&&... args) {
                 auto start = Clock::now();
                 auto&& r = Detail::complete_invoke(fun, CATCH_FORWARD(args)...);
                 auto end = Clock::now();
@@ -1827,11 +1792,11 @@ namespace Catch {
     namespace Benchmark {
         namespace Detail {
             template <typename Clock, typename Fun>
-            TimingOf<Clock, Fun, int> measure_one(Fun&& fun, int iters, std::false_type) {
+            TimingOf<Fun, int> measure_one(Fun&& fun, int iters, std::false_type) {
                 return Detail::measure<Clock>(fun, iters);
             }
             template <typename Clock, typename Fun>
-            TimingOf<Clock, Fun, Chronometer> measure_one(Fun&& fun, int iters, std::true_type) {
+            TimingOf<Fun, Chronometer> measure_one(Fun&& fun, int iters, std::true_type) {
                 Detail::ChronometerModel<Clock> meter;
                 auto&& result = Detail::complete_invoke(fun, Chronometer(meter, iters));
 
@@ -1846,8 +1811,8 @@ namespace Catch {
             void throw_optimized_away_error();
 
             template <typename Clock, typename Fun>
-            TimingOf<Clock, Fun, run_for_at_least_argument_t<Clock, Fun>>
-                run_for_at_least(ClockDuration<Clock> how_long,
+            TimingOf<Fun, run_for_at_least_argument_t<Clock, Fun>>
+                run_for_at_least(IDuration how_long,
                                  const int initial_iterations,
                                  Fun&& fun) {
                 auto iters = initial_iterations;
@@ -1871,33 +1836,31 @@ namespace Catch {
 
 namespace Catch {
     namespace Benchmark {
-        template <typename Duration>
         struct ExecutionPlan {
             int iterations_per_sample;
-            Duration estimated_duration;
+            FDuration estimated_duration;
             Detail::BenchmarkFunction benchmark;
-            Duration warmup_time;
+            FDuration warmup_time;
             int warmup_iterations;
 
-            template <typename Duration2>
-            operator ExecutionPlan<Duration2>() const {
-                return { iterations_per_sample, estimated_duration, benchmark, warmup_time, warmup_iterations };
-            }
-
             template <typename Clock>
-            std::vector<FloatDuration<Clock>> run(const IConfig &cfg, Environment<FloatDuration<Clock>> env) const {
+            std::vector<FDuration> run(const IConfig &cfg, Environment env) const {
                 // warmup a bit
-                Detail::run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(warmup_time), warmup_iterations, Detail::repeat(now<Clock>{}));
+                Detail::run_for_at_least<Clock>(
+                    std::chrono::duration_cast<IDuration>( warmup_time ),
+                    warmup_iterations,
+                    Detail::repeat( []() { return Clock::now(); } )
+                );
 
-                std::vector<FloatDuration<Clock>> times;
+                std::vector<FDuration> times;
                 const auto num_samples = cfg.benchmarkSamples();
                 times.reserve( num_samples );
                 for ( size_t i = 0; i < num_samples; ++i ) {
                     Detail::ChronometerModel<Clock> model;
                     this->benchmark( Chronometer( model, iterations_per_sample ) );
                     auto sample_time = model.elapsed() - env.clock_cost.mean;
-                    if ( sample_time < FloatDuration<Clock>::zero() ) {
-                        sample_time = FloatDuration<Clock>::zero();
+                    if ( sample_time < FDuration::zero() ) {
+                        sample_time = FDuration::zero();
                     }
                     times.push_back(sample_time / iterations_per_sample);
                 }
@@ -1923,100 +1886,35 @@ namespace Catch {
 #define CATCH_STATS_HPP_INCLUDED
 
 
-#include <algorithm>
 #include <vector>
-#include <cmath>
 
 namespace Catch {
     namespace Benchmark {
         namespace Detail {
             using sample = std::vector<double>;
 
-            // Used when we know we want == comparison of two doubles
-            // to centralize warning suppression
-            bool directCompare( double lhs, double rhs );
-
-            double weighted_average_quantile(int k, int q, std::vector<double>::iterator first, std::vector<double>::iterator last);
+            double weighted_average_quantile( int k,
+                                              int q,
+                                              double* first,
+                                              double* last );
 
             OutlierClassification
-            classify_outliers( std::vector<double>::const_iterator first,
-                               std::vector<double>::const_iterator last );
+            classify_outliers( double const* first, double const* last );
 
-            double mean( std::vector<double>::const_iterator first,
-                         std::vector<double>::const_iterator last );
+            double mean( double const* first, double const* last );
 
-            template <typename Estimator>
-            sample jackknife(Estimator&& estimator,
-                             std::vector<double>::iterator first,
-                             std::vector<double>::iterator last) {
-                auto n = static_cast<size_t>(last - first);
-                auto second = first;
-                ++second;
-                sample results;
-                results.reserve(n);
-
-                for (auto it = first; it != last; ++it) {
-                    std::iter_swap(it, first);
-                    results.push_back(estimator(second, last));
-                }
-
-                return results;
-            }
-
-            inline double normal_cdf(double x) {
-                return std::erfc(-x / std::sqrt(2.0)) / 2.0;
-            }
+            double normal_cdf( double x );
 
             double erfc_inv(double x);
 
             double normal_quantile(double p);
 
-            template <typename Estimator>
-            Estimate<double> bootstrap( double confidence_level,
-                                        std::vector<double>::iterator first,
-                                        std::vector<double>::iterator last,
-                                        sample const& resample,
-                                        Estimator&& estimator ) {
-                auto n_samples = last - first;
-
-                double point = estimator(first, last);
-                // Degenerate case with a single sample
-                if (n_samples == 1) return { point, point, point, confidence_level };
-
-                sample jack = jackknife(estimator, first, last);
-                double jack_mean = mean(jack.begin(), jack.end());
-                double sum_squares = 0, sum_cubes = 0;
-                for (double x : jack) {
-                    auto difference = jack_mean - x;
-                    auto square = difference * difference;
-                    auto cube = square * difference;
-                    sum_squares += square; sum_cubes += cube;
-                }
-
-                double accel = sum_cubes / (6 * std::pow(sum_squares, 1.5));
-                long n = static_cast<long>(resample.size());
-                double prob_n = std::count_if(resample.begin(), resample.end(), [point](double x) { return x < point; }) / static_cast<double>(n);
-                // degenerate case with uniform samples
-                if ( directCompare( prob_n, 0. ) ) {
-                    return { point, point, point, confidence_level };
-                }
-
-                double bias = normal_quantile(prob_n);
-                double z1 = normal_quantile((1. - confidence_level) / 2.);
-
-                auto cumn = [n]( double x ) -> long {
-                    return std::lround( normal_cdf( x ) * static_cast<double>(n) );
-                };
-                auto a = [bias, accel](double b) { return bias + b / (1. - accel * b); };
-                double b1 = bias + z1;
-                double b2 = bias - z1;
-                double a1 = a(b1);
-                double a2 = a(b2);
-                auto lo = static_cast<size_t>((std::max)(cumn(a1), 0l));
-                auto hi = static_cast<size_t>((std::min)(cumn(a2), n - 1));
-
-                return { point, resample[lo], resample[hi], confidence_level };
-            }
+            Estimate<double>
+            bootstrap( double confidence_level,
+                       double* first,
+                       double* last,
+                       sample const& resample,
+                       double ( *estimator )( double const*, double const* ) );
 
             struct bootstrap_analysis {
                 Estimate<double> mean;
@@ -2026,8 +1924,8 @@ namespace Catch {
 
             bootstrap_analysis analyse_samples(double confidence_level,
                                                unsigned int n_resamples,
-                                               std::vector<double>::iterator first,
-                                               std::vector<double>::iterator last);
+                                               double* first,
+                                               double* last);
         } // namespace Detail
     } // namespace Benchmark
 } // namespace Catch
@@ -2071,23 +1969,23 @@ namespace Catch {
 
             template <typename Clock>
             int warmup() {
-                return run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(warmup_time), warmup_seed, &resolution<Clock>)
+                return run_for_at_least<Clock>(std::chrono::duration_cast<IDuration>(warmup_time), warmup_seed, &resolution<Clock>)
                     .iterations;
             }
             template <typename Clock>
-            EnvironmentEstimate<FloatDuration<Clock>> estimate_clock_resolution(int iterations) {
-                auto r = run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(clock_resolution_estimation_time), iterations, &resolution<Clock>)
+            EnvironmentEstimate estimate_clock_resolution(int iterations) {
+                auto r = run_for_at_least<Clock>(std::chrono::duration_cast<IDuration>(clock_resolution_estimation_time), iterations, &resolution<Clock>)
                     .result;
                 return {
-                    FloatDuration<Clock>(mean(r.begin(), r.end())),
-                    classify_outliers(r.begin(), r.end()),
+                    FDuration(mean(r.data(), r.data() + r.size())),
+                    classify_outliers(r.data(), r.data() + r.size()),
                 };
             }
             template <typename Clock>
-            EnvironmentEstimate<FloatDuration<Clock>> estimate_clock_cost(FloatDuration<Clock> resolution) {
+            EnvironmentEstimate estimate_clock_cost(FDuration resolution) {
                 auto time_limit = (std::min)(
                     resolution * clock_cost_estimation_tick_limit,
-                    FloatDuration<Clock>(clock_cost_estimation_time_limit));
+                    FDuration(clock_cost_estimation_time_limit));
                 auto time_clock = [](int k) {
                     return Detail::measure<Clock>([k] {
                         for (int i = 0; i < k; ++i) {
@@ -2098,7 +1996,7 @@ namespace Catch {
                 };
                 time_clock(1);
                 int iters = clock_cost_estimation_iterations;
-                auto&& r = run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(clock_cost_estimation_time), iters, time_clock);
+                auto&& r = run_for_at_least<Clock>(std::chrono::duration_cast<IDuration>(clock_cost_estimation_time), iters, time_clock);
                 std::vector<double> times;
                 int nsamples = static_cast<int>(std::ceil(time_limit / r.elapsed));
                 times.reserve(static_cast<size_t>(nsamples));
@@ -2108,18 +2006,18 @@ namespace Catch {
                             .count() ) );
                 }
                 return {
-                    FloatDuration<Clock>(mean(times.begin(), times.end())),
-                    classify_outliers(times.begin(), times.end()),
+                    FDuration(mean(times.data(), times.data() + times.size())),
+                    classify_outliers(times.data(), times.data() + times.size()),
                 };
             }
 
             template <typename Clock>
-            Environment<FloatDuration<Clock>> measure_environment() {
+            Environment measure_environment() {
 #if defined(__clang__)
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wexit-time-destructors"
 #endif
-                static Catch::Detail::unique_ptr<Environment<FloatDuration<Clock>>> env;
+                static Catch::Detail::unique_ptr<Environment> env;
 #if defined(__clang__)
 #    pragma clang diagnostic pop
 #endif
@@ -2131,7 +2029,7 @@ namespace Catch {
                 auto resolution = Detail::estimate_clock_resolution<Clock>(iters);
                 auto cost = Detail::estimate_clock_cost<Clock>(resolution.mean);
 
-                env = Catch::Detail::make_unique<Environment<FloatDuration<Clock>>>( Environment<FloatDuration<Clock>>{resolution, cost} );
+                env = Catch::Detail::make_unique<Environment>( Environment{resolution, cost} );
                 return *env;
             }
         } // namespace Detail
@@ -2158,94 +2056,25 @@ namespace Catch {
 
 namespace Catch {
     namespace Benchmark {
-        template <typename Duration>
         struct SampleAnalysis {
-            std::vector<Duration> samples;
-            Estimate<Duration> mean;
-            Estimate<Duration> standard_deviation;
+            std::vector<FDuration> samples;
+            Estimate<FDuration> mean;
+            Estimate<FDuration> standard_deviation;
             OutlierClassification outliers;
             double outlier_variance;
-
-            template <typename Duration2>
-            operator SampleAnalysis<Duration2>() const {
-                std::vector<Duration2> samples2;
-                samples2.reserve(samples.size());
-                for (auto const& d : samples) {
-                    samples2.push_back(Duration2(d));
-                }
-                return {
-                    CATCH_MOVE(samples2),
-                    mean,
-                    standard_deviation,
-                    outliers,
-                    outlier_variance,
-                };
-            }
         };
     } // namespace Benchmark
 } // namespace Catch
 
 #endif // CATCH_SAMPLE_ANALYSIS_HPP_INCLUDED
 
-#include <vector>
 
 namespace Catch {
+    class IConfig;
+
     namespace Benchmark {
         namespace Detail {
-            template <typename Duration, typename Iterator>
-            SampleAnalysis<Duration> analyse(const IConfig &cfg, Environment<Duration>, Iterator first, Iterator last) {
-                if (!cfg.benchmarkNoAnalysis()) {
-                    std::vector<double> samples;
-                    samples.reserve(static_cast<size_t>(last - first));
-                    for (auto current = first; current != last; ++current) {
-                        samples.push_back( current->count() );
-                    }
-
-                    auto analysis = Catch::Benchmark::Detail::analyse_samples(cfg.benchmarkConfidenceInterval(), cfg.benchmarkResamples(), samples.begin(), samples.end());
-                    auto outliers = Catch::Benchmark::Detail::classify_outliers(samples.begin(), samples.end());
-
-                    auto wrap_estimate = [](Estimate<double> e) {
-                        return Estimate<Duration> {
-                            Duration(e.point),
-                                Duration(e.lower_bound),
-                                Duration(e.upper_bound),
-                                e.confidence_interval,
-                        };
-                    };
-                    std::vector<Duration> samples2;
-                    samples2.reserve(samples.size());
-                    for (auto s : samples) {
-                        samples2.push_back( Duration( s ) );
-                    }
-
-                    return {
-                        CATCH_MOVE(samples2),
-                        wrap_estimate(analysis.mean),
-                        wrap_estimate(analysis.standard_deviation),
-                        outliers,
-                        analysis.outlier_variance,
-                    };
-                } else {
-                    std::vector<Duration> samples;
-                    samples.reserve(static_cast<size_t>(last - first));
-
-                    Duration mean = Duration(0);
-                    int i = 0;
-                    for (auto it = first; it < last; ++it, ++i) {
-                        samples.push_back(Duration(*it));
-                        mean += Duration(*it);
-                    }
-                    mean /= i;
-
-                    return {
-                        CATCH_MOVE(samples),
-                        Estimate<Duration>{mean, mean, mean, 0.0},
-                        Estimate<Duration>{Duration(0), Duration(0), Duration(0), 0.0},
-                        OutlierClassification{},
-                        0.0
-                    };
-                }
-            }
+            SampleAnalysis analyse(const IConfig &cfg, FDuration* first, FDuration* last);
         } // namespace Detail
     } // namespace Benchmark
 } // namespace Catch
@@ -2255,9 +2084,7 @@ namespace Catch {
 #include <algorithm>
 #include <chrono>
 #include <exception>
-#include <functional>
 #include <string>
-#include <vector>
 #include <cmath>
 
 namespace Catch {
@@ -2271,16 +2098,18 @@ namespace Catch {
                 : fun(CATCH_MOVE(func)), name(CATCH_MOVE(benchmarkName)) {}
 
             template <typename Clock>
-            ExecutionPlan<FloatDuration<Clock>> prepare(const IConfig &cfg, Environment<FloatDuration<Clock>> env) const {
+            ExecutionPlan prepare(const IConfig &cfg, Environment env) const {
                 auto min_time = env.clock_resolution.mean * Detail::minimum_ticks;
                 auto run_time = std::max(min_time, std::chrono::duration_cast<decltype(min_time)>(cfg.benchmarkWarmupTime()));
-                auto&& test = Detail::run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(run_time), 1, fun);
+                auto&& test = Detail::run_for_at_least<Clock>(std::chrono::duration_cast<IDuration>(run_time), 1, fun);
                 int new_iters = static_cast<int>(std::ceil(min_time * test.iterations / test.elapsed));
-                return { new_iters, test.elapsed / test.iterations * new_iters * cfg.benchmarkSamples(), fun, std::chrono::duration_cast<FloatDuration<Clock>>(cfg.benchmarkWarmupTime()), Detail::warmup_iterations };
+                return { new_iters, test.elapsed / test.iterations * new_iters * cfg.benchmarkSamples(), fun, std::chrono::duration_cast<FDuration>(cfg.benchmarkWarmupTime()), Detail::warmup_iterations };
             }
 
             template <typename Clock = default_clock>
             void run() {
+                static_assert( Clock::is_steady,
+                               "Benchmarking clock should be steady" );
                 auto const* cfg = getCurrentContext().getConfig();
 
                 auto env = Detail::measure_environment<Clock>();
@@ -2307,8 +2136,8 @@ namespace Catch {
                         return plan.template run<Clock>(*cfg, env);
                     });
 
-                    auto analysis = Detail::analyse(*cfg, env, samples.begin(), samples.end());
-                    BenchmarkStats<FloatDuration<Clock>> stats{ CATCH_MOVE(info), CATCH_MOVE(analysis.samples), analysis.mean, analysis.standard_deviation, analysis.outliers, analysis.outlier_variance };
+                    auto analysis = Detail::analyse(*cfg, samples.data(), samples.data() + samples.size());
+                    BenchmarkStats<> stats{ CATCH_MOVE(info), CATCH_MOVE(analysis.samples), analysis.mean, analysis.standard_deviation, analysis.outliers, analysis.outlier_variance };
                     getResultCapture().benchmarkEnded(stats);
                 } CATCH_CATCH_ANON (TestFailureException const&) {
                     getResultCapture().benchmarkFailed("Benchmark failed due to failed assertion"_sr);
@@ -2982,6 +2811,12 @@ namespace Catch {
             } else {
                 return "{ }";
             }
+        }
+    };
+    template <>
+    struct StringMaker<std::nullopt_t> {
+        static std::string convert(const std::nullopt_t&) {
+            return "{ }";
         }
     };
 }
@@ -4166,6 +4001,29 @@ namespace Catch {
 
 
 
+
+/** \file
+ * Wrapper for the CATCH_CONFIG_PREFIX_MESSAGES configuration option
+ *
+ * CATCH_CONFIG_PREFIX_ALL can be used to avoid clashes with other macros
+ * by prepending CATCH_. This may not be desirable if the only clashes are with
+ * logger macros such as INFO and WARN. In this cases
+ * CATCH_CONFIG_PREFIX_MESSAGES can be used to only prefix a small subset
+ * of relevant macros.
+ *
+ */
+
+#ifndef CATCH_CONFIG_PREFIX_MESSAGES_HPP_INCLUDED
+#define CATCH_CONFIG_PREFIX_MESSAGES_HPP_INCLUDED
+
+
+#if defined(CATCH_CONFIG_PREFIX_ALL) && !defined(CATCH_CONFIG_PREFIX_MESSAGES)
+    #define CATCH_CONFIG_PREFIX_MESSAGES
+#endif
+
+#endif // CATCH_CONFIG_PREFIX_MESSAGES_HPP_INCLUDED
+
+
 #ifndef CATCH_STREAM_END_STOP_HPP_INCLUDED
 #define CATCH_STREAM_END_STOP_HPP_INCLUDED
 
@@ -4321,28 +4179,28 @@ namespace Catch {
     Catch::getResultCapture().emplaceUnscopedMessage( Catch::MessageBuilder( macroName##_catch_sr, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log )
 
 
-#if defined(CATCH_CONFIG_PREFIX_ALL) && !defined(CATCH_CONFIG_DISABLE)
+#if defined(CATCH_CONFIG_PREFIX_MESSAGES) && !defined(CATCH_CONFIG_DISABLE)
 
   #define CATCH_INFO( msg ) INTERNAL_CATCH_INFO( "CATCH_INFO", msg )
   #define CATCH_UNSCOPED_INFO( msg ) INTERNAL_CATCH_UNSCOPED_INFO( "CATCH_UNSCOPED_INFO", msg )
   #define CATCH_WARN( msg ) INTERNAL_CATCH_MSG( "CATCH_WARN", Catch::ResultWas::Warning, Catch::ResultDisposition::ContinueOnFailure, msg )
   #define CATCH_CAPTURE( ... ) INTERNAL_CATCH_CAPTURE( INTERNAL_CATCH_UNIQUE_NAME(capturer), "CATCH_CAPTURE", __VA_ARGS__ )
 
-#elif defined(CATCH_CONFIG_PREFIX_ALL) && defined(CATCH_CONFIG_DISABLE)
+#elif defined(CATCH_CONFIG_PREFIX_MESSAGES) && defined(CATCH_CONFIG_DISABLE)
 
   #define CATCH_INFO( msg )          (void)(0)
   #define CATCH_UNSCOPED_INFO( msg ) (void)(0)
   #define CATCH_WARN( msg )          (void)(0)
   #define CATCH_CAPTURE( ... )       (void)(0)
 
-#elif !defined(CATCH_CONFIG_PREFIX_ALL) && !defined(CATCH_CONFIG_DISABLE)
+#elif !defined(CATCH_CONFIG_PREFIX_MESSAGES) && !defined(CATCH_CONFIG_DISABLE)
 
   #define INFO( msg ) INTERNAL_CATCH_INFO( "INFO", msg )
   #define UNSCOPED_INFO( msg ) INTERNAL_CATCH_UNSCOPED_INFO( "UNSCOPED_INFO", msg )
   #define WARN( msg ) INTERNAL_CATCH_MSG( "WARN", Catch::ResultWas::Warning, Catch::ResultDisposition::ContinueOnFailure, msg )
   #define CAPTURE( ... ) INTERNAL_CATCH_CAPTURE( INTERNAL_CATCH_UNIQUE_NAME(capturer), "CAPTURE", __VA_ARGS__ )
 
-#elif !defined(CATCH_CONFIG_PREFIX_ALL) && defined(CATCH_CONFIG_DISABLE)
+#elif !defined(CATCH_CONFIG_PREFIX_MESSAGES) && defined(CATCH_CONFIG_DISABLE)
 
   #define INFO( msg )          (void)(0)
   #define UNSCOPED_INFO( msg ) (void)(0)
@@ -5784,7 +5642,7 @@ namespace Catch {
 #else // CATCH_CONFIG_FAST_COMPILE
 
 #define INTERNAL_CATCH_TRY try
-#define INTERNAL_CATCH_CATCH( handler ) catch(...) { handler.handleUnexpectedInflightException(); }
+#define INTERNAL_CATCH_CATCH( handler ) catch(...) { (handler).handleUnexpectedInflightException(); }
 
 #endif
 
@@ -6023,7 +5881,7 @@ namespace Catch {
         CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                           \
         CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS                    \
         CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS                             \
-        if ( [[maybe_unused]] int catchInternalPreviousSectionHint =        \
+        if ( [[maybe_unused]] const int catchInternalPreviousSectionHint =  \
                  catchInternalSectionHint,                                  \
              catchInternalSectionHint = Catch::Detail::GetNewSectionHint(); \
              catchInternalPreviousSectionHint == __LINE__ )                 \
@@ -6033,7 +5891,7 @@ namespace Catch {
         CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                           \
         CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS                    \
         CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS                             \
-        if ( [[maybe_unused]] int catchInternalPreviousSectionHint =        \
+        if ( [[maybe_unused]] const int catchInternalPreviousSectionHint =  \
                  catchInternalSectionHint,                                  \
              catchInternalSectionHint = Catch::Detail::GetNewSectionHint(); \
              catchInternalPreviousSectionHint == __LINE__ )                 \
@@ -6175,7 +6033,7 @@ static int catchInternalSectionHint = 0;
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                           \
         CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS                   \
         static const Catch::Detail::DummyUse INTERNAL_CATCH_UNIQUE_NAME(   \
-            dummyUser )( &fname );                                         \
+            dummyUser )( &(fname) );                                       \
         CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS                            \
         static void fname( [[maybe_unused]] int catchInternalSectionHint ) \
             CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
@@ -7374,7 +7232,7 @@ namespace Catch {
 #define CATCH_VERSION_MACROS_HPP_INCLUDED
 
 #define CATCH_VERSION_MAJOR 3
-#define CATCH_VERSION_MINOR 4
+#define CATCH_VERSION_MINOR 5
 #define CATCH_VERSION_PATCH 0
 
 #endif // CATCH_VERSION_MACROS_HPP_INCLUDED
@@ -8037,7 +7895,550 @@ namespace Catch {
 
 #endif // CATCH_RANDOM_NUMBER_GENERATOR_HPP_INCLUDED
 
-#include <random>
+
+
+#ifndef CATCH_UNIFORM_INTEGER_DISTRIBUTION_HPP_INCLUDED
+#define CATCH_UNIFORM_INTEGER_DISTRIBUTION_HPP_INCLUDED
+
+
+
+
+#ifndef CATCH_RANDOM_INTEGER_HELPERS_HPP_INCLUDED
+#define CATCH_RANDOM_INTEGER_HELPERS_HPP_INCLUDED
+
+#include <climits>
+#include <cstddef>
+#include <cstdint>
+#include <type_traits>
+
+namespace Catch {
+    namespace Detail {
+
+        template <std::size_t>
+        struct SizedUnsignedType;
+#define SizedUnsignedTypeHelper( TYPE )        \
+    template <>                                \
+    struct SizedUnsignedType<sizeof( TYPE )> { \
+        using type = TYPE;                     \
+    }
+
+        SizedUnsignedTypeHelper( std::uint8_t );
+        SizedUnsignedTypeHelper( std::uint16_t );
+        SizedUnsignedTypeHelper( std::uint32_t );
+        SizedUnsignedTypeHelper( std::uint64_t );
+#undef SizedUnsignedTypeHelper
+
+        template <std::size_t sz>
+        using SizedUnsignedType_t = typename SizedUnsignedType<sz>::type;
+
+        template <typename T>
+        using DoubleWidthUnsignedType_t = SizedUnsignedType_t<2 * sizeof( T )>;
+
+        template <typename T>
+        struct ExtendedMultResult {
+            T upper;
+            T lower;
+            friend bool operator==( ExtendedMultResult const& lhs,
+                                    ExtendedMultResult const& rhs ) {
+                return lhs.upper == rhs.upper && lhs.lower == rhs.lower;
+            }
+        };
+
+        // Returns 128 bit result of multiplying lhs and rhs
+        constexpr ExtendedMultResult<std::uint64_t>
+        extendedMult( std::uint64_t lhs, std::uint64_t rhs ) {
+            // We use the simple long multiplication approach for
+            // correctness, we can use platform specific builtins
+            // for performance later.
+
+            // Split the lhs and rhs into two 32bit "digits", so that we can
+            // do 64 bit arithmetic to handle carry bits.
+            //            32b    32b    32b    32b
+            //     lhs                  L1     L2
+            //   * rhs                  R1     R2
+            //            ------------------------
+            //                       |  R2 * L2  |
+            //                 |  R2 * L1  |
+            //                 |  R1 * L2  |
+            //           |  R1 * L1  |
+            //           -------------------------
+            //           |  a  |  b  |  c  |  d  |
+
+#define CarryBits( x ) ( x >> 32 )
+#define Digits( x ) ( x & 0xFF'FF'FF'FF )
+
+            auto r2l2 = Digits( rhs ) * Digits( lhs );
+            auto r2l1 = Digits( rhs ) * CarryBits( lhs );
+            auto r1l2 = CarryBits( rhs ) * Digits( lhs );
+            auto r1l1 = CarryBits( rhs ) * CarryBits( lhs );
+
+            // Sum to columns first
+            auto d = Digits( r2l2 );
+            auto c = CarryBits( r2l2 ) + Digits( r2l1 ) + Digits( r1l2 );
+            auto b = CarryBits( r2l1 ) + CarryBits( r1l2 ) + Digits( r1l1 );
+            auto a = CarryBits( r1l1 );
+
+            // Propagate carries between columns
+            c += CarryBits( d );
+            b += CarryBits( c );
+            a += CarryBits( b );
+
+            // Remove the used carries
+            c = Digits( c );
+            b = Digits( b );
+            a = Digits( a );
+
+#undef CarryBits
+#undef Digits
+
+            return {
+                a << 32 | b, // upper 64 bits
+                c << 32 | d  // lower 64 bits
+            };
+        }
+
+        template <typename UInt>
+        constexpr ExtendedMultResult<UInt> extendedMult( UInt lhs, UInt rhs ) {
+            static_assert( std::is_unsigned<UInt>::value,
+                           "extendedMult can only handle unsigned integers" );
+            static_assert( sizeof( UInt ) < sizeof( std::uint64_t ),
+                           "Generic extendedMult can only handle types smaller "
+                           "than uint64_t" );
+            using WideType = DoubleWidthUnsignedType_t<UInt>;
+
+            auto result = WideType( lhs ) * WideType( rhs );
+            return {
+                static_cast<UInt>( result >> ( CHAR_BIT * sizeof( UInt ) ) ),
+                static_cast<UInt>( result & UInt( -1 ) ) };
+        }
+
+
+        template <typename TargetType,
+                  typename Generator>
+            std::enable_if_t<sizeof(typename Generator::result_type) >= sizeof(TargetType),
+            TargetType> fillBitsFrom(Generator& gen) {
+            using gresult_type = typename Generator::result_type;
+            static_assert( std::is_unsigned<TargetType>::value, "Only unsigned integers are supported" );
+            static_assert( Generator::min() == 0 &&
+                           Generator::max() == static_cast<gresult_type>( -1 ),
+                           "Generator must be able to output all numbers in its result type (effectively it must be a random bit generator)" );
+
+            // We want to return the top bits from a generator, as they are
+            // usually considered higher quality.
+            constexpr auto generated_bits = sizeof( gresult_type ) * CHAR_BIT;
+            constexpr auto return_bits = sizeof( TargetType ) * CHAR_BIT;
+
+            return static_cast<TargetType>( gen() >>
+                                            ( generated_bits - return_bits) );
+        }
+
+        template <typename TargetType,
+                  typename Generator>
+            std::enable_if_t<sizeof(typename Generator::result_type) < sizeof(TargetType),
+            TargetType> fillBitsFrom(Generator& gen) {
+            using gresult_type = typename Generator::result_type;
+            static_assert( std::is_unsigned<TargetType>::value,
+                           "Only unsigned integers are supported" );
+            static_assert( Generator::min() == 0 &&
+                           Generator::max() == static_cast<gresult_type>( -1 ),
+                           "Generator must be able to output all numbers in its result type (effectively it must be a random bit generator)" );
+
+            constexpr auto generated_bits = sizeof( gresult_type ) * CHAR_BIT;
+            constexpr auto return_bits = sizeof( TargetType ) * CHAR_BIT;
+            std::size_t filled_bits = 0;
+            TargetType ret = 0;
+            do {
+                ret <<= generated_bits;
+                ret |= gen();
+                filled_bits += generated_bits;
+            } while ( filled_bits < return_bits );
+
+            return ret;
+        }
+
+        /*
+         * Transposes numbers into unsigned type while keeping their ordering
+         *
+         * This means that signed types are changed so that the ordering is
+         * [INT_MIN, ..., -1, 0, ..., INT_MAX], rather than order we would
+         * get by simple casting ([0, ..., INT_MAX, INT_MIN, ..., -1])
+         */
+        template <typename OriginalType, typename UnsignedType>
+        std::enable_if_t<std::is_signed<OriginalType>::value, UnsignedType>
+        transposeToNaturalOrder( UnsignedType in ) {
+            static_assert(
+                sizeof( OriginalType ) == sizeof( UnsignedType ),
+                "reordering requires the same sized types on both sides" );
+            static_assert( std::is_unsigned<UnsignedType>::value,
+                           "Input type must be unsigned" );
+            // Assuming 2s complement (standardized in current C++), the
+            // positive and negative numbers are already internally ordered,
+            // and their difference is in the top bit. Swapping it orders
+            // them the desired way.
+            constexpr auto highest_bit =
+                UnsignedType( 1 ) << ( sizeof( UnsignedType ) * CHAR_BIT - 1 );
+            return static_cast<UnsignedType>( in ^ highest_bit );
+        }
+
+
+
+        template <typename OriginalType,
+                  typename UnsignedType>
+        std::enable_if_t<std::is_unsigned<OriginalType>::value, UnsignedType>
+            transposeToNaturalOrder(UnsignedType in) {
+            static_assert(
+                sizeof( OriginalType ) == sizeof( UnsignedType ),
+                "reordering requires the same sized types on both sides" );
+            static_assert( std::is_unsigned<UnsignedType>::value, "Input type must be unsigned" );
+            // No reordering is needed for unsigned -> unsigned
+            return in;
+        }
+    } // namespace Detail
+} // namespace Catch
+
+#endif // CATCH_RANDOM_INTEGER_HELPERS_HPP_INCLUDED
+
+namespace Catch {
+
+    namespace Detail {
+        // Indirection to enable make_unsigned<bool> behaviour.
+        template <typename T>
+        struct make_unsigned {
+            using type = std::make_unsigned_t<T>;
+        };
+
+        template <>
+        struct make_unsigned<bool> {
+            using type = uint8_t;
+        };
+
+        template <typename T>
+        using make_unsigned_t = typename make_unsigned<T>::type;
+    }
+
+/**
+ * Implementation of uniform distribution on integers.
+ *
+ * Unlike `std::uniform_int_distribution`, this implementation supports
+ * various 1 byte integral types, including bool (but you should not
+ * actually use it for bools).
+ *
+ * The underlying algorithm is based on the one described in "Fast Random
+ * Integer Generation in an Interval" by Daniel Lemire, but has been
+ * optimized under the assumption of reuse of the same distribution object.
+ */
+template <typename IntegerType>
+class uniform_integer_distribution {
+    static_assert(std::is_integral<IntegerType>::value, "...");
+
+    using UnsignedIntegerType = Detail::make_unsigned_t<IntegerType>;
+
+    // We store the left range bound converted to internal representation,
+    // because it will be used in computation in the () operator.
+    UnsignedIntegerType m_a;
+    // After initialization, right bound is only used for the b() getter,
+    // so we keep it in the original type.
+    IntegerType m_b;
+
+    // How many different values are there in [a, b]. a == b => 1, can be 0 for distribution over all values in the type.
+    UnsignedIntegerType m_ab_distance;
+
+    // We hoisted this out of the main generation function. Technically,
+    // this means that using this distribution will be slower than Lemire's
+    // algorithm if this distribution instance will be used only few times,
+    // but it will be faster if it is used many times. Since Catch2 uses
+    // distributions only to implement random generators, we assume that each
+    // distribution will be reused many times and this is an optimization.
+    UnsignedIntegerType m_rejection_threshold = 0;
+
+    // Assumes m_b and m_a are already filled
+    UnsignedIntegerType computeDistance() const {
+        // This overflows and returns 0 if ua == 0 and ub == TYPE_MAX.
+        // We handle that later when generating the number.
+        return transposeTo(m_b) - m_a + 1;
+    }
+
+    static UnsignedIntegerType computeRejectionThreshold(UnsignedIntegerType ab_distance) {
+        // distance == 0 means that we will return all possible values from
+        // the type's range, and that we shouldn't reject anything.
+        if ( ab_distance == 0 ) { return 0; }
+        return ( ~ab_distance + 1 ) % ab_distance;
+    }
+
+    static UnsignedIntegerType transposeTo(IntegerType in) {
+        return Detail::transposeToNaturalOrder<IntegerType>(
+            static_cast<UnsignedIntegerType>( in ) );
+    }
+    static IntegerType transposeBack(UnsignedIntegerType in) {
+        return static_cast<IntegerType>(
+            Detail::transposeToNaturalOrder<IntegerType>(in) );
+    }
+
+public:
+    using result_type = IntegerType;
+
+    uniform_integer_distribution( IntegerType a, IntegerType b ):
+        m_a( transposeTo(a) ),
+        m_b( b ),
+        m_ab_distance( computeDistance() ),
+        m_rejection_threshold( computeRejectionThreshold(m_ab_distance) ) {
+        assert( a <= b );
+    }
+
+    template <typename Generator>
+    result_type operator()( Generator& g ) {
+        // All possible values of result_type are valid.
+        if ( m_ab_distance == 0 ) {
+            return transposeBack( Detail::fillBitsFrom<UnsignedIntegerType>( g ) );
+        }
+
+        auto random_number = Detail::fillBitsFrom<UnsignedIntegerType>( g );
+        auto emul = Detail::extendedMult( random_number, m_ab_distance );
+        // Unlike Lemire's algorithm we skip the ab_distance check, since
+        // we precomputed the rejection threshold, which is always tighter.
+        while (emul.lower < m_rejection_threshold) {
+            random_number = Detail::fillBitsFrom<UnsignedIntegerType>( g );
+            emul = Detail::extendedMult( random_number, m_ab_distance );
+        }
+
+        return transposeBack(m_a + emul.upper);
+    }
+
+    result_type a() const { return transposeBack(m_a); }
+    result_type b() const { return m_b; }
+};
+
+} // end namespace Catch
+
+#endif // CATCH_UNIFORM_INTEGER_DISTRIBUTION_HPP_INCLUDED
+
+
+
+#ifndef CATCH_UNIFORM_FLOATING_POINT_DISTRIBUTION_HPP_INCLUDED
+#define CATCH_UNIFORM_FLOATING_POINT_DISTRIBUTION_HPP_INCLUDED
+
+
+
+
+#ifndef CATCH_RANDOM_FLOATING_POINT_HELPERS_HPP_INCLUDED
+#define CATCH_RANDOM_FLOATING_POINT_HELPERS_HPP_INCLUDED
+
+
+
+#ifndef CATCH_POLYFILLS_HPP_INCLUDED
+#define CATCH_POLYFILLS_HPP_INCLUDED
+
+namespace Catch {
+
+    bool isnan(float f);
+    bool isnan(double d);
+
+    float nextafter(float x, float y);
+    double nextafter(double x, double y);
+
+}
+
+#endif // CATCH_POLYFILLS_HPP_INCLUDED
+
+#include <cassert>
+#include <cmath>
+#include <cstdint>
+#include <limits>
+#include <type_traits>
+
+namespace Catch {
+
+    namespace Detail {
+        /**
+         * Returns the largest magnitude of 1-ULP distance inside the [a, b] range.
+         *
+         * Assumes `a < b`.
+         */
+        template <typename FloatType>
+        FloatType gamma(FloatType a, FloatType b) {
+            static_assert( std::is_floating_point<FloatType>::value,
+                           "gamma returns the largest ULP magnitude within "
+                           "floating point range [a, b]. This only makes sense "
+                           "for floating point types" );
+            assert( a <= b );
+
+            const auto gamma_up = Catch::nextafter( a, std::numeric_limits<FloatType>::infinity() ) - a;
+            const auto gamma_down = b - Catch::nextafter( b, -std::numeric_limits<FloatType>::infinity() );
+
+            return gamma_up < gamma_down ? gamma_down : gamma_up;
+        }
+
+        template <typename FloatingPoint>
+        struct DistanceTypePicker;
+        template <>
+        struct DistanceTypePicker<float> {
+            using type = std::uint32_t;
+        };
+        template <>
+        struct DistanceTypePicker<double> {
+            using type = std::uint64_t;
+        };
+
+        template <typename T>
+        using DistanceType = typename DistanceTypePicker<T>::type;
+
+#if defined( __GNUC__ ) || defined( __clang__ )
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
+        /**
+         * Computes the number of equi-distant floats in [a, b]
+         *
+         * Since not every range can be split into equidistant floats
+         * exactly, we actually compute ceil(b/distance - a/distance),
+         * because in those cases we want to overcount.
+         *
+         * Uses modified Dekker's FastTwoSum algorithm to handle rounding.
+         */
+        template <typename FloatType>
+        DistanceType<FloatType>
+        count_equidistant_floats( FloatType a, FloatType b, FloatType distance ) {
+            assert( a <= b );
+            // We get distance as gamma for our uniform float distribution,
+            // so this will round perfectly.
+            const auto ag = a / distance;
+            const auto bg = b / distance;
+
+            const auto s = bg - ag;
+            const auto err = ( std::fabs( a ) <= std::fabs( b ) )
+                                 ? -ag - ( s - bg )
+                                 : bg - ( s + ag );
+            const auto ceil_s = static_cast<DistanceType<FloatType>>( std::ceil( s ) );
+
+            return ( ceil_s != s ) ? ceil_s : ceil_s + ( err > 0 );
+        }
+#if defined( __GNUC__ ) || defined( __clang__ )
+#    pragma GCC diagnostic pop
+#endif
+
+    }
+
+} // end namespace Catch
+
+#endif // CATCH_RANDOM_FLOATING_POINT_HELPERS_HPP_INCLUDED
+
+#include <cmath>
+#include <type_traits>
+
+namespace Catch {
+
+    namespace Detail {
+#if defined( __GNUC__ ) || defined( __clang__ )
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
+        // The issue with overflow only happens with maximal ULP and HUGE
+        // distance, e.g. when generating numbers in [-inf, inf] for given
+        // type. So we only check for the largest possible ULP in the
+        // type, and return something that does not overflow to inf in 1 mult.
+        constexpr std::uint64_t calculate_max_steps_in_one_go(double gamma) {
+            if ( gamma == 1.99584030953472e+292 ) { return 9007199254740991; }
+            return static_cast<std::uint64_t>( -1 );
+        }
+        constexpr std::uint32_t calculate_max_steps_in_one_go(float gamma) {
+            if ( gamma == 2.028241e+31f ) { return 16777215; }
+            return static_cast<std::uint32_t>( -1 );
+        }
+#if defined( __GNUC__ ) || defined( __clang__ )
+#    pragma GCC diagnostic pop
+#endif
+    }
+
+/**
+ * Implementation of uniform distribution on floating point numbers.
+ *
+ * Note that we support only `float` and `double` types, because these
+ * usually mean the same thing across different platform. `long double`
+ * varies wildly by platform and thus we cannot provide reproducible
+ * implementation. Also note that we don't implement all parts of
+ * distribution per standard: this distribution is not serializable, nor
+ * can the range be arbitrarily reset.
+ *
+ * The implementation also uses different approach than the one taken by
+ * `std::uniform_real_distribution`, where instead of generating a number
+ * between [0, 1) and then multiplying the range bounds with it, we first
+ * split the [a, b] range into a set of equidistributed floating point
+ * numbers, and then use uniform int distribution to pick which one to
+ * return.
+ *
+ * This has the advantage of guaranteeing uniformity (the multiplication
+ * method loses uniformity due to rounding when multiplying floats), except
+ * for small non-uniformity at one side of the interval, where we have
+ * to deal with the fact that not every interval is splittable into
+ * equidistributed floats.
+ *
+ * Based on "Drawing random floating-point numbers from an interval" by
+ * Frederic Goualard.
+ */
+template <typename FloatType>
+class uniform_floating_point_distribution {
+    static_assert(std::is_floating_point<FloatType>::value, "...");
+    static_assert(!std::is_same<FloatType, long double>::value,
+                  "We do not support long double due to inconsistent behaviour between platforms");
+
+    using WidthType = Detail::DistanceType<FloatType>;
+
+    FloatType m_a, m_b;
+    FloatType m_ulp_magnitude;
+    WidthType m_floats_in_range;
+    uniform_integer_distribution<WidthType> m_int_dist;
+
+    // In specific cases, we can overflow into `inf` when computing the
+    // `steps * g` offset. To avoid this, we don't offset by more than this
+    // in one multiply + addition.
+    WidthType m_max_steps_in_one_go;
+    // We don't want to do the magnitude check every call to `operator()`
+    bool m_a_has_leq_magnitude;
+
+public:
+    using result_type = FloatType;
+
+    uniform_floating_point_distribution( FloatType a, FloatType b ):
+        m_a( a ),
+        m_b( b ),
+        m_ulp_magnitude( Detail::gamma( m_a, m_b ) ),
+        m_floats_in_range( Detail::count_equidistant_floats( m_a, m_b, m_ulp_magnitude ) ),
+        m_int_dist(0, m_floats_in_range),
+        m_max_steps_in_one_go( Detail::calculate_max_steps_in_one_go(m_ulp_magnitude)),
+        m_a_has_leq_magnitude(std::fabs(m_a) <= std::fabs(m_b))
+    {
+        assert( a <= b );
+    }
+
+    template <typename Generator>
+    result_type operator()( Generator& g ) {
+        WidthType steps = m_int_dist( g );
+        if ( m_a_has_leq_magnitude ) {
+            if ( steps == m_floats_in_range ) { return m_a; }
+            auto b = m_b;
+            while (steps > m_max_steps_in_one_go) {
+                b -= m_max_steps_in_one_go * m_ulp_magnitude;
+                steps -= m_max_steps_in_one_go;
+            }
+            return b - steps * m_ulp_magnitude;
+        } else {
+            if ( steps == m_floats_in_range ) { return m_b; }
+            auto a = m_a;
+            while (steps > m_max_steps_in_one_go) {
+                a += m_max_steps_in_one_go * m_ulp_magnitude;
+                steps -= m_max_steps_in_one_go;
+            }
+            return a + steps * m_ulp_magnitude;
+        }
+    }
+
+    result_type a() const { return m_a; }
+    result_type b() const { return m_b; }
+};
+
+} // end namespace Catch
+
+#endif // CATCH_UNIFORM_FLOATING_POINT_DISTRIBUTION_HPP_INCLUDED
 
 namespace Catch {
 namespace Generators {
@@ -8051,7 +8452,7 @@ namespace Detail {
 template <typename Float>
 class RandomFloatingGenerator final : public IGenerator<Float> {
     Catch::SimplePcg32 m_rng;
-    std::uniform_real_distribution<Float> m_dist;
+    Catch::uniform_floating_point_distribution<Float> m_dist;
     Float m_current_number;
 public:
     RandomFloatingGenerator( Float a, Float b, std::uint32_t seed ):
@@ -8069,10 +8470,27 @@ public:
     }
 };
 
+template <>
+class RandomFloatingGenerator<long double> final : public IGenerator<long double> {
+    // We still rely on <random> for this specialization, but we don't
+    // want to drag it into the header.
+    struct PImpl;
+    Catch::Detail::unique_ptr<PImpl> m_pimpl;
+    long double m_current_number;
+
+public:
+    RandomFloatingGenerator( long double a, long double b, std::uint32_t seed );
+
+    long double const& get() const override { return m_current_number; }
+    bool next() override;
+
+    ~RandomFloatingGenerator() override; // = default
+};
+
 template <typename Integer>
 class RandomIntegerGenerator final : public IGenerator<Integer> {
     Catch::SimplePcg32 m_rng;
-    std::uniform_int_distribution<Integer> m_dist;
+    Catch::uniform_integer_distribution<Integer> m_dist;
     Integer m_current_number;
 public:
     RandomIntegerGenerator( Integer a, Integer b, std::uint32_t seed ):
@@ -8093,14 +8511,6 @@ public:
 template <typename T>
 std::enable_if_t<std::is_integral<T>::value, GeneratorWrapper<T>>
 random(T a, T b) {
-    static_assert(
-        !std::is_same<T, char>::value &&
-        !std::is_same<T, int8_t>::value &&
-        !std::is_same<T, uint8_t>::value &&
-        !std::is_same<T, signed char>::value &&
-        !std::is_same<T, unsigned char>::value &&
-        !std::is_same<T, bool>::value,
-        "The requested type is not supported by the underlying random distributions from std" );
     return GeneratorWrapper<T>(
         Catch::Detail::make_unique<RandomIntegerGenerator<T>>(a, b, Detail::getSeed())
     );
@@ -8213,10 +8623,11 @@ GeneratorWrapper<ResultType> from_range(InputIterator from, InputSentinel to) {
     return GeneratorWrapper<ResultType>(Catch::Detail::make_unique<IteratorGenerator<ResultType>>(from, to));
 }
 
-template <typename Container,
-          typename ResultType = typename Container::value_type>
-GeneratorWrapper<ResultType> from_range(Container const& cnt) {
-    return GeneratorWrapper<ResultType>(Catch::Detail::make_unique<IteratorGenerator<ResultType>>(cnt.begin(), cnt.end()));
+template <typename Container>
+auto from_range(Container const& cnt) {
+    using std::begin;
+    using std::end;
+    return from_range( begin( cnt ), end( cnt ) );
 }
 
 
@@ -8992,17 +9403,6 @@ namespace Catch {
 #define CATCH_FLOATING_POINT_HELPERS_HPP_INCLUDED
 
 
-
-#ifndef CATCH_POLYFILLS_HPP_INCLUDED
-#define CATCH_POLYFILLS_HPP_INCLUDED
-
-namespace Catch {
-    bool isnan(float f);
-    bool isnan(double d);
-}
-
-#endif // CATCH_POLYFILLS_HPP_INCLUDED
-
 #include <cassert>
 #include <cmath>
 #include <cstdint>
@@ -9014,6 +9414,11 @@ namespace Catch {
 
         uint32_t convertToBits(float f);
         uint64_t convertToBits(double d);
+
+        // Used when we know we want == comparison of two doubles
+        // to centralize warning suppression
+        bool directCompare( float lhs, float rhs );
+        bool directCompare( double lhs, double rhs );
 
     } // end namespace Detail
 
@@ -9289,6 +9694,119 @@ namespace Catch {
 }
 
 #endif // CATCH_STREAM_HPP_INCLUDED
+
+
+#ifndef CATCH_JSONWRITER_HPP_INCLUDED
+#define CATCH_JSONWRITER_HPP_INCLUDED
+
+
+#include <cstdint>
+#include <sstream>
+
+namespace Catch {
+    class JsonObjectWriter;
+    class JsonArrayWriter;
+
+    struct JsonUtils {
+        static void indent( std::ostream& os, std::uint64_t level );
+        static void appendCommaNewline( std::ostream& os,
+                                        bool& should_comma,
+                                        std::uint64_t level );
+    };
+
+    class JsonValueWriter {
+    public:
+        JsonValueWriter( std::ostream& os );
+        JsonValueWriter( std::ostream& os, std::uint64_t indent_level );
+
+        JsonObjectWriter writeObject() &&;
+        JsonArrayWriter writeArray() &&;
+
+        template <typename T>
+        void write( T const& value ) && {
+            writeImpl( value, !std::is_arithmetic<T>::value );
+        }
+        void write( StringRef value ) &&;
+        void write( bool value ) &&;
+
+    private:
+        void writeImpl( StringRef value, bool quote );
+
+        // Without this SFINAE, this overload is a better match
+        // for `std::string`, `char const*`, `char const[N]` args.
+        // While it would still work, it would cause code bloat
+        // and multiple iteration over the strings
+        template <typename T,
+                  typename = typename std::enable_if_t<
+                      !std::is_convertible<T, StringRef>::value>>
+        void writeImpl( T const& value, bool quote_value ) {
+            m_sstream << value;
+            writeImpl( m_sstream.str(), quote_value );
+        }
+
+        std::ostream& m_os;
+        std::stringstream m_sstream;
+        std::uint64_t m_indent_level;
+    };
+
+    class JsonObjectWriter {
+    public:
+        JsonObjectWriter( std::ostream& os );
+        JsonObjectWriter( std::ostream& os, std::uint64_t indent_level );
+
+        JsonObjectWriter( JsonObjectWriter&& source );
+        JsonObjectWriter& operator=( JsonObjectWriter&& source ) = delete;
+
+        ~JsonObjectWriter();
+
+        JsonValueWriter write( StringRef key );
+
+    private:
+        std::ostream& m_os;
+        std::uint64_t m_indent_level;
+        bool m_should_comma = false;
+        bool m_active = true;
+    };
+
+    class JsonArrayWriter {
+    public:
+        JsonArrayWriter( std::ostream& os );
+        JsonArrayWriter( std::ostream& os, std::uint64_t indent_level );
+
+        JsonArrayWriter( JsonArrayWriter&& source );
+        JsonArrayWriter& operator=( JsonArrayWriter&& source ) = delete;
+
+        ~JsonArrayWriter();
+
+        JsonObjectWriter writeObject();
+        JsonArrayWriter writeArray();
+
+        template <typename T>
+        JsonArrayWriter& write( T const& value ) {
+            return writeImpl( value );
+        }
+
+        JsonArrayWriter& write( bool value );
+
+    private:
+        template <typename T>
+        JsonArrayWriter& writeImpl( T const& value ) {
+            JsonUtils::appendCommaNewline(
+                m_os, m_should_comma, m_indent_level + 1 );
+            JsonValueWriter{ m_os }.write( value );
+
+            return *this;
+        }
+
+        std::ostream& m_os;
+        std::uint64_t m_indent_level;
+        bool m_should_comma = false;
+        bool m_active = true;
+    };
+
+} // namespace Catch
+
+#endif // CATCH_JSONWRITER_HPP_INCLUDED
 
 
 #ifndef CATCH_LEAK_DETECTOR_HPP_INCLUDED
@@ -12694,6 +13212,93 @@ namespace Catch {
 } // end namespace Catch
 
 #endif // CATCH_REPORTER_HELPERS_HPP_INCLUDED
+
+
+
+#ifndef CATCH_REPORTER_JSON_HPP_INCLUDED
+#define CATCH_REPORTER_JSON_HPP_INCLUDED
+
+
+#include <stack>
+
+namespace Catch {
+    class JsonReporter : public StreamingReporterBase {
+    public:
+        JsonReporter( ReporterConfig&& config );
+
+        ~JsonReporter() override;
+
+        static std::string getDescription();
+
+    public: // StreamingReporterBase
+        void testRunStarting( TestRunInfo const& runInfo ) override;
+        void testRunEnded( TestRunStats const& runStats ) override;
+
+        void testCaseStarting( TestCaseInfo const& tcInfo ) override;
+        void testCaseEnded( TestCaseStats const& tcStats ) override;
+
+        void testCasePartialStarting( TestCaseInfo const& tcInfo,
+                                      uint64_t index ) override;
+        void testCasePartialEnded( TestCaseStats const& tcStats,
+                                   uint64_t index ) override;
+
+        void sectionStarting( SectionInfo const& sectionInfo ) override;
+        void sectionEnded( SectionStats const& sectionStats ) override;
+
+        void assertionStarting( AssertionInfo const& assertionInfo ) override;
+        void assertionEnded( AssertionStats const& assertionStats ) override;
+
+        //void testRunEndedCumulative() override;
+
+        void benchmarkPreparing( StringRef name ) override;
+        void benchmarkStarting( BenchmarkInfo const& ) override;
+        void benchmarkEnded( BenchmarkStats<> const& ) override;
+        void benchmarkFailed( StringRef error ) override;
+
+        void listReporters(
+            std::vector<ReporterDescription> const& descriptions ) override;
+        void listListeners(
+            std::vector<ListenerDescription> const& descriptions ) override;
+        void listTests( std::vector<TestCaseHandle> const& tests ) override;
+        void listTags( std::vector<TagInfo> const& tags ) override;
+
+    private:
+        Timer m_testCaseTimer;
+        enum class Writer {
+            Object,
+            Array
+        };
+
+        JsonArrayWriter& startArray();
+        JsonArrayWriter& startArray( StringRef key );
+
+        JsonObjectWriter& startObject();
+        JsonObjectWriter& startObject( StringRef key );
+
+        void endObject();
+        void endArray();
+
+        bool isInside( Writer writer );
+
+        void startListing();
+        void endListing();
+
+        // Invariant:
+        // When m_writers is not empty and its top element is
+        // - Writer::Object, then m_objectWriters is not be empty
+        // - Writer::Array,  then m_arrayWriters shall not be empty
+        std::stack<JsonObjectWriter> m_objectWriters{};
+        std::stack<JsonArrayWriter> m_arrayWriters{};
+        std::stack<Writer> m_writers{};
+
+        bool m_startedListing = false;
+
+        // std::size_t m_sectionDepth = 0;
+        // std::size_t m_sectionStarted = 0;
+    };
+} // namespace Catch
+
+#endif // CATCH_REPORTER_JSON_HPP_INCLUDED
 
 
 #ifndef CATCH_REPORTER_JUNIT_HPP_INCLUDED

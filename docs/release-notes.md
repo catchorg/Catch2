@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.5.0](#350)<br>
 [3.4.0](#340)<br>
 [3.3.2](#332)<br>
 [3.3.1](#331)<br>
@@ -56,6 +57,41 @@
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
 
+
+
+## 3.5.0
+
+### Improvements
+* Introduced `CATCH_CONFIG_PREFIX_MESSAGES` to prefix only logging macros (#2544)
+  * This means `INFO`, `UNSCOPED_INFO`, `WARN` and `CAPTURE`.
+* Section hints in static analysis mode are now `const`
+  * This prevents Clang-Tidy from complaining about `misc-const-correctness`.
+* `from_range` generator supports C arrays and ranges that require ADL (#2737)
+* Stringification support for `std::optional` now also includes `std::nullopt` (#2740)
+* The Console reporter flushes output after writing benchmark runtime estimate.
+  * This means that you can immediately see for how long the benchmark is expected to run.
+* Added workaround to enable compilation with ICC 19.1 (#2551, #2766)
+* Compiling Catch2 for XBox should work out of the box (#2772)
+  * Catch2 should automatically disable getenv when compiled for XBox.
+* Compiling Catch2 with exceptions disabled no longer triggers `Wunused-function` (#2726)
+* **`random` Generators for integral types are now reproducible across different platforms**
+  * Unlike `<rando>`, Catch2's generators also support 1 byte integral types (`char`, `bool`, ...)
+* **`random` Generators for `float` and `double` are now reproducible across different platforms**
+  * `long double` varies across different platforms too much to be reproducible
+  * This guarantee applies only to platforms with IEEE 754 floats.
+
+### Fixes
+* UDL declaration inside Catch2 are now strictly conforming to the standard
+  * `operator "" _a` is UB, `operator ""_a` is fine. Seriously.
+* Fixed `CAPTURE` tests failing to compile in C++23 mode (#2744)
+* Fixed missing include in `catch_message.hpp` (#2758)
+* Fixed `CHECK_ELSE` suppressing failure from uncaught exceptions(#2723)
+
+### Miscellaneous
+* The documentation for specifying which tests to run through commandline has been completely rewritten (#2738)
+* Fixed installation when building Catch2 with meson (#2722, #2742)
+* Fixed `catch_discover_tests` when using custom reporter and `PRE_TEST` discovery mode (#2747)
+* `catch_discover_tests` supports multi-config CMake generator in `PRE_TEST` discovery mode (#2739, #2746)
 
 
 ## 3.4.0

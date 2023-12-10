@@ -84,7 +84,7 @@ and it is also generally repeatable across versions, but we might break
 it from time to time. E.g. we broke repeatability with previous versions
 in v2.13.4 so that test cases with similar names are shuffled better.
 
-Since Catch2 vX.Y.Z the random generators use custom distributions,
+Since Catch2 3.5.0 the random generators use custom distributions,
 that should be repeatable across different platforms, with few caveats.
 For details see the section on random generators in the [Generator
 documentation](generators.md#random-number-generators-details).
