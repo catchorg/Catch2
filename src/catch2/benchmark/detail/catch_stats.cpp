@@ -11,6 +11,7 @@
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_floating_point_helpers.hpp>
+#include <catch2/internal/catch_random_number_generator.hpp>
 
 #include <algorithm>
 #include <cassert>
@@ -368,7 +369,7 @@ namespace Catch {
                 auto Estimate = [=](double(*f)(double const*, double const*)) {
                     auto seed = entropy();
                     return std::async(std::launch::async, [=] {
-                        std::mt19937 rng(seed);
+                        SimplePcg32 rng( seed );
                         auto resampled = resample(rng, n_resamples, first, last, f);
                         return bootstrap(confidence_level, first, last, resampled, f);
                     });
@@ -382,7 +383,7 @@ namespace Catch {
 #else
                 auto Estimate = [=](double(*f)(double const* , double const*)) {
                     auto seed = entropy();
-                    std::mt19937 rng(seed);
+                    SimplePcg32 rng( seed );
                     auto resampled = resample(rng, n_resamples, first, last, f);
                     return bootstrap(confidence_level, first, last, resampled, f);
                 };
