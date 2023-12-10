@@ -156,7 +156,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Assume that some platforms do not support getenv.
-#if defined(CATCH_PLATFORM_WINDOWS_UWP) || defined(CATCH_PLATFORM_PLAYSTATION)
+#if defined( CATCH_PLATFORM_WINDOWS_UWP ) ||                                   \
+    defined( CATCH_PLATFORM_PLAYSTATION ) ||                                   \
+    defined( _GAMING_XBOX )
 #    define CATCH_INTERNAL_CONFIG_NO_GETENV
 #else
 #    define CATCH_INTERNAL_CONFIG_GETENV

@@ -10,6 +10,8 @@
 #include <catch2/benchmark/detail/catch_stats.hpp>
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_floating_point_helpers.hpp>
+#include <catch2/internal/catch_random_number_generator.hpp>
 
 #include <algorithm>
 #include <cassert>
@@ -184,20 +186,6 @@ namespace Catch {
                     return std::sqrt( variance );
                 }
 
-#if defined( __GNUC__ ) || defined( __clang__ )
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wfloat-equal"
-#endif
-                // Used when we know we want == comparison of two doubles
-                // to centralize warning suppression
-                static bool directCompare( double lhs, double rhs ) {
-                    return lhs == rhs;
-                }
-#if defined( __GNUC__ ) || defined( __clang__ )
-#    pragma GCC diagnostic pop
-#endif
-
-
                 static sample jackknife( double ( *estimator )( double const*,
                                                                 double const* ),
                                          double* first,
@@ -234,7 +222,7 @@ namespace Catch {
                 double g = idx - j;
                 std::nth_element(first, first + j, last);
                 auto xj = first[j];
-                if ( directCompare( g, 0 ) ) {
+                if ( Catch::Detail::directCompare( g, 0 ) ) {
                     return xj;
                 }
 
@@ -338,7 +326,7 @@ namespace Catch {
                                    [point]( double x ) { return x < point; } ) /
                     static_cast<double>( n );
                 // degenerate case with uniform samples
-                if ( directCompare( prob_n, 0. ) ) {
+                if ( Catch::Detail::directCompare( prob_n, 0. ) ) {
                     return { point, point, point, confidence_level };
                 }
 
@@ -367,21 +355,15 @@ namespace Catch {
                                                unsigned int n_resamples,
                                                double* first,
                                                double* last) {
-                CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
-                CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
-                static std::random_device entropy;
-                CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
-
-                auto n = static_cast<int>(last - first); // seriously, one can't use integral types without hell in C++
-
                 auto mean = &Detail::mean;
                 auto stddev = &standard_deviation;
 
 #if defined(CATCH_CONFIG_USE_ASYNC)
                 auto Estimate = [=](double(*f)(double const*, double const*)) {
-                    auto seed = entropy();
+                    std::random_device rd;
+                    auto seed = rd();
                     return std::async(std::launch::async, [=] {
-                        std::mt19937 rng(seed);
+                        SimplePcg32 rng( seed );
                         auto resampled = resample(rng, n_resamples, first, last, f);
                         return bootstrap(confidence_level, first, last, resampled, f);
                     });
@@ -394,8 +376,9 @@ namespace Catch {
                 auto stddev_estimate = stddev_future.get();
 #else
                 auto Estimate = [=](double(*f)(double const* , double const*)) {
-                    auto seed = entropy();
-                    std::mt19937 rng(seed);
+                    std::random_device rd;
+                    auto seed = rd();
+                    SimplePcg32 rng( seed );
                     auto resampled = resample(rng, n_resamples, first, last, f);
                     return bootstrap(confidence_level, first, last, resampled, f);
                 };
@@ -404,6 +387,7 @@ namespace Catch {
                 auto stddev_estimate = Estimate(stddev);
 #endif // CATCH_USE_ASYNC
 
+                auto n = static_cast<int>(last - first); // seriously, one can't use integral types without hell in C++
                 double outlier_variance = Detail::outlier_variance(mean_estimate, stddev_estimate, n);
 
                 return { mean_estimate, stddev_estimate, outlier_variance };

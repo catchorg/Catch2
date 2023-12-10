@@ -664,6 +664,10 @@ Matchers.tests.cpp:<line number>: passed: 1., !IsNaN() for: 1.0 not is NaN
 Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
 Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
 Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
+Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
+Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
+Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
+Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
 Generators.tests.cpp:<line number>: passed: filter([] (int) {return false; }, value(1)), Catch::GeneratorException
 Generators.tests.cpp:<line number>: passed: i < 4 for: 1 < 4
 Generators.tests.cpp:<line number>: passed: i < 4 for: 2 < 4
@@ -2607,6 +2611,8 @@ InternalBenchmark.tests.cpp:<line number>: passed: e.point == 23 for: 23.0 == 23
 InternalBenchmark.tests.cpp:<line number>: passed: e.upper_bound == 23 for: 23.0 == 23
 InternalBenchmark.tests.cpp:<line number>: passed: e.lower_bound == 23 for: 23.0 == 23
 InternalBenchmark.tests.cpp:<line number>: passed: e.confidence_interval == 0.95 for: 0.95 == 0.95
+RandomNumberGeneration.tests.cpp:<line number>: passed: dist.a() == -10 for: -10 == -10
+RandomNumberGeneration.tests.cpp:<line number>: passed: dist.b() == 10 for: 10 == 10
 UniquePtr.tests.cpp:<line number>: passed: !(ptr) for: !{?}
 UniquePtr.tests.cpp:<line number>: passed: ptr.get() == 0 for: 0 == 0
 UniquePtr.tests.cpp:<line number>: passed: ptr for: {?}
@@ -2672,7 +2678,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  415 |  310 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2254 | 2073 passed | 146 failed | 35 failed as expected
+test cases:  417 |  312 passed |  85 failed | 6 skipped | 14 failed as expected
+assertions: 2260 | 2079 passed | 146 failed | 35 failed as expected
 
 

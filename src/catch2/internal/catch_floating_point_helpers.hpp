@@ -22,6 +22,11 @@ namespace Catch {
         uint32_t convertToBits(float f);
         uint64_t convertToBits(double d);
 
+        // Used when we know we want == comparison of two doubles
+        // to centralize warning suppression
+        bool directCompare( float lhs, float rhs );
+        bool directCompare( double lhs, double rhs );
+
     } // end namespace Detail
 
 

@@ -4890,6 +4890,50 @@ with expansion:
   1.0 not is NaN
 
 -------------------------------------------------------------------------------
+GENERATE can combine literals and generators
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i % 2 == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+GENERATE can combine literals and generators
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i % 2 == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+GENERATE can combine literals and generators
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i % 2 == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+GENERATE can combine literals and generators
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i % 2 == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
 Generators -- adapters
   Filtering by predicate
   Basic usage
@@ -18205,6 +18249,22 @@ with expansion:
   0.95 == 0.95
 
 -------------------------------------------------------------------------------
+uniform_integer_distribution can return the bounds
+-------------------------------------------------------------------------------
+RandomNumberGeneration.tests.cpp:<line number>
+...............................................................................
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( dist.a() == -10 )
+with expansion:
+  -10 == -10
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( dist.b() == 10 )
+with expansion:
+  10 == 10
+
+-------------------------------------------------------------------------------
 unique_ptr reimplementation: basic functionality
   Default constructed unique_ptr is empty
 -------------------------------------------------------------------------------
@@ -18691,6 +18751,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  415 |  310 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2254 | 2073 passed | 146 failed | 35 failed as expected
+test cases:  417 |  312 passed |  85 failed | 6 skipped | 14 failed as expected
+assertions: 2260 | 2079 passed | 146 failed | 35 failed as expected
 

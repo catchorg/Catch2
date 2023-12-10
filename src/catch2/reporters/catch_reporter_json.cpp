@@ -130,7 +130,7 @@ namespace Catch {
     }
 
     std::string JsonReporter::getDescription() {
-        return "WIP! Reports test results as a JSON document. WIP!";
+        return "Outputs listings as JSON. Test listing is Work-in-Progress!";
     }
 
     void JsonReporter::testRunStarting( TestRunInfo const& testInfo ) {

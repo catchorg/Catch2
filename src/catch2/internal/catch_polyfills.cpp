@@ -31,4 +31,12 @@ namespace Catch {
     }
 #endif
 
+#if !defined( CATCH_CONFIG_GLOBAL_NEXTAFTER )
+    float nextafter( float x, float y ) { return std::nextafter( x, y ); }
+    double nextafter( double x, double y ) { return std::nextafter( x, y ); }
+#else
+    float nextafter( float x, float y ) { return ::nextafterf( x, y ); }
+    double nextafter( double x, double y ) { return ::nextafter( x, y ); }
+#endif
+
 } // end namespace Catch

@@ -181,6 +181,7 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="Our PCG implementation provides expected results for known seeds/Specific seed" duration="{duration}"/>
     <testCase name="Random seed generation accepts known methods" duration="{duration}"/>
     <testCase name="Random seed generation reports unknown methods" duration="{duration}"/>
+    <testCase name="uniform_integer_distribution can return the bounds" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp">
     <testCase name="Multireporter calls reporters and listeners in correct order" duration="{duration}"/>
@@ -1071,6 +1072,7 @@ at Generators.tests.cpp:<line number>
     <testCase name="Copy and then generate a range/from var and iterators" duration="{duration}"/>
     <testCase name="Copy and then generate a range/From a temporary container" duration="{duration}"/>
     <testCase name="Copy and then generate a range/Final validation" duration="{duration}"/>
+    <testCase name="GENERATE can combine literals and generators" duration="{duration}"/>
     <testCase name="Generators -- adapters/Filtering by predicate/Basic usage" duration="{duration}"/>
     <testCase name="Generators -- adapters/Filtering by predicate/Throws if there are no matching values" duration="{duration}"/>
     <testCase name="Generators -- adapters/Shortening a range" duration="{duration}"/>

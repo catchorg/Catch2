@@ -154,6 +154,7 @@ Nor would this
 :test-result: PASS Filter generator throws exception for empty generator
 :test-result: PASS Floating point matchers: double
 :test-result: PASS Floating point matchers: float
+:test-result: PASS GENERATE can combine literals and generators
 :test-result: PASS Generators -- adapters
 :test-result: PASS Generators -- simple
 :test-result: PASS Generators internals
@@ -414,6 +415,7 @@ b1!
 :test-result: PASS tuple<string,string>
 :test-result: PASS tuple<tuple<int>,tuple<>,float>
 :test-result: PASS uniform samples
+:test-result: PASS uniform_integer_distribution can return the bounds
 :test-result: PASS unique_ptr reimplementation: basic functionality
 :test-result: PASS vec<vec<string,alloc>> -> toString
 :test-result: PASS vector<bool> -> toString

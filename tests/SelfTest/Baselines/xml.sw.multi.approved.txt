@@ -667,7 +667,7 @@ Nor would this
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <TestCase name="#2615 - Throwing in constructor generator fails test case but does not abort" tags="[!shouldfail]" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
+  <TestCase name="#2615 - Throwing in constructor generator fails test case but does not abort" tags="[!shouldfail][generators][regression]" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
     <Exception filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       failure to init
     </Exception>
@@ -5581,6 +5581,41 @@ C
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="GENERATE can combine literals and generators" tags="[generators]" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
+      <Original>
+        i % 2 == 0
+      </Original>
+      <Expanded>
+        0 == 0
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
+      <Original>
+        i % 2 == 0
+      </Original>
+      <Expanded>
+        0 == 0
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
+      <Original>
+        i % 2 == 0
+      </Original>
+      <Expanded>
+        0 == 0
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
+      <Original>
+        i % 2 == 0
+      </Original>
+      <Expanded>
+        0 == 0
+      </Expanded>
+    </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="Generators -- adapters" tags="[generators][generic]" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
@@ -21098,6 +21133,25 @@ b1!
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="uniform_integer_distribution can return the bounds" tags="[distribution][rng]" filename="tests/<exe-name>/IntrospectiveTests/RandomNumberGeneration.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/RandomNumberGeneration.tests.cpp" >
+      <Original>
+        dist.a() == -10
+      </Original>
+      <Expanded>
+        -10 == -10
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/RandomNumberGeneration.tests.cpp" >
+      <Original>
+        dist.b() == 10
+      </Original>
+      <Expanded>
+        10 == 10
+      </Expanded>
+    </Expression>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="unique_ptr reimplementation: basic functionality" tags="[internals][unique-ptr]" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
     <Section name="Default constructed unique_ptr is empty" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
       <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
@@ -21652,6 +21706,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2073" failures="146" expectedFailures="35" skips="12"/>
-  <OverallResultsCases successes="310" failures="85" expectedFailures="14" skips="6"/>
+  <OverallResults successes="2079" failures="146" expectedFailures="35" skips="12"/>
+  <OverallResultsCases successes="312" failures="85" expectedFailures="14" skips="6"/>
 </Catch2TestRun>

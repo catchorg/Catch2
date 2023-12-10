@@ -1256,6 +1256,14 @@ ok {test-number} - WithinRel( 1.f, -0.2f ), std::domain_error
 ok {test-number} - WithinRel( 1.f, 1.f ), std::domain_error
 # Floating point matchers: float
 ok {test-number} - 1., !IsNaN() for: 1.0 not is NaN
+# GENERATE can combine literals and generators
+ok {test-number} - i % 2 == 0 for: 0 == 0
+# GENERATE can combine literals and generators
+ok {test-number} - i % 2 == 0 for: 0 == 0
+# GENERATE can combine literals and generators
+ok {test-number} - i % 2 == 0 for: 0 == 0
+# GENERATE can combine literals and generators
+ok {test-number} - i % 2 == 0 for: 0 == 0
 # Generators -- adapters
 ok {test-number} - i % 2 == 0 for: 0 == 0
 # Generators -- adapters
@@ -4404,6 +4412,10 @@ ok {test-number} - e.upper_bound == 23 for: 23.0 == 23
 ok {test-number} - e.lower_bound == 23 for: 23.0 == 23
 # uniform samples
 ok {test-number} - e.confidence_interval == 0.95 for: 0.95 == 0.95
+# uniform_integer_distribution can return the bounds
+ok {test-number} - dist.a() == -10 for: -10 == -10
+# uniform_integer_distribution can return the bounds
+ok {test-number} - dist.b() == 10 for: 10 == 10
 # unique_ptr reimplementation: basic functionality
 ok {test-number} - !(ptr) for: !{?}
 # unique_ptr reimplementation: basic functionality
@@ -4526,5 +4538,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2266
+1..2272
 

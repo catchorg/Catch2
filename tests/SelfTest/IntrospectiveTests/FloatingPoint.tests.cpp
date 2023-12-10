@@ -9,7 +9,9 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/internal/catch_floating_point_helpers.hpp>
+#include <catch2/internal/catch_random_floating_point_helpers.hpp>
 
+#include <limits>
 
 TEST_CASE("convertToBits", "[floating-point][conversion]") {
     using Catch::Detail::convertToBits;
@@ -71,4 +73,61 @@ TEST_CASE("UlpDistance", "[floating-point][ulp][approvals]") {
     CHECK( ulpDistance( -2., 2. ) == 0x80'00'00'00'00'00'00'00 );
     CHECK( ulpDistance( 1.f, 2.f ) == 0x80'00'00 );
     CHECK( ulpDistance( -2.f, 2.f ) == 0x80'00'00'00 );
+}
+
+
+
+TEMPLATE_TEST_CASE("gamma", "[approvals][floating-point][ulp][gamma]", float, double) {
+    using Catch::Detail::gamma;
+    using Catch::Detail::directCompare;
+
+    // We need to butcher the equal tests with the directCompare helper,
+    // because the Wfloat-equal triggers in decomposer rather than here,
+    // so we cannot locally disable it. Goddamn GCC.
+    CHECK( directCompare( gamma( TestType( -1. ), TestType( 1. ) ),
+                          gamma( TestType( 0.2332 ), TestType( 1.0 ) ) ) );
+    CHECK( directCompare( gamma( TestType( -2. ), TestType( 0 ) ),
+                          gamma( TestType( 1. ), TestType( 1.5 ) ) ) );
+    CHECK( gamma( TestType( 0. ), TestType( 1.0 ) ) <
+           gamma( TestType( 1.0 ), TestType( 1.5 ) ) );
+    CHECK( gamma( TestType( 0 ), TestType( 1. ) ) <
+           std::numeric_limits<TestType>::epsilon() );
+    CHECK( gamma( TestType( -1. ), TestType( -0. ) ) <
+           std::numeric_limits<TestType>::epsilon() );
+    CHECK( directCompare( gamma( TestType( 1. ), TestType( 2. ) ),
+                          std::numeric_limits<TestType>::epsilon() ) );
+    CHECK( directCompare( gamma( TestType( -2. ), TestType( -1. ) ),
+                          std::numeric_limits<TestType>::epsilon() ) );
+}
+
+TEMPLATE_TEST_CASE("count_equidistant_floats",
+                   "[approvals][floating-point][distance]",
+                   float,
+                   double) {
+    using Catch::Detail::count_equidistant_floats;
+    auto count_steps = []( TestType a, TestType b ) {
+        return count_equidistant_floats( a, b, Catch::Detail::gamma( a, b ) );
+    };
+
+    CHECK( count_steps( TestType( -1. ), TestType( 1. ) ) ==
+           2 * count_steps( TestType( 0. ), TestType( 1. ) ) );
+}
+
+TEST_CASE( "count_equidistant_floats",
+           "[approvals][floating-point][distance]" ) {
+    using Catch::Detail::count_equidistant_floats;
+    auto count_floats_with_scaled_ulp = []( auto a, auto b ) {
+        return count_equidistant_floats( a, b, Catch::Detail::gamma( a, b ) );
+    };
+
+    CHECK( count_floats_with_scaled_ulp( 1., 1.5 ) == 1ull << 51 );
+    CHECK( count_floats_with_scaled_ulp( 1.25, 1.5 ) == 1ull << 50 );
+    CHECK( count_floats_with_scaled_ulp( 1.f, 1.5f ) == 1 << 22 );
+
+    STATIC_REQUIRE( std::is_same<std::uint64_t,
+                                 decltype( count_floats_with_scaled_ulp(
+                                     0., 1. ) )>::value );
+    STATIC_REQUIRE( std::is_same<std::uint32_t,
+                                 decltype( count_floats_with_scaled_ulp(
+                                     0.f, 1.f ) )>::value );
 }

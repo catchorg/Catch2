@@ -91,6 +91,8 @@
 #include <catch2/internal/catch_preprocessor.hpp>
 #include <catch2/internal/catch_preprocessor_internal_stringify.hpp>
 #include <catch2/internal/catch_preprocessor_remove_parens.hpp>
+#include <catch2/internal/catch_random_floating_point_helpers.hpp>
+#include <catch2/internal/catch_random_integer_helpers.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
 #include <catch2/internal/catch_random_seed_generation.hpp>
 #include <catch2/internal/catch_reporter_registry.hpp>
@@ -120,6 +122,8 @@
 #include <catch2/internal/catch_textflow.hpp>
 #include <catch2/internal/catch_to_string.hpp>
 #include <catch2/internal/catch_uncaught_exceptions.hpp>
+#include <catch2/internal/catch_uniform_floating_point_distribution.hpp>
+#include <catch2/internal/catch_uniform_integer_distribution.hpp>
 #include <catch2/internal/catch_unique_name.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_void_type.hpp>

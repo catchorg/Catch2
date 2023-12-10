@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="129" skipped="12" tests="2266" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="129" skipped="12" tests="2272" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -708,6 +708,7 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/Composed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/Constructor validation" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/IsNaN" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="GENERATE can combine literals and generators" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Filtering by predicate/Basic usage" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Filtering by predicate/Throws if there are no matching values" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Shortening a range" time="{duration}" status="run"/>
@@ -2074,6 +2075,7 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="tuple&lt;string,string>" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="uniform samples" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="uniform_integer_distribution can return the bounds" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/Default constructed unique_ptr is empty" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/Take ownership of allocation" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/Take ownership of allocation/Plain reset deallocates" time="{duration}" status="run"/>
