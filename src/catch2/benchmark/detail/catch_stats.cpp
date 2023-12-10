@@ -355,11 +355,6 @@ namespace Catch {
                                                unsigned int n_resamples,
                                                double* first,
                                                double* last) {
-                CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
-                CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
-                static std::random_device entropy;
-                CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
-
                 auto n = static_cast<int>(last - first); // seriously, one can't use integral types without hell in C++
 
                 auto mean = &Detail::mean;
@@ -367,7 +362,8 @@ namespace Catch {
 
 #if defined(CATCH_CONFIG_USE_ASYNC)
                 auto Estimate = [=](double(*f)(double const*, double const*)) {
-                    auto seed = entropy();
+                    std::random_device rd;
+                    auto seed = rd();
                     return std::async(std::launch::async, [=] {
                         SimplePcg32 rng( seed );
                         auto resampled = resample(rng, n_resamples, first, last, f);
@@ -382,7 +378,8 @@ namespace Catch {
                 auto stddev_estimate = stddev_future.get();
 #else
                 auto Estimate = [=](double(*f)(double const* , double const*)) {
-                    auto seed = entropy();
+                    std::random_device rd;
+                    auto seed = rd();
                     SimplePcg32 rng( seed );
                     auto resampled = resample(rng, n_resamples, first, last, f);
                     return bootstrap(confidence_level, first, last, resampled, f);
