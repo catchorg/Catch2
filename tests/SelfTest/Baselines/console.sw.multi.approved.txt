@@ -4888,6 +4888,50 @@ with expansion:
   1.0 not is NaN
 
 -------------------------------------------------------------------------------
+GENERATE can combine literals and generators
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i % 2 == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+GENERATE can combine literals and generators
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i % 2 == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+GENERATE can combine literals and generators
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i % 2 == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+GENERATE can combine literals and generators
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i % 2 == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
 Generators -- adapters
   Filtering by predicate
   Basic usage
@@ -18680,6 +18724,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  415 |  310 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2254 | 2073 passed | 146 failed | 35 failed as expected
+test cases:  416 |  311 passed |  85 failed | 6 skipped | 14 failed as expected
+assertions: 2258 | 2077 passed | 146 failed | 35 failed as expected
 

@@ -154,6 +154,7 @@ Nor would this
 :test-result: PASS Filter generator throws exception for empty generator
 :test-result: PASS Floating point matchers: double
 :test-result: PASS Floating point matchers: float
+:test-result: PASS GENERATE can combine literals and generators
 :test-result: PASS Generators -- adapters
 :test-result: PASS Generators -- simple
 :test-result: PASS Generators internals

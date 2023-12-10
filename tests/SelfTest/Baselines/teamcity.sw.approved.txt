@@ -377,6 +377,8 @@
 ##teamcity[testFinished name='Floating point matchers: double' duration="{duration}"]
 ##teamcity[testStarted name='Floating point matchers: float']
 ##teamcity[testFinished name='Floating point matchers: float' duration="{duration}"]
+##teamcity[testStarted name='GENERATE can combine literals and generators']
+##teamcity[testFinished name='GENERATE can combine literals and generators' duration="{duration}"]
 ##teamcity[testStarted name='Generators -- adapters']
 ##teamcity[testFinished name='Generators -- adapters' duration="{duration}"]
 ##teamcity[testStarted name='Generators -- simple']

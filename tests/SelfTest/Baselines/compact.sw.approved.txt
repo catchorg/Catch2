@@ -666,6 +666,10 @@ Matchers.tests.cpp:<line number>: passed: 1., !IsNaN() for: 1.0 not is NaN
 Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
 Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
 Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
+Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
+Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
+Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
+Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
 Generators.tests.cpp:<line number>: passed: filter([] (int) {return false; }, value(1)), Catch::GeneratorException
 Generators.tests.cpp:<line number>: passed: i < 4 for: 1 < 4
 Generators.tests.cpp:<line number>: passed: i < 4 for: 2 < 4
@@ -2683,7 +2687,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  415 |  310 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2254 | 2073 passed | 146 failed | 35 failed as expected
+test cases:  416 |  311 passed |  85 failed | 6 skipped | 14 failed as expected
+assertions: 2258 | 2077 passed | 146 failed | 35 failed as expected
 
 
