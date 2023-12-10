@@ -203,7 +203,7 @@ the output file name e.g. ".xml".
 
 If specified allows control over when test discovery is performed.
 For a value of `POST_BUILD` (default) test discovery is performed at build time.
-For a a value of `PRE_TEST` test discovery is delayed until just prior to test
+For a value of `PRE_TEST` test discovery is delayed until just prior to test
 execution (useful e.g. in cross-compilation environments).
 ``DISCOVERY_MODE`` defaults to the value of the
 ``CMAKE_CATCH_DISCOVER_TESTS_DISCOVERY_MODE`` variable if it is not passed when
