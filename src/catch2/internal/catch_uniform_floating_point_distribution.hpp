@@ -97,7 +97,7 @@ public:
         m_max_steps_in_one_go( Detail::calculate_max_steps_in_one_go(m_ulp_magnitude)),
         m_a_has_leq_magnitude(std::fabs(m_a) <= std::fabs(m_b))
     {
-        assert( a < b );
+        assert( a <= b );
     }
 
     template <typename Generator>

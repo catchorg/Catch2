@@ -31,7 +31,7 @@ namespace Catch {
                            "gamma returns the largest ULP magnitude within "
                            "floating point range [a, b]. This only makes sense "
                            "for floating point types" );
-            assert( a < b );
+            assert( a <= b );
 
             const auto gamma_up = Catch::nextafter( a, std::numeric_limits<FloatType>::infinity() ) - a;
             const auto gamma_down = b - Catch::nextafter( b, -std::numeric_limits<FloatType>::infinity() );
@@ -69,7 +69,7 @@ namespace Catch {
         template <typename FloatType>
         DistanceType<FloatType>
         count_equidistant_floats( FloatType a, FloatType b, FloatType distance ) {
-            assert( a < b );
+            assert( a <= b );
             // We get distance as gamma for our uniform float distribution,
             // so this will round perfectly.
             const auto ag = a / distance;

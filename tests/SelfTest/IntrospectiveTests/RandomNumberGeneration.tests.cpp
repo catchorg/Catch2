@@ -8,6 +8,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/catch_template_test_macros.hpp>
+#include <catch2/internal/catch_floating_point_helpers.hpp>
 #include <catch2/internal/catch_random_integer_helpers.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
 #include <catch2/internal/catch_random_seed_generation.hpp>
@@ -567,4 +568,23 @@ TEMPLATE_TEST_CASE( "uniform_floating_point_distribution is reproducible",
     }
 
     REQUIRE_THAT( generated, Catch::Matchers::RangeEquals( uniform_fp_test_params<TestType>::expected ) );
+}
+
+TEMPLATE_TEST_CASE( "uniform_floating_point_distribution can handle unitary ranges",
+                    "[rng][distribution][floating-point][approvals]",
+                    float,
+                    double ) {
+    std::random_device rd;
+    auto seed = rd();
+    CAPTURE( seed );
+    Catch::SimplePcg32 pcg( seed );
+
+    const auto highest = uniform_fp_test_params<TestType>::highest;
+    Catch::uniform_floating_point_distribution<TestType> dist( highest,
+                                                               highest );
+
+    constexpr auto iters = 20;
+    for (int i = 0; i < iters; ++i) {
+        REQUIRE( Catch::Detail::directCompare( dist( pcg ), highest ) );
+    }
 }
