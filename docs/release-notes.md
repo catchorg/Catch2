@@ -75,7 +75,7 @@
   * Catch2 should automatically disable getenv when compiled for XBox.
 * Compiling Catch2 with exceptions disabled no longer triggers `Wunused-function` (#2726)
 * **`random` Generators for integral types are now reproducible across different platforms**
-  * Unlike `<rando>`, Catch2's generators also support 1 byte integral types (`char`, `bool`, ...)
+  * Unlike `<random>`, Catch2's generators also support 1 byte integral types (`char`, `bool`, ...)
 * **`random` Generators for `float` and `double` are now reproducible across different platforms**
   * `long double` varies across different platforms too much to be reproducible
   * This guarantee applies only to platforms with IEEE 754 floats.
