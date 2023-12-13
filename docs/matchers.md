@@ -50,24 +50,42 @@ Both of the string matchers used in the examples above live in the
 `catch_matchers_string.hpp` header, so to compile the code above also
 requires `#include <catch2/matchers/catch_matchers_string.hpp>`.
 
+### Combining operators and lifetimes
+
 **IMPORTANT**: The combining operators do not take ownership of the
-matcher objects being combined. This means that if you store combined
-matcher object, you have to ensure that the matchers being combined
-outlive its last use. What this means is that the following code leads
-to a use-after-free (UAF):
+matcher objects being combined.
 
+This means that if you store combined matcher object, you have to ensure
+that the individual matchers being combined outlive the combined matcher.
+Note that the negation matcher from `!` also counts as combining matcher
+for this.
+
+Explained on an example, this is fine
 ```cpp
-#include <catch2/catch_test_macros.hpp>
-#include <catch2/matchers/catch_matchers_string.hpp>
-
-TEST_CASE("Bugs, bugs, bugs", "[Bug]"){
-    std::string str = "Bugs as a service";
-
-    auto match_expression = Catch::Matchers::EndsWith( "as a service" ) ||
-        (Catch::Matchers::StartsWith( "Big data" ) && !Catch::Matchers::ContainsSubstring( "web scale" ) );
-    REQUIRE_THAT(str, match_expression);
-}
+CHECK_THAT(value, WithinAbs(0, 2e-2) && !WithinULP(0., 1));
 ```
+
+and so is this
+```cpp
+auto is_close_to_zero = WithinAbs(0, 2e-2);
+auto is_zero          = WithinULP(0., 1);
+
+CHECK_THAT(value, is_close_to_zero && !is_zero);
+```
+
+but this is not
+```cpp
+auto is_close_to_zero = WithinAbs(0, 2e-2);
+auto is_zero          = WithinULP(0., 1);
+auto is_close_to_but_not_zero = is_close_to_zero && !is_zero;
+
+CHECK_THAT(a_value, is_close_to_but_not_zero); // UAF
+```
+
+because `!is_zero` creates a temporary instance of Negation matcher,
+which the `is_close_to_but_not_zero` refers to. After the line ends,
+the temporary is destroyed and the combined `is_close_to_but_not_zero`
+matcher now refers to non-existent object, so using it causes use-after-free.
 
 
 ## Built-in matchers
