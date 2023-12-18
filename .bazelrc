@@ -8,3 +8,4 @@ build:vs2022 --cxxopt=/std:c++17
 
 build:windows --config=vs2022
 build:linux --config=gcc11
+build:macos --cxxopt=-std=c++2b
