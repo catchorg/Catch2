@@ -55,12 +55,12 @@ namespace Catch {
 
             template <typename Clock>
             int warmup() {
-                return run_for_at_least<Clock>(std::chrono::duration_cast<IDuration>(warmup_time), warmup_seed, &resolution<Clock>)
+                return run_for_at_least<Clock>(warmup_time, warmup_seed, &resolution<Clock>)
                     .iterations;
             }
             template <typename Clock>
             EnvironmentEstimate estimate_clock_resolution(int iterations) {
-                auto r = run_for_at_least<Clock>(std::chrono::duration_cast<IDuration>(clock_resolution_estimation_time), iterations, &resolution<Clock>)
+                auto r = run_for_at_least<Clock>(clock_resolution_estimation_time, iterations, &resolution<Clock>)
                     .result;
                 return {
                     FDuration(mean(r.data(), r.data() + r.size())),
@@ -82,7 +82,7 @@ namespace Catch {
                 };
                 time_clock(1);
                 int iters = clock_cost_estimation_iterations;
-                auto&& r = run_for_at_least<Clock>(std::chrono::duration_cast<IDuration>(clock_cost_estimation_time), iters, time_clock);
+                auto&& r = run_for_at_least<Clock>(clock_cost_estimation_time, iters, time_clock);
                 std::vector<double> times;
                 int nsamples = static_cast<int>(std::ceil(time_limit / r.elapsed));
                 times.reserve(static_cast<size_t>(nsamples));
