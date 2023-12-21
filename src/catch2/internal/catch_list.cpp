@@ -14,10 +14,7 @@
 #include <catch2/internal/catch_reporter_registry.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_case_insensitive_comparisons.hpp>
-
-#include <catch2/internal/catch_context.hpp>
 #include <catch2/catch_config.hpp>
-#include <catch2/catch_test_spec.hpp>
 #include <catch2/catch_test_case_info.hpp>
 
 namespace Catch {

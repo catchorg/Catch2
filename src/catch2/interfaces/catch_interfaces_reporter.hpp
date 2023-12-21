@@ -15,7 +15,6 @@
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_test_run_info.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
-#include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/benchmark/detail/catch_benchmark_stats.hpp>
 
 #include <map>

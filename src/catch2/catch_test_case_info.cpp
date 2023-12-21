@@ -9,6 +9,7 @@
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_case_insensitive_comparisons.hpp>
+#include <catch2/internal/catch_test_registry.hpp>
 
 #include <cassert>
 #include <cctype>

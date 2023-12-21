@@ -7,12 +7,9 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_test_case_registry_impl.hpp>
 
-#include <catch2/internal/catch_context.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
-#include <catch2/internal/catch_random_number_generator.hpp>
-#include <catch2/internal/catch_run_context.hpp>
 #include <catch2/internal/catch_sharding.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/catch_test_spec.hpp>
@@ -73,7 +70,6 @@ namespace Catch {
             return sorted;
         }
         case TestRunOrder::Randomized: {
-            seedRng(config);
             using TestWithHash = std::pair<TestCaseInfoHasher::hash_t, TestCaseHandle>;
 
             TestCaseInfoHasher h{ config.rngSeed() };

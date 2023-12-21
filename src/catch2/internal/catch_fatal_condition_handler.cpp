@@ -26,6 +26,7 @@
 
 #include <catch2/internal/catch_fatal_condition_handler.hpp>
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/interfaces/catch_interfaces_capture.hpp>

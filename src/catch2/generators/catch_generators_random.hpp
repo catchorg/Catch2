@@ -8,7 +8,6 @@
 #ifndef CATCH_GENERATORS_RANDOM_HPP_INCLUDED
 #define CATCH_GENERATORS_RANDOM_HPP_INCLUDED
 
-#include <catch2/internal/catch_context.hpp>
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
 #include <catch2/internal/catch_uniform_integer_distribution.hpp>

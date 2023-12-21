@@ -8,7 +8,7 @@
 #ifndef CATCH_REPORTER_SPEC_PARSER_HPP_INCLUDED
 #define CATCH_REPORTER_SPEC_PARSER_HPP_INCLUDED
 
-#include <catch2/internal/catch_console_colour.hpp>
+#include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_optional.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 

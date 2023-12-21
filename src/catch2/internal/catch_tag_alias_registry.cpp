@@ -6,7 +6,6 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_tag_alias_registry.hpp>
-#include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 #include <catch2/internal/catch_string_manip.hpp>

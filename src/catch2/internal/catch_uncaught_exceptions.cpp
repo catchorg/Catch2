@@ -7,7 +7,6 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <catch2/internal/catch_uncaught_exceptions.hpp>
-#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_config_uncaught_exceptions.hpp>
 #include <catch2/catch_user_config.hpp>
 
