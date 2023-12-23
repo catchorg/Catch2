@@ -29,6 +29,7 @@
 #    endif
 #endif
 
+#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_void_type.hpp>
@@ -465,8 +466,8 @@ namespace Catch {
             protected:
                 Optionality m_optionality = Optionality::Optional;
                 std::shared_ptr<BoundRef> m_ref;
-                std::string m_hint;
-                std::string m_description;
+                StringRef m_hint;
+                StringRef m_description;
 
                 explicit ParserRefImpl( std::shared_ptr<BoundRef> const& ref ):
                     m_ref( ref ) {}
@@ -475,25 +476,25 @@ namespace Catch {
                 template <typename LambdaT>
                 ParserRefImpl( accept_many_t,
                                LambdaT const& ref,
-                               std::string const& hint ):
+                               StringRef hint ):
                     m_ref( std::make_shared<BoundManyLambda<LambdaT>>( ref ) ),
                     m_hint( hint ) {}
 
                 template <typename T,
                           typename = typename std::enable_if_t<
                               !Detail::is_unary_function<T>::value>>
-                ParserRefImpl( T& ref, std::string const& hint ):
+                ParserRefImpl( T& ref, StringRef hint ):
                     m_ref( std::make_shared<BoundValueRef<T>>( ref ) ),
                     m_hint( hint ) {}
 
                 template <typename LambdaT,
                           typename = typename std::enable_if_t<
                               Detail::is_unary_function<LambdaT>::value>>
-                ParserRefImpl( LambdaT const& ref, std::string const& hint ):
+                ParserRefImpl( LambdaT const& ref, StringRef hint ):
                     m_ref( std::make_shared<BoundLambda<LambdaT>>( ref ) ),
                     m_hint( hint ) {}
 
-                auto operator()( std::string const& description ) -> DerivedT& {
+                auto operator()( StringRef description ) -> DerivedT& {
                     m_description = description;
                     return static_cast<DerivedT&>( *this );
                 }
@@ -519,7 +520,7 @@ namespace Catch {
                         return 1;
                 }
 
-                std::string const& hint() const { return m_hint; }
+                StringRef hint() const { return m_hint; }
             };
 
         } // namespace detail
@@ -552,17 +553,17 @@ namespace Catch {
             template <typename LambdaT,
                       typename = typename std::enable_if_t<
                           Detail::is_unary_function<LambdaT>::value>>
-            Opt( LambdaT const& ref, std::string const& hint ):
+            Opt( LambdaT const& ref, StringRef hint ):
                 ParserRefImpl( ref, hint ) {}
 
             template <typename LambdaT>
-            Opt( accept_many_t, LambdaT const& ref, std::string const& hint ):
+            Opt( accept_many_t, LambdaT const& ref, StringRef hint ):
                 ParserRefImpl( accept_many, ref, hint ) {}
 
             template <typename T,
                       typename = typename std::enable_if_t<
                           !Detail::is_unary_function<T>::value>>
-            Opt( T& ref, std::string const& hint ):
+            Opt( T& ref, StringRef hint ):
                 ParserRefImpl( ref, hint ) {}
 
             auto operator[](std::string const& optName) -> Opt& {

@@ -185,7 +185,7 @@ namespace Catch {
             }
             if (!m_hint.empty())
                 oss << " <" << m_hint << '>';
-            return { { oss.str(), m_description } };
+            return { { oss.str(), static_cast<std::string>(m_description) } };
         }
 
         bool Opt::isMatch(std::string const& optToken) const {
