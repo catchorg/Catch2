@@ -11,6 +11,7 @@
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_textflow.hpp>
+#include <catch2/internal/catch_reusable_string_stream.hpp>
 
 #include <algorithm>
 #include <ostream>
@@ -173,8 +174,8 @@ namespace Catch {
         Opt::Opt(bool& ref) :
             ParserRefImpl(std::make_shared<Detail::BoundFlagRef>(ref)) {}
 
-        std::vector<Detail::HelpColumns> Opt::getHelpColumns() const {
-            std::ostringstream oss;
+        Detail::HelpColumns Opt::getHelpColumns() const {
+            ReusableStringStream oss;
             bool first = true;
             for (auto const& opt : m_optNames) {
                 if (first)
@@ -185,7 +186,7 @@ namespace Catch {
             }
             if (!m_hint.empty())
                 oss << " <" << m_hint << '>';
-            return { { oss.str(), static_cast<std::string>(m_description) } };
+            return { oss.str(), m_description };
         }
 
         bool Opt::isMatch(std::string const& optToken) const {
@@ -310,9 +311,9 @@ namespace Catch {
 
         std::vector<Detail::HelpColumns> Parser::getHelpColumns() const {
             std::vector<Detail::HelpColumns> cols;
+            cols.reserve( m_options.size() );
             for ( auto const& o : m_options ) {
-                auto childCols = o.getHelpColumns();
-                cols.insert( cols.end(), childCols.begin(), childCols.end() );
+                cols.push_back(o.getHelpColumns());
             }
             return cols;
         }
@@ -355,7 +356,7 @@ namespace Catch {
                                .width( optWidth )
                                .indent( 2 ) +
                            TextFlow::Spacer( 4 ) +
-                           TextFlow::Column( cols.right )
+                           TextFlow::Column( static_cast<std::string>(cols.descriptions) )
                                .width( consoleWidth - 7 - optWidth );
                 os << row << '\n';
             }

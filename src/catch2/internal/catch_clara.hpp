@@ -164,7 +164,8 @@ namespace Catch {
                 ResultType m_type;
             };
 
-            template <typename T> class ResultValueBase : public ResultBase {
+            template <typename T>
+            class ResultValueBase : public ResultBase {
             public:
                 auto value() const -> T const& {
                     enforceOk();
@@ -286,7 +287,7 @@ namespace Catch {
 
             struct HelpColumns {
                 std::string left;
-                std::string right;
+                StringRef descriptions;
             };
 
             template <typename T>
@@ -571,7 +572,7 @@ namespace Catch {
                 return *this;
             }
 
-            std::vector<Detail::HelpColumns> getHelpColumns() const;
+            Detail::HelpColumns getHelpColumns() const;
 
             bool isMatch(std::string const& optToken) const;
 
