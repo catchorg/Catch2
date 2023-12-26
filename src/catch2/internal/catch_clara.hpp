@@ -545,7 +545,7 @@ namespace Catch {
         // A parser for options
         class Opt : public Detail::ParserRefImpl<Opt> {
         protected:
-            std::vector<std::string> m_optNames;
+            std::vector<StringRef> m_optNames;
 
         public:
             template <typename LambdaT>
@@ -571,11 +571,11 @@ namespace Catch {
             Opt( T& ref, StringRef hint ):
                 ParserRefImpl( ref, hint ) {}
 
-            Opt& operator[]( std::string const& optName ) & {
+            Opt& operator[]( StringRef optName ) & {
                 m_optNames.push_back(optName);
                 return *this;
             }
-            Opt&& operator[]( std::string const& optName ) && {
+            Opt&& operator[]( StringRef optName ) && {
                 m_optNames.push_back( optName );
                 return CATCH_MOVE(*this);
             }
