@@ -495,9 +495,13 @@ namespace Catch {
                     m_ref( std::make_shared<BoundLambda<LambdaT>>( ref ) ),
                     m_hint( hint ) {}
 
-                auto operator()( StringRef description ) -> DerivedT& {
+                DerivedT& operator()( StringRef description ) & {
                     m_description = description;
                     return static_cast<DerivedT&>( *this );
+                }
+                DerivedT&& operator()( StringRef description ) && {
+                    m_description = description;
+                    return static_cast<DerivedT&&>( *this );
                 }
 
                 auto optional() -> DerivedT& {
@@ -567,9 +571,13 @@ namespace Catch {
             Opt( T& ref, StringRef hint ):
                 ParserRefImpl( ref, hint ) {}
 
-            auto operator[](std::string const& optName) -> Opt& {
+            Opt& operator[]( std::string const& optName ) & {
                 m_optNames.push_back(optName);
                 return *this;
+            }
+            Opt&& operator[]( std::string const& optName ) && {
+                m_optNames.push_back( optName );
+                return CATCH_MOVE(*this);
             }
 
             Detail::HelpColumns getHelpColumns() const;
@@ -628,21 +636,25 @@ namespace Catch {
                 return *this;
             }
 
-            auto operator|=(Opt const& opt) -> Parser& {
-                m_options.push_back(opt);
-                return *this;
+            friend Parser& operator|=( Parser& p, Opt const& opt ) {
+                p.m_options.push_back( opt );
+                return p;
+            }
+            friend Parser& operator|=( Parser& p, Opt&& opt ) {
+                p.m_options.push_back( CATCH_MOVE(opt) );
+                return p;
             }
 
             Parser& operator|=(Parser const& other);
 
             template <typename T>
-            friend Parser operator|(Parser const& p, T const& rhs) {
-                return Parser( p ) |= rhs;
+            friend Parser operator|( Parser const& p, T&& rhs ) {
+                return Parser( p ) |= CATCH_FORWARD(rhs);
             }
 
             template <typename T>
-            friend Parser operator|( Parser&& p, T const& rhs ) {
-                p |= rhs;
+            friend Parser operator|( Parser&& p, T&& rhs ) {
+                p |= CATCH_FORWARD(rhs);
                 return CATCH_MOVE(p);
             }
 
