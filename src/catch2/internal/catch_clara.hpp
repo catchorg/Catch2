@@ -636,8 +636,14 @@ namespace Catch {
             Parser& operator|=(Parser const& other);
 
             template <typename T>
-            auto operator|(T const& other) const -> Parser {
-                return Parser(*this) |= other;
+            friend Parser operator|(Parser const& p, T const& rhs) {
+                return Parser( p ) |= rhs;
+            }
+
+            template <typename T>
+            friend Parser operator|( Parser&& p, T const& rhs ) {
+                p |= rhs;
+                return CATCH_MOVE(p);
             }
 
             std::vector<Detail::HelpColumns> getHelpColumns() const;
