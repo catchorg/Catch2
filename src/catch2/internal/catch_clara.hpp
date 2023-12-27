@@ -102,17 +102,16 @@ namespace Catch {
             enum class TokenType { Option, Argument };
             struct Token {
                 TokenType type;
-                std::string token;
+                StringRef token;
             };
 
             // Abstracts iterators into args as a stream of tokens, with option
             // arguments uniformly handled
             class TokenStream {
-                using Iterator = std::vector<std::string>::const_iterator;
+                using Iterator = std::vector<StringRef>::const_iterator;
                 Iterator it;
                 Iterator itEnd;
                 std::vector<Token> m_tokenBuffer;
-
                 void loadBuffer();
 
             public:
@@ -582,7 +581,7 @@ namespace Catch {
 
             Detail::HelpColumns getHelpColumns() const;
 
-            bool isMatch(std::string const& optToken) const;
+            bool isMatch(StringRef optToken) const;
 
             using ParserBase::parse;
 
@@ -676,18 +675,20 @@ namespace Catch {
                       Detail::TokenStream const& tokens) const override;
         };
 
-        // Transport for raw args (copied from main args, or supplied via
-        // init list for testing)
+        /**
+         * Wrapper over argc + argv, assumes that the inputs outlive it
+         */
         class Args {
             friend Detail::TokenStream;
-            std::string m_exeName;
-            std::vector<std::string> m_args;
+            StringRef m_exeName;
+            std::vector<StringRef> m_args;
 
         public:
             Args(int argc, char const* const* argv);
-            Args(std::initializer_list<std::string> args);
+            // Helper constructor for testing
+            Args(std::initializer_list<StringRef> args);
 
-            std::string const& exeName() const { return m_exeName; }
+            StringRef exeName() const { return m_exeName; }
         };
 
 

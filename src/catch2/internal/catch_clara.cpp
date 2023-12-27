@@ -37,6 +37,19 @@ namespace {
         return optName;
     }
 
+    static size_t find_first_separator(Catch::StringRef sr) {
+        auto is_separator = []( char c ) {
+            return c == ' ' || c == ':' || c == '=';
+        };
+        size_t pos = 0;
+        while (pos < sr.size()) {
+            if (is_separator(sr[pos])) { return pos; }
+            ++pos;
+        }
+
+        return Catch::StringRef::npos;
+    }
+
 } // namespace
 
 namespace Catch {
@@ -52,23 +65,23 @@ namespace Catch {
                 }
 
                 if ( it != itEnd ) {
-                    auto const& next = *it;
+                    StringRef next = *it;
                     if ( isOptPrefix( next[0] ) ) {
-                        auto delimiterPos = next.find_first_of( " :=" );
-                        if ( delimiterPos != std::string::npos ) {
+                        auto delimiterPos = find_first_separator(next);
+                        if ( delimiterPos != StringRef::npos ) {
                             m_tokenBuffer.push_back(
                                 { TokenType::Option,
                                   next.substr( 0, delimiterPos ) } );
                             m_tokenBuffer.push_back(
                                 { TokenType::Argument,
-                                  next.substr( delimiterPos + 1 ) } );
+                                  next.substr( delimiterPos + 1, next.size() ) } );
                         } else {
                             if ( next[1] != '-' && next.size() > 2 ) {
-                                std::string opt = "- ";
+                                // Combined short args, e.g. "-ab" for "-a -b"
                                 for ( size_t i = 1; i < next.size(); ++i ) {
-                                    opt[1] = next[i];
                                     m_tokenBuffer.push_back(
-                                        { TokenType::Option, opt } );
+                                        { TokenType::Option,
+                                          next.substr( i, 1 ) } );
                                 }
                             } else {
                                 m_tokenBuffer.push_back(
@@ -128,7 +141,7 @@ namespace Catch {
             size_t ParserBase::cardinality() const { return 1; }
 
             InternalParseResult ParserBase::parse( Args const& args ) const {
-                return parse( args.exeName(), TokenStream( args ) );
+                return parse( static_cast<std::string>(args.exeName()), TokenStream( args ) );
             }
 
             ParseState::ParseState( ParseResultType type,
@@ -166,7 +179,7 @@ namespace Catch {
             auto valueRef =
                 static_cast<Detail::BoundValueRefBase*>(m_ref.get());
 
-            auto result = valueRef->setValue(remainingTokens->token);
+            auto result = valueRef->setValue(static_cast<std::string>(token.token));
             if (!result)
                 return Detail::InternalParseResult(result);
             else
@@ -192,7 +205,7 @@ namespace Catch {
             return { oss.str(), m_description };
         }
 
-        bool Opt::isMatch(std::string const& optToken) const {
+        bool Opt::isMatch(StringRef optToken) const {
             auto normalisedToken = normaliseOpt(optToken);
             for (auto const& name : m_optNames) {
                 if (normaliseOpt(name) == normalisedToken)
@@ -237,7 +250,7 @@ namespace Catch {
                             return Detail::InternalParseResult::runtimeError(
                                 "Expected argument following " +
                                 token.token);
-                        const auto result = valueRef->setValue(argToken.token);
+                        const auto result = valueRef->setValue(static_cast<std::string>(argToken.token));
                         if (!result)
                             return Detail::InternalParseResult(result);
                         if (result.value() ==
@@ -433,7 +446,7 @@ namespace Catch {
         Args::Args(int argc, char const* const* argv) :
             m_exeName(argv[0]), m_args(argv + 1, argv + argc) {}
 
-        Args::Args(std::initializer_list<std::string> args) :
+        Args::Args(std::initializer_list<StringRef> args) :
             m_exeName(*args.begin()),
             m_args(args.begin() + 1, args.end()) {}
 

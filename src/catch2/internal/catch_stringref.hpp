@@ -25,6 +25,8 @@ namespace Catch {
         using size_type = std::size_t;
         using const_iterator = const char*;
 
+        static constexpr size_type npos{ static_cast<size_type>( -1 ) };
+
     private:
         static constexpr char const* const s_empty = "";
 
