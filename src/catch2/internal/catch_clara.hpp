@@ -166,9 +166,13 @@ namespace Catch {
             template <typename T>
             class ResultValueBase : public ResultBase {
             public:
-                auto value() const -> T const& {
+                T const& value() const& {
                     enforceOk();
                     return m_value;
+                }
+                T&& value() && {
+                    enforceOk();
+                    return CATCH_MOVE( m_value );
                 }
 
             protected:
@@ -179,13 +183,23 @@ namespace Catch {
                     if ( m_type == ResultType::Ok )
                         new ( &m_value ) T( other.m_value );
                 }
-
-                ResultValueBase( ResultType, T const& value ): ResultBase( ResultType::Ok ) {
-                    new ( &m_value ) T( value );
+                ResultValueBase( ResultValueBase&& other ):
+                    ResultBase( other ) {
+                    if ( m_type == ResultType::Ok )
+                        new ( &m_value ) T( CATCH_MOVE(other.m_value) );
                 }
 
-                auto operator=( ResultValueBase const& other )
-                    -> ResultValueBase& {
+
+                ResultValueBase( ResultType, T const& value ):
+                    ResultBase( ResultType::Ok ) {
+                    new ( &m_value ) T( value );
+                }
+                ResultValueBase( ResultType, T&& value ):
+                    ResultBase( ResultType::Ok ) {
+                    new ( &m_value ) T( CATCH_MOVE(value) );
+                }
+
+                ResultValueBase& operator=( ResultValueBase const& other ) {
                     if ( m_type == ResultType::Ok )
                         m_value.~T();
                     ResultBase::operator=( other );
@@ -193,6 +207,14 @@ namespace Catch {
                         new ( &m_value ) T( other.m_value );
                     return *this;
                 }
+                ResultValueBase& operator=( ResultValueBase&& other ) {
+                    if ( m_type == ResultType::Ok ) m_value.~T();
+                    ResultBase::operator=( other );
+                    if ( m_type == ResultType::Ok )
+                        new ( &m_value ) T( CATCH_MOVE(other.m_value) );
+                    return *this;
+                }
+
 
                 ~ResultValueBase() override {
                     if ( m_type == ResultType::Ok )
@@ -220,8 +242,8 @@ namespace Catch {
                 }
 
                 template <typename U>
-                static auto ok( U const& value ) -> BasicResult {
-                    return { ResultType::Ok, value };
+                static auto ok( U&& value ) -> BasicResult {
+                    return { ResultType::Ok, CATCH_FORWARD(value) };
                 }
                 static auto ok() -> BasicResult { return { ResultType::Ok }; }
                 static auto logicError( std::string&& message )
@@ -268,11 +290,14 @@ namespace Catch {
             class ParseState {
             public:
                 ParseState( ParseResultType type,
-                            TokenStream const& remainingTokens );
+                            TokenStream remainingTokens );
 
                 ParseResultType type() const { return m_type; }
-                TokenStream const& remainingTokens() const {
+                TokenStream const& remainingTokens() const& {
                     return m_remainingTokens;
+                }
+                TokenStream&& remainingTokens() && {
+                    return CATCH_MOVE( m_remainingTokens );
                 }
 
             private:
@@ -446,7 +471,7 @@ namespace Catch {
                 virtual ~ParserBase() = default;
                 virtual auto validate() const -> Result { return Result::ok(); }
                 virtual auto parse( std::string const& exeName,
-                                    TokenStream const& tokens ) const
+                                    TokenStream tokens ) const
                     -> InternalParseResult = 0;
                 virtual size_t cardinality() const;
 
@@ -538,7 +563,7 @@ namespace Catch {
 
             Detail::InternalParseResult
                 parse(std::string const&,
-                      Detail::TokenStream const& tokens) const override;
+                      Detail::TokenStream tokens) const override;
         };
 
         // A parser for options
@@ -587,7 +612,7 @@ namespace Catch {
 
             Detail::InternalParseResult
                 parse(std::string const&,
-                      Detail::TokenStream const& tokens) const override;
+                      Detail::TokenStream tokens) const override;
 
             Detail::Result validate() const override;
         };
@@ -610,7 +635,7 @@ namespace Catch {
             // handled specially
             Detail::InternalParseResult
                 parse(std::string const&,
-                      Detail::TokenStream const& tokens) const override;
+                      Detail::TokenStream tokens) const override;
 
             std::string const& name() const { return *m_name; }
             Detail::ParserResult set(std::string const& newName);
@@ -672,7 +697,7 @@ namespace Catch {
             using ParserBase::parse;
             Detail::InternalParseResult
                 parse(std::string const& exeName,
-                      Detail::TokenStream const& tokens) const override;
+                      Detail::TokenStream tokens) const override;
         };
 
         /**
