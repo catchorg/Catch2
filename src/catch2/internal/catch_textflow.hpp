@@ -8,8 +8,10 @@
 #ifndef CATCH_TEXTFLOW_HPP_INCLUDED
 #define CATCH_TEXTFLOW_HPP_INCLUDED
 
-#include <cassert>
 #include <catch2/internal/catch_console_width.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
+
+#include <cassert>
 #include <string>
 #include <vector>
 
@@ -37,7 +39,7 @@ namespace Catch {
 
         public:
             /**
-             * Iterates "lines" in `Column` and return sthem
+             * Iterates "lines" in `Column` and returns them
              */
             class const_iterator {
                 friend Column;
@@ -91,19 +93,34 @@ namespace Catch {
             using iterator = const_iterator;
 
             explicit Column( std::string const& text ): m_string( text ) {}
+            explicit Column( std::string&& text ):
+                m_string( CATCH_MOVE(text)) {}
 
-            Column& width( size_t newWidth ) {
+            Column& width( size_t newWidth ) & {
                 assert( newWidth > 0 );
                 m_width = newWidth;
                 return *this;
             }
-            Column& indent( size_t newIndent ) {
+            Column&& width( size_t newWidth ) && {
+                assert( newWidth > 0 );
+                m_width = newWidth;
+                return CATCH_MOVE( *this );
+            }
+            Column& indent( size_t newIndent ) & {
                 m_indent = newIndent;
                 return *this;
             }
-            Column& initialIndent( size_t newIndent ) {
+            Column&& indent( size_t newIndent ) && {
+                m_indent = newIndent;
+                return CATCH_MOVE( *this );
+            }
+            Column& initialIndent( size_t newIndent ) & {
                 m_initialIndent = newIndent;
                 return *this;
+            }
+            Column&& initialIndent( size_t newIndent ) && {
+                m_initialIndent = newIndent;
+                return CATCH_MOVE( *this );
             }
 
             size_t width() const { return m_width; }
@@ -113,7 +130,8 @@ namespace Catch {
             friend std::ostream& operator<<( std::ostream& os,
                                              Column const& col );
 
-            Columns operator+( Column const& other );
+            friend Columns operator+( Column const& lhs, Column const& rhs );
+            friend Columns operator+( Column&& lhs, Column&& rhs );
         };
 
         //! Creates a column that serves as an empty space of specific width
@@ -157,8 +175,10 @@ namespace Catch {
             iterator begin() const { return iterator( *this ); }
             iterator end() const { return { *this, iterator::EndTag() }; }
 
-            Columns& operator+=( Column const& col );
-            Columns operator+( Column const& col );
+            friend Columns& operator+=( Columns& lhs, Column const& rhs );
+            friend Columns& operator+=( Columns& lhs, Column&& rhs );
+            friend Columns operator+( Columns const& lhs, Column const& rhs );
+            friend Columns operator+( Columns&& lhs, Column&& rhs );
 
             friend std::ostream& operator<<( std::ostream& os,
                                              Columns const& cols );

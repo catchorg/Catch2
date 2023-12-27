@@ -315,11 +315,10 @@ public:
             *this << RowBreak();
 
 			TextFlow::Columns headerCols;
-			auto spacer = TextFlow::Spacer(2);
 			for (auto const& info : m_columnInfos) {
                 assert(info.width > 2);
 				headerCols += TextFlow::Column(info.name).width(info.width - 2);
-				headerCols += spacer;
+                headerCols += TextFlow::Spacer( 2 );
 			}
 			m_os << headerCols << '\n';
 

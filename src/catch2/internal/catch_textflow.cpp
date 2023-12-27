@@ -233,22 +233,35 @@ namespace Catch {
             return os;
         }
 
-        Columns Column::operator+( Column const& other ) {
+        Columns operator+(Column const& lhs, Column const& rhs) {
             Columns cols;
-            cols += *this;
-            cols += other;
+            cols += lhs;
+            cols += rhs;
+            return cols;
+        }
+        Columns operator+(Column&& lhs, Column&& rhs) {
+            Columns cols;
+            cols += CATCH_MOVE( lhs );
+            cols += CATCH_MOVE( rhs );
             return cols;
         }
 
-        Columns& Columns::operator+=( Column const& col ) {
-            m_columns.push_back( col );
-            return *this;
+        Columns& operator+=(Columns& lhs, Column const& rhs) {
+            lhs.m_columns.push_back( rhs );
+            return lhs;
         }
-
-        Columns Columns::operator+( Column const& col ) {
-            Columns combined = *this;
-            combined += col;
+        Columns& operator+=(Columns& lhs, Column&& rhs) {
+            lhs.m_columns.push_back( CATCH_MOVE(rhs) );
+            return lhs;
+        }
+        Columns operator+( Columns const& lhs, Column const& rhs ) {
+            auto combined( lhs );
+            combined += rhs;
             return combined;
+        }
+        Columns operator+( Columns&& lhs, Column&& rhs ) {
+            lhs += CATCH_MOVE( rhs );
+            return CATCH_MOVE( lhs );
         }
 
     } // namespace TextFlow

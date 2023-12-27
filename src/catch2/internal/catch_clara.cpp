@@ -366,8 +366,8 @@ namespace Catch {
 
             optWidth = ( std::min )( optWidth, consoleWidth / 2 );
 
-            for ( auto const& cols : rows ) {
-                auto row = TextFlow::Column( cols.left )
+            for ( auto& cols : rows ) {
+                auto row = TextFlow::Column( CATCH_MOVE(cols.left) )
                                .width( optWidth )
                                .indent( 2 ) +
                            TextFlow::Spacer( 4 ) +
