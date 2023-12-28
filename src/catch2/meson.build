@@ -18,6 +18,8 @@ configure_file(
   configuration: conf_data,
 )
 
+fs = import('fs')
+
 benchmark_headers = [
   'benchmark/catch_benchmark.hpp',
   'benchmark/catch_benchmark_all.hpp',
@@ -340,9 +342,19 @@ foreach file : headers
   install_headers(file, subdir: join_paths(include_subdir, folder))
 endforeach
 
+catch2_dependencies = []
+# Check if this is an Android NDK build.
+if ((host_machine.system() == 'android') or
+  # Check if this is an Android Termux build.
+  (host_machine.system() == 'linux' and fs.is_dir('/data/data/com.termux')))
+  log_dep = meson.get_compiler('cpp').find_library('log')
+  catch2_dependencies += log_dep
+endif
+
 catch2 = static_library(
   'Catch2',
   sources,
+  dependencies: catch2_dependencies,
   include_directories: '..',
   install: true,
 )
