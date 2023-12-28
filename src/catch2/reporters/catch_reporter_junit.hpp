@@ -19,8 +19,6 @@ namespace Catch {
     public:
         JunitReporter(ReporterConfig&& _config);
 
-        ~JunitReporter() override = default;
-
         static std::string getDescription();
 
         void testRunStarting(TestRunInfo const& runInfo) override;

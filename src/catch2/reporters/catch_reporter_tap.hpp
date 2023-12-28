@@ -19,7 +19,6 @@ namespace Catch {
             StreamingReporterBase( CATCH_MOVE(config) ) {
             m_preferences.shouldReportAllAssertions = true;
         }
-        ~TAPReporter() override = default;
 
         static std::string getDescription() {
             using namespace std::string_literals;
