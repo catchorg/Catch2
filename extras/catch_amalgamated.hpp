@@ -7391,12 +7391,6 @@ namespace Detail {
         }
 
     public:
-        ~IGenerator() override = default;
-        IGenerator() = default;
-        IGenerator(IGenerator const&) = default;
-        IGenerator& operator=(IGenerator const&) = default;
-
-
         // Returns the current element of the generator
         //
         // \Precondition The generator is either freshly constructed,
@@ -10662,8 +10656,6 @@ namespace Catch {
 
     class TestRegistry : public ITestCaseRegistry {
     public:
-        ~TestRegistry() override = default;
-
         void registerTest( Detail::unique_ptr<TestCaseInfo> testInfo, Detail::unique_ptr<ITestInvoker> testInvoker );
 
         std::vector<TestCaseInfo*> const& getAllInfos() const override;
@@ -13312,8 +13304,6 @@ namespace Catch {
     public:
         JunitReporter(ReporterConfig&& _config);
 
-        ~JunitReporter() override = default;
-
         static std::string getDescription();
 
         void testRunStarting(TestRunInfo const& runInfo) override;
@@ -13554,8 +13544,6 @@ namespace Catch {
             m_shouldStoreSuccesfulAssertions = false;
         }
 
-        ~SonarQubeReporter() override = default;
-
         static std::string getDescription() {
             using namespace std::string_literals;
             return "Reports test results in the Generic Test Data SonarQube XML format"s;
@@ -13602,7 +13590,6 @@ namespace Catch {
             StreamingReporterBase( CATCH_MOVE(config) ) {
             m_preferences.shouldReportAllAssertions = true;
         }
-        ~TAPReporter() override = default;
 
         static std::string getDescription() {
             using namespace std::string_literals;

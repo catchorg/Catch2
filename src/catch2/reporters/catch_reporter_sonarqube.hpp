@@ -25,8 +25,6 @@ namespace Catch {
             m_shouldStoreSuccesfulAssertions = false;
         }
 
-        ~SonarQubeReporter() override = default;
-
         static std::string getDescription() {
             using namespace std::string_literals;
             return "Reports test results in the Generic Test Data SonarQube XML format"s;

@@ -38,7 +38,6 @@ namespace Catch {
                     TrackerContext& ctx,
                     ITracker* parent ):
                     TrackerBase( CATCH_MOVE( nameAndLocation ), ctx, parent ) {}
-                ~GeneratorTracker() override = default;
 
                 static GeneratorTracker*
                 acquire( TrackerContext& ctx,

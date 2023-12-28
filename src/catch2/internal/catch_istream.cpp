@@ -80,7 +80,6 @@ namespace Detail {
                 CATCH_ENFORCE( !m_ofs.fail(), "Unable to open file: '" << filename << '\'' );
                 m_ofs << std::unitbuf;
             }
-            ~FileStream() override = default;
         public: // IStream
             std::ostream& stream() override {
                 return m_ofs;
@@ -95,7 +94,6 @@ namespace Detail {
             // Store the streambuf from cout up-front because
             // cout may get redirected when running tests
             CoutStream() : m_os( Catch::cout().rdbuf() ) {}
-            ~CoutStream() override = default;
 
         public: // IStream
             std::ostream& stream() override { return m_os; }
@@ -109,7 +107,6 @@ namespace Detail {
             // Store the streambuf from cerr up-front because
             // cout may get redirected when running tests
             CerrStream(): m_os( Catch::cerr().rdbuf() ) {}
-            ~CerrStream() override = default;
 
         public: // IStream
             std::ostream& stream() override { return m_os; }
@@ -126,8 +123,6 @@ namespace Detail {
             :   m_streamBuf( Detail::make_unique<StreamBufImpl<OutputDebugWriter>>() ),
                 m_os( m_streamBuf.get() )
             {}
-
-            ~DebugOutStream() override = default;
 
         public: // IStream
             std::ostream& stream() override { return m_os; }
