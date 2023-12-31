@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.5.1](#351)<br>
 [3.5.0](#350)<br>
 [3.4.0](#340)<br>
 [3.3.2](#332)<br>
@@ -57,6 +58,17 @@
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
 
+
+## 3.5.1
+
+### Improvements
+* Significantly improved performance of the CLI parsing.
+  * This includes the cost of preparing the CLI parser, so Catch2's binaries start much faster.
+
+### Miscellaneous
+* Added support for Bazel modules (#2781)
+* Added CMake option to disable the build reproducibility settings (#2785)
+* Added `log` library linking to the Meson build (#2784)
 
 
 ## 3.5.0
