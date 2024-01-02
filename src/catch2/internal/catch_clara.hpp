@@ -673,7 +673,9 @@ namespace Catch {
 
             template <typename T>
             friend Parser operator|( Parser const& p, T&& rhs ) {
-                return Parser( p ) |= CATCH_FORWARD(rhs);
+                Parser temp( p );
+                temp |= rhs;
+                return temp;
             }
 
             template <typename T>
