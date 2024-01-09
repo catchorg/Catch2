@@ -19,7 +19,7 @@ namespace Catch {
         Default
     };
 
-    std::uint32_t generateRandomSeed(GenerateFrom from);
+    std::uint64_t generateRandomSeed(GenerateFrom from);
 
 } // end namespace Catch
 

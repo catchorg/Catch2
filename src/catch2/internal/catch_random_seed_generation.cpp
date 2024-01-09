@@ -16,15 +16,15 @@
 
 namespace Catch {
 
-    std::uint32_t generateRandomSeed( GenerateFrom from ) {
+    std::uint64_t generateRandomSeed( GenerateFrom from ) {
         switch ( from ) {
         case GenerateFrom::Time:
-            return static_cast<std::uint32_t>( std::time( nullptr ) );
+            return static_cast<std::uint64_t>( std::time( nullptr ) );
 
         case GenerateFrom::Default:
         case GenerateFrom::RandomDevice: {
             std::random_device rd;
-            return Detail::fillBitsFrom<std::uint32_t>( rd );
+            return Detail::fillBitsFrom<std::uint64_t>( rd );
         }
 
         default:

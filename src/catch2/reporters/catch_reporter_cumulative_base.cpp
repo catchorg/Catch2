@@ -87,8 +87,8 @@ namespace Catch {
             if ( it == parentNode.childSections.end() ) {
                 auto newNode =
                     Detail::make_unique<SectionNode>( incompleteStats );
-                node = newNode.get();
                 parentNode.childSections.push_back( CATCH_MOVE( newNode ) );
+                node = newNode.get();
             } else {
                 node = it->get();
             }

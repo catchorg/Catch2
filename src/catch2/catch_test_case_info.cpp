@@ -88,8 +88,12 @@ namespace Catch {
             --lastDot;
 
             size_t nameStart = lastDot;
-            while (nameStart > 0 && filename[nameStart - 1] != '/' && filename[nameStart - 1] != '\\') {
+            if (nameStart < filename.size()) {
+               while (nameStart > 0 && filename[nameStart - 1] != '/' && filename[nameStart - 1] != '\\') {
                 --nameStart;
+                }
+            } else {
+                nameStart = 0;
             }
 
             return filename.substr(nameStart, lastDot - nameStart);
