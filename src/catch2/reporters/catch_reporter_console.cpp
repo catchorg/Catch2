@@ -209,13 +209,6 @@ findMax( std::size_t& i, std::size_t& j, std::size_t& k, std::size_t& l ) {
         return l;
 }
 
-enum class Justification { Left, Right };
-
-struct ColumnInfo {
-    std::string name;
-    std::size_t width;
-    Justification justification;
-};
 struct ColumnBreak {};
 struct RowBreak {};
 struct OutputFlush {};
@@ -292,6 +285,14 @@ public:
     }
 };
 } // end anon namespace
+
+enum class Justification { Left, Right };
+
+struct ColumnInfo {
+    std::string name;
+    std::size_t width;
+    Justification justification;
+};
 
 class TablePrinter {
     std::ostream& m_os;
