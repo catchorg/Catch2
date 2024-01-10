@@ -16,7 +16,7 @@ Ideally you should be using Catch2 through its [CMake integration](cmake-integra
 Catch2 also provides pkg-config files and two file (header + cpp)
 distribution, but this documentation will assume you are using CMake. If
 you are using the two file distribution instead, remember to replace
-the included header with `catch_amalgamated.hpp`.
+the included header with `catch_amalgamated.hpp` ([step by step instructions](migrate-v2-to-v3.md#how-to-migrate-projects-from-v2-to-v3)).
 
 
 ## Writing tests
