@@ -123,6 +123,12 @@ TEST_CASE( "count_equidistant_floats",
     CHECK( count_floats_with_scaled_ulp( 1., 1.5 ) == 1ull << 51 );
     CHECK( count_floats_with_scaled_ulp( 1.25, 1.5 ) == 1ull << 50 );
     CHECK( count_floats_with_scaled_ulp( 1.f, 1.5f ) == 1 << 22 );
+    CHECK( count_floats_with_scaled_ulp( -std::numeric_limits<float>::max(),
+                                         std::numeric_limits<float>::max() ) ==
+           33554430 ); // (1 << 25) - 2 due to not including infinities
+    CHECK( count_floats_with_scaled_ulp( -std::numeric_limits<double>::max(),
+                                         std::numeric_limits<double>::max() ) ==
+           18014398509481982 ); // (1 << 54) - 2 due to not including infinities
 
     STATIC_REQUIRE( std::is_same<std::uint64_t,
                                  decltype( count_floats_with_scaled_ulp(
