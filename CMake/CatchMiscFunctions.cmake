@@ -78,6 +78,7 @@ function(add_warnings_to_targets targets)
           "-Wreturn-std-move"
           "-Wshadow"
           "-Wstrict-aliasing"
+          "-Wsubobject-linkage"
           "-Wsuggest-destructor-override"
           "-Wsuggest-override"
           "-Wundef"
