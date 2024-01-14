@@ -69,7 +69,7 @@ namespace Catch {
         bool benchmarkNoAnalysis = false;
         unsigned int benchmarkSamples = 100;
         double benchmarkConfidenceInterval = 0.95;
-        unsigned int benchmarkResamples = 100000;
+        unsigned int benchmarkResamples = 100'000;
         std::chrono::milliseconds::rep benchmarkWarmupTime = 100;
 
         Verbosity verbosity = Verbosity::Normal;
