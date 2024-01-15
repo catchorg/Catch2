@@ -120,5 +120,4 @@ jobs:
       env:
           CTEST_OUTPUT_ON_FAILURE: 1
       working-directory: ${{runner.workspace}}/build
-      # Hardcode 2 cores we know are there
-      run: ctest -C ${{matrix.build_type}} -j 2
+      run: ctest -C ${{matrix.build_type}} -j `nproc`

@@ -40,6 +40,5 @@ jobs:
 
     - name: Run tests
       working-directory: ${{runner.workspace}}/meson-build
-      # Hardcode 2 cores we know are there
       run: |
         meson test --verbose
