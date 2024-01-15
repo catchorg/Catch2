@@ -60,7 +60,7 @@
 [Even Older versions](#even-older-versions)<br>
 
 
-## 3.5.1
+## 3.5.2
 
 ### Fixes
 * Fixed `-Wsubobject-linkage` in the Console reporter (#2794)
