@@ -6,8 +6,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.5.1
-//  Generated: 2023-12-31 15:10:55.864983
+//  Catch v3.5.2
+//  Generated: 2024-01-15 14:06:36.675713
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -187,21 +187,16 @@ namespace Catch {
                           double const* last,
                           Estimator& estimator ) {
                     auto n = static_cast<size_t>( last - first );
-                    std::uniform_int_distribution<decltype( n )> dist( 0,
-                                                                       n - 1 );
+                    std::uniform_int_distribution<size_t> dist( 0, n - 1 );
 
                     sample out;
                     out.reserve( resamples );
-                    // We allocate the vector outside the loop to avoid realloc
-                    // per resample
                     std::vector<double> resampled;
                     resampled.reserve( n );
                     for ( size_t i = 0; i < resamples; ++i ) {
                         resampled.clear();
                         for ( size_t s = 0; s < n; ++s ) {
-                            resampled.push_back(
-                                first[static_cast<std::ptrdiff_t>(
-                                    dist( rng ) )] );
+                            resampled.push_back( first[dist( rng )] );
                         }
                         const auto estimate =
                             estimator( resampled.data(), resampled.data() + resampled.size() );
@@ -2273,7 +2268,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 3, 5, 1, "", 0 );
+        static Version version( 3, 5, 2, "", 0 );
         return version;
     }
 
@@ -4380,7 +4375,6 @@ namespace Detail {
                 CATCH_ENFORCE( !m_ofs.fail(), "Unable to open file: '" << filename << '\'' );
                 m_ofs << std::unitbuf;
             }
-            ~FileStream() override = default;
         public: // IStream
             std::ostream& stream() override {
                 return m_ofs;
@@ -4395,7 +4389,6 @@ namespace Detail {
             // Store the streambuf from cout up-front because
             // cout may get redirected when running tests
             CoutStream() : m_os( Catch::cout().rdbuf() ) {}
-            ~CoutStream() override = default;
 
         public: // IStream
             std::ostream& stream() override { return m_os; }
@@ -4409,7 +4402,6 @@ namespace Detail {
             // Store the streambuf from cerr up-front because
             // cout may get redirected when running tests
             CerrStream(): m_os( Catch::cerr().rdbuf() ) {}
-            ~CerrStream() override = default;
 
         public: // IStream
             std::ostream& stream() override { return m_os; }
@@ -4426,8 +4418,6 @@ namespace Detail {
             :   m_streamBuf( Detail::make_unique<StreamBufImpl<OutputDebugWriter>>() ),
                 m_os( m_streamBuf.get() )
             {}
-
-            ~DebugOutStream() override = default;
 
         public: // IStream
             std::ostream& stream() override { return m_os; }
@@ -5441,7 +5431,6 @@ namespace Catch {
                     TrackerContext& ctx,
                     ITracker* parent ):
                     TrackerBase( CATCH_MOVE( nameAndLocation ), ctx, parent ) {}
-                ~GeneratorTracker() override = default;
 
                 static GeneratorTracker*
                 acquire( TrackerContext& ctx,
@@ -8799,13 +8788,6 @@ findMax( std::size_t& i, std::size_t& j, std::size_t& k, std::size_t& l ) {
         return l;
 }
 
-enum class Justification { Left, Right };
-
-struct ColumnInfo {
-    std::string name;
-    std::size_t width;
-    Justification justification;
-};
 struct ColumnBreak {};
 struct RowBreak {};
 struct OutputFlush {};
@@ -8882,6 +8864,14 @@ public:
     }
 };
 } // end anon namespace
+
+enum class Justification { Left, Right };
+
+struct ColumnInfo {
+    std::string name;
+    std::size_t width;
+    Justification justification;
+};
 
 class TablePrinter {
     std::ostream& m_os;

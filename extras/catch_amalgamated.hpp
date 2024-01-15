@@ -6,8 +6,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.5.1
-//  Generated: 2023-12-31 15:10:53.044176
+//  Catch v3.5.2
+//  Generated: 2024-01-15 14:06:34.036475
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -3766,7 +3766,7 @@ namespace Catch {
         bool benchmarkNoAnalysis = false;
         unsigned int benchmarkSamples = 100;
         double benchmarkConfidenceInterval = 0.95;
-        unsigned int benchmarkResamples = 100000;
+        unsigned int benchmarkResamples = 100'000;
         std::chrono::milliseconds::rep benchmarkWarmupTime = 100;
 
         Verbosity verbosity = Verbosity::Normal;
@@ -4825,7 +4825,9 @@ namespace Catch {
 
             template <typename T>
             friend Parser operator|( Parser const& p, T&& rhs ) {
-                return Parser( p ) |= CATCH_FORWARD(rhs);
+                Parser temp( p );
+                temp |= rhs;
+                return temp;
             }
 
             template <typename T>
@@ -7146,7 +7148,7 @@ namespace Catch {
 
 #define CATCH_VERSION_MAJOR 3
 #define CATCH_VERSION_MINOR 5
-#define CATCH_VERSION_PATCH 1
+#define CATCH_VERSION_PATCH 2
 
 #endif // CATCH_VERSION_MACROS_HPP_INCLUDED
 

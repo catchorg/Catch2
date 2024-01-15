@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.5.2](#352)<br>
 [3.5.1](#351)<br>
 [3.5.0](#350)<br>
 [3.4.0](#340)<br>
@@ -57,6 +58,13 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 3.5.1
+
+### Fixes
+* Fixed `-Wsubobject-linkage` in the Console reporter (#2794)
+* Fixed adding new CLI Options to lvalue parser using `|` (#2787)
 
 
 ## 3.5.1

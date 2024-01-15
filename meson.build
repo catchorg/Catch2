@@ -8,7 +8,7 @@
 project(
   'catch2',
   'cpp',
-  version: '3.5.1', # CML version placeholder, don't delete
+  version: '3.5.2', # CML version placeholder, don't delete
   license: 'BSL-1.0',
   meson_version: '>=0.54.1',
 )
