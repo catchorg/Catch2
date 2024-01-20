@@ -13,6 +13,7 @@ namespace Catch {
 
         //! Deriving classes become noncopyable and nonmovable
         class NonCopyable {
+        public:
             NonCopyable( NonCopyable const& ) = delete;
             NonCopyable( NonCopyable&& ) = delete;
             NonCopyable& operator=( NonCopyable const& ) = delete;
