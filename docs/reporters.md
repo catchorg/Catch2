@@ -5,7 +5,7 @@ Reporters are a customization point for most of Catch2's output, e.g.
 formatting and writing out [assertions (whether passing or failing),
 sections, test cases, benchmarks, and so on](reporter-events.md#top).
 
-Catch2 comes with a bunch of reporters by default (currently 8), and
+Catch2 comes with a bunch of reporters by default (currently 9), and
 you can also write your own reporter. Because multiple reporters can
 be active at the same time, your own reporters do not even have to handle
 all reporter event, just the ones you are interested in, e.g. benchmarks.
