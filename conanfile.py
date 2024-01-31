@@ -1,5 +1,8 @@
 #!/usr/bin/env python
-from conans import ConanFile, CMake, tools
+from conan import ConanFile, tools
+from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
+from conan.tools import files
+
 
 class CatchConan(ConanFile):
     name = "catch2"
@@ -14,30 +17,45 @@ class CatchConan(ConanFile):
 
     settings = "os", "compiler", "build_type", "arch"
 
-    generators = "cmake"
+    def layout(self):
+        cmake_layout(self)
+
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.generate()
+
+        deps = CMakeDeps(self)
+        deps.generate()
 
     def _configure_cmake(self):
         cmake = CMake(self)
-        cmake.definitions["BUILD_TESTING"] = "OFF"
-        cmake.definitions["CATCH_INSTALL_DOCS"] = "OFF"
-        cmake.definitions["CATCH_INSTALL_EXTRAS"] = "ON"
-        cmake.configure(build_folder="build")
+
+        # These are option variables. The toolchain in conan 2 doesn't appear to
+        # set these correctly so you have to do it in the configure variables.
+        cmake.configure(variables= {
+            "BUILD_TESTING": "OFF",
+            "CATCH_INSTALL_DOCS": "OFF",
+            "CATCH_INSTALL_EXTRAS": "ON",
+            }
+        )
         return cmake
 
+
     def build(self):
-        # We need this workaround until the toolchains feature
-        # to inject stuff like MD/MT
-        line_to_replace = 'list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")'
-        tools.replace_in_file("CMakeLists.txt", line_to_replace,
-                              '''{}
-include("{}/conanbuildinfo.cmake")
-conan_basic_setup()'''.format(line_to_replace, self.install_folder.replace("\\", "/")))
+#         # We need this workaround until the toolchains feature
+#         # to inject stuff like MD/MT
+#         line_to_replace = 'list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")'
+#         replacement_text = '''{}
+# include("{}/conanbuildinfo.cmake")
+# conan_basic_setup()'''.format(line_to_replace, self.package_folder.replace("\\", "/"))
+
+#         files.replace_in_file(self, f"{self.source_folder}/CMakeLists.txt", line_to_replace, replacement_text)
 
         cmake = self._configure_cmake()
         cmake.build()
 
     def package(self):
-        self.copy(pattern="LICENSE.txt", dst="licenses")
+        files.copy(self, pattern="LICENSE.txt", src='.', dst="licenses")
         cmake = self._configure_cmake()
         cmake.install()
 
