@@ -12,7 +12,6 @@ class TestPackageConan(ConanFile):
 
     def requirements(self):
         self.requires(self.tested_reference_str)
-        print(f'TESTED:: {self.tested_reference_str}')
 
     def layout(self):
         cmake_layout(self)
@@ -23,9 +22,11 @@ class TestPackageConan(ConanFile):
         cmake.build()
 
     def test(self):
-        print(os.getcwd())
-        print(self.package_folder)
-
         if can_run(self):
             cmd = os.path.join(self.cpp.build.bindir, "test_package")
             self.run(cmd, env="conanrun")
+
+        # catch2 = self.dependencies["catch2"]
+        # assert catch2.license == 'BSL-1.0'
+        # print(catch2.package_folder)
+        # # assert os.path.Path(catch2.)
