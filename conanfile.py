@@ -4,6 +4,7 @@ from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools import files, scm
 import os
 import shutil
+import re
 
 
 class CatchConan(ConanFile):
@@ -19,6 +20,16 @@ class CatchConan(ConanFile):
     exports_sources = ("src/*", "CMakeLists.txt", "CMake/*", "extras/*")
 
     settings = "os", "compiler", "build_type", "arch"
+
+    def set_version(self):
+        pattern = re.compile(r"\w*VERSION (\d+\.\d+\.\d+) # CML version placeholder, don't delete")
+        with open("CMakeLists.txt") as file:
+            for line in file:
+                result = pattern.search(line)
+                if result:
+                    self.version = result.group(1)
+
+        self.output.info(f'Using version: {self.version}')
 
     def layout(self):
         cmake_layout(self)
