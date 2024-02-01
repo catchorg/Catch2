@@ -26,7 +26,8 @@ class TestPackageConan(ConanFile):
             cmd = os.path.join(self.cpp.build.bindir, "test_package")
             self.run(cmd, env="conanrun")
 
-        # catch2 = self.dependencies["catch2"]
-        # assert catch2.license == 'BSL-1.0'
-        # print(catch2.package_folder)
-        # # assert os.path.Path(catch2.)
+        # If we are on conan 2 we can check the license info is populated
+        if hasattr(self, 'dependencies'):
+            catch2 = self.dependencies["catch2"]
+            assert os.path.exists(f'{catch2.package_folder}/licenses/LICENSE.txt')
+            assert catch2.license == 'BSL-1.0'

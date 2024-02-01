@@ -2,6 +2,8 @@
 from conan import ConanFile, tools
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools import files
+import os
+import shutil
 
 
 class CatchConan(ConanFile):
@@ -11,6 +13,7 @@ class CatchConan(ConanFile):
     url = "https://github.com/catchorg/Catch2"
     homepage = url
     license = "BSL-1.0"
+    version = "latest"
 
     exports = "LICENSE.txt"
     exports_sources = ("src/*", "CMakeLists.txt", "CMake/*", "extras/*")
@@ -55,9 +58,11 @@ class CatchConan(ConanFile):
         cmake.build()
 
     def package(self):
-        files.copy(self, pattern="LICENSE.txt", src='.', dst="licenses")
         cmake = self._configure_cmake()
         cmake.install()
+
+        os.mkdir(f'{self.package_folder}/licenses/')
+        shutil.copy2(f'{self.recipe_folder}/LICENSE.txt', f'{self.package_folder}/licenses/')
 
     def package_info(self):
         lib_suffix = "d" if self.settings.build_type == "Debug" else ""
