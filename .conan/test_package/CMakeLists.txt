@@ -4,4 +4,4 @@ project(PackageTest CXX)
 find_package(Catch2 CONFIG REQUIRED)
 
 add_executable(test_package test_package.cpp)
-target_link_libraries(test_package catch2::catch2main)
+target_link_libraries(test_package Catch2::Catch2WithMain)
