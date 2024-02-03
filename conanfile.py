@@ -74,7 +74,7 @@ class CatchConan(ConanFile):
             # Catch2
             self.cpp_info.components["catch2base"].names["cmake_find_package"] = "Catch2"
             self.cpp_info.components["catch2base"].names["cmake_find_package_multi"] = "Catch2"
-            self.cpp_info.components["catch2base"].names["pkg_config"] = "Catch2"
+            self.cpp_info.components["catch2base"].names["pkg_config"] = "catch2"
             self.cpp_info.components["catch2base"].libs = ["Catch2" + lib_suffix]
             self.cpp_info.components["catch2base"].builddirs.append("lib/cmake/Catch2")
             # Catch2WithMain
@@ -85,15 +85,18 @@ class CatchConan(ConanFile):
             self.cpp_info.components["catch2main"].requires = ["catch2base"]
         else:
             self.cpp_info.set_property("cmake_file_name", "Catch2")
+            self.cpp_info.set_property("cmake_target_name", "Catch2WithMain")
+            self.cpp_info.set_property("pkg_config_name", "catch2-with-main")
 
             # Catch2
             self.cpp_info.components["catch2base"].set_property("cmake_file_name", "Catch2")
-            self.cpp_info.components["catch2base"].set_property("pkg_config_name", "Catch2")
+            self.cpp_info.components["catch2base"].set_property("pkg_config_name", "catch2")
             self.cpp_info.components["catch2base"].libs = ["Catch2" + lib_suffix]
             self.cpp_info.components["catch2base"].builddirs.append("lib/cmake/Catch2")
 
             # Catch2WithMain
             self.cpp_info.components["catch2main"].set_property("cmake_file_name", "Catch2WithMain")
-            self.cpp_info.components["catch2main"].set_property("pkg_config_name", "Catch2WithMain")
+            self.cpp_info.components["catch2main"].set_property("cmake_target_name", "Catch2WithMain")
+            self.cpp_info.components["catch2main"].set_property("pkg_config_name", "catch2-with-main")
             self.cpp_info.components["catch2main"].libs = ["Catch2Main" + lib_suffix]
             self.cpp_info.components["catch2main"].requires = ["catch2base"]
