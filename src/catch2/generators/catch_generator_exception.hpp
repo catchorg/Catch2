@@ -23,7 +23,7 @@ namespace Catch {
             m_msg(msg)
         {}
 
-        const char* what() const noexcept override final;
+        const char* what() const noexcept final;
     };
 
 } // end namespace Catch
