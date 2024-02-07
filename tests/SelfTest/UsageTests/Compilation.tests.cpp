@@ -25,6 +25,16 @@ namespace bar {
     struct TypeList {};
 }
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
+#endif
+#ifdef __GNUC__
+// Note that because -~GCC~-, this warning cannot be silenced temporarily, by pushing diagnostic stack...
+// Luckily it is firing in test files and thus can be silenced for the whole file, without losing much.
+#pragma GCC diagnostic ignored "-Wunused-function"
+#endif
+
 #ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #endif
@@ -76,16 +86,6 @@ static std::ostream &operator<<(std::ostream &o, const A &) { return o << 0; }
 struct B : private A {
     bool operator==(int) const { return true; }
 };
-
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-function"
-#endif
-#ifdef __GNUC__
-// Note that because -~GCC~-, this warning cannot be silenced temporarily, by pushing diagnostic stack...
-// Luckily it is firing in test files and thus can be silenced for the whole file, without losing much.
-#pragma GCC diagnostic ignored "-Wunused-function"
-#endif
 
 B f();
 

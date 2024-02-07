@@ -160,6 +160,10 @@ set(HEADERS
 include(CTest)
 
 add_executable(SelfTest ${TEST_SOURCES} ${TEST_HEADERS})
+if (CATCH_ENABLE_PCH)
+    target_precompile_headers(SelfTest REUSE_FROM Catch2)
+endif()
+
 target_include_directories(SelfTest PRIVATE ${SELF_TEST_DIR})
 target_link_libraries(SelfTest PRIVATE Catch2WithMain)
 if (BUILD_SHARED_LIBS AND WIN32)

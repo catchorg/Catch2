@@ -348,6 +348,11 @@ source_group("generated headers"
 )
 
 add_library(Catch2 ${ALL_FILES})
+
+if (CATCH_ENABLE_PCH)
+    target_precompile_headers(Catch2 PRIVATE "${SOURCES_DIR}/internal/catch_pch.hpp")
+endif()
+
 if (CATCH_ENABLE_REPRODUCIBLE_BUILD)
     add_build_reproducibility_settings(Catch2)
 endif()
@@ -403,6 +408,11 @@ target_include_directories(Catch2
 add_library(Catch2WithMain
     ${SOURCES_DIR}/internal/catch_main.cpp
 )
+
+if (CATCH_ENABLE_PCH)
+    target_precompile_headers(Catch2WithMain REUSE_FROM Catch2)
+endif()
+
 if (CATCH_ENABLE_REPRODUCIBLE_BUILD)
     add_build_reproducibility_settings(Catch2WithMain)
 endif()
@@ -458,6 +468,11 @@ endif()
 # the sources into the binary.
 if (CATCH_BUILD_EXAMPLES OR CATCH_BUILD_EXTRA_TESTS)
     add_library(Catch2_buildall_interface INTERFACE)
+
+    if (CATCH_ENABLE_PCH)
+        target_precompile_headers(Catch2_buildall_interface REUSE_FROM Catch2)
+    endif()
+
     target_sources(Catch2_buildall_interface INTERFACE
       ${ALL_FILES}
       # Also include main entry point

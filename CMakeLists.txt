@@ -12,6 +12,7 @@ option(CATCH_INSTALL_DOCS "Install documentation alongside library" ON)
 option(CATCH_INSTALL_EXTRAS "Install extras (CMake scripts, debugger helpers) alongside library" ON)
 option(CATCH_DEVELOPMENT_BUILD "Build tests, enable warnings, enable Werror, etc" OFF)
 option(CATCH_ENABLE_REPRODUCIBLE_BUILD "Add compiler flags for improving build reproducibility" ON)
+option(CATCH_ENABLE_PCH "Enable pre-compiled headers to improve build speed" ON)
 
 include(CMakeDependentOption)
 cmake_dependent_option(CATCH_BUILD_TESTING "Build the SelfTest project" ON "CATCH_DEVELOPMENT_BUILD" OFF)
@@ -155,7 +156,7 @@ if (NOT_SUBPROJECT)
           DESTINATION
             ${CATCH_CMAKE_CONFIG_DESTINATION}
         )
-    
+
         # Install debugger helpers
         install(
           FILES

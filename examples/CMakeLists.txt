@@ -23,6 +23,10 @@ add_executable(231-Cfg_OutputStreams
 target_link_libraries(231-Cfg_OutputStreams Catch2_buildall_interface)
 target_compile_definitions(231-Cfg_OutputStreams PUBLIC CATCH_CONFIG_NOSTDOUT)
 
+if (CATCH_ENABLE_PCH)
+    target_precompile_headers(231-Cfg_OutputStreams PRIVATE "${SOURCES_DIR}/internal/catch_pch.hpp")
+endif()
+
 # These examples use the standard separate compilation
 set( SOURCES_IDIOMATIC_EXAMPLES
     030-Asn-Require-Check.cpp
@@ -55,6 +59,10 @@ set(ALL_EXAMPLE_TARGETS
 
 foreach( name ${ALL_EXAMPLE_TARGETS} )
     target_link_libraries( ${name} Catch2WithMain )
+
+    if (CATCH_ENABLE_PCH)
+        target_precompile_headers(${name} REUSE_FROM Catch2)
+    endif()
 endforeach()
 
 
