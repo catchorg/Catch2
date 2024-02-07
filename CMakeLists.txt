@@ -105,7 +105,7 @@ if(CATCH_BUILD_FUZZERS)
 endif()
 
 if (CATCH_DEVELOPMENT_BUILD)
-    add_warnings_to_targets("${CATCH_WARNING_TARGETS}")
+    #add_warnings_to_targets("${CATCH_WARNING_TARGETS}")
 endif()
 
 # Only perform the installation steps when Catch is not being used as
