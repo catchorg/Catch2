@@ -142,6 +142,11 @@ set(TEST_HEADERS
   ${SELF_TEST_DIR}/helpers/type_with_lit_0_comparisons.hpp
 )
 
+set_source_files_properties(${SELF_TEST_DIR}/UsageTests/ToStringGeneral.tests.cpp PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+set_source_files_properties(${SELF_TEST_DIR}/UsageTests/ToStringOptional.tests.cpp PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+set_source_files_properties(${SELF_TEST_DIR}/UsageTests/ToStringPair.tests.cpp PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+set_source_files_properties(${SELF_TEST_DIR}/UsageTests/ToStringTuple.tests.cpp PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+set_source_files_properties(${SELF_TEST_DIR}/UsageTests/ToStringVariant.tests.cpp PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
 
 # Specify the headers, too, so CLion recognises them as project files
 set(HEADERS
