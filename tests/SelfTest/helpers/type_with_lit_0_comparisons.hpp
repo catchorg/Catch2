@@ -12,23 +12,28 @@
 #include <type_traits>
 
 // Should only be constructible from literal 0.
+// Based on the constructor from pointer trick, used by libstdc++ and libc++
+// (formerly also MSVC, but they've moved to consteval int constructor).
 // Used by `TypeWithLit0Comparisons` for testing comparison
 // ops that only work with literal zero, the way std::*orderings do
-struct ZeroLiteralDetector {
-    constexpr ZeroLiteralDetector( ZeroLiteralDetector* ) noexcept {}
+struct ZeroLiteralAsPointer {
+    constexpr ZeroLiteralAsPointer( ZeroLiteralAsPointer* ) noexcept {}
 
     template <typename T,
               typename = std::enable_if_t<!std::is_same<T, int>::value>>
-    constexpr ZeroLiteralDetector( T ) = delete;
+    constexpr ZeroLiteralAsPointer( T ) = delete;
 };
 
+
 struct TypeWithLit0Comparisons {
-#define DEFINE_COMP_OP( op )                                                  \
-    friend bool operator op( TypeWithLit0Comparisons, ZeroLiteralDetector ) { \
-        return true;                                                          \
-    }                                                                         \
-    friend bool operator op( ZeroLiteralDetector, TypeWithLit0Comparisons ) { \
-        return false;                                                         \
+#define DEFINE_COMP_OP( op )                                       \
+    constexpr friend bool operator op( TypeWithLit0Comparisons,    \
+                                       ZeroLiteralAsPointer ) {    \
+        return true;                                               \
+    }                                                              \
+    constexpr friend bool operator op( ZeroLiteralAsPointer,       \
+                                       TypeWithLit0Comparisons ) { \
+        return false;                                              \
     }
 
     DEFINE_COMP_OP( < )

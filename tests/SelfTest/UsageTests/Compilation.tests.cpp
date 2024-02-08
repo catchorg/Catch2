@@ -313,11 +313,12 @@ TEST_CASE("ADL universal operators don't hijack expression deconstruction", "[co
     REQUIRE(0 ^ adl::always_true{});
 }
 
-TEST_CASE( "#2555 - types that can only be compared with 0 literal (not int/long) are supported", "[compilation][approvals]" ) {
+TEST_CASE( "#2555 - types that can only be compared with 0 literal implemented as pointer conversion are supported",
+           "[compilation][approvals]" ) {
     REQUIRE( TypeWithLit0Comparisons{} < 0 );
     REQUIRE_FALSE( 0 < TypeWithLit0Comparisons{} );
     REQUIRE( TypeWithLit0Comparisons{} <= 0 );
-    REQUIRE_FALSE( 0 > TypeWithLit0Comparisons{} );
+    REQUIRE_FALSE( 0 <= TypeWithLit0Comparisons{} );
 
     REQUIRE( TypeWithLit0Comparisons{} > 0 );
     REQUIRE_FALSE( 0 > TypeWithLit0Comparisons{} );
@@ -329,6 +330,72 @@ TEST_CASE( "#2555 - types that can only be compared with 0 literal (not int/long
     REQUIRE( TypeWithLit0Comparisons{} != 0 );
     REQUIRE_FALSE( 0 != TypeWithLit0Comparisons{} );
 }
+
+// These tests require `consteval` to propagate through `constexpr` calls
+// which is a late DR against C++20.
+#if defined( CATCH_CPP20_OR_GREATER ) && defined( __cpp_consteval ) && \
+    __cpp_consteval >= 202211L
+// Can't have internal linkage to avoid warnings
+void ZeroLiteralErrorFunc();
+namespace {
+    struct ZeroLiteralConsteval {
+        template <class T, std::enable_if_t<std::is_same_v<T, int>, int> = 0>
+        consteval ZeroLiteralConsteval( T zero ) noexcept {
+            if ( zero != 0 ) { ZeroLiteralErrorFunc(); }
+        }
+    };
+
+    // Should only be constructible from literal 0. Uses the propagating
+    // consteval constructor trick (currently used by MSVC, might be used
+    // by libc++ in the future as well).
+    struct TypeWithConstevalLit0Comparison {
+#    define DEFINE_COMP_OP( op )                                               \
+        constexpr friend bool operator op( TypeWithConstevalLit0Comparison,    \
+                                           ZeroLiteralConsteval ) {            \
+            return true;                                                       \
+        }                                                                      \
+        constexpr friend bool operator op( ZeroLiteralConsteval,               \
+                                           TypeWithConstevalLit0Comparison ) { \
+            return false;                                                      \
+        }
+
+        DEFINE_COMP_OP( < )
+        DEFINE_COMP_OP( <= )
+        DEFINE_COMP_OP( > )
+        DEFINE_COMP_OP( >= )
+        DEFINE_COMP_OP( == )
+        DEFINE_COMP_OP( != )
+
+#undef DEFINE_COMP_OP
+    };
+
+} // namespace
+
+namespace Catch {
+    template <>
+    struct capture_by_value<TypeWithConstevalLit0Comparison> : std::true_type {};
+}
+
+TEST_CASE( "#2555 - types that can only be compared with 0 literal implemented as consteval check are supported",
+           "[compilation][approvals]" ) {
+    REQUIRE( TypeWithConstevalLit0Comparison{} < 0 );
+    REQUIRE_FALSE( 0 < TypeWithConstevalLit0Comparison{} );
+    REQUIRE( TypeWithConstevalLit0Comparison{} <= 0 );
+    REQUIRE_FALSE( 0 <= TypeWithConstevalLit0Comparison{} );
+
+    REQUIRE( TypeWithConstevalLit0Comparison{} > 0 );
+    REQUIRE_FALSE( 0 > TypeWithConstevalLit0Comparison{} );
+    REQUIRE( TypeWithConstevalLit0Comparison{} >= 0 );
+    REQUIRE_FALSE( 0 >= TypeWithConstevalLit0Comparison{} );
+
+    REQUIRE( TypeWithConstevalLit0Comparison{} == 0 );
+    REQUIRE_FALSE( 0 == TypeWithConstevalLit0Comparison{} );
+    REQUIRE( TypeWithConstevalLit0Comparison{} != 0 );
+    REQUIRE_FALSE( 0 != TypeWithConstevalLit0Comparison{} );
+}
+
+#endif // C++20 consteval
+
 
 namespace {
     struct MultipleImplicitConstructors {
