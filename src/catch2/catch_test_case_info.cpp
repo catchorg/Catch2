@@ -85,8 +85,10 @@ namespace Catch {
             while (lastDot > 0 && filename[lastDot - 1] != '.') {
                 --lastDot;
             }
-            --lastDot;
+            // In theory we could have filename without any extension in it
+            if ( lastDot == 0 ) { return StringRef(); }
 
+            --lastDot;
             size_t nameStart = lastDot;
             while (nameStart > 0 && filename[nameStart - 1] != '/' && filename[nameStart - 1] != '\\') {
                 --nameStart;
