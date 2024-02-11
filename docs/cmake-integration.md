@@ -413,7 +413,7 @@ If the version is out of date, please [create an issue or pull request](https://
 Catch2 is now a supported module in the Bazel Central Registry. You only need to add one line to your MODULE.bazel file;
 please see https://registry.bazel.build/modules/catch2 for the latest supported version.
 
-You can then add
+You can then add `catch2_main` to each of your C++ test build rules as follows:
 
 ```
 cc_test(
