@@ -18,6 +18,86 @@
 #include <type_traits>
 #include <iosfwd>
 
+/** \file
+ * Why does decomposing look the way it does:
+ *
+ * Conceptually, decomposing is simple. We change `REQUIRE( a == b )` into
+ * `Decomposer{} <= a == b`, so that `Decomposer{} <= a` is evaluated first,
+ * and our custom operator is used for `a == b`, because `a` is transformed
+ * into `ExprLhs<T&>` and then into `BinaryExpr<T&, U&>`.
+ *
+ * In practice, decomposing ends up a mess, because we have to support
+ * various fun things.
+ *
+ * 1) Types that are only comparable with literal 0, and they do this by
+ *    comparing against a magic type with pointer constructor and deleted
+ *    other constructors. Example: `REQUIRE((a <=> b) == 0)` in libstdc++
+ *
+ * 2) Types that are only comparable with literal 0, and they do this by
+ *    comparing against a magic type with consteval integer constructor.
+ *    Example: `REQUIRE((a <=> b) == 0)` in current MSVC STL.
+ *
+ * 3) Types that have no linkage, and so we cannot form a reference to
+ *    them. Example: some implementations of traits.
+ *
+ * 4) Starting with C++20, when the compiler sees `a == b`, it also uses
+ *    `b == a` when constructing the overload set. For us this means that
+ *    when the compiler handles `ExprLhs<T> == b`, it also tries to resolve
+ *    the overload set for `b == ExprLhs<T>`.
+ *
+ * To accomodate these use cases, decomposer ended up rather complex.
+ *
+ * 1) These types are handled by adding SFINAE overloads to our comparison
+ *    operators, checking whether `T == U` are comparable with the given
+ *    operator, and if not, whether T (or U) are comparable with literal 0.
+ *    If yes, the overload compares T (or U) with 0 literal inline in the
+ *    definition.
+ *
+ *    Note that for extra correctness, we check  that the other type is
+ *    either an `int` (literal 0 is captured as `int` by templates), or
+ *    a `long` (some platforms use 0L for `NULL` and we want to support
+ *    that for pointer comparisons).
+ *
+ * 2) For these types, `is_foo_comparable<T, int>` is true, but letting
+ *    them fall into the overload that actually does `T == int` causes
+ *    compilation error. Handling them requires that the decomposition
+ *    is `constexpr`, so that P2564R3 applies and the `consteval` from
+ *    their accompanying magic type is propagated through the `constexpr`
+ *    call stack.
+ *
+ *    However this is not enough to handle these types automatically,
+ *    because our default is to capture types by reference, to avoid
+ *    runtime copies. While these references cannot become dangling,
+ *    they outlive the constexpr context and thus the default capture
+ *    path cannot be actually constexpr.
+ *
+ *    The solution is to capture these types by value, by explicitly
+ *    specializing `Catch::capture_by_value` for them. Catch2 provides
+ *    specialization for `std::foo_ordering`s, but users can specialize
+ *    the trait for their own types as well.
+ *
+ * 3) If a type has no linkage, we also cannot capture it by reference.
+ *    The solution is once again to capture them by value. We handle
+ *    the common cases by using `std::is_arithmetic` as the default
+ *    for `Catch::capture_by_value`, but that is only a some-effort
+ *    heuristic. But as with 2), users can specialize `capture_by_value`
+ *    for their own types as needed.
+ *
+ * 4) To support C++20 and make the SFINAE on our decomposing operators
+ *    work, the SFINAE has to happen in return type, rather than in
+ *    a template type. This is due to our use of logical type traits
+ *    (`conjunction`/`disjunction`/`negation`), that we use to workaround
+ *    an issue in older (9-) versions of GCC. I still blame C++20 for
+ *    this, because without the comparison order switching, the logical
+ *    traits could still be used in template type.
+ *
+ * There are also other side concerns, e.g. supporting both `REQUIRE(a)`
+ * and `REQUIRE(a == b)`, or making `REQUIRE_THAT(a, IsEqual(b))` slot
+ * nicely into the same expression handling logic, but these are rather
+ * straightforward and add only a bit of complexity (e.g. common base
+ * class for decomposed expressions).
+ */
+
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable:4389) // '==' : signed/unsigned mismatch
