@@ -173,3 +173,19 @@ TEST_CASE("b") {
 
 If you are seeing a problem like this, i.e. weird test paths that trigger only under Clang with `libc++`, or only under very specific version of `libstdc++`, it is very likely you are seeing this. The only known workaround is to use a fixed version of your standard library.
 
+
+### Visual Studio 2022 -- can't compile assertion with the spaceship operator
+
+[The C++ standard requires that `std::foo_ordering` is only comparable with
+a literal 0](https://eel.is/c++draft/cmp#categories.pre-3). There are
+multiple strategies a stdlib implementation can take to achieve this, and
+MSVC's STL has changed the strategy they use between two releases of VS 2022.
+
+With the new strategy, `REQUIRE((a <=> b) == 0)` no longer compiles under
+MSVC. Note that Catch2 can compile code using MSVC STL's new strategy,
+but only when compiled with a C++20 conforming compiler. MSVC is currently
+not conformant enough, but `clang-cl` will compile the assertion above
+using MSVC STL without problem.
+
+This change got in with MSVC v19.37](https://godbolt.org/z/KG9obzdvE).
+
