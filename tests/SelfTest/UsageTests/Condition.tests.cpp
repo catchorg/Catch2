@@ -136,7 +136,7 @@ TEST_CASE( "Ordering comparison checks that should succeed" )
 
     REQUIRE( data.float_nine_point_one > 9 );
     REQUIRE( data.float_nine_point_one < 10 );
-    REQUIRE( data.float_nine_point_one < 9.2 );
+    REQUIRE( data.float_nine_point_one < 9.2f );
 
     REQUIRE( data.str_hello <= "hello" );
     REQUIRE( data.str_hello >= "hello" );
@@ -163,7 +163,7 @@ TEST_CASE( "Ordering comparison checks that should fail", "[.][failing]" )
 
     CHECK( data.float_nine_point_one < 9 );
     CHECK( data.float_nine_point_one > 10 );
-    CHECK( data.float_nine_point_one > 9.2 );
+    CHECK( data.float_nine_point_one > 9.2f );
 
     CHECK( data.str_hello > "hello" );
     CHECK( data.str_hello < "hello" );
