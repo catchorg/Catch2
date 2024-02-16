@@ -408,6 +408,24 @@ cd vcpkg
 The catch2 port in vcpkg is kept up to date by microsoft team members and community contributors.
 If the version is out of date, please [create an issue or pull request](https://github.com/Microsoft/vcpkg) on the vcpkg repository.
 
+## Installing Catch2 from Bazel
+
+Catch2 is now a supported module in the Bazel Central Registry. You only need to add one line to your MODULE.bazel file;
+please see https://registry.bazel.build/modules/catch2 for the latest supported version.
+
+You can then add `catch2_main` to each of your C++ test build rules as follows:
+
+```
+cc_test(
+    name = "example_test",
+    srcs = ["example_test.cpp"],
+    deps = [
+        ":example",
+        "@catch2//:catch2_main",
+    ],
+)
+```
+
 ---
 
 [Home](Readme.md#top)
