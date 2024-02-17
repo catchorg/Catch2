@@ -6,6 +6,7 @@ import os
 import shutil
 import re
 
+required_conan_version = ">=1.53.0"
 
 class CatchConan(ConanFile):
     name = "catch2"
@@ -68,35 +69,19 @@ class CatchConan(ConanFile):
     def package_info(self):
         lib_suffix = "d" if self.settings.build_type == "Debug" else ""
 
-        if conan_version < scm.Version("2.0.0"):
-            self.cpp_info.names["cmake_find_package"] = "Catch2"
-            self.cpp_info.names["cmake_find_package_multi"] = "Catch2"
-            # Catch2
-            self.cpp_info.components["catch2base"].names["cmake_find_package"] = "Catch2"
-            self.cpp_info.components["catch2base"].names["cmake_find_package_multi"] = "Catch2"
-            self.cpp_info.components["catch2base"].names["pkg_config"] = "catch2"
-            self.cpp_info.components["catch2base"].libs = ["Catch2" + lib_suffix]
-            self.cpp_info.components["catch2base"].builddirs.append("lib/cmake/Catch2")
-            # Catch2WithMain
-            self.cpp_info.components["catch2main"].names["cmake_find_package"] = "Catch2WithMain"
-            self.cpp_info.components["catch2main"].names["cmake_find_package_multi"] = "Catch2WithMain"
-            self.cpp_info.components["catch2main"].names["pkg_config"] = "Catch2WithMain"
-            self.cpp_info.components["catch2main"].libs = ["Catch2Main" + lib_suffix]
-            self.cpp_info.components["catch2main"].requires = ["catch2base"]
-        else:
-            self.cpp_info.set_property("cmake_file_name", "Catch2")
-            self.cpp_info.set_property("cmake_target_name", "Catch2::Catch2WithMain")
-            self.cpp_info.set_property("pkg_config_name", "catch2-with-main")
+        self.cpp_info.set_property("cmake_file_name", "Catch2")
+        self.cpp_info.set_property("cmake_target_name", "Catch2::Catch2WithMain")
+        self.cpp_info.set_property("pkg_config_name", "catch2-with-main")
 
-            # Catch2
-            self.cpp_info.components["catch2base"].set_property("cmake_file_name", "Catch2::Catch2")
-            self.cpp_info.components["catch2base"].set_property("pkg_config_name", "catch2")
-            self.cpp_info.components["catch2base"].libs = ["Catch2" + lib_suffix]
-            self.cpp_info.components["catch2base"].builddirs.append("lib/cmake/Catch2")
+        # Catch2
+        self.cpp_info.components["catch2base"].set_property("cmake_file_name", "Catch2::Catch2")
+        self.cpp_info.components["catch2base"].set_property("pkg_config_name", "catch2")
+        self.cpp_info.components["catch2base"].libs = ["Catch2" + lib_suffix]
+        self.cpp_info.components["catch2base"].builddirs.append("lib/cmake/Catch2")
 
-            # Catch2WithMain
-            self.cpp_info.components["catch2main"].set_property("cmake_file_name", "Catch2::Catch2WithMain")
-            self.cpp_info.components["catch2main"].set_property("cmake_target_name", "Catch2::Catch2WithMain")
-            self.cpp_info.components["catch2main"].set_property("pkg_config_name", "catch2-with-main")
-            self.cpp_info.components["catch2main"].libs = ["Catch2Main" + lib_suffix]
-            self.cpp_info.components["catch2main"].requires = ["catch2base"]
+        # Catch2WithMain
+        self.cpp_info.components["catch2main"].set_property("cmake_file_name", "Catch2::Catch2WithMain")
+        self.cpp_info.components["catch2main"].set_property("cmake_target_name", "Catch2::Catch2WithMain")
+        self.cpp_info.components["catch2main"].set_property("pkg_config_name", "catch2-with-main")
+        self.cpp_info.components["catch2main"].libs = ["Catch2Main" + lib_suffix]
+        self.cpp_info.components["catch2main"].requires = ["catch2base"]
