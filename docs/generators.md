@@ -206,12 +206,26 @@ or OO ranges.
 Unlike `std::uniform_int_distribution`, Catch2's generators also support
 various single-byte integral types, such as `char` or `bool`.
 
-Given the same seed, the output from the integral generators is
-reproducible across different platforms. For floating point generators,
-we only promise reproducibility on platforms that obey the IEEE 754
-standard, and where `float` is 4 bytes and `double` is 8 bytes. We provide
-no guarantees for `long double`, as the internals of `long double` can
-vary wildly across different platforms.
+
+#### Reproducibility
+
+Given the same seed, the output from the integral generators is fully
+reproducible across different platforms.
+
+For floating point generators, the situation is much more complex.
+Generally Catch2 only promises reproducibility (or even just correctness!)
+on platforms that obey the IEEE-754 standard. Furthermore, reproducibility
+only applies between binaries that perform floating point math in the
+same way, e.g. if you compile a binary targetting the x87 FPU and another
+one targetting SSE2 for floating point math, their results will vary.
+Similarly, binaries compiled with compiler flags that relax the IEEE-754
+adherence, e.g. `-ffast-math`, might provide different results than those
+compiled for strict IEEE-754 adherence.
+
+Finally, we provide zero guarantees on the reproducibility of generating
+`long double`s, as the internals of `long double` varies across different
+platforms.
+
 
 
 ## Generator interface
