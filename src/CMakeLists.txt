@@ -354,7 +354,7 @@ endif()
 add_library(Catch2::Catch2 ALIAS Catch2)
 
 if (ANDROID)
-    target_link_libraries(Catch2 INTERFACE log)
+    target_link_libraries(Catch2 PRIVATE log)
 endif()
 
 set_target_properties(Catch2 PROPERTIES
