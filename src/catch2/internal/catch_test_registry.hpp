@@ -95,7 +95,7 @@ struct AutoReg : Detail::NonCopyable {
 namespace Catch {
     namespace Detail {
         struct DummyUse {
-            DummyUse( void ( * )( int ) );
+            DummyUse( void ( * )( int ), Catch::NameAndTags const& );
         };
     } // namespace Detail
 } // namespace Catch
@@ -107,18 +107,18 @@ namespace Catch {
 // tests can compile. The redefined `TEST_CASE` shadows this with param.
 static int catchInternalSectionHint = 0;
 
-#    define INTERNAL_CATCH_TESTCASE2( fname )                              \
+#    define INTERNAL_CATCH_TESTCASE2( fname, ... )                         \
         static void fname( int );                                          \
         CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                          \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                           \
         CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS                   \
         static const Catch::Detail::DummyUse INTERNAL_CATCH_UNIQUE_NAME(   \
-            dummyUser )( &(fname) );                                       \
+            dummyUser )( &(fname), Catch::NameAndTags{ __VA_ARGS__ } );    \
         CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS                            \
         static void fname( [[maybe_unused]] int catchInternalSectionHint ) \
             CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 #    define INTERNAL_CATCH_TESTCASE( ... ) \
-        INTERNAL_CATCH_TESTCASE2( INTERNAL_CATCH_UNIQUE_NAME( dummyFunction ) )
+        INTERNAL_CATCH_TESTCASE2( INTERNAL_CATCH_UNIQUE_NAME( dummyFunction ), __VA_ARGS__ )
 
 
 #endif // CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT
