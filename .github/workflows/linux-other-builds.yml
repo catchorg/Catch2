@@ -103,3 +103,52 @@ jobs:
           CTEST_OUTPUT_ON_FAILURE: 1
       working-directory: ${{runner.workspace}}/build
       run: ctest -C ${{matrix.build_type}} -j `nproc` ${{matrix.other_ctest_args}}
+  clang-tidy:
+    name: clang-tidy ${{matrix.version}}, ${{matrix.build_description}}, C++${{matrix.std}} ${{matrix.build_type}}
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        include:
+          - version: "15"
+            build_description: all
+            build_type: Debug
+            std: 17
+            other_pkgs: ''
+            cmake_configurations: -DCATCH_BUILD_EXAMPLES=ON -DCATCH_ENABLE_CMAKE_HELPER_TESTS=ON
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Prepare environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ninja-build clang-${{matrix.version}} clang-tidy-${{matrix.version}} ${{matrix.other_pkgs}}
+
+    - name: Configure build
+      working-directory: ${{runner.workspace}}
+      env:
+        CXX: clang++-${{matrix.version}}
+        CXXFLAGS: ${{matrix.cxxflags}}
+      # Note: $GITHUB_WORKSPACE is distinct from ${{runner.workspace}}.
+      #       This is important
+      run: |
+        clangtidy="clang-tidy-${{matrix.version}};-use-color"
+        # Use a dummy compiler/linker/ar/ranlib to effectively disable the
+        # compilation and only run clang-tidy.
+        cmake -Bbuild -H$GITHUB_WORKSPACE \
+              -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
+              -DCMAKE_CXX_STANDARD=${{matrix.std}} \
+              -DCMAKE_CXX_STANDARD_REQUIRED=ON \
+              -DCMAKE_CXX_EXTENSIONS=OFF \
+              -DCATCH_DEVELOPMENT_BUILD=ON \
+              -DCMAKE_CXX_CLANG_TIDY="$clangtidy" \
+              -DCMAKE_CXX_COMPILER_LAUNCHER=/usr/bin/true \
+              -DCMAKE_AR=/usr/bin/true \
+              -DCMAKE_CXX_COMPILER_AR=/usr/bin/true \
+              -DCMAKE_RANLIB=/usr/bin/true \
+              -DCMAKE_CXX_LINK_EXECUTABLE=/usr/bin/true \
+              ${{matrix.cmake_configurations}} \
+              -G Ninja
+
+    - name: Run clang-tidy
+      working-directory: ${{runner.workspace}}/build
+      run: ninja
