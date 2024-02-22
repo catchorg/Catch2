@@ -41,9 +41,8 @@ namespace Catch {
         struct ExtendedMultResult {
             T upper;
             T lower;
-            friend bool operator==( ExtendedMultResult const& lhs,
-                                    ExtendedMultResult const& rhs ) {
-                return lhs.upper == rhs.upper && lhs.lower == rhs.lower;
+            bool operator==( ExtendedMultResult const& rhs ) const {
+                return upper == rhs.upper && lower == rhs.lower;
             }
         };
 
