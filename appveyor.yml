@@ -5,10 +5,10 @@ version: "{build}-{branch}"
 clone_depth: 20
 
 # We want to build everything, except for branches that are explicitly
-# for messing around with travis.
+# for messing around with Github Actions.
 branches:
   except:
-    - /dev-travis.+/
+    - /devel-gha.+/
 
 
 # We need a more up to date pip because Python 2.7 is EOL soon
