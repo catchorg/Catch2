@@ -57,6 +57,17 @@ TEST_CASE("replaceInPlace", "[string-manip]") {
         CHECK_FALSE(Catch::replaceInPlace(letters, "x", "z"));
         CHECK(letters == letters);
     }
+    SECTION("no replace in already-replaced string") {
+        SECTION("lengthening") {
+            CHECK(Catch::replaceInPlace(letters, "c", "cc"));
+            CHECK(letters == "abccdefccg");
+        }
+        SECTION("shortening") {
+            std::string s = "----";
+            CHECK(Catch::replaceInPlace(s, "--", "-"));
+            CHECK(s == "--");
+        }
+    }
     SECTION("escape '") {
         std::string s = "didn't";
         CHECK(Catch::replaceInPlace(s, "'", "|'"));

@@ -2797,19 +2797,19 @@ ok {test-number} - Template_Fixture<TestType>::m_a == 1 for: 1 == 1
 # Template test case method with test types specified inside std::tuple - MyTypes - 2
 ok {test-number} - Template_Fixture<TestType>::m_a == 1 for: 1.0 == 1
 # Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 0
-ok {test-number} - sizeof(TestType) > 0 for: 1 > 0
+ok {test-number} - std::is_default_constructible<TestType>::value for: true
 # Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 1
-ok {test-number} - sizeof(TestType) > 0 for: 4 > 0
+ok {test-number} - std::is_default_constructible<TestType>::value for: true
 # Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 0
-ok {test-number} - sizeof(TestType) > 0 for: 1 > 0
+ok {test-number} - std::is_trivially_copyable<TestType>::value for: true
 # Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 1
-ok {test-number} - sizeof(TestType) > 0 for: 4 > 0
+ok {test-number} - std::is_trivially_copyable<TestType>::value for: true
 # Template test case with test types specified inside std::tuple - MyTypes - 0
-ok {test-number} - sizeof(TestType) > 0 for: 4 > 0
+ok {test-number} - std::is_arithmetic<TestType>::value for: true
 # Template test case with test types specified inside std::tuple - MyTypes - 1
-ok {test-number} - sizeof(TestType) > 0 for: 1 > 0
+ok {test-number} - std::is_arithmetic<TestType>::value for: true
 # Template test case with test types specified inside std::tuple - MyTypes - 2
-ok {test-number} - sizeof(TestType) > 0 for: 4 > 0
+ok {test-number} - std::is_arithmetic<TestType>::value for: true
 # TemplateTest: vectors can be sized and resized - float
 ok {test-number} - v.size() == 5 for: 5 == 5
 # TemplateTest: vectors can be sized and resized - float
@@ -4187,6 +4187,14 @@ ok {test-number} - !(Catch::replaceInPlace(letters, "x", "z")) for: !false
 # replaceInPlace
 ok {test-number} - letters == letters for: "abcdefcg" == "abcdefcg"
 # replaceInPlace
+ok {test-number} - Catch::replaceInPlace(letters, "c", "cc") for: true
+# replaceInPlace
+ok {test-number} - letters == "abccdefccg" for: "abccdefccg" == "abccdefccg"
+# replaceInPlace
+ok {test-number} - Catch::replaceInPlace(s, "--", "-") for: true
+# replaceInPlace
+ok {test-number} - s == "--" for: "--" == "--"
+# replaceInPlace
 ok {test-number} - Catch::replaceInPlace(s, "'", "|'") for: true
 # replaceInPlace
 ok {test-number} - s == "didn|'t" for: "didn|'t" == "didn|'t"
@@ -4530,5 +4538,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2268
+1..2272
 

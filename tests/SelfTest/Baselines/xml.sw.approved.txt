@@ -13560,10 +13560,10 @@ Message from section two
   <TestCase name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 0" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        sizeof(TestType) > 0
+        std::is_default_constructible&lt;TestType>::value
       </Original>
       <Expanded>
-        1 > 0
+        true
       </Expanded>
     </Expression>
     <OverallResult success="true" skips="0"/>
@@ -13571,10 +13571,10 @@ Message from section two
   <TestCase name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 1" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        sizeof(TestType) > 0
+        std::is_default_constructible&lt;TestType>::value
       </Original>
       <Expanded>
-        4 > 0
+        true
       </Expanded>
     </Expression>
     <OverallResult success="true" skips="0"/>
@@ -13582,10 +13582,10 @@ Message from section two
   <TestCase name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 0" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        sizeof(TestType) > 0
+        std::is_trivially_copyable&lt;TestType>::value
       </Original>
       <Expanded>
-        1 > 0
+        true
       </Expanded>
     </Expression>
     <OverallResult success="true" skips="0"/>
@@ -13593,10 +13593,10 @@ Message from section two
   <TestCase name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 1" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        sizeof(TestType) > 0
+        std::is_trivially_copyable&lt;TestType>::value
       </Original>
       <Expanded>
-        4 > 0
+        true
       </Expanded>
     </Expression>
     <OverallResult success="true" skips="0"/>
@@ -13604,10 +13604,10 @@ Message from section two
   <TestCase name="Template test case with test types specified inside std::tuple - MyTypes - 0" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        sizeof(TestType) > 0
+        std::is_arithmetic&lt;TestType>::value
       </Original>
       <Expanded>
-        4 > 0
+        true
       </Expanded>
     </Expression>
     <OverallResult success="true" skips="0"/>
@@ -13615,10 +13615,10 @@ Message from section two
   <TestCase name="Template test case with test types specified inside std::tuple - MyTypes - 1" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        sizeof(TestType) > 0
+        std::is_arithmetic&lt;TestType>::value
       </Original>
       <Expanded>
-        1 > 0
+        true
       </Expanded>
     </Expression>
     <OverallResult success="true" skips="0"/>
@@ -13626,10 +13626,10 @@ Message from section two
   <TestCase name="Template test case with test types specified inside std::tuple - MyTypes - 2" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        sizeof(TestType) > 0
+        std::is_arithmetic&lt;TestType>::value
       </Original>
       <Expanded>
-        4 > 0
+        true
       </Expanded>
     </Expression>
     <OverallResult success="true" skips="0"/>
@@ -20034,6 +20034,50 @@ b1!
       </Expression>
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
+    <Section name="no replace in already-replaced string" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+      <Section name="lengthening" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+          <Original>
+            Catch::replaceInPlace(letters, "c", "cc")
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+          <Original>
+            letters == "abccdefccg"
+          </Original>
+          <Expanded>
+            "abccdefccg" == "abccdefccg"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="no replace in already-replaced string" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+      <Section name="shortening" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+          <Original>
+            Catch::replaceInPlace(s, "--", "-")
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+          <Original>
+            s == "--"
+          </Original>
+          <Expanded>
+            "--" == "--"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
     <Section name="escape '" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
         <Original>
@@ -21675,6 +21719,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2075" failures="146" expectedFailures="35" skips="12"/>
+  <OverallResults successes="2079" failures="146" expectedFailures="35" skips="12"/>
   <OverallResultsCases successes="312" failures="85" expectedFailures="14" skips="6"/>
 </Catch2TestRun>

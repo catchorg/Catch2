@@ -262,6 +262,8 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="replaceInPlace/replace last char" duration="{duration}"/>
     <testCase name="replaceInPlace/replace all chars" duration="{duration}"/>
     <testCase name="replaceInPlace/replace no chars" duration="{duration}"/>
+    <testCase name="replaceInPlace/no replace in already-replaced string/lengthening" duration="{duration}"/>
+    <testCase name="replaceInPlace/no replace in already-replaced string/shortening" duration="{duration}"/>
     <testCase name="replaceInPlace/escape '" duration="{duration}"/>
     <testCase name="splitString" duration="{duration}"/>
     <testCase name="startsWith" duration="{duration}"/>
