@@ -11655,9 +11655,9 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( sizeof(TestType) > 0 )
+  REQUIRE( std::is_default_constructible<TestType>::value )
 with expansion:
-  1 > 0
+  true
 
 -------------------------------------------------------------------------------
 Template test case with test types specified inside non-copyable and non-
@@ -11667,9 +11667,9 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( sizeof(TestType) > 0 )
+  REQUIRE( std::is_default_constructible<TestType>::value )
 with expansion:
-  4 > 0
+  true
 
 -------------------------------------------------------------------------------
 Template test case with test types specified inside non-default-constructible
@@ -11679,9 +11679,9 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( sizeof(TestType) > 0 )
+  REQUIRE( std::is_trivially_copyable<TestType>::value )
 with expansion:
-  1 > 0
+  true
 
 -------------------------------------------------------------------------------
 Template test case with test types specified inside non-default-constructible
@@ -11691,9 +11691,9 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( sizeof(TestType) > 0 )
+  REQUIRE( std::is_trivially_copyable<TestType>::value )
 with expansion:
-  4 > 0
+  true
 
 -------------------------------------------------------------------------------
 Template test case with test types specified inside std::tuple - MyTypes - 0
@@ -11702,9 +11702,9 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( sizeof(TestType) > 0 )
+  REQUIRE( std::is_arithmetic<TestType>::value )
 with expansion:
-  4 > 0
+  true
 
 -------------------------------------------------------------------------------
 Template test case with test types specified inside std::tuple - MyTypes - 1
@@ -11713,9 +11713,9 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( sizeof(TestType) > 0 )
+  REQUIRE( std::is_arithmetic<TestType>::value )
 with expansion:
-  1 > 0
+  true
 
 -------------------------------------------------------------------------------
 Template test case with test types specified inside std::tuple - MyTypes - 2
@@ -11724,9 +11724,9 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( sizeof(TestType) > 0 )
+  REQUIRE( std::is_arithmetic<TestType>::value )
 with expansion:
-  4 > 0
+  true
 
 -------------------------------------------------------------------------------
 TemplateTest: vectors can be sized and resized - float
@@ -17291,6 +17291,42 @@ with expansion:
 
 -------------------------------------------------------------------------------
 replaceInPlace
+  no replace in already-replaced string
+  lengthening
+-------------------------------------------------------------------------------
+StringManip.tests.cpp:<line number>
+...............................................................................
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( Catch::replaceInPlace(letters, "c", "cc") )
+with expansion:
+  true
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( letters == "abccdefccg" )
+with expansion:
+  "abccdefccg" == "abccdefccg"
+
+-------------------------------------------------------------------------------
+replaceInPlace
+  no replace in already-replaced string
+  shortening
+-------------------------------------------------------------------------------
+StringManip.tests.cpp:<line number>
+...............................................................................
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( Catch::replaceInPlace(s, "--", "-") )
+with expansion:
+  true
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( s == "--" )
+with expansion:
+  "--" == "--"
+
+-------------------------------------------------------------------------------
+replaceInPlace
   escape '
 -------------------------------------------------------------------------------
 StringManip.tests.cpp:<line number>
@@ -18732,5 +18768,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  417 |  312 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2256 | 2075 passed | 146 failed | 35 failed as expected
+assertions: 2260 | 2079 passed | 146 failed | 35 failed as expected
 

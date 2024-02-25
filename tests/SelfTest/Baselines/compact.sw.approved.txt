@@ -1733,13 +1733,13 @@ Tag.tests.cpp:<line number>: passed: testCase.tags, VectorContains( Tag( "tag wi
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1 == 1
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1 == 1
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1.0 == 1
-Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 1 > 0
-Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 4 > 0
-Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 1 > 0
-Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 4 > 0
-Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 4 > 0
-Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 1 > 0
-Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 4 > 0
+Misc.tests.cpp:<line number>: passed: std::is_default_constructible<TestType>::value for: true
+Misc.tests.cpp:<line number>: passed: std::is_default_constructible<TestType>::value for: true
+Misc.tests.cpp:<line number>: passed: std::is_trivially_copyable<TestType>::value for: true
+Misc.tests.cpp:<line number>: passed: std::is_trivially_copyable<TestType>::value for: true
+Misc.tests.cpp:<line number>: passed: std::is_arithmetic<TestType>::value for: true
+Misc.tests.cpp:<line number>: passed: std::is_arithmetic<TestType>::value for: true
+Misc.tests.cpp:<line number>: passed: std::is_arithmetic<TestType>::value for: true
 Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
 Misc.tests.cpp:<line number>: passed: v.size() == 10 for: 10 == 10
@@ -2479,6 +2479,10 @@ StringManip.tests.cpp:<line number>: passed: Catch::replaceInPlace(letters, lett
 StringManip.tests.cpp:<line number>: passed: letters == "replaced" for: "replaced" == "replaced"
 StringManip.tests.cpp:<line number>: passed: !(Catch::replaceInPlace(letters, "x", "z")) for: !false
 StringManip.tests.cpp:<line number>: passed: letters == letters for: "abcdefcg" == "abcdefcg"
+StringManip.tests.cpp:<line number>: passed: Catch::replaceInPlace(letters, "c", "cc") for: true
+StringManip.tests.cpp:<line number>: passed: letters == "abccdefccg" for: "abccdefccg" == "abccdefccg"
+StringManip.tests.cpp:<line number>: passed: Catch::replaceInPlace(s, "--", "-") for: true
+StringManip.tests.cpp:<line number>: passed: s == "--" for: "--" == "--"
 StringManip.tests.cpp:<line number>: passed: Catch::replaceInPlace(s, "'", "|'") for: true
 StringManip.tests.cpp:<line number>: passed: s == "didn|'t" for: "didn|'t" == "didn|'t"
 Stream.tests.cpp:<line number>: passed: Catch::makeStream( "%somestream" )
@@ -2686,6 +2690,6 @@ InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
 test cases:  417 |  312 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2256 | 2075 passed | 146 failed | 35 failed as expected
+assertions: 2260 | 2079 passed | 146 failed | 35 failed as expected
 
 
