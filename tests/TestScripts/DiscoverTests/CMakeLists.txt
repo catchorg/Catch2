@@ -11,6 +11,12 @@ add_executable(tests
 add_subdirectory(${CATCH2_PATH} catch2-build)
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
 
-include(CTest)
+enable_testing()
 include(Catch)
-catch_discover_tests(tests)
+set(extra_args)
+if (CMAKE_VERSION GREATER_EQUAL 3.27)
+    list(APPEND extra_args
+            DL_PATHS "$<TARGET_RUNTIME_DLL_DIRS:tests>"
+    )
+endif ()
+catch_discover_tests(tests ${extra_args})
