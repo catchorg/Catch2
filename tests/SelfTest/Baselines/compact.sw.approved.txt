@@ -219,6 +219,10 @@ Class.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>::m_a.size() 
 Class.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>::m_a.size() == 0 for: 0 == 0
 Class.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>::m_a.size() == 0 for: 0 == 0
 Class.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>::m_a.size() == 0 for: 0 == 0
+CustomNaming.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>::m_a.size() == 0 for: 0 == 0
+CustomNaming.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>::m_a.size() == 0 for: 0 == 0
+CustomNaming.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>::m_a.size() == 0 for: 0 == 0
+CustomNaming.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>::m_a.size() == 0 for: 0 == 0
 Class.tests.cpp:<line number>: failed: Template_Fixture_2<TestType>{}.m_a.size() < 2 for: 6 < 2
 Class.tests.cpp:<line number>: failed: Template_Fixture_2<TestType>{}.m_a.size() < 2 for: 2 < 2
 Class.tests.cpp:<line number>: failed: Template_Fixture_2<TestType>{}.m_a.size() < 2 for: 6 < 2
@@ -227,18 +231,28 @@ Class.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>{}.m_a.size()
 Class.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>{}.m_a.size() >= 2 for: 2 >= 2
 Class.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>{}.m_a.size() >= 2 for: 6 >= 2
 Class.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>{}.m_a.size() >= 2 for: 2 >= 2
+CustomNaming.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>{}.m_a.size() >= 2 for: 6 >= 2
+CustomNaming.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>{}.m_a.size() >= 2 for: 2 >= 2
+CustomNaming.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>{}.m_a.size() >= 2 for: 6 >= 2
+CustomNaming.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>{}.m_a.size() >= 2 for: 2 >= 2
 Class.tests.cpp:<line number>: failed: Template_Fixture<TestType>::m_a == 2 for: 1.0 == 2
 Class.tests.cpp:<line number>: failed: Template_Fixture<TestType>::m_a == 2 for: 1.0f == 2
 Class.tests.cpp:<line number>: failed: Template_Fixture<TestType>::m_a == 2 for: 1 == 2
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1.0 == 1
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1.0f == 1
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1 == 1
+CustomNaming.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1.0 == 1
+CustomNaming.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1.0f == 1
+CustomNaming.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1 == 1
 Class.tests.cpp:<line number>: failed: Nttp_Fixture<V>::value == 0 for: 1 == 0
 Class.tests.cpp:<line number>: failed: Nttp_Fixture<V>::value == 0 for: 3 == 0
 Class.tests.cpp:<line number>: failed: Nttp_Fixture<V>::value == 0 for: 6 == 0
 Class.tests.cpp:<line number>: passed: Nttp_Fixture<V>::value > 0 for: 1 > 0
 Class.tests.cpp:<line number>: passed: Nttp_Fixture<V>::value > 0 for: 3 > 0
 Class.tests.cpp:<line number>: passed: Nttp_Fixture<V>::value > 0 for: 6 > 0
+CustomNaming.tests.cpp:<line number>: passed: Nttp_Fixture<V>::value > 0 for: 1 > 0
+CustomNaming.tests.cpp:<line number>: passed: Nttp_Fixture<V>::value > 0 for: 3 > 0
+CustomNaming.tests.cpp:<line number>: passed: Nttp_Fixture<V>::value > 0 for: 6 > 0
 Class.tests.cpp:<line number>: failed: m_a == 2 for: 1 == 2
 Class.tests.cpp:<line number>: passed: m_a == 1 for: 1 == 1
 Misc.tests.cpp:<line number>: passed: x.size() == 0 for: 0 == 0
@@ -1734,9 +1748,15 @@ Tag.tests.cpp:<line number>: passed: registry.add( "@no square bracket at start]
 Tag.tests.cpp:<line number>: passed: registry.add( "[@no square bracket at end", "", Catch::SourceLineInfo( "file", 3 ) )
 Tag.tests.cpp:<line number>: passed: testCase.tags.size() == 2 for: 2 == 2
 Tag.tests.cpp:<line number>: passed: testCase.tags, VectorContains( Tag( "tag with spaces" ) ) && VectorContains( Tag( "I said \"good day\" sir!"_catch_sr ) ) for: { {?}, {?} } ( Contains: {?} and Contains: {?} )
+CustomNaming.tests.cpp:<line number>: passed: Template_Foo<TestType>{}.size() == 0 for: 0 == 0
+CustomNaming.tests.cpp:<line number>: passed: Template_Foo<TestType>{}.size() == 0 for: 0 == 0
+CustomNaming.tests.cpp:<line number>: passed: Template_Foo<TestType>{}.size() == 0 for: 0 == 0
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1 == 1
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1 == 1
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1.0 == 1
+CustomNaming.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1 == 1
+CustomNaming.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1 == 1
+CustomNaming.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1.0 == 1
 Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 1 > 0
 Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 4 > 0
 Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 1 > 0
@@ -2689,7 +2709,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  417 |  312 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2260 | 2079 passed | 146 failed | 35 failed as expected
+test cases:  437 |  332 passed |  85 failed | 6 skipped | 14 failed as expected
+assertions: 2280 | 2099 passed | 146 failed | 35 failed as expected
 
 

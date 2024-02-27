@@ -30,6 +30,7 @@ expand_template(
         "#cmakedefine CATCH_CONFIG_FAST_COMPILE": "",
         "#cmakedefine CATCH_CONFIG_GETENV": "",
         "#cmakedefine CATCH_CONFIG_GLOBAL_NEXTAFTER": "",
+        "#cmakedefine CATCH_CONFIG_NAME_SEPARATOR": "",
         "#cmakedefine CATCH_CONFIG_NO_ANDROID_LOGWRITE": "",
         "#cmakedefine CATCH_CONFIG_NO_COLOUR_WIN32": "",
         "#cmakedefine CATCH_CONFIG_NO_COUNTER": "",
