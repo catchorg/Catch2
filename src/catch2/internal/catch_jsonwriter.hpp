@@ -65,7 +65,7 @@ namespace Catch {
         JsonObjectWriter( std::ostream& os );
         JsonObjectWriter( std::ostream& os, std::uint64_t indent_level );
 
-        JsonObjectWriter( JsonObjectWriter&& source );
+        JsonObjectWriter( JsonObjectWriter&& source ) noexcept;
         JsonObjectWriter& operator=( JsonObjectWriter&& source ) = delete;
 
         ~JsonObjectWriter();
@@ -84,7 +84,7 @@ namespace Catch {
         JsonArrayWriter( std::ostream& os );
         JsonArrayWriter( std::ostream& os, std::uint64_t indent_level );
 
-        JsonArrayWriter( JsonArrayWriter&& source );
+        JsonArrayWriter( JsonArrayWriter&& source ) noexcept;
         JsonArrayWriter& operator=( JsonArrayWriter&& source ) = delete;
 
         ~JsonArrayWriter();

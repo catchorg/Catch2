@@ -520,8 +520,8 @@ void ConsoleReporter::testRunEnded(TestRunStats const& _testRunStats) {
     m_stream << '\n' << std::flush;
     StreamingReporterBase::testRunEnded(_testRunStats);
 }
-void ConsoleReporter::testRunStarting(TestRunInfo const& _testInfo) {
-    StreamingReporterBase::testRunStarting(_testInfo);
+void ConsoleReporter::testRunStarting(TestRunInfo const& _testRunInfo) {
+    StreamingReporterBase::testRunStarting(_testRunInfo);
     if ( m_config->testSpec().hasFilters() ) {
         m_stream << m_colour->guardColour( Colour::BrightYellow ) << "Filters: "
                  << m_config->testSpec() << '\n';

@@ -80,20 +80,20 @@ TEST_CASE( "Output from all sections is reported", "[failing][messages][.]" ) {
 
 TEST_CASE( "Standard output from all sections is reported", "[messages][.]" ) {
     SECTION( "one" ) {
-        std::cout << "Message from section one" << std::endl;
+        std::cout << "Message from section one\n";
     }
 
     SECTION( "two" ) {
-        std::cout << "Message from section two" << std::endl;
+        std::cout << "Message from section two\n";
     }
 }
 
 TEST_CASE( "Standard error is reported and redirected", "[messages][.][approvals]" ) {
     SECTION( "std::cerr" ) {
-        std::cerr << "Write to std::cerr" << std::endl;
+        std::cerr << "Write to std::cerr\n";
     }
     SECTION( "std::clog" ) {
-        std::clog << "Write to std::clog" << std::endl;
+        std::clog << "Write to std::clog\n";
     }
     SECTION( "Interleaved writes to cerr and clog" ) {
         std::cerr << "Inter";
@@ -101,7 +101,7 @@ TEST_CASE( "Standard error is reported and redirected", "[messages][.][approvals
         std::cerr << ' ';
         std::clog << "writes";
         std::cerr << " to error";
-        std::clog << " streams" << std::endl;
+        std::clog << " streams\n" << std::flush;
     }
 }
 

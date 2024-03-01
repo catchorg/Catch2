@@ -230,21 +230,21 @@ namespace {
 
 namespace Catch {
 
-    Detail::unique_ptr<ColourImpl> makeColourImpl( ColourMode implSelection,
+    Detail::unique_ptr<ColourImpl> makeColourImpl( ColourMode colourSelection,
                                                    IStream* stream ) {
 #if defined( CATCH_CONFIG_COLOUR_WIN32 )
-        if ( implSelection == ColourMode::Win32 ) {
+        if ( colourSelection == ColourMode::Win32 ) {
             return Detail::make_unique<Win32ColourImpl>( stream );
         }
 #endif
-        if ( implSelection == ColourMode::ANSI ) {
+        if ( colourSelection == ColourMode::ANSI ) {
             return Detail::make_unique<ANSIColourImpl>( stream );
         }
-        if ( implSelection == ColourMode::None ) {
+        if ( colourSelection == ColourMode::None ) {
             return Detail::make_unique<NoColourImpl>( stream );
         }
 
-        if ( implSelection == ColourMode::PlatformDefault) {
+        if ( colourSelection == ColourMode::PlatformDefault) {
 #if defined( CATCH_CONFIG_COLOUR_WIN32 )
             if ( Win32ColourImpl::useImplementationForStream( *stream ) ) {
                 return Detail::make_unique<Win32ColourImpl>( stream );
@@ -256,7 +256,7 @@ namespace Catch {
             return Detail::make_unique<NoColourImpl>( stream );
         }
 
-        CATCH_ERROR( "Could not create colour impl for selection " << static_cast<int>(implSelection) );
+        CATCH_ERROR( "Could not create colour impl for selection " << static_cast<int>(colourSelection) );
     }
 
     bool isColourImplAvailable( ColourMode colourSelection ) {

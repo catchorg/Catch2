@@ -133,8 +133,8 @@ namespace Catch {
         return "Outputs listings as JSON. Test listing is Work-in-Progress!";
     }
 
-    void JsonReporter::testRunStarting( TestRunInfo const& testInfo ) {
-        StreamingReporterBase::testRunStarting( testInfo );
+    void JsonReporter::testRunStarting( TestRunInfo const& runInfo ) {
+        StreamingReporterBase::testRunStarting( runInfo );
         endListing();
 
         assert( isInside( Writer::Object ) );

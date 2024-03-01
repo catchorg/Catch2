@@ -16,8 +16,7 @@ namespace Catch {
     namespace {
         struct BySectionInfo {
             BySectionInfo( SectionInfo const& other ): m_other( other ) {}
-            BySectionInfo( BySectionInfo const& other ):
-                m_other( other.m_other ) {}
+            BySectionInfo( BySectionInfo const& other ) = default;
             bool operator()(
                 Detail::unique_ptr<CumulativeReporterBase::SectionNode> const&
                     node ) const {

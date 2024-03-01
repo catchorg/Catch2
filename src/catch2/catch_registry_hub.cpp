@@ -20,7 +20,6 @@
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
-#include <catch2/internal/catch_reporter_registry.hpp>
 
 #include <exception>
 

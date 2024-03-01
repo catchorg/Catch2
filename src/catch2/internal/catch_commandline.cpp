@@ -47,7 +47,7 @@ namespace Catch {
                     line = trim(line);
                     if( !line.empty() && !startsWith( line, '#' ) ) {
                         if( !startsWith( line, '"' ) )
-                            line = '"' + line + '"';
+                            line = '"' + CATCH_MOVE(line) + '"';
                         config.testsOrTags.push_back( line );
                         config.testsOrTags.emplace_back( "," );
                     }

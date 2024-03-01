@@ -21,7 +21,7 @@
 namespace {
 
 // This class shows how to implement a simple generator for Catch tests
-class RandomIntGenerator : public Catch::Generators::IGenerator<int> {
+class RandomIntGenerator final : public Catch::Generators::IGenerator<int> {
     std::minstd_rand m_rand;
     std::uniform_int_distribution<> m_dist;
     int current_number;

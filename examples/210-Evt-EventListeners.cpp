@@ -385,8 +385,7 @@ struct MyListener : Catch::EventListenerBase {
 CATCH_REGISTER_LISTENER( MyListener )
 
 // Get rid of Wweak-tables
-MyListener::~MyListener() {}
-
+MyListener::~MyListener() = default;
 
 // -----------------------------------------------------------------------
 // 3. Test cases:

@@ -35,8 +35,8 @@ namespace Catch {
             return "Reports test results as TeamCity service messages"s;
         }
 
-        void testRunStarting( TestRunInfo const& groupInfo ) override;
-        void testRunEnded( TestRunStats const& testGroupStats ) override;
+        void testRunStarting( TestRunInfo const& runInfo ) override;
+        void testRunEnded( TestRunStats const& runStats ) override;
 
 
         void assertionEnded(AssertionStats const& assertionStats) override;

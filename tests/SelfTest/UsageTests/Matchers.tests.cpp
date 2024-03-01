@@ -1027,7 +1027,6 @@ TEST_CASE( "Combining MatchNotOfGeneric does not nest",
 }
 
 struct EvilAddressOfOperatorUsed : std::exception {
-    EvilAddressOfOperatorUsed() {}
     const char* what() const noexcept override {
         return "overloaded address-of operator of matcher was used instead of "
                "std::addressof";
@@ -1035,7 +1034,6 @@ struct EvilAddressOfOperatorUsed : std::exception {
 };
 
 struct EvilCommaOperatorUsed : std::exception {
-    EvilCommaOperatorUsed() {}
     const char* what() const noexcept override {
         return "overloaded comma operator of matcher was used";
     }
@@ -1073,7 +1071,6 @@ struct ImmovableMatcher : Catch::Matchers::MatcherGenericBase {
 };
 
 struct MatcherWasMovedOrCopied : std::exception {
-    MatcherWasMovedOrCopied() {}
     const char* what() const noexcept override {
         return "attempted to copy or move a matcher";
     }
@@ -1081,17 +1078,20 @@ struct MatcherWasMovedOrCopied : std::exception {
 
 struct ThrowOnCopyOrMoveMatcher : Catch::Matchers::MatcherGenericBase {
     ThrowOnCopyOrMoveMatcher() = default;
-    [[noreturn]] ThrowOnCopyOrMoveMatcher( ThrowOnCopyOrMoveMatcher const& ):
-        Catch::Matchers::MatcherGenericBase() {
+
+    [[noreturn]] ThrowOnCopyOrMoveMatcher( ThrowOnCopyOrMoveMatcher const& other ):
+        Catch::Matchers::MatcherGenericBase( other ) {
         throw MatcherWasMovedOrCopied();
     }
-    [[noreturn]] ThrowOnCopyOrMoveMatcher( ThrowOnCopyOrMoveMatcher&& ):
-        Catch::Matchers::MatcherGenericBase() {
+    // NOLINTNEXTLINE(performance-noexcept-move-constructor)
+    [[noreturn]] ThrowOnCopyOrMoveMatcher( ThrowOnCopyOrMoveMatcher&& other ):
+        Catch::Matchers::MatcherGenericBase( CATCH_MOVE(other) ) {
         throw MatcherWasMovedOrCopied();
     }
     ThrowOnCopyOrMoveMatcher& operator=( ThrowOnCopyOrMoveMatcher const& ) {
         throw MatcherWasMovedOrCopied();
     }
+    // NOLINTNEXTLINE(performance-noexcept-move-constructor)
     ThrowOnCopyOrMoveMatcher& operator=( ThrowOnCopyOrMoveMatcher&& ) {
         throw MatcherWasMovedOrCopied();
     }

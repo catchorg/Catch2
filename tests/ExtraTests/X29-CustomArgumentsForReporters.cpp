@@ -36,6 +36,7 @@ public:
 
     void testRunStarting( Catch::TestRunInfo const& ) override {
         std::vector<std::pair<std::string, std::string>> options;
+        options.reserve( m_customOptions.size() );
         for ( auto const& kv : m_customOptions ) {
             options.push_back( kv );
         }

@@ -68,7 +68,7 @@ namespace Catch {
     struct TestCaseInfo : Detail::NonCopyable {
 
         TestCaseInfo(StringRef _className,
-                     NameAndTags const& _tags,
+                     NameAndTags const& _nameAndTags,
                      SourceLineInfo const& _lineInfo);
 
         bool isHidden() const;

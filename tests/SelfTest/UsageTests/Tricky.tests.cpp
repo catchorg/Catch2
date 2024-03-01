@@ -261,7 +261,7 @@ TEST_CASE( "non streamable - with conv. op", "[Tricky]" )
 
 inline void foo() {}
 
-typedef void (*fooptr_t)();
+using fooptr_t = void (*)();
 
 TEST_CASE( "Comparing function pointers", "[Tricky][function pointer]" )
 {
@@ -281,7 +281,7 @@ struct S
 
 TEST_CASE( "Comparing member function pointers", "[Tricky][member function pointer][approvals]" )
 {
-    typedef void (S::*MF)();
+    using MF = void (S::*)();
     MF m = &S::f;
 
     CHECK( m == &S::f );

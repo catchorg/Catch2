@@ -37,7 +37,7 @@ namespace Catch {
             xml.endElement();
         }
 
-        void writeRun( TestRunNode const& groupNode );
+        void writeRun( TestRunNode const& runNode );
 
         void writeTestFile(StringRef filename, std::vector<TestCaseNode const*> const& testCaseNodes);
 

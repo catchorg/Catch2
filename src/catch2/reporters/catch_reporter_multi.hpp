@@ -53,7 +53,7 @@ namespace Catch {
 
         void assertionEnded( AssertionStats const& assertionStats ) override;
         void sectionEnded( SectionStats const& sectionStats ) override;
-        void testCasePartialEnded(TestCaseStats const& testInfo, uint64_t partNumber) override;
+        void testCasePartialEnded(TestCaseStats const& testStats, uint64_t partNumber) override;
         void testCaseEnded( TestCaseStats const& testCaseStats ) override;
         void testRunEnded( TestRunStats const& testRunStats ) override;
 

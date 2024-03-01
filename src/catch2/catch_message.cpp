@@ -91,6 +91,7 @@ namespace Catch {
                     m_messages.back().message += " := ";
                     start = pos;
                 }
+            default:; // noop
             }
         }
         assert(openings.empty() && "Mismatched openings");
