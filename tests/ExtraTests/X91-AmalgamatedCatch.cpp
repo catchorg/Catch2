@@ -16,10 +16,10 @@
 TEST_CASE("Just a dummy test") {
     auto i = GENERATE(1, 2, 3);
     SECTION("a") {
-        REQUIRE(1 != 4);
+        REQUIRE(i != 4);
     }
     SECTION("b") {
-        CHECK(1 != 5);
+        CHECK(i != 5);
     }
     REQUIRE_THAT(1,
                  Catch::Matchers::Predicate<int>([](int i) {

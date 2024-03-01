@@ -97,8 +97,8 @@ namespace Catch {
         constexpr const_iterator end() const { return m_start + m_size; }
 
 
-        friend std::string& operator += (std::string& lhs, StringRef sr);
-        friend std::ostream& operator << (std::ostream& os, StringRef sr);
+        friend std::string& operator += (std::string& lhs, StringRef rhs);
+        friend std::ostream& operator << (std::ostream& os, StringRef str);
         friend std::string operator+(StringRef lhs, StringRef rhs);
 
         /**

@@ -34,7 +34,7 @@ public:
         return "Custom reporter for testing cumulative reporter base";
     }
 
-    virtual void testRunEndedCumulative() override;
+    void testRunEndedCumulative() override;
 };
 
 CATCH_REGISTER_REPORTER("testReporter", CumulativeBenchmarkReporter)

@@ -107,7 +107,7 @@ TEST_CASE( "Reporter's write listings to provided stream", "[reporters]" ) {
     for (auto const& factory : factories) {
         INFO("Tested reporter: " << factory.first);
         auto sstream = Catch::Detail::make_unique<StringIStream>();
-        auto& sstreamRef = *sstream.get();
+        auto& sstreamRef = *sstream;
 
         Catch::ConfigData cfg_data;
         cfg_data.rngSeed = 1234;

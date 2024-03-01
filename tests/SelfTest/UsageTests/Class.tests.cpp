@@ -39,7 +39,7 @@ namespace {
     };
 
     template <typename T> struct Template_Fixture_2 {
-        Template_Fixture_2() {}
+        Template_Fixture_2() = default;
 
         T m_a;
     };

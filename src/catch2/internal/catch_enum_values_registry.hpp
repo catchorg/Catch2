@@ -24,7 +24,7 @@ namespace Catch {
 
             std::vector<Catch::Detail::unique_ptr<EnumInfo>> m_enumInfos;
 
-            EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::vector<int> const& values) override;
+            EnumInfo const& registerEnum( StringRef enumName, StringRef allValueNames, std::vector<int> const& values) override;
         };
 
         std::vector<StringRef> parseEnums( StringRef enums );

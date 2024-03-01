@@ -31,7 +31,7 @@ namespace Catch {
         m_os{ os }, m_indent_level{ indent_level } {
         m_os << '{';
     }
-    JsonObjectWriter::JsonObjectWriter( JsonObjectWriter&& source ):
+    JsonObjectWriter::JsonObjectWriter( JsonObjectWriter&& source ) noexcept:
         m_os{ source.m_os },
         m_indent_level{ source.m_indent_level },
         m_should_comma{ source.m_should_comma },
@@ -62,7 +62,7 @@ namespace Catch {
         m_os{ os }, m_indent_level{ indent_level } {
         m_os << '[';
     }
-    JsonArrayWriter::JsonArrayWriter( JsonArrayWriter&& source ):
+    JsonArrayWriter::JsonArrayWriter( JsonArrayWriter&& source ) noexcept:
         m_os{ source.m_os },
         m_indent_level{ source.m_indent_level },
         m_should_comma{ source.m_should_comma },

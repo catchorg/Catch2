@@ -119,7 +119,7 @@ TEST_CASE( "When unchecked exceptions are thrown, but caught, they do not affect
     try {
         throw std::domain_error( "unexpected exception" );
     }
-    catch(...) {}
+    catch(...) {} // NOLINT(bugprone-empty-catch)
 }
 
 
@@ -152,7 +152,7 @@ TEST_CASE( "Custom exceptions can be translated when testing for throwing as som
 }
 
 TEST_CASE( "Unexpected exceptions can be translated", "[.][failing][!throws]"  ) {
-    throw double( 3.14 );
+    throw double( 3.14 ); // NOLINT(readability-redundant-casting): the type is important here, so we want to be explicit
 }
 
 TEST_CASE("Thrown string literals are translated", "[.][failing][!throws]") {

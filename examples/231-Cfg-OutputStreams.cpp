@@ -22,7 +22,7 @@ class out_buff : public std::stringbuf {
     std::FILE* m_stream;
 public:
     out_buff(std::FILE* stream):m_stream(stream) {}
-    ~out_buff();
+    ~out_buff() override;
     int sync() override {
         int ret = 0;
         for (unsigned char c : str()) {

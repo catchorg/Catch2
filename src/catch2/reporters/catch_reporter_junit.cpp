@@ -74,7 +74,7 @@ namespace Catch {
 
         static void normalizeNamespaceMarkers(std::string& str) {
             std::size_t pos = str.find( "::" );
-            while ( pos != str.npos ) {
+            while ( pos != std::string::npos ) {
                 str.replace( pos, 2, "." );
                 pos += 1;
                 pos = str.find( "::", pos );

@@ -90,14 +90,14 @@ TEST_CASE("Benchmark containers", "[!benchmark]") {
         };
         REQUIRE(v.size() == size);
 
-        int array[size];
+        int array[size] {};
         BENCHMARK("A fixed size array that should require no allocations") {
             for (int i = 0; i < size; ++i)
                 array[i] = i;
         };
         int sum = 0;
-        for (int i = 0; i < size; ++i)
-            sum += array[i];
+        for (int val : array)
+            sum += val;
         REQUIRE(sum > size);
 
         SECTION("XYZ") {
@@ -121,8 +121,8 @@ TEST_CASE("Benchmark containers", "[!benchmark]") {
                 runs = benchmarkIndex;
             };
 
-            for (size_t i = 0; i < v.size(); ++i) {
-                REQUIRE(v[i] == runs);
+            for (int val : v) {
+                REQUIRE(val == runs);
             }
         }
     }
@@ -135,8 +135,8 @@ TEST_CASE("Benchmark containers", "[!benchmark]") {
             for (int i = 0; i < size; ++i)
                 v[i] = generated;
         };
-        for (size_t i = 0; i < v.size(); ++i) {
-            REQUIRE(v[i] == generated);
+        for (int val : v) {
+            REQUIRE(val == generated);
         }
     }
 

@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
       return returnCode;
 
   // if set on the command line then 'height' is now set at this point
-  std::cout << "height: " << height << std::endl;
+  std::cout << "height: " << height << '\n';
 
   return session.run();
 }

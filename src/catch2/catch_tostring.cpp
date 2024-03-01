@@ -54,13 +54,13 @@ namespace Detail {
         }
     } // end unnamed namespace
 
-    std::string convertIntoString(StringRef string, bool escape_invisibles) {
+    std::string convertIntoString(StringRef string, bool escapeInvisibles) {
         std::string ret;
         // This is enough for the "don't escape invisibles" case, and a good
         // lower bound on the "escape invisibles" case.
         ret.reserve(string.size() + 2);
 
-        if (!escape_invisibles) {
+        if (!escapeInvisibles) {
             ret += '"';
             ret += string;
             ret += '"';
@@ -138,7 +138,7 @@ std::string StringMaker<char const*>::convert(char const* str) {
         return{ "{null string}" };
     }
 }
-std::string StringMaker<char*>::convert(char* str) {
+std::string StringMaker<char*>::convert(char* str) { // NOLINT(readability-non-const-parameter)
     if (str) {
         return Detail::convertIntoString( str );
     } else {
@@ -235,8 +235,8 @@ std::string StringMaker<signed char>::convert(signed char value) {
 std::string StringMaker<char>::convert(char c) {
     return ::Catch::Detail::stringify(static_cast<signed char>(c));
 }
-std::string StringMaker<unsigned char>::convert(unsigned char c) {
-    return ::Catch::Detail::stringify(static_cast<char>(c));
+std::string StringMaker<unsigned char>::convert(unsigned char value) {
+    return ::Catch::Detail::stringify(static_cast<char>(value));
 }
 
 int StringMaker<float>::precision = 5;

@@ -152,7 +152,7 @@ TEST_CASE( "TextFlow::Column respects indentation for empty lines",
 
     std::string written = as_written(col);
 
-    REQUIRE(as_written(col) == "  \n  \n  third line");
+    REQUIRE(written == "  \n  \n  third line");
 }
 
 TEST_CASE( "TextFlow::Column leading/trailing whitespace",

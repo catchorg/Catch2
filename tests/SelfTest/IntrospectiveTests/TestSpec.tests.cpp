@@ -236,7 +236,7 @@ TEST_CASE( "Parse test names and tags", "[command-line][test-spec][approvals]" )
         CHECK( spec.matches( *tcD ) == false );
     }
     SECTION( "two wildcarded names" ) {
-        TestSpec spec = parseTestSpec( "\"longer*\"\"*spaces\"" );
+        TestSpec spec = parseTestSpec( R"("longer*""*spaces")" );
         CHECK( spec.hasFilters() == true );
         CHECK( spec.matches( *tcA ) == false );
         CHECK( spec.matches( *tcB ) == false );

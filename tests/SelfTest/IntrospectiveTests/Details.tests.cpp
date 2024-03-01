@@ -120,13 +120,13 @@ TEST_CASE( "Optional supports move ops", "[optional][approvals]" ) {
     }
     SECTION( "Move construction from optional" ) {
         Optional<MoveChecker> opt_B( CATCH_MOVE( opt_A ) );
-        REQUIRE( opt_A->has_moved );
+        REQUIRE( opt_A->has_moved ); // NOLINT(clang-analyzer-cplusplus.Move)
     }
     SECTION( "Move assignment from optional" ) {
         Optional<MoveChecker> opt_B( opt_A );
         REQUIRE_FALSE( opt_A->has_moved );
         opt_B = CATCH_MOVE( opt_A );
-        REQUIRE( opt_A->has_moved );
+        REQUIRE( opt_A->has_moved ); // NOLINT(clang-analyzer-cplusplus.Move)
     }
 }
 
