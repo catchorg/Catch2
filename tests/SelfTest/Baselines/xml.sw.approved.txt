@@ -3142,34 +3142,34 @@ Nor would this
     <Section name="Specifically escaped" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
         <Original>
-          tab == '\t'
+          ::Catch::Detail::stringify('\t') == "'\\t'"
         </Original>
         <Expanded>
-          '\t' == '\t'
+          "'\t'" == "'\t'"
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
         <Original>
-          newline == '\n'
+          ::Catch::Detail::stringify('\n') == "'\\n'"
         </Original>
         <Expanded>
-          '\n' == '\n'
+          "'\n'" == "'\n'"
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
         <Original>
-          carr_return == '\r'
+          ::Catch::Detail::stringify('\r') == "'\\r'"
         </Original>
         <Expanded>
-          '\r' == '\r'
+          "'\r'" == "'\r'"
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
         <Original>
-          form_feed == '\f'
+          ::Catch::Detail::stringify('\f') == "'\\f'"
         </Original>
         <Expanded>
-          '\f' == '\f'
+          "'\f'" == "'\f'"
         </Expanded>
       </Expression>
       <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
@@ -3177,88 +3177,56 @@ Nor would this
     <Section name="General chars" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
         <Original>
-          space == ' '
+          ::Catch::Detail::stringify( ' ' ) == "' '"
         </Original>
         <Expanded>
-          ' ' == ' '
+          "' '" == "' '"
         </Expanded>
       </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
         <Original>
-          c == chars[i]
+          ::Catch::Detail::stringify( 'A' ) == "'A'"
         </Original>
         <Expanded>
-          'a' == 'a'
+          "'A'" == "'A'"
         </Expanded>
       </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
         <Original>
-          c == chars[i]
+          ::Catch::Detail::stringify( 'z' ) == "'z'"
         </Original>
         <Expanded>
-          'z' == 'z'
+          "'z'" == "'z'"
         </Expanded>
       </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
-        <Original>
-          c == chars[i]
-        </Original>
-        <Expanded>
-          'A' == 'A'
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
-        <Original>
-          c == chars[i]
-        </Original>
-        <Expanded>
-          'Z' == 'Z'
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Low ASCII" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
         <Original>
-          null_terminator == '\0'
+          ::Catch::Detail::stringify( '\0' ) == "0"
         </Original>
         <Expanded>
-          0 == 0
+          "0" == "0"
         </Expanded>
       </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
         <Original>
-          c == i
+          ::Catch::Detail::stringify( static_cast&lt;char>(2) ) == "2"
         </Original>
         <Expanded>
-          2 == 2
+          "2" == "2"
         </Expanded>
       </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
         <Original>
-          c == i
+          ::Catch::Detail::stringify( static_cast&lt;char>(5) ) == "5"
         </Original>
         <Expanded>
-          3 == 3
+          "5" == "5"
         </Expanded>
       </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
-        <Original>
-          c == i
-        </Original>
-        <Expanded>
-          4 == 4
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
-        <Original>
-          c == i
-        </Original>
-        <Expanded>
-          5 == 5
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
@@ -21707,6 +21675,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2079" failures="146" expectedFailures="35" skips="12"/>
+  <OverallResults successes="2075" failures="146" expectedFailures="35" skips="12"/>
   <OverallResultsCases successes="312" failures="85" expectedFailures="14" skips="6"/>
 </Catch2TestRun>

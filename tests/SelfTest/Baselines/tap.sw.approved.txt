@@ -697,33 +697,25 @@ ok {test-number} - lt( "A", "b" ) for: true
 # CaseInsensitiveLess is case insensitive
 ok {test-number} - lt( "A", "B" ) for: true
 # Character pretty printing
-ok {test-number} - tab == '\t' for: '\t' == '\t'
+ok {test-number} - ::Catch::Detail::stringify('\t') == "'\\t'" for: "'\t'" == "'\t'"
 # Character pretty printing
-ok {test-number} - newline == '\n' for: '\n' == '\n'
+ok {test-number} - ::Catch::Detail::stringify('\n') == "'\\n'" for: "'\n'" == "'\n'"
 # Character pretty printing
-ok {test-number} - carr_return == '\r' for: '\r' == '\r'
+ok {test-number} - ::Catch::Detail::stringify('\r') == "'\\r'" for: "'\r'" == "'\r'"
 # Character pretty printing
-ok {test-number} - form_feed == '\f' for: '\f' == '\f'
+ok {test-number} - ::Catch::Detail::stringify('\f') == "'\\f'" for: "'\f'" == "'\f'"
 # Character pretty printing
-ok {test-number} - space == ' ' for: ' ' == ' '
+ok {test-number} - ::Catch::Detail::stringify( ' ' ) == "' '" for: "' '" == "' '"
 # Character pretty printing
-ok {test-number} - c == chars[i] for: 'a' == 'a'
+ok {test-number} - ::Catch::Detail::stringify( 'A' ) == "'A'" for: "'A'" == "'A'"
 # Character pretty printing
-ok {test-number} - c == chars[i] for: 'z' == 'z'
+ok {test-number} - ::Catch::Detail::stringify( 'z' ) == "'z'" for: "'z'" == "'z'"
 # Character pretty printing
-ok {test-number} - c == chars[i] for: 'A' == 'A'
+ok {test-number} - ::Catch::Detail::stringify( '\0' ) == "0" for: "0" == "0"
 # Character pretty printing
-ok {test-number} - c == chars[i] for: 'Z' == 'Z'
+ok {test-number} - ::Catch::Detail::stringify( static_cast<char>(2) ) == "2" for: "2" == "2"
 # Character pretty printing
-ok {test-number} - null_terminator == '\0' for: 0 == 0
-# Character pretty printing
-ok {test-number} - c == i for: 2 == 2
-# Character pretty printing
-ok {test-number} - c == i for: 3 == 3
-# Character pretty printing
-ok {test-number} - c == i for: 4 == 4
-# Character pretty printing
-ok {test-number} - c == i for: 5 == 5
+ok {test-number} - ::Catch::Detail::stringify( static_cast<char>(5) ) == "5" for: "5" == "5"
 # Clara::Arg supports single-arg parse the way Opt does
 ok {test-number} - name.empty() for: true
 # Clara::Arg supports single-arg parse the way Opt does
@@ -4549,5 +4541,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2272
+1..2268
 

@@ -350,20 +350,16 @@ Details.tests.cpp:<line number>: passed: lt( "a", "b" ) for: true
 Details.tests.cpp:<line number>: passed: lt( "a", "B" ) for: true
 Details.tests.cpp:<line number>: passed: lt( "A", "b" ) for: true
 Details.tests.cpp:<line number>: passed: lt( "A", "B" ) for: true
-ToStringGeneral.tests.cpp:<line number>: passed: tab == '\t' for: '\t' == '\t'
-ToStringGeneral.tests.cpp:<line number>: passed: newline == '\n' for: '\n' == '\n'
-ToStringGeneral.tests.cpp:<line number>: passed: carr_return == '\r' for: '\r' == '\r'
-ToStringGeneral.tests.cpp:<line number>: passed: form_feed == '\f' for: '\f' == '\f'
-ToStringGeneral.tests.cpp:<line number>: passed: space == ' ' for: ' ' == ' '
-ToStringGeneral.tests.cpp:<line number>: passed: c == chars[i] for: 'a' == 'a'
-ToStringGeneral.tests.cpp:<line number>: passed: c == chars[i] for: 'z' == 'z'
-ToStringGeneral.tests.cpp:<line number>: passed: c == chars[i] for: 'A' == 'A'
-ToStringGeneral.tests.cpp:<line number>: passed: c == chars[i] for: 'Z' == 'Z'
-ToStringGeneral.tests.cpp:<line number>: passed: null_terminator == '\0' for: 0 == 0
-ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 2 == 2
-ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 3 == 3
-ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 4 == 4
-ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 5 == 5
+ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify('\t') == "'\\t'" for: "'\t'" == "'\t'"
+ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify('\n') == "'\\n'" for: "'\n'" == "'\n'"
+ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify('\r') == "'\\r'" for: "'\r'" == "'\r'"
+ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify('\f') == "'\\f'" for: "'\f'" == "'\f'"
+ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( ' ' ) == "' '" for: "' '" == "' '"
+ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( 'A' ) == "'A'" for: "'A'" == "'A'"
+ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( 'z' ) == "'z'" for: "'z'" == "'z'"
+ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( '\0' ) == "0" for: "0" == "0"
+ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( static_cast<char>(2) ) == "2" for: "2" == "2"
+ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( static_cast<char>(5) ) == "5" for: "5" == "5"
 Clara.tests.cpp:<line number>: passed: name.empty() for: true
 Clara.tests.cpp:<line number>: passed: name == "foo" for: "foo" == "foo"
 Clara.tests.cpp:<line number>: passed: !(parse_result) for: !{?}
@@ -2690,6 +2686,6 @@ InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
 test cases:  417 |  312 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2260 | 2079 passed | 146 failed | 35 failed as expected
+assertions: 2256 | 2075 passed | 146 failed | 35 failed as expected
 
 
