@@ -89,7 +89,7 @@ def updateCmakeFile(version):
 def updateMesonFile(version):
     with open(mesonPath, 'rb') as file:
         lines = file.readlines()
-    replacementRegex = re.compile(b'''version\s*:\s*'(\\d+.\\d+.\\d+)', # CML version placeholder, don't delete''')
+    replacementRegex = re.compile(b'''version\\s*:\\s*'(\\d+.\\d+.\\d+)', # CML version placeholder, don't delete''')
     replacement = '''version: '{0}', # CML version placeholder, don't delete'''.format(version.getVersionString()).encode('ascii')
     with open(mesonPath, 'wb') as file:
         for line in lines:
