@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.5.3](#353)<br>
 [3.5.2](#352)<br>
 [3.5.1](#351)<br>
 [3.5.0](#350)<br>
@@ -58,6 +59,31 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 3.5.3
+
+### Fixes
+* Fixed OOB access when computing filename tag (from the `-#` flag) for file without extension (#2798)
+* Fixed the linking against `log` on Android to be `PRIVATE` (#2815)
+* Fixed `Wuseless-cast` in benchmarking internals (#2823)
+
+### Improvements
+* Restored compatibility with VS2017 (#2792, #2822)
+  * The baseline for Catch2 is still C++14 with some reasonable workarounds for specific compilers, so if VS2017 starts acting up again, the support will be dropped again.
+* Suppressed clang-tidy's `bugprone-chained-comparison` in assertions (#2801)
+* Improved the static analysis mode to evaluate arguments to `TEST_CASE` and `SECTION` (#2817)
+  * Clang-tidy should no longer warn about runtime arguments to these macros being unused in static analysis mode.
+  * Clang-tidy can warn on issues involved arguments to these macros.
+* Added support for literal-zero detectors based on `consteval` constructors
+  * This is required for compiling `REQUIRE((a <=> b) == 0)` against MSVC's stdlib.
+  * Sadly, MSVC still cannot compile this assertion as it does not implement C++20 correctly.
+  * You can use `clang-cl` with MSVC's stdlib instead.
+  * If for some godforsaken reasons you want to understand this better, read the two relevant commits: [`dc51386b9fd61f99ea9c660d01867e6ad489b403`](https://github.com/catchorg/Catch2/commit/dc51386b9fd61f99ea9c660d01867e6ad489b403), and [`0787132fc82a75e3fb255aa9484ca1dc1eff2a30`](https://github.com/catchorg/Catch2/commit/0787132fc82a75e3fb255aa9484ca1dc1eff2a30).
+
+### Miscellaneous
+* Disabled tests for FP random generator reproducibility on non-SSE2 x86 targets (#2796)
+* Modified the in-tree Conan recipe to support Conan 2 (#2805)
 
 
 ## 3.5.2
