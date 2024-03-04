@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-from conan import ConanFile, tools, __version__ as conan_version
+from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
-from conan.tools import files, scm
+from conan.tools.files import copy, rmdir
+from conan.tools.build import check_min_cppstd
 import os
-import shutil
 import re
 
 required_conan_version = ">=1.53.0"
@@ -22,6 +22,15 @@ class CatchConan(ConanFile):
 
     settings = "os", "compiler", "build_type", "arch"
 
+    options = {
+        "shared": [True, False],
+        "fPIC": [True, False],
+    }
+    default_options = {
+        "shared": False,
+        "fPIC": True,
+    }
+
     def set_version(self):
         pattern = re.compile(r"\w*VERSION (\d+\.\d+\.\d+) # CML version placeholder, don't delete")
         with open("CMakeLists.txt") as file:
@@ -35,36 +44,38 @@ class CatchConan(ConanFile):
     def layout(self):
         cmake_layout(self)
 
+    def validate(self):
+        if self.settings.compiler.get_safe("cppstd"):
+            check_min_cppstd(self, 17)
+
     def generate(self):
         tc = CMakeToolchain(self)
+        tc.cache_variables["BUILD_TESTING"] = False
+        tc.cache_variables["CATCH_INSTALL_DOCS"] = False
+        tc.cache_variables["CATCH_INSTALL_EXTRAS"] = True
         tc.generate()
 
         deps = CMakeDeps(self)
         deps.generate()
 
-    def _configure_cmake(self):
-        cmake = CMake(self)
-
-        # These are option variables. The toolchain in conan 2 doesn't appear to
-        # set these correctly so you have to do it in the configure variables.
-        cmake.configure(variables= {
-            "BUILD_TESTING": "OFF",
-            "CATCH_INSTALL_DOCS": "OFF",
-            "CATCH_INSTALL_EXTRAS": "ON",
-            }
-        )
-        return cmake
-
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
     def package(self):
-        cmake = self._configure_cmake()
+        copy(self, "LICENSE.txt", src=str(self.recipe_folder), dst=os.path.join(self.package_folder, "licenses"))
+        cmake = CMake(self)
         cmake.install()
-
-        os.mkdir(f'{self.package_folder}/licenses/')
-        shutil.copy2(f'{self.recipe_folder}/LICENSE.txt', f'{self.package_folder}/licenses/')
+        rmdir(self, os.path.join(self.package_folder, "share"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        for cmake_file in ["ParseAndAddCatchTests.cmake", "Catch.cmake", "CatchAddTests.cmake"]:
+            copy(
+                self,
+                cmake_file,
+                src=os.path.join(self.export_sources_folder, "extras"),
+                dst=os.path.join(self.package_folder, "lib", "cmake", "Catch2"),
+            )
 
     def package_info(self):
         lib_suffix = "d" if self.settings.build_type == "Debug" else ""
