@@ -3,6 +3,8 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools.files import copy, rmdir
 from conan.tools.build import check_min_cppstd
+from conan.tools.scm import Version
+from conan.errors import ConanInvalidConfiguration
 import os
 import re
 
@@ -27,6 +29,21 @@ class CatchConan(ConanFile):
         "fPIC": True,
     }
 
+    @property
+    def _min_cppstd(self):
+        return "14"
+
+    @property
+    def _compilers_minimum_version(self):
+        return {
+            "gcc": "7",
+            "Visual Studio": "15",
+            "msvc": "191",
+            "clang": "5",
+            "apple-clang": "10",
+        }
+
+
     def set_version(self):
         pattern = re.compile(r"\w*VERSION (\d+\.\d+\.\d+) # CML version placeholder, don't delete")
         with open("CMakeLists.txt") as file:
@@ -46,12 +63,24 @@ class CatchConan(ConanFile):
         copy(self, "extras/*", src=self.recipe_folder, dst=self.export_sources_folder)
         copy(self, "CMake/*", src=self.recipe_folder, dst=self.export_sources_folder)
 
+    def config_options(self):
+        if self.settings.os == "Windows":
+            del self.options.fPIC
+
+    def configure(self):
+        if self.options.shared:
+            self.options.rm_safe("fPIC")
+
     def layout(self):
         cmake_layout(self)
 
     def validate(self):
         if self.settings.compiler.get_safe("cppstd"):
-            check_min_cppstd(self, 14)
+            check_min_cppstd(self, self._min_cppstd)
+        # INFO: Conan 1.x does not specify cppstd by default, so we need to check the compiler version instead.
+        minimum_version = self._compilers_minimum_version.get(str(self.settings.compiler), False)
+        if minimum_version and Version(self.settings.compiler.version) < minimum_version:
+            raise ConanInvalidConfiguration(f"{self.ref} requires C++{self._min_cppstd}, which your compiler doesn't support")
 
     def generate(self):
         tc = CMakeToolchain(self)
