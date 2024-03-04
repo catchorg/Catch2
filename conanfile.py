@@ -16,10 +16,6 @@ class CatchConan(ConanFile):
     homepage = url
     license = "BSL-1.0"
     version = "latest"
-
-    exports = "LICENSE.txt"
-    exports_sources = ("src/*", "CMakeLists.txt", "CMake/*", "extras/*")
-
     settings = "os", "compiler", "build_type", "arch"
 
     options = {
@@ -40,6 +36,15 @@ class CatchConan(ConanFile):
                     self.version = result.group(1)
 
         self.output.info(f'Using version: {self.version}')
+
+    def export(self):
+        copy(self, "LICENSE.txt", src=self.recipe_folder, dst=self.export_folder)
+
+    def export_sources(self):
+        copy(self, "CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder)
+        copy(self, "src/*", src=self.recipe_folder, dst=self.export_sources_folder)
+        copy(self, "extras/*", src=self.recipe_folder, dst=self.export_sources_folder)
+        copy(self, "CMake/*", src=self.recipe_folder, dst=self.export_sources_folder)
 
     def layout(self):
         cmake_layout(self)
