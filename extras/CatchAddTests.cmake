@@ -120,6 +120,8 @@ function(catch_discover_tests_impl)
   string(JSON tests_length LENGTH "${tests}")
   # CMake foreach loop is inclusive
   math(EXPR test_end "${tests_length} - 1")
+  # Accumulate test names
+  set(tests_list)
   # Parse output
   foreach(index RANGE "${test_end}")
     string(JSON test_spec GET "${tests}" "${index}")
@@ -130,6 +132,7 @@ function(catch_discover_tests_impl)
     foreach(char \\ , [ ])
       string(REPLACE ${char} "\\${char}" test_name "${test_name}")
     endforeach(char)
+    list(APPEND tests_list "${test_name}")
     # ...add output dir
     if(output_dir)
       string(REGEX REPLACE "[^A-Za-z0-9_]" "_" test_name_clean "${test_name}")
@@ -173,7 +176,7 @@ function(catch_discover_tests_impl)
         add_command(set_tests_properties
           "${prefix}${test}${suffix}"
           PROPERTIES
-            LABELS "${tags}"
+            LABELS "${tag}"
         )
       endforeach()
     endif()
@@ -181,7 +184,7 @@ function(catch_discover_tests_impl)
 
   # Create a list of all discovered tests, which users may use to e.g. set
   # properties on the tests
-  add_command(set ${_TEST_LIST} ${tests})
+  add_command(set ${_TEST_LIST} ${tests_list})
 
   # Write CTest script
   file(WRITE "${_CTEST_FILE}" "${script}")
