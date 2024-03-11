@@ -164,14 +164,13 @@ namespace Catch {
         ITransientExpression(ITransientExpression const&) = default;
         ITransientExpression& operator=(ITransientExpression const&) = default;
 
-        // We don't actually need a virtual destructor, but many static analysers
-        // complain if it's not here :-(
-        virtual ~ITransientExpression() = default;
-
         friend std::ostream& operator<<(std::ostream& out, ITransientExpression const& expr) {
             expr.streamReconstructedExpression(out);
             return out;
         }
+
+    protected:
+        ~ITransientExpression() = default;
     };
 
     void formatReconstructedExpression( std::ostream &os, std::string const& lhs, StringRef op, std::string const& rhs );
