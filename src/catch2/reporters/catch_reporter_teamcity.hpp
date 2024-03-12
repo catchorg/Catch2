@@ -12,6 +12,7 @@
 #include <catch2/catch_timer.hpp>
 
 #include <cstring>
+#include <string>
 
 #ifdef __clang__
 #   pragma clang diagnostic push
@@ -22,11 +23,7 @@ namespace Catch {
 
     class TeamCityReporter final : public StreamingReporterBase {
     public:
-        TeamCityReporter( ReporterConfig&& _config )
-        :   StreamingReporterBase( CATCH_MOVE(_config) )
-        {
-            m_preferences.shouldRedirectStdOut = true;
-        }
+        TeamCityReporter( ReporterConfig&& _config );
 
         ~TeamCityReporter() override;
 
@@ -38,23 +35,25 @@ namespace Catch {
         void testRunStarting( TestRunInfo const& runInfo ) override;
         void testRunEnded( TestRunStats const& runStats ) override;
 
-
         void assertionEnded(AssertionStats const& assertionStats) override;
 
-        void sectionStarting(SectionInfo const& sectionInfo) override {
-            m_headerPrintedForThisSection = false;
-            StreamingReporterBase::sectionStarting( sectionInfo );
-        }
+        void sectionStarting( SectionInfo const& sectionInfo ) override;
+        void sectionEnded( SectionStats const& sectionStats ) override;
 
         void testCaseStarting(TestCaseInfo const& testInfo) override;
 
         void testCaseEnded(TestCaseStats const& testCaseStats) override;
 
     private:
-        void printSectionHeader(std::ostream& os);
+        std::string printSectionName();
+        std::string createTestCaseHeader( std::string name );
+        std::string createTestCaseFooter( std::string name, double duration );
+        void parseCustomOptions();
 
-        bool m_headerPrintedForThisSection = false;
-        Timer m_testTimer;
+        Timer m_testCaseTimer;
+        bool m_headerPrintedForThisSection{ false };
+        bool m_printSections{ false };
+        std::string m_sectionSeparator{ "." };
     };
 
 } // end namespace Catch
