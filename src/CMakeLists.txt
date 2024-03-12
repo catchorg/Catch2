@@ -362,29 +362,10 @@ set_target_properties(Catch2 PROPERTIES
                                 VERSION ${PROJECT_VERSION}
                               SOVERSION ${PROJECT_VERSION})
 
-# depend on bunch of C++11 and C++14 features to have C++14 enabled by default
+# require C++14
 target_compile_features(Catch2
   PUBLIC
-    cxx_alignas
-    cxx_alignof
-    cxx_attributes
-    cxx_auto_type
-    cxx_constexpr
-    cxx_defaulted_functions
-    cxx_deleted_functions
-    cxx_final
-    cxx_lambdas
-    cxx_noexcept
-    cxx_override
-    cxx_range_for
-    cxx_rvalue_references
-    cxx_static_assert
-    cxx_strong_enums
-    cxx_trailing_return_types
-    cxx_unicode_literals
-    cxx_user_literals
-    cxx_variable_templates
-    cxx_variadic_macros
+    cxx_std_14
 )
 
 configure_file(
@@ -475,26 +456,7 @@ if (CATCH_BUILD_EXAMPLES OR CATCH_BUILD_EXTRA_TESTS)
     )
     target_compile_features(Catch2_buildall_interface
       INTERFACE
-        cxx_alignas
-        cxx_alignof
-        cxx_attributes
-        cxx_auto_type
-        cxx_constexpr
-        cxx_defaulted_functions
-        cxx_deleted_functions
-        cxx_final
-        cxx_lambdas
-        cxx_noexcept
-        cxx_override
-        cxx_range_for
-        cxx_rvalue_references
-        cxx_static_assert
-        cxx_strong_enums
-        cxx_trailing_return_types
-        cxx_unicode_literals
-        cxx_user_literals
-        cxx_variable_templates
-        cxx_variadic_macros
+        cxx_std_14
     )
 endif()
 
