@@ -11,11 +11,6 @@
 #include <catch2/internal/catch_config_wchar.hpp>
 #include <catch2/internal/catch_windows_h_proxy.hpp>
 
-#ifdef __clang__
-#   pragma clang diagnostic ignored "-Wc++98-compat"
-#   pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
-#endif
-
 
 #include <iostream>
 #include <cerrno>

@@ -20,7 +20,6 @@ CATCH_REGISTER_TAG_ALIAS("[@tricky]", "[tricky]~[.]")
 #ifdef __clang__
 #   pragma clang diagnostic ignored "-Wpadded"
 #   pragma clang diagnostic ignored "-Wweak-vtables"
-#   pragma clang diagnostic ignored "-Wc++98-compat"
 #endif
 
 /**
