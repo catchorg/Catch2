@@ -59,7 +59,7 @@ if (CATCH_BUILD_SURROGATES)
   )
   target_link_libraries(Catch2SurrogateTarget PRIVATE Catch2WithMain)
 
-endif(CATCH_BUILD_SURROGATES)
+endif()
 
 ####
 # Temporary workaround for VS toolset changes in 2017
@@ -70,7 +70,7 @@ if (MSVC)
 configure_file(${CATCH_DIR}/tools/misc/SelfTest.vcxproj.user
                ${CMAKE_BINARY_DIR}/tests
                COPYONLY)
-endif(MSVC) #Temporary workaround
+endif() #Temporary workaround
 
 
 # define the sources of the self test
