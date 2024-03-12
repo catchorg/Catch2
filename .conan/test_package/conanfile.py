@@ -3,18 +3,26 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, cmake_layout
 from conan.tools.build import can_run
+from conan.tools.files import save, load
 import os
 
 
 class TestPackageConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    generators = "CMakeToolchain", "CMakeDeps"
+    generators = "CMakeToolchain", "CMakeDeps", "VirtualRunEnv"
+    test_type = "explicit"
 
     def requirements(self):
         self.requires(self.tested_reference_str)
 
     def layout(self):
         cmake_layout(self)
+
+    def generate(self):
+        save(self, os.path.join(self.build_folder, "package_folder"),
+             self.dependencies[self.tested_reference_str].package_folder)
+        save(self, os.path.join(self.build_folder, "license"),
+             self.dependencies[self.tested_reference_str].license)
 
     def build(self):
         cmake = CMake(self)
@@ -26,8 +34,7 @@ class TestPackageConan(ConanFile):
             cmd = os.path.join(self.cpp.build.bindir, "test_package")
             self.run(cmd, env="conanrun")
 
-        # If we are on conan 2 we can check the license info is populated
-        if hasattr(self, 'dependencies'):
-            catch2 = self.dependencies["catch2"]
-            assert os.path.exists(f'{catch2.package_folder}/licenses/LICENSE.txt')
-            assert catch2.license == 'BSL-1.0'
+            package_folder = load(self, os.path.join(self.build_folder, "package_folder"))
+            license = load(self, os.path.join(self.build_folder, "license"))
+            assert os.path.isfile(os.path.join(package_folder, "licenses", "LICENSE.txt"))
+            assert license == 'BSL-1.0'

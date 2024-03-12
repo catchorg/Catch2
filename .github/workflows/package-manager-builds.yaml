@@ -9,12 +9,12 @@ jobs:
     strategy:
       matrix:
         conan_version:
-          - '1.62'
-          - '2.0'
+          - '1.63'
+          - '2.1'
 
         include:
           # Conan 1 has default profiles installed
-          - conan_version: '1.62'
+          - conan_version: '1.63'
             profile_generate: 'false'
 
     steps:
