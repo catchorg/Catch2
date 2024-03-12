@@ -103,13 +103,8 @@ class CatchConan(ConanFile):
         cmake.install()
         rmdir(self, os.path.join(self.package_folder, "share"))
         rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
-        for cmake_file in ["ParseAndAddCatchTests.cmake", "Catch.cmake", "CatchAddTests.cmake"]:
-            copy(
-                self,
-                cmake_file,
-                src=os.path.join(self.export_sources_folder, "extras"),
-                dst=os.path.join(self.package_folder, "lib", "cmake", "Catch2"),
-            )
+        copy(self, "*.cmake", src=os.path.join(self.export_sources_folder, "extras"),
+                              dst=os.path.join(self.package_folder, "lib", "cmake", "Catch2"))
 
     def package_info(self):
         lib_suffix = "d" if self.settings.build_type == "Debug" else ""
