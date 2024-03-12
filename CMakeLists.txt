@@ -200,4 +200,4 @@ if (NOT_SUBPROJECT)
 
     include( CPack )
 
-endif(NOT_SUBPROJECT)
+endif()
