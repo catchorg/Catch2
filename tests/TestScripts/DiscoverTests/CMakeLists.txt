@@ -11,6 +11,10 @@ add_executable(tests
 add_subdirectory(${CATCH2_PATH} catch2-build)
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
 
+if (CATCH_ENABLE_PCH)
+    target_precompile_headers(tests REUSE_FROM Catch2)
+endif()
+
 include(CTest)
 include(Catch)
 catch_discover_tests(tests)

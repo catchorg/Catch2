@@ -14,6 +14,8 @@
 #include <string>
 #include <string_view>
 
+#include <cstdint>
+
 
 template<class Callback>
 void split(const char *Data, size_t Size, Callback callback) {
@@ -50,4 +52,3 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size) {
 
     return 0;
 }
-

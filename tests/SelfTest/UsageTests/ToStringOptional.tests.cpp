@@ -11,6 +11,8 @@
 
 #if defined(CATCH_CONFIG_CPP17_OPTIONAL)
 
+#include <optional>
+
 TEST_CASE( "std::optional<int> -> toString", "[toString][optional][approvals]" ) {
     using type = std::optional<int>;
     REQUIRE( "{ }" == ::Catch::Detail::stringify( type{} ) );

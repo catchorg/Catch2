@@ -65,11 +65,28 @@ set_tests_properties(
 # define folders used:
 set( TESTS_DIR   ${CATCH_DIR}/tests/ExtraTests )
 
-add_executable(PrefixedMacros ${TESTS_DIR}/X01-PrefixedMacros.cpp)
+function(catch2_add_extratest target SOURCES)
+    add_executable(${target} ${SOURCES})
+    target_link_libraries(${target} PRIVATE Catch2WithMain)
+
+    if (CATCH_ENABLE_PCH)
+        target_precompile_headers(${target} REUSE_FROM Catch2)
+    endif()
+endfunction()
+
+function(catch2_add_extratest_no_pch_reuse target SOURCES)
+    add_executable(${target} ${SOURCES})
+    target_link_libraries(${target} PRIVATE Catch2WithMain)
+
+    if (CATCH_ENABLE_PCH)
+        target_precompile_headers(${target} PRIVATE "${SOURCES_DIR}/internal/catch_pch.hpp")
+    endif()
+endfunction()
+
+catch2_add_extratest_no_pch_reuse(PrefixedMacros ${TESTS_DIR}/X01-PrefixedMacros.cpp)
 target_compile_definitions( PrefixedMacros PRIVATE CATCH_CONFIG_PREFIX_ALL CATCH_CONFIG_RUNTIME_STATIC_REQUIRE )
 # Macro configuration does not touch the compiled parts, so we can link
 # it against the main library
-target_link_libraries( PrefixedMacros Catch2WithMain )
 
 add_test(NAME CATCH_CONFIG_PREFIX_ALL COMMAND PrefixedMacros -s)
 set_tests_properties(
@@ -83,11 +100,10 @@ set_tests_properties(
 )
 
 
-add_executable(DisabledMacros ${TESTS_DIR}/X02-DisabledMacros.cpp)
+catch2_add_extratest_no_pch_reuse(DisabledMacros ${TESTS_DIR}/X02-DisabledMacros.cpp)
 target_compile_definitions( DisabledMacros PRIVATE CATCH_CONFIG_DISABLE )
 # Macro configuration does not touch the compiled parts, so we can link
 # it against the main library
-target_link_libraries( DisabledMacros Catch2WithMain )
 
 add_test(NAME CATCH_CONFIG_DISABLE-1 COMMAND DisabledMacros -s)
 set_tests_properties(
@@ -103,8 +119,8 @@ set_tests_properties(
     PASS_REGULAR_EXPRESSION "0 test cases"
 )
 
-add_executable( DisabledExceptions-DefaultHandler ${TESTS_DIR}/X03-DisabledExceptions-DefaultHandler.cpp )
-add_executable( DisabledExceptions-CustomHandler ${TESTS_DIR}/X04-DisabledExceptions-CustomHandler.cpp )
+catch2_add_extratest_no_pch_reuse( DisabledExceptions-DefaultHandler ${TESTS_DIR}/X03-DisabledExceptions-DefaultHandler.cpp )
+catch2_add_extratest_no_pch_reuse( DisabledExceptions-CustomHandler ${TESTS_DIR}/X04-DisabledExceptions-CustomHandler.cpp )
 
 foreach(target DisabledExceptions-DefaultHandler DisabledExceptions-CustomHandler)
   target_compile_options( ${target}
@@ -112,7 +128,7 @@ foreach(target DisabledExceptions-DefaultHandler DisabledExceptions-CustomHandle
       $<$<CXX_COMPILER_ID:MSVC>:/EHs-c-;/D_HAS_EXCEPTIONS=0>
       $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:AppleClang>>:-fno-exceptions>
   )
-  target_link_libraries(${target} Catch2_buildall_interface)
+  target_link_libraries(${target} PRIVATE Catch2_buildall_interface)
 endforeach()
 target_compile_definitions( DisabledExceptions-CustomHandler PUBLIC CATCH_CONFIG_DISABLE_EXCEPTIONS_CUSTOM_HANDLER )
 
@@ -125,9 +141,9 @@ set_tests_properties(
     FAIL_REGULAR_EXPRESSION "abort;terminate;fatal"
 )
 
-add_executable( BazelReporter ${TESTS_DIR}/X30-BazelReporter.cpp )
+catch2_add_extratest_no_pch_reuse( BazelReporter ${TESTS_DIR}/X30-BazelReporter.cpp )
 target_compile_definitions( BazelReporter PRIVATE CATCH_CONFIG_BAZEL_SUPPORT )
-target_link_libraries(BazelReporter Catch2_buildall_interface)
+target_link_libraries(BazelReporter PRIVATE Catch2_buildall_interface)
 add_test(NAME CATCH_CONFIG_BAZEL_REPORTER-1
   COMMAND
   "${PYTHON_EXECUTABLE}" "${CATCH_DIR}/tests/TestScripts/testBazelReporter.py" $<TARGET_FILE:BazelReporter> "${CMAKE_CURRENT_BINARY_DIR}"
@@ -138,8 +154,7 @@ set_tests_properties(CATCH_CONFIG_BAZEL_REPORTER-1
 )
 
 # We must now test this works without the build flag.
-add_executable( BazelReporterNoCatchConfig ${TESTS_DIR}/X30-BazelReporter.cpp )
-target_link_libraries(BazelReporterNoCatchConfig Catch2WithMain)
+catch2_add_extratest( BazelReporterNoCatchConfig ${TESTS_DIR}/X30-BazelReporter.cpp )
 add_test(NAME NO_CATCH_CONFIG_BAZEL_REPORTER-1
   COMMAND
   "${PYTHON_EXECUTABLE}" "${CATCH_DIR}/tests/TestScripts/testBazelReporter.py" $<TARGET_FILE:BazelReporterNoCatchConfig> "${CMAKE_CURRENT_BINARY_DIR}"
@@ -202,8 +217,7 @@ set_tests_properties(
 )
 
 
-add_executable(DeferredStaticChecks ${TESTS_DIR}/X05-DeferredStaticChecks.cpp)
-target_link_libraries(DeferredStaticChecks PRIVATE Catch2WithMain)
+catch2_add_extratest_no_pch_reuse(DeferredStaticChecks ${TESTS_DIR}/X05-DeferredStaticChecks.cpp)
 target_compile_definitions(DeferredStaticChecks PRIVATE "CATCH_CONFIG_RUNTIME_STATIC_REQUIRE")
 
 add_test(NAME DeferredStaticChecks COMMAND DeferredStaticChecks -r compact)
@@ -214,9 +228,8 @@ set_tests_properties(
 )
 
 
-add_executable(FallbackStringifier ${TESTS_DIR}/X10-FallbackStringifier.cpp)
+catch2_add_extratest_no_pch_reuse(FallbackStringifier ${TESTS_DIR}/X10-FallbackStringifier.cpp)
 target_compile_definitions( FallbackStringifier PRIVATE CATCH_CONFIG_FALLBACK_STRINGIFIER=fallbackStringifier )
-target_link_libraries( FallbackStringifier Catch2WithMain )
 
 add_test(NAME FallbackStringifier COMMAND FallbackStringifier -r compact -s)
 set_tests_properties(
@@ -226,9 +239,8 @@ set_tests_properties(
 )
 
 
-add_executable(DisableStringification ${TESTS_DIR}/X11-DisableStringification.cpp)
+catch2_add_extratest_no_pch_reuse(DisableStringification ${TESTS_DIR}/X11-DisableStringification.cpp)
 target_compile_definitions( DisableStringification PRIVATE CATCH_CONFIG_DISABLE_STRINGIFICATION )
-target_link_libraries(DisableStringification Catch2WithMain)
 add_test(NAME CATCH_CONFIG_DISABLE_STRINGIFICATION COMMAND DisableStringification -r compact -s)
 set_tests_properties(
     CATCH_CONFIG_DISABLE_STRINGIFICATION
@@ -241,15 +253,13 @@ set_tests_properties(
 # This test touches windows.h, so it should only be compiled under msvc
 if (MSVC)
     # This test fails if it does not compile and succeeds otherwise
-    add_executable(WindowsHeader ${TESTS_DIR}/X90-WindowsHeaderInclusion.cpp)
-    target_link_libraries( WindowsHeader Catch2WithMain )
+    catch2_add_extratest(WindowsHeader ${TESTS_DIR}/X90-WindowsHeaderInclusion.cpp)
     add_test(NAME WindowsHeader COMMAND WindowsHeader -r compact)
     list(APPEND CATCH_WARNING_TARGETS ${EXTRA_TEST_BINARIES} WindowsHeader)
 endif()
 
 
-add_executable(PartialTestCaseEvents ${TESTS_DIR}/X21-PartialTestCaseEvents.cpp)
-target_link_libraries(PartialTestCaseEvents PRIVATE Catch2WithMain)
+catch2_add_extratest(PartialTestCaseEvents ${TESTS_DIR}/X21-PartialTestCaseEvents.cpp)
 add_test(
   NAME PartialTestCaseEvents
   COMMAND ${PYTHON_EXECUTABLE} ${CATCH_DIR}/tests/TestScripts/testPartialTestCaseEvent.py $<TARGET_FILE:PartialTestCaseEvents>
@@ -259,8 +269,7 @@ set_tests_properties(PartialTestCaseEvents
     LABELS "uses-python"
 )
 
-add_executable(BenchmarksInCumulativeReporter ${TESTS_DIR}/X22-BenchmarksInCumulativeReporter.cpp)
-target_link_libraries(BenchmarksInCumulativeReporter PRIVATE Catch2::Catch2WithMain)
+catch2_add_extratest(BenchmarksInCumulativeReporter ${TESTS_DIR}/X22-BenchmarksInCumulativeReporter.cpp)
 add_test(
   NAME BenchmarksInCumulativeReporter
   COMMAND BenchmarksInCumulativeReporter --reporter testReporter
@@ -273,8 +282,7 @@ set_tests_properties(
 )
 
 
-add_executable(CasingInReporterNames ${TESTS_DIR}/X23-CasingInReporterNames.cpp)
-target_link_libraries(CasingInReporterNames PRIVATE Catch2::Catch2WithMain)
+catch2_add_extratest(CasingInReporterNames ${TESTS_DIR}/X23-CasingInReporterNames.cpp)
 add_test(
   NAME Reporters::registration-is-case-preserving
   COMMAND CasingInReporterNames --list-reporters
@@ -294,8 +302,7 @@ set_tests_properties(
     PASS_REGULAR_EXPRESSION "TestReporter constructed"
 )
 
-add_executable(CapturedStdoutInTestCaseEvents ${TESTS_DIR}/X27-CapturedStdoutInTestCaseEvents.cpp)
-target_link_libraries(CapturedStdoutInTestCaseEvents PRIVATE Catch2::Catch2WithMain)
+catch2_add_extratest(CapturedStdoutInTestCaseEvents ${TESTS_DIR}/X27-CapturedStdoutInTestCaseEvents.cpp)
 add_test(
   NAME Reporters::CapturedStdOutInEvents
   COMMAND CapturedStdoutInTestCaseEvents
@@ -315,8 +322,7 @@ else()
   set(_NullFile "/dev/null")
 endif()
 
-add_executable(ListenerStdoutCaptureInMultireporter ${TESTS_DIR}/X24-ListenerStdoutCaptureInMultireporter.cpp)
-target_link_libraries(ListenerStdoutCaptureInMultireporter PRIVATE Catch2::Catch2WithMain)
+catch2_add_extratest(ListenerStdoutCaptureInMultireporter ${TESTS_DIR}/X24-ListenerStdoutCaptureInMultireporter.cpp)
 
 # This test checks that there is nothing written out from the process,
 # but if CMake is running the tests under Valgrind or similar tool, then
@@ -338,8 +344,7 @@ if (NOT MEMORYCHECK_COMMAND)
 endif()
 
 
-add_executable(ListenerCanAskForCapturedStdout ${TESTS_DIR}/X25-ListenerCanAskForCapturedStdout.cpp)
-target_link_libraries(ListenerCanAskForCapturedStdout PRIVATE Catch2::Catch2WithMain)
+catch2_add_extratest(ListenerCanAskForCapturedStdout ${TESTS_DIR}/X25-ListenerCanAskForCapturedStdout.cpp)
 add_test(
   NAME MultiReporter::CapturingListenerCausesStdoutCapture
   COMMAND ListenerCanAskForCapturedStdout
@@ -353,8 +358,7 @@ set_tests_properties(
     FAIL_REGULAR_EXPRESSION "X25 - ERROR"
 )
 
-add_executable(ReporterPreferencesForPassingAssertionsIsRespected ${TESTS_DIR}/X26-ReporterPreferencesForPassingAssertionsIsRespected.cpp)
-target_link_libraries(ReporterPreferencesForPassingAssertionsIsRespected PRIVATE Catch2::Catch2WithMain)
+catch2_add_extratest(ReporterPreferencesForPassingAssertionsIsRespected ${TESTS_DIR}/X26-ReporterPreferencesForPassingAssertionsIsRespected.cpp)
 add_test(
   NAME Reporters::PreferencesForPassingAssertionsIsRespected
   COMMAND ReporterPreferencesForPassingAssertionsIsRespected
@@ -379,8 +383,7 @@ set_tests_properties(
     FAIL_REGULAR_EXPRESSION "X26 - assertionEnded"
 )
 
-add_executable(ListenersGetEventsBeforeReporters ${TESTS_DIR}/X28-ListenersGetEventsBeforeReporters.cpp)
-target_link_libraries(ListenersGetEventsBeforeReporters PRIVATE Catch2::Catch2WithMain)
+catch2_add_extratest(ListenersGetEventsBeforeReporters ${TESTS_DIR}/X28-ListenersGetEventsBeforeReporters.cpp)
 add_test(
   NAME ListenersGetEventsBeforeReporters
   COMMAND ListenersGetEventsBeforeReporters --reporter test-reporter
@@ -392,8 +395,7 @@ set_tests_properties(
     FAIL_REGULAR_EXPRESSION "X28 - ERROR"
 )
 
-add_executable(CustomArgumentsForReporters ${TESTS_DIR}/X29-CustomArgumentsForReporters.cpp)
-target_link_libraries(CustomArgumentsForReporters PRIVATE Catch2::Catch2WithMain)
+catch2_add_extratest(CustomArgumentsForReporters ${TESTS_DIR}/X29-CustomArgumentsForReporters.cpp)
 add_test(
   NAME CustomArgumentsForReporters
   COMMAND CustomArgumentsForReporters
@@ -406,8 +408,7 @@ set_tests_properties(
 )
 
 
-add_executable(DuplicatedTestCases-SameNameAndTags ${TESTS_DIR}/X31-DuplicatedTestCases.cpp)
-target_link_libraries(DuplicatedTestCases-SameNameAndTags PRIVATE Catch2::Catch2WithMain)
+catch2_add_extratest(DuplicatedTestCases-SameNameAndTags ${TESTS_DIR}/X31-DuplicatedTestCases.cpp)
 add_test(
   NAME DuplicatedTestCases::SameNameAndTags
   COMMAND $<TARGET_FILE:DuplicatedTestCases-SameNameAndTags>
@@ -418,8 +419,7 @@ set_tests_properties(
      PASS_REGULAR_EXPRESSION "error: .* already defined\\."
 )
 
-add_executable(DuplicatedTestCases-SameNameDifferentTags ${TESTS_DIR}/X32-DuplicatedTestCasesDifferentTags.cpp)
-target_link_libraries(DuplicatedTestCases-SameNameDifferentTags PRIVATE Catch2::Catch2WithMain)
+catch2_add_extratest(DuplicatedTestCases-SameNameDifferentTags ${TESTS_DIR}/X32-DuplicatedTestCasesDifferentTags.cpp)
 add_test(
   NAME DuplicatedTestCases::SameNameDifferentTags
   COMMAND $<TARGET_FILE:DuplicatedTestCases-SameNameDifferentTags>
@@ -430,8 +430,7 @@ set_tests_properties(
      FAIL_REGULAR_EXPRESSION "error: .* already defined\\."
 )
 
-add_executable(DuplicatedTestCases-DuplicatedTestCaseMethods ${TESTS_DIR}/X33-DuplicatedTestCaseMethods.cpp)
-target_link_libraries(DuplicatedTestCases-DuplicatedTestCaseMethods PRIVATE Catch2::Catch2WithMain)
+catch2_add_extratest(DuplicatedTestCases-DuplicatedTestCaseMethods ${TESTS_DIR}/X33-DuplicatedTestCaseMethods.cpp)
 add_test(
   NAME DuplicatedTestCases::DuplicatedTestCaseMethods
   COMMAND $<TARGET_FILE:DuplicatedTestCases-DuplicatedTestCaseMethods>
@@ -442,8 +441,7 @@ set_tests_properties(
      PASS_REGULAR_EXPRESSION "error: .* already defined\\."
 )
 
-add_executable(DuplicatedTestCases-DifferentFixtures ${TESTS_DIR}/X34-DuplicatedTestCaseMethodsDifferentFixtures.cpp)
-target_link_libraries(DuplicatedTestCases-DifferentFixtures PRIVATE Catch2::Catch2WithMain)
+catch2_add_extratest(DuplicatedTestCases-DifferentFixtures ${TESTS_DIR}/X34-DuplicatedTestCaseMethodsDifferentFixtures.cpp)
 add_test(
   NAME DuplicatedTestCases::DuplicatedTestCaseMethodsDifferentFixtures
   COMMAND $<TARGET_FILE:DuplicatedTestCases-DifferentFixtures>
@@ -455,8 +453,7 @@ set_tests_properties(
 )
 
 
-add_executable(DuplicatedReporters ${TESTS_DIR}/X35-DuplicatedReporterNames.cpp)
-target_link_libraries(DuplicatedReporters PRIVATE Catch2::Catch2WithMain)
+catch2_add_extratest(DuplicatedReporters ${TESTS_DIR}/X35-DuplicatedReporterNames.cpp)
 add_test(
   NAME Reporters::RegistrationErrorsAreCaught
   COMMAND $<TARGET_FILE:DuplicatedReporters>
@@ -468,18 +465,15 @@ set_tests_properties(
 )
 
 
-add_executable(AssertionStartingEventGoesBeforeAssertionIsEvaluated
-  X20-AssertionStartingEventGoesBeforeAssertionIsEvaluated.cpp
-)
-target_link_libraries(AssertionStartingEventGoesBeforeAssertionIsEvaluated
-  PRIVATE Catch2::Catch2WithMain
+catch2_add_extratest(AssertionStartingEventGoesBeforeAssertionIsEvaluated
+  ${TESTS_DIR}/X20-AssertionStartingEventGoesBeforeAssertionIsEvaluated.cpp
 )
 add_test(
   NAME ReporterEvents::AssertionStartingHappensBeforeAssertionIsEvaluated
   COMMAND $<TARGET_FILE:AssertionStartingEventGoesBeforeAssertionIsEvaluated>
 )
 
-#add_executable(DebugBreakMacros ${TESTS_DIR}/X12-CustomDebugBreakMacro.cpp)
+#catch2_add_extratest(DebugBreakMacros ${TESTS_DIR}/X12-CustomDebugBreakMacro.cpp)
 #target_link_libraries(DebugBreakMacros Catch2)
 #add_test(NAME DebugBreakMacros COMMAND DebugBreakMacros --break)
 #set_tests_properties(
@@ -488,8 +482,7 @@ add_test(
 #    PASS_REGULAR_EXPRESSION "Pretty please, break into debugger"
 #)
 
-add_executable(NoTests ${TESTS_DIR}/X92-NoTests.cpp)
-target_link_libraries(NoTests PRIVATE Catch2::Catch2WithMain)
+catch2_add_extratest(NoTests ${TESTS_DIR}/X92-NoTests.cpp)
 
 add_test(
   NAME TestSpecs::EmptySpecWithNoTestsFails
@@ -511,8 +504,7 @@ add_test(
 )
 
 
-add_executable(AllSkipped ${TESTS_DIR}/X93-AllSkipped.cpp)
-target_link_libraries(AllSkipped PRIVATE Catch2::Catch2WithMain)
+catch2_add_extratest(AllSkipped ${TESTS_DIR}/X93-AllSkipped.cpp)
 
 add_test(
   NAME TestSpecs::SkippingAllTestsFails
@@ -556,6 +548,10 @@ add_executable(AmalgamatedTestCompilation
   ${CATCH_DIR}/extras/catch_amalgamated.cpp
 )
 target_include_directories(AmalgamatedTestCompilation PRIVATE ${CATCH_DIR}/extras)
+
+if (CATCH_ENABLE_PCH)
+    target_precompile_headers(AmalgamatedTestCompilation REUSE_FROM Catch2)
+endif()
 
 add_test(NAME AmalgamatedFileTest COMMAND AmalgamatedTestCompilation)
 set_tests_properties(
