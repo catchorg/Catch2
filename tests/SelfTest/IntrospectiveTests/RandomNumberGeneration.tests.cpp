@@ -558,7 +558,7 @@ namespace {
 // into smaller type when the type is saved into memory. This obviously
 // leads to a different answer, than doing the math in the correct precision.
 #if ( defined( _MSC_VER ) && _M_IX86_FP < 2 ) || \
-    ( defined( __GNUC__ ) && !defined( __SSE2_MATH__ ) )
+    ( defined( __GNUC__ ) && (defined( __i386__ ) || defined( __x86_64__ )) && !defined( __SSE2_MATH__ ) )
 #    define CATCH_TEST_CONFIG_DISABLE_FLOAT_REPRODUCIBILITY_TESTS
 #endif
 
