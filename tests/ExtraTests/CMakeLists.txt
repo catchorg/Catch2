@@ -556,6 +556,7 @@ add_executable(AmalgamatedTestCompilation
   ${CATCH_DIR}/extras/catch_amalgamated.cpp
 )
 target_include_directories(AmalgamatedTestCompilation PRIVATE ${CATCH_DIR}/extras)
+target_compile_features(AmalgamatedTestCompilation PRIVATE cxx_std_14)
 
 add_test(NAME AmalgamatedFileTest COMMAND AmalgamatedTestCompilation)
 set_tests_properties(
