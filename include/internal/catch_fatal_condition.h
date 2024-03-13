@@ -31,7 +31,7 @@ namespace Catch {
         // Should be if-defed to work on current platform, can assume
         // engage-disengage 1:1 pairing.
         void engage_platform();
-        void disengage_platform();
+        void disengage_platform() noexcept;
     public:
         // Should also have platform-specific implementations as needed
         FatalConditionHandler();

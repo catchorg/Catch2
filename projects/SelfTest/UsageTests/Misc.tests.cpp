@@ -7,6 +7,7 @@
  */
 
 #include "catch.hpp"
+#include "internal/catch_windows_h_proxy.h"
 
 #ifdef __clang__
 #   pragma clang diagnostic ignored "-Wc++98-compat"
@@ -489,5 +490,49 @@ TEMPLATE_TEST_CASE_SIG("#1954 - 7 arg template test case sig compiles", "[regres
                        (1, 1, 1, 1, 1, 0, 0), (5, 1, 1, 1, 1, 0, 0), (5, 3, 1, 1, 1, 0, 0)) {
     SUCCEED();
 }
+
+// MinGW doesn't support __try, and Clang has only very partial support
+#if defined(_MSC_VER)
+void throw_and_catch()
+{
+    __try {
+        RaiseException(0xC0000005, 0, 0, NULL);
+    }
+    __except (1)
+    {
+
+    }
+}
+
+
+TEST_CASE("Validate SEH behavior - handled", "[approvals][FatalConditionHandler][CATCH_PLATFORM_WINDOWS]")
+{
+    // Validate that Catch2 framework correctly handles tests raising and handling SEH exceptions.
+    throw_and_catch();
+}
+
+void throw_no_catch()
+{
+    RaiseException(0xC0000005, 0, 0, NULL);
+}
+
+TEST_CASE("Validate SEH behavior - unhandled", "[.approvals][FatalConditionHandler][CATCH_PLATFORM_WINDOWS]")
+{
+    // Validate that Catch2 framework correctly handles tests raising and not handling SEH exceptions.
+    throw_no_catch();
+}
+
+static LONG CALLBACK dummyExceptionFilter(PEXCEPTION_POINTERS /*ExceptionInfo*/) {
+    return EXCEPTION_CONTINUE_SEARCH;
+}
+
+TEST_CASE("Validate SEH behavior - no crash for stack unwinding", "[approvals][!throws][!shouldfail][FatalConditionHandler][CATCH_PLATFORM_WINDOWS]")
+{
+    // Trigger stack unwinding with SEH top-level filter changed and validate the test fails expectedly with no application crash
+    SetUnhandledExceptionFilter(dummyExceptionFilter);
+    throw 1;
+}
+
+#endif // _MSC_VER
 
 }} // namespace MiscTests
