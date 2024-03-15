@@ -62,10 +62,28 @@ Typically you should place the ```#define``` before #including "catch.hpp" in yo
 
 ## Console width
 
-    CATCH_CONFIG_CONSOLE_WIDTH = x // where x is a number
+    CATCH_CONFIG_CONSOLE_WIDTH = x // where x is a number or a function
 
 Catch formats output intended for the console to fit within a fixed number of characters. This is especially important as indentation is used extensively and uncontrolled line wraps break this.
 By default a console width of 80 is assumed but this can be controlled by defining the above identifier to be a different value.
+
+If the above identifier is set to a function, the function will be called to get the width of the console. This may
+be used to set the console width based on the current number of columns of the terminal. The function is required to return
+an integral result. The function must be declared before including the Catch header in the source file hosting the Catch implementation.
+It is not necessary to do this in any othe file.  For example:
+
+    int Catch2GetConsoleWidth();
+    #define CATCH_CONFIG_CONSOLE_WIDTH Catch2GetConsoleWidth()
+    #define CATCH_CONFIG_MAIN
+    #include "catch.hpp"
+
+And then we can define the function elsewhere, or in the same file:
+
+    int Catch2GetConsoleWidth()
+    {
+        return Terminal::GetWidth();
+    }
+
 
 ## stdout
 
@@ -203,7 +221,7 @@ _Inspired by Doctest's `DOCTEST_CONFIG_DISABLE`_
 
 On Windows Catch includes `windows.h`. To minimize global namespace clutter in the implementation file, it defines `NOMINMAX` and `WIN32_LEAN_AND_MEAN` before including it. You can control this behaviour via two macros:
 
-    CATCH_CONFIG_NO_NOMINMAX            // Stops Catch from using NOMINMAX macro 
+    CATCH_CONFIG_NO_NOMINMAX            // Stops Catch from using NOMINMAX macro
     CATCH_CONFIG_NO_WIN32_LEAN_AND_MEAN // Stops Catch from using WIN32_LEAN_AND_MEAN macro
 
 

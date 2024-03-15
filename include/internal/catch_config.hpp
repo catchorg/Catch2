@@ -18,6 +18,10 @@
 #include <vector>
 #include <string>
 
+#ifndef CATCH_CONFIG_CONSOLE_MAXIMUM_WIDTH
+#define CATCH_CONFIG_CONSOLE_MAXIMUM_WIDTH 512
+#endif
+
 #ifndef CATCH_CONFIG_CONSOLE_WIDTH
 #define CATCH_CONFIG_CONSOLE_WIDTH 80
 #endif
