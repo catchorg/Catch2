@@ -176,7 +176,7 @@ namespace Detail {
 
     std::string WithinRelMatcher::describe() const {
         Catch::ReusableStringStream sstr;
-        sstr << "and " << m_target << " are within " << m_epsilon * 100. << "% of each other";
+        sstr << "and " << ::Catch::Detail::stringify(m_target) << " are within " << m_epsilon * 100. << "% of each other";
         return sstr.str();
     }
 
