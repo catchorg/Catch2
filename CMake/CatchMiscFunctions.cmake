@@ -77,6 +77,7 @@ function(add_warnings_to_targets targets)
           "-Wreorder"
           "-Wreturn-std-move"
           "-Wshadow"
+          "-Wsign-conversion"
           "-Wstrict-aliasing"
           "-Wsubobject-linkage"
           "-Wsuggest-destructor-override"

@@ -2750,7 +2750,7 @@ Nor would this
     <Section name="Different element type, custom comparisons" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Original>
-          a, Contains(4, [](auto&amp;&amp; lhs, size_t sz) { return lhs.size() == sz; })
+          a, Contains(4u, [](auto&amp;&amp; lhs, size_t sz) { return lhs.size() == sz; })
         </Original>
         <Expanded>
           { "abc", "abcd", "abcde" } contains element 4
@@ -6089,7 +6089,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast&lt;std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           4 > 1
@@ -6100,7 +6100,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast&lt;std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           4 > 2
@@ -6111,7 +6111,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast&lt;std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           4 > 3
@@ -6155,7 +6155,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast&lt;std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           8 > 1
@@ -6166,7 +6166,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast&lt;std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           8 > 2
@@ -6177,7 +6177,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast&lt;std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           8 > 3
@@ -6221,7 +6221,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast&lt;std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           12 > 1
@@ -6232,7 +6232,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast&lt;std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           12 > 2
@@ -6243,7 +6243,7 @@ C
     <Section name="two" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Original>
-          4u * i > str.size()
+          4u * static_cast&lt;std::size_t>(i) > str.size()
         </Original>
         <Expanded>
           12 > 3

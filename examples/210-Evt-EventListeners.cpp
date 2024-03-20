@@ -25,7 +25,7 @@
 
 
 namespace {
-std::string ws(int const level) {
+std::string ws(std::size_t const level) {
     return std::string( 2 * level, ' ' );
 }
 
@@ -45,7 +45,7 @@ std::ostream& operator<<( std::ostream& os, std::vector<T> const& v ) {
 //     std::size_t line;
 // };
 
-void print( std::ostream& os, int const level, std::string const& title, Catch::SourceLineInfo const& info ) {
+void print( std::ostream& os, std::size_t const level, std::string const& title, Catch::SourceLineInfo const& info ) {
     os << ws(level  ) << title << ":\n"
        << ws(level+1) << "- file: " << info.file << "\n"
        << ws(level+1) << "- line: " << info.line << "\n";
@@ -59,14 +59,14 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 //    unsigned int sequence;
 //};
 
-void print( std::ostream& os, int const level, Catch::MessageInfo const& info ) {
+void print( std::ostream& os, std::size_t const level, Catch::MessageInfo const& info ) {
     os << ws(level+1) << "- macroName: '" << info.macroName << "'\n"
        << ws(level+1) << "- message '"    << info.message   << "'\n";
     print( os,level+1  , "- lineInfo", info.lineInfo );
     os << ws(level+1) << "- sequence "    << info.sequence  << "\n";
 }
 
-void print( std::ostream& os, int const level, std::string const& title, std::vector<Catch::MessageInfo> const& v ) {
+void print( std::ostream& os, std::size_t const level, std::string const& title, std::vector<Catch::MessageInfo> const& v ) {
     os << ws(level  ) << title << ":\n";
     for ( const auto& x : v )
     {
@@ -81,7 +81,7 @@ void print( std::ostream& os, int const level, std::string const& title, std::ve
 //     std::string name;
 // };
 
-void print( std::ostream& os, int const level, std::string const& title, Catch::TestRunInfo const& info ) {
+void print( std::ostream& os, std::size_t const level, std::string const& title, Catch::TestRunInfo const& info ) {
     os << ws(level  ) << title << ":\n"
        << ws(level+1) << "- name: " << info.name << "\n";
 }
@@ -96,7 +96,7 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 //     std::size_t failedButOk = 0;
 // };
 
-void print( std::ostream& os, int const level, std::string const& title, Catch::Counts const& info ) {
+void print( std::ostream& os, std::size_t const level, std::string const& title, Catch::Counts const& info ) {
     os << ws(level  ) << title << ":\n"
        << ws(level+1) << "- total(): "     << info.total()     << "\n"
        << ws(level+1) << "- allPassed(): " << info.allPassed() << "\n"
@@ -111,7 +111,7 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 //     Counts testCases;
 // };
 
-void print( std::ostream& os, int const level, std::string const& title, Catch::Totals const& info ) {
+void print( std::ostream& os, std::size_t const level, std::string const& title, Catch::Totals const& info ) {
     os << ws(level) << title << ":\n";
     print( os, level+1, "- assertions", info.assertions );
     print( os, level+1, "- testCases" , info.testCases  );
@@ -123,7 +123,7 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 //     bool aborting;
 // };
 
-void print( std::ostream& os, int const level, std::string const& title, Catch::TestRunStats const& info ) {
+void print( std::ostream& os, std::size_t const level, std::string const& title, Catch::TestRunStats const& info ) {
     os << ws(level) << title << ":\n";
     print( os, level+1 , "- runInfo", info.runInfo );
     print( os, level+1 , "- totals" , info.totals  );
@@ -161,7 +161,7 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 //        TestCaseProperties properties = TestCaseProperties::None;
 //    };
 
-void print( std::ostream& os, int const level, std::string const& title, Catch::TestCaseInfo const& info ) {
+void print( std::ostream& os, std::size_t const level, std::string const& title, Catch::TestCaseInfo const& info ) {
     os << ws(level  ) << title << ":\n"
        << ws(level+1) << "- isHidden(): "       << info.isHidden() << "\n"
        << ws(level+1) << "- throws(): "         << info.throws() << "\n"
@@ -183,7 +183,7 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 //     bool aborting;
 // };
 
-void print( std::ostream& os, int const level, std::string const& title, Catch::TestCaseStats const& info ) {
+void print( std::ostream& os, std::size_t const level, std::string const& title, Catch::TestCaseStats const& info ) {
     os << ws(level  ) << title << ":\n";
     print( os, level+1 , "- testInfo", *info.testInfo );
     print( os, level+1 , "- totals"  , info.totals   );
@@ -198,7 +198,7 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 //     SourceLineInfo lineInfo;
 // };
 
-void print( std::ostream& os, int const level, std::string const& title, Catch::SectionInfo const& info ) {
+void print( std::ostream& os, std::size_t const level, std::string const& title, Catch::SectionInfo const& info ) {
     os << ws(level  ) << title << ":\n"
        << ws(level+1) << "- name: "         << info.name << "\n";
     print( os, level+1 , "- lineInfo", info.lineInfo );
@@ -211,7 +211,7 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 //     bool missingAssertions;
 // };
 
-void print( std::ostream& os, int const level, std::string const& title, Catch::SectionStats const& info ) {
+void print( std::ostream& os, std::size_t const level, std::string const& title, Catch::SectionStats const& info ) {
     os << ws(level  ) << title << ":\n";
     print( os, level+1 , "- sectionInfo", info.sectionInfo );
     print( os, level+1 , "- assertions" , info.assertions );
@@ -227,7 +227,7 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 //     ResultDisposition::Flags resultDisposition;
 // };
 
-void print( std::ostream& os, int const level, std::string const& title, Catch::AssertionInfo const& info ) {
+void print( std::ostream& os, std::size_t const level, std::string const& title, Catch::AssertionInfo const& info ) {
     os << ws(level  ) << title << ":\n"
        << ws(level+1) << "- macroName: '"  << info.macroName << "'\n";
     print( os, level+1 , "- lineInfo" , info.lineInfo );
@@ -245,7 +245,7 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 //    ResultWas::OfType resultType;
 //};
 
-void print( std::ostream& os, int const level, std::string const& title, Catch::AssertionResultData const& info ) {
+void print( std::ostream& os, std::size_t const level, std::string const& title, Catch::AssertionResultData const& info ) {
     os << ws(level  ) << title << ":\n"
        << ws(level+1) << "- reconstructExpression(): '" <<   info.reconstructExpression() << "'\n"
        << ws(level+1) << "- message: '"                 <<   info.message << "'\n"
@@ -271,7 +271,7 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 //    AssertionResultData m_resultData;
 //};
 
-void print( std::ostream& os, int const level, std::string const& title, Catch::AssertionResult const& info ) {
+void print( std::ostream& os, std::size_t const level, std::string const& title, Catch::AssertionResult const& info ) {
     os << ws(level  ) << title << ":\n"
        << ws(level+1) << "- isOk(): "  << info.isOk() << "\n"
        << ws(level+1) << "- succeeded(): "  << info.succeeded() << "\n"
@@ -296,7 +296,7 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 //     Totals totals;
 // };
 
-void print( std::ostream& os, int const level, std::string const& title, Catch::AssertionStats const& info ) {
+void print( std::ostream& os, std::size_t const level, std::string const& title, Catch::AssertionStats const& info ) {
     os << ws(level  ) << title << ":\n";
     print( os, level+1 , "- assertionResult", info.assertionResult );
     print( os, level+1 , "- infoMessages", info.infoMessages );
