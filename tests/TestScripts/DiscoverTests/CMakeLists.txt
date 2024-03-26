@@ -16,7 +16,7 @@ include(Catch)
 set(extra_args)
 if (CMAKE_VERSION GREATER_EQUAL 3.27)
     list(APPEND extra_args
-            DL_PATHS "$<TARGET_RUNTIME_DLL_DIRS:tests>"
+            DL_PATHS "${CMAKE_CURRENT_LIST_DIR};${CMAKE_CURRENT_LIST_DIR}/.."
     )
 endif ()
 catch_discover_tests(tests ${extra_args})
