@@ -10,7 +10,24 @@
 import os
 import subprocess
 import sys
+import re
+import json
 
+cmake_version_regex = re.compile('cmake version (\d+)\.(\d+)\.(\d+)')
+
+def get_cmake_version():
+    result = subprocess.run(['cmake', '--version'],
+                            capture_output = True,
+                            check = True,
+                            text = True)
+    version_match = cmake_version_regex.match(result.stdout)
+    if not version_match:
+        print('Could not find cmake version in output')
+        print(f"output: '{result.stdout}'")
+        exit(4)
+    return (int(version_match.group(1)),
+            int(version_match.group(2)),
+            int(version_match.group(3)))
 
 def build_project(sources_dir, output_base_path, catch2_path):
     build_dir = os.path.join(output_base_path, 'ctest-registration-test')
@@ -62,8 +79,7 @@ def get_test_names(build_path):
     root = ET.fromstring(result.stdout)
     return [tc.text for tc in root.findall('TestCase/Name')]
 
-
-def list_ctest_tests(build_path):
+def get_ctest_listing(build_path):
     old_path = os.getcwd()
     os.chdir(build_path)
 
@@ -73,10 +89,10 @@ def list_ctest_tests(build_path):
                             check = True,
                             text = True)
     os.chdir(old_path)
+    return result.stdout
 
-    import json
-
-    ctest_response = json.loads(result.stdout)
+def extract_tests_from_ctest(ctest_output):
+    ctest_response = json.loads(ctest_output)
     tests = ctest_response['tests']
     test_names = []
     for test in tests:
@@ -89,6 +105,15 @@ def list_ctest_tests(build_path):
         test_name = test_command[1]
 
     return test_names
+
+def check_DL_PATHS(ctest_output):
+    ctest_response = json.loads(ctest_output)
+    tests = ctest_response['tests']
+    for test in tests:
+        properties = test['properties']
+        for property in properties:
+            if property['name'] == 'ENVIRONMENT_MODIFICATION':
+                assert len(property['value']) == 2, f"The test provides 2 arguments to DL_PATHS, but instead found {len(property['value'])}"
 
 def escape_catch2_test_name(name):
     for char in ('\\', ',', '[', ']'):
@@ -106,7 +131,8 @@ if __name__ == '__main__':
     build_path = build_project(sources_dir, output_base_path, catch2_path)
 
     catch_test_names = [escape_catch2_test_name(name) for name in get_test_names(build_path)]
-    ctest_test_names = list_ctest_tests(build_path)
+    ctest_output = get_ctest_listing(build_path)
+    ctest_test_names = extract_tests_from_ctest(ctest_output)
 
     mismatched = 0
     for catch_test in catch_test_names:
@@ -121,3 +147,7 @@ if __name__ == '__main__':
     if mismatched:
         print(f"Found {mismatched} mismatched tests catch test names and ctest test commands!")
         exit(1)
+
+    cmake_version = get_cmake_version()
+    if cmake_version >= (3, 27):
+        check_DL_PATHS(ctest_output)
