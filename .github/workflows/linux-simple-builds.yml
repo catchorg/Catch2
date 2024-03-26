@@ -9,6 +9,8 @@ jobs:
     strategy:
       matrix:
         cxx:
+          - g++-5
+          - g++-6
           - g++-7
           - g++-8
           - g++-9
@@ -21,6 +23,10 @@ jobs:
         build_type: [Debug, Release]
         std: [14]
         include:
+          - cxx: g++-5
+            other_pkgs: g++-5
+          - cxx: g++-6
+            other_pkgs: g++-6
           - cxx: g++-7
             other_pkgs: g++-7
           - cxx: g++-8
