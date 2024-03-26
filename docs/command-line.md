@@ -145,7 +145,7 @@ only tests that match the positive filters are included.
 
 You can also match test names with special characters by escaping them
 with a backslash (`"\"`), e.g. a test named `"Do A, then B"` is matched
-by "Do A\, then B" test spec. Backslash also escapes itself.
+by `"Do A\, then B"` test spec. Backslash also escapes itself.
 
 
 ### Examples
