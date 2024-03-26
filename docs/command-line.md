@@ -194,7 +194,8 @@ verbose and human-friendly output.
 
 Reporters are also individually configurable. To pass configuration options
 to the reporter, you append `::key=value` to the reporter specification
-as many times as you want, e.g. `--reporter xml::out=someFile.xml`.
+as many times as you want, e.g. `--reporter xml::out=someFile.xml` or
+`--reporter custom::colour-mode=ansi::Xoption=2`.
 
 The keys must either be prefixed by "X", in which case they are not parsed
 by Catch2 and are only passed down to the reporter, or one of options
