@@ -28,14 +28,23 @@ if len(sys.argv) != 3:
 catch2_source_path = os.path.abspath(sys.argv[1])
 build_dir_path = os.path.join(os.path.abspath(sys.argv[2]), 'CMakeConfigTests', 'DefaultReporter')
 
+output_file = f"{build_dir_path}/foo.xml"
+# We need to escape backslashes in Windows paths, because otherwise they
+# are interpreted as escape characters in strings, and cause compilation
+# error.
+escaped_output_file = output_file.replace('\\', '\\\\')
 configure_and_build(catch2_source_path,
                     build_dir_path,
-                    [("CATCH_CONFIG_DEFAULT_REPORTER", "xml")])
+                    [("CATCH_CONFIG_DEFAULT_REPORTER", f"xml::out={escaped_output_file}")])
 
 stdout, _ = run_and_return_output(os.path.join(build_dir_path, 'tests'), 'SelfTest', ['[approx][custom]'])
 
-xml_tag = '</Catch2TestRun>'
-if xml_tag not in stdout:
-    print("Could not find '{}' in the stdout".format(xml_tag))
-    print('stdout: "{}"'.format(stdout))
+if not os.path.exists(output_file):
+    print(f'Did not find the {output_file} file')
     exit(2)
+
+xml_tag = '</Catch2TestRun>'
+with open(output_file, 'r', encoding='utf-8') as file:
+    if xml_tag not in file.read():
+        print(f"Could not find '{xml_tag}' in the file")
+        exit(3)
