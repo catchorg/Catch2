@@ -26,14 +26,11 @@ namespace {
         return std::memchr( chars, c, sizeof( chars ) - 1 ) != nullptr;
     }
 
-    bool isBoundary( std::string const& line, size_t at ) {
-        assert( at > 0 );
-        assert( at <= line.size() );
-
-        return at == line.size() ||
-               ( isWhitespace( line[at] ) && !isWhitespace( line[at - 1] ) ) ||
-               isBreakableBefore( line[at] ) ||
-               isBreakableAfter( line[at - 1] );
+    bool isBoundary( std::string const& line, std::string::const_iterator it ) {
+        return it == line.end() ||
+               ( isWhitespace( *it ) && !isWhitespace( *(it - 1) ) ) ||
+               isBreakableBefore( *it ) ||
+               isBreakableAfter( *(it - 1) );
     }
 
 } // namespace
@@ -51,37 +48,37 @@ namespace Catch {
             }
 
             const auto maxLineLength = m_column.m_width - indentSize();
-            std::size_t parsed = 0;
-            while ( m_parsedTo != current_line.end() && parsed < maxLineLength && *m_parsedTo != '\n' ) {
+            std::size_t lineLength = 0;
+            while ( m_parsedTo != current_line.end() && lineLength < maxLineLength && *m_parsedTo != '\n' ) {
                 ++m_parsedTo;
-                ++parsed;
+                ++lineLength;
             }
 
             // If we encountered a newline before the column is filled,
             // then we linebreak at the newline and consider this line
             // finished.
-            if ( m_parsedTo < m_lineStart + maxLineLength ) {
+            if ( lineLength < maxLineLength ) {
                 m_lineEnd = m_parsedTo;
             } else {
                 // Look for a natural linebreak boundary in the column
                 // (We look from the end, so that the first found boundary is
                 // the right one)
-                size_t newLineLength = maxLineLength;
-                while ( newLineLength > 0 && !isBoundary( current_line, (m_lineStart - current_line.begin()) + newLineLength ) ) {
-                    --newLineLength;
+                m_lineEnd = m_parsedTo;
+                while ( lineLength > 0 && !isBoundary( current_line, m_lineEnd )) {
+                    --lineLength;
+                    --m_lineEnd;
                 }
-                while ( newLineLength > 0 &&
-                        isWhitespace( *(m_lineStart + newLineLength - 1) ) ) {
-                    --newLineLength;
+                while ( lineLength > 0 && isWhitespace( *(m_lineEnd - 1) ) ) {
+                    --lineLength;
+                    --m_lineEnd;
                 }
 
                 // If we found one, then that is where we linebreak
-                if ( newLineLength > 0 ) {
-                    m_lineEnd = m_lineStart + newLineLength;
+                if ( lineLength > 0 ) {
                 } else {
                     // Otherwise we have to split text with a hyphen
                     m_addHyphen = true;
-                    m_lineEnd = m_lineStart + maxLineLength - 1;
+                    m_lineEnd = m_parsedTo - 1;
                 }
             }
         }
