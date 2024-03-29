@@ -26,7 +26,7 @@ namespace Catch {
          *
          * Internal representation:
          * An escape sequence looks like \033[39;49m
-         * We need bidirectional iteration and tne unbound length of escape sequences poses a problem for operator--
+         * We need bidirectional iteration and the unbound length of escape sequences poses a problem for operator--
          * To make this work we'll replace the last `m` with a 0xff (this is a codepoint that won't have any utf-8
          * meaning).
          */
