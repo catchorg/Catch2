@@ -46,60 +46,60 @@ namespace Catch {
             m_parsedTo = m_lineStart;
 
             std::string const& current_line = m_column.m_string;
-            if ( current_line[m_lineStart] == '\n' ) {
+            if ( *m_lineStart == '\n' ) {
                 ++m_parsedTo;
             }
 
             const auto maxLineLength = m_column.m_width - indentSize();
-            const auto maxParseTo = std::min(current_line.size(), m_lineStart + maxLineLength);
-            while ( m_parsedTo < maxParseTo &&
-                    current_line[m_parsedTo] != '\n' ) {
+            std::size_t parsed = 0;
+            while ( m_parsedTo != current_line.end() && parsed < maxLineLength && *m_parsedTo != '\n' ) {
                 ++m_parsedTo;
+                ++parsed;
             }
 
             // If we encountered a newline before the column is filled,
             // then we linebreak at the newline and consider this line
             // finished.
             if ( m_parsedTo < m_lineStart + maxLineLength ) {
-                m_lineLength = m_parsedTo - m_lineStart;
+                m_lineEnd = m_parsedTo;
             } else {
                 // Look for a natural linebreak boundary in the column
                 // (We look from the end, so that the first found boundary is
                 // the right one)
                 size_t newLineLength = maxLineLength;
-                while ( newLineLength > 0 && !isBoundary( current_line, m_lineStart + newLineLength ) ) {
+                while ( newLineLength > 0 && !isBoundary( current_line, (m_lineStart - current_line.begin()) + newLineLength ) ) {
                     --newLineLength;
                 }
                 while ( newLineLength > 0 &&
-                        isWhitespace( current_line[m_lineStart + newLineLength - 1] ) ) {
+                        isWhitespace( *(m_lineStart + newLineLength - 1) ) ) {
                     --newLineLength;
                 }
 
                 // If we found one, then that is where we linebreak
                 if ( newLineLength > 0 ) {
-                    m_lineLength = newLineLength;
+                    m_lineEnd = m_lineStart + newLineLength;
                 } else {
                     // Otherwise we have to split text with a hyphen
                     m_addHyphen = true;
-                    m_lineLength = maxLineLength - 1;
+                    m_lineEnd = m_lineStart + maxLineLength - 1;
                 }
             }
         }
 
         size_t Column::const_iterator::indentSize() const {
             auto initial =
-                m_lineStart == 0 ? m_column.m_initialIndent : std::string::npos;
+                m_lineStart == m_column.m_string.begin() ? m_column.m_initialIndent : std::string::npos;
             return initial == std::string::npos ? m_column.m_indent : initial;
         }
 
         std::string
-        Column::const_iterator::addIndentAndSuffix( size_t position,
-                                              size_t length ) const {
+        Column::const_iterator::addIndentAndSuffix( std::string::const_iterator start,
+                                              std::string::const_iterator end ) const {
             std::string ret;
             const auto desired_indent = indentSize();
-            ret.reserve( desired_indent + length + m_addHyphen );
+            ret.reserve( desired_indent + (end - start) + m_addHyphen );
             ret.append( desired_indent, ' ' );
-            ret.append( m_column.m_string, position, length );
+            ret.append( start, end );
             if ( m_addHyphen ) {
                 ret.push_back( '-' );
             }
@@ -107,34 +107,33 @@ namespace Catch {
             return ret;
         }
 
-        Column::const_iterator::const_iterator( Column const& column ): m_column( column ) {
+        Column::const_iterator::const_iterator( Column const& column ): m_column( column ), m_lineStart(column.m_string.begin()), m_lineEnd(column.m_string.begin()) {
             assert( m_column.m_width > m_column.m_indent );
             assert( m_column.m_initialIndent == std::string::npos ||
                     m_column.m_width > m_column.m_initialIndent );
             calcLength();
-            if ( m_lineLength == 0 ) {
-                m_lineStart = m_column.m_string.size();
+            if ( m_lineStart == m_lineEnd ) {
+                m_lineStart = m_column.m_string.end();
             }
         }
 
         std::string Column::const_iterator::operator*() const {
             assert( m_lineStart <= m_parsedTo );
-            return addIndentAndSuffix( m_lineStart, m_lineLength );
+            return addIndentAndSuffix( m_lineStart, m_lineEnd );
         }
 
         Column::const_iterator& Column::const_iterator::operator++() {
-            m_lineStart += m_lineLength;
+            m_lineStart = m_lineEnd; // FIXME
             std::string const& current_line = m_column.m_string;
-            if ( m_lineStart < current_line.size() && current_line[m_lineStart] == '\n' ) {
+            if ( m_lineStart < current_line.end() && *m_lineStart == '\n' ) {
                 m_lineStart += 1;
             } else {
-                while ( m_lineStart < current_line.size() &&
-                        isWhitespace( current_line[m_lineStart] ) ) {
+                while ( m_lineStart < current_line.end() && isWhitespace( *m_lineStart ) ) {
                     ++m_lineStart;
                 }
             }
 
-            if ( m_lineStart != current_line.size() ) {
+            if ( m_lineStart != current_line.end() ) {
                 calcLength();
             }
             return *this;

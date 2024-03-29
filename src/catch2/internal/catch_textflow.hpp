@@ -47,16 +47,16 @@ namespace Catch {
 
                 Column const& m_column;
                 // Where does the current line start?
-                size_t m_lineStart = 0;
+                std::string::const_iterator m_lineStart;
                 // How long should the current line be?
-                size_t m_lineLength = 0;
+                std::string::const_iterator m_lineEnd;
                 // How far have we checked the string to iterate?
-                size_t m_parsedTo = 0;
+                std::string::const_iterator m_parsedTo;
                 // Should a '-' be appended to the line?
                 bool m_addHyphen = false;
 
                 const_iterator( Column const& column, EndTag ):
-                    m_column( column ), m_lineStart( m_column.m_string.size() ) {}
+                    m_column( column ), m_lineStart( m_column.m_string.end() ), m_lineEnd(column.m_string.end()) {}
 
                 // Calculates the length of the current line
                 void calcLength();
@@ -66,8 +66,8 @@ namespace Catch {
 
                 // Creates an indented and (optionally) suffixed string from
                 // current iterator position, indentation and length.
-                std::string addIndentAndSuffix( size_t position,
-                                                size_t length ) const;
+                std::string addIndentAndSuffix( std::string::const_iterator start,
+                                                std::string::const_iterator end ) const;
 
             public:
                 using difference_type = std::ptrdiff_t;
