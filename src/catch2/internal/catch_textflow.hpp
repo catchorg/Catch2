@@ -21,6 +21,98 @@ namespace Catch {
         class Columns;
 
         /**
+         * Abstraction for a string with ansi escape sequences that automatically skips over escapes when iterating.
+         * Only graphical escape sequences are considered.
+         *
+         * Internal representation:
+         * An escape sequence looks like \033[39;49m
+         * We need bidirectional iteration and tne unbound length of escape sequences poses a problem for operator--
+         * To make this work we'll replace the last `m` with a 0xff (this is a codepoint that won't have any utf-8
+         * meaning).
+         */
+        class AnsiSkippingString {
+            std::string m_string;
+            std::size_t m_length;
+        public:
+            class const_iterator;
+            using iterator = const_iterator;
+
+            AnsiSkippingString(std::string const& text) : m_string(text) {}
+
+            const_iterator begin() const;
+            const_iterator end() const;
+
+            size_t size() const {
+                return m_string.size();
+            }
+
+            std::string substring(std::size_t pos, std::size_t length) const {
+                return m_string.substr(pos, length);
+            }
+        };
+
+        class AnsiSkippingString::const_iterator {
+            friend AnsiSkippingString;
+            struct EndTag {};
+
+            const std::string* m_string;
+            std::string::const_iterator m_it;
+
+            explicit const_iterator( const std::string& string, EndTag ):
+                m_string(&string), m_it(string.end()) {}
+
+            void advance() {
+                // TODO
+                m_it++;
+            }
+
+        public:
+            using difference_type = std::ptrdiff_t;
+            using value_type = char;
+            using pointer = value_type*;
+            using reference = value_type&;
+            using iterator_category = std::bidirectional_iterator_tag;
+
+            // TODO: Advance if first character is ansi sequence
+            explicit const_iterator( const std::string& string ): m_string(&string), m_it(string.begin()) {}
+
+            char operator*() const {
+                return *m_it;
+            }
+
+            const_iterator& operator++() {
+                advance();
+                return *this;
+            }
+            const_iterator operator++( int ) {
+                iterator prev( *this );
+                operator++();
+                return prev;
+            }
+            const_iterator& operator--() {
+                m_it--;
+                return *this;
+            }
+            const_iterator operator--( int ) {
+                iterator prev( *this );
+                operator--();
+                return prev;
+            }
+
+            bool operator==( const_iterator const& other ) const {
+                return m_it == other.m_it;
+            }
+            bool operator!=( const_iterator const& other ) const {
+                return !operator==( other );
+            }
+
+            const_iterator one_before() const {
+                auto it = *this;
+                return --it;
+            }
+        };
+
+        /**
          * Represents a column of text with specific width and indentation
          *
          * When written out to a stream, it will perform linebreaking
@@ -29,7 +121,7 @@ namespace Catch {
          */
         class Column {
             // String to be written out
-            std::string m_string;
+            AnsiSkippingString m_string;
             // Width of the column for linebreaking
             size_t m_width = CATCH_CONFIG_CONSOLE_WIDTH - 1;
             // Indentation of other lines (including first if initial indent is unset)
@@ -47,16 +139,16 @@ namespace Catch {
 
                 Column const& m_column;
                 // Where does the current line start?
-                std::string::const_iterator m_lineStart;
+                AnsiSkippingString::const_iterator m_lineStart;
                 // How long should the current line be?
-                std::string::const_iterator m_lineEnd;
+                AnsiSkippingString::const_iterator m_lineEnd;
                 // How far have we checked the string to iterate?
-                std::string::const_iterator m_parsedTo;
+                AnsiSkippingString::const_iterator m_parsedTo;
                 // Should a '-' be appended to the line?
                 bool m_addHyphen = false;
 
                 const_iterator( Column const& column, EndTag ):
-                    m_column( column ), m_lineStart( m_column.m_string.end() ), m_lineEnd(column.m_string.end()) {}
+                    m_column( column ), m_lineStart( m_column.m_string.end() ), m_lineEnd(column.m_string.end()), m_parsedTo(column.m_string.end()) {}
 
                 // Calculates the length of the current line
                 void calcLength();
@@ -66,8 +158,8 @@ namespace Catch {
 
                 // Creates an indented and (optionally) suffixed string from
                 // current iterator position, indentation and length.
-                std::string addIndentAndSuffix( std::string::const_iterator start,
-                                                std::string::const_iterator end ) const;
+                std::string addIndentAndSuffix( AnsiSkippingString::const_iterator start,
+                                                AnsiSkippingString::const_iterator end ) const;
 
             public:
                 using difference_type = std::ptrdiff_t;

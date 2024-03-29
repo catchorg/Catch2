@@ -26,23 +26,25 @@ namespace {
         return std::memchr( chars, c, sizeof( chars ) - 1 ) != nullptr;
     }
 
-    bool isBoundary( std::string const& line, std::string::const_iterator it ) {
-        return it == line.end() ||
-               ( isWhitespace( *it ) && !isWhitespace( *(it - 1) ) ) ||
-               isBreakableBefore( *it ) ||
-               isBreakableAfter( *(it - 1) );
-    }
-
 } // namespace
 
 namespace Catch {
     namespace TextFlow {
+        AnsiSkippingString::const_iterator AnsiSkippingString::begin() const { return const_iterator(m_string); }
+        AnsiSkippingString::const_iterator AnsiSkippingString::end() const { return const_iterator(m_string, const_iterator::EndTag{}); }
+
+        static bool isBoundary( AnsiSkippingString const& line, AnsiSkippingString::const_iterator it ) {
+            return it == line.end() ||
+                ( isWhitespace( *it ) && !isWhitespace( *it.one_before() ) ) ||
+                isBreakableBefore( *it ) ||
+                isBreakableAfter( *it.one_before() );
+        }
 
         void Column::const_iterator::calcLength() {
             m_addHyphen = false;
             m_parsedTo = m_lineStart;
 
-            std::string const& current_line = m_column.m_string;
+            AnsiSkippingString const& current_line = m_column.m_string;
             if ( *m_lineStart == '\n' ) {
                 ++m_parsedTo;
             }
@@ -68,7 +70,7 @@ namespace Catch {
                     --lineLength;
                     --m_lineEnd;
                 }
-                while ( lineLength > 0 && isWhitespace( *(m_lineEnd - 1) ) ) {
+                while ( lineLength > 0 && isWhitespace( *m_lineEnd.one_before() ) ) {
                     --lineLength;
                     --m_lineEnd;
                 }
@@ -78,7 +80,7 @@ namespace Catch {
                 } else {
                     // Otherwise we have to split text with a hyphen
                     m_addHyphen = true;
-                    m_lineEnd = m_parsedTo - 1;
+                    m_lineEnd = m_parsedTo.one_before();
                 }
             }
         }
@@ -90,11 +92,11 @@ namespace Catch {
         }
 
         std::string
-        Column::const_iterator::addIndentAndSuffix( std::string::const_iterator start,
-                                              std::string::const_iterator end ) const {
+        Column::const_iterator::addIndentAndSuffix( AnsiSkippingString::const_iterator start,
+                                              AnsiSkippingString::const_iterator end ) const {
             std::string ret;
             const auto desired_indent = indentSize();
-            ret.reserve( desired_indent + (end - start) + m_addHyphen );
+            // ret.reserve( desired_indent + (end - start) + m_addHyphen );
             ret.append( desired_indent, ' ' );
             ret.append( start, end );
             if ( m_addHyphen ) {
@@ -104,7 +106,7 @@ namespace Catch {
             return ret;
         }
 
-        Column::const_iterator::const_iterator( Column const& column ): m_column( column ), m_lineStart(column.m_string.begin()), m_lineEnd(column.m_string.begin()) {
+        Column::const_iterator::const_iterator( Column const& column ): m_column( column ), m_lineStart(column.m_string.begin()), m_lineEnd(column.m_string.begin()), m_parsedTo(column.m_string.begin()) {
             assert( m_column.m_width > m_column.m_indent );
             assert( m_column.m_initialIndent == std::string::npos ||
                     m_column.m_width > m_column.m_initialIndent );
@@ -115,17 +117,17 @@ namespace Catch {
         }
 
         std::string Column::const_iterator::operator*() const {
-            assert( m_lineStart <= m_parsedTo );
+            // assert( m_lineStart <= m_parsedTo );
             return addIndentAndSuffix( m_lineStart, m_lineEnd );
         }
 
         Column::const_iterator& Column::const_iterator::operator++() {
             m_lineStart = m_lineEnd; // FIXME
-            std::string const& current_line = m_column.m_string;
-            if ( m_lineStart < current_line.end() && *m_lineStart == '\n' ) {
-                m_lineStart += 1;
+            AnsiSkippingString const& current_line = m_column.m_string;
+            if ( m_lineStart != current_line.end() && *m_lineStart == '\n' ) {
+                m_lineStart++;
             } else {
-                while ( m_lineStart < current_line.end() && isWhitespace( *m_lineStart ) ) {
+                while ( m_lineStart != current_line.end() && isWhitespace( *m_lineStart ) ) {
                     ++m_lineStart;
                 }
             }
