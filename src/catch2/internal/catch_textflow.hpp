@@ -32,23 +32,26 @@ namespace Catch {
          */
         class AnsiSkippingString {
             std::string m_string;
-            std::size_t m_length;
+            std::size_t m_size = 0;
+
+            // perform 0xff replacement and calculate m_size
+            void preprocessString();
+
         public:
             class const_iterator;
             using iterator = const_iterator;
+            static constexpr char sentinel = static_cast<char>(0xff);
 
-            AnsiSkippingString(std::string const& text) : m_string(text) {}
+            AnsiSkippingString(std::string const& text);
 
             const_iterator begin() const;
             const_iterator end() const;
 
             size_t size() const {
-                return m_string.size();
+                return m_size;
             }
 
-            std::string substring(std::size_t pos, std::size_t length) const {
-                return m_string.substr(pos, length);
-            }
+            std::string substring(const_iterator begin, const_iterator end) const;
         };
 
         class AnsiSkippingString::const_iterator {
@@ -61,10 +64,9 @@ namespace Catch {
             explicit const_iterator( const std::string& string, EndTag ):
                 m_string(&string), m_it(string.end()) {}
 
-            void advance() {
-                // TODO
-                m_it++;
-            }
+            void tryParseAnsiEscapes();
+            void advance();
+            void unadvance();
 
         public:
             using difference_type = std::ptrdiff_t;
@@ -73,8 +75,9 @@ namespace Catch {
             using reference = value_type&;
             using iterator_category = std::bidirectional_iterator_tag;
 
-            // TODO: Advance if first character is ansi sequence
-            explicit const_iterator( const std::string& string ): m_string(&string), m_it(string.begin()) {}
+            explicit const_iterator( const std::string& string ): m_string(&string), m_it(string.begin()) {
+                tryParseAnsiEscapes();
+            }
 
             char operator*() const {
                 return *m_it;
@@ -90,7 +93,7 @@ namespace Catch {
                 return prev;
             }
             const_iterator& operator--() {
-                m_it--;
+                unadvance();
                 return *this;
             }
             const_iterator operator--( int ) {
@@ -106,7 +109,7 @@ namespace Catch {
                 return !operator==( other );
             }
 
-            const_iterator one_before() const {
+            const_iterator oneBefore() const {
                 auto it = *this;
                 return --it;
             }

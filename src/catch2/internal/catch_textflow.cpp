@@ -30,14 +30,93 @@ namespace {
 
 namespace Catch {
     namespace TextFlow {
+        void AnsiSkippingString::preprocessString() {
+            for(auto it = m_string.begin(); it != m_string.end(); ) {
+                // try to read through an ansi sequence
+                while(*it == '\033' && it + 1 != m_string.end() && *(it + 1) == '[') {
+                    auto cursor = it + 2;
+                    while(cursor != m_string.end() && (isdigit(*cursor) || *cursor == ';')) {
+                        ++cursor;
+                    }
+                    if(cursor != m_string.end() && *cursor == 'm') {
+                        // 'm' -> 0xff
+                        *cursor = AnsiSkippingString::sentinel;
+                        // if we've read an ansi sequence, set the iterator and return to the top of the loop
+                        it = cursor + 1;
+                    } else {
+                        break;
+                    }
+                }
+                if(it != m_string.end()) {
+                    ++m_size;
+                    ++it;
+                }
+            }
+        }
+
+        AnsiSkippingString::AnsiSkippingString(std::string const& text) : m_string(text) {
+            preprocessString();
+        }
+
         AnsiSkippingString::const_iterator AnsiSkippingString::begin() const { return const_iterator(m_string); }
+
         AnsiSkippingString::const_iterator AnsiSkippingString::end() const { return const_iterator(m_string, const_iterator::EndTag{}); }
+
+        std::string AnsiSkippingString::substring(const_iterator begin, const_iterator end) const {
+            // There's one caveat here to an otherwise simple substring: when making a begin iterator we might have
+            // skipped ansi sequences at the start. If `begin` here is a begin iterator, skipped over initial ansi
+            // sequences, we'll use the true beginning of the string.
+            // Lastly: We need to transform any chars we replaced with 0xff back to 'm'
+            auto str = std::string(begin == this->begin() ? m_string.begin() : begin.m_it, end.m_it);
+            std::transform(str.begin(), str.end(), str.begin(), [](char c) {
+                return c == AnsiSkippingString::sentinel ? 'm' : c;
+            });
+            return str;
+        }
+
+        void AnsiSkippingString::const_iterator::tryParseAnsiEscapes() {
+            // check if we've landed on an ansi sequence, and if so read through it
+            while(m_it != m_string->end() && *m_it == '\033' && m_it + 1 != m_string->end() && *(m_it + 1) == '[') {
+                auto cursor = m_it + 2;
+                while(cursor != m_string->end() && (isdigit(*cursor) || *cursor == ';')) {
+                    ++cursor;
+                }
+                if(cursor != m_string->end() && *cursor == AnsiSkippingString::sentinel) {
+                    // if we've read an ansi sequence, set the iterator and return to the top of the loop
+                    m_it = cursor + 1;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        void AnsiSkippingString::const_iterator::advance() {
+            m_it++;
+            tryParseAnsiEscapes();
+        }
+
+        void AnsiSkippingString::const_iterator::unadvance() {
+            assert(m_it != m_string->begin());
+            m_it--;
+            // if *m_it is 0xff, scan back to the \033 and then m_it-- once more (and repeat check)
+            while(*m_it == AnsiSkippingString::sentinel) {
+                while(*m_it != '\033') {
+                    assert(m_it != m_string->begin());
+                    m_it--;
+                }
+                // if this happens, we must have been a begin iterator that had skipped over ansi sequences at the
+                // start of a string
+                assert(m_it != m_string->begin());
+                assert(*m_it == '\033');
+                m_it--;
+            }
+        }
 
         static bool isBoundary( AnsiSkippingString const& line, AnsiSkippingString::const_iterator it ) {
             return it == line.end() ||
-                ( isWhitespace( *it ) && !isWhitespace( *it.one_before() ) ) ||
+                ( isWhitespace( *it ) && !isWhitespace( *it.oneBefore() ) ) ||
                 isBreakableBefore( *it ) ||
-                isBreakableAfter( *it.one_before() );
+                isBreakableAfter( *it.oneBefore() );
         }
 
         void Column::const_iterator::calcLength() {
@@ -70,7 +149,7 @@ namespace Catch {
                     --lineLength;
                     --m_lineEnd;
                 }
-                while ( lineLength > 0 && isWhitespace( *m_lineEnd.one_before() ) ) {
+                while ( lineLength > 0 && isWhitespace( *m_lineEnd.oneBefore() ) ) {
                     --lineLength;
                     --m_lineEnd;
                 }
@@ -80,7 +159,7 @@ namespace Catch {
                 } else {
                     // Otherwise we have to split text with a hyphen
                     m_addHyphen = true;
-                    m_lineEnd = m_parsedTo.one_before();
+                    m_lineEnd = m_parsedTo.oneBefore();
                 }
             }
         }
@@ -98,7 +177,8 @@ namespace Catch {
             const auto desired_indent = indentSize();
             // ret.reserve( desired_indent + (end - start) + m_addHyphen );
             ret.append( desired_indent, ' ' );
-            ret.append( start, end );
+            // ret.append( start, end );
+            ret += m_column.m_string.substring(start, end);
             if ( m_addHyphen ) {
                 ret.push_back( '-' );
             }

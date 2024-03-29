@@ -12,6 +12,7 @@
 #include <sstream>
 
 using Catch::TextFlow::Column;
+using Catch::TextFlow::AnsiSkippingString;
 
 namespace {
     static std::string as_written(Column const& c) {
@@ -197,4 +198,197 @@ TEST_CASE( "#1400 - TextFlow::Column wrapping would sometimes duplicate words",
             "  massa, luctus ut ligula vitae, suscipit tempus velit. Vivamus sodales, quam\n"
             "  in \n"
             "  convallis posuere, libero nisi ultricies orci, nec lobortis.");
+}
+
+TEST_CASE( "TextFlow::AnsiSkippingString skips ansi sequences",
+           "[TextFlow][ansiskippingstring][approvals]" ) {
+
+    SECTION("basic string") {
+        std::string text = "a[38;2;98;174;239mb[38mc[0md[me";
+        AnsiSkippingString str(text);
+
+        SECTION( "iterates forward" ) {
+            auto it = str.begin();
+            CHECK(*it == 'a');
+            ++it;
+            CHECK(*it == 'b');
+            ++it;
+            CHECK(*it == 'c');
+            ++it;
+            CHECK(*it == 'd');
+            ++it;
+            CHECK(*it == 'e');
+            ++it;
+            CHECK(it == str.end());
+        }
+        SECTION( "iterates backwards" ) {
+            auto it = str.end();
+            --it;
+            CHECK(*it == 'e');
+            --it;
+            CHECK(*it == 'd');
+            --it;
+            CHECK(*it == 'c');
+            --it;
+            CHECK(*it == 'b');
+            --it;
+            CHECK(*it == 'a');
+            CHECK(it == str.begin());
+        }
+    }
+
+    SECTION( "ansi escape sequences at the start" ) {
+        std::string text = "[38;2;98;174;239ma[38;2;98;174;239mb[38mc[0md[me";
+        AnsiSkippingString str(text);
+        auto it = str.begin();
+        CHECK(*it == 'a');
+        ++it;
+        CHECK(*it == 'b');
+        ++it;
+        CHECK(*it == 'c');
+        ++it;
+        CHECK(*it == 'd');
+        ++it;
+        CHECK(*it == 'e');
+        ++it;
+        CHECK(it == str.end());
+        --it;
+        CHECK(*it == 'e');
+        --it;
+        CHECK(*it == 'd');
+        --it;
+        CHECK(*it == 'c');
+        --it;
+        CHECK(*it == 'b');
+        --it;
+        CHECK(*it == 'a');
+        CHECK(it == str.begin());
+    }
+
+    SECTION( "ansi escape sequences at the end" ) {
+        std::string text = "a[38;2;98;174;239mb[38mc[0md[me[38;2;98;174;239m";
+        AnsiSkippingString str(text);
+        auto it = str.begin();
+        CHECK(*it == 'a');
+        ++it;
+        CHECK(*it == 'b');
+        ++it;
+        CHECK(*it == 'c');
+        ++it;
+        CHECK(*it == 'd');
+        ++it;
+        CHECK(*it == 'e');
+        ++it;
+        CHECK(it == str.end());
+        --it;
+        CHECK(*it == 'e');
+        --it;
+        CHECK(*it == 'd');
+        --it;
+        CHECK(*it == 'c');
+        --it;
+        CHECK(*it == 'b');
+        --it;
+        CHECK(*it == 'a');
+        CHECK(it == str.begin());
+    }
+
+    SECTION( "skips consecutive escapes" ) {
+        std::string text = "[38;2;98;174;239m[38;2;98;174;239ma[38;2;98;174;239mb[38m[38m[38mc[0md[me";
+        AnsiSkippingString str(text);
+        auto it = str.begin();
+        CHECK(*it == 'a');
+        ++it;
+        CHECK(*it == 'b');
+        ++it;
+        CHECK(*it == 'c');
+        ++it;
+        CHECK(*it == 'd');
+        ++it;
+        CHECK(*it == 'e');
+        ++it;
+        CHECK(it == str.end());
+        --it;
+        CHECK(*it == 'e');
+        --it;
+        CHECK(*it == 'd');
+        --it;
+        CHECK(*it == 'c');
+        --it;
+        CHECK(*it == 'b');
+        --it;
+        CHECK(*it == 'a');
+        CHECK(it == str.begin());
+    }
+}
+
+TEST_CASE( "TextFlow::AnsiSkippingString computes the size properly",
+           "[TextFlow][ansiskippingstring][approvals]" ) {
+    std::string text = "[38;2;98;174;239m[38;2;98;174;239ma[38;2;98;174;239mb[38m[38m[38mc[0md[me";
+    AnsiSkippingString str(text);
+    CHECK(str.size() == 5);
+}
+
+TEST_CASE( "TextFlow::AnsiSkippingString substrings properly",
+           "[TextFlow][ansiskippingstring][approvals]" ) {
+    SECTION("basic test") {
+        std::string text = "a[38;2;98;174;239mb[38mc[0md[me";
+        AnsiSkippingString str(text);
+        auto a = str.begin();
+        auto b = str.begin();
+        ++b;
+        ++b;
+        CHECK(str.substring(a, b) == "a[38;2;98;174;239mb[38m");
+        ++a;
+        ++b;
+        CHECK(str.substring(a, b) == "b[38mc[0m");
+        CHECK(str.substring(a, str.end()) == "b[38mc[0md[me");
+        CHECK(str.substring(str.begin(), str.end()) == text);
+    }
+    SECTION("escapes at the start") {
+        std::string text = "[38;2;98;174;239m[38;2;98;174;239ma[38;2;98;174;239mb[38m[38m[38mc[0md[me";
+        AnsiSkippingString str(text);
+        auto a = str.begin();
+        auto b = str.begin();
+        ++b;
+        ++b;
+        CHECK(str.substring(a, b) == "[38;2;98;174;239m[38;2;98;174;239ma[38;2;98;174;239mb[38m[38m[38m");
+        ++a;
+        ++b;
+        CHECK(str.substring(a, b) == "b[38m[38m[38mc[0m");
+        CHECK(str.substring(a, str.end()) == "b[38m[38m[38mc[0md[me");
+        CHECK(str.substring(str.begin(), str.end()) == text);
+    }
+    SECTION("escapes at the end") {
+        std::string text = "a[38;2;98;174;239mb[38mc[0md[me[38m";
+        AnsiSkippingString str(text);
+        auto a = str.begin();
+        auto b = str.begin();
+        ++b;
+        ++b;
+        CHECK(str.substring(a, b) == "a[38;2;98;174;239mb[38m");
+        ++a;
+        ++b;
+        CHECK(str.substring(a, b) == "b[38mc[0m");
+        CHECK(str.substring(a, str.end()) == "b[38mc[0md[me[38m");
+        CHECK(str.substring(str.begin(), str.end()) == text);
+    }
+}
+
+TEST_CASE( "TextFlow::Column skips ansi escape sequences",
+           "[TextFlow][column][approvals]" ) {
+    std::string text = "[38;2;98;174;239m[38;2;198;120;221mThe quick brown [38;2;198;120;221mfox jumped over the lazy dog[0m";
+    Column col(text);
+
+    SECTION( "width=20" ) {
+        col.width( 20 );
+        REQUIRE( as_written( col ) == "[38;2;98;174;239m[38;2;198;120;221mThe quick brown [38;2;198;120;221mfox\n"
+                                      "jumped over the lazy\n"
+                                      "dog[0m" );
+    }
+
+    SECTION( "width=80" ) {
+        col.width( 80 );
+        REQUIRE( as_written( col ) == text );
+    }
 }
