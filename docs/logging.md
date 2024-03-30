@@ -114,6 +114,10 @@ Similar to `INFO`, but messages are not limited to their own scope: They are rem
 
 The message is always reported but does not fail the test.
 
+**SUCCEED(** _message expression_ **)**
+
+The message is reported and the test case succeeds.
+
 **FAIL(** _message expression_ **)**
 
 The message is reported and the test case fails.
