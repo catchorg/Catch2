@@ -12,6 +12,7 @@
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_floating_point_helpers.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
+#include <catch2/internal/catch_uniform_integer_distribution.hpp>
 
 #include <algorithm>
 #include <cassert>
@@ -38,7 +39,7 @@ namespace Catch {
                           double const* last,
                           Estimator& estimator ) {
                     auto n = static_cast<size_t>( last - first );
-                    std::uniform_int_distribution<size_t> dist( 0, n - 1 );
+                    Catch::uniform_integer_distribution<size_t> dist( 0, n - 1 );
 
                     sample out;
                     out.reserve( resamples );
