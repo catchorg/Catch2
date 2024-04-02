@@ -33,7 +33,7 @@ namespace Catch {
         void AnsiSkippingString::preprocessString() {
             for(auto it = m_string.begin(); it != m_string.end(); ) {
                 // try to read through an ansi sequence
-                while(*it == '\033' && it + 1 != m_string.end() && *(it + 1) == '[') {
+                while(it != m_string.end() && *it == '\033' && it + 1 != m_string.end() && *(it + 1) == '[') {
                     auto cursor = it + 2;
                     while(cursor != m_string.end() && (isdigit(*cursor) || *cursor == ';')) {
                         ++cursor;
@@ -122,8 +122,13 @@ namespace Catch {
         void Column::const_iterator::calcLength() {
             m_addHyphen = false;
             m_parsedTo = m_lineStart;
-
             AnsiSkippingString const& current_line = m_column.m_string;
+
+            if(m_parsedTo == current_line.end()) {
+                m_lineEnd = m_parsedTo;
+                return;
+            }
+
             if ( *m_lineStart == '\n' ) {
                 ++m_parsedTo;
             }
@@ -154,10 +159,8 @@ namespace Catch {
                     --m_lineEnd;
                 }
 
-                // If we found one, then that is where we linebreak
-                if ( lineLength > 0 ) {
-                } else {
-                    // Otherwise we have to split text with a hyphen
+                // If we found one, then that is where we linebreak, otherwise we have to split text with a hyphen
+                if ( lineLength == 0 ) {
                     m_addHyphen = true;
                     m_lineEnd = m_parsedTo.oneBefore();
                 }
