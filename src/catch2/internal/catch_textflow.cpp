@@ -109,6 +109,7 @@ namespace Catch {
         }
 
         void AnsiSkippingString::const_iterator::advance() {
+            assert( m_it != m_string->end() );
             m_it++;
             tryParseAnsiEscapes();
         }
@@ -150,6 +151,7 @@ namespace Catch {
                 return;
             }
 
+            assert( m_lineStart != current_line.end() );
             if ( *m_lineStart == '\n' ) { ++m_parsedTo; }
 
             const auto maxLineLength = m_column.m_width - indentSize();
