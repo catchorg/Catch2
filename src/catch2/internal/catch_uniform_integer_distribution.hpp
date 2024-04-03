@@ -13,22 +13,6 @@
 
 namespace Catch {
 
-    namespace Detail {
-        // Indirection to enable make_unsigned<bool> behaviour.
-        template <typename T>
-        struct make_unsigned {
-            using type = std::make_unsigned_t<T>;
-        };
-
-        template <>
-        struct make_unsigned<bool> {
-            using type = uint8_t;
-        };
-
-        template <typename T>
-        using make_unsigned_t = typename make_unsigned<T>::type;
-    }
-
 /**
  * Implementation of uniform distribution on integers.
  *
@@ -44,7 +28,7 @@ template <typename IntegerType>
 class uniform_integer_distribution {
     static_assert(std::is_integral<IntegerType>::value, "...");
 
-    using UnsignedIntegerType = Detail::make_unsigned_t<IntegerType>;
+    using UnsignedIntegerType = Detail::SizedUnsignedType_t<sizeof(IntegerType)>;
 
     // Only the left bound is stored, and we store it converted to its
     // unsigned image. This avoids having to do the conversions inside

@@ -140,7 +140,9 @@ TEMPLATE_TEST_CASE( "uniform_integer_distribution can handle unit ranges",
                     uint32_t,
                     int32_t,
                     uint64_t,
-                    int64_t ) {
+                    int64_t,
+                    size_t,
+                    ptrdiff_t) {
     // We want random seed to sample different parts of the rng state,
     // the output is predetermined anyway
     std::random_device rd;
