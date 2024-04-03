@@ -40,7 +40,8 @@ namespace Catch {
         public:
             class const_iterator;
             using iterator = const_iterator;
-            static constexpr char sentinel = static_cast<char>(0xff);
+            // note: must be u-suffixed or this will cause a "truncation of constant value" warning on MSVC
+            static constexpr char sentinel = static_cast<char>(0xffu);
 
             AnsiSkippingString(std::string const& text);
 
