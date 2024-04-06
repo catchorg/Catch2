@@ -495,6 +495,22 @@ TEMPLATE_TEST_CASE( "uniform_integer_distribution is reproducible",
     REQUIRE_THAT(generated, Catch::Matchers::RangeEquals(uniform_integer_test_params<TestType>::expected));
 }
 
+// The reproducibility tests assume that operations on `float`/`double`
+// happen in the same precision as the operated-upon type. This is
+// generally true, unless the code is compiled for 32 bit targets without
+// SSE2 enabled, in which case the operations are done in the x87 FPU,
+// which usually implies doing math in 80 bit floats, and then rounding
+// into smaller type when the type is saved into memory. This obviously
+// leads to a different answer, than doing the math in the correct precision.
+#if ( defined( _MSC_VER ) && _M_IX86_FP < 2 ) ||              \
+    ( defined( __GNUC__ ) &&                                  \
+      ( ( defined( __i386__ ) || defined( __x86_64__ ) ) ) && \
+      !defined( __SSE2_MATH__ ) )
+#    define CATCH_TEST_CONFIG_DISABLE_FLOAT_REPRODUCIBILITY_TESTS
+#endif
+
+#if !defined( CATCH_TEST_CONFIG_DISABLE_FLOAT_REPRODUCIBILITY_TESTS )
+
 namespace {
     template <typename T>
     struct uniform_fp_test_params;
@@ -552,20 +568,6 @@ namespace {
 #endif
 } // namespace
 
-// The reproducibility tests assume that operations on `float`/`double`
-// happen in the same precision as the operated-upon type. This is
-// generally true, unless the code is compiled for 32 bit targets without
-// SSE2 enabled, in which case the operations are done in the x87 FPU,
-// which usually implies doing math in 80 bit floats, and then rounding
-// into smaller type when the type is saved into memory. This obviously
-// leads to a different answer, than doing the math in the correct precision.
-#if ( defined( _MSC_VER ) && _M_IX86_FP < 2 ) || \
-    ( defined( __GNUC__ ) && !defined( __SSE2_MATH__ ) )
-#    define CATCH_TEST_CONFIG_DISABLE_FLOAT_REPRODUCIBILITY_TESTS
-#endif
-
-#if !defined( CATCH_TEST_CONFIG_DISABLE_FLOAT_REPRODUCIBILITY_TESTS )
-
 TEMPLATE_TEST_CASE( "uniform_floating_point_distribution is reproducible",
                     "[rng][distribution][floating-point][approvals]",
                     float,
@@ -596,7 +598,7 @@ TEMPLATE_TEST_CASE( "uniform_floating_point_distribution can handle unitary rang
     CAPTURE( seed );
     Catch::SimplePcg32 pcg( seed );
 
-    const auto highest = uniform_fp_test_params<TestType>::highest;
+    const auto highest = TestType(385.125);
     Catch::uniform_floating_point_distribution<TestType> dist( highest,
                                                                highest );
 
