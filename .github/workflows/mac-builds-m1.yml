@@ -1,0 +1,44 @@
+name: M1 Mac builds
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: macos-14
+    strategy:
+      matrix:
+        cxx:
+          - clang++
+        build_type: [Debug, Release]
+        std: [14, 17]
+        include:
+          - build_type: Debug
+            examples: ON
+            extra_tests: ON
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Configure build
+      working-directory: ${{runner.workspace}}
+      env:
+        CXX: ${{matrix.cxx}}
+        CXXFLAGS: ${{matrix.cxxflags}}
+      run: |
+        cmake -Bbuild -H$GITHUB_WORKSPACE \
+              -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
+              -DCMAKE_CXX_STANDARD=${{matrix.std}} \
+              -DCMAKE_CXX_STANDARD_REQUIRED=ON \
+              -DCATCH_DEVELOPMENT_BUILD=ON \
+              -DCATCH_BUILD_EXAMPLES=${{matrix.examples}} \
+              -DCATCH_BUILD_EXTRA_TESTS=${{matrix.examples}}
+
+    - name: Build tests + lib
+      working-directory: ${{runner.workspace}}/build
+      run: make -j `sysctl -n hw.ncpu`
+
+    - name: Run tests
+      env:
+          CTEST_OUTPUT_ON_FAILURE: 1
+      working-directory: ${{runner.workspace}}/build
+      run: ctest -C ${{matrix.build_type}} -j `sysctl -n hw.ncpu`
