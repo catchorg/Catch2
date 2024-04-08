@@ -36,6 +36,8 @@ namespace Catch {
         std::vector<TestCaseHandle> const& getAllTests() const override;
         std::vector<TestCaseHandle> const& getAllTestsSorted( IConfig const& config ) const override;
 
+        ~TestRegistry() override; // = default
+
     private:
         std::vector<Detail::unique_ptr<TestCaseInfo>> m_owned_test_infos;
         // Keeps a materialized vector for `getAllInfos`.

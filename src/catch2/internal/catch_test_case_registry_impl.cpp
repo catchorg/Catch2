@@ -123,6 +123,8 @@ namespace Catch {
         return getRegistryHub().getTestCaseRegistry().getAllTestsSorted( config );
     }
 
+    TestRegistry::~TestRegistry() = default;
+
     void TestRegistry::registerTest(Detail::unique_ptr<TestCaseInfo> testInfo, Detail::unique_ptr<ITestInvoker> testInvoker) {
         m_handles.emplace_back(testInfo.get(), testInvoker.get());
         m_viewed_test_infos.push_back(testInfo.get());
