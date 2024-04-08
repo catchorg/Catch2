@@ -26,14 +26,20 @@ struct ZeroLiteralAsPointer {
 
 
 struct TypeWithLit0Comparisons {
-#define DEFINE_COMP_OP( op )                                       \
-    constexpr friend bool operator op( TypeWithLit0Comparisons,    \
-                                       ZeroLiteralAsPointer ) {    \
-        return true;                                               \
-    }                                                              \
-    constexpr friend bool operator op( ZeroLiteralAsPointer,       \
-                                       TypeWithLit0Comparisons ) { \
-        return false;                                              \
+#define DEFINE_COMP_OP( op )                                          \
+    constexpr friend bool operator op( TypeWithLit0Comparisons,       \
+                                       ZeroLiteralAsPointer ) {       \
+        return true;                                                  \
+    }                                                                 \
+    constexpr friend bool operator op( ZeroLiteralAsPointer,          \
+                                       TypeWithLit0Comparisons ) {    \
+        return false;                                                 \
+    }                                                                 \
+    /* std::orderings only have these for ==, but we add them for all \
+       operators so we can test all overloads for decomposer */       \
+    constexpr friend bool operator op( TypeWithLit0Comparisons,       \
+                                       TypeWithLit0Comparisons ) {    \
+        return true;                                                  \
     }
 
     DEFINE_COMP_OP( < )

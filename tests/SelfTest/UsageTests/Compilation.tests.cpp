@@ -405,14 +405,26 @@ TEST_CASE( "#2555 - types that can only be compared with 0 literal implemented a
 // have the ambiguity issue) for `==` and `!=`.
 TEST_CASE( "Comparing const instances of type registered with capture_by_value",
            "[regression][approvals][compilation]" ) {
-    auto const const_Lit0Type_1 = TypeWithLit0Comparisons{};
-    auto const const_Lit0Type_2 = TypeWithLit0Comparisons{};
-    REQUIRE( const_Lit0Type_1 == const_Lit0Type_2 );
-    REQUIRE( const_Lit0Type_1 <= const_Lit0Type_2 );
-    REQUIRE( const_Lit0Type_1 < const_Lit0Type_2 );
-    REQUIRE( const_Lit0Type_1 >= const_Lit0Type_2 );
-    REQUIRE( const_Lit0Type_1 > const_Lit0Type_2 );
-    REQUIRE_FALSE( const_Lit0Type_1 != const_Lit0Type_2 );
+    SECTION("Type with consteval-int constructor") {
+        auto const const_Lit0Type_1 = TypeWithConstevalLit0Comparison{};
+        auto const const_Lit0Type_2 = TypeWithConstevalLit0Comparison{};
+        REQUIRE( const_Lit0Type_1 == const_Lit0Type_2 );
+        REQUIRE( const_Lit0Type_1 <= const_Lit0Type_2 );
+        REQUIRE( const_Lit0Type_1 < const_Lit0Type_2 );
+        REQUIRE( const_Lit0Type_1 >= const_Lit0Type_2 );
+        REQUIRE( const_Lit0Type_1 > const_Lit0Type_2 );
+        REQUIRE( const_Lit0Type_1 != const_Lit0Type_2 );
+    }
+    SECTION("Type with constexpr-int constructor") {
+        auto const const_Lit0Type_1 = TypeWithLit0Comparisons{};
+        auto const const_Lit0Type_2 = TypeWithLit0Comparisons{};
+        REQUIRE( const_Lit0Type_1 == const_Lit0Type_2 );
+        REQUIRE( const_Lit0Type_1 <= const_Lit0Type_2 );
+        REQUIRE( const_Lit0Type_1 < const_Lit0Type_2 );
+        REQUIRE( const_Lit0Type_1 >= const_Lit0Type_2 );
+        REQUIRE( const_Lit0Type_1 > const_Lit0Type_2 );
+        REQUIRE( const_Lit0Type_1 != const_Lit0Type_2 );
+    }
 }
 
 #endif // C++20 consteval
