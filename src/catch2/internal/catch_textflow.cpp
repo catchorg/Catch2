@@ -231,7 +231,7 @@ namespace Catch {
         }
 
         std::string Column::const_iterator::operator*() const {
-            assert( m_lineStart != m_parsedTo );
+            assert( m_lineStart <= m_parsedTo );
             return addIndentAndSuffix( m_lineStart, m_lineEnd );
         }
 

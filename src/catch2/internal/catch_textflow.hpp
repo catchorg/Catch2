@@ -111,6 +111,9 @@ namespace Catch {
             bool operator!=( const_iterator const& other ) const {
                 return !operator==( other );
             }
+            bool operator<=( const_iterator const& other ) const {
+                return m_it <= other.m_it;
+            }
 
             const_iterator oneBefore() const {
                 auto it = *this;
