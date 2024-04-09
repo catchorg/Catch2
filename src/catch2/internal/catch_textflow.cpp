@@ -33,22 +33,21 @@ namespace Catch {
         void AnsiSkippingString::preprocessString() {
             for ( auto it = m_string.begin(); it != m_string.end(); ) {
                 // try to read through an ansi sequence
-                while ( it != m_string.end() && *it == '\033' &&
-                        it + 1 != m_string.end() && *( it + 1 ) == '[' ) {
+                while ( it + 1 < m_string.end() && *it == '\033' &&
+                        *( it + 1 ) == '[' ) {
                     auto cursor = it + 2;
                     while ( cursor != m_string.end() &&
                             ( isdigit( *cursor ) || *cursor == ';' ) ) {
                         ++cursor;
                     }
-                    if ( cursor != m_string.end() && *cursor == 'm' ) {
-                        // 'm' -> 0xff
-                        *cursor = AnsiSkippingString::sentinel;
-                        // if we've read an ansi sequence, set the iterator and
-                        // return to the top of the loop
-                        it = cursor + 1;
-                    } else {
+                    if ( cursor == m_string.end() || *cursor != 'm' ) {
                         break;
                     }
+                    // 'm' -> 0xff
+                    *cursor = AnsiSkippingString::sentinel;
+                    // if we've read an ansi sequence, set the iterator and
+                    // return to the top of the loop
+                    it = cursor + 1;
                 }
                 if ( it != m_string.end() ) {
                     ++m_size;
@@ -59,6 +58,11 @@ namespace Catch {
 
         AnsiSkippingString::AnsiSkippingString( std::string const& text ):
             m_string( text ) {
+            preprocessString();
+        }
+
+        AnsiSkippingString::AnsiSkippingString( std::string&& text ):
+            m_string( CATCH_MOVE( text ) ) {
             preprocessString();
         }
 
@@ -90,21 +94,20 @@ namespace Catch {
         void AnsiSkippingString::const_iterator::tryParseAnsiEscapes() {
             // check if we've landed on an ansi sequence, and if so read through
             // it
-            while ( m_it != m_string->end() && *m_it == '\033' &&
-                    m_it + 1 != m_string->end() && *( m_it + 1 ) == '[' ) {
+            while ( m_it + 1 < m_string->end() && *m_it == '\033' &&
+                    *( m_it + 1 ) == '[' ) {
                 auto cursor = m_it + 2;
                 while ( cursor != m_string->end() &&
                         ( isdigit( *cursor ) || *cursor == ';' ) ) {
                     ++cursor;
                 }
-                if ( cursor != m_string->end() &&
-                     *cursor == AnsiSkippingString::sentinel ) {
-                    // if we've read an ansi sequence, set the iterator and
-                    // return to the top of the loop
-                    m_it = cursor + 1;
-                } else {
+                if ( cursor == m_string->end() ||
+                     *cursor != AnsiSkippingString::sentinel ) {
                     break;
                 }
+                // if we've read an ansi sequence, set the iterator and
+                // return to the top of the loop
+                m_it = cursor + 1;
             }
         }
 
@@ -228,12 +231,12 @@ namespace Catch {
         }
 
         std::string Column::const_iterator::operator*() const {
-            // assert( m_lineStart <= m_parsedTo );
+            assert( m_lineStart != m_parsedTo );
             return addIndentAndSuffix( m_lineStart, m_lineEnd );
         }
 
         Column::const_iterator& Column::const_iterator::operator++() {
-            m_lineStart = m_lineEnd; // FIXME
+            m_lineStart = m_lineEnd;
             AnsiSkippingString const& current_line = m_column.m_string;
             if ( m_lineStart != current_line.end() && *m_lineStart == '\n' ) {
                 m_lineStart++;

@@ -46,7 +46,8 @@ namespace Catch {
             // constant value" warning on MSVC
             static constexpr char sentinel = static_cast<char>( 0xffu );
 
-            AnsiSkippingString( std::string const& text );
+            explicit AnsiSkippingString( std::string const& text );
+            explicit AnsiSkippingString( std::string&& text );
 
             const_iterator begin() const;
             const_iterator end() const;
