@@ -33,8 +33,8 @@ namespace Catch {
         void AnsiSkippingString::preprocessString() {
             for ( auto it = m_string.begin(); it != m_string.end(); ) {
                 // try to read through an ansi sequence
-                while ( it + 1 < m_string.end() && *it == '\033' &&
-                        *( it + 1 ) == '[' ) {
+                while ( it != m_string.end() && *it == '\033' &&
+                        it + 1 != m_string.end() && *( it + 1 ) == '[' ) {
                     auto cursor = it + 2;
                     while ( cursor != m_string.end() &&
                             ( isdigit( *cursor ) || *cursor == ';' ) ) {
@@ -94,8 +94,8 @@ namespace Catch {
         void AnsiSkippingString::const_iterator::tryParseAnsiEscapes() {
             // check if we've landed on an ansi sequence, and if so read through
             // it
-            while ( m_it + 1 < m_string->end() && *m_it == '\033' &&
-                    *( m_it + 1 ) == '[' ) {
+            while ( m_it != m_string->end() && *m_it == '\033' &&
+                    m_it + 1 != m_string->end() &&  *( m_it + 1 ) == '[' ) {
                 auto cursor = m_it + 2;
                 while ( cursor != m_string->end() &&
                         ( isdigit( *cursor ) || *cursor == ';' ) ) {
