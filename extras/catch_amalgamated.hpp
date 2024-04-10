@@ -6,8 +6,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.5.3
-//  Generated: 2024-03-01 22:05:55.031514
+//  Catch v3.5.4
+//  Generated: 2024-04-10 12:03:45.785902
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -87,6 +87,9 @@
 // See e.g.:
 // https://opensource.apple.com/source/CarbonHeaders/CarbonHeaders-18.1/TargetConditionals.h.auto.html
 #ifdef __APPLE__
+#  ifndef __has_extension
+#    define __has_extension(x) 0
+#  endif
 #  include <TargetConditionals.h>
 #  if (defined(TARGET_OS_OSX) && TARGET_OS_OSX == 1) || \
       (defined(TARGET_OS_MAC) && TARGET_OS_MAC == 1)
@@ -5254,6 +5257,12 @@ namespace Detail {
 
 namespace Catch {
 
+    namespace Detail {
+        // This was added in C++20, but we require only C++14 for now.
+        template <typename T>
+        using RemoveCVRef_t = std::remove_cv_t<std::remove_reference_t<T>>;
+    }
+
     // Note: There is nothing that stops us from extending this,
     //       e.g. to `std::is_scalar`, but the more encompassing
     //       traits are usually also more expensive. For now we
@@ -5293,14 +5302,13 @@ namespace Catch {
         ITransientExpression(ITransientExpression const&) = default;
         ITransientExpression& operator=(ITransientExpression const&) = default;
 
-        // We don't actually need a virtual destructor, but many static analysers
-        // complain if it's not here :-(
-        virtual ~ITransientExpression() = default;
-
         friend std::ostream& operator<<(std::ostream& out, ITransientExpression const& expr) {
             expr.streamReconstructedExpression(out);
             return out;
         }
+
+    protected:
+        ~ITransientExpression() = default;
     };
 
     void formatReconstructedExpression( std::ostream &os, std::string const& lhs, StringRef op, std::string const& rhs );
@@ -5406,17 +5414,17 @@ namespace Catch {
 #define CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR( id, op )           \
     template <typename RhsT>                                                   \
     constexpr friend auto operator op( ExprLhs&& lhs, RhsT&& rhs )             \
-        ->std::enable_if_t<                                                    \
+        -> std::enable_if_t<                                                   \
             Detail::conjunction<Detail::is_##id##_comparable<LhsT, RhsT>,      \
                                 Detail::negation<capture_by_value<             \
-                                    std::remove_reference_t<RhsT>>>>::value,   \
+                                    Detail::RemoveCVRef_t<RhsT>>>>::value,     \
             BinaryExpr<LhsT, RhsT const&>> {                                   \
         return {                                                               \
             static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
     }                                                                          \
     template <typename RhsT>                                                   \
     constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
-        ->std::enable_if_t<                                                    \
+        -> std::enable_if_t<                                                   \
             Detail::conjunction<Detail::is_##id##_comparable<LhsT, RhsT>,      \
                                 capture_by_value<RhsT>>::value,                \
             BinaryExpr<LhsT, RhsT>> {                                          \
@@ -5425,7 +5433,7 @@ namespace Catch {
     }                                                                          \
     template <typename RhsT>                                                   \
     constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
-        ->std::enable_if_t<                                                    \
+        -> std::enable_if_t<                                                   \
             Detail::conjunction<                                               \
                 Detail::negation<Detail::is_##id##_comparable<LhsT, RhsT>>,    \
                 Detail::is_eq_0_comparable<LhsT>,                              \
@@ -5439,7 +5447,7 @@ namespace Catch {
     }                                                                          \
     template <typename RhsT>                                                   \
     constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
-        ->std::enable_if_t<                                                    \
+        -> std::enable_if_t<                                                   \
             Detail::conjunction<                                               \
                 Detail::negation<Detail::is_##id##_comparable<LhsT, RhsT>>,    \
                 Detail::is_eq_0_comparable<RhsT>,                              \
@@ -5460,17 +5468,17 @@ namespace Catch {
 #define CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( id, op )         \
     template <typename RhsT>                                                   \
     constexpr friend auto operator op( ExprLhs&& lhs, RhsT&& rhs )             \
-        ->std::enable_if_t<                                                    \
+        -> std::enable_if_t<                                                   \
             Detail::conjunction<Detail::is_##id##_comparable<LhsT, RhsT>,      \
                                 Detail::negation<capture_by_value<             \
-                                    std::remove_reference_t<RhsT>>>>::value,   \
+                                    Detail::RemoveCVRef_t<RhsT>>>>::value,     \
             BinaryExpr<LhsT, RhsT const&>> {                                   \
         return {                                                               \
             static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
     }                                                                          \
     template <typename RhsT>                                                   \
     constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
-        ->std::enable_if_t<                                                    \
+        -> std::enable_if_t<                                                   \
             Detail::conjunction<Detail::is_##id##_comparable<LhsT, RhsT>,      \
                                 capture_by_value<RhsT>>::value,                \
             BinaryExpr<LhsT, RhsT>> {                                          \
@@ -5479,7 +5487,7 @@ namespace Catch {
     }                                                                          \
     template <typename RhsT>                                                   \
     constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
-        ->std::enable_if_t<                                                    \
+        -> std::enable_if_t<                                                   \
             Detail::conjunction<                                               \
                 Detail::negation<Detail::is_##id##_comparable<LhsT, RhsT>>,    \
                 Detail::is_##id##_0_comparable<LhsT>,                          \
@@ -5491,7 +5499,7 @@ namespace Catch {
     }                                                                          \
     template <typename RhsT>                                                   \
     constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
-        ->std::enable_if_t<                                                    \
+        -> std::enable_if_t<                                                   \
             Detail::conjunction<                                               \
                 Detail::negation<Detail::is_##id##_comparable<LhsT, RhsT>>,    \
                 Detail::is_##id##_0_comparable<RhsT>,                          \
@@ -5512,16 +5520,16 @@ namespace Catch {
 #define CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR( op )                        \
     template <typename RhsT>                                                   \
     constexpr friend auto operator op( ExprLhs&& lhs, RhsT&& rhs )             \
-        ->std::enable_if_t<                                                    \
-            !capture_by_value<std::remove_reference_t<RhsT>>::value,           \
+        -> std::enable_if_t<                                                   \
+            !capture_by_value<Detail::RemoveCVRef_t<RhsT>>::value,             \
             BinaryExpr<LhsT, RhsT const&>> {                                   \
         return {                                                               \
             static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
     }                                                                          \
     template <typename RhsT>                                                   \
     constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
-        ->std::enable_if_t<capture_by_value<RhsT>::value,                      \
-                           BinaryExpr<LhsT, RhsT>> {                           \
+        -> std::enable_if_t<capture_by_value<RhsT>::value,                     \
+                            BinaryExpr<LhsT, RhsT>> {                          \
         return {                                                               \
             static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
     }
@@ -5553,8 +5561,7 @@ namespace Catch {
 
     struct Decomposer {
         template <typename T,
-                  std::enable_if_t<
-                      !capture_by_value<std::remove_reference_t<T>>::value,
+                  std::enable_if_t<!capture_by_value<Detail::RemoveCVRef_t<T>>::value,
                       int> = 0>
         constexpr friend auto operator <= ( Decomposer &&, T && lhs ) -> ExprLhs<T const&> {
             return ExprLhs<const T&>{ lhs };
@@ -7263,7 +7270,7 @@ namespace Catch {
 
 #define CATCH_VERSION_MAJOR 3
 #define CATCH_VERSION_MINOR 5
-#define CATCH_VERSION_PATCH 3
+#define CATCH_VERSION_PATCH 4
 
 #endif // CATCH_VERSION_MACROS_HPP_INCLUDED
 
@@ -7935,6 +7942,32 @@ namespace Catch {
 #include <cstdint>
 #include <type_traits>
 
+// Note: We use the usual enable-disable-autodetect dance here even though
+//       we do not support these in CMake configuration options (yet?).
+//       It is highly unlikely that we will need to make these actually
+//       user-configurable, but this will make it simpler if weend up needing
+//       it, and it provides an escape hatch to the users who need it.
+#if defined( __SIZEOF_INT128__ )
+#    define CATCH_CONFIG_INTERNAL_UINT128
+#elif defined( _MSC_VER ) && ( defined( _WIN64 ) || defined( _M_ARM64 ) )
+#    define CATCH_CONFIG_INTERNAL_MSVC_UMUL128
+#endif
+
+#if defined( CATCH_CONFIG_INTERNAL_UINT128 ) && \
+    !defined( CATCH_CONFIG_NO_UINT128 ) &&      \
+    !defined( CATCH_CONFIG_UINT128 )
+#define CATCH_CONFIG_UINT128
+#endif
+
+#if defined( CATCH_CONFIG_INTERNAL_MSVC_UMUL128 ) && \
+    !defined( CATCH_CONFIG_NO_MSVC_UMUL128 ) &&      \
+    !defined( CATCH_CONFIG_MSVC_UMUL128 )
+#    define CATCH_CONFIG_MSVC_UMUL128
+#    include <intrin.h>
+#    pragma intrinsic( _umul128 )
+#endif
+
+
 namespace Catch {
     namespace Detail {
 
@@ -7967,58 +8000,51 @@ namespace Catch {
             }
         };
 
-        // Returns 128 bit result of multiplying lhs and rhs
+        /**
+         * Returns 128 bit result of lhs * rhs using portable C++ code
+         *
+         * This implementation is almost twice as fast as naive long multiplication,
+         * and unlike intrinsic-based approach, it supports constexpr evaluation.
+         */
         constexpr ExtendedMultResult<std::uint64_t>
-        extendedMult( std::uint64_t lhs, std::uint64_t rhs ) {
-            // We use the simple long multiplication approach for
-            // correctness, we can use platform specific builtins
-            // for performance later.
-
-            // Split the lhs and rhs into two 32bit "digits", so that we can
-            // do 64 bit arithmetic to handle carry bits.
-            //            32b    32b    32b    32b
-            //     lhs                  L1     L2
-            //   * rhs                  R1     R2
-            //            ------------------------
-            //                       |  R2 * L2  |
-            //                 |  R2 * L1  |
-            //                 |  R1 * L2  |
-            //           |  R1 * L1  |
-            //           -------------------------
-            //           |  a  |  b  |  c  |  d  |
-
+        extendedMultPortable(std::uint64_t lhs, std::uint64_t rhs) {
 #define CarryBits( x ) ( x >> 32 )
 #define Digits( x ) ( x & 0xFF'FF'FF'FF )
+            std::uint64_t lhs_low = Digits( lhs );
+            std::uint64_t rhs_low = Digits( rhs );
+            std::uint64_t low_low = ( lhs_low * rhs_low );
+            std::uint64_t high_high = CarryBits( lhs ) * CarryBits( rhs );
 
-            auto r2l2 = Digits( rhs ) * Digits( lhs );
-            auto r2l1 = Digits( rhs ) * CarryBits( lhs );
-            auto r1l2 = CarryBits( rhs ) * Digits( lhs );
-            auto r1l1 = CarryBits( rhs ) * CarryBits( lhs );
+            // We add in carry bits from low-low already
+            std::uint64_t high_low =
+                ( CarryBits( lhs ) * rhs_low ) + CarryBits( low_low );
+            // Note that we can add only low bits from high_low, to avoid
+            // overflow with large inputs
+            std::uint64_t low_high =
+                ( lhs_low * CarryBits( rhs ) ) + Digits( high_low );
 
-            // Sum to columns first
-            auto d = Digits( r2l2 );
-            auto c = CarryBits( r2l2 ) + Digits( r2l1 ) + Digits( r1l2 );
-            auto b = CarryBits( r2l1 ) + CarryBits( r1l2 ) + Digits( r1l1 );
-            auto a = CarryBits( r1l1 );
-
-            // Propagate carries between columns
-            c += CarryBits( d );
-            b += CarryBits( c );
-            a += CarryBits( b );
-
-            // Remove the used carries
-            c = Digits( c );
-            b = Digits( b );
-            a = Digits( a );
-
+            return { high_high + CarryBits( high_low ) + CarryBits( low_high ),
+                     ( low_high << 32 ) | Digits( low_low ) };
 #undef CarryBits
 #undef Digits
-
-            return {
-                a << 32 | b, // upper 64 bits
-                c << 32 | d  // lower 64 bits
-            };
         }
+
+        //! Returns 128 bit result of lhs * rhs
+        inline ExtendedMultResult<std::uint64_t>
+        extendedMult( std::uint64_t lhs, std::uint64_t rhs ) {
+#if defined( CATCH_CONFIG_UINT128 )
+            auto result = __uint128_t( lhs ) * __uint128_t( rhs );
+            return { static_cast<std::uint64_t>( result >> 64 ),
+                     static_cast<std::uint64_t>( result ) };
+#elif defined( CATCH_CONFIG_MSVC_UMUL128 )
+            std::uint64_t high;
+            std::uint64_t low = _umul128( lhs, rhs, &high );
+            return { high, low };
+#else
+            return extendedMultPortable( lhs, rhs );
+#endif
+        }
+
 
         template <typename UInt>
         constexpr ExtendedMultResult<UInt> extendedMult( UInt lhs, UInt rhs ) {
@@ -8123,22 +8149,6 @@ namespace Catch {
 
 namespace Catch {
 
-    namespace Detail {
-        // Indirection to enable make_unsigned<bool> behaviour.
-        template <typename T>
-        struct make_unsigned {
-            using type = std::make_unsigned_t<T>;
-        };
-
-        template <>
-        struct make_unsigned<bool> {
-            using type = uint8_t;
-        };
-
-        template <typename T>
-        using make_unsigned_t = typename make_unsigned<T>::type;
-    }
-
 /**
  * Implementation of uniform distribution on integers.
  *
@@ -8154,7 +8164,7 @@ template <typename IntegerType>
 class uniform_integer_distribution {
     static_assert(std::is_integral<IntegerType>::value, "...");
 
-    using UnsignedIntegerType = Detail::make_unsigned_t<IntegerType>;
+    using UnsignedIntegerType = Detail::SizedUnsignedType_t<sizeof(IntegerType)>;
 
     // Only the left bound is stored, and we store it converted to its
     // unsigned image. This avoids having to do the conversions inside
@@ -10822,6 +10832,8 @@ namespace Catch {
         std::vector<TestCaseInfo*> const& getAllInfos() const override;
         std::vector<TestCaseHandle> const& getAllTests() const override;
         std::vector<TestCaseHandle> const& getAllTestsSorted( IConfig const& config ) const override;
+
+        ~TestRegistry() override; // = default
 
     private:
         std::vector<Detail::unique_ptr<TestCaseInfo>> m_owned_test_infos;

@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.5.4](#354)<br>
 [3.5.3](#353)<br>
 [3.5.2](#352)<br>
 [3.5.1](#351)<br>
@@ -59,6 +60,29 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 3.5.4
+
+### Fixes
+* Fixed potential compilation error when asked to generate random integers whose type did not match `std::(u)int*_t`.
+  * This manifested itself when generating random `size_t`s on MacOS
+* Added missing outlined destructor causing `Wdelete-incomplete` when compiling against libstdc++ in C++23 mode (#2852)
+* Fixed regression where decomposing assertion with const instance of `std::foo_ordering` would not compile
+
+### Improvements
+* Reintroduced support for GCC 5 and 6 (#2836)
+  * As with VS2017, if they start causing trouble again, they will be dropped again.
+* Added workaround for targetting newest MacOS (Sonoma) using GCC (#2837, #2839)
+* `CATCH_CONFIG_DEFAULT_REPORTER` can now be an arbitrary reporter spec
+  * Previously it could only be a plain reporter name, so it was impossible to compile in custom arguments to the reporter.
+* Improved performance of generating 64bit random integers by 20+%
+
+### Miscellaneous
+* Significantly improved Conan in-tree recipe (#2831)
+* `DL_PATHS` in `catch_discover_tests` now supports multiple arguments (#2852, #2736)
+* Fixed preprocessor logic for checking whether we expect reproducible floating point results in tests.
+* Improved the floating point tests structure to avoid `Wunused` when the reproducibility tests are disabled (#2845)
 
 
 ## 3.5.3
