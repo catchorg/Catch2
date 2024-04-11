@@ -76,8 +76,6 @@ endif()
 set(CATCH_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SOURCES_DIR ${CATCH_DIR}/src/catch2)
 set(SELF_TEST_DIR ${CATCH_DIR}/tests/SelfTest)
-set(BENCHMARK_DIR ${CATCH_DIR}/tests/Benchmark)
-set(EXAMPLES_DIR ${CATCH_DIR}/examples)
 
 # We need to bring-in the variables defined there to this scope
 add_subdirectory(src)

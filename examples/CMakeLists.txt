@@ -43,8 +43,7 @@ set( TARGETS_IDIOMATIC_EXAMPLES ${BASENAMES_IDIOMATIC_EXAMPLES} )
 
 
 foreach( name ${TARGETS_IDIOMATIC_EXAMPLES} )
-    add_executable( ${name}
-      ${EXAMPLES_DIR}/${name}.cpp )
+    add_executable( ${name} ${name}.cpp )
 endforeach()
 
 set(ALL_EXAMPLE_TARGETS
