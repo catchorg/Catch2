@@ -24,7 +24,7 @@
 // Unlike GCC, MSVC does not polyfill umul as mulh + mul pair on ARM machines.
 // Currently we do not bother doing this ourselves, but we could if it became
 // important for perf.
-#elif defined( _MSC_VER ) && defined( _WIN64 )
+#elif defined( _MSC_VER ) && defined( _M_X64 )
 #    define CATCH_CONFIG_INTERNAL_MSVC_UMUL128
 #endif
 
