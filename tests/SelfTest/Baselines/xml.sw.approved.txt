@@ -5022,7 +5022,7 @@ C
           1., !WithinRel( 0., 0.99 )
         </Original>
         <Expanded>
-          1.0 not and 0 are within 99% of each other
+          1.0 not and 0.0 are within 99% of each other
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -5030,7 +5030,7 @@ C
           -0., WithinRel( 0. )
         </Original>
         <Expanded>
-          -0.0 and 0 are within 2.22045e-12% of each other
+          -0.0 and 0.0 are within 2.22045e-12% of each other
         </Expanded>
       </Expression>
       <Section name="Some subnormal values" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -5039,7 +5039,7 @@ C
             v1, WithinRel( v2 )
           </Original>
           <Expanded>
-            0.0 and 2.22507e-308 are within 2.22045e-12% of each other
+            0.0 and 0.0 are within 2.22045e-12% of each other
           </Expanded>
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
@@ -5194,7 +5194,7 @@ C
           0.0001, WithinAbs( 0., 0.001 ) || WithinRel( 0., 0.1 )
         </Original>
         <Expanded>
-          0.0001 ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
+          0.0001 ( is within 0.001 of 0.0 or and 0.0 are within 10% of each other )
         </Expanded>
       </Expression>
       <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
@@ -5270,7 +5270,7 @@ C
           10.f, WithinRel( 11.1f, 0.1f )
         </Original>
         <Expanded>
-          10.0f and 11.1 are within 10% of each other
+          10.0f and 11.1000003815 are within 10% of each other
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -5278,7 +5278,7 @@ C
           10.f, !WithinRel( 11.2f, 0.1f )
         </Original>
         <Expanded>
-          10.0f not and 11.2 are within 10% of each other
+          10.0f not and 11.1999998093 are within 10% of each other
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -5286,7 +5286,7 @@ C
           1.f, !WithinRel( 0.f, 0.99f )
         </Original>
         <Expanded>
-          1.0f not and 0 are within 99% of each other
+          1.0f not and 0.0 are within 99% of each other
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -5294,7 +5294,7 @@ C
           -0.f, WithinRel( 0.f )
         </Original>
         <Expanded>
-          -0.0f and 0 are within 0.00119209% of each other
+          -0.0f and 0.0 are within 0.00119209% of each other
         </Expanded>
       </Expression>
       <Section name="Some subnormal values" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -5303,7 +5303,7 @@ C
             v1, WithinRel( v2 )
           </Original>
           <Expanded>
-            0.0f and 1.17549e-38 are within 0.00119209% of each other
+            0.0f and 0.0 are within 0.00119209% of each other
           </Expanded>
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
@@ -5474,7 +5474,7 @@ C
           0.0001f, WithinAbs( 0.f, 0.001f ) || WithinRel( 0.f, 0.1f )
         </Original>
         <Expanded>
-          0.0001f ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
+          0.0001f ( is within 0.001 of 0.0 or and 0.0 are within 10% of each other )
         </Expanded>
       </Expression>
       <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
