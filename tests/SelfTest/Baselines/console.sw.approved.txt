@@ -4487,12 +4487,12 @@ with expansion:
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1., !WithinRel( 0., 0.99 ) )
 with expansion:
-  1.0 not and 0 are within 99% of each other
+  1.0 not and 0.0 are within 99% of each other
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( -0., WithinRel( 0. ) )
 with expansion:
-  -0.0 and 0 are within 2.22045e-12% of each other
+  -0.0 and 0.0 are within 2.22045e-12% of each other
 
 -------------------------------------------------------------------------------
 Floating point matchers: double
@@ -4505,7 +4505,7 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( v1, WithinRel( v2 ) )
 with expansion:
-  0.0 and 2.22507e-308 are within 2.22045e-12% of each other
+  0.0 and 0.0 are within 2.22045e-12% of each other
 
 -------------------------------------------------------------------------------
 Floating point matchers: double
@@ -4625,7 +4625,7 @@ with expansion:
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 0.0001, WithinAbs( 0., 0.001 ) || WithinRel( 0., 0.1 ) )
 with expansion:
-  0.0001 ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
+  0.0001 ( is within 0.001 of 0.0 or and 0.0 are within 10% of each other )
 
 -------------------------------------------------------------------------------
 Floating point matchers: double
@@ -4674,22 +4674,22 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 10.f, WithinRel( 11.1f, 0.1f ) )
 with expansion:
-  10.0f and 11.1 are within 10% of each other
+  10.0f and 11.1000003815 are within 10% of each other
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 10.f, !WithinRel( 11.2f, 0.1f ) )
 with expansion:
-  10.0f not and 11.2 are within 10% of each other
+  10.0f not and 11.1999998093 are within 10% of each other
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1.f, !WithinRel( 0.f, 0.99f ) )
 with expansion:
-  1.0f not and 0 are within 99% of each other
+  1.0f not and 0.0 are within 99% of each other
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( -0.f, WithinRel( 0.f ) )
 with expansion:
-  -0.0f and 0 are within 0.00119209% of each other
+  -0.0f and 0.0 are within 0.00119209% of each other
 
 -------------------------------------------------------------------------------
 Floating point matchers: float
@@ -4702,7 +4702,7 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( v1, WithinRel( v2 ) )
 with expansion:
-  0.0f and 1.17549e-38 are within 0.00119209% of each other
+  0.0f and 0.0 are within 0.00119209% of each other
 
 -------------------------------------------------------------------------------
 Floating point matchers: float
@@ -4827,7 +4827,7 @@ with expansion:
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 0.0001f, WithinAbs( 0.f, 0.001f ) || WithinRel( 0.f, 0.1f ) )
 with expansion:
-  0.0001f ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
+  0.0001f ( is within 0.001 of 0.0 or and 0.0 are within 10% of each other )
 
 -------------------------------------------------------------------------------
 Floating point matchers: float
