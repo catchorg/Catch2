@@ -19,6 +19,7 @@ class CatchConan(ConanFile):
     license = "BSL-1.0"
     version = "latest"
     settings = "os", "compiler", "build_type", "arch"
+    extension_properties = {"compatibility_cppstd": False}
 
     options = {
         "shared": [True, False],
