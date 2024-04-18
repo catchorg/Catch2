@@ -121,7 +121,10 @@ namespace {
 
 #elif defined( CATCH_CONFIG_COLOUR_ANSI ) //////////////////////////////////////
 
-#include <unistd.h>
+#if defined( CATCH_PLATFORM_LINUX ) || defined( CATCH_PLATFORM_MAC )
+#    define CATCH_INTERNAL_HAS_ISATTY
+#    include <unistd.h>
+#endif
 
 namespace Catch {
 namespace {
@@ -170,7 +173,8 @@ namespace {
 #if defined(CATCH_PLATFORM_MAC) || defined(CATCH_PLATFORM_IPHONE)
             !isDebuggerActive() &&
 #endif
-#if !(defined(__DJGPP__) && defined(__STRICT_ANSI__))
+#if defined( CATCH_INTERNAL_HAS_ISATTY ) && \
+    !( defined( __DJGPP__ ) && defined( __STRICT_ANSI__ ) )
             isatty(STDOUT_FILENO)
 #else
             false

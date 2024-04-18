@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.13.10](#21310)<br>
 [2.13.9](#2139)<br>
 [2.13.8](#2138)<br>
 [2.13.7](#2137)<br>
@@ -48,6 +49,15 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 2.13.10
+
+### Fixes
+* Fixed issue with `catch_discover_tests` when there is multiple of 256 tests (#2401, #2503)
+* Catch2-provided `main` and `wmain` are explicitly marked as `__cdecl` when compiled with MSVC (#2486, #2487)
+* Improved break-into-debugger behaviour for ARM Macs. It should now be possible to step execution after the break (#2422)
+* Replaced deprecated `std::aligned_storage` (#2419, #2420)
 
 
 ## 2.13.9

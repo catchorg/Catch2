@@ -87,7 +87,7 @@ int main( int argc, char* argv[] )
   int height = 0; // Some user variable you want to be able to set
   
   // Build a new parser on top of Catch's
-  using namespace Catch::clara;
+  using namespace Catch::Clara;
   auto cli 
     = session.cli() // Get Catch's composite command line parser
     | Opt( height, "height" ) // bind variable to a new option, with a hint string
