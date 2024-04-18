@@ -26,9 +26,6 @@
 // important for perf.
 #elif defined( _MSC_VER ) && defined( _M_X64 )
 #    define CATCH_CONFIG_INTERNAL_MSVC_UMUL128
-#    if defined( _M_ARM64EC )
-#        define CATCH_CONFIG_INTERNAL_MSVC_ARM64EC
-#    endif
 #endif
 
 #if defined( CATCH_CONFIG_INTERNAL_UINT128 ) && \
@@ -42,9 +39,7 @@
     !defined( CATCH_CONFIG_MSVC_UMUL128 )
 #    define CATCH_CONFIG_MSVC_UMUL128
 #    include <intrin.h>
-#    if !defined( CATCH_CONFIG_INTERNAL_MSVC_ARM64EC )
-#        pragma intrinsic( _umul128 )
-#    endif
+#    pragma intrinsic( _umul128 )
 #endif
 
 
