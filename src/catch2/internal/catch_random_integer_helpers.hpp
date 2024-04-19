@@ -39,7 +39,6 @@
     !defined( CATCH_CONFIG_MSVC_UMUL128 )
 #    define CATCH_CONFIG_MSVC_UMUL128
 #    include <intrin.h>
-#    pragma intrinsic( _umul128 )
 #endif
 
 
