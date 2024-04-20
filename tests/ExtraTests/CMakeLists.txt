@@ -467,6 +467,18 @@ set_tests_properties(
     PASS_REGULAR_EXPRESSION "Errors occurred during startup!"
 )
 
+add_executable(ReportingCrashWithJunitReporter ${TESTS_DIR}/X36-ReportingCrashWithJunitReporter.cpp)
+target_link_libraries(ReportingCrashWithJunitReporter PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME Reporters::CrashInJunitReporter
+  COMMAND ${CMAKE_COMMAND} -E env $<TARGET_FILE:ReportingCrashWithJunitReporter> --reporter JUnit
+)
+set_tests_properties(
+    Reporters::CrashInJunitReporter
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "</testsuites>"
+    LABELS "uses-signals"
+)
 
 add_executable(AssertionStartingEventGoesBeforeAssertionIsEvaluated
   X20-AssertionStartingEventGoesBeforeAssertionIsEvaluated.cpp
