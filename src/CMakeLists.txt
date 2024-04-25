@@ -48,6 +48,7 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/catch_approx.hpp
   ${SOURCES_DIR}/catch_assertion_info.hpp
   ${SOURCES_DIR}/catch_assertion_result.hpp
+  ${SOURCES_DIR}/catch_case_sensitive.hpp
   ${SOURCES_DIR}/catch_config.hpp
   ${SOURCES_DIR}/catch_get_random_seed.hpp
   ${SOURCES_DIR}/catch_message.hpp
@@ -67,7 +68,6 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/catch_version_macros.hpp
   ${SOURCES_DIR}/internal/catch_assertion_handler.hpp
   ${SOURCES_DIR}/internal/catch_case_insensitive_comparisons.hpp
-  ${SOURCES_DIR}/internal/catch_case_sensitive.hpp
   ${SOURCES_DIR}/internal/catch_clara.hpp
   ${SOURCES_DIR}/internal/catch_commandline.hpp
   ${SOURCES_DIR}/internal/catch_compare_traits.hpp
