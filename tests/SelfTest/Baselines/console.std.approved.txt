@@ -434,27 +434,31 @@ with expansion:
 Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one == Approx( 9.11f ) )
 with expansion:
-  9.1f == Approx( 9.1099996567 )
+  9.100000381f
+  ==
+  Approx( 9.10999965667724609 )
 
 Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one == Approx( 9.0f ) )
 with expansion:
-  9.1f == Approx( 9.0 )
+  9.100000381f == Approx( 9.0 )
 
 Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one == Approx( 1 ) )
 with expansion:
-  9.1f == Approx( 1.0 )
+  9.100000381f == Approx( 1.0 )
 
 Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one == Approx( 0 ) )
 with expansion:
-  9.1f == Approx( 0.0 )
+  9.100000381f == Approx( 0.0 )
 
 Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.double_pi == Approx( 3.1415 ) )
 with expansion:
-  3.1415926535 == Approx( 3.1415 )
+  3.14159265350000005
+  ==
+  Approx( 3.14150000000000018 )
 
 Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello == "goodbye" )
@@ -479,7 +483,9 @@ with expansion:
 Condition.tests.cpp:<line number>: FAILED:
   CHECK( x == Approx( 1.301 ) )
 with expansion:
-  1.3 == Approx( 1.301 )
+  1.30000000000000027
+  ==
+  Approx( 1.30099999999999993 )
 
 -------------------------------------------------------------------------------
 Equals string matcher
@@ -696,12 +702,16 @@ with expansion:
 Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one != Approx( 9.1f ) )
 with expansion:
-  9.1f != Approx( 9.1000003815 )
+  9.100000381f
+  !=
+  Approx( 9.10000038146972656 )
 
 Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.double_pi != Approx( 3.1415926535 ) )
 with expansion:
-  3.1415926535 != Approx( 3.1415926535 )
+  3.14159265350000005
+  !=
+  Approx( 3.14159265350000005 )
 
 Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello != "hello" )
@@ -855,17 +865,17 @@ with expansion:
 Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one < 9 )
 with expansion:
-  9.1f < 9
+  9.100000381f < 9
 
 Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one > 10 )
 with expansion:
-  9.1f > 10
+  9.100000381f > 10
 
 Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one > 9.2 )
 with expansion:
-  9.1f > 9.2
+  9.100000381f > 9.19999999999999929
 
 Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello > "hello" )
@@ -1060,7 +1070,7 @@ Exception.tests.cpp:<line number>
 
 Exception.tests.cpp:<line number>: FAILED:
 due to unexpected exception with message:
-  3.14
+  3.14000000000000012
 
 -------------------------------------------------------------------------------
 Vector Approx matcher -- failing

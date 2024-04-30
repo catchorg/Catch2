@@ -29,8 +29,8 @@ TEST_CASE( "tuple<int>", "[toString][tuple]" )
 TEST_CASE( "tuple<float,int>", "[toString][tuple]" )
 {
     typedef std::tuple<float,int> type;
-    CHECK( "1.2f" == ::Catch::Detail::stringify(float(1.2)) );
-    CHECK( "{ 1.2f, 0 }" == ::Catch::Detail::stringify(type{1.2f,0}) );
+    CHECK( "1.5f" == ::Catch::Detail::stringify(float(1.5)) );
+    CHECK( "{ 1.5f, 0 }" == ::Catch::Detail::stringify(type{1.5f,0}) );
 }
 
 TEST_CASE( "tuple<string,string>", "[toString][tuple]" )
@@ -42,8 +42,8 @@ TEST_CASE( "tuple<string,string>", "[toString][tuple]" )
 TEST_CASE( "tuple<tuple<int>,tuple<>,float>", "[toString][tuple]" )
 {
     typedef std::tuple<std::tuple<int>,std::tuple<>,float> type;
-    type value { std::tuple<int>{42}, {}, 1.2f };
-    CHECK( "{ { 42 }, { }, 1.2f }" == ::Catch::Detail::stringify(value) );
+    type value { std::tuple<int>{42}, {}, 1.5f };
+    CHECK( "{ { 42 }, { }, 1.5f }" == ::Catch::Detail::stringify(value) );
 }
 
 TEST_CASE( "tuple<nullptr,int,const char *>", "[approvals][toString][tuple]" ) {

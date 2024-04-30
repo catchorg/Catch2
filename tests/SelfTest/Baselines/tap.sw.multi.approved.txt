@@ -493,17 +493,17 @@ ok {test-number} - x.size() > 0 for: 42 > 0
 # A Template product test case with array signature - std::array<int, 9>
 ok {test-number} - x.size() > 0 for: 9 > 0
 # A comparison that uses literals instead of the normal constructor
-ok {test-number} - d == 1.23_a for: 1.23 == Approx( 1.23 )
+ok {test-number} - d == 1.23_a for: 1.22999999999999998 == Approx( 1.22999999999999998 )
 # A comparison that uses literals instead of the normal constructor
-ok {test-number} - d != 1.22_a for: 1.23 != Approx( 1.22 )
+ok {test-number} - d != 1.22_a for: 1.22999999999999998 != Approx( 1.21999999999999997 )
 # A comparison that uses literals instead of the normal constructor
-ok {test-number} - -d == -1.23_a for: -1.23 == Approx( -1.23 )
+ok {test-number} - -d == -1.23_a for: -1.22999999999999998 == Approx( -1.22999999999999998 )
 # A comparison that uses literals instead of the normal constructor
-ok {test-number} - d == 1.2_a .epsilon(.1) for: 1.23 == Approx( 1.2 )
+ok {test-number} - d == 1.2_a .epsilon(.1) for: 1.22999999999999998 == Approx( 1.19999999999999996 )
 # A comparison that uses literals instead of the normal constructor
-ok {test-number} - d != 1.2_a .epsilon(.001) for: 1.23 != Approx( 1.2 )
+ok {test-number} - d != 1.2_a .epsilon(.001) for: 1.22999999999999998 != Approx( 1.19999999999999996 )
 # A comparison that uses literals instead of the normal constructor
-ok {test-number} - d == 1_a .epsilon(.3) for: 1.23 == Approx( 1.0 )
+ok {test-number} - d == 1_a .epsilon(.3) for: 1.22999999999999998 == Approx( 1.0 )
 # A couple of nested sections followed by a failure
 ok {test-number} - with 1 message: 'that's not flying - that's failing in style'
 # A couple of nested sections followed by a failure
@@ -521,9 +521,9 @@ ok {test-number} - 104.0 == Approx(100.0).margin(4) for: 104.0 == Approx( 100.0 
 # Absolute margin
 ok {test-number} - 104.0 != Approx(100.0).margin(3) for: 104.0 != Approx( 100.0 )
 # Absolute margin
-ok {test-number} - 100.3 != Approx(100.0) for: 100.3 != Approx( 100.0 )
+ok {test-number} - 100.3 != Approx(100.0) for: 100.29999999999999716 != Approx( 100.0 )
 # Absolute margin
-ok {test-number} - 100.3 == Approx(100.0).margin(0.5) for: 100.3 == Approx( 100.0 )
+ok {test-number} - 100.3 == Approx(100.0).margin(0.5) for: 100.29999999999999716 == Approx( 100.0 )
 # An expression with side-effects should only be evaluated once
 ok {test-number} - i++ == 7 for: 7 == 7
 # An expression with side-effects should only be evaluated once
@@ -559,15 +559,15 @@ ok {test-number} - 245.0f == Approx(245.25f).margin(0.25f) for: 245.0f == Approx
 # Approx with exactly-representable margin
 ok {test-number} - 245.5f == Approx(245.25f).margin(0.25f) for: 245.5f == Approx( 245.25 )
 # Approximate PI
-ok {test-number} - divide( 22, 7 ) == Approx( 3.141 ).epsilon( 0.001 ) for: 3.1428571429 == Approx( 3.141 )
+ok {test-number} - divide( 22, 7 ) == Approx( 3.141 ).epsilon( 0.001 ) for: 3.14285714285714279 == Approx( 3.14100000000000001 )
 # Approximate PI
-ok {test-number} - divide( 22, 7 ) != Approx( 3.141 ).epsilon( 0.0001 ) for: 3.1428571429 != Approx( 3.141 )
+ok {test-number} - divide( 22, 7 ) != Approx( 3.141 ).epsilon( 0.0001 ) for: 3.14285714285714279 != Approx( 3.14100000000000001 )
 # Approximate comparisons with different epsilons
-ok {test-number} - d != Approx( 1.231 ) for: 1.23 != Approx( 1.231 )
+ok {test-number} - d != Approx( 1.231 ) for: 1.22999999999999998 != Approx( 1.23100000000000009 )
 # Approximate comparisons with different epsilons
-ok {test-number} - d == Approx( 1.231 ).epsilon( 0.1 ) for: 1.23 == Approx( 1.231 )
+ok {test-number} - d == Approx( 1.231 ).epsilon( 0.1 ) for: 1.22999999999999998 == Approx( 1.23100000000000009 )
 # Approximate comparisons with floats
-ok {test-number} - 1.23f == Approx( 1.23f ) for: 1.23f == Approx( 1.2300000191 )
+ok {test-number} - 1.23f == Approx( 1.23f ) for: 1.230000019f == Approx( 1.23000001907348633 )
 # Approximate comparisons with floats
 ok {test-number} - 0.0f == Approx( 0.0f ) for: 0.0f == Approx( 0.0 )
 # Approximate comparisons with ints
@@ -581,9 +581,9 @@ ok {test-number} - 0 == Approx( dZero) for: 0 == Approx( 0.0 )
 # Approximate comparisons with mixed numeric types
 ok {test-number} - 0 == Approx( dSmall ).margin( 0.001 ) for: 0 == Approx( 0.00001 )
 # Approximate comparisons with mixed numeric types
-ok {test-number} - 1.234f == Approx( dMedium ) for: 1.234f == Approx( 1.234 )
+ok {test-number} - 1.234f == Approx( dMedium ) for: 1.233999968f == Approx( 1.23399999999999999 )
 # Approximate comparisons with mixed numeric types
-ok {test-number} - dMedium == Approx( 1.234f ) for: 1.234 == Approx( 1.2339999676 )
+ok {test-number} - dMedium == Approx( 1.234f ) for: 1.23399999999999999 == Approx( 1.23399996757507324 )
 # Arbitrary predicate matcher
 ok {test-number} - 1, Predicate<int>( alwaysTrue, "always true" ) for: 1 matches predicate: "always true"
 # Arbitrary predicate matcher
@@ -965,7 +965,7 @@ not ok {test-number} - unexpected exception with message: 'custom exception - no
 # Custom std-exceptions can be custom translated
 not ok {test-number} - unexpected exception with message: 'custom std exception'
 # Default scale is invisible to comparison
-ok {test-number} - 101.000001 != Approx(100).epsilon(0.01) for: 101.000001 != Approx( 100.0 )
+ok {test-number} - 101.000001 != Approx(100).epsilon(0.01) for: 101.00000099999999748 != Approx( 100.0 )
 # Default scale is invisible to comparison
 ok {test-number} - std::pow(10, -5) != Approx(std::pow(10, -7)) for: 0.00001 != Approx( 0.0000001 )
 # Directly creating an EnumInfo
@@ -997,7 +997,7 @@ ok {test-number} - stringify( Bikeshed::Colours::Red ) == "Red" for: "Red" == "R
 # Enums in namespaces can quickly have stringification enabled using REGISTER_ENUM
 ok {test-number} - stringify( Bikeshed::Colours::Blue ) == "Blue" for: "Blue" == "Blue"
 # Epsilon only applies to Approx's value
-ok {test-number} - 101.01 != Approx(100).epsilon(0.01) for: 101.01 != Approx( 100.0 )
+ok {test-number} - 101.01 != Approx(100).epsilon(0.01) for: 101.01000000000000512 != Approx( 100.0 )
 # Equality checks that should fail
 not ok {test-number} - data.int_seven == 6 for: 7 == 6
 # Equality checks that should fail
@@ -1005,15 +1005,15 @@ not ok {test-number} - data.int_seven == 8 for: 7 == 8
 # Equality checks that should fail
 not ok {test-number} - data.int_seven == 0 for: 7 == 0
 # Equality checks that should fail
-not ok {test-number} - data.float_nine_point_one == Approx( 9.11f ) for: 9.1f == Approx( 9.1099996567 )
+not ok {test-number} - data.float_nine_point_one == Approx( 9.11f ) for: 9.100000381f == Approx( 9.10999965667724609 )
 # Equality checks that should fail
-not ok {test-number} - data.float_nine_point_one == Approx( 9.0f ) for: 9.1f == Approx( 9.0 )
+not ok {test-number} - data.float_nine_point_one == Approx( 9.0f ) for: 9.100000381f == Approx( 9.0 )
 # Equality checks that should fail
-not ok {test-number} - data.float_nine_point_one == Approx( 1 ) for: 9.1f == Approx( 1.0 )
+not ok {test-number} - data.float_nine_point_one == Approx( 1 ) for: 9.100000381f == Approx( 1.0 )
 # Equality checks that should fail
-not ok {test-number} - data.float_nine_point_one == Approx( 0 ) for: 9.1f == Approx( 0.0 )
+not ok {test-number} - data.float_nine_point_one == Approx( 0 ) for: 9.100000381f == Approx( 0.0 )
 # Equality checks that should fail
-not ok {test-number} - data.double_pi == Approx( 3.1415 ) for: 3.1415926535 == Approx( 3.1415 )
+not ok {test-number} - data.double_pi == Approx( 3.1415 ) for: 3.14159265350000005 == Approx( 3.14150000000000018 )
 # Equality checks that should fail
 not ok {test-number} - data.str_hello == "goodbye" for: "hello" == "goodbye"
 # Equality checks that should fail
@@ -1023,13 +1023,13 @@ not ok {test-number} - data.str_hello == "hello1" for: "hello" == "hello1"
 # Equality checks that should fail
 not ok {test-number} - data.str_hello.size() == 6 for: 5 == 6
 # Equality checks that should fail
-not ok {test-number} - x == Approx( 1.301 ) for: 1.3 == Approx( 1.301 )
+not ok {test-number} - x == Approx( 1.301 ) for: 1.30000000000000027 == Approx( 1.30099999999999993 )
 # Equality checks that should succeed
 ok {test-number} - data.int_seven == 7 for: 7 == 7
 # Equality checks that should succeed
-ok {test-number} - data.float_nine_point_one == Approx( 9.1f ) for: 9.1f == Approx( 9.1000003815 )
+ok {test-number} - data.float_nine_point_one == Approx( 9.1f ) for: 9.100000381f == Approx( 9.10000038146972656 )
 # Equality checks that should succeed
-ok {test-number} - data.double_pi == Approx( 3.1415926535 ) for: 3.1415926535 == Approx( 3.1415926535 )
+ok {test-number} - data.double_pi == Approx( 3.1415926535 ) for: 3.14159265350000005 == Approx( 3.14159265350000005 )
 # Equality checks that should succeed
 ok {test-number} - data.str_hello == "hello" for: "hello" == "hello"
 # Equality checks that should succeed
@@ -1037,7 +1037,7 @@ ok {test-number} - "hello" == data.str_hello for: "hello" == "hello"
 # Equality checks that should succeed
 ok {test-number} - data.str_hello.size() == 5 for: 5 == 5
 # Equality checks that should succeed
-ok {test-number} - x == Approx( 1.3 ) for: 1.3 == Approx( 1.3 )
+ok {test-number} - x == Approx( 1.3 ) for: 1.30000000000000027 == Approx( 1.30000000000000004 )
 # Equals
 ok {test-number} - testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
 # Equals
@@ -1123,9 +1123,9 @@ ok {test-number} - Factorial(10) == 3628800 for: 3628800 (0x<hex digits>) == 362
 # Filter generator throws exception for empty generator
 ok {test-number} - filter( []( int ) { return false; }, value( 3 ) ), Catch::GeneratorException
 # Floating point matchers: double
-ok {test-number} - 10., WithinRel( 11.1, 0.1 ) for: 10.0 and 11.1 are within 10% of each other
+ok {test-number} - 10., WithinRel( 11.1, 0.1 ) for: 10.0 and 11.09999999999999964 are within 10% of each other
 # Floating point matchers: double
-ok {test-number} - 10., !WithinRel( 11.2, 0.1 ) for: 10.0 not and 11.2 are within 10% of each other
+ok {test-number} - 10., !WithinRel( 11.2, 0.1 ) for: 10.0 not and 11.19999999999999929 are within 10% of each other
 # Floating point matchers: double
 ok {test-number} - 1., !WithinRel( 0., 0.99 ) for: 1.0 not and 0.0 are within 99% of each other
 # Floating point matchers: double
@@ -1137,9 +1137,9 @@ ok {test-number} - 1., WithinAbs( 1., 0 ) for: 1.0 is within 0.0 of 1.0
 # Floating point matchers: double
 ok {test-number} - 0., WithinAbs( 1., 1 ) for: 0.0 is within 1.0 of 1.0
 # Floating point matchers: double
-ok {test-number} - 0., !WithinAbs( 1., 0.99 ) for: 0.0 not is within 0.99 of 1.0
+ok {test-number} - 0., !WithinAbs( 1., 0.99 ) for: 0.0 not is within 0.98999999999999999 of 1.0
 # Floating point matchers: double
-ok {test-number} - 0., !WithinAbs( 1., 0.99 ) for: 0.0 not is within 0.99 of 1.0
+ok {test-number} - 0., !WithinAbs( 1., 0.99 ) for: 0.0 not is within 0.98999999999999999 of 1.0
 # Floating point matchers: double
 ok {test-number} - 11., !WithinAbs( 10., 0.5 ) for: 11.0 not is within 0.5 of 10.0
 # Floating point matchers: double
@@ -1147,11 +1147,11 @@ ok {test-number} - 10., !WithinAbs( 11., 0.5 ) for: 10.0 not is within 0.5 of 11
 # Floating point matchers: double
 ok {test-number} - -10., WithinAbs( -10., 0.5 ) for: -10.0 is within 0.5 of -10.0
 # Floating point matchers: double
-ok {test-number} - -10., WithinAbs( -9.6, 0.5 ) for: -10.0 is within 0.5 of -9.6
+ok {test-number} - -10., WithinAbs( -9.6, 0.5 ) for: -10.0 is within 0.5 of -9.59999999999999964
 # Floating point matchers: double
 ok {test-number} - 1., WithinULP( 1., 0 ) for: 1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
 # Floating point matchers: double
-ok {test-number} - nextafter( 1., 2. ), WithinULP( 1., 1 ) for: 1.0 is within 1 ULPs of 1.0000000000000000e+00 ([9.9999999999999989e-01, 1.0000000000000002e+00])
+ok {test-number} - nextafter( 1., 2. ), WithinULP( 1., 1 ) for: 1.00000000000000022 is within 1 ULPs of 1.0000000000000000e+00 ([9.9999999999999989e-01, 1.0000000000000002e+00])
 # Floating point matchers: double
 ok {test-number} - 0., WithinULP( nextafter( 0., 1. ), 1 ) for: 0.0 is within 1 ULPs of 4.9406564584124654e-324 ([0.0000000000000000e+00, 9.8813129168249309e-324])
 # Floating point matchers: double
@@ -1183,9 +1183,9 @@ ok {test-number} - WithinRel( 1., 1. ), std::domain_error
 # Floating point matchers: double
 ok {test-number} - 1., !IsNaN() for: 1.0 not is NaN
 # Floating point matchers: float
-ok {test-number} - 10.f, WithinRel( 11.1f, 0.1f ) for: 10.0f and 11.1000003815 are within 10% of each other
+ok {test-number} - 10.f, WithinRel( 11.1f, 0.1f ) for: 10.0f and 11.10000038146972656 are within 10% of each other
 # Floating point matchers: float
-ok {test-number} - 10.f, !WithinRel( 11.2f, 0.1f ) for: 10.0f not and 11.1999998093 are within 10% of each other
+ok {test-number} - 10.f, !WithinRel( 11.2f, 0.1f ) for: 10.0f not and 11.19999980926513672 are within 10% of each other
 # Floating point matchers: float
 ok {test-number} - 1.f, !WithinRel( 0.f, 0.99f ) for: 1.0f not and 0.0 are within 99% of each other
 # Floating point matchers: float
@@ -1197,9 +1197,9 @@ ok {test-number} - 1.f, WithinAbs( 1.f, 0 ) for: 1.0f is within 0.0 of 1.0
 # Floating point matchers: float
 ok {test-number} - 0.f, WithinAbs( 1.f, 1 ) for: 0.0f is within 1.0 of 1.0
 # Floating point matchers: float
-ok {test-number} - 0.f, !WithinAbs( 1.f, 0.99f ) for: 0.0f not is within 0.9900000095 of 1.0
+ok {test-number} - 0.f, !WithinAbs( 1.f, 0.99f ) for: 0.0f not is within 0.99000000953674316 of 1.0
 # Floating point matchers: float
-ok {test-number} - 0.f, !WithinAbs( 1.f, 0.99f ) for: 0.0f not is within 0.9900000095 of 1.0
+ok {test-number} - 0.f, !WithinAbs( 1.f, 0.99f ) for: 0.0f not is within 0.99000000953674316 of 1.0
 # Floating point matchers: float
 ok {test-number} - 0.f, WithinAbs( -0.f, 0 ) for: 0.0f is within 0.0 of -0.0
 # Floating point matchers: float
@@ -1209,13 +1209,13 @@ ok {test-number} - 10.f, !WithinAbs( 11.f, 0.5f ) for: 10.0f not is within 0.5 o
 # Floating point matchers: float
 ok {test-number} - -10.f, WithinAbs( -10.f, 0.5f ) for: -10.0f is within 0.5 of -10.0
 # Floating point matchers: float
-ok {test-number} - -10.f, WithinAbs( -9.6f, 0.5f ) for: -10.0f is within 0.5 of -9.6000003815
+ok {test-number} - -10.f, WithinAbs( -9.6f, 0.5f ) for: -10.0f is within 0.5 of -9.60000038146972656
 # Floating point matchers: float
 ok {test-number} - 1.f, WithinULP( 1.f, 0 ) for: 1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
 # Floating point matchers: float
 ok {test-number} - -1.f, WithinULP( -1.f, 0 ) for: -1.0f is within 0 ULPs of -1.00000000e+00f ([-1.00000000e+00, -1.00000000e+00])
 # Floating point matchers: float
-ok {test-number} - nextafter( 1.f, 2.f ), WithinULP( 1.f, 1 ) for: 1.0f is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00])
+ok {test-number} - nextafter( 1.f, 2.f ), WithinULP( 1.f, 1 ) for: 1.000000119f is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00])
 # Floating point matchers: float
 ok {test-number} - 0.f, WithinULP( nextafter( 0.f, 1.f ), 1 ) for: 0.0f is within 1 ULPs of 1.40129846e-45f ([0.00000000e+00, 2.80259693e-45])
 # Floating point matchers: float
@@ -1231,7 +1231,7 @@ ok {test-number} - 1.f, WithinAbs( 1.f, 0.5 ) || WithinULP( 1.f, 1 ) for: 1.0f (
 # Floating point matchers: float
 ok {test-number} - 1.f, WithinAbs( 2.f, 0.5 ) || WithinULP( 1.f, 0 ) for: 1.0f ( is within 0.5 of 2.0 or is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00]) )
 # Floating point matchers: float
-ok {test-number} - 0.0001f, WithinAbs( 0.f, 0.001f ) || WithinRel( 0.f, 0.1f ) for: 0.0001f ( is within 0.001 of 0.0 or and 0.0 are within 10% of each other )
+ok {test-number} - 0.0001f, WithinAbs( 0.f, 0.001f ) || WithinRel( 0.f, 0.1f ) for: 0.0001f ( is within 0.00100000004749745 of 0.0 or and 0.0 are within 10% of each other )
 # Floating point matchers: float
 ok {test-number} - WithinAbs( 1.f, 0.f )
 # Floating point matchers: float
@@ -1591,83 +1591,83 @@ ok {test-number} - gen.get() == Approx(expected) for: -1.0 == Approx( -1.0 ) wit
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -1'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.9 == Approx( -0.9 ) with 1 message: 'Current expected value is -0.9'
+ok {test-number} - gen.get() == Approx(expected) for: -0.90000000000000002 == Approx( -0.90000000000000002 ) with 1 message: 'Current expected value is -0.9'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.9'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.8 == Approx( -0.8 ) with 1 message: 'Current expected value is -0.8'
+ok {test-number} - gen.get() == Approx(expected) for: -0.80000000000000004 == Approx( -0.80000000000000004 ) with 1 message: 'Current expected value is -0.8'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.8'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.7 == Approx( -0.7 ) with 1 message: 'Current expected value is -0.7'
+ok {test-number} - gen.get() == Approx(expected) for: -0.70000000000000007 == Approx( -0.70000000000000007 ) with 1 message: 'Current expected value is -0.7'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.7'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.6 == Approx( -0.6 ) with 1 message: 'Current expected value is -0.6'
+ok {test-number} - gen.get() == Approx(expected) for: -0.60000000000000009 == Approx( -0.60000000000000009 ) with 1 message: 'Current expected value is -0.6'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.6'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.5 == Approx( -0.5 ) with 1 message: 'Current expected value is -0.5'
+ok {test-number} - gen.get() == Approx(expected) for: -0.50000000000000011 == Approx( -0.50000000000000011 ) with 1 message: 'Current expected value is -0.5'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.5'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.4 == Approx( -0.4 ) with 1 message: 'Current expected value is -0.4'
+ok {test-number} - gen.get() == Approx(expected) for: -0.40000000000000013 == Approx( -0.40000000000000013 ) with 1 message: 'Current expected value is -0.4'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.4'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.3 == Approx( -0.3 ) with 1 message: 'Current expected value is -0.3'
+ok {test-number} - gen.get() == Approx(expected) for: -0.30000000000000016 == Approx( -0.30000000000000016 ) with 1 message: 'Current expected value is -0.3'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.3'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.2 == Approx( -0.2 ) with 1 message: 'Current expected value is -0.2'
+ok {test-number} - gen.get() == Approx(expected) for: -0.20000000000000015 == Approx( -0.20000000000000015 ) with 1 message: 'Current expected value is -0.2'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.2'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.1 == Approx( -0.1 ) with 1 message: 'Current expected value is -0.1'
+ok {test-number} - gen.get() == Approx(expected) for: -0.10000000000000014 == Approx( -0.10000000000000014 ) with 1 message: 'Current expected value is -0.1'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.1'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.0 == Approx( -0.0 ) with 1 message: 'Current expected value is -1.38778e-16'
+ok {test-number} - gen.get() == Approx(expected) for: -0.00000000000000014 == Approx( -0.00000000000000014 ) with 1 message: 'Current expected value is -1.38778e-16'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -1.38778e-16'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.1 == Approx( 0.1 ) with 1 message: 'Current expected value is 0.1'
+ok {test-number} - gen.get() == Approx(expected) for: 0.09999999999999987 == Approx( 0.09999999999999987 ) with 1 message: 'Current expected value is 0.1'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.1'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.2 == Approx( 0.2 ) with 1 message: 'Current expected value is 0.2'
+ok {test-number} - gen.get() == Approx(expected) for: 0.19999999999999987 == Approx( 0.19999999999999987 ) with 1 message: 'Current expected value is 0.2'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.2'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.3 == Approx( 0.3 ) with 1 message: 'Current expected value is 0.3'
+ok {test-number} - gen.get() == Approx(expected) for: 0.29999999999999988 == Approx( 0.29999999999999988 ) with 1 message: 'Current expected value is 0.3'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.3'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.4 == Approx( 0.4 ) with 1 message: 'Current expected value is 0.4'
+ok {test-number} - gen.get() == Approx(expected) for: 0.39999999999999991 == Approx( 0.39999999999999991 ) with 1 message: 'Current expected value is 0.4'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.4'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.5 == Approx( 0.5 ) with 1 message: 'Current expected value is 0.5'
+ok {test-number} - gen.get() == Approx(expected) for: 0.49999999999999989 == Approx( 0.49999999999999989 ) with 1 message: 'Current expected value is 0.5'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.5'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.6 == Approx( 0.6 ) with 1 message: 'Current expected value is 0.6'
+ok {test-number} - gen.get() == Approx(expected) for: 0.59999999999999987 == Approx( 0.59999999999999987 ) with 1 message: 'Current expected value is 0.6'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.6'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.7 == Approx( 0.7 ) with 1 message: 'Current expected value is 0.7'
+ok {test-number} - gen.get() == Approx(expected) for: 0.69999999999999984 == Approx( 0.69999999999999984 ) with 1 message: 'Current expected value is 0.7'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.7'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.8 == Approx( 0.8 ) with 1 message: 'Current expected value is 0.8'
+ok {test-number} - gen.get() == Approx(expected) for: 0.79999999999999982 == Approx( 0.79999999999999982 ) with 1 message: 'Current expected value is 0.8'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.8'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.9 == Approx( 0.9 ) with 1 message: 'Current expected value is 0.9'
+ok {test-number} - gen.get() == Approx(expected) for: 0.8999999999999998 == Approx( 0.8999999999999998 ) with 1 message: 'Current expected value is 0.9'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.9'
 # Generators internals
-ok {test-number} - gen.get() == Approx( rangeEnd ) for: 1.0 == Approx( 1.0 )
+ok {test-number} - gen.get() == Approx( rangeEnd ) for: 0.99999999999999978 == Approx( 1.0 )
 # Generators internals
 ok {test-number} - !(gen.next()) for: !false
 # Generators internals
@@ -1675,19 +1675,19 @@ ok {test-number} - gen.get() == Approx(expected) for: -1.0 == Approx( -1.0 ) wit
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -1'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.7 == Approx( -0.7 ) with 1 message: 'Current expected value is -0.7'
+ok {test-number} - gen.get() == Approx(expected) for: -0.69999999999999996 == Approx( -0.69999999999999996 ) with 1 message: 'Current expected value is -0.7'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.7'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.4 == Approx( -0.4 ) with 1 message: 'Current expected value is -0.4'
+ok {test-number} - gen.get() == Approx(expected) for: -0.39999999999999997 == Approx( -0.39999999999999997 ) with 1 message: 'Current expected value is -0.4'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.4'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.1 == Approx( -0.1 ) with 1 message: 'Current expected value is -0.1'
+ok {test-number} - gen.get() == Approx(expected) for: -0.09999999999999998 == Approx( -0.09999999999999998 ) with 1 message: 'Current expected value is -0.1'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.1'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.2 == Approx( 0.2 ) with 1 message: 'Current expected value is 0.2'
+ok {test-number} - gen.get() == Approx(expected) for: 0.20000000000000001 == Approx( 0.20000000000000001 ) with 1 message: 'Current expected value is 0.2'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.2'
 # Generators internals
@@ -1701,19 +1701,19 @@ ok {test-number} - gen.get() == Approx(expected) for: -1.0 == Approx( -1.0 ) wit
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -1'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.7 == Approx( -0.7 ) with 1 message: 'Current expected value is -0.7'
+ok {test-number} - gen.get() == Approx(expected) for: -0.69999999999999996 == Approx( -0.69999999999999996 ) with 1 message: 'Current expected value is -0.7'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.7'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.4 == Approx( -0.4 ) with 1 message: 'Current expected value is -0.4'
+ok {test-number} - gen.get() == Approx(expected) for: -0.39999999999999997 == Approx( -0.39999999999999997 ) with 1 message: 'Current expected value is -0.4'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.4'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.1 == Approx( -0.1 ) with 1 message: 'Current expected value is -0.1'
+ok {test-number} - gen.get() == Approx(expected) for: -0.09999999999999998 == Approx( -0.09999999999999998 ) with 1 message: 'Current expected value is -0.1'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.1'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.2 == Approx( 0.2 ) with 1 message: 'Current expected value is 0.2'
+ok {test-number} - gen.get() == Approx(expected) for: 0.20000000000000001 == Approx( 0.20000000000000001 ) with 1 message: 'Current expected value is 0.2'
 # Generators internals
 ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.2'
 # Generators internals
@@ -1775,13 +1775,13 @@ ok {test-number} - gen.get() == -7 for: -7 == -7
 # Generators internals
 ok {test-number} - !(gen.next()) for: !false
 # Greater-than inequalities with different epsilons
-ok {test-number} - d >= Approx( 1.22 ) for: 1.23 >= Approx( 1.22 )
+ok {test-number} - d >= Approx( 1.22 ) for: 1.22999999999999998 >= Approx( 1.21999999999999997 )
 # Greater-than inequalities with different epsilons
-ok {test-number} - d >= Approx( 1.23 ) for: 1.23 >= Approx( 1.23 )
+ok {test-number} - d >= Approx( 1.23 ) for: 1.22999999999999998 >= Approx( 1.22999999999999998 )
 # Greater-than inequalities with different epsilons
-ok {test-number} - !(d >= Approx( 1.24 )) for: !(1.23 >= Approx( 1.24 ))
+ok {test-number} - !(d >= Approx( 1.24 )) for: !(1.22999999999999998 >= Approx( 1.23999999999999999 ))
 # Greater-than inequalities with different epsilons
-ok {test-number} - d >= Approx( 1.24 ).epsilon(0.1) for: 1.23 >= Approx( 1.24 )
+ok {test-number} - d >= Approx( 1.24 ).epsilon(0.1) for: 1.22999999999999998 >= Approx( 1.23999999999999999 )
 # Hashers with different seed produce different hash with same test case
 ok {test-number} - h1( dummy ) != h2( dummy ) for: 3422778688 (0x<hex digits>) != 130711275 (0x<hex digits>)
 # Hashers with same seed produce same hash
@@ -1835,9 +1835,9 @@ not ok {test-number} - unexpected exception with message: 'Exception translation
 # Inequality checks that should fail
 not ok {test-number} - data.int_seven != 7 for: 7 != 7
 # Inequality checks that should fail
-not ok {test-number} - data.float_nine_point_one != Approx( 9.1f ) for: 9.1f != Approx( 9.1000003815 )
+not ok {test-number} - data.float_nine_point_one != Approx( 9.1f ) for: 9.100000381f != Approx( 9.10000038146972656 )
 # Inequality checks that should fail
-not ok {test-number} - data.double_pi != Approx( 3.1415926535 ) for: 3.1415926535 != Approx( 3.1415926535 )
+not ok {test-number} - data.double_pi != Approx( 3.1415926535 ) for: 3.14159265350000005 != Approx( 3.14159265350000005 )
 # Inequality checks that should fail
 not ok {test-number} - data.str_hello != "hello" for: "hello" != "hello"
 # Inequality checks that should fail
@@ -1847,15 +1847,15 @@ ok {test-number} - data.int_seven != 6 for: 7 != 6
 # Inequality checks that should succeed
 ok {test-number} - data.int_seven != 8 for: 7 != 8
 # Inequality checks that should succeed
-ok {test-number} - data.float_nine_point_one != Approx( 9.11f ) for: 9.1f != Approx( 9.1099996567 )
+ok {test-number} - data.float_nine_point_one != Approx( 9.11f ) for: 9.100000381f != Approx( 9.10999965667724609 )
 # Inequality checks that should succeed
-ok {test-number} - data.float_nine_point_one != Approx( 9.0f ) for: 9.1f != Approx( 9.0 )
+ok {test-number} - data.float_nine_point_one != Approx( 9.0f ) for: 9.100000381f != Approx( 9.0 )
 # Inequality checks that should succeed
-ok {test-number} - data.float_nine_point_one != Approx( 1 ) for: 9.1f != Approx( 1.0 )
+ok {test-number} - data.float_nine_point_one != Approx( 1 ) for: 9.100000381f != Approx( 1.0 )
 # Inequality checks that should succeed
-ok {test-number} - data.float_nine_point_one != Approx( 0 ) for: 9.1f != Approx( 0.0 )
+ok {test-number} - data.float_nine_point_one != Approx( 0 ) for: 9.100000381f != Approx( 0.0 )
 # Inequality checks that should succeed
-ok {test-number} - data.double_pi != Approx( 3.1415 ) for: 3.1415926535 != Approx( 3.1415 )
+ok {test-number} - data.double_pi != Approx( 3.1415 ) for: 3.14159265350000005 != Approx( 3.14150000000000018 )
 # Inequality checks that should succeed
 ok {test-number} - data.str_hello != "goodbye" for: "hello" != "goodbye"
 # Inequality checks that should succeed
@@ -1903,13 +1903,13 @@ ok {test-number} - sstream.str() == "\"\\\\/\\t\\r\\n\"" for: ""\\/\t\r\n"" == "
 # Lambdas in assertions
 ok {test-number} - []() { return true; }() for: true
 # Less-than inequalities with different epsilons
-ok {test-number} - d <= Approx( 1.24 ) for: 1.23 <= Approx( 1.24 )
+ok {test-number} - d <= Approx( 1.24 ) for: 1.22999999999999998 <= Approx( 1.23999999999999999 )
 # Less-than inequalities with different epsilons
-ok {test-number} - d <= Approx( 1.23 ) for: 1.23 <= Approx( 1.23 )
+ok {test-number} - d <= Approx( 1.23 ) for: 1.22999999999999998 <= Approx( 1.22999999999999998 )
 # Less-than inequalities with different epsilons
-ok {test-number} - !(d <= Approx( 1.22 )) for: !(1.23 <= Approx( 1.22 ))
+ok {test-number} - !(d <= Approx( 1.22 )) for: !(1.22999999999999998 <= Approx( 1.21999999999999997 ))
 # Less-than inequalities with different epsilons
-ok {test-number} - d <= Approx( 1.22 ).epsilon(0.1) for: 1.23 <= Approx( 1.22 )
+ok {test-number} - d <= Approx( 1.22 ).epsilon(0.1) for: 1.22999999999999998 <= Approx( 1.21999999999999997 )
 # ManuallyRegistered
 ok {test-number} - with 1 message: 'was called'
 # Matchers can be (AllOf) composed with the && operator
@@ -2039,11 +2039,11 @@ not ok {test-number} - data.int_seven >= 8 for: 7 >= 8
 # Ordering comparison checks that should fail
 not ok {test-number} - data.int_seven <= 6 for: 7 <= 6
 # Ordering comparison checks that should fail
-not ok {test-number} - data.float_nine_point_one < 9 for: 9.1f < 9
+not ok {test-number} - data.float_nine_point_one < 9 for: 9.100000381f < 9
 # Ordering comparison checks that should fail
-not ok {test-number} - data.float_nine_point_one > 10 for: 9.1f > 10
+not ok {test-number} - data.float_nine_point_one > 10 for: 9.100000381f > 10
 # Ordering comparison checks that should fail
-not ok {test-number} - data.float_nine_point_one > 9.2 for: 9.1f > 9.2
+not ok {test-number} - data.float_nine_point_one > 9.2 for: 9.100000381f > 9.19999999999999929
 # Ordering comparison checks that should fail
 not ok {test-number} - data.str_hello > "hello" for: "hello" > "hello"
 # Ordering comparison checks that should fail
@@ -2077,11 +2077,11 @@ ok {test-number} - data.int_seven <= 7 for: 7 <= 7
 # Ordering comparison checks that should succeed
 ok {test-number} - data.int_seven <= 8 for: 7 <= 8
 # Ordering comparison checks that should succeed
-ok {test-number} - data.float_nine_point_one > 9 for: 9.1f > 9
+ok {test-number} - data.float_nine_point_one > 9 for: 9.100000381f > 9
 # Ordering comparison checks that should succeed
-ok {test-number} - data.float_nine_point_one < 10 for: 9.1f < 10
+ok {test-number} - data.float_nine_point_one < 10 for: 9.100000381f < 10
 # Ordering comparison checks that should succeed
-ok {test-number} - data.float_nine_point_one < 9.2 for: 9.1f < 9.2
+ok {test-number} - data.float_nine_point_one < 9.2 for: 9.100000381f < 9.19999999999999929
 # Ordering comparison checks that should succeed
 ok {test-number} - data.str_hello <= "hello" for: "hello" <= "hello"
 # Ordering comparison checks that should succeed
@@ -2417,7 +2417,7 @@ ok {test-number} - config.benchmarkResamples == 20000 for: 20000 (0x<hex digits>
 # Process can be configured on command line
 ok {test-number} - cli.parse({ "test", "--benchmark-confidence-interval=0.99" }) for: {?}
 # Process can be configured on command line
-ok {test-number} - config.benchmarkConfidenceInterval == Catch::Approx(0.99) for: 0.99 == Approx( 0.99 )
+ok {test-number} - config.benchmarkConfidenceInterval == Catch::Approx(0.99) for: 0.98999999999999999 == Approx( 0.98999999999999999 )
 # Process can be configured on command line
 ok {test-number} - cli.parse({ "test", "--benchmark-no-analysis" }) for: {?}
 # Process can be configured on command line
@@ -2595,21 +2595,21 @@ ok {test-number} - v.capacity() >= 10 for: 10 >= 10
 # Scenario: Vector resizing affects size and capacity
 ok {test-number} - v.size() == 0 for: 0 == 0
 # Some simple comparisons between doubles
-ok {test-number} - d == Approx( 1.23 ) for: 1.23 == Approx( 1.23 )
+ok {test-number} - d == Approx( 1.23 ) for: 1.22999999999999998 == Approx( 1.22999999999999998 )
 # Some simple comparisons between doubles
-ok {test-number} - d != Approx( 1.22 ) for: 1.23 != Approx( 1.22 )
+ok {test-number} - d != Approx( 1.22 ) for: 1.22999999999999998 != Approx( 1.21999999999999997 )
 # Some simple comparisons between doubles
-ok {test-number} - d != Approx( 1.24 ) for: 1.23 != Approx( 1.24 )
+ok {test-number} - d != Approx( 1.24 ) for: 1.22999999999999998 != Approx( 1.23999999999999999 )
 # Some simple comparisons between doubles
-ok {test-number} - d == 1.23_a for: 1.23 == Approx( 1.23 )
+ok {test-number} - d == 1.23_a for: 1.22999999999999998 == Approx( 1.22999999999999998 )
 # Some simple comparisons between doubles
-ok {test-number} - d != 1.22_a for: 1.23 != Approx( 1.22 )
+ok {test-number} - d != 1.22_a for: 1.22999999999999998 != Approx( 1.21999999999999997 )
 # Some simple comparisons between doubles
-ok {test-number} - Approx( d ) == 1.23 for: Approx( 1.23 ) == 1.23
+ok {test-number} - Approx( d ) == 1.23 for: Approx( 1.22999999999999998 ) == 1.22999999999999998
 # Some simple comparisons between doubles
-ok {test-number} - Approx( d ) != 1.22 for: Approx( 1.23 ) != 1.22
+ok {test-number} - Approx( d ) != 1.22 for: Approx( 1.22999999999999998 ) != 1.21999999999999997
 # Some simple comparisons between doubles
-ok {test-number} - Approx( d ) != 1.24 for: Approx( 1.23 ) != 1.24
+ok {test-number} - Approx( d ) != 1.24 for: Approx( 1.22999999999999998 ) != 1.23999999999999999
 # StartsWith string matcher
 not ok {test-number} - testStringForMatching(), StartsWith( "This String" ) for: "this string contains 'abc' as a substring" starts with: "This String"
 # StartsWith string matcher
@@ -3319,7 +3319,7 @@ ok {test-number} - vector_a, RangeEquals( array_a_plus_1, close_enough ) for: { 
 # Type conversions of RangeEquals and similar
 ok {test-number} - vector_a, UnorderedRangeEquals( array_a_plus_1, close_enough ) for: { 1, 2, 3 } unordered elements are { 2, 3, 4 }
 # Unexpected exceptions can be translated
-not ok {test-number} - unexpected exception with message: '3.14'
+not ok {test-number} - unexpected exception with message: '3.14000000000000012'
 # Upcasting special member functions
 ok {test-number} - bptr->i == 3 for: 3 == 3
 # Upcasting special member functions
@@ -3611,21 +3611,21 @@ ok {test-number} - unrelated::ADL_size{}, SizeIs(12) for: {?} has size == 12
 # Usage of the SizeIs range matcher
 ok {test-number} - has_size{}, SizeIs(13) for: {?} has size == 13
 # Use a custom approx
-ok {test-number} - d == approx( 1.23 ) for: 1.23 == Approx( 1.23 )
+ok {test-number} - d == approx( 1.23 ) for: 1.22999999999999998 == Approx( 1.22999999999999998 )
 # Use a custom approx
-ok {test-number} - d == approx( 1.22 ) for: 1.23 == Approx( 1.22 )
+ok {test-number} - d == approx( 1.22 ) for: 1.22999999999999998 == Approx( 1.21999999999999997 )
 # Use a custom approx
-ok {test-number} - d == approx( 1.24 ) for: 1.23 == Approx( 1.24 )
+ok {test-number} - d == approx( 1.24 ) for: 1.22999999999999998 == Approx( 1.23999999999999999 )
 # Use a custom approx
-ok {test-number} - d != approx( 1.25 ) for: 1.23 != Approx( 1.25 )
+ok {test-number} - d != approx( 1.25 ) for: 1.22999999999999998 != Approx( 1.25 )
 # Use a custom approx
-ok {test-number} - approx( d ) == 1.23 for: Approx( 1.23 ) == 1.23
+ok {test-number} - approx( d ) == 1.23 for: Approx( 1.22999999999999998 ) == 1.22999999999999998
 # Use a custom approx
-ok {test-number} - approx( d ) == 1.22 for: Approx( 1.23 ) == 1.22
+ok {test-number} - approx( d ) == 1.22 for: Approx( 1.22999999999999998 ) == 1.21999999999999997
 # Use a custom approx
-ok {test-number} - approx( d ) == 1.24 for: Approx( 1.23 ) == 1.24
+ok {test-number} - approx( d ) == 1.24 for: Approx( 1.22999999999999998 ) == 1.23999999999999999
 # Use a custom approx
-ok {test-number} - approx( d ) != 1.25 for: Approx( 1.23 ) != 1.25
+ok {test-number} - approx( d ) != 1.25 for: Approx( 1.22999999999999998 ) != 1.25
 # Variadic macros
 ok {test-number} - with 1 message: 'no assertions'
 # Vector Approx matcher
@@ -3951,11 +3951,11 @@ ok {test-number} -  # SKIP 'skipping because answer = 43'
 # empty tags are not allowed
 ok {test-number} - Catch::TestCaseInfo("", { "test with an empty tag", "[]" }, dummySourceLineInfo)
 # erfc_inv
-ok {test-number} - erfc_inv(1.103560) == Approx(-0.09203687623843015) for: -0.0920368762 == Approx( -0.0920368762 )
+ok {test-number} - erfc_inv(1.103560) == Approx(-0.09203687623843015) for: -0.09203687623843014 == Approx( -0.09203687623843015 )
 # erfc_inv
-ok {test-number} - erfc_inv(1.067400) == Approx(-0.05980291115763361) for: -0.0598029112 == Approx( -0.0598029112 )
+ok {test-number} - erfc_inv(1.067400) == Approx(-0.05980291115763361) for: -0.05980291115763361 == Approx( -0.05980291115763361 )
 # erfc_inv
-ok {test-number} - erfc_inv(0.050000) == Approx(1.38590382434967796) for: 1.3859038243 == Approx( 1.3859038243 )
+ok {test-number} - erfc_inv(0.050000) == Approx(1.38590382434967796) for: 1.38590382434967774 == Approx( 1.38590382434967796 )
 # estimate_clock_resolution
 ok {test-number} - res.mean.count() == rate for: 2000.0 == 2000 (0x<hex digits>)
 # estimate_clock_resolution
@@ -4099,19 +4099,19 @@ ok {test-number} - ti == typeid(int) for: {?} == {?}
 # normal_cdf
 ok {test-number} - normal_cdf(0.000000) == Approx(0.50000000000000000) for: 0.5 == Approx( 0.5 )
 # normal_cdf
-ok {test-number} - normal_cdf(1.000000) == Approx(0.84134474606854293) for: 0.8413447461 == Approx( 0.8413447461 )
+ok {test-number} - normal_cdf(1.000000) == Approx(0.84134474606854293) for: 0.84134474606854293 == Approx( 0.84134474606854293 )
 # normal_cdf
-ok {test-number} - normal_cdf(-1.000000) == Approx(0.15865525393145705) for: 0.1586552539 == Approx( 0.1586552539 )
+ok {test-number} - normal_cdf(-1.000000) == Approx(0.15865525393145705) for: 0.15865525393145707 == Approx( 0.15865525393145705 )
 # normal_cdf
-ok {test-number} - normal_cdf(2.809729) == Approx(0.99752083845315409) for: 0.9975208385 == Approx( 0.9975208385 )
+ok {test-number} - normal_cdf(2.809729) == Approx(0.99752083845315409) for: 0.99752083845315409 == Approx( 0.99752083845315409 )
 # normal_cdf
-ok {test-number} - normal_cdf(-1.352570) == Approx(0.08809652095066035) for: 0.088096521 == Approx( 0.088096521 )
+ok {test-number} - normal_cdf(-1.352570) == Approx(0.08809652095066035) for: 0.08809652095066035 == Approx( 0.08809652095066035 )
 # normal_quantile
-ok {test-number} - normal_quantile(0.551780) == Approx(0.13015979861484198) for: 0.1301597986 == Approx( 0.1301597986 )
+ok {test-number} - normal_quantile(0.551780) == Approx(0.13015979861484198) for: 0.13015979861484195 == Approx( 0.13015979861484198 )
 # normal_quantile
-ok {test-number} - normal_quantile(0.533700) == Approx(0.08457408802851875) for: 0.084574088 == Approx( 0.084574088 )
+ok {test-number} - normal_quantile(0.533700) == Approx(0.08457408802851875) for: 0.08457408802851875 == Approx( 0.08457408802851875 )
 # normal_quantile
-ok {test-number} - normal_quantile(0.025000) == Approx(-1.95996398454005449) for: -1.9599639845 == Approx( -1.9599639845 )
+ok {test-number} - normal_quantile(0.025000) == Approx(-1.95996398454005449) for: -1.95996398454005405 == Approx( -1.95996398454005449 )
 # not allowed
 ok {test-number} -
 # not prints unscoped info from previous failures
@@ -4395,15 +4395,15 @@ ok {test-number} - "{ }" == ::Catch::Detail::stringify(type{}) for: "{ }" == "{ 
 # tuple<>
 ok {test-number} - "{ }" == ::Catch::Detail::stringify(value) for: "{ }" == "{ }"
 # tuple<float,int>
-ok {test-number} - "1.2f" == ::Catch::Detail::stringify(float(1.2)) for: "1.2f" == "1.2f"
+ok {test-number} - "1.5f" == ::Catch::Detail::stringify(float(1.5)) for: "1.5f" == "1.5f"
 # tuple<float,int>
-ok {test-number} - "{ 1.2f, 0 }" == ::Catch::Detail::stringify(type{1.2f,0}) for: "{ 1.2f, 0 }" == "{ 1.2f, 0 }"
+ok {test-number} - "{ 1.5f, 0 }" == ::Catch::Detail::stringify(type{1.5f,0}) for: "{ 1.5f, 0 }" == "{ 1.5f, 0 }"
 # tuple<int>
 ok {test-number} - "{ 0 }" == ::Catch::Detail::stringify(type{0}) for: "{ 0 }" == "{ 0 }"
 # tuple<string,string>
 ok {test-number} - "{ \"hello\", \"world\" }" == ::Catch::Detail::stringify(type{"hello","world"}) for: "{ "hello", "world" }" == "{ "hello", "world" }"
 # tuple<tuple<int>,tuple<>,float>
-ok {test-number} - "{ { 42 }, { }, 1.2f }" == ::Catch::Detail::stringify(value) for: "{ { 42 }, { }, 1.2f }" == "{ { 42 }, { }, 1.2f }"
+ok {test-number} - "{ { 42 }, { }, 1.5f }" == ::Catch::Detail::stringify(value) for: "{ { 42 }, { }, 1.5f }" == "{ { 42 }, { }, 1.5f }"
 # uniform samples
 ok {test-number} - e.point == 23 for: 23.0 == 23
 # uniform samples
@@ -4411,7 +4411,7 @@ ok {test-number} - e.upper_bound == 23 for: 23.0 == 23
 # uniform samples
 ok {test-number} - e.lower_bound == 23 for: 23.0 == 23
 # uniform samples
-ok {test-number} - e.confidence_interval == 0.95 for: 0.95 == 0.95
+ok {test-number} - e.confidence_interval == 0.95 for: 0.94999999999999996 == 0.94999999999999996
 # uniform_integer_distribution can return the bounds
 ok {test-number} - dist.a() == -10 for: -10 == -10
 # uniform_integer_distribution can return the bounds

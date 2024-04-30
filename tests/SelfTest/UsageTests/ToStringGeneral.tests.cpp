@@ -124,8 +124,8 @@ TEST_CASE("Precision of floating point stringification can be set", "[toString][
         const auto oldPrecision = sm::precision;
 
         const float testFloat = 1.12345678901234567899f;
-        auto str1 = sm::convert(testFloat);
         sm::precision = 5;
+        auto str1 = sm::convert( testFloat );
         // "1." prefix = 2 chars, f suffix is another char
         CHECK(str1.size() == 3 + 5);
 
