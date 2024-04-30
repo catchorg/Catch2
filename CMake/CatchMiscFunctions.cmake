@@ -68,6 +68,7 @@ function(add_warnings_to_targets targets)
           "-Wmissing-noreturn"
           "-Wmissing-prototypes"
           "-Wmissing-variable-declarations"
+          "-Wnon-virtual-dtor"
           "-Wnull-dereference"
           "-Wold-style-cast"
           "-Woverloaded-virtual"

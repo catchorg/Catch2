@@ -18,6 +18,16 @@
 
 namespace Catch {
 
+#ifdef __clang__
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wsign-compare"
+#    pragma clang diagnostic ignored "-Wnon-virtual-dtor"
+#elif defined __GNUC__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wsign-compare"
+#    pragma GCC diagnostic ignored "-Wnon-virtual-dtor"
+#endif
+
     template<typename ArgT, typename MatcherT>
     class MatchExpr : public ITransientExpression {
         ArgT && m_arg;
@@ -35,6 +45,13 @@ namespace Catch {
                << m_matcher.toString();
         }
     };
+
+#ifdef __clang__
+#    pragma clang diagnostic pop
+#elif defined __GNUC__
+#    pragma GCC diagnostic pop
+#endif
+
 
     namespace Matchers {
         template <typename ArgT>
