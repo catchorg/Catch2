@@ -4096,16 +4096,6 @@ ok {test-number} -  # SKIP
 ok {test-number} - s == "7" for: "7" == "7"
 # non-copyable objects
 ok {test-number} - ti == typeid(int) for: {?} == {?}
-# normal_cdf
-ok {test-number} - normal_cdf(0.000000) == Approx(0.50000000000000000) for: 0.5 == Approx( 0.5 )
-# normal_cdf
-ok {test-number} - normal_cdf(1.000000) == Approx(0.84134474606854293) for: 0.84134474606854293 == Approx( 0.84134474606854293 )
-# normal_cdf
-ok {test-number} - normal_cdf(-1.000000) == Approx(0.15865525393145705) for: 0.15865525393145707 == Approx( 0.15865525393145705 )
-# normal_cdf
-ok {test-number} - normal_cdf(2.809729) == Approx(0.99752083845315409) for: 0.99752083845315409 == Approx( 0.99752083845315409 )
-# normal_cdf
-ok {test-number} - normal_cdf(-1.352570) == Approx(0.08809652095066035) for: 0.08809652095066035 == Approx( 0.08809652095066035 )
 # normal_quantile
 ok {test-number} - normal_quantile(0.551780) == Approx(0.13015979861484198) for: 0.13015979861484195 == Approx( 0.13015979861484198 )
 # normal_quantile
@@ -4538,5 +4528,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2272
+1..2267
 

@@ -120,7 +120,6 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="estimate_clock_resolution" duration="{duration}"/>
     <testCase name="mean" duration="{duration}"/>
     <testCase name="measure" duration="{duration}"/>
-    <testCase name="normal_cdf" duration="{duration}"/>
     <testCase name="normal_quantile" duration="{duration}"/>
     <testCase name="resolution" duration="{duration}"/>
     <testCase name="run_for_at_least, chronometer" duration="{duration}"/>

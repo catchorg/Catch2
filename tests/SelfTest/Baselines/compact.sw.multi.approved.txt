@@ -2571,19 +2571,6 @@ Misc.tests.cpp:<line number>: passed: a != b for: 1 != 2
 Skip.tests.cpp:<line number>: skipped:
 Tricky.tests.cpp:<line number>: passed: s == "7" for: "7" == "7"
 Tricky.tests.cpp:<line number>: passed: ti == typeid(int) for: {?} == {?}
-InternalBenchmark.tests.cpp:<line number>: passed: normal_cdf(0.000000) == Approx(0.50000000000000000) for: 0.5 == Approx( 0.5 )
-InternalBenchmark.tests.cpp:<line number>: passed: normal_cdf(1.000000) == Approx(0.84134474606854293) for: 0.84134474606854293
-==
-Approx( 0.84134474606854293 )
-InternalBenchmark.tests.cpp:<line number>: passed: normal_cdf(-1.000000) == Approx(0.15865525393145705) for: 0.15865525393145707
-==
-Approx( 0.15865525393145705 )
-InternalBenchmark.tests.cpp:<line number>: passed: normal_cdf(2.809729) == Approx(0.99752083845315409) for: 0.99752083845315409
-==
-Approx( 0.99752083845315409 )
-InternalBenchmark.tests.cpp:<line number>: passed: normal_cdf(-1.352570) == Approx(0.08809652095066035) for: 0.08809652095066035
-==
-Approx( 0.08809652095066035 )
 InternalBenchmark.tests.cpp:<line number>: passed: normal_quantile(0.551780) == Approx(0.13015979861484198) for: 0.13015979861484195
 ==
 Approx( 0.13015979861484198 )
@@ -2842,7 +2829,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  417 |  312 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2260 | 2079 passed | 146 failed | 35 failed as expected
+test cases:  416 |  311 passed |  85 failed | 6 skipped | 14 failed as expected
+assertions: 2255 | 2074 passed | 146 failed | 35 failed as expected
 
 

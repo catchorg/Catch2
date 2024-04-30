@@ -172,7 +172,7 @@ TEST_CASE("uniform samples", "[benchmark]") {
 }
 
 
-TEST_CASE("normal_cdf", "[benchmark]") {
+TEST_CASE("normal_cdf", "[benchmark][approvals]") {
     using Catch::Benchmark::Detail::normal_cdf;
     using Catch::Approx;
     CHECK(normal_cdf(0.000000) == Approx(0.50000000000000000));

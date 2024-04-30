@@ -17076,45 +17076,6 @@ with expansion:
   {?} == {?}
 
 -------------------------------------------------------------------------------
-normal_cdf
--------------------------------------------------------------------------------
-InternalBenchmark.tests.cpp:<line number>
-...............................................................................
-
-InternalBenchmark.tests.cpp:<line number>: PASSED:
-  CHECK( normal_cdf(0.000000) == Approx(0.50000000000000000) )
-with expansion:
-  0.5 == Approx( 0.5 )
-
-InternalBenchmark.tests.cpp:<line number>: PASSED:
-  CHECK( normal_cdf(1.000000) == Approx(0.84134474606854293) )
-with expansion:
-  0.84134474606854293
-  ==
-  Approx( 0.84134474606854293 )
-
-InternalBenchmark.tests.cpp:<line number>: PASSED:
-  CHECK( normal_cdf(-1.000000) == Approx(0.15865525393145705) )
-with expansion:
-  0.15865525393145707
-  ==
-  Approx( 0.15865525393145705 )
-
-InternalBenchmark.tests.cpp:<line number>: PASSED:
-  CHECK( normal_cdf(2.809729) == Approx(0.99752083845315409) )
-with expansion:
-  0.99752083845315409
-  ==
-  Approx( 0.99752083845315409 )
-
-InternalBenchmark.tests.cpp:<line number>: PASSED:
-  CHECK( normal_cdf(-1.352570) == Approx(0.08809652095066035) )
-with expansion:
-  0.08809652095066035
-  ==
-  Approx( 0.08809652095066035 )
-
--------------------------------------------------------------------------------
 normal_quantile
 -------------------------------------------------------------------------------
 InternalBenchmark.tests.cpp:<line number>
@@ -18933,6 +18894,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  417 |  312 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2260 | 2079 passed | 146 failed | 35 failed as expected
+test cases:  416 |  311 passed |  85 failed | 6 skipped | 14 failed as expected
+assertions: 2255 | 2074 passed | 146 failed | 35 failed as expected
 

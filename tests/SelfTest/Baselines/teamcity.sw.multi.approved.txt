@@ -860,8 +860,6 @@
 ##teamcity[testFinished name='non streamable - with conv. op' duration="{duration}"]
 ##teamcity[testStarted name='non-copyable objects']
 ##teamcity[testFinished name='non-copyable objects' duration="{duration}"]
-##teamcity[testStarted name='normal_cdf']
-##teamcity[testFinished name='normal_cdf' duration="{duration}"]
 ##teamcity[testStarted name='normal_quantile']
 ##teamcity[testFinished name='normal_quantile' duration="{duration}"]
 ##teamcity[testStarted name='not allowed']

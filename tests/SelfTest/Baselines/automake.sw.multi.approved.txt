@@ -343,7 +343,6 @@
 :test-result: FAIL nested sections can be skipped dynamically at runtime
 :test-result: PASS non streamable - with conv. op
 :test-result: PASS non-copyable objects
-:test-result: PASS normal_cdf
 :test-result: PASS normal_quantile
 :test-result: PASS not allowed
 :test-result: FAIL not prints unscoped info from previous failures

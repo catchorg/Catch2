@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="129" skipped="12" tests="2272" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="129" skipped="12" tests="2267" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1931,7 +1931,6 @@ b1!
     </testcase>
     <testcase classname="<exe-name>.global" name="non streamable - with conv. op" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="non-copyable objects" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="normal_cdf" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="normal_quantile" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="not allowed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="not prints unscoped info from previous failures" time="{duration}" status="run">

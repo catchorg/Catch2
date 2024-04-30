@@ -19733,57 +19733,6 @@ b1!
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <TestCase name="normal_cdf" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
-    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
-      <Original>
-        normal_cdf(0.000000) == Approx(0.50000000000000000)
-      </Original>
-      <Expanded>
-        0.5 == Approx( 0.5 )
-      </Expanded>
-    </Expression>
-    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
-      <Original>
-        normal_cdf(1.000000) == Approx(0.84134474606854293)
-      </Original>
-      <Expanded>
-        0.84134474606854293
-==
-Approx( 0.84134474606854293 )
-      </Expanded>
-    </Expression>
-    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
-      <Original>
-        normal_cdf(-1.000000) == Approx(0.15865525393145705)
-      </Original>
-      <Expanded>
-        0.15865525393145707
-==
-Approx( 0.15865525393145705 )
-      </Expanded>
-    </Expression>
-    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
-      <Original>
-        normal_cdf(2.809729) == Approx(0.99752083845315409)
-      </Original>
-      <Expanded>
-        0.99752083845315409
-==
-Approx( 0.99752083845315409 )
-      </Expanded>
-    </Expression>
-    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
-      <Original>
-        normal_cdf(-1.352570) == Approx(0.08809652095066035)
-      </Original>
-      <Expanded>
-        0.08809652095066035
-==
-Approx( 0.08809652095066035 )
-      </Expanded>
-    </Expression>
-    <OverallResult success="true" skips="0"/>
-  </TestCase>
   <TestCase name="normal_quantile" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
       <Original>
@@ -21883,6 +21832,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2079" failures="146" expectedFailures="35" skips="12"/>
-  <OverallResultsCases successes="312" failures="85" expectedFailures="14" skips="6"/>
+  <OverallResults successes="2074" failures="146" expectedFailures="35" skips="12"/>
+  <OverallResultsCases successes="311" failures="85" expectedFailures="14" skips="6"/>
 </Catch2TestRun>
