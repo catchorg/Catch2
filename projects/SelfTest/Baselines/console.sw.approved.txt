@@ -2135,7 +2135,7 @@ with expansion:
 -------------------------------------------------------------------------------
 A couple of nested sections followed by a failure
   Outer
-  Inner
+    Inner
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -2495,7 +2495,7 @@ Tricky.tests.cpp:<line number>: PASSED:
 -------------------------------------------------------------------------------
 Assertions then sections
   A section
-  Another section
+    Another section
 -------------------------------------------------------------------------------
 Tricky.tests.cpp:<line number>
 ...............................................................................
@@ -2525,7 +2525,7 @@ Tricky.tests.cpp:<line number>: PASSED:
 -------------------------------------------------------------------------------
 Assertions then sections
   A section
-  Another other section
+    Another other section
 -------------------------------------------------------------------------------
 Tricky.tests.cpp:<line number>
 ...............................................................................
@@ -3802,7 +3802,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Floating point matchers: double
   Relative
-  Some subnormal values
+    Some subnormal values
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
 ...............................................................................
@@ -3987,7 +3987,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Floating point matchers: float
   Relative
-  Some subnormal values
+    Some subnormal values
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
 ...............................................................................
@@ -4147,7 +4147,7 @@ Matchers.tests.cpp:<line number>: PASSED:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Filtering by predicate
-  Basic usage
+    Basic usage
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4160,7 +4160,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Filtering by predicate
-  Basic usage
+    Basic usage
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4173,7 +4173,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Filtering by predicate
-  Basic usage
+    Basic usage
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4186,7 +4186,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Filtering by predicate
-  Throws if there are no matching values
+    Throws if there are no matching values
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4233,7 +4233,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Transforming elements
-  Same type
+    Same type
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4246,7 +4246,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Transforming elements
-  Same type
+    Same type
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4259,7 +4259,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Transforming elements
-  Same type
+    Same type
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4272,7 +4272,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Transforming elements
-  Different type
+    Different type
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4285,7 +4285,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Transforming elements
-  Different type
+    Different type
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4298,7 +4298,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Transforming elements
-  Different type
+    Different type
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4311,7 +4311,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Transforming elements
-  Different deduced type
+    Different deduced type
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4324,7 +4324,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Transforming elements
-  Different deduced type
+    Different deduced type
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4337,7 +4337,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Transforming elements
-  Different deduced type
+    Different deduced type
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4422,7 +4422,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Chunking a generator into sized pieces
-  Number of elements in source is divisible by chunk size
+    Number of elements in source is divisible by chunk size
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4440,7 +4440,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Chunking a generator into sized pieces
-  Number of elements in source is divisible by chunk size
+    Number of elements in source is divisible by chunk size
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4458,7 +4458,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Chunking a generator into sized pieces
-  Number of elements in source is divisible by chunk size
+    Number of elements in source is divisible by chunk size
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4476,7 +4476,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Chunking a generator into sized pieces
-  Number of elements in source is not divisible by chunk size
+    Number of elements in source is not divisible by chunk size
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4499,7 +4499,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Chunking a generator into sized pieces
-  Number of elements in source is not divisible by chunk size
+    Number of elements in source is not divisible by chunk size
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4522,7 +4522,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Chunking a generator into sized pieces
-  Chunk size of zero
+    Chunk size of zero
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4535,7 +4535,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Chunking a generator into sized pieces
-  Chunk size of zero
+    Chunk size of zero
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4548,7 +4548,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Chunking a generator into sized pieces
-  Chunk size of zero
+    Chunk size of zero
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4561,7 +4561,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Chunking a generator into sized pieces
-  Throws on too small generators
+    Throws on too small generators
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -4974,7 +4974,7 @@ GeneratorsImpl.tests.cpp:<line number>: PASSED:
 -------------------------------------------------------------------------------
 Generators internals
   Take generator
-  Take less
+    Take less
 -------------------------------------------------------------------------------
 GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
@@ -5002,7 +5002,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators internals
   Take generator
-  Take more
+    Take more
 -------------------------------------------------------------------------------
 GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
@@ -5094,7 +5094,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators internals
   Repeat
-  Singular repeat
+    Singular repeat
 -------------------------------------------------------------------------------
 GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
@@ -5112,7 +5112,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators internals
   Repeat
-  Actual repeat
+    Actual repeat
 -------------------------------------------------------------------------------
 GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
@@ -5180,8 +5180,8 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators internals
   Range
-  Positive auto step
-  Integer
+    Positive auto step
+      Integer
 -------------------------------------------------------------------------------
 GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
@@ -5229,8 +5229,8 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators internals
   Range
-  Negative auto step
-  Integer
+    Negative auto step
+      Integer
 -------------------------------------------------------------------------------
 GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
@@ -5278,9 +5278,9 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators internals
   Range
-  Positive manual step
-  Integer
-  Exact
+    Positive manual step
+      Integer
+        Exact
 -------------------------------------------------------------------------------
 GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
@@ -5328,9 +5328,9 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators internals
   Range
-  Positive manual step
-  Integer
-  Slightly over end
+    Positive manual step
+      Integer
+        Slightly over end
 -------------------------------------------------------------------------------
 GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
@@ -5378,9 +5378,9 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators internals
   Range
-  Positive manual step
-  Integer
-  Slightly under end
+    Positive manual step
+      Integer
+        Slightly under end
 -------------------------------------------------------------------------------
 GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
@@ -5438,9 +5438,9 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators internals
   Range
-  Positive manual step
-  Floating Point
-  Exact
+    Positive manual step
+      Floating Point
+        Exact
 -------------------------------------------------------------------------------
 GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
@@ -5738,9 +5738,9 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators internals
   Range
-  Positive manual step
-  Floating Point
-  Slightly over end
+    Positive manual step
+      Floating Point
+        Slightly over end
 -------------------------------------------------------------------------------
 GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
@@ -5837,9 +5837,9 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators internals
   Range
-  Positive manual step
-  Floating Point
-  Slightly under end
+    Positive manual step
+      Floating Point
+        Slightly under end
 -------------------------------------------------------------------------------
 GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
@@ -5936,9 +5936,9 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators internals
   Range
-  Negative manual step
-  Integer
-  Exact
+    Negative manual step
+      Integer
+        Exact
 -------------------------------------------------------------------------------
 GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
@@ -5986,9 +5986,9 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators internals
   Range
-  Negative manual step
-  Integer
-  Slightly over end
+    Negative manual step
+      Integer
+        Slightly over end
 -------------------------------------------------------------------------------
 GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
@@ -6036,9 +6036,9 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators internals
   Range
-  Negative manual step
-  Integer
-  Slightly under end
+    Negative manual step
+      Integer
+        Slightly under end
 -------------------------------------------------------------------------------
 GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
@@ -6498,7 +6498,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Mayfail test case with nested sections
   A
-  1
+    1
 -------------------------------------------------------------------------------
 Condition.tests.cpp:<line number>
 ...............................................................................
@@ -6508,7 +6508,7 @@ Condition.tests.cpp:<line number>: FAILED:
 -------------------------------------------------------------------------------
 Mayfail test case with nested sections
   A
-  2
+    2
 -------------------------------------------------------------------------------
 Condition.tests.cpp:<line number>
 ...............................................................................
@@ -6518,7 +6518,7 @@ Condition.tests.cpp:<line number>: FAILED:
 -------------------------------------------------------------------------------
 Mayfail test case with nested sections
   B
-  1
+    1
 -------------------------------------------------------------------------------
 Condition.tests.cpp:<line number>
 ...............................................................................
@@ -6528,7 +6528,7 @@ Condition.tests.cpp:<line number>: FAILED:
 -------------------------------------------------------------------------------
 Mayfail test case with nested sections
   B
-  2
+    2
 -------------------------------------------------------------------------------
 Condition.tests.cpp:<line number>
 ...............................................................................
@@ -8270,7 +8270,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   test lists
-  Specify one test case using
+    Specify one test case using
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8298,7 +8298,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   test lists
-  Specify one test case exclusion using exclude:
+    Specify one test case exclusion using exclude:
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8326,7 +8326,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   test lists
-  Specify one test case exclusion using ~
+    Specify one test case exclusion using ~
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8354,7 +8354,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   reporter
-  -r/console
+    -r/console
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8372,7 +8372,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   reporter
-  -r/xml
+    -r/xml
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8390,7 +8390,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   reporter
-  --reporter/junit
+    --reporter/junit
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8408,7 +8408,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   reporter
-  Only one reporter is accepted
+    Only one reporter is accepted
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8421,7 +8421,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   reporter
-  must match one of the available ones
+    must match one of the available ones
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8440,7 +8440,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   debugger
-  -b
+    -b
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8458,7 +8458,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   debugger
-  --break
+    --break
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8476,7 +8476,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   abort
-  -a aborts after first failure
+    -a aborts after first failure
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8494,7 +8494,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   abort
-  -x 2 aborts after two failures
+    -x 2 aborts after two failures
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8512,7 +8512,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   abort
-  -x must be numeric
+    -x must be numeric
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8531,8 +8531,8 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   abort
-  wait-for-keypress
-  Accepted options
+    wait-for-keypress
+      Accepted options
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8550,8 +8550,8 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   abort
-  wait-for-keypress
-  Accepted options
+    wait-for-keypress
+      Accepted options
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8569,8 +8569,8 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   abort
-  wait-for-keypress
-  Accepted options
+    wait-for-keypress
+      Accepted options
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8588,8 +8588,8 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   abort
-  wait-for-keypress
-  Accepted options
+    wait-for-keypress
+      Accepted options
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8607,8 +8607,8 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   abort
-  wait-for-keypress
-  invalid options are reported
+    wait-for-keypress
+      invalid options are reported
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8627,7 +8627,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   nothrow
-  -e
+    -e
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8645,7 +8645,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   nothrow
-  --nothrow
+    --nothrow
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8663,7 +8663,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   output filename
-  -o filename
+    -o filename
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8681,7 +8681,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   output filename
-  --out
+    --out
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8699,7 +8699,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   combinations
-  Single character flags can be combined
+    Single character flags can be combined
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8727,7 +8727,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   use-colour
-  without option
+    without option
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8745,7 +8745,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   use-colour
-  auto
+    auto
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8763,7 +8763,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   use-colour
-  yes
+    yes
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8781,7 +8781,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   use-colour
-  no
+    no
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8799,7 +8799,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   use-colour
-  error
+    error
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8818,7 +8818,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   Benchmark options
-  samples
+    samples
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8836,7 +8836,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   Benchmark options
-  resamples
+    resamples
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8854,7 +8854,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   Benchmark options
-  confidence-interval
+    confidence-interval
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8872,7 +8872,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   Benchmark options
-  no-analysis
+    no-analysis
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8890,7 +8890,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   Benchmark options
-  warmup-time
+    warmup-time
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -9030,8 +9030,8 @@ with expansion:
 Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or
           methods
       Given: No operations precede me
-       When: We get the count
-       Then: Subsequently values are higher
+         When: We get the count
+           Then: Subsequently values are higher
 -------------------------------------------------------------------------------
 BDD.tests.cpp:<line number>
 ...............................................................................
@@ -9044,9 +9044,9 @@ with expansion:
 -------------------------------------------------------------------------------
 Scenario: Do that thing with the thing
       Given: This stuff exists
-  And given: And some assumption
-       When: I do this
-       Then: it should do this
+    And given: And some assumption
+           When: I do this
+             Then: it should do this
 -------------------------------------------------------------------------------
 BDD.tests.cpp:<line number>
 ...............................................................................
@@ -9059,10 +9059,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Scenario: Do that thing with the thing
       Given: This stuff exists
-  And given: And some assumption
-       When: I do this
-       Then: it should do this
-        And: do that
+    And given: And some assumption
+           When: I do this
+             Then: it should do this
+                And: do that
 -------------------------------------------------------------------------------
 BDD.tests.cpp:<line number>
 ...............................................................................
@@ -9077,10 +9077,10 @@ Scenario: This is a really long scenario name to see how the list command deals
           with wrapping
       Given: A section name that is so long that it cannot fit in a single
              console width
-       When: The test headers are printed as part of the normal running of the
-             scenario
-       Then: The, deliberately very long and overly verbose (you see what I did
-             there?) section names must wrap, along with an indent
+         When: The test headers are printed as part of the normal running of
+               the scenario
+           Then: The, deliberately very long and overly verbose (you see what I
+                 did there?) section names must wrap, along with an indent
 -------------------------------------------------------------------------------
 BDD.tests.cpp:<line number>
 ...............................................................................
@@ -9104,8 +9104,8 @@ with expansion:
 -------------------------------------------------------------------------------
 Scenario: Vector resizing affects size and capacity
       Given: an empty vector
-       When: it is made larger
-       Then: the size and capacity go up
+         When: it is made larger
+           Then: the size and capacity go up
 -------------------------------------------------------------------------------
 BDD.tests.cpp:<line number>
 ...............................................................................
@@ -9123,10 +9123,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Scenario: Vector resizing affects size and capacity
       Given: an empty vector
-       When: it is made larger
-       Then: the size and capacity go up
-   And when: it is made smaller again
-       Then: the size goes down but the capacity stays the same
+         When: it is made larger
+           Then: the size and capacity go up
+         And when: it is made smaller again
+               Then: the size goes down but the capacity stays the same
 -------------------------------------------------------------------------------
 BDD.tests.cpp:<line number>
 ...............................................................................
@@ -9156,8 +9156,8 @@ with expansion:
 -------------------------------------------------------------------------------
 Scenario: Vector resizing affects size and capacity
       Given: an empty vector
-       When: we reserve more space
-       Then: The capacity is increased but the size remains the same
+         When: we reserve more space
+           Then: The capacity is increased but the size remains the same
 -------------------------------------------------------------------------------
 BDD.tests.cpp:<line number>
 ...............................................................................
@@ -9448,7 +9448,7 @@ String.tests.cpp:<line number>: PASSED:
 -------------------------------------------------------------------------------
 StringRef
   Substrings
-  zero-based substring
+    zero-based substring
 -------------------------------------------------------------------------------
 String.tests.cpp:<line number>
 ...............................................................................
@@ -9476,7 +9476,7 @@ with expansion:
 -------------------------------------------------------------------------------
 StringRef
   Substrings
-  non-zero-based substring
+    non-zero-based substring
 -------------------------------------------------------------------------------
 String.tests.cpp:<line number>
 ...............................................................................
@@ -9494,7 +9494,7 @@ with expansion:
 -------------------------------------------------------------------------------
 StringRef
   Substrings
-  Pointer values of full refs should match
+    Pointer values of full refs should match
 -------------------------------------------------------------------------------
 String.tests.cpp:<line number>
 ...............................................................................
@@ -9507,7 +9507,7 @@ with expansion:
 -------------------------------------------------------------------------------
 StringRef
   Substrings
-  Pointer values of substring refs should also match
+    Pointer values of substring refs should also match
 -------------------------------------------------------------------------------
 String.tests.cpp:<line number>
 ...............................................................................
@@ -9520,7 +9520,7 @@ with expansion:
 -------------------------------------------------------------------------------
 StringRef
   Substrings
-  Past the end substring
+    Past the end substring
 -------------------------------------------------------------------------------
 String.tests.cpp:<line number>
 ...............................................................................
@@ -9533,7 +9533,7 @@ with expansion:
 -------------------------------------------------------------------------------
 StringRef
   Substrings
-  Substring off the end are trimmed
+    Substring off the end are trimmed
 -------------------------------------------------------------------------------
 String.tests.cpp:<line number>
 ...............................................................................
@@ -9568,7 +9568,7 @@ with expansion:
 -------------------------------------------------------------------------------
 StringRef
   from std::string
-  implicitly constructed
+    implicitly constructed
 -------------------------------------------------------------------------------
 String.tests.cpp:<line number>
 ...............................................................................
@@ -9586,7 +9586,7 @@ with expansion:
 -------------------------------------------------------------------------------
 StringRef
   from std::string
-  explicitly constructed
+    explicitly constructed
 -------------------------------------------------------------------------------
 String.tests.cpp:<line number>
 ...............................................................................
@@ -9604,7 +9604,7 @@ with expansion:
 -------------------------------------------------------------------------------
 StringRef
   from std::string
-  assigned
+    assigned
 -------------------------------------------------------------------------------
 String.tests.cpp:<line number>
 ...............................................................................
@@ -9622,7 +9622,7 @@ with expansion:
 -------------------------------------------------------------------------------
 StringRef
   to std::string
-  explicitly constructed
+    explicitly constructed
 -------------------------------------------------------------------------------
 String.tests.cpp:<line number>
 ...............................................................................
@@ -9640,7 +9640,7 @@ with expansion:
 -------------------------------------------------------------------------------
 StringRef
   to std::string
-  assigned
+    assigned
 -------------------------------------------------------------------------------
 String.tests.cpp:<line number>
 ...............................................................................
@@ -10026,7 +10026,7 @@ with expansion:
 -------------------------------------------------------------------------------
 TemplateTest: vectors can be sized and resized - float
   resizing smaller changes size but not capacity
-  We can use the 'swap trick' to reset the capacity
+    We can use the 'swap trick' to reset the capacity
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -10171,7 +10171,7 @@ with expansion:
 -------------------------------------------------------------------------------
 TemplateTest: vectors can be sized and resized - int
   resizing smaller changes size but not capacity
-  We can use the 'swap trick' to reset the capacity
+    We can use the 'swap trick' to reset the capacity
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -10316,7 +10316,7 @@ with expansion:
 -------------------------------------------------------------------------------
 TemplateTest: vectors can be sized and resized - std::string
   resizing smaller changes size but not capacity
-  We can use the 'swap trick' to reset the capacity
+    We can use the 'swap trick' to reset the capacity
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -10461,7 +10461,7 @@ with expansion:
 -------------------------------------------------------------------------------
 TemplateTest: vectors can be sized and resized - std::tuple<int,float>
   resizing smaller changes size but not capacity
-  We can use the 'swap trick' to reset the capacity
+    We can use the 'swap trick' to reset the capacity
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -10606,7 +10606,7 @@ with expansion:
 -------------------------------------------------------------------------------
 TemplateTestSig: vectors can be sized and resized - (std::tuple<int, float>), 6
   resizing smaller changes size but not capacity
-  We can use the 'swap trick' to reset the capacity
+    We can use the 'swap trick' to reset the capacity
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -10751,7 +10751,7 @@ with expansion:
 -------------------------------------------------------------------------------
 TemplateTestSig: vectors can be sized and resized - float,4
   resizing smaller changes size but not capacity
-  We can use the 'swap trick' to reset the capacity
+    We can use the 'swap trick' to reset the capacity
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -10896,7 +10896,7 @@ with expansion:
 -------------------------------------------------------------------------------
 TemplateTestSig: vectors can be sized and resized - int,5
   resizing smaller changes size but not capacity
-  We can use the 'swap trick' to reset the capacity
+    We can use the 'swap trick' to reset the capacity
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -11041,7 +11041,7 @@ with expansion:
 -------------------------------------------------------------------------------
 TemplateTestSig: vectors can be sized and resized - std::string,15
   resizing smaller changes size but not capacity
-  We can use the 'swap trick' to reset the capacity
+    We can use the 'swap trick' to reset the capacity
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -11272,7 +11272,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Tracker
   fail one section
-  re-enter after failed section
+    re-enter after failed section
 -------------------------------------------------------------------------------
 PartTracker.tests.cpp:<line number>
 ...............................................................................
@@ -11353,7 +11353,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Tracker
   fail one section
-  re-enter after failed section and find next section
+    re-enter after failed section and find next section
 -------------------------------------------------------------------------------
 PartTracker.tests.cpp:<line number>
 ...............................................................................
@@ -11424,7 +11424,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Tracker
   successfully close one section, then find another
-  Re-enter - skips S1 and enters S2
+    Re-enter - skips S1 and enters S2
 -------------------------------------------------------------------------------
 PartTracker.tests.cpp:<line number>
 ...............................................................................
@@ -11452,8 +11452,8 @@ with expansion:
 -------------------------------------------------------------------------------
 Tracker
   successfully close one section, then find another
-  Re-enter - skips S1 and enters S2
-  Successfully close S2
+    Re-enter - skips S1 and enters S2
+      Successfully close S2
 -------------------------------------------------------------------------------
 PartTracker.tests.cpp:<line number>
 ...............................................................................
@@ -11514,7 +11514,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Tracker
   successfully close one section, then find another
-  Re-enter - skips S1 and enters S2
+    Re-enter - skips S1 and enters S2
 -------------------------------------------------------------------------------
 PartTracker.tests.cpp:<line number>
 ...............................................................................
@@ -11542,8 +11542,8 @@ with expansion:
 -------------------------------------------------------------------------------
 Tracker
   successfully close one section, then find another
-  Re-enter - skips S1 and enters S2
-  fail S2
+    Re-enter - skips S1 and enters S2
+      fail S2
 -------------------------------------------------------------------------------
 PartTracker.tests.cpp:<line number>
 ...............................................................................
@@ -11785,7 +11785,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Vector Approx matcher
   Vectors with elements
-  A vector is approx equal to itself
+    A vector is approx equal to itself
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
 ...............................................................................
@@ -11803,7 +11803,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Vector Approx matcher
   Vectors with elements
-  Different length
+    Different length
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
 ...............................................................................
@@ -11816,7 +11816,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Vector Approx matcher
   Vectors with elements
-  Same length, different elements
+    Same length, different elements
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
 ...............................................................................
@@ -12557,7 +12557,7 @@ with expansion:
 -------------------------------------------------------------------------------
 even more nested SECTION tests
   c
-  d (leaf)
+    d (leaf)
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -12567,7 +12567,7 @@ Misc.tests.cpp:<line number>: PASSED:
 -------------------------------------------------------------------------------
 even more nested SECTION tests
   c
-  e (leaf)
+    e (leaf)
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -12857,7 +12857,7 @@ No assertions in test case 'mix info, unscoped info and warning'
 -------------------------------------------------------------------------------
 more nested SECTION tests
   doesn't equal
-  equal
+    equal
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -12870,7 +12870,7 @@ with expansion:
 -------------------------------------------------------------------------------
 more nested SECTION tests
   doesn't equal
-  not equal
+    not equal
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -12883,7 +12883,7 @@ with expansion:
 -------------------------------------------------------------------------------
 more nested SECTION tests
   doesn't equal
-  less than
+    less than
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -12913,7 +12913,7 @@ with expansion:
 -------------------------------------------------------------------------------
 nested SECTION tests
   doesn't equal
-  not equal
+    not equal
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -14084,7 +14084,7 @@ with expansion:
 -------------------------------------------------------------------------------
 vectors can be sized and resized
   resizing smaller changes size but not capacity
-  We can use the 'swap trick' to reset the capacity
+    We can use the 'swap trick' to reset the capacity
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
