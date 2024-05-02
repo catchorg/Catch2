@@ -250,6 +250,12 @@ namespace Catch {
             .writeAttribute("lowSevere"_sr, benchmarkStats.outliers.low_severe)
             .writeAttribute("highMild"_sr, benchmarkStats.outliers.high_mild)
             .writeAttribute("highSevere"_sr, benchmarkStats.outliers.high_severe);
+        auto samples = m_xml.scopedElement("samples");
+        for (auto const& sample : benchmarkStats.samples) {
+            m_xml.startElement("sample", XmlFormatting::Indent)
+                .writeText(std::to_string(sample.count()), XmlFormatting::None)
+                .endElement(XmlFormatting::Newline);
+        }
         m_xml.endElement();
     }
 
