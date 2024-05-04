@@ -204,7 +204,7 @@ TEST_CASE( "TextFlow::AnsiSkippingString skips ansi sequences",
            "[TextFlow][ansiskippingstring][approvals]" ) {
 
     SECTION("basic string") {
-        std::string text = "a[38;2;98;174;239mb[38mc[0md[me";
+        std::string text = "a\033[38;2;98;174;239mb\033[38mc\033[0md\033[me";
         AnsiSkippingString str(text);
 
         SECTION( "iterates forward" ) {
@@ -238,7 +238,7 @@ TEST_CASE( "TextFlow::AnsiSkippingString skips ansi sequences",
     }
 
     SECTION( "ansi escape sequences at the start" ) {
-        std::string text = "[38;2;98;174;239ma[38;2;98;174;239mb[38mc[0md[me";
+        std::string text = "\033[38;2;98;174;239ma\033[38;2;98;174;239mb\033[38mc\033[0md\033[me";
         AnsiSkippingString str(text);
         auto it = str.begin();
         CHECK(*it == 'a');
@@ -266,7 +266,7 @@ TEST_CASE( "TextFlow::AnsiSkippingString skips ansi sequences",
     }
 
     SECTION( "ansi escape sequences at the end" ) {
-        std::string text = "a[38;2;98;174;239mb[38mc[0md[me[38;2;98;174;239m";
+        std::string text = "a\033[38;2;98;174;239mb\033[38mc\033[0md\033[me\033[38;2;98;174;239m";
         AnsiSkippingString str(text);
         auto it = str.begin();
         CHECK(*it == 'a');
@@ -294,7 +294,7 @@ TEST_CASE( "TextFlow::AnsiSkippingString skips ansi sequences",
     }
 
     SECTION( "skips consecutive escapes" ) {
-        std::string text = "[38;2;98;174;239m[38;2;98;174;239ma[38;2;98;174;239mb[38m[38m[38mc[0md[me";
+        std::string text = "\033[38;2;98;174;239m\033[38;2;98;174;239ma\033[38;2;98;174;239mb\033[38m\033[38m\033[38mc\033[0md\033[me";
         AnsiSkippingString str(text);
         auto it = str.begin();
         CHECK(*it == 'a');
@@ -320,11 +320,17 @@ TEST_CASE( "TextFlow::AnsiSkippingString skips ansi sequences",
         CHECK(*it == 'a');
         CHECK(it == str.begin());
     }
+
+    SECTION( "handles incomplete ansi sequences" ) {
+        std::string text = "a\033[b\033[30c\033[30;d\033[30;2e";
+        AnsiSkippingString str(text);
+        CHECK(std::string(str.begin(), str.end()) == text);
+    }
 }
 
 TEST_CASE( "TextFlow::AnsiSkippingString computes the size properly",
            "[TextFlow][ansiskippingstring][approvals]" ) {
-    std::string text = "[38;2;98;174;239m[38;2;98;174;239ma[38;2;98;174;239mb[38m[38m[38mc[0md[me";
+    std::string text = "\033[38;2;98;174;239m\033[38;2;98;174;239ma\033[38;2;98;174;239mb\033[38m\033[38m\033[38mc\033[0md\033[me";
     AnsiSkippingString str(text);
     CHECK(str.size() == 5);
 }
@@ -332,59 +338,59 @@ TEST_CASE( "TextFlow::AnsiSkippingString computes the size properly",
 TEST_CASE( "TextFlow::AnsiSkippingString substrings properly",
            "[TextFlow][ansiskippingstring][approvals]" ) {
     SECTION("basic test") {
-        std::string text = "a[38;2;98;174;239mb[38mc[0md[me";
+        std::string text = "a\033[38;2;98;174;239mb\033[38mc\033[0md\033[me";
         AnsiSkippingString str(text);
         auto a = str.begin();
         auto b = str.begin();
         ++b;
         ++b;
-        CHECK(str.substring(a, b) == "a[38;2;98;174;239mb[38m");
+        CHECK(str.substring(a, b) == "a\033[38;2;98;174;239mb\033[38m");
         ++a;
         ++b;
-        CHECK(str.substring(a, b) == "b[38mc[0m");
-        CHECK(str.substring(a, str.end()) == "b[38mc[0md[me");
+        CHECK(str.substring(a, b) == "b\033[38mc\033[0m");
+        CHECK(str.substring(a, str.end()) == "b\033[38mc\033[0md\033[me");
         CHECK(str.substring(str.begin(), str.end()) == text);
     }
     SECTION("escapes at the start") {
-        std::string text = "[38;2;98;174;239m[38;2;98;174;239ma[38;2;98;174;239mb[38m[38m[38mc[0md[me";
+        std::string text = "\033[38;2;98;174;239m\033[38;2;98;174;239ma\033[38;2;98;174;239mb\033[38m\033[38m\033[38mc\033[0md\033[me";
         AnsiSkippingString str(text);
         auto a = str.begin();
         auto b = str.begin();
         ++b;
         ++b;
-        CHECK(str.substring(a, b) == "[38;2;98;174;239m[38;2;98;174;239ma[38;2;98;174;239mb[38m[38m[38m");
+        CHECK(str.substring(a, b) == "\033[38;2;98;174;239m\033[38;2;98;174;239ma\033[38;2;98;174;239mb\033[38m\033[38m\033[38m");
         ++a;
         ++b;
-        CHECK(str.substring(a, b) == "b[38m[38m[38mc[0m");
-        CHECK(str.substring(a, str.end()) == "b[38m[38m[38mc[0md[me");
+        CHECK(str.substring(a, b) == "b\033[38m\033[38m\033[38mc\033[0m");
+        CHECK(str.substring(a, str.end()) == "b\033[38m\033[38m\033[38mc\033[0md\033[me");
         CHECK(str.substring(str.begin(), str.end()) == text);
     }
     SECTION("escapes at the end") {
-        std::string text = "a[38;2;98;174;239mb[38mc[0md[me[38m";
+        std::string text = "a\033[38;2;98;174;239mb\033[38mc\033[0md\033[me\033[38m";
         AnsiSkippingString str(text);
         auto a = str.begin();
         auto b = str.begin();
         ++b;
         ++b;
-        CHECK(str.substring(a, b) == "a[38;2;98;174;239mb[38m");
+        CHECK(str.substring(a, b) == "a\033[38;2;98;174;239mb\033[38m");
         ++a;
         ++b;
-        CHECK(str.substring(a, b) == "b[38mc[0m");
-        CHECK(str.substring(a, str.end()) == "b[38mc[0md[me[38m");
+        CHECK(str.substring(a, b) == "b\033[38mc\033[0m");
+        CHECK(str.substring(a, str.end()) == "b\033[38mc\033[0md\033[me\033[38m");
         CHECK(str.substring(str.begin(), str.end()) == text);
     }
 }
 
 TEST_CASE( "TextFlow::Column skips ansi escape sequences",
            "[TextFlow][column][approvals]" ) {
-    std::string text = "[38;2;98;174;239m[38;2;198;120;221mThe quick brown [38;2;198;120;221mfox jumped over the lazy dog[0m";
+    std::string text = "\033[38;2;98;174;239m\033[38;2;198;120;221mThe quick brown \033[38;2;198;120;221mfox jumped over the lazy dog\033[0m";
     Column col(text);
 
     SECTION( "width=20" ) {
         col.width( 20 );
-        REQUIRE( as_written( col ) == "[38;2;98;174;239m[38;2;198;120;221mThe quick brown [38;2;198;120;221mfox\n"
+        REQUIRE( as_written( col ) == "\033[38;2;98;174;239m\033[38;2;198;120;221mThe quick brown \033[38;2;198;120;221mfox\n"
                                       "jumped over the lazy\n"
-                                      "dog[0m" );
+                                      "dog\033[0m" );
     }
 
     SECTION( "width=80" ) {
