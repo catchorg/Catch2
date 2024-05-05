@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.6.0](#360)<br>
 [3.5.4](#354)<br>
 [3.5.3](#353)<br>
 [3.5.2](#352)<br>
@@ -60,6 +61,31 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 3.6.0
+
+### Fixes
+* Fixed Windows ARM64 build by fixing the preprocessor condition guarding use `_umul128` intrinsic.
+* Fixed Windows ARM64EC build by removing intrinsic pragma it does not understand. (#2858)
+  * Why doesn't the x64-emulation build mode understand x64 pragmas? Don't ask me, ask the MSVC guys.
+* Fixed the JUnit reporter sometimes crashing when reporting a fatal error. (#1210, #2855)
+  * The binary will still exit, but through the original error, rather than secondary error inside the reporter.
+  * The underlying fix applies to all reporters, not just the JUnit one, but only JUnit was currently causing troubles.
+
+### Improvements
+* Disable `-Wnon-virtual-dtor` in Decomposer and Matchers (#2854)
+* `precision` in floating point stringmakers defaults to `max_digits10`.
+  * This means that floating point values will be printed with enough precision to disambiguate any two floats.
+* Column wrapping ignores ansi colour codes when calculating string width (#2833, #2849)
+  * This makes the output much more readable when the provided messages contain colour codes.
+
+### Miscellaneous
+* Conan support improvements
+  * `compatibility_cppstr` is set to False. (#2860)
+    * This means that Conan won't let you mix library and project with different C++ standard settings.
+  * The implementation library CMake target name through Conan is properly set to `Catch2::Catch2` (#2861)
+* `SelfTest` target can be built through Bazel (#2857)
 
 
 ## 3.5.4
