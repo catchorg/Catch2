@@ -7,7 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 //  Catch v3.6.0
-//  Generated: 2024-05-05 20:53:27.071502
+//  Generated: 2024-05-08 15:27:20.160378
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -13150,6 +13150,31 @@ namespace Catch {
 } // end namespace Catch
 
 #endif // CATCH_REPORTER_AUTOMAKE_HPP_INCLUDED
+
+
+#ifndef CATCH_REPORTER_CMAKE_HPP_INCLUDED
+#define CATCH_REPORTER_CMAKE_HPP_INCLUDED
+
+
+namespace Catch {
+
+    class CMakeReporter final : public StreamingReporterBase {
+    public:
+        using StreamingReporterBase::StreamingReporterBase;
+
+        static std::string getDescription();
+
+        void listReporters(
+            std::vector<ReporterDescription> const& descriptions ) override;
+        void listListeners(
+            std::vector<ListenerDescription> const& descriptions ) override;
+        void listTests( std::vector<TestCaseHandle> const& tests ) override;
+        void listTags( std::vector<TagInfo> const& tags ) override;
+    };
+
+} // end namespace Catch
+
+#endif // CATCH_REPORTER_CMAKE_HPP_INCLUDED
 
 
 #ifndef CATCH_REPORTER_COMPACT_HPP_INCLUDED

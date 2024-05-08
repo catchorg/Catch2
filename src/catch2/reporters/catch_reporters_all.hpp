@@ -22,6 +22,7 @@
 #define CATCH_REPORTERS_ALL_HPP_INCLUDED
 
 #include <catch2/reporters/catch_reporter_automake.hpp>
+#include <catch2/reporters/catch_reporter_cmake.hpp>
 #include <catch2/reporters/catch_reporter_common_base.hpp>
 #include <catch2/reporters/catch_reporter_compact.hpp>
 #include <catch2/reporters/catch_reporter_console.hpp>

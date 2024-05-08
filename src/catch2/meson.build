@@ -282,6 +282,7 @@ internal_sources = files(
 
 reporter_headers = [
   'reporters/catch_reporter_automake.hpp',
+  'reporters/catch_reporter_cmake.hpp',
   'reporters/catch_reporter_common_base.hpp',
   'reporters/catch_reporter_compact.hpp',
   'reporters/catch_reporter_console.hpp',
@@ -302,6 +303,7 @@ reporter_headers = [
 
 reporter_sources = files(
   'reporters/catch_reporter_automake.cpp',
+  'reporters/catch_reporter_cmake.cpp',
   'reporters/catch_reporter_common_base.cpp',
   'reporters/catch_reporter_compact.cpp',
   'reporters/catch_reporter_console.cpp',

@@ -289,6 +289,7 @@ set(MATCHER_FILES ${MATCHER_HEADERS} ${MATCHER_SOURCES})
 
 set(REPORTER_HEADERS
   ${SOURCES_DIR}/reporters/catch_reporter_automake.hpp
+  ${SOURCES_DIR}/reporters/catch_reporter_cmake.hpp
   ${SOURCES_DIR}/reporters/catch_reporter_common_base.hpp
   ${SOURCES_DIR}/reporters/catch_reporter_compact.hpp
   ${SOURCES_DIR}/reporters/catch_reporter_console.hpp
@@ -308,6 +309,7 @@ set(REPORTER_HEADERS
 )
 set(REPORTER_SOURCES
   ${SOURCES_DIR}/reporters/catch_reporter_automake.cpp
+  ${SOURCES_DIR}/reporters/catch_reporter_cmake.cpp
   ${SOURCES_DIR}/reporters/catch_reporter_common_base.cpp
   ${SOURCES_DIR}/reporters/catch_reporter_compact.cpp
   ${SOURCES_DIR}/reporters/catch_reporter_console.cpp

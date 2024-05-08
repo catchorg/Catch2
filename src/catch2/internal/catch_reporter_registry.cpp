@@ -11,6 +11,7 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_reporter_registry.hpp>
 #include <catch2/reporters/catch_reporter_automake.hpp>
+#include <catch2/reporters/catch_reporter_cmake.hpp>
 #include <catch2/reporters/catch_reporter_compact.hpp>
 #include <catch2/reporters/catch_reporter_console.hpp>
 #include <catch2/reporters/catch_reporter_json.hpp>
@@ -34,6 +35,8 @@ namespace Catch {
         // we have to add the elements manually
         m_impl->factories["Automake"] =
             Detail::make_unique<ReporterFactory<AutomakeReporter>>();
+        m_impl->factories["CMake"] =
+            Detail::make_unique<ReporterFactory<CMakeReporter>>();
         m_impl->factories["compact"] =
             Detail::make_unique<ReporterFactory<CompactReporter>>();
         m_impl->factories["console"] =
