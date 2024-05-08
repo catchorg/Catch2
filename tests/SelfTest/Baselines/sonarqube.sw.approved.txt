@@ -192,6 +192,9 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="Reporter's write listings to provided stream/Automake reporter lists tags" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/Automake reporter lists reporters" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/Automake reporter lists tests" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/CMake reporter lists tags" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/CMake reporter lists reporters" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/CMake reporter lists tests" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/compact reporter lists tags" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/compact reporter lists reporters" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/compact reporter lists tests" duration="{duration}"/>

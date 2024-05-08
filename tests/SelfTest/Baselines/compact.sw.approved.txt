@@ -1508,6 +1508,15 @@ Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fa
 
 " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: Automake'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "1\;[fakeTag]
+" contains: "fakeTag" with 1 message: 'Tested reporter: CMake'
+Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "fake reporter\;fake description
+" contains: "fake reporter" with 1 message: 'Tested reporter: CMake'
+Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "fake test name/;/;fake-file.cpp\;123456789\;fakeTestTag
+" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: CMake'
+Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "All available tags:
    1  [fakeTag]
 1 tag
@@ -2841,6 +2850,6 @@ InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
 test cases:  416 |  311 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2255 | 2074 passed | 146 failed | 35 failed as expected
+assertions: 2261 | 2080 passed | 146 failed | 35 failed as expected
 
 

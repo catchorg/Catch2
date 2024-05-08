@@ -11929,6 +11929,75 @@ Approx( 0.98999999999999999 )
         !false
       </Expanded>
     </Expression>
+    <Section name="CMake reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        Tested reporter: CMake
+      </Info>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          listingString, ContainsSubstring("fakeTag"s)
+        </Original>
+        <Expanded>
+          "1\;[fakeTag]
+" contains: "fakeTag"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Original>
+        !(factories.empty())
+      </Original>
+      <Expanded>
+        !false
+      </Expanded>
+    </Expression>
+    <Section name="CMake reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        Tested reporter: CMake
+      </Info>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          listingString, ContainsSubstring("fake reporter"s)
+        </Original>
+        <Expanded>
+          "fake reporter\;fake description
+" contains: "fake reporter"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Original>
+        !(factories.empty())
+      </Original>
+      <Expanded>
+        !false
+      </Expanded>
+    </Expression>
+    <Section name="CMake reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        Tested reporter: CMake
+      </Info>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          listingString, ContainsSubstring( "fake test name"s ) &amp;&amp; ContainsSubstring( "fakeTestTag"s )
+        </Original>
+        <Expanded>
+          "fake test name/;/;fake-file.cpp\;123456789\;fakeTestTag
+" ( contains: "fake test name" and contains: "fakeTestTag" )
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Original>
+        !(factories.empty())
+      </Original>
+      <Expanded>
+        !false
+      </Expanded>
+    </Expression>
     <Section name="compact reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         Tested reporter: compact
@@ -21831,6 +21900,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2074" failures="146" expectedFailures="35" skips="12"/>
+  <OverallResults successes="2080" failures="146" expectedFailures="35" skips="12"/>
   <OverallResultsCases successes="311" failures="85" expectedFailures="14" skips="6"/>
 </Catch2TestRun>
