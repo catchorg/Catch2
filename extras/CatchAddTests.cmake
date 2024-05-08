@@ -17,6 +17,8 @@ function(add_command NAME)
 endfunction()
 
 function(catch_discover_tests_impl)
+  # Don't ignore empty elements in a list
+  cmake_policy(SET CMP0007 NEW)
 
   cmake_parse_arguments(
     ""
@@ -61,8 +63,8 @@ function(catch_discover_tests_impl)
   endif()
 
   execute_process(
-    COMMAND ${_TEST_EXECUTOR} "${_TEST_EXECUTABLE}" ${spec} --list-tests --verbosity quiet
-    OUTPUT_VARIABLE output
+    COMMAND ${_TEST_EXECUTOR} "${_TEST_EXECUTABLE}" ${spec} --list-tests --reporter cmake
+    OUTPUT_VARIABLE test_cases
     RESULT_VARIABLE result
     WORKING_DIRECTORY "${_TEST_WORKING_DIR}"
   )
@@ -74,11 +76,8 @@ function(catch_discover_tests_impl)
     )
   endif()
 
-  # Make sure to escape ; (semicolons) in test names first, because
-  # that'd break the foreach loop for "Parse output" later and create
-  # wrongly splitted and thus failing test cases (false positives)
-  string(REPLACE ";" "\;" output "${output}")
-  string(REPLACE "\n" ";" output "${output}")
+  # Remove any leading or trailing whitespace from the output
+  string(STRIP "${test_cases}" test_cases)
 
   # Prepare reporter
   if(reporter)
@@ -121,24 +120,34 @@ function(catch_discover_tests_impl)
     endforeach()
   endif()
 
-  # Parse output
-  foreach(line ${output})
-    set(test "${line}")
+  foreach(test_case ${test_cases})
+    # Extract test name and tags
+    list(GET test_case 0 test_name)
+    list(GET test_case 4 tags)
+
     # Escape characters in test case names that would be parsed by Catch2
     # Note that the \ escaping must happen FIRST! Do not change the order.
-    set(test_name "${test}")
+    # set(test_name "${raw_test_name}")
+    set(raw_test_name "${test_name}")
     foreach(char \\ , [ ])
       string(REPLACE ${char} "\\${char}" test_name "${test_name}")
     endforeach(char)
+
+    # Convert tags to a list
+    # Need to re-escape any semicolons here as the first replace will eat any existing escapes
+    string(REPLACE "\"" "" tags "${tags}")
+    string(REPLACE ";" "\;" tags "${tags}")
+    string(REPLACE "," ";" tags_list "${tags}")
+
     # ...add output dir
     if(output_dir)
       string(REGEX REPLACE "[^A-Za-z0-9_]" "_" test_name_clean "${test_name}")
       set(output_dir_arg "--out ${output_dir}/${output_prefix}${test_name_clean}${output_suffix}")
     endif()
 
-    # ...and add to script
+    # ... add to script
     add_command(add_test
-      "${prefix}${test}${suffix}"
+      "${prefix}${raw_test_name}${suffix}"
       ${_TEST_EXECUTOR}
       "${_TEST_EXECUTABLE}"
       "${test_name}"
@@ -147,20 +156,31 @@ function(catch_discover_tests_impl)
       "${output_dir_arg}"
     )
     add_command(set_tests_properties
-      "${prefix}${test}${suffix}"
+      "${prefix}${raw_test_name}${suffix}"
       PROPERTIES
       WORKING_DIRECTORY "${_TEST_WORKING_DIR}"
       ${properties}
     )
 
+    # ... add any environment modifications
     if(environment_modifications)
       add_command(set_tests_properties
-        "${prefix}${test}${suffix}"
+        "${prefix}${raw_test_name}${suffix}"
         PROPERTIES
-        ENVIRONMENT_MODIFICATION "${environment_modifications}")
+        ENVIRONMENT_MODIFICATION "${environment_modifications}"
+      )
     endif()
 
-    list(APPEND tests "${prefix}${test}${suffix}")
+    # ... and any tags as labels
+    foreach(tag ${tags_list})
+      add_command(set_tests_properties
+        "${prefix}${raw_test_name}${suffix}"
+        PROPERTIES
+          LABELS "${tag}"
+      )
+    endforeach()
+
+    list(APPEND tests "${prefix}${raw_test_name}${suffix}")
   endforeach()
 
   # Create a list of all discovered tests, which users may use to e.g. set
