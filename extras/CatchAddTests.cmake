@@ -121,23 +121,27 @@ function(catch_discover_tests_impl)
   endif()
 
   foreach(test_case ${test_cases})
+    # Remove long form brackets
+    # [[...test case list...]]
+    string(LENGTH "${test_case}" test_case_length)
+    math(EXPR test_case_length "${test_case_length} - 4")
+    string(SUBSTRING "${test_case}" 2 ${test_case_length} test_case)
+
     # Extract test name and tags
-    list(GET test_case 0 test_name)
+    list(GET test_case 0 raw_test_name)
     list(GET test_case 4 tags)
+
+    # Remove long form brackets from test name
+    # [=[...test name...]=]
+    string(LENGTH "${raw_test_name}" test_name_length)
+    math(EXPR test_name_length "${test_name_length} - 6")
+    string(SUBSTRING "${raw_test_name}" 3 ${test_name_length} test_name)
 
     # Escape characters in test case names that would be parsed by Catch2
     # Note that the \ escaping must happen FIRST! Do not change the order.
-    # set(test_name "${raw_test_name}")
-    set(raw_test_name "${test_name}")
     foreach(char \\ , [ ])
       string(REPLACE ${char} "\\${char}" test_name "${test_name}")
     endforeach(char)
-
-    # Convert tags to a list
-    # Need to re-escape any semicolons here as the first replace will eat any existing escapes
-    string(REPLACE "\"" "" tags "${tags}")
-    string(REPLACE ";" "\;" tags "${tags}")
-    string(REPLACE "," ";" tags_list "${tags}")
 
     # ...add output dir
     if(output_dir)
@@ -171,14 +175,28 @@ function(catch_discover_tests_impl)
       )
     endif()
 
-    # ... and any tags as labels
-    foreach(tag ${tags_list})
-      add_command(set_tests_properties
-        "${prefix}${raw_test_name}${suffix}"
-        PROPERTIES
-          LABELS "${tag}"
-      )
-    endforeach()
+    # Remove long form brackets from tags list
+    # [=[...tags list...]=]
+    string(LENGTH "${tags}" tags_length)
+    if("${tags_length}" GREATER 0)
+      math(EXPR tags_length "${tags_length} - 6")
+      string(SUBSTRING "${tags}" 3 ${tags_length} tags)
+
+      # ... and any tags as labels
+      foreach(tag ${tags})
+        # Remove long form brackets from tag
+        # [==[...tags list...]==]
+        string(LENGTH "${tag}" tag_length)
+        math(EXPR tag_length "${tag_length} - 8")
+        string(SUBSTRING "${tag}" 4 ${tag_length} tag)
+
+        add_command(set_tests_properties
+          "${prefix}${raw_test_name}${suffix}"
+          PROPERTIES
+            LABELS "${tag}"
+        )
+      endforeach()
+    endif()
 
     list(APPEND tests "${prefix}${raw_test_name}${suffix}")
   endforeach()

@@ -16,49 +16,28 @@
 namespace Catch {
 
     namespace {
-        template <typename T>
-        std::string escapeString( T const& str ) {
-            ReusableStringStream rss;
-            for ( auto const& c : str ) {
-                switch ( c ) {
-                case ';':
-                    rss << R"(\\;)";
-                    break;
-                default:
-                    rss << c;
-                    break;
-                }
-            }
-
-            return rss.str();
-        }
-
-        std::string escapeCString( const char* const& str ) {
-            return escapeString( std::string( str ) );
-        }
-
         std::ostream& tagWriter( std::ostream& out,
                                  std::vector<Tag> const& tags ) {
-            if ( tags.empty() ) {
-                out << "\\;";
-                return out;
-            }
-            out << "\\;" << escapeString( tags.front().original );
+            out << ';';
+            if ( tags.empty() ) { return out; }
+
+            out << "[=[" << "[==[" << tags.front().original << "]==]";
             for ( auto it = std::next( tags.begin() ); it != tags.end();
                   ++it ) {
-                out << ',' << escapeString( it->original );
+                out << ';' << "[==[" << it->original << "]==]";
             }
+            out << "]=]";
             return out;
         }
 
         std::ostream& testWriter( std::ostream& out,
                                   TestCaseHandle const& test ) {
             auto const& info = test.getTestCaseInfo();
-            out << escapeString( info.name ) << "\\;"
-                << escapeString( info.className ) << "\\;"
-                << escapeCString( info.lineInfo.file ) << "\\;"
-                << info.lineInfo.line;
+            out << "[[" << "[=[" << info.name << "]=]" << ';' << "[=["
+                << info.className << "]=]" << ';' << "[=[" << info.lineInfo.file
+                << "]=]" << ';' << "[=[" << info.lineInfo.line << "]=]";
             tagWriter( out, info.tags );
+            out << "]]";
 
             return out;
         }
@@ -74,13 +53,13 @@ namespace Catch {
 
         if ( descriptions.empty() ) { return; }
 
-        m_stream << descriptions.front().name << "\\;"
-                 << descriptions.front().description;
+        m_stream << "[[" << "[=[" << descriptions.front().name << "]=]" << ';'
+                 << "[=[" << descriptions.front().description << "]=]" << "]]";
         for ( auto it = std::next( descriptions.begin() );
               it != descriptions.end();
               ++it ) {
-            m_stream << ";" << escapeString( it->name ) << "\\;"
-                     << escapeString( it->description );
+            m_stream << ';' << "[[" << "[=[" << it->name << "]=]" << ';'
+                     << "[=[" << it->description << "]=]" << "]]";
         }
 
         m_stream << '\n';
@@ -91,13 +70,13 @@ namespace Catch {
 
         if ( descriptions.empty() ) { return; }
 
-        m_stream << descriptions.front().name << "\\;"
-                 << descriptions.front().description;
+        m_stream << "[[" << "[=[" << descriptions.front().name << "]=]" << ';'
+                 << "[=[" << descriptions.front().description << "]=]" << "]]";
         for ( auto it = std::next( descriptions.begin() );
               it != descriptions.end();
               ++it ) {
-            m_stream << ";" << escapeString( it->name ) << "\\;"
-                     << escapeString( it->description );
+            m_stream << ';' << "[[" << "[=[" << it->name << "]=]" << ';'
+                     << "[=[" << it->description << "]=]" << "]]";
         }
 
         m_stream << '\n';
@@ -119,11 +98,12 @@ namespace Catch {
     void CMakeReporter::listTags( std::vector<TagInfo> const& tags ) {
         if ( tags.empty() ) { return; }
 
-        m_stream << tags.front().count << "\\;"
-                 << escapeString( tags.front().all() );
+        m_stream << "[[" << "[=[" << tags.front().count << "]=]" << ';' << "[=["
+                 << tags.front().all() << "]=]" << "]]";
 
         for ( auto it = std::next( tags.begin() ); it != tags.end(); ++it ) {
-            m_stream << ";" << it->count << "\\;" << escapeString( it->all() );
+            m_stream << ';' << "[[" << "[=[" << it->count << "]=]" << ';'
+                     << "[=[" << it->all() << "]=]" << "]]";
         }
 
         m_stream << '\n';
