@@ -7,7 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 //  Catch v3.6.0
-//  Generated: 2024-05-10 11:46:09.025442
+//  Generated: 2024-05-10 11:52:28.385302
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -8468,27 +8468,6 @@ namespace Catch {
 namespace Catch {
 
     namespace {
-        // template <typename T>
-        // std::string escapeString( T const& str ) {
-        //     ReusableStringStream rss;
-        //     for ( auto const& c : str ) {
-        //         switch ( c ) {
-        //         case ';':
-        //             rss << R"(\\;)";
-        //             break;
-        //         default:
-        //             rss << c;
-        //             break;
-        //         }
-        //     }
-
-        //     return rss.str();
-        // }
-
-        // std::string escapeCString( const char* const& str ) {
-        //     return escapeString( std::string( str ) );
-        // }
-
         std::ostream& tagWriter( std::ostream& out,
                                  std::vector<Tag> const& tags ) {
             out << ';';
