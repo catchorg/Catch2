@@ -11938,7 +11938,7 @@ Approx( 0.98999999999999999 )
           listingString, ContainsSubstring("fakeTag"s)
         </Original>
         <Expanded>
-          "1\;[fakeTag]
+          "[[[=[1]=];[=[[fakeTag]]=]]]
 " contains: "fakeTag"
         </Expanded>
       </Expression>
@@ -11961,7 +11961,7 @@ Approx( 0.98999999999999999 )
           listingString, ContainsSubstring("fake reporter"s)
         </Original>
         <Expanded>
-          "fake reporter\;fake description
+          "[[[=[fake reporter]=];[=[fake description]=]]]
 " contains: "fake reporter"
         </Expanded>
       </Expression>
@@ -11984,7 +11984,7 @@ Approx( 0.98999999999999999 )
           listingString, ContainsSubstring( "fake test name"s ) &amp;&amp; ContainsSubstring( "fakeTestTag"s )
         </Original>
         <Expanded>
-          "fake test name/;/;fake-file.cpp\;123456789\;fakeTestTag
+          "[[[=[fake test name]=];[=[]=];[=[fake-file.cpp]=];[=[123456789]=];[=[[==[fakeTestTag]==]]=]]]
 " ( contains: "fake test name" and contains: "fakeTestTag" )
         </Expanded>
       </Expression>

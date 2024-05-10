@@ -1508,13 +1508,13 @@ Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fa
 
 " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: Automake'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "1\;[fakeTag]
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "[[[=[1]=];[=[[fakeTag]]=]]]
 " contains: "fakeTag" with 1 message: 'Tested reporter: CMake'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "fake reporter\;fake description
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "[[[=[fake reporter]=];[=[fake description]=]]]
 " contains: "fake reporter" with 1 message: 'Tested reporter: CMake'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "fake test name/;/;fake-file.cpp\;123456789\;fakeTestTag
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "[[[=[fake test name]=];[=[]=];[=[fake-file.cpp]=];[=[123456789]=];[=[[==[fakeTestTag]==]]=]]]
 " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: CMake'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "All available tags:

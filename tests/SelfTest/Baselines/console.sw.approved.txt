@@ -10024,7 +10024,7 @@ Reporters.tests.cpp:<line number>
 Reporters.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( listingString, ContainsSubstring("fakeTag"s) )
 with expansion:
-  "1\;[fakeTag]
+  "[[[=[1]=];[=[[fakeTag]]=]]]
   " contains: "fakeTag"
 with message:
   Tested reporter: CMake
@@ -10050,7 +10050,7 @@ Reporters.tests.cpp:<line number>
 Reporters.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( listingString, ContainsSubstring("fake reporter"s) )
 with expansion:
-  "fake reporter\;fake description
+  "[[[=[fake reporter]=];[=[fake description]=]]]
   " contains: "fake reporter"
 with message:
   Tested reporter: CMake
@@ -10076,7 +10076,8 @@ Reporters.tests.cpp:<line number>
 Reporters.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) )
 with expansion:
-  "fake test name/;/;fake-file.cpp\;123456789\;fakeTestTag
+  "[[[=[fake test name]=];[=[]=];[=[fake-file.cpp]=];[=[123456789]=];[=[[==
+  [fakeTestTag]==]]=]]]
   " ( contains: "fake test name" and contains: "fakeTestTag" )
 with message:
   Tested reporter: CMake
