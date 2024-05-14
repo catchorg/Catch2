@@ -2471,15 +2471,15 @@ ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && Cont
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, ContainsSubstring("fakeTag"s) for: "[[[=[1]=];[=[[fakeTag]]=]]] " contains: "fakeTag" with 1 message: 'Tested reporter: CMake'
+ok {test-number} - listingString, ContainsSubstring("fakeTag"s) for: "[[[=[1;[==[[fakeTag]]==]]=]]]" contains: "fakeTag" with 1 message: 'Tested reporter: CMake'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, ContainsSubstring("fake reporter"s) for: "[[[=[fake reporter]=];[=[fake description]=]]] " contains: "fake reporter" with 1 message: 'Tested reporter: CMake'
+ok {test-number} - listingString, ContainsSubstring("fake reporter"s) for: "[[[=[[==[fake reporter]==];[==[fake description]==]]=]]]" contains: "fake reporter" with 1 message: 'Tested reporter: CMake'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "[[[=[fake test name]=];[=[]=];[=[fake-file.cpp]=];[=[123456789]=];[=[[==[fakeTestTag]==]]=]]] " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: CMake'
+ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "[[[=[[==[fake test name]==];;[==[fake-file.cpp]==];123456789;[=[[==[fakeTestTag]==]]=]]=]]]" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: CMake'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
