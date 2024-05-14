@@ -86,9 +86,6 @@ function(catch_discover_tests_impl)
     )
   endif()
 
-  # Remove any leading or trailing whitespace from the output
-  string(STRIP "${test_cases}" test_cases)
-
   # Prepare reporter
   if(reporter)
     set(reporter_arg "--reporter ${reporter}")
