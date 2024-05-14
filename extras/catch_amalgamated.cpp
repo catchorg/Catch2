@@ -7,7 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 //  Catch v3.6.0
-//  Generated: 2024-05-10 11:52:28.385302
+//  Generated: 2024-05-14 10:26:40.575000
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -8468,28 +8468,53 @@ namespace Catch {
 namespace Catch {
 
     namespace {
+        std::string createOpenBracket( int const& indent ) {
+            ReusableStringStream rss;
+            rss << '[';
+            if ( indent > 0 ) { rss << std::string( indent, '=' ); }
+            rss << '[';
+            return rss.str();
+        }
+        std::string createCloseBracket( int const& indent ) {
+            ReusableStringStream rss;
+            rss << ']';
+            if ( indent > 0 ) { rss << std::string( indent, '=' ); }
+            rss << ']';
+            return rss.str();
+        }
         std::ostream& tagWriter( std::ostream& out,
-                                 std::vector<Tag> const& tags ) {
+                                 std::vector<Tag> const& tags,
+                                 int const& indent ) {
             out << ';';
             if ( tags.empty() ) { return out; }
 
-            out << "[=[" << "[==[" << tags.front().original << "]==]";
+            out << createOpenBracket( indent );
+
+            out << createOpenBracket( indent + 1 ) << tags.front().original
+                << createCloseBracket( indent + 1 );
             for ( auto it = std::next( tags.begin() ); it != tags.end();
                   ++it ) {
-                out << ';' << "[==[" << it->original << "]==]";
+                out << ';' << createOpenBracket( indent + 1 ) << it->original
+                    << createCloseBracket( indent + 1 );
             }
-            out << "]=]";
+
+            out << createCloseBracket( indent );
+
             return out;
         }
 
         std::ostream& testWriter( std::ostream& out,
-                                  TestCaseHandle const& test ) {
+                                  TestCaseHandle const& test,
+                                  int const& indent ) {
             auto const& info = test.getTestCaseInfo();
-            out << "[[" << "[=[" << info.name << "]=]" << ';' << "[=["
-                << info.className << "]=]" << ';' << "[=[" << info.lineInfo.file
-                << "]=]" << ';' << "[=[" << info.lineInfo.line << "]=]";
-            tagWriter( out, info.tags );
-            out << "]]";
+            out << createOpenBracket( indent )
+                << createOpenBracket( indent + 1 ) << info.name
+                << createCloseBracket( indent + 1 ) << ';' << info.className
+                << ';' << createOpenBracket( indent + 1 ) << info.lineInfo.file
+                << createCloseBracket( indent + 1 ) << ';'
+                << info.lineInfo.line;
+            tagWriter( out, info.tags, indent );
+            out << createCloseBracket( indent );
 
             return out;
         }
@@ -8505,16 +8530,29 @@ namespace Catch {
 
         if ( descriptions.empty() ) { return; }
 
-        m_stream << "[[" << "[=[" << descriptions.front().name << "]=]" << ';'
-                 << "[=[" << descriptions.front().description << "]=]" << "]]";
+        int indent = 0;
+
+        m_stream << createOpenBracket( indent );
+
+        m_stream << createOpenBracket( indent + 1 )
+                 << createOpenBracket( indent + 2 ) << descriptions.front().name
+                 << createCloseBracket( indent + 2 ) << ';'
+                 << createOpenBracket( indent + 2 )
+                 << descriptions.front().description
+                 << createCloseBracket( indent + 2 )
+                 << createCloseBracket( indent + 1 );
         for ( auto it = std::next( descriptions.begin() );
               it != descriptions.end();
               ++it ) {
-            m_stream << ';' << "[[" << "[=[" << it->name << "]=]" << ';'
-                     << "[=[" << it->description << "]=]" << "]]";
+            m_stream << ';' << createOpenBracket( indent + 1 )
+                     << createOpenBracket( indent + 2 ) << it->name
+                     << createCloseBracket( indent + 2 ) << ';'
+                     << createOpenBracket( indent + 2 ) << it->description
+                     << createCloseBracket( indent + 2 )
+                     << createCloseBracket( indent + 1 );
         }
 
-        m_stream << '\n';
+        m_stream << createCloseBracket( indent );
     }
 
     void CMakeReporter::listListeners(
@@ -8522,43 +8560,68 @@ namespace Catch {
 
         if ( descriptions.empty() ) { return; }
 
-        m_stream << "[[" << "[=[" << descriptions.front().name << "]=]" << ';'
-                 << "[=[" << descriptions.front().description << "]=]" << "]]";
+        int indent = 0;
+
+        m_stream << createOpenBracket( indent );
+
+        m_stream << createOpenBracket( indent + 1 )
+                 << createOpenBracket( indent + 2 ) << descriptions.front().name
+                 << createCloseBracket( indent + 2 ) << ';'
+                 << createOpenBracket( indent + 2 )
+                 << descriptions.front().description
+                 << createCloseBracket( indent + 2 )
+                 << createCloseBracket( indent + 1 );
         for ( auto it = std::next( descriptions.begin() );
               it != descriptions.end();
               ++it ) {
-            m_stream << ';' << "[[" << "[=[" << it->name << "]=]" << ';'
-                     << "[=[" << it->description << "]=]" << "]]";
+            m_stream << ';' << createOpenBracket( indent + 1 )
+                     << createOpenBracket( indent + 2 ) << it->name
+                     << createCloseBracket( indent + 2 ) << ';'
+                     << createOpenBracket( indent + 2 ) << it->description
+                     << createCloseBracket( indent + 2 )
+                     << createCloseBracket( indent + 1 );
         }
 
-        m_stream << '\n';
+        m_stream << createCloseBracket( indent );
     }
 
     void CMakeReporter::listTests( std::vector<TestCaseHandle> const& tests ) {
         if ( tests.empty() ) { return; }
 
-        testWriter( m_stream, tests.front() );
+        int indent = 0;
+
+        m_stream << createOpenBracket( indent );
+
+        testWriter( m_stream, tests.front(), indent + 1 );
 
         for ( auto it = std::next( tests.begin() ); it != tests.end(); ++it ) {
             m_stream << ';';
-            testWriter( m_stream, *it );
+            testWriter( m_stream, *it, indent + 1 );
         }
 
-        m_stream << '\n';
+        m_stream << createCloseBracket( indent );
     }
 
     void CMakeReporter::listTags( std::vector<TagInfo> const& tags ) {
         if ( tags.empty() ) { return; }
 
-        m_stream << "[[" << "[=[" << tags.front().count << "]=]" << ';' << "[=["
-                 << tags.front().all() << "]=]" << "]]";
+        int indent = 0;
+
+        m_stream << createOpenBracket( indent );
+
+        m_stream << createOpenBracket( indent + 1 ) << tags.front().count << ';'
+                 << createOpenBracket( indent + 2 ) << tags.front().all()
+                 << createCloseBracket( indent + 2 )
+                 << createCloseBracket( indent + 1 );
 
         for ( auto it = std::next( tags.begin() ); it != tags.end(); ++it ) {
-            m_stream << ';' << "[[" << "[=[" << it->count << "]=]" << ';'
-                     << "[=[" << it->all() << "]=]" << "]]";
+            m_stream << ';' << createOpenBracket( indent + 1 ) << it->count
+                     << ';' << createOpenBracket( indent + 2 ) << it->all()
+                     << createCloseBracket( indent + 2 )
+                     << createCloseBracket( indent + 1 );
         }
 
-        m_stream << '\n';
+        m_stream << createCloseBracket( indent );
     }
 
 } // end namespace Catch
