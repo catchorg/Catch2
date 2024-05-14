@@ -16,6 +16,16 @@ function(add_command NAME)
   set(script "${script}${NAME}(${_args})\n" PARENT_SCOPE)
 endfunction()
 
+function(remove_brackets VAR VAR_OUT)
+  string(REGEX MATCH "^\\[=*\\[" start_bracket "${VAR}")
+  string(REPLACE "[" "]" end_bracket "${start_bracket}")
+  string(REPLACE "[" "\\[" start_bracket "${start_bracket}")
+  string(REPLACE "]" "\\]" end_bracket "${end_bracket}")
+  string(REGEX REPLACE "^${start_bracket}" "" new_var "${VAR}")
+  string(REGEX REPLACE "${end_bracket}\$" "" new_var "${new_var}")
+  set(${VAR_OUT} "${new_var}" PARENT_SCOPE)
+endfunction()
+
 function(catch_discover_tests_impl)
   # Don't ignore empty elements in a list
   cmake_policy(SET CMP0007 NEW)
@@ -120,12 +130,11 @@ function(catch_discover_tests_impl)
     endforeach()
   endif()
 
+  remove_brackets("${test_cases}" test_cases)
   foreach(test_case ${test_cases})
     # Remove long form brackets
     # [[...test case list...]]
-    string(LENGTH "${test_case}" test_case_length)
-    math(EXPR test_case_length "${test_case_length} - 4")
-    string(SUBSTRING "${test_case}" 2 ${test_case_length} test_case)
+    remove_brackets("${test_case}" test_case)
 
     # Extract test name and tags
     list(GET test_case 0 raw_test_name)
@@ -133,9 +142,8 @@ function(catch_discover_tests_impl)
 
     # Remove long form brackets from test name
     # [=[...test name...]=]
-    string(LENGTH "${raw_test_name}" test_name_length)
-    math(EXPR test_name_length "${test_name_length} - 6")
-    string(SUBSTRING "${raw_test_name}" 3 ${test_name_length} test_name)
+    remove_brackets("${raw_test_name}" raw_test_name)
+    set(test_name "${raw_test_name}")
 
     # Escape characters in test case names that would be parsed by Catch2
     # Note that the \ escaping must happen FIRST! Do not change the order.
@@ -179,16 +187,13 @@ function(catch_discover_tests_impl)
     # [=[...tags list...]=]
     string(LENGTH "${tags}" tags_length)
     if("${tags_length}" GREATER 0)
-      math(EXPR tags_length "${tags_length} - 6")
-      string(SUBSTRING "${tags}" 3 ${tags_length} tags)
+      remove_brackets("${tags}" tags)
 
       # ... and any tags as labels
       foreach(tag ${tags})
         # Remove long form brackets from tag
         # [==[...tags list...]==]
-        string(LENGTH "${tag}" tag_length)
-        math(EXPR tag_length "${tag_length} - 8")
-        string(SUBSTRING "${tag}" 4 ${tag_length} tag)
+        remove_brackets("${tag}" tag)
 
         add_command(set_tests_properties
           "${prefix}${raw_test_name}${suffix}"
