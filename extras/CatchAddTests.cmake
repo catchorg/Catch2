@@ -22,7 +22,7 @@ function(catch_discover_tests_impl)
     ""
     ""
     "TEST_EXECUTABLE;TEST_WORKING_DIR;TEST_OUTPUT_DIR;TEST_OUTPUT_PREFIX;TEST_OUTPUT_SUFFIX;TEST_PREFIX;TEST_REPORTER;TEST_SPEC;TEST_SUFFIX;TEST_LIST;CTEST_FILE"
-    "TEST_EXTRA_ARGS;TEST_PROPERTIES;TEST_EXECUTOR;TEST_DL_PATHS"
+    "TEST_EXTRA_ARGS;TEST_PROPERTIES;TEST_EXECUTOR;TEST_DL_PATHS;TEST_DL_FRAMEWORK_PATHS"
     ${ARGN}
   )
 
@@ -36,6 +36,7 @@ function(catch_discover_tests_impl)
   set(output_prefix ${_TEST_OUTPUT_PREFIX})
   set(output_suffix ${_TEST_OUTPUT_SUFFIX})
   set(dl_paths ${_TEST_DL_PATHS})
+  set(dl_framework_paths ${_TEST_DL_FRAMEWORK_PATHS})
   set(script)
   set(suite)
   set(tests)
@@ -58,6 +59,11 @@ function(catch_discover_tests_impl)
   if(dl_paths)
     cmake_path(CONVERT "${dl_paths}" TO_NATIVE_PATH_LIST paths)
     set(ENV{${dl_paths_variable_name}} "${paths}")
+  endif()
+
+  if(APPLE AND dl_framework_paths)
+    cmake_path(CONVERT "${dl_framework_paths}" TO_NATIVE_PATH_LIST paths)
+    set(ENV{DYLD_FRAMEWORK_PATH} "${paths}")
   endif()
 
   execute_process(
@@ -118,6 +124,13 @@ function(catch_discover_tests_impl)
     foreach(path ${dl_paths})
       cmake_path(NATIVE_PATH path native_path)
       list(APPEND environment_modifications "${dl_paths_variable_name}=path_list_prepend:${native_path}")
+    endforeach()
+  endif()
+
+  if(APPLE AND dl_framework_paths)
+    foreach(path ${dl_framework_paths})
+      cmake_path(NATIVE_PATH path native_path)
+      list(APPEND environment_modifications "DYLD_FRAMEWORK_PATH=path_list_prepend:${native_path}")
     endforeach()
   endif()
 
@@ -187,6 +200,7 @@ if(CMAKE_SCRIPT_MODE_FILE)
     TEST_OUTPUT_PREFIX ${TEST_OUTPUT_PREFIX}
     TEST_OUTPUT_SUFFIX ${TEST_OUTPUT_SUFFIX}
     TEST_DL_PATHS ${TEST_DL_PATHS}
+    TEST_DL_FRAMEWORK_PATHS ${TEST_DL_FRAMEWORK_PATHS}
     CTEST_FILE ${CTEST_FILE}
   )
 endif()
