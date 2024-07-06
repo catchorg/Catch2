@@ -474,6 +474,14 @@ ok {test-number} - Nttp_Fixture<V>::value > 0 for: 1 > 0
 ok {test-number} - Nttp_Fixture<V>::value > 0 for: 3 > 0
 # A TEMPLATE_TEST_CASE_METHOD_SIG based test run that succeeds - 6
 ok {test-number} - Nttp_Fixture<V>::value > 0 for: 6 > 0
+# A TEST_CASE_FIXTURE based test run that fails
+ok {test-number} - m_a++ == 0 for: 0 == 0
+# A TEST_CASE_FIXTURE based test run that fails
+not ok {test-number} - m_a == 0 for: 1 == 0
+# A TEST_CASE_FIXTURE based test run that succeeds
+ok {test-number} - m_a++ == 0 for: 0 == 0
+# A TEST_CASE_FIXTURE based test run that succeeds
+ok {test-number} - m_a == 1 for: 1 == 1
 # A TEST_CASE_METHOD based test run that fails
 not ok {test-number} - m_a == 2 for: 1 == 2
 # A TEST_CASE_METHOD based test run that succeeds
@@ -4539,5 +4547,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2267
+1..2271
 
