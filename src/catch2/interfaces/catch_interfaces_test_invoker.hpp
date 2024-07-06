@@ -12,6 +12,8 @@ namespace Catch {
 
     class ITestInvoker {
     public:
+        virtual void testCaseStarting();
+        virtual void testCaseEnding();
         virtual void invoke() const = 0;
         virtual ~ITestInvoker(); // = default
     };

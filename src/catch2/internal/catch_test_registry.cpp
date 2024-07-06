@@ -16,6 +16,8 @@
 #include <iterator>
 
 namespace Catch {
+    void ITestInvoker::testCaseStarting() {}
+    void ITestInvoker::testCaseEnding() {}
     ITestInvoker::~ITestInvoker() = default;
 
     namespace {

@@ -112,6 +112,14 @@ namespace Catch {
         TestCaseHandle(TestCaseInfo* info, ITestInvoker* invoker) :
             m_info(info), m_invoker(invoker) {}
 
+        void testCaseStarting() const { 
+            m_invoker->testCaseStarting();
+        }
+
+        void testCaseEnding() const { 
+            m_invoker->testCaseEnding(); 
+        }
+
         void invoke() const {
             m_invoker->invoke();
         }

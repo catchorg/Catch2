@@ -25,6 +25,7 @@ target_compile_definitions(231-Cfg_OutputStreams PUBLIC CATCH_CONFIG_NOSTDOUT)
 
 # These examples use the standard separate compilation
 set( SOURCES_IDIOMATIC_EXAMPLES
+    Fixture.cpp
     030-Asn-Require-Check.cpp
     100-Fix-Section.cpp
     110-Fix-ClassFixture.cpp
