@@ -75,6 +75,8 @@ This type of fixture is similar to [TEST_CASE_METHOD](#1-test_case_method) excep
 
 ### 3. `TEST_CASE_FIXTURE`
 
+> [Introduced](link-to-issue-or-PR) in Catch2 X.Y.Z
+
 `TEST_CASE_FIXTURE` behaves in the same way as [TEST_CASE_METHOD](#1-test_case_method) except that there will only be one instance created throughout the entire run of a test case. To demonstrate this have a look at the following example:
 
 ```cpp
