@@ -1,9 +1,20 @@
 <a id="top"></a>
 # Test fixtures
 
-## Defining test fixtures
+## Non-Templated test fixtures
 
-Although Catch allows you to group tests together as [sections within a test case](test-cases-and-sections.md), it can still be convenient, sometimes, to group them using a more traditional test fixture. Catch fully supports this too. You define the test fixture as a simple structure:
+Although Catch allows you to group tests together as [sections within a test case](test-cases-and-sections.md), it can still be convenient, sometimes, to group them using a more traditional test fixture. Catch fully supports this too with 3 different macros for non-templated test fixtures. They are: 
+
+| Macro    | Description |
+|----------|-------------|
+|1. `TEST_CASE_METHOD(className, ...)`| Creates a uniquely named class which inherits from the class specified by `className`. The test function will be a member of this derived class. An instance of the derived class will be created for every partial run of the test case. |
+|2. `METHOD_AS_TEST_CASE(member-function, ...)`| Uses `member-function` as the test function. An instance of the class will be created for each partial run of the test case. |
+|3. `TEST_CASE_FIXTURE(className, ...)`| Creates a uniquely named class which inherits from the class specified by `className`. The test function will be a member of this derived class. An instance of the derived class will be created at the start of the test run. That instance will be destroyed once the entire test case has ended. |
+
+### 1. `TEST_CASE_METHOD`
+
+
+You define a `TEST_CASE_METHOD` test fixture as a simple structure:
 
 ```c++
 class UniqueTestsFixture {
@@ -30,8 +41,57 @@ class UniqueTestsFixture {
  }
 ```
 
-The two test cases here will create uniquely-named derived classes of UniqueTestsFixture and thus can access the `getID()` protected method and `conn` member variables. This ensures that both the test cases are able to create a DBConnection using the same method (DRY principle) and that any ID's created are unique such that the order that tests are executed does not matter.
+The two test cases here will create uniquely-named derived classes of UniqueTestsFixture and thus can access the `getID()` protected method and `conn` member variables. This ensures that both the test cases are able to create a DBConnection using the same method (DRY principle) and that any ID's created are unique such that the order that tests are executed does not matter. 
 
+### 2. `METHOD_AS_TEST_CASE`
+
+`METHOD_AS_TEST_CASE` lets you register a member function of a class as a Catch2 test case. The class will be separately instantiated for each method registered in this way.
+
+```cpp
+class TestClass {
+    std::string s;
+
+public:
+    TestClass()
+        :s( "hello" )
+    {}
+
+    void testCase() {
+        REQUIRE( s == "hello" );
+    }
+};
+
+
+METHOD_AS_TEST_CASE( TestClass::testCase, "Use class's method as a test case", "[class]" )
+```
+
+This type of fixture is similar to [TEST_CASE_METHOD](#1-test_case_method) except in this case it will directly use the provided class to create an object rather than a derived class.
+
+### 3. `TEST_CASE_FIXTURE`
+
+`TEST_CASE_FIXTURE` behaves in the same way as [TEST_CASE_METHOD](#1-test_case_method) except that there will only be one instance created throughout the entire run of a test case. To demonstrate this have a look at the following example:
+
+```cpp
+struct MyFixture{
+    int MyInt = 0;
+};
+
+TEST_CASE_FIXTURE(MyFixture, "Tests with MyFixture") { 
+    
+    const int val = MyInt++;
+
+    SECTION("First partial run") {
+        REQUIRE(val == 0);
+    }
+
+    SECTION("Second partial run") {
+        REQUIRE(val == 1);
+    }
+}
+```
+This test case will be executed twice as there are two leaf sections. On the first run `val` will be `0` and on the second run `val` will be `1`. This is useful if you would like to share some expensive setup code with all runs of your test case which can't be done at static initialization time.
+
+## Templated test fixtures
 
 Catch2 also provides `TEMPLATE_TEST_CASE_METHOD` and
 `TEMPLATE_PRODUCT_TEST_CASE_METHOD` that can be used together

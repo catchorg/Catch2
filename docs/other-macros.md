@@ -93,30 +93,6 @@ TEST_CASE("STATIC_CHECK showcase", "[traits]") {
 
 ## Test case related macros
 
-* `METHOD_AS_TEST_CASE`
-
-`METHOD_AS_TEST_CASE( member-function-pointer, description )` lets you
-register a member function of a class as a Catch2 test case. The class
-will be separately instantiated for each method registered in this way.
-
-```cpp
-class TestClass {
-    std::string s;
-
-public:
-    TestClass()
-        :s( "hello" )
-    {}
-
-    void testCase() {
-        REQUIRE( s == "hello" );
-    }
-};
-
-
-METHOD_AS_TEST_CASE( TestClass::testCase, "Use class's method as a test case", "[class]" )
-```
-
 * `REGISTER_TEST_CASE`
 
 `REGISTER_TEST_CASE( function, description )` let's you register
