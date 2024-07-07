@@ -243,7 +243,7 @@ namespace Catch {
 
             SummaryColumn&& addRow( std::uint64_t count ) && {
                 std::string row = std::to_string(count);
-                auto const new_width = std::max( m_width, row.size() );
+                auto const new_width = (std::max)( m_width, row.size() );
                 if ( new_width > m_width ) {
                     for ( auto& oldRow : m_rows ) {
                         oldRow.insert( 0, new_width - m_width, ' ' );
