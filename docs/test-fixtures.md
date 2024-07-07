@@ -1,6 +1,12 @@
 <a id="top"></a>
 # Test fixtures
 
+**Contents**<br>
+[Non-Templated test fixtures](#non-templated-test-fixtures)<br>
+[Templated test fixtures](#templated-test-fixtures)<br>
+[Signature-based parameterised test fixtures](#signature-based-parametrised-test-fixtures)<br>
+[Template fixtures with types specified in template type lists](#template-fixtures-with-types-specified-in-template-type-lists)<br>
+
 ## Non-Templated test fixtures
 
 Although Catch allows you to group tests together as [sections within a test case](test-cases-and-sections.md), it can still be convenient, sometimes, to group them using a more traditional test fixture. Catch fully supports this too with 3 different macros for non-templated test fixtures. They are: 
@@ -153,7 +159,7 @@ _While there is an upper limit on the number of types you can specify
 in single `TEMPLATE_TEST_CASE_METHOD` or `TEMPLATE_PRODUCT_TEST_CASE_METHOD`,
 the limit is very high and should not be encountered in practice._
 
-## Signature-based parametrised test fixtures
+## Signature-based parameterised test fixtures
 
 > [Introduced](https://github.com/catchorg/Catch2/issues/1609) in Catch2 2.8.0.
 
