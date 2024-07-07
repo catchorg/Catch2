@@ -15,12 +15,15 @@ struct MyFixture{
     int MyInt = 0;
 };
 
-TEST_CASE_FIXTURE(MyFixture, "Tests with MyFixture") { 
+TEST_CASE_FIXTURE(MyFixture, "Tests with MyFixture") {
+
+    const int val = MyInt++;
+
     SECTION("First partial run") {
-        REQUIRE(MyInt++ == 0);
+        REQUIRE(val == 0);
     }
 
     SECTION("Second partial run") {
-        REQUIRE(MyInt == 1);
+        REQUIRE(val == 1);
     }
 }
