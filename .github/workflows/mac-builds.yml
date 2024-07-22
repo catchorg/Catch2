@@ -4,11 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    # macos-12 updated to a toolchain that crashes when linking the
-    # test binary. This seems to be a known bug in that version,
-    # and will eventually get fixed in an update. After that, we can go
-    # back to newer macos images.
-    runs-on: macos-11
+    runs-on: macos-12
     strategy:
       matrix:
         cxx:
@@ -29,8 +25,6 @@ jobs:
       env:
         CXX: ${{matrix.cxx}}
         CXXFLAGS: ${{matrix.cxxflags}}
-      # Note: $GITHUB_WORKSPACE is distinct from ${{runner.workspace}}.
-      #       This is important
       run: |
         cmake -Bbuild -H$GITHUB_WORKSPACE \
               -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
