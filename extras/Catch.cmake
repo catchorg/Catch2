@@ -124,6 +124,13 @@ same as the Catch name; see also ``TEST_PREFIX`` and ``TEST_SUFFIX``.
     test executable and when the tests are executed themselves. This requires
     cmake/ctest >= 3.22.
 
+  ``DL_FRAMEWORK_PATHS path...``
+    Specifies paths that need to be set for the dynamic linker to find libraries
+    packaged as frameworks on Apple platforms when running the test executable
+    (DYLD_FRAMEWORK_PATH). These paths will both be set when retrieving the list
+    of test cases from the test executable and when the tests are executed themselves.
+    This requires cmake/ctest >= 3.22.
+
   `DISCOVERY_MODE mode``
     Provides control over when ``catch_discover_tests`` performs test discovery.
     By default, ``POST_BUILD`` sets up a post-build command to perform test discovery
@@ -146,7 +153,7 @@ function(catch_discover_tests TARGET)
     ""
     ""
     "TEST_PREFIX;TEST_SUFFIX;WORKING_DIRECTORY;TEST_LIST;REPORTER;OUTPUT_DIR;OUTPUT_PREFIX;OUTPUT_SUFFIX;DISCOVERY_MODE"
-    "TEST_SPEC;EXTRA_ARGS;PROPERTIES;DL_PATHS"
+    "TEST_SPEC;EXTRA_ARGS;PROPERTIES;DL_PATHS;DL_FRAMEWORK_PATHS"
     ${ARGN}
   )
 
@@ -156,10 +163,11 @@ function(catch_discover_tests TARGET)
   if(NOT _TEST_LIST)
     set(_TEST_LIST ${TARGET}_TESTS)
   endif()
-  if (_DL_PATHS)
-    if(${CMAKE_VERSION} VERSION_LESS "3.22.0")
-        message(FATAL_ERROR "The DL_PATHS option requires at least cmake 3.22")
-    endif()
+  if(_DL_PATHS AND ${CMAKE_VERSION} VERSION_LESS "3.22.0")
+    message(FATAL_ERROR "The DL_PATHS option requires at least cmake 3.22")
+  endif()
+  if(_DL_FRAMEWORK_PATHS AND ${CMAKE_VERSION} VERSION_LESS "3.22.0")
+    message(FATAL_ERROR "The DL_FRAMEWORK_PATHS option requires at least cmake 3.22")
   endif()
   if(NOT _DISCOVERY_MODE)
     if(NOT CMAKE_CATCH_DISCOVER_TESTS_DISCOVERY_MODE)
@@ -205,6 +213,7 @@ function(catch_discover_tests TARGET)
               -D "TEST_OUTPUT_PREFIX=${_OUTPUT_PREFIX}"
               -D "TEST_OUTPUT_SUFFIX=${_OUTPUT_SUFFIX}"
               -D "TEST_DL_PATHS=${_DL_PATHS}"
+              -D "TEST_DL_FRAMEWORK_PATHS=${_DL_FRAMEWORK_PATHS}"
               -D "CTEST_FILE=${ctest_tests_file}"
               -P "${_CATCH_DISCOVER_TESTS_SCRIPT}"
       VERBATIM
@@ -250,6 +259,7 @@ function(catch_discover_tests TARGET)
       "      TEST_OUTPUT_SUFFIX"     " [==[" "${_OUTPUT_SUFFIX}"          "]==]"   "\n"
       "      CTEST_FILE"             " [==[" "${ctest_tests_file}"        "]==]"   "\n"
       "      TEST_DL_PATHS"          " [==[" "${_DL_PATHS}"               "]==]"   "\n"
+      "      TEST_DL_FRAMEWORK_PATHS" " [==[" "${_DL_FRAMEWORK_PATHS}"     "]==]"   "\n"
       "      CTEST_FILE"             " [==[" "${CTEST_FILE}"              "]==]"   "\n"
       "    )"                                                                      "\n"
       "  endif()"                                                                  "\n"
