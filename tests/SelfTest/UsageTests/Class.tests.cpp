@@ -33,7 +33,7 @@ namespace {
     };
 
     struct Persistent_Fixture {
-        int m_a = 0;
+        mutable int m_a = 0;
     };
 
     template <typename T> struct Template_Fixture {

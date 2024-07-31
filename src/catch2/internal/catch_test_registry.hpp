@@ -49,28 +49,28 @@ Detail::unique_ptr<ITestInvoker> makeTestInvoker( void (C::*testAsMethod)() ) {
 
 template <typename C>
 class TestInvokerFixture : public ITestInvoker {
-    void ( C::*m_testAsMethod )();
+    void ( C::*m_testAsMethod )() const;
     Detail::unique_ptr<C> m_fixture = nullptr;
 
 public:
-    TestInvokerFixture( void ( C::*testAsMethod )() ) noexcept : m_testAsMethod( testAsMethod ) {}
+    TestInvokerFixture( void ( C::*testAsMethod )() const) noexcept : m_testAsMethod( testAsMethod ) {}
 
-    void testCaseStarting() override { 
-        m_fixture = Detail::make_unique<C>(); 
+    void testCaseStarting() override {
+        m_fixture = Detail::make_unique<C>();
     }
 
-    void testCaseEnding() override { 
-        m_fixture.reset(); 
+    void testCaseEnding() override {
+        m_fixture.reset();
     }
 
     void invoke() const override {
-        auto* f = const_cast<C*>( m_fixture.get() );
+        auto* f = m_fixture.get();
         ( f->*m_testAsMethod )();
     }
 };
 
 template<typename C>
-Detail::unique_ptr<ITestInvoker> makeTestInvokerFixture( void ( C::*testAsMethod )() ) {
+Detail::unique_ptr<ITestInvoker> makeTestInvokerFixture( void ( C::*testAsMethod )() const ) {
     return Detail::make_unique<TestInvokerFixture<C>>( testAsMethod );
 }
 
@@ -177,7 +177,7 @@ static int catchInternalSectionHint = 0;
         CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS                      \
         namespace {                                                           \
             struct TestName : INTERNAL_CATCH_REMOVE_PARENS( ClassName ) {     \
-                void test();                                                  \
+                void test() const;                                            \
             };                                                                \
             const Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( \
                 Catch::makeTestInvokerFixture( &TestName::test ),                    \
@@ -186,7 +186,7 @@ static int catchInternalSectionHint = 0;
                 Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */             \
         }                                                                     \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION                              \
-        void TestName::test()
+        void TestName::test() const
     #define INTERNAL_CATCH_TEST_CASE_FIXTURE( ClassName, ... )    \
         INTERNAL_CATCH_TEST_CASE_FIXTURE2( INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEST_ ), ClassName, __VA_ARGS__ )
 

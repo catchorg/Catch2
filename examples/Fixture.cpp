@@ -11,8 +11,8 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-struct MyFixture{
-    int MyInt = 0;
+struct MyFixture {
+    mutable int MyInt = 0;
 };
 
 TEST_CASE_FIXTURE(MyFixture, "Tests with MyFixture") {
