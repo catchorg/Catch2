@@ -11,7 +11,13 @@
 namespace Catch {
     namespace Benchmark {
         namespace Detail {
+            struct do_nothing {
+                void operator()() const {}
+            };
+
             BenchmarkFunction::callable::~callable() = default;
+            BenchmarkFunction::BenchmarkFunction():
+                f( new model<do_nothing>{ {} } ){}
         } // namespace Detail
     } // namespace Benchmark
 } // namespace Catch

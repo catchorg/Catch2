@@ -27,15 +27,17 @@ namespace Catch {
         namespace Detail {
             template <typename Clock>
             std::vector<double> resolution(int k) {
-                std::vector<TimePoint<Clock>> times;
-                times.reserve(static_cast<size_t>(k + 1));
-                for ( int i = 0; i < k + 1; ++i ) {
-                    times.push_back( Clock::now() );
+                const size_t points = static_cast<size_t>( k + 1 );
+                // To avoid overhead from the branch inside vector::push_back,
+                // we allocate them all and then overwrite.
+                std::vector<TimePoint<Clock>> times(points);
+                for ( auto& time : times ) {
+                    time = Clock::now();
                 }
 
                 std::vector<double> deltas;
                 deltas.reserve(static_cast<size_t>(k));
-                for ( size_t idx = 1; idx < times.size(); ++idx ) {
+                for ( size_t idx = 1; idx < points; ++idx ) {
                     deltas.push_back( static_cast<double>(
                         ( times[idx] - times[idx - 1] ).count() ) );
                 }

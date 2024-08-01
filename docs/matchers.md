@@ -210,15 +210,36 @@ The other miscellaneous matcher utility is exception matching.
 
 #### Matching exceptions
 
-Catch2 provides a utility macro for asserting that an expression
-throws exception of specific type, and that the exception has desired
-properties. The macro is `REQUIRE_THROWS_MATCHES(expr, ExceptionType, Matcher)`.
+Because exceptions are a bit special, Catch2 has a separate macro for them.
+
+
+The basic form is
+
+```
+REQUIRE_THROWS_MATCHES(expr, ExceptionType, Matcher)
+```
+
+and it checks that the `expr` throws an exception, that exception is derived
+from the `ExceptionType` type, and then `Matcher::match` is called on
+the caught exception.
 
 > `REQUIRE_THROWS_MATCHES` macro lives in `catch2/matchers/catch_matchers.hpp`
 
+For one-off checks you can use the `Predicate` matcher above, e.g.
 
-Catch2 currently provides two matchers for exceptions.
-These are:
+```cpp
+REQUIRE_THROWS_MATCHES(parse(...),
+                       parse_error,
+                       Predicate<parse_error>([] (parse_error const& err) -> bool { return err.line() == 1; })
+);
+```
+
+but if you intend to thoroughly test your error reporting, I recommend
+defining a specialized matcher.
+
+
+Catch2 also provides 2 built-in matchers for checking the error message
+inside an exception (it must be derived from `std::exception`):
 * `Message(std::string message)`.
 * `MessageMatches(Matcher matcher)`.
 
@@ -236,10 +257,7 @@ REQUIRE_THROWS_MATCHES(throwsDerivedException(),  DerivedException,  Message("De
 REQUIRE_THROWS_MATCHES(throwsDerivedException(),  DerivedException,  MessageMatches(StartsWith("DerivedException")));
 ```
 
-Note that `DerivedException` in the example above has to derive from
-`std::exception` for the example to work.
-
-> the exception message matcher lives in `catch2/matchers/catch_matchers_exception.hpp`
+> the exception message matchers live in `catch2/matchers/catch_matchers_exception.hpp`
 
 
 ### Generic range Matchers
