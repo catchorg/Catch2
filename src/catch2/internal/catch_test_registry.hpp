@@ -55,11 +55,11 @@ class TestInvokerFixture : public ITestInvoker {
 public:
     TestInvokerFixture( void ( C::*testAsMethod )() const) noexcept : m_testAsMethod( testAsMethod ) {}
 
-    void testCaseStarting() override {
+    void prepareTestCase() override {
         m_fixture = Detail::make_unique<C>();
     }
 
-    void testCaseEnding() override {
+    void tearDownTestCase() override {
         m_fixture.reset();
     }
 
