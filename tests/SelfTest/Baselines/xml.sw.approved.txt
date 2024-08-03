@@ -2034,7 +2034,29 @@ Nor would this
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <TestCase name="A TEST_CASE_FIXTURE based test run that fails" tags="[.][class][failing]" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+  <TestCase name="A TEST_CASE_METHOD based test run that fails" tags="[.][class][failing]" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+    <Expression success="false" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Original>
+        m_a == 2
+      </Original>
+      <Expanded>
+        1 == 2
+      </Expanded>
+    </Expression>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="A TEST_CASE_METHOD based test run that succeeds" tags="[class]" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Original>
+        m_a == 1
+      </Original>
+      <Expanded>
+        1 == 1
+      </Expanded>
+    </Expression>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="A TEST_CASE_PERSISTENT_FIXTURE based test run that fails" tags="[.][class][failing]" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
     <Section name="First partial run" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
         <Original>
@@ -2059,7 +2081,7 @@ Nor would this
     </Section>
     <OverallResult success="false" skips="0"/>
   </TestCase>
-  <TestCase name="A TEST_CASE_FIXTURE based test run that succeeds" tags="[class]" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+  <TestCase name="A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds" tags="[class]" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
     <Section name="First partial run" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
         <Original>
@@ -2082,28 +2104,6 @@ Nor would this
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <OverallResult success="true" skips="0"/>
-  </TestCase>
-  <TestCase name="A TEST_CASE_METHOD based test run that fails" tags="[.][class][failing]" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
-    <Expression success="false" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
-      <Original>
-        m_a == 2
-      </Original>
-      <Expanded>
-        1 == 2
-      </Expanded>
-    </Expression>
-    <OverallResult success="false" skips="0"/>
-  </TestCase>
-  <TestCase name="A TEST_CASE_METHOD based test run that succeeds" tags="[class]" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
-    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
-      <Original>
-        m_a == 1
-      </Original>
-      <Expanded>
-        1 == 1
-      </Expanded>
-    </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="A Template product test case - Foo&lt;float>" tags="[product][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >

@@ -239,11 +239,11 @@ Class.tests.cpp:<line number>: failed: Nttp_Fixture<V>::value == 0 for: 6 == 0
 Class.tests.cpp:<line number>: passed: Nttp_Fixture<V>::value > 0 for: 1 > 0
 Class.tests.cpp:<line number>: passed: Nttp_Fixture<V>::value > 0 for: 3 > 0
 Class.tests.cpp:<line number>: passed: Nttp_Fixture<V>::value > 0 for: 6 > 0
+Class.tests.cpp:<line number>: failed: m_a == 2 for: 1 == 2
+Class.tests.cpp:<line number>: passed: m_a == 1 for: 1 == 1
 Class.tests.cpp:<line number>: passed: m_a++ == 0 for: 0 == 0
 Class.tests.cpp:<line number>: failed: m_a == 0 for: 1 == 0
 Class.tests.cpp:<line number>: passed: m_a++ == 0 for: 0 == 0
-Class.tests.cpp:<line number>: passed: m_a == 1 for: 1 == 1
-Class.tests.cpp:<line number>: failed: m_a == 2 for: 1 == 2
 Class.tests.cpp:<line number>: passed: m_a == 1 for: 1 == 1
 Misc.tests.cpp:<line number>: passed: x.size() == 0 for: 0 == 0
 Misc.tests.cpp:<line number>: passed: x.size() == 0 for: 0 == 0

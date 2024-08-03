@@ -171,7 +171,7 @@ static int catchInternalSectionHint = 0;
         INTERNAL_CATCH_TEST_CASE_METHOD2( INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEST_ ), ClassName, __VA_ARGS__ )
 
     ///////////////////////////////////////////////////////////////////////////////
-    #define INTERNAL_CATCH_TEST_CASE_FIXTURE2( TestName, ClassName, ... )      \
+    #define INTERNAL_CATCH_TEST_CASE_PERSISTENT_FIXTURE2( TestName, ClassName, ... )      \
         CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                             \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                              \
         CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS                      \
@@ -187,8 +187,8 @@ static int catchInternalSectionHint = 0;
         }                                                                     \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION                              \
         void TestName::test() const
-    #define INTERNAL_CATCH_TEST_CASE_FIXTURE( ClassName, ... )    \
-        INTERNAL_CATCH_TEST_CASE_FIXTURE2( INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEST_ ), ClassName, __VA_ARGS__ )
+    #define INTERNAL_CATCH_TEST_CASE_PERSISTENT_FIXTURE( ClassName, ... )    \
+        INTERNAL_CATCH_TEST_CASE_PERSISTENT_FIXTURE2( INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEST_ ), ClassName, __VA_ARGS__ )
 
 
     ///////////////////////////////////////////////////////////////////////////////

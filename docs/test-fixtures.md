@@ -9,13 +9,17 @@
 
 ## Non-Templated test fixtures
 
-Although Catch allows you to group tests together as [sections within a test case](test-cases-and-sections.md), it can still be convenient, sometimes, to group them using a more traditional test fixture. Catch fully supports this too with 3 different macros for non-templated test fixtures. They are: 
+Although Catch2 allows you to group tests together as 
+[sections within a test case](test-cases-and-sections.md), it can still 
+be convenient, sometimes, to group them using a more traditional test. 
+Catch2 fully supports this too with 3 different macros for 
+non-templated test fixtures. They are: 
 
 | Macro    | Description |
 |----------|-------------|
 |1. `TEST_CASE_METHOD(className, ...)`| Creates a uniquely named class which inherits from the class specified by `className`. The test function will be a member of this derived class. An instance of the derived class will be created for every partial run of the test case. |
 |2. `METHOD_AS_TEST_CASE(member-function, ...)`| Uses `member-function` as the test function. An instance of the class will be created for each partial run of the test case. |
-|3. `TEST_CASE_FIXTURE(className, ...)`| Creates a uniquely named class which inherits from the class specified by `className`. The test function will be a member of this derived class. An instance of the derived class will be created at the start of the test run. That instance will be destroyed once the entire test case has ended. |
+|3. `TEST_CASE_PERSISTENT_FIXTURE(className, ...)`| Creates a uniquely named class which inherits from the class specified by `className`. The test function will be a member of this derived class. An instance of the derived class will be created at the start of the test run. That instance will be destroyed once the entire test case has ended. |
 
 ### 1. `TEST_CASE_METHOD`
 
@@ -73,18 +77,21 @@ METHOD_AS_TEST_CASE( TestClass::testCase, "Use class's method as a test case", "
 
 This type of fixture is similar to [TEST_CASE_METHOD](#1-test_case_method) except in this case it will directly use the provided class to create an object rather than a derived class.
 
-### 3. `TEST_CASE_FIXTURE`
+### 3. `TEST_CASE_PERSISTENT_FIXTURE`
 
 > [Introduced](link-to-issue-or-PR) in Catch2 X.Y.Z
 
-`TEST_CASE_FIXTURE` behaves in the same way as [TEST_CASE_METHOD](#1-test_case_method) except that there will only be one instance created throughout the entire run of a test case. To demonstrate this have a look at the following example:
+`TEST_CASE_PERSISTENT_FIXTURE` behaves in the same way as
+[TEST_CASE_METHOD](#1-test_case_method) except that there will only be
+one instance created throughout the entire run of a test case. To 
+demonstrate this have a look at the following example:
 
 ```cpp
 struct MyFixture{
     int MyInt = 0;
 };
 
-TEST_CASE_FIXTURE(MyFixture, "Tests with MyFixture") { 
+TEST_CASE_PERSISTENT_FIXTURE(MyFixture, "Tests with MyFixture") { 
     
     const int val = MyInt++;
 
@@ -97,7 +104,11 @@ TEST_CASE_FIXTURE(MyFixture, "Tests with MyFixture") {
     }
 }
 ```
-This test case will be executed twice as there are two leaf sections. On the first run `val` will be `0` and on the second run `val` will be `1`. This is useful if you would like to share some expensive setup code with all runs of your test case which can't be done at static initialization time.
+This test case will be executed twice as there are two leaf sections.
+On the first run `val` will be `0` and on the second run `val` will be 
+`1`. This is useful if you would like to share some expensive setup code
+with all runs of your test case which can't be done at static 
+initialization time.
 
 ## Templated test fixtures
 

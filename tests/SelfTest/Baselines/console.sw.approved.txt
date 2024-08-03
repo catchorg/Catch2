@@ -2007,54 +2007,6 @@ with expansion:
   6 > 0
 
 -------------------------------------------------------------------------------
-A TEST_CASE_FIXTURE based test run that fails
-  First partial run
--------------------------------------------------------------------------------
-Class.tests.cpp:<line number>
-...............................................................................
-
-Class.tests.cpp:<line number>: PASSED:
-  REQUIRE( m_a++ == 0 )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
-A TEST_CASE_FIXTURE based test run that fails
-  Second partial run
--------------------------------------------------------------------------------
-Class.tests.cpp:<line number>
-...............................................................................
-
-Class.tests.cpp:<line number>: FAILED:
-  REQUIRE( m_a == 0 )
-with expansion:
-  1 == 0
-
--------------------------------------------------------------------------------
-A TEST_CASE_FIXTURE based test run that succeeds
-  First partial run
--------------------------------------------------------------------------------
-Class.tests.cpp:<line number>
-...............................................................................
-
-Class.tests.cpp:<line number>: PASSED:
-  REQUIRE( m_a++ == 0 )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
-A TEST_CASE_FIXTURE based test run that succeeds
-  Second partial run
--------------------------------------------------------------------------------
-Class.tests.cpp:<line number>
-...............................................................................
-
-Class.tests.cpp:<line number>: PASSED:
-  REQUIRE( m_a == 1 )
-with expansion:
-  1 == 1
-
--------------------------------------------------------------------------------
 A TEST_CASE_METHOD based test run that fails
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
@@ -2067,6 +2019,54 @@ with expansion:
 
 -------------------------------------------------------------------------------
 A TEST_CASE_METHOD based test run that succeeds
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( m_a == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+A TEST_CASE_PERSISTENT_FIXTURE based test run that fails
+  First partial run
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( m_a++ == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+A TEST_CASE_PERSISTENT_FIXTURE based test run that fails
+  Second partial run
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( m_a == 0 )
+with expansion:
+  1 == 0
+
+-------------------------------------------------------------------------------
+A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds
+  First partial run
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( m_a++ == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds
+  Second partial run
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
 ...............................................................................

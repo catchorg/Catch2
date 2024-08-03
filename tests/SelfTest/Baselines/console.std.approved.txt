@@ -287,18 +287,6 @@ with expansion:
   6 == 0
 
 -------------------------------------------------------------------------------
-A TEST_CASE_FIXTURE based test run that fails
-  Second partial run
--------------------------------------------------------------------------------
-Class.tests.cpp:<line number>
-...............................................................................
-
-Class.tests.cpp:<line number>: FAILED:
-  REQUIRE( m_a == 0 )
-with expansion:
-  1 == 0
-
--------------------------------------------------------------------------------
 A TEST_CASE_METHOD based test run that fails
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
@@ -308,6 +296,18 @@ Class.tests.cpp:<line number>: FAILED:
   REQUIRE( m_a == 2 )
 with expansion:
   1 == 2
+
+-------------------------------------------------------------------------------
+A TEST_CASE_PERSISTENT_FIXTURE based test run that fails
+  Second partial run
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( m_a == 0 )
+with expansion:
+  1 == 0
 
 -------------------------------------------------------------------------------
 A couple of nested sections followed by a failure

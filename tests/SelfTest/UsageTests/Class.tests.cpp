@@ -68,7 +68,7 @@ TEST_CASE_METHOD( Fixture, "A TEST_CASE_METHOD based test run that succeeds", "[
     REQUIRE( m_a == 1 );
 }
 
-TEST_CASE_FIXTURE( Persistent_Fixture, "A TEST_CASE_FIXTURE based test run that succeeds", "[class]" )
+TEST_CASE_PERSISTENT_FIXTURE( Persistent_Fixture, "A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds", "[class]" )
 {
     SECTION( "First partial run" ) {
         REQUIRE( m_a++ == 0 );
@@ -111,7 +111,7 @@ namespace Inner
         REQUIRE( m_a == 2 );
     }
 
-    TEST_CASE_FIXTURE( Persistent_Fixture, "A TEST_CASE_FIXTURE based test run that fails", "[.][class][failing]" )
+    TEST_CASE_PERSISTENT_FIXTURE( Persistent_Fixture, "A TEST_CASE_PERSISTENT_FIXTURE based test run that fails", "[.][class][failing]" )
     {
         SECTION( "First partial run" ) {
             REQUIRE( m_a++ == 0 );
