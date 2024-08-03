@@ -51,11 +51,18 @@ class UniqueTestsFixture {
  }
 ```
 
-The two test cases here will create uniquely-named derived classes of UniqueTestsFixture and thus can access the `getID()` protected method and `conn` member variables. This ensures that both the test cases are able to create a DBConnection using the same method (DRY principle) and that any ID's created are unique such that the order that tests are executed does not matter. 
+The two test cases here will create uniquely-named derived classes of 
+UniqueTestsFixture and thus can access the `getID()` protected method 
+and `conn` member variables. This ensures that both the test cases 
+are able to create a DBConnection using the same method 
+(DRY principle) and that any ID's created are unique such that the 
+order that tests are executed does not matter. 
 
 ### 2. `METHOD_AS_TEST_CASE`
 
-`METHOD_AS_TEST_CASE` lets you register a member function of a class as a Catch2 test case. The class will be separately instantiated for each method registered in this way.
+`METHOD_AS_TEST_CASE` lets you register a member function of a class 
+as a Catch2 test case. The class will be separately instantiated 
+for each method registered in this way.
 
 ```cpp
 class TestClass {
@@ -75,11 +82,13 @@ public:
 METHOD_AS_TEST_CASE( TestClass::testCase, "Use class's method as a test case", "[class]" )
 ```
 
-This type of fixture is similar to [TEST_CASE_METHOD](#1-test_case_method) except in this case it will directly use the provided class to create an object rather than a derived class.
+This type of fixture is similar to [TEST_CASE_METHOD](#1-test_case_method) except in this 
+case it will directly use the provided class to create an object rather than a derived 
+class.
 
 ### 3. `TEST_CASE_PERSISTENT_FIXTURE`
 
-> [Introduced](link-to-issue-or-PR) in Catch2 X.Y.Z
+> [Introduced](https://github.com/catchorg/Catch2/pull/2885) in Catch2 X.Y.Z
 
 `TEST_CASE_PERSISTENT_FIXTURE` behaves in the same way as
 [TEST_CASE_METHOD](#1-test_case_method) except that there will only be
@@ -87,28 +96,64 @@ one instance created throughout the entire run of a test case. To
 demonstrate this have a look at the following example:
 
 ```cpp
-struct MyFixture{
-    int MyInt = 0;
+class ClassWithExpensiveSetup {
+public:
+    ClassWithExpensiveSetup() {
+        // expensive construction
+        std::this_thread::sleep_for( std::chrono::seconds( 2 ) );
+    }
+
+    ~ClassWithExpensiveSetup() noexcept {
+        // expensive destruction
+        std::this_thread::sleep_for( std::chrono::seconds( 1 ) );
+    }
+
+    int getInt() const { return 42; }
 };
 
-TEST_CASE_PERSISTENT_FIXTURE(MyFixture, "Tests with MyFixture") { 
-    
-    const int val = MyInt++;
+struct MyFixture {
+    mutable int myInt = 0;
+    ClassWithExpensiveSetup expensive;
+};
 
-    SECTION("First partial run") {
-        REQUIRE(val == 0);
+TEST_CASE_PERSISTENT_FIXTURE( MyFixture, "Tests with MyFixture" ) {
+
+    const int val = myInt++;
+
+    SECTION( "First partial run" ) {
+        const auto otherValue = expensive.getInt();
+        REQUIRE( val == 0 );
+        REQUIRE( otherValue == 42 );
     }
 
-    SECTION("Second partial run") {
-        REQUIRE(val == 1);
-    }
+    SECTION( "Second partial run" ) { REQUIRE( val == 1 ); }
 }
 ```
+
+This example demonstates two possible use-cases of this fixture type:
+1. Improve test run times by reducing the amount of expensive and 
+redundant setup and tear-down required.
+2. Reusing results from the previous partial run, in the current
+partial run.
+
 This test case will be executed twice as there are two leaf sections.
 On the first run `val` will be `0` and on the second run `val` will be 
-`1`. This is useful if you would like to share some expensive setup code
-with all runs of your test case which can't be done at static 
-initialization time.
+`1`. 
+
+Additionally, we are simulating an expensive object using 
+`std::this_thread::sleep_for`, but real world use-cases could be:
+1. Creating a D3D12/Vulkan device
+2. Connecting to a database
+3. Loading a file.
+
+The fixture object will be constructed just before the test case begins, and
+it will be destroyed just after the test case ends.
+
+NOTE: The member function which runs the test case is `const`. Therefore 
+if you want to mutate any member of the fixture it must be marked as
+`mutable` as shown in this example. This is to make it clear that
+the initial state of the fixture is intended to mutate during the
+execution of the test case.
 
 ## Templated test fixtures
 
