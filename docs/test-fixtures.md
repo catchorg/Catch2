@@ -138,7 +138,8 @@ partial run.
 
 This test case will be executed twice as there are two leaf sections.
 On the first run `val` will be `0` and on the second run `val` will be 
-`1`. 
+`1`. This demonstrates that we were able to use the results of the
+previous partial run in subsequent partial runs.
 
 Additionally, we are simulating an expensive object using 
 `std::this_thread::sleep_for`, but real world use-cases could be:
@@ -146,8 +147,12 @@ Additionally, we are simulating an expensive object using
 2. Connecting to a database
 3. Loading a file.
 
-The fixture object will be constructed just before the test case begins, and
-it will be destroyed just after the test case ends.
+The fixture object (`MyFixture`) will be constructed just before the
+test case begins, and it will be destroyed just after the test case 
+ends. Therefore, this expensive object will only be created and 
+destroyed once during the execution of this test case. If we had used 
+`TEST_CASE_METHOD`, `MyFixture` would have been created and destroyed 
+twice during the execution of this test case.
 
 NOTE: The member function which runs the test case is `const`. Therefore 
 if you want to mutate any member of the fixture it must be marked as
