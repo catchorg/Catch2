@@ -8,6 +8,7 @@
 - Assertion: [REQUIRE, CHECK](../examples/030-Asn-Require-Check.cpp)
 - Fixture: [Sections](../examples/100-Fix-Section.cpp)
 - Fixture: [Class-based fixtures](../examples/110-Fix-ClassFixture.cpp)
+- Fixture: [Persistent fixtures](../examples/111-Fix-PersistentFixture.cpp)
 - BDD: [SCENARIO, GIVEN, WHEN, THEN](../examples/120-Bdd-ScenarioGivenWhenThen.cpp)
 - Listener: [Listeners](../examples/210-Evt-EventListeners.cpp)
 - Configuration: [Provide your own output streams](../examples/231-Cfg-OutputStreams.cpp)

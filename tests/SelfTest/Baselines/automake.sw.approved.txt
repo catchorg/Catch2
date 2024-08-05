@@ -68,6 +68,8 @@ Nor would this
 :test-result: PASS A TEMPLATE_TEST_CASE_METHOD_SIG based test run that succeeds - 6
 :test-result: FAIL A TEST_CASE_METHOD based test run that fails
 :test-result: PASS A TEST_CASE_METHOD based test run that succeeds
+:test-result: FAIL A TEST_CASE_PERSISTENT_FIXTURE based test run that fails
+:test-result: PASS A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds
 :test-result: PASS A Template product test case - Foo<float>
 :test-result: PASS A Template product test case - Foo<int>
 :test-result: PASS A Template product test case - std::vector<float>

@@ -519,6 +519,18 @@ at Class.tests.cpp:<line number>
       </failure>
     </testCase>
     <testCase name="A TEST_CASE_METHOD based test run that succeeds" duration="{duration}"/>
+    <testCase name="A TEST_CASE_PERSISTENT_FIXTURE based test run that fails/First partial run" duration="{duration}"/>
+    <testCase name="A TEST_CASE_PERSISTENT_FIXTURE based test run that fails/Second partial run" duration="{duration}">
+      <failure message="REQUIRE(m_a == 0)">
+FAILED:
+	REQUIRE( m_a == 0 )
+with expansion:
+	1 == 0
+at Class.tests.cpp:<line number>
+      </failure>
+    </testCase>
+    <testCase name="A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds/First partial run" duration="{duration}"/>
+    <testCase name="A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds/Second partial run" duration="{duration}"/>
     <testCase name="Template test case method with test types specified inside std::tuple - MyTypes - 0" duration="{duration}"/>
     <testCase name="Template test case method with test types specified inside std::tuple - MyTypes - 1" duration="{duration}"/>
     <testCase name="Template test case method with test types specified inside std::tuple - MyTypes - 2" duration="{duration}"/>

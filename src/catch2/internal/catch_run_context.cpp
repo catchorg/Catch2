@@ -185,6 +185,7 @@ namespace Catch {
 
         auto const& testInfo = testCase.getTestCaseInfo();
         m_reporter->testCaseStarting(testInfo);
+        testCase.prepareTestCase();
         m_activeTestCase = &testCase;
 
 
@@ -254,6 +255,7 @@ namespace Catch {
             deltaTotals.testCases.failed++;
         }
         m_totals.testCases += deltaTotals.testCases;
+        testCase.tearDownTestCase();
         m_reporter->testCaseEnded(TestCaseStats(testInfo,
                                   deltaTotals,
                                   CATCH_MOVE(redirectedCout),

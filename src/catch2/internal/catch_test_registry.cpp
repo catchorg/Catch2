@@ -16,6 +16,8 @@
 #include <iterator>
 
 namespace Catch {
+    void ITestInvoker::prepareTestCase() {}
+    void ITestInvoker::tearDownTestCase() {}
     ITestInvoker::~ITestInvoker() = default;
 
     namespace {

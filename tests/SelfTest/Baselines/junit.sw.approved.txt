@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="129" skipped="12" tests="2267" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="130" skipped="12" tests="2271" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -313,6 +313,18 @@ at Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.Fixture" name="A TEST_CASE_METHOD based test run that succeeds" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.Persistent_Fixture" name="A TEST_CASE_PERSISTENT_FIXTURE based test run that fails/First partial run" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.Persistent_Fixture" name="A TEST_CASE_PERSISTENT_FIXTURE based test run that fails/Second partial run" time="{duration}" status="run">
+      <failure message="m_a == 0" type="REQUIRE">
+FAILED:
+  REQUIRE( m_a == 0 )
+with expansion:
+  1 == 0
+at Class.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.Persistent_Fixture" name="A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds/First partial run" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.Persistent_Fixture" name="A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds/Second partial run" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="A Template product test case - Foo&lt;float>" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="A Template product test case - Foo&lt;int>" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="A Template product test case - std::vector&lt;float>" time="{duration}" status="run"/>

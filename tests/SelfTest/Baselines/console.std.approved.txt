@@ -298,6 +298,18 @@ with expansion:
   1 == 2
 
 -------------------------------------------------------------------------------
+A TEST_CASE_PERSISTENT_FIXTURE based test run that fails
+  Second partial run
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( m_a == 0 )
+with expansion:
+  1 == 0
+
+-------------------------------------------------------------------------------
 A couple of nested sections followed by a failure
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -1598,6 +1610,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  416 |  325 passed |  70 failed | 7 skipped | 14 failed as expected
-assertions: 2238 | 2074 passed | 129 failed | 35 failed as expected
+test cases:  418 |  326 passed |  71 failed | 7 skipped | 14 failed as expected
+assertions: 2242 | 2077 passed | 130 failed | 35 failed as expected
 

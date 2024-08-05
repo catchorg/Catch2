@@ -2056,6 +2056,56 @@ Nor would this
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="A TEST_CASE_PERSISTENT_FIXTURE based test run that fails" tags="[.][class][failing]" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+    <Section name="First partial run" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          m_a++ == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Second partial run" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="false" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          m_a == 0
+        </Original>
+        <Expanded>
+          1 == 0
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds" tags="[class]" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+    <Section name="First partial run" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          m_a++ == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Second partial run" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          m_a == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="A Template product test case - Foo&lt;float>" tags="[product][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
@@ -21831,6 +21881,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2074" failures="146" expectedFailures="35" skips="12"/>
-  <OverallResultsCases successes="311" failures="85" expectedFailures="14" skips="6"/>
+  <OverallResults successes="2077" failures="147" expectedFailures="35" skips="12"/>
+  <OverallResultsCases successes="312" failures="86" expectedFailures="14" skips="6"/>
 </Catch2TestRun>

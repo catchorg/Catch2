@@ -2029,6 +2029,54 @@ with expansion:
   1 == 1
 
 -------------------------------------------------------------------------------
+A TEST_CASE_PERSISTENT_FIXTURE based test run that fails
+  First partial run
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( m_a++ == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+A TEST_CASE_PERSISTENT_FIXTURE based test run that fails
+  Second partial run
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( m_a == 0 )
+with expansion:
+  1 == 0
+
+-------------------------------------------------------------------------------
+A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds
+  First partial run
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( m_a++ == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds
+  Second partial run
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( m_a == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
 A Template product test case - Foo<float>
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -18894,6 +18942,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  416 |  311 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2255 | 2074 passed | 146 failed | 35 failed as expected
+test cases:  418 |  312 passed |  86 failed | 6 skipped | 14 failed as expected
+assertions: 2259 | 2077 passed | 147 failed | 35 failed as expected
 

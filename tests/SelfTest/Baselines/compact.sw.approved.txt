@@ -241,6 +241,10 @@ Class.tests.cpp:<line number>: passed: Nttp_Fixture<V>::value > 0 for: 3 > 0
 Class.tests.cpp:<line number>: passed: Nttp_Fixture<V>::value > 0 for: 6 > 0
 Class.tests.cpp:<line number>: failed: m_a == 2 for: 1 == 2
 Class.tests.cpp:<line number>: passed: m_a == 1 for: 1 == 1
+Class.tests.cpp:<line number>: passed: m_a++ == 0 for: 0 == 0
+Class.tests.cpp:<line number>: failed: m_a == 0 for: 1 == 0
+Class.tests.cpp:<line number>: passed: m_a++ == 0 for: 0 == 0
+Class.tests.cpp:<line number>: passed: m_a == 1 for: 1 == 1
 Misc.tests.cpp:<line number>: passed: x.size() == 0 for: 0 == 0
 Misc.tests.cpp:<line number>: passed: x.size() == 0 for: 0 == 0
 Misc.tests.cpp:<line number>: passed: x.size() == 0 for: 0 == 0
@@ -2840,7 +2844,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  416 |  311 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2255 | 2074 passed | 146 failed | 35 failed as expected
+test cases:  418 |  312 passed |  86 failed | 6 skipped | 14 failed as expected
+assertions: 2259 | 2077 passed | 147 failed | 35 failed as expected
 
 
