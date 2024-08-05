@@ -35,6 +35,19 @@ being aborted (when using `--abort` or `--abortx`). It is however
 **NOT** invoked for test cases that are [explicitly skipped using the `SKIP`
 macro](skipping-passing-failing.md#top).
 
+
+### Non-const function for `TEST_CASE_METHOD`
+
+> Deprecated in Catch2 vX.Y.Z
+
+Currently, the member function generated for `TEST_CASE_METHOD` is
+not `const` qualified. In the future, the generated member function will
+be `const` qualified, just as `TEST_CASE_PERSISTENT_FIXTURE` does.
+
+If you are mutating the fixture instance from within the test case, and
+want to keep doing so in the future, mark the mutated members as `mutable`.
+
+
 ---
 
 [Home](Readme.md#top)
