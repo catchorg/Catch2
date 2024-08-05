@@ -8,7 +8,7 @@
 
 // Fixture.cpp
 
-// Catch has three ways to express fixtures:
+// Catch2 has three ways to express fixtures:
 // - Sections
 // - Traditional class-based fixtures that are created and destroyed on every
 // partial run
