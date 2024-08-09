@@ -29,6 +29,7 @@ namespace Catch {
     class IConfig;
     class IEventListener;
     using IEventListenerPtr = Detail::unique_ptr<IEventListener>;
+    class OutputRedirect;
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -115,7 +116,7 @@ namespace Catch {
 
     private:
 
-        void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr );
+        void runCurrentTest();
         void invokeActiveTestCase();
 
         void resetAssertionInfo();
@@ -148,6 +149,7 @@ namespace Catch {
         std::vector<SectionEndInfo> m_unfinishedSections;
         std::vector<ITracker*> m_activeSections;
         TrackerContext m_trackerContext;
+        Detail::unique_ptr<OutputRedirect> m_outputRedirect;
         FatalConditionHandler m_fatalConditionhandler;
         bool m_lastAssertionPassed = false;
         bool m_shouldReportUnexpected = true;

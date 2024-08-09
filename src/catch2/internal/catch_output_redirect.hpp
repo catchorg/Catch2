@@ -8,110 +8,69 @@
 #ifndef CATCH_OUTPUT_REDIRECT_HPP_INCLUDED
 #define CATCH_OUTPUT_REDIRECT_HPP_INCLUDED
 
-#include <catch2/internal/catch_platform.hpp>
-#include <catch2/internal/catch_reusable_string_stream.hpp>
-#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
-#include <cstdio>
-#include <iosfwd>
+#include <cassert>
 #include <string>
 
 namespace Catch {
 
-    class RedirectedStream {
-        std::ostream& m_originalStream;
-        std::ostream& m_redirectionStream;
-        std::streambuf* m_prevBuf;
-
-    public:
-        RedirectedStream( std::ostream& originalStream, std::ostream& redirectionStream );
-        ~RedirectedStream();
-    };
-
-    class RedirectedStdOut {
-        ReusableStringStream m_rss;
-        RedirectedStream m_cout;
-    public:
-        RedirectedStdOut();
-        auto str() const -> std::string;
-    };
-
-    // StdErr has two constituent streams in C++, std::cerr and std::clog
-    // This means that we need to redirect 2 streams into 1 to keep proper
-    // order of writes
-    class RedirectedStdErr {
-        ReusableStringStream m_rss;
-        RedirectedStream m_cerr;
-        RedirectedStream m_clog;
-    public:
-        RedirectedStdErr();
-        auto str() const -> std::string;
-    };
-
-    class RedirectedStreams {
-    public:
-        RedirectedStreams(RedirectedStreams const&) = delete;
-        RedirectedStreams& operator=(RedirectedStreams const&) = delete;
-        RedirectedStreams(RedirectedStreams&&) = delete;
-        RedirectedStreams& operator=(RedirectedStreams&&) = delete;
-
-        RedirectedStreams(std::string& redirectedCout, std::string& redirectedCerr);
-        ~RedirectedStreams();
-    private:
-        std::string& m_redirectedCout;
-        std::string& m_redirectedCerr;
-        RedirectedStdOut m_redirectedStdOut;
-        RedirectedStdErr m_redirectedStdErr;
-    };
-
-#if defined(CATCH_CONFIG_NEW_CAPTURE)
-
-    // Windows's implementation of std::tmpfile is terrible (it tries
-    // to create a file inside system folder, thus requiring elevated
-    // privileges for the binary), so we have to use tmpnam(_s) and
-    // create the file ourselves there.
-    class TempFile {
-    public:
-        TempFile(TempFile const&) = delete;
-        TempFile& operator=(TempFile const&) = delete;
-        TempFile(TempFile&&) = delete;
-        TempFile& operator=(TempFile&&) = delete;
-
-        TempFile();
-        ~TempFile();
-
-        std::FILE* getFile();
-        std::string getContents();
-
-    private:
-        std::FILE* m_file = nullptr;
-    #if defined(_MSC_VER)
-        char m_buffer[L_tmpnam] = { 0 };
-    #endif
-    };
-
-
     class OutputRedirect {
+        bool m_redirectActive = false;
+        virtual void activateImpl() = 0;
+        virtual void deactivateImpl() = 0;
     public:
-        OutputRedirect(OutputRedirect const&) = delete;
-        OutputRedirect& operator=(OutputRedirect const&) = delete;
-        OutputRedirect(OutputRedirect&&) = delete;
-        OutputRedirect& operator=(OutputRedirect&&) = delete;
+        enum Kind {
+            //! No redirect (noop implementation)
+            None,
+            //! Redirect std::cout/std::cerr/std::clog streams internally
+            Streams,
+            //! Redirect the stdout/stderr file descriptors into files
+            FileDescriptors,
+        };
 
+        virtual ~OutputRedirect(); // = default;
 
-        OutputRedirect(std::string& stdout_dest, std::string& stderr_dest);
-        ~OutputRedirect();
-
-    private:
-        int m_originalStdout = -1;
-        int m_originalStderr = -1;
-        TempFile m_stdoutFile;
-        TempFile m_stderrFile;
-        std::string& m_stdoutDest;
-        std::string& m_stderrDest;
+        // TODO: Do we want to check that redirect is not active before retrieving the output?
+        virtual std::string getStdout() = 0;
+        virtual std::string getStderr() = 0;
+        virtual void clearBuffers() = 0;
+        bool isActive() const { return m_redirectActive; }
+        void activate() {
+            assert( !m_redirectActive && "redirect is already active" );
+            activateImpl();
+            m_redirectActive = true;
+        }
+        void deactivate() {
+            assert( m_redirectActive && "redirect is not active" );
+            deactivateImpl();
+            m_redirectActive = false;
+        }
     };
 
-#endif
+    bool isRedirectAvailable( OutputRedirect::Kind kind);
+    Detail::unique_ptr<OutputRedirect> makeOutputRedirect( bool actual );
+
+    class RedirectGuard {
+        OutputRedirect* m_redirect;
+        bool m_activate;
+        bool m_previouslyActive;
+        bool m_moved = false;
+
+    public:
+        RedirectGuard( bool activate, OutputRedirect& redirectImpl );
+        ~RedirectGuard() noexcept( false );
+
+        RedirectGuard( RedirectGuard const& ) = delete;
+        RedirectGuard& operator=( RedirectGuard const& ) = delete;
+
+        // C++14 needs move-able guards to return them from functions
+        RedirectGuard( RedirectGuard&& rhs ) noexcept;
+        RedirectGuard& operator=( RedirectGuard&& rhs ) noexcept;
+    };
+
+    RedirectGuard scopedActivate( OutputRedirect& redirectImpl );
+    RedirectGuard scopedDeactivate( OutputRedirect& redirectImpl );
 
 } // end namespace Catch
 
