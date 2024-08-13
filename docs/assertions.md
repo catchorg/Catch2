@@ -110,7 +110,7 @@ Expects that an exception is thrown that, when converted to a string, matches th
 
 e.g.
 ```cpp
-REQUIRE_THROWS_WITH( openThePodBayDoors(), Contains( "afraid" ) && Contains( "can't do that" ) );
+REQUIRE_THROWS_WITH( openThePodBayDoors(), ContainsSubstring( "afraid" ) && ContainsSubstring( "can't do that" ) );
 REQUIRE_THROWS_WITH( dismantleHal(), "My mind is going" );
 ```
 
