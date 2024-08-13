@@ -12,6 +12,7 @@
     <testcase classname="<exe-name>.global" name="#1175 - Hidden Test" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1238" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.(Fixture_1245&lt;int, int>)" name="#1245" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#1319: Sections can have description (even if it is not saved" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1319: Sections can have description (even if it is not saved/SectionName" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1403" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1455 - INFO and WARN can start with a linebreak" time="{duration}" status="run"/>
@@ -30,10 +31,12 @@ Nor would this
     </testcase>
     <testcase classname="<exe-name>.global" name="#1548" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1905 -- test spec parser properly clears internal state between compound tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#1912 -- test spec parser handles escaping" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1912 -- test spec parser handles escaping/Various parentheses" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1912 -- test spec parser handles escaping/backslash in test name" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1913 - GENERATE inside a for loop should not keep recreating the generator" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1913 - GENERATEs can share a line" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#1938 - GENERATE after a section" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1938 - GENERATE after a section/A" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1938 - GENERATE after a section/B" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1938 - Section followed by flat generate" time="{duration}" status="run"/>
@@ -56,6 +59,7 @@ failure to init
 at Generators.tests.cpp:<line number>
       </error>
     </testcase>
+    <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
       <error type="TEST_CASE">
@@ -89,6 +93,7 @@ at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="#872" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#961 -- Dynamically created sections should all be reported" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#961 -- Dynamically created sections should all be reported/Looped section 0" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#961 -- Dynamically created sections should all be reported/Looped section 1" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#961 -- Dynamically created sections should all be reported/Looped section 2" time="{duration}" status="run"/>
@@ -147,6 +152,7 @@ at Condition.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="'Not' checks that should succeed" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="(unimplemented) static bools can be evaluated" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="(unimplemented) static bools can be evaluated/compare to true" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="(unimplemented) static bools can be evaluated/compare to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="(unimplemented) static bools can be evaluated/negation" time="{duration}" status="run"/>
@@ -323,6 +329,7 @@ with expansion:
 at Class.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.Persistent_Fixture" name="A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.Persistent_Fixture" name="A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds/First partial run" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.Persistent_Fixture" name="A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds/Second partial run" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="A Template product test case - Foo&lt;float>" time="{duration}" status="run"/>
@@ -341,6 +348,7 @@ to infinity and beyond
 at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="A couple of nested sections followed by a failure/Outer" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="A couple of nested sections followed by a failure/Outer/Inner" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="A failing expression with a non streamable type is still captured" time="{duration}" status="run">
       <failure message="&amp;o1 == &amp;o2" type="CHECK">
@@ -359,6 +367,7 @@ at Tricky.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Absolute margin" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="An empty test with no assertions" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="An expression with side-effects should only be evaluated once" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="An unchecked exception reports the line of the last assertion" time="{duration}" status="run">
       <error message="{Unknown expression after the reported line}">
@@ -376,6 +385,7 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Approximate comparisons with floats" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Approximate comparisons with ints" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Approximate comparisons with mixed numeric types" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Arbitrary predicate matcher" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Arbitrary predicate matcher/Function pointer" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Arbitrary predicate matcher/Lambdas + different type" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Assertion macros support bit operators and bool conversions" time="{duration}" status="run"/>
@@ -383,30 +393,38 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Assertions then sections/A section" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Assertions then sections/A section/Another section" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Assertions then sections/A section/Another other section" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Basic use of the Contains range matcher" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Basic use of the Contains range matcher/Different argument ranges, same element type, default comparison" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Basic use of the Contains range matcher/Different argument ranges, same element type, custom comparison" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Basic use of the Contains range matcher/Different element type, custom comparisons" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Basic use of the Contains range matcher/Can handle type that requires ADL-found free function begin and end" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Basic use of the Contains range matcher/Initialization with move only types" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Basic use of the Contains range matcher/Matching using matcher" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Basic use of the Empty range matcher" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Basic use of the Empty range matcher/Simple, std-provided containers" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Basic use of the Empty range matcher/Type with empty" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Basic use of the Empty range matcher/Type requires ADL found empty free function" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="CAPTURE can deal with complex expressions" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="CAPTURE can deal with complex expressions involving commas" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="CAPTURE parses string and character constants" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Capture and info messages" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Capture and info messages/Capture should stringify like assertions" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Capture and info messages/Info should NOT stringify the way assertions do" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="CaseInsensitiveEqualsTo is case insensitive" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="CaseInsensitiveEqualsTo is case insensitive/Degenerate cases" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="CaseInsensitiveEqualsTo is case insensitive/Plain comparisons" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="CaseInsensitiveLess is case insensitive" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="CaseInsensitiveLess is case insensitive/Degenerate cases" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="CaseInsensitiveLess is case insensitive/Plain comparisons" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Character pretty printing" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Character pretty printing/Specifically escaped" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Character pretty printing/General chars" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Character pretty printing/Low ASCII" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Clara::Arg supports single-arg parse the way Opt does" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Clara::Opt supports accept-many lambdas" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Clara::Opt supports accept-many lambdas/Parsing fails on multiple options without accept_many" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Clara::Opt supports accept-many lambdas/Parsing succeeds on multiple options with accept_many" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="ColourGuard behaviour" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="ColourGuard behaviour/ColourGuard is disengaged by default" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="ColourGuard behaviour/ColourGuard is engaged by op&lt;&lt;" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="ColourGuard behaviour/ColourGuard can be engaged explicitly" time="{duration}" status="run"/>
@@ -424,8 +442,10 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Comparisons between ints where one side is computed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Comparisons between unsigned ints and negative signed ints match c++ standard behaviour" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Comparisons with int literals don't warn when mixing signed/ unsigned" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Composed generic matchers shortcircuit" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Composed generic matchers shortcircuit/MatchAllOf" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Composed generic matchers shortcircuit/MatchAnyOf" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Composed matchers shortcircuit" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Composed matchers shortcircuit/MatchAllOf" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Composed matchers shortcircuit/MatchAnyOf" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Contains string matcher" time="{duration}" status="run">
@@ -445,6 +465,7 @@ with expansion:
 at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Copy and then generate a range" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Copy and then generate a range/from var and iterators" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Copy and then generate a range/From a temporary container" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Copy and then generate a range/Final validation" time="{duration}" status="run"/>
@@ -667,6 +688,7 @@ at Matchers.tests.cpp:<line number>
     </testcase>
     <testcase classname="<exe-name>.global" name="Exception matchers that succeed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Exception message can be matched" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Exception messages can be tested for" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Exception messages can be tested for/exact match" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Exception messages can be tested for/different case" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Exception messages can be tested for/wildcarded" time="{duration}" status="run"/>
@@ -712,6 +734,7 @@ at Message.tests.cpp:<line number>
     </testcase>
     <testcase classname="<exe-name>.global" name="Factorials are computed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Filter generator throws exception for empty generator" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Floating point matchers: double" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: double/Relative" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: double/Relative/Some subnormal values" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: double/Margin" time="{duration}" status="run"/>
@@ -719,6 +742,7 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Floating point matchers: double/Composed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: double/Constructor validation" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: double/IsNaN" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Floating point matchers: float" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/Relative" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/Relative/Some subnormal values" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/Margin" time="{duration}" status="run"/>
@@ -727,46 +751,64 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/Constructor validation" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/IsNaN" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="GENERATE can combine literals and generators" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators -- adapters" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators -- adapters/Filtering by predicate" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Filtering by predicate/Basic usage" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Filtering by predicate/Throws if there are no matching values" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Shortening a range" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators -- adapters/Transforming elements" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Transforming elements/Same type" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Transforming elements/Different type" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Transforming elements/Different deduced type" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Repeating a generator" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators -- adapters/Chunking a generator into sized pieces" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Chunking a generator into sized pieces/Number of elements in source is divisible by chunk size" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Chunking a generator into sized pieces/Number of elements in source is not divisible by chunk size" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Chunking a generator into sized pieces/Chunk size of zero" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Chunking a generator into sized pieces/Throws on too small generators" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators -- simple" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators -- simple/one" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators -- simple/two" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators internals" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Single value" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Preset values" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Generator combinator" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Explicitly typed generator sequence" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Filter generator" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Filter generator/Simple filtering" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Filter generator/Filter out multiple elements at the start and end" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Filter generator/Throws on construction if it can't get initial element" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Take generator" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Take generator/Take less" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Take generator/Take more" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Map with explicit return type" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Map with deduced return type" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Repeat" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Repeat/Singular repeat" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Repeat/Actual repeat" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive auto step" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive auto step/Integer" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative auto step" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative auto step/Integer" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step/Integer" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step/Integer/Exact" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step/Integer/Slightly over end" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step/Integer/Slightly under end" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step/Floating Point" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step/Floating Point/Exact" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step/Floating Point/Slightly over end" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step/Floating Point/Slightly under end" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative manual step" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative manual step/Integer" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative manual step/Integer/Exact" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative manual step/Integer/Slightly over end" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative manual step/Integer/Slightly under end" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Greater-than inequalities with different epsilons" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Hashers with different seed produce different hash with same test case" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Hashers with same seed produce same hash" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Hashing different test cases produces different result" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Hashing different test cases produces different result/Different test name" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Hashing different test cases produces different result/Different classname" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Hashing different test cases produces different result/Different tags" time="{duration}" status="run"/>
@@ -876,6 +918,7 @@ at Condition.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Inequality checks that should succeed" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="JsonWriter" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter/Newly constructed JsonWriter does nothing" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter/Calling writeObject will create an empty pair of braces" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter/Calling writeObject with key will create an object to write the value" time="{duration}" status="run"/>
@@ -885,6 +928,7 @@ at Condition.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="JsonWriter/Moved from JsonObjectWriter shall not insert superfluous brace" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter/Moved from JsonArrayWriter shall not insert superfluous bracket" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter/Custom class shall be quoted" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="JsonWriter escapes charaters in strings properly" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter escapes charaters in strings properly/Quote in a string is escaped" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter escapes charaters in strings properly/Backslash in a string is escaped" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter escapes charaters in strings properly/Forward slash in a string is **not** escaped" time="{duration}" status="run"/>
@@ -920,12 +964,18 @@ with expansion:
 at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/1" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
+    </testcase>
     <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/1/A" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure type="FAIL">
 FAILED:
 at Condition.tests.cpp:<line number>
       </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/2" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
     </testcase>
     <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/2/A" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
@@ -934,12 +984,18 @@ FAILED:
 at Condition.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/1" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
+    </testcase>
     <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/1/B" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure type="FAIL">
 FAILED:
 at Condition.tests.cpp:<line number>
       </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/2" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
     </testcase>
     <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/2/B" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
@@ -1108,6 +1164,7 @@ at Condition.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Ordering comparison checks that should succeed" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Our PCG implementation provides expected results for known seeds" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Our PCG implementation provides expected results for known seeds/Default seeded" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Our PCG implementation provides expected results for known seeds/Specific seed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Output from all sections is reported/one" time="{duration}" status="run">
@@ -1125,9 +1182,11 @@ at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Overloaded comma or address-of operators are not used" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Parse uints" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parse uints/proper inputs" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parse uints/Bad inputs" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsed tags are matched case insensitive" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Parsing sharding-related cli flags" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing sharding-related cli flags/shard-count" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing sharding-related cli flags/Negative shard count reports error" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing sharding-related cli flags/Zero shard count reports error" time="{duration}" status="run"/>
@@ -1135,44 +1194,58 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Parsing sharding-related cli flags/Negative shard index reports error" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing sharding-related cli flags/Shard index 0 is accepted" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing tags with non-alphabetical characters is pass-through" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Parsing warnings" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing warnings/NoAssertions" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing warnings/NoTests is no longer supported" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing warnings/Combining multiple warnings" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Pointers can be compared to null" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Precision of floating point stringification can be set" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Precision of floating point stringification can be set/Floats" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Precision of floating point stringification can be set/Double" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Predicate matcher can accept const char*" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/empty args don't cause a crash" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/default - no arguments" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/test lists" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/test lists/Specify one test case using" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/test lists/Specify one test case exclusion using exclude:" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/test lists/Specify one test case exclusion using ~" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/-r/console" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/-r/xml" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/--reporter/junit" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/must match one of the available ones" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/With output file" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/With Windows-like absolute path as output file" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/Multiple reporters" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/Multiple reporters/All with output files" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/Multiple reporters/Mixed output files and default output" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/Multiple reporters/cannot have multiple reporters with default output" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/debugger" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/debugger/-b" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/debugger/--break" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/-a aborts after first failure" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/-x 2 aborts after two failures" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/-x must be numeric" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/wait-for-keypress" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/wait-for-keypress/Accepted options" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/wait-for-keypress/invalid options are reported" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/nothrow" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/nothrow/-e" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/nothrow/--nothrow" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/output filename" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/output filename/-o filename" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/output filename/--out" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/combinations" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/combinations/Single character flags can be combined" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour/without option" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour/auto" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour/yes" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour/no" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour/error" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/samples" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/resamples" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/confidence-interval" time="{duration}" status="run"/>
@@ -1252,14 +1325,27 @@ at Matchers.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Reproducer for #2309 - a very long description past 80 chars (default console width) with a late colon : blablabla" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="SUCCEED counts as a test pass" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="SUCCEED does not require an argument" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.Fixture" name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.Fixture" name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods/Given: No operations precede me" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.Fixture" name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods/Given: No operations precede me/When: We get the count" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.Fixture" name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods/Given: No operations precede me/When: We get the count/Then: Subsequently values are higher" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Scenario: Do that thing with the thing" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Scenario: Do that thing with the thing/Given: This stuff exists" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Scenario: Do that thing with the thing/Given: This stuff exists/And given: And some assumption" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Scenario: Do that thing with the thing/Given: This stuff exists/And given: And some assumption/When: I do this" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Scenario: Do that thing with the thing/Given: This stuff exists/And given: And some assumption/When: I do this/Then: it should do this" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Scenario: Do that thing with the thing/Given: This stuff exists/And given: And some assumption/When: I do this/Then: it should do this/And: do that" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Scenario: This is a really long scenario name to see how the list command deals with wrapping" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Scenario: This is a really long scenario name to see how the list command deals with wrapping/Given: A section name that is so long that it cannot fit in a single console width" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Scenario: This is a really long scenario name to see how the list command deals with wrapping/Given: A section name that is so long that it cannot fit in a single console width/When: The test headers are printed as part of the normal running of the scenario" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Scenario: This is a really long scenario name to see how the list command deals with wrapping/Given: A section name that is so long that it cannot fit in a single console width/When: The test headers are printed as part of the normal running of the scenario/Then: The, deliberately very long and overly verbose (you see what I did there?) section names must wrap, along with an indent" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Scenario: Vector resizing affects size and capacity" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Scenario: Vector resizing affects size and capacity/Given: an empty vector" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Scenario: Vector resizing affects size and capacity/Given: an empty vector/When: it is made larger" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Scenario: Vector resizing affects size and capacity/Given: an empty vector/When: it is made larger/Then: the size and capacity go up" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Scenario: Vector resizing affects size and capacity/Given: an empty vector/When: it is made larger/Then: the size and capacity go up/And when: it is made smaller again" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Scenario: Vector resizing affects size and capacity/Given: an empty vector/When: it is made larger/Then: the size and capacity go up/And when: it is made smaller again/Then: the size goes down but the capacity stays the same" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Scenario: Vector resizing affects size and capacity/Given: an empty vector/When: we reserve more space" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Scenario: Vector resizing affects size and capacity/Given: an empty vector/When: we reserve more space/Then: The capacity is increased but the size remains the same" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Sends stuff to stdout and stderr" time="{duration}" status="run">
       <system-out>
@@ -1271,6 +1357,8 @@ A string sent to stderr via clog
       </system-err>
     </testcase>
     <testcase classname="<exe-name>.global" name="Some simple comparisons between doubles" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Standard output from all sections is reported" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Standard output from all sections is reported/one" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Standard output from all sections is reported/two" time="{duration}" status="run">
       <system-out>
 Message from section one
@@ -1294,15 +1382,18 @@ with expansion:
 at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Static arrays are convertible to string" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Static arrays are convertible to string/Single item" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Static arrays are convertible to string/Multiple" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Static arrays are convertible to string/Non-trivial inner items" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="String matchers" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="StringRef" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/Empty string" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/From string literal" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/From sub-string" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/Copy construction is shallow" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/Copy assignment is shallow" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="StringRef/Substrings" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings/zero-based substring" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings/non-zero-based substring" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings/Pointer values of full refs should match" time="{duration}" status="run"/>
@@ -1311,13 +1402,16 @@ at Matchers.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings/Substring off the end are trimmed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings/substring start after the end is empty" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/Comparisons are deep" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="StringRef/from std::string" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/from std::string/implicitly constructed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/from std::string/explicitly constructed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/from std::string/assigned" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="StringRef/to std::string" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/to std::string/explicitly constructed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/to std::string/assigned" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/std::string += StringRef" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/StringRef + StringRef" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="StringRef at compilation time" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef at compilation time/Simple constructors" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef at compilation time/UDL construction" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Stringifying char arrays with statically known sizes - char" time="{duration}" status="run"/>
@@ -1342,6 +1436,7 @@ with expansion:
 at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Tag alias can be registered against tag patterns" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Tag alias can be registered against tag patterns/The same tag alias can only be registered once" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Tag alias can be registered against tag patterns/Tag aliases must be of the form [@name]" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Tags with spaces and non-alphanumerical characters are accepted" time="{duration}" status="run"/>
@@ -1441,6 +1536,7 @@ at Misc.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="The NO_FAIL macro reports a failure but does not fail the test" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing tags" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing reporters" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing tests" time="{duration}" status="run"/>
@@ -1464,13 +1560,17 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Tracker/successfully close one section, then find another/Re-enter - skips S1 and enters S2/fail S2" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Tracker/open a nested section" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Trim strings" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Container conversions" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Container conversions/Two equal containers of different container types" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Container conversions/Two equal containers of different container types (differ in array N)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Container conversions/Two equal containers of different container types and value types" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Container conversions/Two equal containers, one random access, one not" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Value type" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Value type/Two equal containers of different value types" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Value type/Two non-equal containers of different value types" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Ranges with begin that needs ADL" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Custom predicate" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Custom predicate/Two equal non-empty containers (close enough)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Unexpected exceptions can be translated" time="{duration}" status="run">
       <error type="TEST_CASE">
@@ -1479,76 +1579,107 @@ FAILED:
 at Exception.tests.cpp:<line number>
       </error>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Upcasting special member functions" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Upcasting special member functions/Move constructor" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Upcasting special member functions/move assignment" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of AllMatch range matcher" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllMatch range matcher/Basic usage" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllMatch range matcher/Type requires ADL found begin and end" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of AllMatch range matcher/Shortcircuiting" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllMatch range matcher/Shortcircuiting/All are read" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllMatch range matcher/Shortcircuiting/Short-circuited" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Basic usage" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Basic usage/All true evaluates to true" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Basic usage/Empty evaluates to true" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Basic usage/One false evaluates to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Basic usage/All false evaluates to false" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Contained type is convertible to bool" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Contained type is convertible to bool/All true evaluates to true" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Contained type is convertible to bool/One false evaluates to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Contained type is convertible to bool/All false evaluates to false" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Shortcircuiting" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Shortcircuiting/All are read" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AllTrue range matcher/Shortcircuiting/Short-circuited" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of AnyMatch range matcher" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyMatch range matcher/Basic usage" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyMatch range matcher/Type requires ADL found begin and end" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of AnyMatch range matcher/Shortcircuiting" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyMatch range matcher/Shortcircuiting/All are read" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyMatch range matcher/Shortcircuiting/Short-circuited" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Basic usage" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Basic usage/All true evaluates to true" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Basic usage/Empty evaluates to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Basic usage/One true evaluates to true" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Basic usage/All false evaluates to false" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Contained type is convertible to bool" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Contained type is convertible to bool/All true evaluates to true" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Contained type is convertible to bool/One true evaluates to true" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Contained type is convertible to bool/All false evaluates to false" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Shortcircuiting" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Shortcircuiting/All are read" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of AnyTrue range matcher/Shortcircuiting/Short-circuited" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of NoneMatch range matcher" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneMatch range matcher/Basic usage" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneMatch range matcher/Type requires ADL found begin and end" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of NoneMatch range matcher/Shortcircuiting" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneMatch range matcher/Shortcircuiting/All are read" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneMatch range matcher/Shortcircuiting/Short-circuited" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Basic usage" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Basic usage/All true evaluates to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Basic usage/Empty evaluates to true" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Basic usage/One true evaluates to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Basic usage/All false evaluates to true" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Contained type is convertible to bool" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Contained type is convertible to bool/All true evaluates to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Contained type is convertible to bool/One true evaluates to false" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Contained type is convertible to bool/All false evaluates to true" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Shortcircuiting" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Shortcircuiting/All are read" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of NoneTrue range matcher/Shortcircuiting/Short-circuited" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of RangeEquals range matcher" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of RangeEquals range matcher/Basic usage" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of RangeEquals range matcher/Basic usage/Empty container matches empty container" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of RangeEquals range matcher/Basic usage/Empty container does not match non-empty container" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of RangeEquals range matcher/Basic usage/Two equal 1-length non-empty containers" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of RangeEquals range matcher/Basic usage/Two equal-sized, equal, non-empty containers" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of RangeEquals range matcher/Basic usage/Two equal-sized, non-equal, non-empty containers" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of RangeEquals range matcher/Basic usage/Two non-equal-sized, non-empty containers (with same first elements)" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of RangeEquals range matcher/Custom predicate" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of RangeEquals range matcher/Custom predicate/Two equal non-empty containers (close enough)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of RangeEquals range matcher/Custom predicate/Two non-equal non-empty containers (close enough)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of RangeEquals range matcher/Ranges that need ADL begin/end" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of RangeEquals range matcher/Check short-circuiting behaviour" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of RangeEquals range matcher/Check short-circuiting behaviour/Check short-circuits on failure" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of RangeEquals range matcher/Check short-circuiting behaviour/All elements are checked on success" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher/Basic usage" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher/Basic usage/Empty container matches empty container" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher/Basic usage/Empty container does not match non-empty container" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher/Basic usage/Two equal 1-length non-empty containers" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher/Basic usage/Two equal-sized, equal, non-empty containers" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher/Basic usage/Two equal-sized, non-equal, non-empty containers" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher/Basic usage/Two non-equal-sized, non-empty containers" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher/Custom predicate" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher/Custom predicate/Two equal non-empty containers (close enough)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher/Custom predicate/Two non-equal non-empty containers (close enough)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher/Ranges that need ADL begin/end" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of the SizeIs range matcher" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of the SizeIs range matcher/Some with stdlib containers" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of the SizeIs range matcher/Type requires ADL found size free function" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of the SizeIs range matcher/Type has size member" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Use a custom approx" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Variadic macros" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Variadic macros/Section with one argument" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Vector Approx matcher" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Vector Approx matcher/Empty vector is roughly equal to an empty vector" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Vector Approx matcher/Vectors with elements" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Vector Approx matcher/Vectors with elements/A vector is approx equal to itself" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Vector Approx matcher/Vectors with elements/Different length" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Vector Approx matcher/Vectors with elements/Same length, different elements" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Vector Approx matcher -- failing" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Vector Approx matcher -- failing/Empty and non empty vectors are not approx equal" time="{duration}" status="run">
       <failure message="empty, Approx( t1 )" type="CHECK_THAT">
 FAILED:
@@ -1567,11 +1698,13 @@ with expansion:
 at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Vector matchers" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Vector matchers/Contains (element)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Vector matchers/Contains (vector)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Vector matchers/Contains (element), composed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Vector matchers/Equals" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Vector matchers/UnorderedEquals" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Vector matchers that fail" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Vector matchers that fail/Contains (element)" time="{duration}" status="run">
       <failure message="v, VectorContains( -1 )" type="CHECK_THAT">
 FAILED:
@@ -1703,10 +1836,12 @@ unexpected exception
 at Exception.tests.cpp:<line number>
       </error>
     </testcase>
+    <testcase classname="<exe-name>.global" name="When unchecked exceptions are thrown, but caught, they do not affect the test" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="X/level/0/a" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="X/level/0/b" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="X/level/1/a" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="X/level/1/b" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="XmlEncode" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="XmlEncode/normal string" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="XmlEncode/empty string" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="XmlEncode/string with ampersand" time="{duration}" status="run"/>
@@ -1724,6 +1859,7 @@ at Skip.tests.cpp:<line number>
     </testcase>
     <testcase classname="<exe-name>.global" name="analyse no analysis" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="array&lt;int, N> -> toString" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="benchmark function call" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="benchmark function call/without chronometer" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="benchmark function call/with chronometer" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="boolean member" time="{duration}" status="run"/>
@@ -1747,6 +1883,7 @@ with expansion:
 at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="classify_outliers" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="classify_outliers/none" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="classify_outliers/low severe" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="classify_outliers/low mild" time="{duration}" status="run"/>
@@ -1771,6 +1908,8 @@ at Skip.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="empty tags are not allowed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="erfc_inv" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="estimate_clock_resolution" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="even more nested SECTION tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="even more nested SECTION tests/c" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="even more nested SECTION tests/c/d (leaf)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="even more nested SECTION tests/c/e (leaf)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="even more nested SECTION tests/f (leaf)" time="{duration}" status="run"/>
@@ -1817,6 +1956,8 @@ FAILED:
 at Skip.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="first tag" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="has printf" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="is_unary_function" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="just failure" time="{duration}" status="run">
       <failure type="FAIL">
@@ -1832,7 +1973,10 @@ previous unscoped info SHOULD not be seen
 at Message.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="just info" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="just unscoped info" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="long long" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="looped SECTION tests" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="looped SECTION tests/b is currently: 0" time="{duration}" status="run">
       <failure message="b > a" type="CHECK">
 FAILED:
@@ -1910,12 +2054,15 @@ at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="makeStream recognizes %debug stream name" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="make_unique reimplementation" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="make_unique reimplementation/From lvalue copies" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="make_unique reimplementation/From rvalue moves" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="make_unique reimplementation/Variadic constructor" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="mean" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="measure" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="mix info, unscoped info and warning" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="more nested SECTION tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="more nested SECTION tests/equal" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="more nested SECTION tests/equal/doesn't equal" time="{duration}" status="run">
       <failure message="a == b" type="REQUIRE">
 FAILED:
@@ -1925,10 +2072,15 @@ with expansion:
 at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="more nested SECTION tests/doesn't equal" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="more nested SECTION tests/doesn't equal/not equal" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="more nested SECTION tests/doesn't equal/less than" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="nested SECTION tests" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="nested SECTION tests/doesn't equal" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="nested SECTION tests/doesn't equal/not equal" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="nested sections can be skipped dynamically at runtime/A" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="nested sections can be skipped dynamically at runtime/B2" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="nested sections can be skipped dynamically at runtime/B2/B1" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="nested sections can be skipped dynamically at runtime/B2/B" time="{duration}" status="run">
       <skipped type="SKIP">
 SKIPPED
@@ -1957,6 +2109,7 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="null strings" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="null_ptr" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="pair&lt;pair&lt;int,const char *,pair&lt;std::string,int> > -> toString" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="parseEnums" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="parseEnums/No enums" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="parseEnums/One enum value" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="parseEnums/Multiple enum values" time="{duration}" status="run"/>
@@ -1979,14 +2132,17 @@ this SHOULD be seen only ONCE
 at Message.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="random SECTION tests" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="random SECTION tests/doesn't equal" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="random SECTION tests/not equal" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="replaceInPlace" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="replaceInPlace/replace single char" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="replaceInPlace/replace two chars" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="replaceInPlace/replace first char" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="replaceInPlace/replace last char" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="replaceInPlace/replace all chars" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="replaceInPlace/replace no chars" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="replaceInPlace/no replace in already-replaced string" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="replaceInPlace/no replace in already-replaced string/lengthening" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="replaceInPlace/no replace in already-replaced string/shortening" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="replaceInPlace/escape '" time="{duration}" status="run"/>
@@ -1994,6 +2150,8 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="resolution" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="run_for_at_least, chronometer" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="run_for_at_least, int" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="second tag" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="sections can be skipped dynamically at runtime" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="sections can be skipped dynamically at runtime/not skipped" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="sections can be skipped dynamically at runtime/skipped" time="{duration}" status="run">
       <skipped type="SKIP">
@@ -2049,11 +2207,13 @@ at Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="startsWith" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="std::map is convertible string" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="std::map is convertible string/empty" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="std::map is convertible string/single item" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="std::map is convertible string/several items" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="std::pair&lt;int,const std::string> -> toString" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="std::pair&lt;int,std::string> -> toString" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="std::set is convertible string" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="std::set is convertible string/empty" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="std::set is convertible string/single item" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="std::set is convertible string/several items" time="{duration}" status="run"/>
@@ -2099,6 +2259,7 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="uniform samples" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="uniform_integer_distribution can return the bounds" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/Default constructed unique_ptr is empty" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/Take ownership of allocation" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/Take ownership of allocation/Plain reset deallocates" time="{duration}" status="run"/>
@@ -2120,6 +2281,7 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="vectors can be sized and resized/reserving smaller does not change size or capacity" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="warmup" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="weighted_average_quantile" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="xmlentitycheck" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="xmlentitycheck/embedded xml: &lt;test>it should be possible to embed xml characters, such as &lt;, &quot; or &amp;, or even whole &lt;xml>documents&lt;/xml> within an attribute&lt;/test>" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="xmlentitycheck/encoded chars: these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;" time="{duration}" status="run"/>
     <system-out>
