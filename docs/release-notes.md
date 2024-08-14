@@ -66,7 +66,7 @@
 
 ## 3.7.0
 
-### improvements
+### Improvements
 * Slightly improved compile times of benchmarks
 * Made the resolution estimation in benchmarks slightly more precise
 * Added new test case macro, `TEST_CASE_PERSISTENT_FIXTURE` (#2885, #1602)
