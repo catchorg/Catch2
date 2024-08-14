@@ -88,7 +88,7 @@ class.
 
 ### 3. `TEST_CASE_PERSISTENT_FIXTURE`
 
-> [Introduced](https://github.com/catchorg/Catch2/pull/2885) in Catch2 X.Y.Z
+> [Introduced](https://github.com/catchorg/Catch2/pull/2885) in Catch2 3.7.0
 
 `TEST_CASE_PERSISTENT_FIXTURE` behaves in the same way as
 [TEST_CASE_METHOD](#1-test_case_method) except that there will only be
