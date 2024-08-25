@@ -120,7 +120,7 @@
 ### Improvements
 * Reintroduced support for GCC 5 and 6 (#2836)
   * As with VS2017, if they start causing trouble again, they will be dropped again.
-* Added workaround for targetting newest MacOS (Sonoma) using GCC (#2837, #2839)
+* Added workaround for targeting newest MacOS (Sonoma) using GCC (#2837, #2839)
 * `CATCH_CONFIG_DEFAULT_REPORTER` can now be an arbitrary reporter spec
   * Previously it could only be a plain reporter name, so it was impossible to compile in custom arguments to the reporter.
 * Improved performance of generating 64bit random integers by 20+%

@@ -123,7 +123,7 @@ specs. You can:
     This allows test cases that are tagged with **either** "[some-tag]" **or**
     "[other-tag]". A test case with both will obviously also pass the filter.
 
-    Note that commas take precendence over simple concatenation. This means
+    Note that commas take precedence over simple concatenation. This means
     that `[a][b],[c]` accepts tests that are tagged with either both "[a]" and
     "[b]", or tests that are tagged with just "[c]".
 

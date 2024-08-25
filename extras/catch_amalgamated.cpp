@@ -5961,7 +5961,7 @@ namespace Catch {
         auto& currentTracker = m_trackerContext.currentTracker();
         assert(
             currentTracker.nameAndLocation() != nameAndLoc &&
-            "Trying to create tracker for a genreator that already has one" );
+            "Trying to create tracker for a generator that already has one" );
 
         auto newTracker = Catch::Detail::make_unique<Generators::GeneratorTracker>(
             CATCH_MOVE(nameAndLoc), m_trackerContext, &currentTracker );
@@ -6539,7 +6539,7 @@ namespace Catch {
         std::string origStr = CATCH_MOVE(str);
         str.clear();
         // There is at least one replacement, so reserve with the best guess
-        // we can make without actually counting the number of occurences.
+        // we can make without actually counting the number of occurrences.
         str.reserve(origStr.size() - replaceThis.size() + withThis.size());
         do {
             str.append(origStr, copyBegin, i-copyBegin );

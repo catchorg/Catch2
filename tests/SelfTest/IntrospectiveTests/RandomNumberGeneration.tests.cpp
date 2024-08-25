@@ -151,7 +151,7 @@ TEMPLATE_TEST_CASE( "uniform_integer_distribution can handle unit ranges",
     Catch::SimplePcg32 pcg( seed );
 
     // We check unitary ranges of 3 different values, min for type, max for type,
-    // some value inbetween just to make sure
+    // some value in between just to make sure
     SECTION("lowest value") {
         constexpr auto lowest = std::numeric_limits<TestType>::min();
         Catch::uniform_integer_distribution<TestType> dist( lowest, lowest );
@@ -180,7 +180,7 @@ TEST_CASE( "uniform_integer_distribution can handle boolean unit ranges",
     Catch::SimplePcg32 pcg( seed );
 
     // We check unitary ranges of 3 different values, min for type, max for
-    // type, some value inbetween just to make sure
+    // type, some value in between just to make sure
     SECTION( "lowest value" ) {
         Catch::uniform_integer_distribution<bool> dist( false, false );
         CheckReturnValue( dist, pcg, false );

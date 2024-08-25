@@ -361,7 +361,7 @@ namespace Catch {
         auto& currentTracker = m_trackerContext.currentTracker();
         assert(
             currentTracker.nameAndLocation() != nameAndLoc &&
-            "Trying to create tracker for a genreator that already has one" );
+            "Trying to create tracker for a generator that already has one" );
 
         auto newTracker = Catch::Detail::make_unique<Generators::GeneratorTracker>(
             CATCH_MOVE(nameAndLoc), m_trackerContext, &currentTracker );

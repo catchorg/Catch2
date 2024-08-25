@@ -111,7 +111,7 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
     }
 }
 
-TEST_CASE( "JsonWriter escapes charaters in strings properly", "[JsonWriter]" ) {
+TEST_CASE( "JsonWriter escapes characters in strings properly", "[JsonWriter]" ) {
     std::stringstream sstream;
     SECTION( "Quote in a string is escaped" ) {
         Catch::JsonValueWriter{ sstream }.write( "\"" );

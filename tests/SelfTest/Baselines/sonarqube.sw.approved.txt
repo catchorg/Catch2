@@ -172,16 +172,16 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="JsonWriter/Moved from JsonObjectWriter shall not insert superfluous brace" duration="{duration}"/>
     <testCase name="JsonWriter/Moved from JsonArrayWriter shall not insert superfluous bracket" duration="{duration}"/>
     <testCase name="JsonWriter/Custom class shall be quoted" duration="{duration}"/>
-    <testCase name="JsonWriter escapes charaters in strings properly" duration="{duration}"/>
-    <testCase name="JsonWriter escapes charaters in strings properly/Quote in a string is escaped" duration="{duration}"/>
-    <testCase name="JsonWriter escapes charaters in strings properly/Backslash in a string is escaped" duration="{duration}"/>
-    <testCase name="JsonWriter escapes charaters in strings properly/Forward slash in a string is **not** escaped" duration="{duration}"/>
-    <testCase name="JsonWriter escapes charaters in strings properly/Backspace in a string is escaped" duration="{duration}"/>
-    <testCase name="JsonWriter escapes charaters in strings properly/Formfeed in a string is escaped" duration="{duration}"/>
-    <testCase name="JsonWriter escapes charaters in strings properly/linefeed in a string is escaped" duration="{duration}"/>
-    <testCase name="JsonWriter escapes charaters in strings properly/carriage return in a string is escaped" duration="{duration}"/>
-    <testCase name="JsonWriter escapes charaters in strings properly/tab in a string is escaped" duration="{duration}"/>
-    <testCase name="JsonWriter escapes charaters in strings properly/combination of characters is escaped" duration="{duration}"/>
+    <testCase name="JsonWriter escapes characters in strings properly" duration="{duration}"/>
+    <testCase name="JsonWriter escapes characters in strings properly/Quote in a string is escaped" duration="{duration}"/>
+    <testCase name="JsonWriter escapes characters in strings properly/Backslash in a string is escaped" duration="{duration}"/>
+    <testCase name="JsonWriter escapes characters in strings properly/Forward slash in a string is **not** escaped" duration="{duration}"/>
+    <testCase name="JsonWriter escapes characters in strings properly/Backspace in a string is escaped" duration="{duration}"/>
+    <testCase name="JsonWriter escapes characters in strings properly/Formfeed in a string is escaped" duration="{duration}"/>
+    <testCase name="JsonWriter escapes characters in strings properly/linefeed in a string is escaped" duration="{duration}"/>
+    <testCase name="JsonWriter escapes characters in strings properly/carriage return in a string is escaped" duration="{duration}"/>
+    <testCase name="JsonWriter escapes characters in strings properly/tab in a string is escaped" duration="{duration}"/>
+    <testCase name="JsonWriter escapes characters in strings properly/combination of characters is escaped" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp">
     <testCase name="Parse uints" duration="{duration}"/>

@@ -9107,7 +9107,7 @@ Approx( 3.14150000000000018 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <TestCase name="JsonWriter escapes charaters in strings properly" tags="[JsonWriter]" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+  <TestCase name="JsonWriter escapes characters in strings properly" tags="[JsonWriter]" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
     <Section name="Quote in a string is escaped" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>

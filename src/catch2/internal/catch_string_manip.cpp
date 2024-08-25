@@ -74,7 +74,7 @@ namespace Catch {
         std::string origStr = CATCH_MOVE(str);
         str.clear();
         // There is at least one replacement, so reserve with the best guess
-        // we can make without actually counting the number of occurences.
+        // we can make without actually counting the number of occurrences.
         str.reserve(origStr.size() - replaceThis.size() + withThis.size());
         do {
             str.append(origStr, copyBegin, i-copyBegin );

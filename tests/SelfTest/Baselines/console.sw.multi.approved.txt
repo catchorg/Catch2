@@ -7614,7 +7614,7 @@ with expansion:
   ""custom"" == ""custom""
 
 -------------------------------------------------------------------------------
-JsonWriter escapes charaters in strings properly
+JsonWriter escapes characters in strings properly
   Quote in a string is escaped
 -------------------------------------------------------------------------------
 Json.tests.cpp:<line number>
@@ -7626,7 +7626,7 @@ with expansion:
   ""\""" == ""\"""
 
 -------------------------------------------------------------------------------
-JsonWriter escapes charaters in strings properly
+JsonWriter escapes characters in strings properly
   Backslash in a string is escaped
 -------------------------------------------------------------------------------
 Json.tests.cpp:<line number>
@@ -7638,7 +7638,7 @@ with expansion:
   ""\\"" == ""\\""
 
 -------------------------------------------------------------------------------
-JsonWriter escapes charaters in strings properly
+JsonWriter escapes characters in strings properly
   Forward slash in a string is **not** escaped
 -------------------------------------------------------------------------------
 Json.tests.cpp:<line number>
@@ -7650,7 +7650,7 @@ with expansion:
   ""/"" == ""/""
 
 -------------------------------------------------------------------------------
-JsonWriter escapes charaters in strings properly
+JsonWriter escapes characters in strings properly
   Backspace in a string is escaped
 -------------------------------------------------------------------------------
 Json.tests.cpp:<line number>
@@ -7662,7 +7662,7 @@ with expansion:
   ""\b"" == ""\b""
 
 -------------------------------------------------------------------------------
-JsonWriter escapes charaters in strings properly
+JsonWriter escapes characters in strings properly
   Formfeed in a string is escaped
 -------------------------------------------------------------------------------
 Json.tests.cpp:<line number>
@@ -7674,7 +7674,7 @@ with expansion:
   ""\f"" == ""\f""
 
 -------------------------------------------------------------------------------
-JsonWriter escapes charaters in strings properly
+JsonWriter escapes characters in strings properly
   linefeed in a string is escaped
 -------------------------------------------------------------------------------
 Json.tests.cpp:<line number>
@@ -7686,7 +7686,7 @@ with expansion:
   ""\n"" == ""\n""
 
 -------------------------------------------------------------------------------
-JsonWriter escapes charaters in strings properly
+JsonWriter escapes characters in strings properly
   carriage return in a string is escaped
 -------------------------------------------------------------------------------
 Json.tests.cpp:<line number>
@@ -7698,7 +7698,7 @@ with expansion:
   ""\r"" == ""\r""
 
 -------------------------------------------------------------------------------
-JsonWriter escapes charaters in strings properly
+JsonWriter escapes characters in strings properly
   tab in a string is escaped
 -------------------------------------------------------------------------------
 Json.tests.cpp:<line number>
@@ -7710,7 +7710,7 @@ with expansion:
   ""\t"" == ""\t""
 
 -------------------------------------------------------------------------------
-JsonWriter escapes charaters in strings properly
+JsonWriter escapes characters in strings properly
   combination of characters is escaped
 -------------------------------------------------------------------------------
 Json.tests.cpp:<line number>
@@ -18933,4 +18933,3 @@ Misc.tests.cpp:<line number>: PASSED:
 ===============================================================================
 test cases:  418 |  312 passed |  86 failed | 6 skipped | 14 failed as expected
 assertions: 2259 | 2077 passed | 147 failed | 35 failed as expected
-

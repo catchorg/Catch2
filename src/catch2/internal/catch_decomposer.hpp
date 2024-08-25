@@ -45,7 +45,7 @@
  *    when the compiler handles `ExprLhs<T> == b`, it also tries to resolve
  *    the overload set for `b == ExprLhs<T>`.
  *
- * To accomodate these use cases, decomposer ended up rather complex.
+ * To accommodate these use cases, decomposer ended up rather complex.
  *
  * 1) These types are handled by adding SFINAE overloads to our comparison
  *    operators, checking whether `T == U` are comparable with the given
@@ -160,7 +160,7 @@ namespace Catch {
     public:
         constexpr auto isBinaryExpression() const -> bool { return m_isBinaryExpression; }
         constexpr auto getResult() const -> bool { return m_result; }
-        //! This function **has** to be overriden by the derived class.
+        //! This function **has** to be overridden by the derived class.
         virtual void streamReconstructedExpression( std::ostream& os ) const;
 
         constexpr ITransientExpression( bool isBinaryExpression, bool result )

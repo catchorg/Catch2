@@ -66,7 +66,7 @@ expand_template(
 cc_library(
     name = "catch2_generated",
     hdrs = ["catch2/catch_user_config.hpp"],
-    include_prefix = ".",  # to manipulate -I of dependenices
+    include_prefix = ".",  # to manipulate -I of dependencies
     visibility = ["//visibility:public"],
 )
 

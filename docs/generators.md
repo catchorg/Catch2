@@ -216,8 +216,8 @@ For floating point generators, the situation is much more complex.
 Generally Catch2 only promises reproducibility (or even just correctness!)
 on platforms that obey the IEEE-754 standard. Furthermore, reproducibility
 only applies between binaries that perform floating point math in the
-same way, e.g. if you compile a binary targetting the x87 FPU and another
-one targetting SSE2 for floating point math, their results will vary.
+same way, e.g. if you compile a binary targeting the x87 FPU and another
+one targeting SSE2 for floating point math, their results will vary.
 Similarly, binaries compiled with compiler flags that relax the IEEE-754
 adherence, e.g. `-ffast-math`, might provide different results than those
 compiled for strict IEEE-754 adherence.

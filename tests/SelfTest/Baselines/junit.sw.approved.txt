@@ -928,16 +928,16 @@ at Condition.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="JsonWriter/Moved from JsonObjectWriter shall not insert superfluous brace" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter/Moved from JsonArrayWriter shall not insert superfluous bracket" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter/Custom class shall be quoted" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="JsonWriter escapes charaters in strings properly" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="JsonWriter escapes charaters in strings properly/Quote in a string is escaped" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="JsonWriter escapes charaters in strings properly/Backslash in a string is escaped" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="JsonWriter escapes charaters in strings properly/Forward slash in a string is **not** escaped" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="JsonWriter escapes charaters in strings properly/Backspace in a string is escaped" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="JsonWriter escapes charaters in strings properly/Formfeed in a string is escaped" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="JsonWriter escapes charaters in strings properly/linefeed in a string is escaped" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="JsonWriter escapes charaters in strings properly/carriage return in a string is escaped" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="JsonWriter escapes charaters in strings properly/tab in a string is escaped" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="JsonWriter escapes charaters in strings properly/combination of characters is escaped" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="JsonWriter escapes characters in strings properly" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="JsonWriter escapes characters in strings properly/Quote in a string is escaped" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="JsonWriter escapes characters in strings properly/Backslash in a string is escaped" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="JsonWriter escapes characters in strings properly/Forward slash in a string is **not** escaped" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="JsonWriter escapes characters in strings properly/Backspace in a string is escaped" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="JsonWriter escapes characters in strings properly/Formfeed in a string is escaped" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="JsonWriter escapes characters in strings properly/linefeed in a string is escaped" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="JsonWriter escapes characters in strings properly/carriage return in a string is escaped" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="JsonWriter escapes characters in strings properly/tab in a string is escaped" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="JsonWriter escapes characters in strings properly/combination of characters is escaped" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Lambdas in assertions" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Less-than inequalities with different epsilons" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="ManuallyRegistered" time="{duration}" status="run"/>

@@ -87,7 +87,7 @@ function(catch_discover_tests_impl)
 
   # Make sure to escape ; (semicolons) in test names first, because
   # that'd break the foreach loop for "Parse output" later and create
-  # wrongly splitted and thus failing test cases (false positives)
+  # wrongly split and thus failing test cases (false positives)
   string(REPLACE ";" "\;" output "${output}")
   string(REPLACE "\n" ";" output "${output}")
 
