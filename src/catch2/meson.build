@@ -10,6 +10,10 @@ conf_data = configuration_data()
 conf_data.set('CATCH_CONFIG_DEFAULT_REPORTER', 'console')
 conf_data.set('CATCH_CONFIG_CONSOLE_WIDTH', '80')
 
+windows_seh = get_option('windows_seh')
+conf_data.set('CATCH_CONFIG_WINDOWS_SEH', windows_seh)
+conf_data.set('CATCH_CONFIG_NO_WINDOWS_SEH', not windows_seh)
+
 configure_file(
   input: 'catch_user_config.hpp.in',
   output: 'catch_user_config.hpp',
