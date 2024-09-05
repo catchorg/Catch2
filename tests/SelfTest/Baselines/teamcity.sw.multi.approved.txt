@@ -245,6 +245,8 @@
 ##teamcity[testFinished name='CaseInsensitiveLess is case insensitive' duration="{duration}"]
 ##teamcity[testStarted name='Character pretty printing']
 ##teamcity[testFinished name='Character pretty printing' duration="{duration}"]
+##teamcity[testStarted name='Clara::Arg does not crash on incomplete input']
+##teamcity[testFinished name='Clara::Arg does not crash on incomplete input' duration="{duration}"]
 ##teamcity[testStarted name='Clara::Arg supports single-arg parse the way Opt does']
 ##teamcity[testFinished name='Clara::Arg supports single-arg parse the way Opt does' duration="{duration}"]
 ##teamcity[testStarted name='Clara::Opt supports accept-many lambdas']

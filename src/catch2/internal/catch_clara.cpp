@@ -76,7 +76,7 @@ namespace Catch {
                                 { TokenType::Argument,
                                   next.substr( delimiterPos + 1, next.size() ) } );
                         } else {
-                            if ( next[1] != '-' && next.size() > 2 ) {
+                            if ( next.size() > 1 && next[1] != '-' && next.size() > 2 ) {
                                 // Combined short args, e.g. "-ab" for "-a -b"
                                 for ( size_t i = 1; i < next.size(); ++i ) {
                                     m_tokenBuffer.push_back(

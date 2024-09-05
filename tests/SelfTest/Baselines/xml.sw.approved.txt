@@ -3304,6 +3304,57 @@ Approx( 1.23399996757507324 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="Clara::Arg does not crash on incomplete input" tags="[arg][clara][compilation]" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+      <Original>
+        name.empty()
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+      <Original>
+        result
+      </Original>
+      <Expanded>
+        {?}
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+      <Original>
+        result.type() == Catch::Clara::Detail::ResultType::Ok
+      </Original>
+      <Expanded>
+        0 == 0
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+      <Original>
+        parsed.type() == Catch::Clara::ParseResultType::NoMatch
+      </Original>
+      <Expanded>
+        1 == 1
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+      <Original>
+        parsed.remainingTokens().count() == 2
+      </Original>
+      <Expanded>
+        2 == 2
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+      <Original>
+        name.empty()
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="Clara::Arg supports single-arg parse the way Opt does" tags="[arg][clara][compilation]" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
       <Original>
@@ -21882,6 +21933,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2077" failures="147" expectedFailures="35" skips="12"/>
-  <OverallResultsCases successes="312" failures="86" expectedFailures="14" skips="6"/>
+  <OverallResults successes="2083" failures="147" expectedFailures="35" skips="12"/>
+  <OverallResultsCases successes="313" failures="86" expectedFailures="14" skips="6"/>
 </Catch2TestRun>

@@ -3038,6 +3038,42 @@ with expansion:
   "5" == "5"
 
 -------------------------------------------------------------------------------
+Clara::Arg does not crash on incomplete input
+-------------------------------------------------------------------------------
+Clara.tests.cpp:<line number>
+...............................................................................
+
+Clara.tests.cpp:<line number>: PASSED:
+  CHECK( name.empty() )
+with expansion:
+  true
+
+Clara.tests.cpp:<line number>: PASSED:
+  CHECK( result )
+with expansion:
+  {?}
+
+Clara.tests.cpp:<line number>: PASSED:
+  CHECK( result.type() == Catch::Clara::Detail::ResultType::Ok )
+with expansion:
+  0 == 0
+
+Clara.tests.cpp:<line number>: PASSED:
+  CHECK( parsed.type() == Catch::Clara::ParseResultType::NoMatch )
+with expansion:
+  1 == 1
+
+Clara.tests.cpp:<line number>: PASSED:
+  CHECK( parsed.remainingTokens().count() == 2 )
+with expansion:
+  2 == 2
+
+Clara.tests.cpp:<line number>: PASSED:
+  CHECK( name.empty() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 Clara::Arg supports single-arg parse the way Opt does
 -------------------------------------------------------------------------------
 Clara.tests.cpp:<line number>
@@ -18931,6 +18967,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  418 |  312 passed |  86 failed | 6 skipped | 14 failed as expected
-assertions: 2259 | 2077 passed | 147 failed | 35 failed as expected
+test cases:  419 |  313 passed |  86 failed | 6 skipped | 14 failed as expected
+assertions: 2265 | 2083 passed | 147 failed | 35 failed as expected
 

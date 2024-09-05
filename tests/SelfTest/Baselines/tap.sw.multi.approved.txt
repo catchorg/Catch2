@@ -722,6 +722,18 @@ ok {test-number} - ::Catch::Detail::stringify( '\0' ) == "0" for: "0" == "0"
 ok {test-number} - ::Catch::Detail::stringify( static_cast<char>(2) ) == "2" for: "2" == "2"
 # Character pretty printing
 ok {test-number} - ::Catch::Detail::stringify( static_cast<char>(5) ) == "5" for: "5" == "5"
+# Clara::Arg does not crash on incomplete input
+ok {test-number} - name.empty() for: true
+# Clara::Arg does not crash on incomplete input
+ok {test-number} - result for: {?}
+# Clara::Arg does not crash on incomplete input
+ok {test-number} - result.type() == Catch::Clara::Detail::ResultType::Ok for: 0 == 0
+# Clara::Arg does not crash on incomplete input
+ok {test-number} - parsed.type() == Catch::Clara::ParseResultType::NoMatch for: 1 == 1
+# Clara::Arg does not crash on incomplete input
+ok {test-number} - parsed.remainingTokens().count() == 2 for: 2 == 2
+# Clara::Arg does not crash on incomplete input
+ok {test-number} - name.empty() for: true
 # Clara::Arg supports single-arg parse the way Opt does
 ok {test-number} - name.empty() for: true
 # Clara::Arg supports single-arg parse the way Opt does
@@ -4536,5 +4548,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2271
+1..2277
 
