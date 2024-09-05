@@ -105,6 +105,7 @@ Nor would this
 :test-result: PASS CaseInsensitiveEqualsTo is case insensitive
 :test-result: PASS CaseInsensitiveLess is case insensitive
 :test-result: PASS Character pretty printing
+:test-result: PASS Clara::Arg does not crash on incomplete input
 :test-result: PASS Clara::Arg supports single-arg parse the way Opt does
 :test-result: PASS Clara::Opt supports accept-many lambdas
 :test-result: PASS ColourGuard behaviour

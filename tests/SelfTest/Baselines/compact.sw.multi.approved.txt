@@ -387,6 +387,12 @@ ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( '\0
 ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( static_cast<char>(2) ) == "2" for: "2" == "2"
 ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( static_cast<char>(5) ) == "5" for: "5" == "5"
 Clara.tests.cpp:<line number>: passed: name.empty() for: true
+Clara.tests.cpp:<line number>: passed: result for: {?}
+Clara.tests.cpp:<line number>: passed: result.type() == Catch::Clara::Detail::ResultType::Ok for: 0 == 0
+Clara.tests.cpp:<line number>: passed: parsed.type() == Catch::Clara::ParseResultType::NoMatch for: 1 == 1
+Clara.tests.cpp:<line number>: passed: parsed.remainingTokens().count() == 2 for: 2 == 2
+Clara.tests.cpp:<line number>: passed: name.empty() for: true
+Clara.tests.cpp:<line number>: passed: name.empty() for: true
 Clara.tests.cpp:<line number>: passed: name == "foo" for: "foo" == "foo"
 Clara.tests.cpp:<line number>: passed: !(parse_result) for: !{?}
 Clara.tests.cpp:<line number>: passed: parse_result for: {?}
@@ -2833,7 +2839,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  418 |  312 passed |  86 failed | 6 skipped | 14 failed as expected
-assertions: 2259 | 2077 passed | 147 failed | 35 failed as expected
+test cases:  419 |  313 passed |  86 failed | 6 skipped | 14 failed as expected
+assertions: 2265 | 2083 passed | 147 failed | 35 failed as expected
 
 
