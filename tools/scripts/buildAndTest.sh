@@ -14,6 +14,5 @@ cmake -B debug-build -S . -DCMAKE_BUILD_TYPE=Debug --preset all-tests
 cmake --build debug-build
 
 # 4. Run the tests using CTest
-cd debug-build
-ctest -j 4 --output-on-failure -C Debug
+ctest -j 4 --output-on-failure -C Debug --test-dir debug-build
 # end-snippet

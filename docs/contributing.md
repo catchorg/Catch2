@@ -107,8 +107,7 @@ cmake -B debug-build -S . -DCMAKE_BUILD_TYPE=Debug --preset all-tests
 cmake --build debug-build
 
 # 4. Run the tests using CTest
-cd debug-build
-ctest -j 4 --output-on-failure -C Debug
+ctest -j 4 --output-on-failure -C Debug --test-dir debug-build
 ```
 <sup><a href='/tools/scripts/buildAndTest.sh#L6-L19' title='File snippet `catch2-build-and-test` was extracted from'>snippet source</a> | <a href='#snippet-catch2-build-and-test' title='Navigate to start of snippet `catch2-build-and-test`'>anchor</a></sup>
 <!-- endSnippet -->
