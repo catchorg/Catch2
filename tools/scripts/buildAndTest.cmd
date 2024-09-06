@@ -12,6 +12,5 @@ rem 3. Run the actual build
 cmake --build debug-build
 
 rem 4. Run the tests using CTest
-cd debug-build
-ctest -j 4 --output-on-failure -C Debug
+ctest -j 4 --output-on-failure -C Debug --test-dir debug-build
 rem end-snippet
