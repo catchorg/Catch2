@@ -34,7 +34,13 @@
 namespace Catch {
 
     namespace {
-        const int MaxExitCode = 255;
+        static constexpr int TestFailureExitCode = 42;
+        static constexpr int UnspecifiedErrorExitCode = 1;
+        static constexpr int AllTestsSkippedExitCode = 4;
+        static constexpr int NoTestsRunExitCode = 2;
+        static constexpr int UnmatchedTestSpecExitCode = 3;
+        static constexpr int InvalidTestSpecExitCode = 5;
+
 
         IEventListenerPtr createReporter(std::string const& reporterName, ReporterConfig&& config) {
             auto reporter = Catch::getRegistryHub().getReporterRegistry().create(reporterName, CATCH_MOVE(config));
@@ -198,8 +204,7 @@ namespace Catch {
     }
 
     int Session::applyCommandLine( int argc, char const * const * argv ) {
-        if( m_startupExceptions )
-            return 1;
+        if ( m_startupExceptions ) { return UnspecifiedErrorExitCode; }
 
         auto result = m_cli.parse( Clara::Args( argc, argv ) );
 
@@ -215,7 +220,7 @@ namespace Catch {
                 << TextFlow::Column( result.errorMessage() ).indent( 2 )
                 << "\n\n";
             errStream->stream() << "Run with -? for usage\n\n" << std::flush;
-            return MaxExitCode;
+            return UnspecifiedErrorExitCode;
         }
 
         if( m_configData.showHelp )
@@ -285,8 +290,7 @@ namespace Catch {
     }
 
     int Session::runInternal() {
-        if( m_startupExceptions )
-            return 1;
+        if ( m_startupExceptions ) { return UnspecifiedErrorExitCode; }
 
         if (m_configData.showHelp || m_configData.libIdentify) {
             return 0;
@@ -297,7 +301,7 @@ namespace Catch {
                           << ") must be greater than the shard index ("
                           << m_configData.shardIndex << ")\n"
                           << std::flush;
-            return 1;
+            return UnspecifiedErrorExitCode;
         }
 
         CATCH_TRY {
@@ -320,7 +324,7 @@ namespace Catch {
                 for ( auto const& spec : invalidSpecs ) {
                     reporter->reportInvalidTestSpec( spec );
                 }
-                return 1;
+                return InvalidTestSpecExitCode;
             }
 
 
@@ -334,29 +338,29 @@ namespace Catch {
 
             if ( tests.hadUnmatchedTestSpecs()
                 && m_config->warnAboutUnmatchedTestSpecs() ) {
-                return 3;
+                // UnmatchedTestSpecExitCode
+                return UnmatchedTestSpecExitCode;
             }
 
             if ( totals.testCases.total() == 0
                 && !m_config->zeroTestsCountAsSuccess() ) {
-                return 2;
+                return NoTestsRunExitCode;
             }
 
             if ( totals.testCases.total() > 0 &&
                  totals.testCases.total() == totals.testCases.skipped
                 && !m_config->zeroTestsCountAsSuccess() ) {
-                return 4;
+                return AllTestsSkippedExitCode;
             }
 
-            // Note that on unices only the lower 8 bits are usually used, clamping
-            // the return value to 255 prevents false negative when some multiple
-            // of 256 tests has failed
-            return (std::min) (MaxExitCode, static_cast<int>(totals.assertions.failed));
+            if ( totals.assertions.failed ) { return TestFailureExitCode; }
+            return 0;
+
         }
 #if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
         catch( std::exception& ex ) {
             Catch::cerr() << ex.what() << '\n' << std::flush;
-            return MaxExitCode;
+            return UnspecifiedErrorExitCode;
         }
 #endif
     }
