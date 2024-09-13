@@ -9,7 +9,6 @@
 #define CATCH_INTERFACES_CAPTURE_HPP_INCLUDED
 
 #include <string>
-#include <chrono>
 
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_result_type.hpp>
