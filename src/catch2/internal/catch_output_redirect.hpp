@@ -25,8 +25,10 @@ namespace Catch {
             None,
             //! Redirect std::cout/std::cerr/std::clog streams internally
             Streams,
-            //! Redirect the stdout/stderr file descriptors into files
+            //! Redirect the stdout/stderr file descriptors into temp files
             FileDescriptors,
+            //! Redirect the stdout/stderr file descriptors into anonymous pipes
+            Pipes,
         };
 
         virtual ~OutputRedirect(); // = default;
