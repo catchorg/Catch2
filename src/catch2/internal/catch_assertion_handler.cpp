@@ -28,8 +28,8 @@ namespace Catch {
     void AssertionHandler::handleExpr( ITransientExpression const& expr ) {
         m_resultCapture.handleExpr( m_assertionInfo, expr, m_reaction );
     }
-    void AssertionHandler::handleMessage(ResultWas::OfType resultType, StringRef message) {
-        m_resultCapture.handleMessage( m_assertionInfo, resultType, message, m_reaction );
+    void AssertionHandler::handleMessage(ResultWas::OfType resultType, std::string&& message) {
+        m_resultCapture.handleMessage( m_assertionInfo, resultType, CATCH_MOVE(message), m_reaction );
     }
 
     auto AssertionHandler::allowThrows() const -> bool {

@@ -632,13 +632,13 @@ namespace Catch {
     void RunContext::handleMessage(
             AssertionInfo const& info,
             ResultWas::OfType resultType,
-            StringRef message,
+            std::string&& message,
             AssertionReaction& reaction
     ) {
         m_lastAssertionInfo = info;
 
         AssertionResultData data( resultType, LazyExpression( false ) );
-        data.message = static_cast<std::string>(message);
+        data.message = CATCH_MOVE( message );
         AssertionResult assertionResult{ m_lastAssertionInfo,
                                          CATCH_MOVE( data ) };
 
