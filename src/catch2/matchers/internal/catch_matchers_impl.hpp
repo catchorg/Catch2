@@ -77,7 +77,7 @@ namespace Catch {
         INTERNAL_CATCH_TRY { \
             catchAssertionHandler.handleExpr( Catch::makeMatchExpr( arg, matcher ) ); \
         } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
-        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
+        catchAssertionHandler.complete(); \
     } while( false )
 
 
@@ -101,7 +101,7 @@ namespace Catch {
             } \
         else \
             catchAssertionHandler.handleThrowingCallSkipped(); \
-        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
+        catchAssertionHandler.complete(); \
     } while( false )
 
 

@@ -38,8 +38,6 @@
 
 #endif
 
-#define INTERNAL_CATCH_REACT( handler ) handler.complete();
-
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( macroName, resultDisposition, ... ) \
     do { /* NOLINT(bugprone-infinite-loop) */ \
@@ -52,7 +50,7 @@
             catchAssertionHandler.handleExpr( Catch::Decomposer() <= __VA_ARGS__ ); /* NOLINT(bugprone-chained-comparison) */ \
             CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
-        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
+        catchAssertionHandler.complete(); \
     } while( (void)0, (false) && static_cast<const bool&>( !!(__VA_ARGS__) ) ) // the expression here is never evaluated at runtime but it forces the compiler to give it a look
     // The double negation silences MSVC's C4800 warning, the static_cast forces short-circuit evaluation if the type has overloaded &&.
 
@@ -80,7 +78,7 @@
         catch( ... ) { \
             catchAssertionHandler.handleUnexpectedInflightException(); \
         } \
-        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
+        catchAssertionHandler.complete(); \
     } while( false )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -101,7 +99,7 @@
             } \
         else \
             catchAssertionHandler.handleThrowingCallSkipped(); \
-        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
+        catchAssertionHandler.complete(); \
     } while( false )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -125,7 +123,7 @@
             } \
         else \
             catchAssertionHandler.handleThrowingCallSkipped(); \
-        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
+        catchAssertionHandler.complete(); \
     } while( false )
 
 
@@ -149,7 +147,7 @@
             } \
         else \
             catchAssertionHandler.handleThrowingCallSkipped(); \
-        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
+        catchAssertionHandler.complete(); \
     } while( false )
 
 #endif // CATCH_CONFIG_DISABLE
