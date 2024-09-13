@@ -15,14 +15,22 @@
 #include <vector>
 
 namespace Catch {
-    enum class XmlFormatting {
+    enum class XmlFormatting : uint8_t {
         None = 0x00,
         Indent = 0x01,
         Newline = 0x02,
     };
 
-    XmlFormatting operator | (XmlFormatting lhs, XmlFormatting rhs);
-    XmlFormatting operator & (XmlFormatting lhs, XmlFormatting rhs);
+    constexpr XmlFormatting operator|( XmlFormatting lhs, XmlFormatting rhs ) {
+        return static_cast<XmlFormatting>( static_cast<uint8_t>( lhs ) |
+                                           static_cast<uint8_t>( rhs ) );
+    }
+
+    constexpr XmlFormatting operator&( XmlFormatting lhs, XmlFormatting rhs ) {
+        return static_cast<XmlFormatting>( static_cast<uint8_t>( lhs ) &
+                                           static_cast<uint8_t>( rhs ) );
+    }
+
 
     /**
      * Helper for XML-encoding text (escaping angle brackets, quotes, etc)
@@ -34,7 +42,9 @@ namespace Catch {
     public:
         enum ForWhat { ForTextNodes, ForAttributes };
 
-        XmlEncode( StringRef str, ForWhat forWhat = ForTextNodes );
+        constexpr XmlEncode( StringRef str, ForWhat forWhat = ForTextNodes ):
+            m_str( str ), m_forWhat( forWhat ) {}
+
 
         void encodeTo( std::ostream& os ) const;
 

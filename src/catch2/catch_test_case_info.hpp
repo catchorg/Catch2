@@ -109,7 +109,7 @@ namespace Catch {
         TestCaseInfo* m_info;
         ITestInvoker* m_invoker;
     public:
-        TestCaseHandle(TestCaseInfo* info, ITestInvoker* invoker) :
+        constexpr TestCaseHandle(TestCaseInfo* info, ITestInvoker* invoker) :
             m_info(info), m_invoker(invoker) {}
 
         void prepareTestCase() const {
@@ -124,7 +124,9 @@ namespace Catch {
             m_invoker->invoke();
         }
 
-        TestCaseInfo const& getTestCaseInfo() const;
+        constexpr TestCaseInfo const& getTestCaseInfo() const {
+            return *m_info;
+        }
     };
 
     Detail::unique_ptr<TestCaseInfo>

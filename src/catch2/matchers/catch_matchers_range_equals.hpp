@@ -28,12 +28,14 @@ namespace Catch {
 
         public:
             template <typename TargetRangeLike2, typename Equality2>
+            constexpr
             RangeEqualsMatcher( TargetRangeLike2&& range,
                                 Equality2&& predicate ):
                 m_desired( CATCH_FORWARD( range ) ),
                 m_predicate( CATCH_FORWARD( predicate ) ) {}
 
             template <typename RangeLike>
+            constexpr
             bool match( RangeLike&& rng ) const {
                 auto rng_start = begin( rng );
                 const auto rng_end = end( rng );
@@ -66,12 +68,14 @@ namespace Catch {
 
         public:
             template <typename TargetRangeLike2, typename Equality2>
+            constexpr
             UnorderedRangeEqualsMatcher( TargetRangeLike2&& range,
                                          Equality2&& predicate ):
                 m_desired( CATCH_FORWARD( range ) ),
                 m_predicate( CATCH_FORWARD( predicate ) ) {}
 
             template <typename RangeLike>
+            constexpr
             bool match( RangeLike&& rng ) const {
                 using std::begin;
                 using std::end;
@@ -95,6 +99,7 @@ namespace Catch {
          * Uses `std::equal_to` to do the comparison
          */
         template <typename RangeLike>
+        constexpr
         std::enable_if_t<!Detail::is_matcher<RangeLike>::value,
                          RangeEqualsMatcher<RangeLike, std::equal_to<>>>
         RangeEquals( RangeLike&& range ) {
@@ -108,6 +113,7 @@ namespace Catch {
          * Uses to provided predicate `predicate` to do the comparisons
          */
         template <typename RangeLike, typename Equality>
+        constexpr
         RangeEqualsMatcher<RangeLike, Equality>
         RangeEquals( RangeLike&& range, Equality&& predicate ) {
             return { CATCH_FORWARD( range ), CATCH_FORWARD( predicate ) };
@@ -120,6 +126,7 @@ namespace Catch {
          * Uses `std::equal_to` to do the comparison
          */
         template <typename RangeLike>
+        constexpr
         std::enable_if_t<
             !Detail::is_matcher<RangeLike>::value,
             UnorderedRangeEqualsMatcher<RangeLike, std::equal_to<>>>
@@ -134,6 +141,7 @@ namespace Catch {
          * Uses to provided predicate `predicate` to do the comparisons
          */
         template <typename RangeLike, typename Equality>
+        constexpr
         UnorderedRangeEqualsMatcher<RangeLike, Equality>
         UnorderedRangeEquals( RangeLike&& range, Equality&& predicate ) {
             return { CATCH_FORWARD( range ), CATCH_FORWARD( predicate ) };

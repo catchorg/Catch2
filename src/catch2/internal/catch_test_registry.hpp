@@ -32,7 +32,8 @@ template<typename C>
 class TestInvokerAsMethod : public ITestInvoker {
     void (C::*m_testAsMethod)();
 public:
-    TestInvokerAsMethod( void (C::*testAsMethod)() ) noexcept : m_testAsMethod( testAsMethod ) {}
+    constexpr TestInvokerAsMethod( void ( C::*testAsMethod )() ) noexcept:
+        m_testAsMethod( testAsMethod ) {}
 
     void invoke() const override {
         C obj;
@@ -53,7 +54,8 @@ class TestInvokerFixture : public ITestInvoker {
     Detail::unique_ptr<C> m_fixture = nullptr;
 
 public:
-    TestInvokerFixture( void ( C::*testAsMethod )() const) noexcept : m_testAsMethod( testAsMethod ) {}
+    constexpr TestInvokerFixture( void ( C::*testAsMethod )() const ) noexcept:
+        m_testAsMethod( testAsMethod ) {}
 
     void prepareTestCase() override {
         m_fixture = Detail::make_unique<C>();

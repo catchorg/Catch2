@@ -33,8 +33,10 @@ namespace Catch {
 
     }; };
 
-    bool isOk( ResultWas::OfType resultType );
-    bool isJustInfo( int flags );
+    constexpr bool isOk( ResultWas::OfType resultType ) {
+        return ( resultType & ResultWas::FailureBit ) == 0;
+    }
+    constexpr bool isJustInfo( int flags ) { return flags == ResultWas::Info; }
 
 
     // ResultDisposition::Flags enum
@@ -46,11 +48,18 @@ namespace Catch {
         SuppressFail = 0x08         // Failures are reported but do not fail the test
     }; };
 
-    ResultDisposition::Flags operator | ( ResultDisposition::Flags lhs, ResultDisposition::Flags rhs );
+    constexpr ResultDisposition::Flags operator|( ResultDisposition::Flags lhs,
+                                        ResultDisposition::Flags rhs ) {
+        return static_cast<ResultDisposition::Flags>( static_cast<int>( lhs ) |
+                                                      static_cast<int>( rhs ) );
+    }
 
-    bool shouldContinueOnFailure( int flags );
-    inline bool isFalseTest( int flags ) { return ( flags & ResultDisposition::FalseTest ) != 0; }
-    bool shouldSuppressFailure( int flags );
+    constexpr bool isFalseTest( int flags ) {
+        return ( flags & ResultDisposition::FalseTest ) != 0;
+    }
+    constexpr bool shouldSuppressFailure( int flags ) {
+        return ( flags & ResultDisposition::SuppressFail ) != 0;
+    }
 
 } // end namespace Catch
 

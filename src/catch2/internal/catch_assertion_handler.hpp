@@ -42,7 +42,7 @@ namespace Catch {
 
 
         template<typename T>
-        void handleExpr( ExprLhs<T> const& expr ) {
+        constexpr void handleExpr( ExprLhs<T> const& expr ) {
             handleExpr( expr.makeUnaryExpr() );
         }
         void handleExpr( ITransientExpression const& expr );

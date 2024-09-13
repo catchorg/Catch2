@@ -234,7 +234,6 @@ internal_sources = files(
   'internal/catch_random_seed_generation.cpp',
   'internal/catch_reporter_registry.cpp',
   'internal/catch_reporter_spec_parser.cpp',
-  'internal/catch_result_type.cpp',
   'internal/catch_reusable_string_stream.cpp',
   'internal/catch_run_context.cpp',
   'internal/catch_section.cpp',

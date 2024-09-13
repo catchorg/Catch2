@@ -54,7 +54,7 @@ namespace Catch {
             TestType m_testAsFunction;
 
         public:
-            TestInvokerAsFunction( TestType testAsFunction ) noexcept:
+            constexpr TestInvokerAsFunction( TestType testAsFunction ) noexcept:
                 m_testAsFunction( testAsFunction ) {}
 
             void invoke() const override { m_testAsFunction(); }

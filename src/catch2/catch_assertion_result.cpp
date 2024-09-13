@@ -11,7 +11,7 @@
 
 namespace Catch {
 
-    AssertionResultData::AssertionResultData(ResultWas::OfType _resultType, LazyExpression const & _lazyExpression):
+    AssertionResultData::AssertionResultData(ResultWas::OfType _resultType, LazyExpression const& _lazyExpression):
         lazyExpression(_lazyExpression),
         resultType(_resultType) {}
 

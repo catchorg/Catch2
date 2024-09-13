@@ -26,10 +26,15 @@ namespace Catch {
         friend void cleanUpContext();
 
     public:
-        IResultCapture* getResultCapture() const { return m_resultCapture; }
-        IConfig const* getConfig() const { return m_config; }
-        void setResultCapture( IResultCapture* resultCapture );
-        void setConfig( IConfig const* config );
+        constexpr IResultCapture* getResultCapture() const {
+            return m_resultCapture;
+        }
+        constexpr IConfig const* getConfig() const { return m_config; }
+        constexpr void setResultCapture( IResultCapture* resultCapture ) {
+            m_resultCapture = resultCapture;
+        }
+        constexpr void setConfig( IConfig const* config ) { m_config = config; }
+
     };
 
     Context& getCurrentMutableContext();

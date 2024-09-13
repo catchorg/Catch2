@@ -25,7 +25,7 @@ namespace Catch {
         class ExceptionTranslator : public IExceptionTranslator {
         public:
 
-            ExceptionTranslator( std::string(*translateFunction)( T const& ) )
+            constexpr ExceptionTranslator( std::string(*translateFunction)( T const& ) )
             : m_translateFunction( translateFunction )
             {}
 

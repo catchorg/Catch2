@@ -33,7 +33,7 @@ namespace Catch {
         ArgT && m_arg;
         MatcherT const& m_matcher;
     public:
-        MatchExpr( ArgT && arg, MatcherT const& matcher )
+        constexpr MatchExpr( ArgT && arg, MatcherT const& matcher )
         :   ITransientExpression{ true, matcher.match( arg ) }, // not forwarding arg here on purpose
             m_arg( CATCH_FORWARD(arg) ),
             m_matcher( matcher )
@@ -63,7 +63,8 @@ namespace Catch {
     void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher );
 
     template<typename ArgT, typename MatcherT>
-    auto makeMatchExpr( ArgT && arg, MatcherT const& matcher ) -> MatchExpr<ArgT, MatcherT> {
+    constexpr MatchExpr<ArgT, MatcherT>
+    makeMatchExpr( ArgT&& arg, MatcherT const& matcher ) {
         return MatchExpr<ArgT, MatcherT>( CATCH_FORWARD(arg), matcher );
     }
 
