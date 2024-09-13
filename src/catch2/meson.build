@@ -80,6 +80,7 @@ internal_headers = [
   'internal/catch_compiler_capabilities.hpp',
   'internal/catch_config_android_logwrite.hpp',
   'internal/catch_config_counter.hpp',
+  'internal/catch_config_prefix_messages.hpp',
   'internal/catch_config_static_analysis_support.hpp',
   'internal/catch_config_uncaught_exceptions.hpp',
   'internal/catch_config_wchar.hpp',
