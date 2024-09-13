@@ -13,7 +13,7 @@ namespace Catch {
 
     namespace {
         static auto getCurrentNanosecondsSinceEpoch() -> uint64_t {
-            return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+            return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
         }
     } // end unnamed namespace
 
