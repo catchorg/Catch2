@@ -308,10 +308,15 @@ TEST_CASE( "X/level/0/b", "[Tricky][fizz]" ){ SUCCEED(""); }
 TEST_CASE( "X/level/1/a", "[Tricky]" )      { SUCCEED(""); }
 TEST_CASE( "X/level/1/b", "[Tricky]" )      { SUCCEED(""); }
 
+#include <chrono>
+#include <thread>
+
 TEST_CASE( "has printf" ) {
 
     // This can cause problems as, currently, stdout itself is not redirected - only the cout (and cerr) buffer
     printf( "loose text artifact\n" );
+    fflush( stdout );
+    std::this_thread::sleep_for( std::chrono::seconds( 1 ) );
 }
 
 namespace {
