@@ -19,6 +19,7 @@
 
 #if defined(CATCH_CONFIG_USE_ASYNC)
 #include <thread>
+#include <mutex>
 #endif
 
 #if defined( CATCH_CONFIG_NEW_CAPTURE ) || defined(CATCH_CONFIG_USE_ASYNC)
@@ -253,110 +254,6 @@ namespace Catch {
 
 #if defined( CATCH_CONFIG_USE_ASYNC )
 
-        struct UniqueFileDescriptor final {
-            constexpr UniqueFileDescriptor() noexcept;
-            explicit UniqueFileDescriptor( int value ) noexcept;
-
-            UniqueFileDescriptor( UniqueFileDescriptor const& ) = delete;
-            constexpr UniqueFileDescriptor(
-                UniqueFileDescriptor&& other ) noexcept;
-
-            ~UniqueFileDescriptor() noexcept;
-
-            UniqueFileDescriptor&
-            operator=( UniqueFileDescriptor const& ) = delete;
-            UniqueFileDescriptor&
-            operator=( UniqueFileDescriptor&& other ) noexcept;
-
-            constexpr int get();
-
-        private:
-            int m_value;
-        };
-
-        struct OutputFileRedirector final {
-            explicit OutputFileRedirector( std::FILE* file,
-                                           std::string& result );
-
-            OutputFileRedirector( OutputFileRedirector const& ) = delete;
-            OutputFileRedirector( OutputFileRedirector&& ) = delete;
-
-            ~OutputFileRedirector() noexcept;
-
-            OutputFileRedirector&
-            operator=( OutputFileRedirector const& ) = delete;
-            OutputFileRedirector& operator=( OutputFileRedirector&& ) = delete;
-
-        private:
-            std::FILE* m_file;
-            int m_fd;
-            UniqueFileDescriptor m_previous;
-            std::thread m_readThread;
-        };
-
-        struct PipeRedirect final {
-            PipeRedirect( std::string& output, std::string& error ):
-                m_output{ stdout, output }, m_error{ stderr, error } {}
-
-        private:
-            OutputFileRedirector m_output;
-            OutputFileRedirector m_error;
-        };
-
-        class PipeRedirectWrapper : public OutputRedirect {
-            void activateImpl() override { m_redirect = Detail::make_unique<PipeRedirect>( m_stdout, m_stderr ); }
-            void deactivateImpl() override { m_redirect.reset(); }
-            std::string getStdout() override { return m_stdout; }
-            std::string getStderr() override { return m_stderr; }
-            void clearBuffers() override {
-                m_stdout.clear();
-                m_stderr.clear();
-            }
-            Detail::unique_ptr<PipeRedirect> m_redirect;
-            std::string m_stdout, m_stderr;
-        };
-
-        static inline void close_or_throw( int descriptor ) {
-            if ( close( descriptor ) ) {
-                CATCH_INTERNAL_ERROR( "close-or-throw" );
-                //CATCH_SYSTEM_ERROR( errno, std::generic_category() );
-            }
-        }
-
-        static inline int dup_or_throw( int descriptor ) {
-            int result{ dup( descriptor ) };
-
-            if ( result == -1 ) {
-                CATCH_INTERNAL_ERROR( "dup-or-throw" );
-                //CATCH_SYSTEM_ERROR( errno, std::generic_category() );
-            }
-
-            return result;
-        }
-
-        static inline int dup2_or_throw( int sourceDescriptor,
-                                         int destinationDescriptor ) {
-            int result{ dup2( sourceDescriptor, destinationDescriptor ) };
-
-            if ( result == -1 ) {
-                CATCH_INTERNAL_ERROR( "dup2-or-throw" );
-                //CATCH_SYSTEM_ERROR( errno, std::generic_category() );
-            }
-
-            return result;
-        }
-
-        static inline int fileno_or_throw( std::FILE* file ) {
-            int result{ fileno( file ) };
-
-            if ( result == -1 ) {
-                CATCH_INTERNAL_ERROR( "fileno-or-throw" );
-                //CATCH_SYSTEM_ERROR( errno, std::generic_category() );
-            }
-
-            return result;
-        }
-
         static inline void pipe_or_throw( int descriptors[2] ) {
 #    if defined( _MSC_VER )
             constexpr int defaultPipeSize{ 0 };
@@ -383,10 +280,51 @@ namespace Catch {
 
             if ( result == -1 ) {
                 CATCH_INTERNAL_ERROR( "read-or-throw" );
-                //CATCH_SYSTEM_ERROR( errno, std::generic_category() );
+                // CATCH_SYSTEM_ERROR( errno, std::generic_category() );
             }
 
             return static_cast<size_t>( result );
+        }
+
+        static inline void close_or_throw( int descriptor ) {
+            if ( close( descriptor ) ) {
+                CATCH_INTERNAL_ERROR( "close-or-throw" );
+                // CATCH_SYSTEM_ERROR( errno, std::generic_category() );
+            }
+        }
+
+        static inline int dup_or_throw( int descriptor ) {
+            int result{ dup( descriptor ) };
+
+            if ( result == -1 ) {
+                CATCH_INTERNAL_ERROR( "dup-or-throw" );
+                // CATCH_SYSTEM_ERROR( errno, std::generic_category() );
+            }
+
+            return result;
+        }
+
+        static inline int dup2_or_throw( int sourceDescriptor,
+                                         int destinationDescriptor ) {
+            int result{ dup2( sourceDescriptor, destinationDescriptor ) };
+
+            if ( result == -1 ) {
+                CATCH_INTERNAL_ERROR( "dup2-or-throw" );
+                // CATCH_SYSTEM_ERROR( errno, std::generic_category() );
+            }
+
+            return result;
+        }
+
+        static inline int fileno_or_throw( std::FILE* file ) {
+            int result{ fileno( file ) };
+
+            if ( result == -1 ) {
+                CATCH_INTERNAL_ERROR( "fileno-or-throw" );
+                // CATCH_SYSTEM_ERROR( errno, std::generic_category() );
+            }
+
+            return result;
         }
 
         static inline void fflush_or_throw( std::FILE* file ) {
@@ -396,96 +334,95 @@ namespace Catch {
             }
         }
 
-        constexpr UniqueFileDescriptor::UniqueFileDescriptor() noexcept:
-            m_value{} {}
+        class StreamPipeHandler {
+            int m_originalFd = -1;
+            int m_pipeReadEnd = -1;
+            int m_pipeWriteEnd = -1;
+            FILE* m_targetStream;
+            std::mutex m_mutex;
+            std::string m_captured;
+            std::thread m_readThread;
 
-        UniqueFileDescriptor::UniqueFileDescriptor( int value ) noexcept:
-            m_value{ value } {}
+        public:
+            StreamPipeHandler( FILE* original ):
+                m_originalFd( dup_or_throw( fileno( original ) ) ),
+                m_targetStream(original)
+            {
+                CATCH_ENFORCE( m_originalFd >= 0, "Could not dup stream" );
+                int pipe_fds[2];
+                pipe_or_throw( pipe_fds );
+                m_pipeReadEnd = pipe_fds[0];
+                m_pipeWriteEnd = pipe_fds[1];
 
-        constexpr UniqueFileDescriptor::UniqueFileDescriptor(
-            UniqueFileDescriptor&& other ) noexcept:
-            m_value{ other.m_value } {
-            other.m_value = 0;
-        }
-
-        UniqueFileDescriptor::~UniqueFileDescriptor() noexcept {
-            if ( m_value == 0 ) { return; }
-
-            close_or_throw(
-                m_value ); // std::terminate on failure (due to noexcept)
-        }
-
-        UniqueFileDescriptor& UniqueFileDescriptor::operator=(
-            UniqueFileDescriptor&& other ) noexcept {
-            std::swap( m_value, other.m_value );
-            return *this;
-        }
-
-        constexpr int UniqueFileDescriptor::get() { return m_value; }
-
-        static inline void
-        create_pipe( UniqueFileDescriptor& readDescriptor,
-                     UniqueFileDescriptor& writeDescriptor ) {
-            readDescriptor = {};
-            writeDescriptor = {};
-
-            int descriptors[2];
-            pipe_or_throw( descriptors );
-
-            readDescriptor = UniqueFileDescriptor{ descriptors[0] };
-            writeDescriptor = UniqueFileDescriptor{ descriptors[1] };
-        }
-
-        static inline void read_thread( UniqueFileDescriptor&& file,
-                                        std::string& result ) {
-            std::string buffer{};
-            constexpr size_t bufferSize{ 4096 };
-            buffer.resize( bufferSize );
-            size_t sizeRead{};
-
-            while ( ( sizeRead = read_or_throw(
-                          file.get(), &buffer[0], bufferSize ) ) != 0 ) {
-                result.append( buffer.data(), sizeRead );
+                m_readThread = std::thread([this]() {
+                    constexpr size_t bufferSize = 4096;
+                    char buffer[bufferSize];
+                    size_t sizeRead;
+                    while ( ( sizeRead = read_or_throw(
+                                  m_pipeReadEnd, buffer, bufferSize ) ) != 0 ) {
+                        std::unique_lock<std::mutex> _( m_mutex );
+                        m_captured.append( buffer, sizeRead );
+                    }
+                });
             }
-        }
 
-        OutputFileRedirector::OutputFileRedirector( FILE* file,
-                                                    std::string& result ):
-            m_file{ file },
-            m_fd{ fileno_or_throw( m_file ) },
-            m_previous{ dup_or_throw( m_fd ) } {
-            fflush_or_throw( m_file );
+            ~StreamPipeHandler() {
+                close_or_throw( m_pipeWriteEnd );
+                m_readThread.join();
+            }
 
-            UniqueFileDescriptor readDescriptor{};
-            UniqueFileDescriptor writeDescriptor{};
-            create_pipe( readDescriptor, writeDescriptor );
+            std::string getCapturedOutput() {
+                std::unique_lock<std::mutex> _( m_mutex );
+                return m_captured;
+            }
 
-            // Anonymous pipes have a limited buffer and require an active
-            // reader to ensure the writer does not become blocked. Use a
-            // separate thread to ensure the buffer does not get stuck full.
-            m_readThread =
-                std::thread{ [readDescriptor{ CATCH_MOVE( readDescriptor ) },
-                              &result]() mutable {
-                    read_thread( CATCH_MOVE( readDescriptor ), result );
-                } };
+            void clearCapturedOutput() {
+                std::unique_lock<std::mutex> _( m_mutex );
+                m_captured.clear();
+            }
 
-            // Replace the stdout or stderr file descriptor with the write end
-            // of the pipe.
-            dup2_or_throw( writeDescriptor.get(), m_fd );
-        }
+            void startCapture() {
+                fflush_or_throw( m_targetStream );
+                int ret = dup2_or_throw( m_pipeWriteEnd, fileno( m_targetStream ) );
+                CATCH_ENFORCE( ret >= 0,
+                               "dup2 pipe-write -> original stream failed " << errno );
+            }
+            void stopCapture() {
+                fflush_or_throw( m_targetStream );
+                int ret = dup2_or_throw( m_originalFd, fileno( m_targetStream ) );
+                CATCH_ENFORCE( ret >= 0,
+                               "dup2 of original fd -> original stream failed " << errno );
+            }
+        };
 
-        OutputFileRedirector::~OutputFileRedirector() noexcept {
-            fflush_or_throw(
-                m_file ); // std::terminate on failure (due to noexcept)
+        class PipeRedirect : public OutputRedirect {
+        private:
+            StreamPipeHandler m_stdout;
+            StreamPipeHandler m_stderr;
+        public:
+            PipeRedirect():
+                m_stdout(stdout),
+                m_stderr(stderr){}
 
-            // Restore the original stdout or stderr file descriptor.
-            dup2_or_throw(
-                m_previous.get(),
-                m_fd ); // std::terminate on failure (due to noexcept)
-
-            if ( m_readThread.joinable() ) { m_readThread.join(); }
-        }
-
+            void activateImpl() override {
+                m_stdout.startCapture();
+                m_stderr.startCapture();
+            }
+            void deactivateImpl() override {
+                m_stdout.stopCapture();
+                m_stderr.stopCapture();
+            }
+            std::string getStdout() override {
+                return m_stdout.getCapturedOutput();
+            }
+            std::string getStderr() override {
+                return m_stderr.getCapturedOutput();
+            }
+            void clearBuffers() override {
+                m_stdout.clearCapturedOutput();
+                m_stderr.clearCapturedOutput();
+            }
+        };
 
 #endif // CATCH_CONFIG_USE_ASYNC
 
@@ -518,7 +455,7 @@ namespace Catch {
             return Detail::make_unique<FileRedirect>();
 #else
             //return Detail::make_unique<StreamRedirect>();
-            return Detail::make_unique<PipeRedirectWrapper>();
+            return Detail::make_unique<PipeRedirect>();
 #endif
         } else {
             return Detail::make_unique<NoopRedirect>();
