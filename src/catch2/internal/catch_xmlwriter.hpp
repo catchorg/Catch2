@@ -13,22 +13,23 @@
 
 #include <iosfwd>
 #include <vector>
+#include <cstdint>
 
 namespace Catch {
-    enum class XmlFormatting : uint8_t {
+    enum class XmlFormatting : std::uint8_t {
         None = 0x00,
         Indent = 0x01,
         Newline = 0x02,
     };
 
     constexpr XmlFormatting operator|( XmlFormatting lhs, XmlFormatting rhs ) {
-        return static_cast<XmlFormatting>( static_cast<uint8_t>( lhs ) |
-                                           static_cast<uint8_t>( rhs ) );
+        return static_cast<XmlFormatting>( static_cast<std::uint8_t>( lhs ) |
+                                           static_cast<std::uint8_t>( rhs ) );
     }
 
     constexpr XmlFormatting operator&( XmlFormatting lhs, XmlFormatting rhs ) {
-        return static_cast<XmlFormatting>( static_cast<uint8_t>( lhs ) &
-                                           static_cast<uint8_t>( rhs ) );
+        return static_cast<XmlFormatting>( static_cast<std::uint8_t>( lhs ) &
+                                           static_cast<std::uint8_t>( rhs ) );
     }
 
 
