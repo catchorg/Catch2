@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.7.1](#371)<br>
 [3.7.0](#370)<br>
 [3.6.0](#360)<br>
 [3.5.4](#354)<br>
@@ -62,6 +63,26 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 3.7.1
+
+### Improvements
+* Applied the JUnit reporter's optimization from last release to the SonarQube reporter
+* Suppressed `-Wuseless-cast` in `CHECK_THROWS_MATCHES` (#2904)
+* Standardize exit codes for various failures
+  * Running no tests is now guaranteed to exit with 2 (without the `--allow-running-no-tests` flag)
+  * All tests skipped is now always 4 (...)
+  * Assertion failures are now always 42
+  * and so on
+
+### Fixes
+* Fixed out-of-bounds access when the arg parser encounters single `-` as an argument (#2905)
+
+### Miscellaneous
+* Added `catch_config_prefix_messages.hpp` to meson build (#2903)
+* `catch_discover_tests` now supports skipped tests (#2873)
+  * You can get the old behaviour by calling `catch_discover_tests` with `SKIP_IS_FAILURE` option.
 
 
 ## 3.7.0
