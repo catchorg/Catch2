@@ -17383,6 +17383,25 @@ There is no extra whitespace here
       </Expression>
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
+    <Section name="Compare against std::initializer_list" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Original>
+          array_a, RangeEquals( { 1, 2, 3 } )
+        </Original>
+        <Expanded>
+          { 1, 2, 3 } elements are { 1, 2, 3 }
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Original>
+          array_a, RangeEquals( { 2, 4, 6 }, []( int l, int r ) { return l * 2 == r; } )
+        </Original>
+        <Expanded>
+          { 1, 2, 3 } elements are { 2, 4, 6 }
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
     <Section name="Check short-circuiting behaviour" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
       <Section name="Check short-circuits on failure" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
@@ -17608,6 +17627,25 @@ There is no extra whitespace here
         </Expanded>
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Compare against std::initializer_list" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Original>
+          array_a, UnorderedRangeEquals( { 10, 20, 1 } )
+        </Original>
+        <Expanded>
+          { 1, 10, 20 } unordered elements are { 10, 20, 1 }
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Original>
+          array_a, UnorderedRangeEquals( { 11, 21, 2 }, []( int l, int r ) { return std::abs( l - r ) &lt;= 1; } )
+        </Original>
+        <Expanded>
+          { 1, 10, 20 } unordered elements are { 11, 21, 2 }
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
@@ -21933,6 +21971,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2083" failures="147" expectedFailures="35" skips="12"/>
+  <OverallResults successes="2087" failures="147" expectedFailures="35" skips="12"/>
   <OverallResultsCases successes="313" failures="86" expectedFailures="14" skips="6"/>
 </Catch2TestRun>

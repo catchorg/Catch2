@@ -727,6 +727,15 @@ TEST_CASE( "Usage of RangeEquals range matcher", "[matchers][templated][quantifi
                       } ) );
     }
 
+    SECTION( "Compare against std::initializer_list" ) {
+        const std::array<int, 3> array_a{ { 1, 2, 3 } };
+
+        REQUIRE_THAT( array_a, RangeEquals( { 1, 2, 3 } ) );
+        REQUIRE_THAT( array_a, RangeEquals( { 2, 4, 6 }, []( int l, int r ) {
+                          return l * 2 == r;
+                      } ) );
+    }
+
     SECTION("Check short-circuiting behaviour") {
         with_mocked_iterator_access<int> const mocked1{ 1, 2, 3, 4 };
 
@@ -819,6 +828,16 @@ TEST_CASE( "Usage of UnorderedRangeEquals range matcher",
             needs_adl2{ 1, 2, 3, 4, 5 };
 
         REQUIRE_THAT( needs_adl1, UnorderedRangeEquals( needs_adl2 ) );
+    }
+
+    SECTION( "Compare against std::initializer_list" ) {
+        const std::array<int, 3> array_a{ { 1, 10, 20 } };
+
+        REQUIRE_THAT( array_a, UnorderedRangeEquals( { 10, 20, 1 } ) );
+        REQUIRE_THAT( array_a,
+                      UnorderedRangeEquals( { 11, 21, 2 }, []( int l, int r ) {
+                          return std::abs( l - r ) <= 1;
+                      } ) );
     }
 }
 

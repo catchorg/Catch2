@@ -1611,5 +1611,5 @@ due to unexpected exception with message:
 
 ===============================================================================
 test cases:  419 |  327 passed |  71 failed | 7 skipped | 14 failed as expected
-assertions: 2248 | 2083 passed | 130 failed | 35 failed as expected
+assertions: 2252 | 2087 passed | 130 failed | 35 failed as expected
 
