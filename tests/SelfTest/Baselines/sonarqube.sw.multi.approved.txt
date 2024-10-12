@@ -1606,6 +1606,7 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Usage of RangeEquals range matcher/Custom predicate/Two equal non-empty containers (close enough)" duration="{duration}"/>
     <testCase name="Usage of RangeEquals range matcher/Custom predicate/Two non-equal non-empty containers (close enough)" duration="{duration}"/>
     <testCase name="Usage of RangeEquals range matcher/Ranges that need ADL begin/end" duration="{duration}"/>
+    <testCase name="Usage of RangeEquals range matcher/Compare against std::initializer_list" duration="{duration}"/>
     <testCase name="Usage of RangeEquals range matcher/Check short-circuiting behaviour" duration="{duration}"/>
     <testCase name="Usage of RangeEquals range matcher/Check short-circuiting behaviour/Check short-circuits on failure" duration="{duration}"/>
     <testCase name="Usage of RangeEquals range matcher/Check short-circuiting behaviour/All elements are checked on success" duration="{duration}"/>
@@ -1621,6 +1622,7 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Custom predicate/Two equal non-empty containers (close enough)" duration="{duration}"/>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Custom predicate/Two non-equal non-empty containers (close enough)" duration="{duration}"/>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Ranges that need ADL begin/end" duration="{duration}"/>
+    <testCase name="Usage of UnorderedRangeEquals range matcher/Compare against std::initializer_list" duration="{duration}"/>
     <testCase name="Usage of the SizeIs range matcher" duration="{duration}"/>
     <testCase name="Usage of the SizeIs range matcher/Some with stdlib containers" duration="{duration}"/>
     <testCase name="Usage of the SizeIs range matcher/Type requires ADL found size free function" duration="{duration}"/>

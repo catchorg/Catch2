@@ -14976,6 +14976,23 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Usage of RangeEquals range matcher
+  Compare against std::initializer_list
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( array_a, RangeEquals( { 1, 2, 3 } ) )
+with expansion:
+  { 1, 2, 3 } elements are { 1, 2, 3 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( array_a, RangeEquals( { 2, 4, 6 }, []( int l, int r ) { return l * 2 == r; } ) )
+with expansion:
+  { 1, 2, 3 } elements are { 2, 4, 6 }
+
+-------------------------------------------------------------------------------
+Usage of RangeEquals range matcher
   Check short-circuiting behaviour
   Check short-circuits on failure
 -------------------------------------------------------------------------------
@@ -15160,6 +15177,23 @@ MatchersRanges.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( needs_adl1, UnorderedRangeEquals( needs_adl2 ) )
 with expansion:
   { 1, 2, 3, 4, 5 } unordered elements are { 1, 2, 3, 4, 5 }
+
+-------------------------------------------------------------------------------
+Usage of UnorderedRangeEquals range matcher
+  Compare against std::initializer_list
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( array_a, UnorderedRangeEquals( { 10, 20, 1 } ) )
+with expansion:
+  { 1, 10, 20 } unordered elements are { 10, 20, 1 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( array_a, UnorderedRangeEquals( { 11, 21, 2 }, []( int l, int r ) { return std::abs( l - r ) <= 1; } ) )
+with expansion:
+  { 1, 10, 20 } unordered elements are { 11, 21, 2 }
 
 -------------------------------------------------------------------------------
 Usage of the SizeIs range matcher
@@ -18968,5 +19002,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  419 |  313 passed |  86 failed | 6 skipped | 14 failed as expected
-assertions: 2265 | 2083 passed | 147 failed | 35 failed as expected
+assertions: 2269 | 2087 passed | 147 failed | 35 failed as expected
 

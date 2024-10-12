@@ -3580,6 +3580,10 @@ ok {test-number} - needs_adl1, RangeEquals( needs_adl2 ) for: { 1, 2, 3, 4, 5 } 
 # Usage of RangeEquals range matcher
 ok {test-number} - needs_adl1, RangeEquals( needs_adl3, []( int l, int r ) { return l + 1 == r; } ) for: { 1, 2, 3, 4, 5 } elements are { 2, 3, 4, 5, 6 }
 # Usage of RangeEquals range matcher
+ok {test-number} - array_a, RangeEquals( { 1, 2, 3 } ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
+# Usage of RangeEquals range matcher
+ok {test-number} - array_a, RangeEquals( { 2, 4, 6 }, []( int l, int r ) { return l * 2 == r; } ) for: { 1, 2, 3 } elements are { 2, 4, 6 }
+# Usage of RangeEquals range matcher
 ok {test-number} - mocked1, !RangeEquals( arr ) for: { 1, 2, 3, 4 } not elements are { 1, 2, 4, 4 }
 # Usage of RangeEquals range matcher
 ok {test-number} - mocked1.m_derefed[0] for: true
@@ -3619,6 +3623,10 @@ ok {test-number} - vector_a, UnorderedRangeEquals( vector_a_plus_1, close_enough
 ok {test-number} - vector_a, !UnorderedRangeEquals( vector_b, close_enough ) for: { 1, 10, 21 } not unordered elements are { 11, 21, 3 }
 # Usage of UnorderedRangeEquals range matcher
 ok {test-number} - needs_adl1, UnorderedRangeEquals( needs_adl2 ) for: { 1, 2, 3, 4, 5 } unordered elements are { 1, 2, 3, 4, 5 }
+# Usage of UnorderedRangeEquals range matcher
+ok {test-number} - array_a, UnorderedRangeEquals( { 10, 20, 1 } ) for: { 1, 10, 20 } unordered elements are { 10, 20, 1 }
+# Usage of UnorderedRangeEquals range matcher
+ok {test-number} - array_a, UnorderedRangeEquals( { 11, 21, 2 }, []( int l, int r ) { return std::abs( l - r ) <= 1; } ) for: { 1, 10, 20 } unordered elements are { 11, 21, 2 }
 # Usage of the SizeIs range matcher
 ok {test-number} - empty_vec, SizeIs(0) for: {  } has size == 0
 # Usage of the SizeIs range matcher
@@ -4559,5 +4567,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2277
+1..2281
 
