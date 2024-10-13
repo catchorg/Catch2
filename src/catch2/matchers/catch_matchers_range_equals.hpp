@@ -96,42 +96,16 @@ namespace Catch {
          * Creates a matcher that checks if all elements in a range are equal
          * to all elements in another range.
          *
-         * Uses `std::equal_to` to do the comparison
-         */
-        template <typename RangeLike>
-        constexpr
-        std::enable_if_t<!Detail::is_matcher<RangeLike>::value,
-                         RangeEqualsMatcher<RangeLike, std::equal_to<>>>
-        RangeEquals( RangeLike&& range ) {
-            return { CATCH_FORWARD( range ), std::equal_to<>{} };
-        }
-
-        /**
-         * Creates a matcher that checks if all elements in a range are equal
-         * to all elements in another range.
-         *
          * Uses the provided predicate `predicate` to do the comparisons
+         * (defaulting to `std::equal_to`)
          */
-        template <typename RangeLike, typename Equality>
+        template <typename RangeLike,
+                  typename Equality = decltype( std::equal_to<>{} )>
         constexpr
         RangeEqualsMatcher<RangeLike, Equality>
-        RangeEquals( RangeLike&& range, Equality&& predicate ) {
+        RangeEquals( RangeLike&& range,
+                     Equality&& predicate = std::equal_to<>{} ) {
             return { CATCH_FORWARD( range ), CATCH_FORWARD( predicate ) };
-        }
-
-        /**
-         * Creates a matcher that checks if all elements in a range are equal
-         * to all elements in another range, in some permutation
-         *
-         * Uses `std::equal_to` to do the comparison
-         */
-        template <typename RangeLike>
-        constexpr
-        std::enable_if_t<
-            !Detail::is_matcher<RangeLike>::value,
-            UnorderedRangeEqualsMatcher<RangeLike, std::equal_to<>>>
-        UnorderedRangeEquals( RangeLike&& range ) {
-            return { CATCH_FORWARD( range ), std::equal_to<>{} };
         }
 
         /**
@@ -139,11 +113,14 @@ namespace Catch {
          * to all elements in another range, in some permutation.
          *
          * Uses the provided predicate `predicate` to do the comparisons
+         * (defaulting to `std::equal_to`)
          */
-        template <typename RangeLike, typename Equality>
+        template <typename RangeLike,
+                  typename Equality = decltype( std::equal_to<>{} )>
         constexpr
         UnorderedRangeEqualsMatcher<RangeLike, Equality>
-        UnorderedRangeEquals( RangeLike&& range, Equality&& predicate ) {
+        UnorderedRangeEquals( RangeLike&& range,
+                              Equality&& predicate = std::equal_to<>{} ) {
             return { CATCH_FORWARD( range ), CATCH_FORWARD( predicate ) };
         }
     } // namespace Matchers
