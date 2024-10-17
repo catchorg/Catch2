@@ -1,10 +1,10 @@
-name: M1 Mac builds
+name: Arm Mac builds
 
 on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: macos-14
+    runs-on: macos-14-xlarge
     strategy:
       matrix:
         cxx:

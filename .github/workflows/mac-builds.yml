@@ -1,10 +1,10 @@
-name: Mac builds
+name: Intel Mac builds
 
 on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: macos-12
+    runs-on: macos-14-large
     strategy:
       matrix:
         cxx:
