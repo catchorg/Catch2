@@ -1,1 +1,3 @@
 option('tests', type: 'boolean', value: true, description: 'Build the unit tests')
+
+option('windows_seh', type: 'boolean', value: true, description: 'Enable Windows SEH exception handling when available')
