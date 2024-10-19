@@ -351,7 +351,7 @@ if ((host_machine.system() == 'android') or
   catch2_dependencies += log_dep
 endif
 
-catch2 = static_library(
+catch2 = library(
   'Catch2',
   sources,
   dependencies: catch2_dependencies,
@@ -371,7 +371,7 @@ pkg.generate(
   url: 'https://github.com/catchorg/Catch2',
 )
 
-catch2_with_main = static_library(
+catch2_with_main = library(
   'Catch2Main',
   'internal/catch_main.cpp',
   link_with: catch2,
