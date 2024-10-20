@@ -395,6 +395,12 @@ when configuring the build, and then modify your calls to
 [find_package](https://cmake.org/cmake/help/latest/command/find_package.html)
 accordingly.
 
+If you are on windows you will need to use an admin level powershell or command prompt and run the command:
+
+```
+cmake --build build/ --target install
+```
+
 ## Installing Catch2 from vcpkg
 
 Alternatively, you can build and install Catch2 using [vcpkg](https://github.com/microsoft/vcpkg/) dependency manager:
