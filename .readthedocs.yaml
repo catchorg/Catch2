@@ -1,0 +1,16 @@
+version: 2
+
+python:
+  install:
+    - path: docs
+      extra_requirements:
+        - docs
+build:
+  os: ubuntu-22.04
+  apt_packages:
+    - doxygen
+    - graphviz
+  tools:
+    python: "3.11"
+sphinx:
+  configuration: docs/conf.py
