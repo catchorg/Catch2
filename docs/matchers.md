@@ -15,6 +15,9 @@ own and combine them with the Catch2-provided matchers seamlessly.
 
 
 ## Using Matchers
+```cpp
+#include <catch2/matchers/catch_matchers.hpp>
+```
 
 Matchers are most commonly used in tandem with the `REQUIRE_THAT` or
 `CHECK_THAT` macros. The `REQUIRE_THAT` macro takes two arguments,
