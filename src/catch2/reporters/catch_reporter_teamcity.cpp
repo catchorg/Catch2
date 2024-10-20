@@ -5,68 +5,66 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
+#include <catch2/catch_test_case_info.hpp>
+#include <catch2/internal/catch_enforce.hpp>
+#include <catch2/internal/catch_string_manip.hpp>
+#include <catch2/internal/catch_textflow.hpp>
+#include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/reporters/catch_reporter_teamcity.hpp>
 
-#include <catch2/reporters/catch_reporter_helpers.hpp>
-#include <catch2/internal/catch_string_manip.hpp>
-#include <catch2/internal/catch_enforce.hpp>
-#include <catch2/internal/catch_textflow.hpp>
-#include <catch2/catch_test_case_info.hpp>
-
+#include <algorithm>
 #include <cassert>
 #include <ostream>
 
 namespace Catch {
 
     namespace {
-        // if string has a : in first line will set indent to follow it on
-        // subsequent lines
-        void printHeaderString(std::ostream& os, std::string const& _string, std::size_t indent = 0) {
-            std::size_t i = _string.find(": ");
-            if (i != std::string::npos)
-                i += 2;
-            else
-                i = 0;
-            os << TextFlow::Column(_string)
-                  .indent(indent + i)
-                  .initialIndent(indent) << '\n';
-        }
-
-        std::string escape(StringRef str) {
-            std::string escaped = static_cast<std::string>(str);
-            replaceInPlace(escaped, "|", "||");
-            replaceInPlace(escaped, "'", "|'");
-            replaceInPlace(escaped, "\n", "|n");
-            replaceInPlace(escaped, "\r", "|r");
-            replaceInPlace(escaped, "[", "|[");
-            replaceInPlace(escaped, "]", "|]");
+        std::string escape( StringRef str ) {
+            std::string escaped = static_cast<std::string>( str );
+            replaceInPlace( escaped, " ", "_" );
+            replaceInPlace( escaped, "|", "||" );
+            replaceInPlace( escaped, "'", "|'" );
+            replaceInPlace( escaped, "\n", "|n" );
+            replaceInPlace( escaped, "\r", "|r" );
+            replaceInPlace( escaped, "[", "|[" );
+            replaceInPlace( escaped, "]", "|]" );
             return escaped;
         }
     } // end anonymous namespace
 
+    TeamCityReporter::TeamCityReporter( ReporterConfig&& _config ):
+        StreamingReporterBase( CATCH_MOVE( _config ) ) {
+        m_preferences.shouldRedirectStdOut = true;
+
+        parseCustomOptions();
+    }
 
     TeamCityReporter::~TeamCityReporter() = default;
 
     void TeamCityReporter::testRunStarting( TestRunInfo const& runInfo ) {
-        m_stream << "##teamcity[testSuiteStarted name='" << escape( runInfo.name )
-               << "']\n";
+        StreamingReporterBase::testRunStarting( runInfo );
+        m_stream << "##teamcity[testSuiteStarted name='"
+                 << escape( runInfo.name ) << "']\n";
     }
 
     void TeamCityReporter::testRunEnded( TestRunStats const& runStats ) {
+        StreamingReporterBase::testRunEnded( runStats );
+
         m_stream << "##teamcity[testSuiteFinished name='"
-               << escape( runStats.runInfo.name ) << "']\n";
+                 << escape( runStats.runInfo.name ) << "']\n";
     }
 
-    void TeamCityReporter::assertionEnded(AssertionStats const& assertionStats) {
+    void TeamCityReporter::assertionEnded( AssertionStats const& assertionStats ) {
         AssertionResult const& result = assertionStats.assertionResult;
         if ( !result.isOk() ||
              result.getResultType() == ResultWas::ExplicitSkip ) {
 
-            ReusableStringStream msg;
-            if (!m_headerPrintedForThisSection)
-                printSectionHeader(msg.get());
-            m_headerPrintedForThisSection = true;
+            if ( m_printSections ) {
+                m_stream << createTestCaseHeader( printSectionName() );
+                m_headerPrintedForThisSection = true;
+            }
 
+            ReusableStringStream msg;
             msg << result.getSourceInfo() << '\n';
 
             switch (result.getResultType()) {
@@ -107,12 +105,12 @@ namespace Catch {
             for (auto const& messageInfo : assertionStats.infoMessages)
                 msg << "\n  \"" << messageInfo.message << '"';
 
-
             if (result.hasExpression()) {
-                msg <<
-                    "\n  " << result.getExpressionInMacro() << "\n"
-                    "with expansion:\n"
-                    "  " << result.getExpandedExpression() << '\n';
+                msg << "\n  " << result.getExpressionInMacro()
+                    << "\n"
+                       "with expansion:\n"
+                       "  "
+                    << result.getExpandedExpression() << '\n';
             }
 
             if ( result.getResultType() == ResultWas::ExplicitSkip ) {
@@ -123,55 +121,103 @@ namespace Catch {
             } else {
                 m_stream << "##teamcity[testFailed";
             }
-            m_stream << " name='" << escape( currentTestCaseInfo->name ) << '\''
-                     << " message='" << escape( msg.str() ) << '\'' << "]\n";
+
+            if ( m_printSections ) {
+                m_stream << " name='" << escape( printSectionName() ) << '\'';
+            } else {
+                m_stream << " name='" << escape( currentTestCaseInfo->name )
+                         << '\'';
+            }
+            m_stream << " message='" << escape( msg.str() ) << "']\n";
         }
-        m_stream.flush();
     }
 
-    void TeamCityReporter::testCaseStarting(TestCaseInfo const& testInfo) {
-        m_testTimer.start();
-        StreamingReporterBase::testCaseStarting(testInfo);
-        m_stream << "##teamcity[testStarted name='"
-            << escape(testInfo.name) << "']\n";
-        m_stream.flush();
+    void TeamCityReporter::testCaseStarting( TestCaseInfo const& testInfo ) {
+        StreamingReporterBase::testCaseStarting( testInfo );
+
+        if ( !m_printSections ) {
+            m_testCaseTimer.start();
+            m_stream << createTestCaseHeader( testInfo.name );
+        }
     }
 
-    void TeamCityReporter::testCaseEnded(TestCaseStats const& testCaseStats) {
-        StreamingReporterBase::testCaseEnded(testCaseStats);
-        auto const& testCaseInfo = *testCaseStats.testInfo;
-        if (!testCaseStats.stdOut.empty())
-            m_stream << "##teamcity[testStdOut name='"
-            << escape(testCaseInfo.name)
-            << "' out='" << escape(testCaseStats.stdOut) << "']\n";
-        if (!testCaseStats.stdErr.empty())
-            m_stream << "##teamcity[testStdErr name='"
-            << escape(testCaseInfo.name)
-            << "' out='" << escape(testCaseStats.stdErr) << "']\n";
-        m_stream << "##teamcity[testFinished name='"
-            << escape(testCaseInfo.name) << "' duration='"
-            << m_testTimer.getElapsedMilliseconds() << "']\n";
-        m_stream.flush();
+    void TeamCityReporter::testCaseEnded( TestCaseStats const& testCaseStats ) {
+        StreamingReporterBase::testCaseEnded( testCaseStats );
+
+        if ( !m_printSections ) {
+            m_stream << createTestCaseFooter(
+                testCaseStats.testInfo->name,
+                m_testCaseTimer.getElapsedSeconds() );
+        }
     }
 
-    void TeamCityReporter::printSectionHeader(std::ostream& os) {
-        assert(!m_sectionStack.empty());
+    std::string TeamCityReporter::printSectionName() {
+        std::string output;
 
-        if (m_sectionStack.size() > 1) {
-            os << lineOfChars('-') << '\n';
-
-            std::vector<SectionInfo>::const_iterator
-                it = m_sectionStack.begin() + 1, // Skip first section (test case)
-                itEnd = m_sectionStack.end();
-            for (; it != itEnd; ++it)
-                printHeaderString(os, it->name);
-            os << lineOfChars('-') << '\n';
+        for ( const auto& entry : m_sectionStack ) {
+            output += entry.name + m_sectionSeparator;
         }
 
-        SourceLineInfo lineInfo = m_sectionStack.front().lineInfo;
+        const auto endPos = output.find_last_not_of( m_sectionSeparator );
+        if ( endPos != std::string::npos ) { output.resize( endPos + 1 ); }
 
-        os << lineInfo << '\n';
-        os << lineOfChars('.') << "\n\n";
+        return output;
+    }
+
+    void TeamCityReporter::sectionStarting( SectionInfo const& sectionInfo ) {
+        StreamingReporterBase::sectionStarting( sectionInfo );
+
+        if ( !m_printSections ) { return; }
+
+        m_headerPrintedForThisSection = false;
+    }
+
+    void TeamCityReporter::sectionEnded( SectionStats const& sectionStats ) {
+        if ( !m_printSections ) { return; }
+
+        if ( !m_headerPrintedForThisSection ) {
+            m_headerPrintedForThisSection = true;
+
+            m_stream << createTestCaseHeader( printSectionName() );
+            m_stream << createTestCaseFooter( printSectionName(),
+                                              sectionStats.durationInSeconds );
+        }
+
+        StreamingReporterBase::sectionEnded( sectionStats );
+    }
+
+    std::string TeamCityReporter::createTestCaseHeader( std::string name ) {
+        std::string result{ "##teamcity[testStarted name='" };
+        result += escape( name );
+        result += "']\n";
+        return result;
+    }
+
+    std::string TeamCityReporter::createTestCaseFooter( std::string name,
+                                                        double duration ) {
+        std::string result{ "##teamcity[testFinished name='" };
+        result += escape( name );
+
+        if ( m_config->showDurations() == ShowDurations::Always ) {
+            result +=
+                "' duration='" +
+                std::to_string( static_cast<uint32_t>( duration * 1000 ) );
+        }
+
+        result += "']\n";
+        return result;
+    }
+
+    void TeamCityReporter::parseCustomOptions() {
+        auto result = m_customOptions.find( "Xsections" );
+        if ( result != m_customOptions.end() ) {
+            m_printSections = result->second == "true";
+        }
+
+        result = m_customOptions.find( "Xseparator" );
+        if ( result != m_customOptions.end() ) {
+            m_sectionSeparator = result->second;
+        }
     }
 
 } // end namespace Catch
