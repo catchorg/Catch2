@@ -4493,7 +4493,7 @@ C
     </Expression>
     <OverallResult success="false" skips="0"/>
   </TestCase>
-  <TestCase name="Enums can quickly have stringification enabled using REGISTER_ENUM" filename="tests/<exe-name>/UsageTests/EnumToString.tests.cpp" >
+  <TestCase name="Enums can quickly have stringification enabled using CATCH_REGISTER_ENUM" filename="tests/<exe-name>/UsageTests/EnumToString.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/EnumToString.tests.cpp" >
       <Original>
         stringify( EnumClass3::Value1 ) == "Value1"
@@ -4538,7 +4538,7 @@ C
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <TestCase name="Enums in namespaces can quickly have stringification enabled using REGISTER_ENUM" filename="tests/<exe-name>/UsageTests/EnumToString.tests.cpp" >
+  <TestCase name="Enums in namespaces can quickly have stringification enabled using CATCH_REGISTER_ENUM" filename="tests/<exe-name>/UsageTests/EnumToString.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/EnumToString.tests.cpp" >
       <Original>
         stringify( Bikeshed::Colours::Red ) == "Red"

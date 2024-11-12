@@ -4081,7 +4081,7 @@ with expansion:
   insensitive)
 
 -------------------------------------------------------------------------------
-Enums can quickly have stringification enabled using REGISTER_ENUM
+Enums can quickly have stringification enabled using CATCH_REGISTER_ENUM
 -------------------------------------------------------------------------------
 EnumToString.tests.cpp:<line number>
 ...............................................................................
@@ -4115,7 +4115,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Enums in namespaces can quickly have stringification enabled using
-REGISTER_ENUM
+CATCH_REGISTER_ENUM
 -------------------------------------------------------------------------------
 EnumToString.tests.cpp:<line number>
 ...............................................................................

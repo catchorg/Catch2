@@ -997,8 +997,8 @@ at Decomposition.tests.cpp:<line number>
     </testCase>
   </file>
   <file path="tests/<exe-name>/UsageTests/EnumToString.tests.cpp">
-    <testCase name="Enums can quickly have stringification enabled using REGISTER_ENUM" duration="{duration}"/>
-    <testCase name="Enums in namespaces can quickly have stringification enabled using REGISTER_ENUM" duration="{duration}"/>
+    <testCase name="Enums can quickly have stringification enabled using CATCH_REGISTER_ENUM" duration="{duration}"/>
+    <testCase name="Enums in namespaces can quickly have stringification enabled using CATCH_REGISTER_ENUM" duration="{duration}"/>
     <testCase name="toString(enum class w/operator&lt;&lt;)" duration="{duration}"/>
     <testCase name="toString(enum class)" duration="{duration}"/>
     <testCase name="toString(enum w/operator&lt;&lt;)" duration="{duration}"/>

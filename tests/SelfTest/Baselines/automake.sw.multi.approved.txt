@@ -134,8 +134,8 @@
 :test-result: SKIP Empty generators can SKIP in constructor
 :test-result: PASS Empty stream name opens cout stream
 :test-result: FAIL EndsWith string matcher
-:test-result: PASS Enums can quickly have stringification enabled using REGISTER_ENUM
-:test-result: PASS Enums in namespaces can quickly have stringification enabled using REGISTER_ENUM
+:test-result: PASS Enums can quickly have stringification enabled using CATCH_REGISTER_ENUM
+:test-result: PASS Enums in namespaces can quickly have stringification enabled using CATCH_REGISTER_ENUM
 :test-result: PASS Epsilon only applies to Approx's value
 :test-result: XFAIL Equality checks that should fail
 :test-result: PASS Equality checks that should succeed

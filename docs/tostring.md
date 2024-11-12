@@ -75,7 +75,7 @@ CATCH_TRANSLATE_EXCEPTION( MyType const& ex ) {
 
 Enums that already have a `<<` overload for `std::ostream` will convert to strings as expected.
 If you only need to convert enums to strings for test reporting purposes you can provide a `StringMaker` specialisations as any other type.
-However, as a convenience, Catch provides the `REGISTER_ENUM` helper macro that will generate the `StringMaker` specialisation for you with minimal code.
+However, as a convenience, Catch provides the `CATCH_REGISTER_ENUM` helper macro that will generate the `StringMaker` specialisation for you with minimal code.
 Simply provide it the (qualified) enum name, followed by all the enum values, and you're done!
 
 E.g.

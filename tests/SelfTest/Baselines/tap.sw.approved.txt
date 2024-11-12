@@ -1004,19 +1004,19 @@ ok {test-number} - Catch::makeStream( "" )->isConsole() for: true
 not ok {test-number} - testStringForMatching(), EndsWith( "Substring" ) for: "this string contains 'abc' as a substring" ends with: "Substring"
 # EndsWith string matcher
 not ok {test-number} - testStringForMatching(), EndsWith( "this", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" ends with: "this" (case insensitive)
-# Enums can quickly have stringification enabled using REGISTER_ENUM
+# Enums can quickly have stringification enabled using CATCH_REGISTER_ENUM
 ok {test-number} - stringify( EnumClass3::Value1 ) == "Value1" for: "Value1" == "Value1"
-# Enums can quickly have stringification enabled using REGISTER_ENUM
+# Enums can quickly have stringification enabled using CATCH_REGISTER_ENUM
 ok {test-number} - stringify( EnumClass3::Value2 ) == "Value2" for: "Value2" == "Value2"
-# Enums can quickly have stringification enabled using REGISTER_ENUM
+# Enums can quickly have stringification enabled using CATCH_REGISTER_ENUM
 ok {test-number} - stringify( EnumClass3::Value3 ) == "Value3" for: "Value3" == "Value3"
-# Enums can quickly have stringification enabled using REGISTER_ENUM
+# Enums can quickly have stringification enabled using CATCH_REGISTER_ENUM
 ok {test-number} - stringify( EnumClass3::Value4 ) == "{** unexpected enum value **}" for: "{** unexpected enum value **}" == "{** unexpected enum value **}"
-# Enums can quickly have stringification enabled using REGISTER_ENUM
+# Enums can quickly have stringification enabled using CATCH_REGISTER_ENUM
 ok {test-number} - stringify( ec3 ) == "Value2" for: "Value2" == "Value2"
-# Enums in namespaces can quickly have stringification enabled using REGISTER_ENUM
+# Enums in namespaces can quickly have stringification enabled using CATCH_REGISTER_ENUM
 ok {test-number} - stringify( Bikeshed::Colours::Red ) == "Red" for: "Red" == "Red"
-# Enums in namespaces can quickly have stringification enabled using REGISTER_ENUM
+# Enums in namespaces can quickly have stringification enabled using CATCH_REGISTER_ENUM
 ok {test-number} - stringify( Bikeshed::Colours::Blue ) == "Blue" for: "Blue" == "Blue"
 # Epsilon only applies to Approx's value
 ok {test-number} - 101.01 != Approx(100).epsilon(0.01) for: 101.01000000000000512 != Approx( 100.0 )
