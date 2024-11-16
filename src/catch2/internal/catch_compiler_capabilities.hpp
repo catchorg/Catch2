@@ -103,8 +103,16 @@
 #    define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
          _Pragma( "clang diagnostic ignored \"-Wunused-variable\"" )
 
-#    define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS \
-         _Pragma( "clang diagnostic ignored \"-Wgnu-zero-variadic-macro-arguments\"" )
+#    if (__clang_major__ >= 20)
+#        define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS \
+             _Pragma( "clang diagnostic ignored \"-Wvariadic-macro-arguments-omitted\"" )
+#    elif (__clang_major__ == 19)
+#        define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS \
+	         _Pragma( "clang diagnostic ignored \"-Wc++20-extensions\"" )
+#    else
+#        define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS
+             _Pragma( "clang diagnostic ignored \"-Wgnu-zero-variadic-macro-arguments\"" )
+#    endif
 
 #    define CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
          _Pragma( "clang diagnostic ignored \"-Wunused-template\"" )
