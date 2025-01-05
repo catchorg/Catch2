@@ -8,6 +8,7 @@
 project(
   'catch2',
   'cpp',
+  default_options: ['default_library=static'],
   version: '3.7.1', # CML version placeholder, don't delete
   license: 'BSL-1.0',
   meson_version: '>=0.54.1',
