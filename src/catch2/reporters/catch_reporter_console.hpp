@@ -38,6 +38,7 @@ namespace Catch {
         void benchmarkEnded(BenchmarkStats<> const& stats) override;
         void benchmarkFailed( StringRef error ) override;
 
+        void testCaseStarting( TestCaseInfo const& testInfo ) override;
         void testCaseEnded(TestCaseStats const& _testCaseStats) override;
         void testRunEnded(TestRunStats const& _testRunStats) override;
         void testRunStarting(TestRunInfo const& _testRunInfo) override;

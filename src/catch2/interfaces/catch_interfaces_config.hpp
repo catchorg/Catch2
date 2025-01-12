@@ -87,6 +87,8 @@ namespace Catch {
         virtual ColourMode defaultColourMode() const = 0;
         virtual std::vector<std::string> const& getSectionsToRun() const = 0;
         virtual Verbosity verbosity() const = 0;
+        virtual bool outputTestCaseNameFirst() const = 0;
+        virtual bool outputTestCaseStats() const = 0;
 
         virtual bool skipBenchmarks() const = 0;
         virtual bool benchmarkNoAnalysis() const = 0;

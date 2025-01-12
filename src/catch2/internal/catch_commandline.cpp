@@ -251,6 +251,12 @@ namespace Catch {
             | Opt( setVerbosity, "quiet|normal|high" )
                 ["-v"]["--verbosity"]
                 ( "set output verbosity" )
+            | Opt( config.outputTestCaseNameFirst)
+                ["--output-test-case-name-first"]
+                ( "test case name will be printed before the test is run" )
+            | Opt( config.outputTestCaseStats)
+                ["--output-test-case-stats"]
+                ( "prints assertion stat data of the test case run" )
             | Opt( config.listTests )
                 ["--list-tests"]
                 ( "list all/matching test cases" )
