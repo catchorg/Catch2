@@ -58,23 +58,9 @@ again.
 This section outlines some missing features, what is their status and their possible workarounds.
 
 ### Thread safe assertions
-Catch2's assertion macros are not thread safe. This does not mean that
-you cannot use threads inside Catch's test, but that only single thread
-can interact with Catch's assertions and other macros.
+Catch2's assertion macros and logging macros are thread safe.
 
-This means that this is ok
-```cpp
-    std::vector<std::thread> threads;
-    std::atomic<int> cnt{ 0 };
-    for (int i = 0; i < 4; ++i) {
-        threads.emplace_back([&]() {
-            ++cnt; ++cnt; ++cnt; ++cnt;
-        });
-    }
-    for (auto& t : threads) { t.join(); }
-    REQUIRE(cnt == 16);
-```
-because only one thread passes the `REQUIRE` macro and this is not
+This is ok however it was previously not ok for Catch2 3.8.0 and earlier:
 ```cpp
     std::vector<std::thread> threads;
     std::atomic<int> cnt{ 0 };
@@ -87,8 +73,6 @@ because only one thread passes the `REQUIRE` macro and this is not
     for (auto& t : threads) { t.join(); }
     REQUIRE(cnt == 16);
 ```
-
-We currently do not plan to support thread-safe assertions.
 
 
 ### Process isolation in a test

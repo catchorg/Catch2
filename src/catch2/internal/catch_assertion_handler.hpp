@@ -34,12 +34,7 @@ namespace Catch {
                 SourceLineInfo const& lineInfo,
                 StringRef capturedExpression,
                 ResultDisposition::Flags resultDisposition );
-        ~AssertionHandler() {
-            if ( !m_completed ) {
-                m_resultCapture.handleIncomplete( m_assertionInfo );
-            }
-        }
-
+        ~AssertionHandler();
 
         template<typename T>
         constexpr void handleExpr( ExprLhs<T> const& expr ) {

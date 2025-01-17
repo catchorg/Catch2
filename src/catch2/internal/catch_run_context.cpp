@@ -21,6 +21,7 @@
 #include <catch2/internal/catch_assertion_handler.hpp>
 #include <catch2/internal/catch_test_failure_exception.hpp>
 #include <catch2/internal/catch_result_type.hpp>
+#include <catch2/internal/catch_global_lock.hpp>
 
 #include <cassert>
 #include <algorithm>
@@ -418,19 +419,25 @@ namespace Catch {
         m_unfinishedSections.push_back(CATCH_MOVE(endInfo));
     }
 
+    // Catch benchmark macros call these functions. Since catch internals are not thread-safe locking is needed.
+
     void RunContext::benchmarkPreparing( StringRef name ) {
+        auto lock = get_global_lock();
         auto _ = scopedDeactivate( *m_outputRedirect );
         m_reporter->benchmarkPreparing( name );
     }
     void RunContext::benchmarkStarting( BenchmarkInfo const& info ) {
+        auto lock = get_global_lock();
         auto _ = scopedDeactivate( *m_outputRedirect );
         m_reporter->benchmarkStarting( info );
     }
     void RunContext::benchmarkEnded( BenchmarkStats<> const& stats ) {
+        auto lock = get_global_lock();
         auto _ = scopedDeactivate( *m_outputRedirect );
         m_reporter->benchmarkEnded( stats );
     }
     void RunContext::benchmarkFailed( StringRef error ) {
+        auto lock = get_global_lock();
         auto _ = scopedDeactivate( *m_outputRedirect );
         m_reporter->benchmarkFailed( error );
     }

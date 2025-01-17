@@ -182,6 +182,7 @@ set(IMPL_SOURCES
   ${SOURCES_DIR}/internal/catch_fatal_condition_handler.cpp
   ${SOURCES_DIR}/internal/catch_floating_point_helpers.cpp
   ${SOURCES_DIR}/internal/catch_getenv.cpp
+  ${SOURCES_DIR}/internal/catch_global_lock.cpp
   ${SOURCES_DIR}/internal/catch_istream.cpp
   ${SOURCES_DIR}/internal/catch_jsonwriter.cpp
   ${SOURCES_DIR}/internal/catch_lazy_expr.cpp

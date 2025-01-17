@@ -429,6 +429,25 @@ set_tests_properties(Reporters::CrashInJunitReporter
     LABELS "uses-signals"
 )
 
+add_executable(Multithreading ${TESTS_DIR}/X37-Multithreading.cpp)
+target_link_libraries(Multithreading PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME Reporters::Multithreading
+  COMMAND ${CMAKE_COMMAND} -E env $<TARGET_FILE:Multithreading>
+)
+set_tests_properties(
+    Reporters::Multithreading
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "passed"
+    FAIL_REGULAR_EXPRESSION "ThreadSanitizer"
+)
+if (NOT WIN32)
+  target_compile_options( Reporters::Multithreading
+    PUBLIC
+      $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:AppleClang>>:-fsanitize=thread>
+  )
+endif()
+
 add_executable(AssertionStartingEventGoesBeforeAssertionIsEvaluated
   X20-AssertionStartingEventGoesBeforeAssertionIsEvaluated.cpp
 )

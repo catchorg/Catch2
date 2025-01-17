@@ -10,9 +10,12 @@
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/internal/catch_debugger.hpp>
 #include <catch2/internal/catch_test_failure_exception.hpp>
+#include <catch2/internal/catch_global_lock.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 
 namespace Catch {
+    // The AssertionHandler API and handleExceptionMatchExpr are used by assertion macros. Everything here must be
+    // locked as catch internals are not thread-safe.
 
     AssertionHandler::AssertionHandler
         (   StringRef macroName,
@@ -22,13 +25,23 @@ namespace Catch {
     :   m_assertionInfo{ macroName, lineInfo, capturedExpression, resultDisposition },
         m_resultCapture( getResultCapture() )
     {
+        auto lock = get_global_lock();
         m_resultCapture.notifyAssertionStarted( m_assertionInfo );
     }
 
+    AssertionHandler::~AssertionHandler() {
+        auto lock = get_global_lock();
+        if ( !m_completed ) {
+            m_resultCapture.handleIncomplete( m_assertionInfo );
+        }
+    }
+
     void AssertionHandler::handleExpr( ITransientExpression const& expr ) {
+        auto lock = get_global_lock();
         m_resultCapture.handleExpr( m_assertionInfo, expr, m_reaction );
     }
     void AssertionHandler::handleMessage(ResultWas::OfType resultType, std::string&& message) {
+        auto lock = get_global_lock();
         m_resultCapture.handleMessage( m_assertionInfo, resultType, CATCH_MOVE(message), m_reaction );
     }
 
@@ -55,21 +68,26 @@ namespace Catch {
     }
 
     void AssertionHandler::handleUnexpectedInflightException() {
+        auto lock = get_global_lock();
         m_resultCapture.handleUnexpectedInflightException( m_assertionInfo, Catch::translateActiveException(), m_reaction );
     }
 
     void AssertionHandler::handleExceptionThrownAsExpected() {
+        auto lock = get_global_lock();
         m_resultCapture.handleNonExpr(m_assertionInfo, ResultWas::Ok, m_reaction);
     }
     void AssertionHandler::handleExceptionNotThrownAsExpected() {
+        auto lock = get_global_lock();
         m_resultCapture.handleNonExpr(m_assertionInfo, ResultWas::Ok, m_reaction);
     }
 
     void AssertionHandler::handleUnexpectedExceptionNotThrown() {
+        auto lock = get_global_lock();
         m_resultCapture.handleUnexpectedExceptionNotThrown( m_assertionInfo, m_reaction );
     }
 
     void AssertionHandler::handleThrowingCallSkipped() {
+        auto lock = get_global_lock();
         m_resultCapture.handleNonExpr(m_assertionInfo, ResultWas::Ok, m_reaction);
     }
 

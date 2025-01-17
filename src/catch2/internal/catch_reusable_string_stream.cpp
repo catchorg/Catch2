@@ -8,6 +8,7 @@
 #include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_singletons.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_global_lock.hpp>
 
 #include <cstdio>
 #include <sstream>
@@ -39,12 +40,18 @@ namespace Catch {
         }
     };
 
-    ReusableStringStream::ReusableStringStream()
-    :   m_index( Singleton<StringStreams>::getMutable().add() ),
-        m_oss( Singleton<StringStreams>::getMutable().m_streams[m_index].get() )
-    {}
+    // Catch message macros create MessageStreams which hold ReusableStringStream. Since catch internals are not
+    // thread-safe locking is needed and it's easiest to lock at the ReusableStringStream construct/destruct level
+    // instead of poking around StringStreams and Singleton.
+
+    ReusableStringStream::ReusableStringStream() {
+        auto lock = get_global_lock();
+        m_index = Singleton<StringStreams>::getMutable().add();
+        m_oss = Singleton<StringStreams>::getMutable().m_streams[m_index].get();
+    }
 
     ReusableStringStream::~ReusableStringStream() {
+        auto lock = get_global_lock();
         static_cast<std::ostringstream*>( m_oss )->str("");
         m_oss->clear();
         Singleton<StringStreams>::getMutable().release( m_index );
