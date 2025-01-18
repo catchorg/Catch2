@@ -6,11 +6,10 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_global_lock.hpp>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 
-#if defined(__clang__)
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wexit-time-destructors"
-#endif
+CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
+CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
 
 namespace Catch {
 
@@ -18,6 +17,4 @@ namespace Catch {
 
 } // namespace Catch
 
-#if defined(__clang__)
-#    pragma clang diagnostic pop
-#endif
+CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
