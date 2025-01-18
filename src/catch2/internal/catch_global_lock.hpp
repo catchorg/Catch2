@@ -13,10 +13,10 @@
 
 namespace Catch {
 
-    extern std::recursive_mutex global_lock;
+    std::recursive_mutex& get_global_lock();
 
-    inline auto get_global_lock() {
-        return std::unique_lock<std::recursive_mutex>(global_lock);
+    inline auto take_global_lock() {
+        return std::unique_lock<std::recursive_mutex>(get_global_lock());
     }
 
 } // namespace Catch

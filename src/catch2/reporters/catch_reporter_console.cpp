@@ -466,7 +466,7 @@ void ConsoleReporter::sectionEnded(SectionStats const& _sectionStats) {
 // Catch benchmark macros call these functions. Since catch internals are not thread-safe locking is needed.
 
 void ConsoleReporter::benchmarkPreparing( StringRef name ) {
-    auto lock = get_global_lock();
+    auto lock = take_global_lock();
 	lazyPrintWithoutClosingBenchmarkTable();
 
 	auto nameCol = TextFlow::Column( static_cast<std::string>( name ) )
@@ -484,7 +484,7 @@ void ConsoleReporter::benchmarkPreparing( StringRef name ) {
 }
 
 void ConsoleReporter::benchmarkStarting(BenchmarkInfo const& info) {
-    auto lock = get_global_lock();
+    auto lock = take_global_lock();
     (*m_tablePrinter) << info.samples << ColumnBreak()
         << info.iterations << ColumnBreak();
     if ( !m_config->benchmarkNoAnalysis() ) {
@@ -494,7 +494,7 @@ void ConsoleReporter::benchmarkStarting(BenchmarkInfo const& info) {
     ( *m_tablePrinter ) << OutputFlush{};
 }
 void ConsoleReporter::benchmarkEnded(BenchmarkStats<> const& stats) {
-    auto lock = get_global_lock();
+    auto lock = take_global_lock();
     if (m_config->benchmarkNoAnalysis())
     {
         (*m_tablePrinter) << Duration(stats.mean.point.count()) << ColumnBreak();
@@ -512,7 +512,7 @@ void ConsoleReporter::benchmarkEnded(BenchmarkStats<> const& stats) {
 }
 
 void ConsoleReporter::benchmarkFailed( StringRef error ) {
-    auto lock = get_global_lock();
+    auto lock = take_global_lock();
     auto guard = m_colour->guardColour( Colour::Red ).engage( m_stream );
     (*m_tablePrinter)
         << "Benchmark failed (" << error << ')'

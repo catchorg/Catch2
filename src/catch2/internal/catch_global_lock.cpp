@@ -13,7 +13,10 @@ CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
 
 namespace Catch {
 
-    std::recursive_mutex global_lock;
+    std::recursive_mutex& get_global_lock() {
+        static std::recursive_mutex global_lock;
+        return global_lock;
+    }
 
 } // namespace Catch
 

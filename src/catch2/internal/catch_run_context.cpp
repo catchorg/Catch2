@@ -422,22 +422,22 @@ namespace Catch {
     // Catch benchmark macros call these functions. Since catch internals are not thread-safe locking is needed.
 
     void RunContext::benchmarkPreparing( StringRef name ) {
-        auto lock = get_global_lock();
+        auto lock = take_global_lock();
         auto _ = scopedDeactivate( *m_outputRedirect );
         m_reporter->benchmarkPreparing( name );
     }
     void RunContext::benchmarkStarting( BenchmarkInfo const& info ) {
-        auto lock = get_global_lock();
+        auto lock = take_global_lock();
         auto _ = scopedDeactivate( *m_outputRedirect );
         m_reporter->benchmarkStarting( info );
     }
     void RunContext::benchmarkEnded( BenchmarkStats<> const& stats ) {
-        auto lock = get_global_lock();
+        auto lock = take_global_lock();
         auto _ = scopedDeactivate( *m_outputRedirect );
         m_reporter->benchmarkEnded( stats );
     }
     void RunContext::benchmarkFailed( StringRef error ) {
-        auto lock = get_global_lock();
+        auto lock = take_global_lock();
         auto _ = scopedDeactivate( *m_outputRedirect );
         m_reporter->benchmarkFailed( error );
     }

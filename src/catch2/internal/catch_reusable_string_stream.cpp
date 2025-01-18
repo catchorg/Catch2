@@ -45,13 +45,13 @@ namespace Catch {
     // instead of poking around StringStreams and Singleton.
 
     ReusableStringStream::ReusableStringStream() {
-        auto lock = get_global_lock();
+        auto lock = take_global_lock();
         m_index = Singleton<StringStreams>::getMutable().add();
         m_oss = Singleton<StringStreams>::getMutable().m_streams[m_index].get();
     }
 
     ReusableStringStream::~ReusableStringStream() {
-        auto lock = get_global_lock();
+        auto lock = take_global_lock();
         static_cast<std::ostringstream*>( m_oss )->str("");
         m_oss->clear();
         Singleton<StringStreams>::getMutable().release( m_index );
