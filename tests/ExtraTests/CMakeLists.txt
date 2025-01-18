@@ -434,11 +434,11 @@ find_package(Threads REQUIRED)
 target_link_libraries(Multithreading PRIVATE Catch2::Catch2WithMain Threads::Threads)
 target_compile_features(Multithreading PRIVATE cxx_std_11)
 add_test(
-  NAME Reporters::Multithreading
+  NAME Multithreading::Multithreading
   COMMAND ${CMAKE_COMMAND} -E env $<TARGET_FILE:Multithreading>
 )
 set_tests_properties(
-    Reporters::Multithreading
+  Multithreading::Multithreading
   PROPERTIES
     PASS_REGULAR_EXPRESSION "passed"
     FAIL_REGULAR_EXPRESSION "ThreadSanitizer"
