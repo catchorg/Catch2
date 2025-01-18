@@ -223,7 +223,7 @@ internal_sources = files(
   'internal/catch_fatal_condition_handler.cpp',
   'internal/catch_floating_point_helpers.cpp',
   'internal/catch_getenv.cpp',
-  'internal/catch_getenv.cpp',
+  'internal/catch_global_lock.cpp',
   'internal/catch_istream.cpp',
   'internal/catch_jsonwriter.cpp',
   'internal/catch_lazy_expr.cpp',
