@@ -430,7 +430,8 @@ set_tests_properties(Reporters::CrashInJunitReporter
 )
 
 add_executable(Multithreading ${TESTS_DIR}/X37-Multithreading.cpp)
-target_link_libraries(Multithreading PRIVATE Catch2::Catch2WithMain)
+find_package(Threads REQUIRED)
+target_link_libraries(Multithreading PRIVATE Catch2::Catch2WithMain Threads::Threads)
 target_compile_features(Multithreading PRIVATE cxx_std_11)
 add_test(
   NAME Reporters::Multithreading
