@@ -69,6 +69,22 @@ jobs:
           #   cmake_configurations: -DMEMORYCHECK_COMMAND=`which valgrind` -DMEMORYCHECK_COMMAND_OPTIONS="-q --track-origins=yes --leak-check=full --num-callers=50 --show-leak-kinds=definite --error-exitcode=1"
           #   other_ctest_args: -T memcheck -LE uses-python
 
+          # Thread sanitizer test gcc-7
+          - cxx: g++-7
+            build_description: Thread sanitizer tests
+            build_type: Debug
+            std: 14
+            other_pkgs: g++-7
+            cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCMAKE_CXX_FLAGS="-fsanitize=thread"
+
+          # Thread sanitizer test clang-10
+          - cxx: clang++-10
+            build_description: Thread sanitizer tests
+            build_type: Debug
+            std: 14
+            other_pkgs: clang-10
+            cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCMAKE_CXX_FLAGS="-fsanitize=thread"
+
 
     steps:
     - uses: actions/checkout@v4

@@ -441,12 +441,6 @@ set_tests_properties(
     PASS_REGULAR_EXPRESSION "passed"
     FAIL_REGULAR_EXPRESSION "ThreadSanitizer"
 )
-if (NOT WIN32)
-  target_compile_options( Reporters::Multithreading
-    PUBLIC
-      $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:AppleClang>>:-fsanitize=thread>
-  )
-endif()
 
 add_executable(AssertionStartingEventGoesBeforeAssertionIsEvaluated
   X20-AssertionStartingEventGoesBeforeAssertionIsEvaluated.cpp
