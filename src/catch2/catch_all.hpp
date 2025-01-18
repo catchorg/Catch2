@@ -73,6 +73,7 @@
 #include <catch2/internal/catch_fatal_condition_handler.hpp>
 #include <catch2/internal/catch_floating_point_helpers.hpp>
 #include <catch2/internal/catch_getenv.hpp>
+#include <catch2/internal/catch_global_lock.hpp>
 #include <catch2/internal/catch_is_permutation.hpp>
 #include <catch2/internal/catch_istream.hpp>
 #include <catch2/internal/catch_jsonwriter.hpp>
