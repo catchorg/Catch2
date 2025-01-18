@@ -15,8 +15,8 @@
 
 TEST_CASE( "ThreadAssertionTest",
            "[Multithreading]" ) {
-    std::atomic_bool should_stop = false;
     SECTION( "Basic" ) {
+        std::atomic_bool should_stop{false};
         std::thread a([&should_stop] () {
             while (!should_stop) {
                 FAIL_CHECK(false);
