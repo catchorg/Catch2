@@ -681,3 +681,43 @@ endforeach()
 
 list(APPEND CATCH_WARNING_TARGETS SelfTest)
 set(CATCH_WARNING_TARGETS ${CATCH_WARNING_TARGETS} PARENT_SCOPE)
+
+if (QNX)
+  #path to tests on target
+  set(tests_path ${CMAKE_INSTALL_BINDIR}/catch2_tests)
+
+  #list of ut test targets
+  set(list_tests_targets
+    Catch2
+    Catch2WithMain
+    SelfTest
+  )
+
+  #install tests and libs
+  install(
+    TARGETS ${list_tests_targets}
+    LIBRARY DESTINATION ${tests_path}/lib
+    RUNTIME DESTINATION ${tests_path}
+  )
+
+  #install tests execution script
+  install(
+    PROGRAMS ${QNX_TEST_SCRIPT} ${QNX_CTEST_MODULE} ${QNX_DECODE_CTEST_MODULE}
+    DESTINATION ${tests_path}
+  )
+
+  #install SelfTest Misc artifacts
+  install(
+    DIRECTORY ${SELF_TEST_DIR}/Misc
+    DESTINATION ${tests_path}
+  )
+
+  #install CTests files
+  install(
+    DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    DESTINATION ${tests_path}
+    FILES_MATCHING PATTERN "CTestTestfile.cmake"
+    PATTERN "CMakeFiles" EXCLUDE
+    PATTERN "surrogates" EXCLUDE
+  )
+endif()

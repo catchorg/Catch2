@@ -110,7 +110,7 @@ foreach(target DisabledExceptions-DefaultHandler DisabledExceptions-CustomHandle
   target_compile_options( ${target}
     PUBLIC
       $<$<CXX_COMPILER_ID:MSVC>:/EHs-c-;/D_HAS_EXCEPTIONS=0>
-      $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:AppleClang>>:-fno-exceptions>
+      $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:QCC>,$<CXX_COMPILER_ID:AppleClang>>:-fno-exceptions>
   )
   target_link_libraries(${target} Catch2_buildall_interface)
 endforeach()
@@ -576,3 +576,46 @@ set_tests_properties(
   PROPERTIES
     PASS_REGULAR_EXPRESSION "All tests passed \\(14 assertions in 3 test cases\\)"
 )
+
+if (QNX)
+  #path to tests on target
+  set(tests_path ${CMAKE_INSTALL_BINDIR}/catch2_tests)
+
+  set(list_tests_targets ${list_tests_targets}
+    ListenerStdoutCaptureInMultireporter
+    AssertionStartingEventGoesBeforeAssertionIsEvaluated
+    PartialTestCaseEvents
+    DuplicatedReporters
+    DuplicatedTestCases-DuplicatedTestCaseMethods
+    ReportingCrashWithJunitReporter
+    DuplicatedTestCases-SameNameDifferentTags
+    CapturedStdoutInTestCaseEvents
+    AllSkipped
+    DisabledExceptions-CustomHandler
+    DisableStringification
+    DuplicatedTestCases-DifferentFixtures
+    DisabledMacros
+    AmalgamatedTestCompilation
+    BazelReporter
+    FallbackStringifier
+    CustomArgumentsForReporters
+    DisabledExceptions-DefaultHandler
+    ListenerCanAskForCapturedStdout
+    BenchmarksInCumulativeReporter
+    DuplicatedTestCases-SameNameAndTags
+    ListenersGetEventsBeforeReporters
+    CasingInReporterNames
+    NoTests
+    ReporterPreferencesForPassingAssertionsIsRespected
+    BazelReporterNoCatchConfig
+    DeferredStaticChecks
+    PrefixedMacros
+  )
+
+  #install tests and libs
+  install(
+    TARGETS ${list_tests_targets}
+    LIBRARY DESTINATION ${tests_path}/lib
+    RUNTIME DESTINATION ${tests_path}
+  )
+endif()

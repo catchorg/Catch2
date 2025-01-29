@@ -38,7 +38,7 @@ namespace Catch {
         #define CATCH_TRAP()  __asm__(".inst 0xde01")
     #endif
 
-#elif defined(CATCH_PLATFORM_LINUX)
+#elif defined(CATCH_PLATFORM_LINUX) || defined(CATCH_PLATFORM_QNX)
     // If we can use inline assembler, do it because this allows us to break
     // directly at the location of the failing check instead of breaking inside
     // raise() called from it, i.e. one stack frame below.

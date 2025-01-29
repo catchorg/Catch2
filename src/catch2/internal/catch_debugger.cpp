@@ -69,7 +69,7 @@
         #endif
     } // namespace Catch
 
-#elif defined(CATCH_PLATFORM_LINUX)
+#elif defined(CATCH_PLATFORM_LINUX) || defined(CATCH_PLATFORM_QNX)
     #include <fstream>
     #include <string>
 
