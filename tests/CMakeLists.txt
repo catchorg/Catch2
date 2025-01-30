@@ -684,7 +684,7 @@ set(CATCH_WARNING_TARGETS ${CATCH_WARNING_TARGETS} PARENT_SCOPE)
 
 if (QNX)
   #path to tests on target
-  set(tests_path ${CMAKE_INSTALL_BINDIR}/catch2_tests)
+  set(tests_path ${CMAKE_INSTALL_BINDIR}/Catch2_tests)
 
   #list of ut test targets
   set(list_tests_targets
