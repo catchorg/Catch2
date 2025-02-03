@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   build:
     # Set the type of machine to run on
-    runs-on: ubuntu-20.04
+    runs-on: [ubuntu-22.04, ubuntu-22.04-arm]
     steps:
 
       - name: Checkout source code

@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        os: [windows-2019, windows-2022]
+        os: [windows-2019, windows-2022, windows-2025]
         platform: [Win32, x64]
         build_type: [Debug, Release]
         std: [14, 17]

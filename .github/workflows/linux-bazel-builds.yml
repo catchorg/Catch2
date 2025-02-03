@@ -3,22 +3,23 @@ name: Bazel build
 on: [push, pull_request]
 
 jobs:
-  build_and_test_ubuntu:
-    name: Linux Ubuntu 22.04 Bazel build <GCC 11.2.0>
-    runs-on: ubuntu-22.04
+  build_and_test:
+    name: Linux Ubuntu Bazel build <GCC 11.2.0>
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        os: [ubuntu-22.04, ubuntu-22.04-arm]
         compilation_mode: [fastbuild, dbg, opt]
-
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Mount bazel cache
-      uses: actions/cache@v3
-      with:
-        path: "/home/runner/.cache/bazel"
-        key: bazel-ubuntu22-gcc11
+      - name: Mount bazel cache
+        uses: actions/cache@v4
+        with:
+          path: "/home/runner/.cache/bazel"
+          # Use the OS name in the cache key to separate caches per platform.
+          key: bazel-${{ matrix.os }}-gcc11
 
-    - name: Build Catch2
-      run: |
-        bazelisk build --compilation_mode=${{matrix.compilation_mode}} //...
+      - name: Build Catch2
+        run: |
+          bazelisk build --compilation_mode=${{ matrix.compilation_mode }} //...

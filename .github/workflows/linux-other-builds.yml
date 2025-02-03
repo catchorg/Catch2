@@ -8,9 +8,10 @@ on: [push, pull_request]
 jobs:
   build:
     name: ${{matrix.build_description}}, ${{matrix.cxx}}, C++${{matrix.std}} ${{matrix.build_type}}
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        os: [ ubuntu-22.04, ubuntu-22.04-arm ]
         # We add builds one by one in this case, because there are no
         # dimensions that are shared across the builds
         include:
@@ -105,9 +106,10 @@ jobs:
       run: ctest -C ${{matrix.build_type}} -j `nproc` ${{matrix.other_ctest_args}}
   clang-tidy:
     name: clang-tidy ${{matrix.version}}, ${{matrix.build_description}}, C++${{matrix.std}} ${{matrix.build_type}}
-    runs-on: ubuntu-22.04
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        os: [ ubuntu-22.04, ubuntu-22.04-arm ]
         include:
           - version: "15"
             build_description: all
