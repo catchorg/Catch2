@@ -3509,7 +3509,7 @@ namespace {
 #endif // Windows/ ANSI/ None
 
 
-#if defined( CATCH_PLATFORM_LINUX ) || defined( CATCH_PLATFORM_MAC ) || defined( CATCH_PLATFORM_QNX )
+#if defined( CATCH_PLATFORM_LINUX ) || defined( CATCH_PLATFORM_MAC )
 #    define CATCH_INTERNAL_HAS_ISATTY
 #    include <unistd.h>
 #endif
@@ -3757,7 +3757,7 @@ namespace Catch {
         #endif
     } // namespace Catch
 
-#elif defined(CATCH_PLATFORM_LINUX) || defined( CATCH_PLATFORM_QNX )
+#elif defined(CATCH_PLATFORM_LINUX)
     #include <fstream>
     #include <string>
 
