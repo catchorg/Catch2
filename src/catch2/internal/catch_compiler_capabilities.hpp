@@ -62,7 +62,7 @@
 #    define CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS \
          _Pragma( "GCC diagnostic ignored \"-Wshadow\"" )
 
-#    define CATCH_INTERNAL_IGNORE_BUT_WARN(...) (void)__builtin_constant_p(__VA_ARGS__)
+#    define CATCH_INTERNAL_CONFIG_USE_BUILTIN_CONSTANT_P
 
 #endif
 
@@ -86,34 +86,12 @@
 // clang-cl defines _MSC_VER as well as __clang__, which could cause the
 // start/stop internal suppression macros to be double defined.
 #if defined(__clang__) && !defined(_MSC_VER)
-
+#    define CATCH_INTERNAL_CONFIG_USE_BUILTIN_CONSTANT_P
 #    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "clang diagnostic push" )
 #    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "clang diagnostic pop" )
-
 #endif // __clang__ && !_MSC_VER
 
 #if defined(__clang__)
-
-// As of this writing, IBM XL's implementation of __builtin_constant_p has a bug
-// which results in calls to destructors being emitted for each temporary,
-// without a matching initialization. In practice, this can result in something
-// like `std::string::~string` being called on an uninitialized value.
-//
-// For example, this code will likely segfault under IBM XL:
-// ```
-// REQUIRE(std::string("12") + "34" == "1234")
-// ```
-//
-// Similarly, NVHPC's implementation of `__builtin_constant_p` has a bug which
-// results in calls to the immediately evaluated lambda expressions to be
-// reported as unevaluated lambdas.
-// https://developer.nvidia.com/nvidia_bug/3321845.
-//
-// Therefore, `CATCH_INTERNAL_IGNORE_BUT_WARN` is not implemented.
-#  if !defined(__ibmxl__) && !defined(__CUDACC__) && !defined( __NVCOMPILER )
-#    define CATCH_INTERNAL_IGNORE_BUT_WARN(...) (void)__builtin_constant_p(__VA_ARGS__) /* NOLINT(cppcoreguidelines-pro-type-vararg, hicpp-vararg) */
-#  endif
-
 
 #    define CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
          _Pragma( "clang diagnostic ignored \"-Wexit-time-destructors\"" ) \
@@ -138,6 +116,27 @@
         _Pragma( "clang diagnostic ignored \"-Wshadow\"" )
 
 #endif // __clang__
+
+// As of this writing, IBM XL's implementation of __builtin_constant_p has a bug
+// which results in calls to destructors being emitted for each temporary,
+// without a matching initialization. In practice, this can result in something
+// like `std::string::~string` being called on an uninitialized value.
+//
+// For example, this code will likely segfault under IBM XL:
+// ```
+// REQUIRE(std::string("12") + "34" == "1234")
+// ```
+//
+// Similarly, NVHPC's implementation of `__builtin_constant_p` has a bug which
+// results in calls to the immediately evaluated lambda expressions to be
+// reported as unevaluated lambdas.
+// https://developer.nvidia.com/nvidia_bug/3321845.
+//
+// Therefore, `CATCH_INTERNAL_IGNORE_BUT_WARN` is not implemented.
+#if defined( __ibmxl__ ) || defined( __CUDACC__ ) || defined( __NVCOMPILER )
+#    define CATCH_INTERNAL_CONFIG_NO_USE_BUILTIN_CONSTANT_P
+#endif
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -362,6 +361,22 @@
 #endif
 
 
+// The goal of this macro is to avoid evaluation of the arguments, but
+// still have the compiler warn on problems inside...
+#if defined( CATCH_INTERNAL_CONFIG_USE_BUILTIN_CONSTANT_P ) && \
+    !defined( CATCH_INTERNAL_CONFIG_NO_USE_BUILTIN_CONSTANT_P ) && !defined(CATCH_CONFIG_USE_BUILTIN_CONSTANT_P)
+#define CATCH_CONFIG_USE_BUILTIN_CONSTANT_P
+#endif
+
+#if defined( CATCH_CONFIG_USE_BUILTIN_CONSTANT_P ) && \
+    !defined( CATCH_CONFIG_NO_USE_BUILTIN_CONSTANT_P )
+#    define CATCH_INTERNAL_IGNORE_BUT_WARN( ... )                                              \
+        (void)__builtin_constant_p( __VA_ARGS__ ) /* NOLINT(cppcoreguidelines-pro-type-vararg, \
+                                                     hicpp-vararg) */
+#else
+#    define CATCH_INTERNAL_IGNORE_BUT_WARN( ... )
+#endif
+
 // Even if we do not think the compiler has that warning, we still have
 // to provide a macro that can be used by the code.
 #if !defined(CATCH_INTERNAL_START_WARNINGS_SUPPRESSION)
@@ -396,13 +411,6 @@
 #endif
 #if !defined( CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS )
 #    define CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS
-#endif
-
-
-// The goal of this macro is to avoid evaluation of the arguments, but
-// still have the compiler warn on problems inside...
-#if !defined(CATCH_INTERNAL_IGNORE_BUT_WARN)
-#   define CATCH_INTERNAL_IGNORE_BUT_WARN(...)
 #endif
 
 #if defined(__APPLE__) && defined(__apple_build_version__) && (__clang_major__ < 10)

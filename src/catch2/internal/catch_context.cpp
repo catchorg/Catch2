@@ -27,12 +27,6 @@ namespace Catch {
         return *Context::currentContext;
     }
 
-    void Context::setResultCapture( IResultCapture* resultCapture ) {
-        m_resultCapture = resultCapture;
-    }
-
-    void Context::setConfig( IConfig const* config ) { m_config = config; }
-
     SimplePcg32& sharedRng() {
         static SimplePcg32 s_rng;
         return s_rng;

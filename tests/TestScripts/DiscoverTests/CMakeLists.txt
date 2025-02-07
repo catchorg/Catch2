@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.16)
 
 project(discover-tests-test
   LANGUAGES CXX
@@ -19,4 +19,11 @@ if (CMAKE_VERSION GREATER_EQUAL 3.27)
             DL_PATHS "${CMAKE_CURRENT_LIST_DIR};${CMAKE_CURRENT_LIST_DIR}/.."
     )
 endif ()
-catch_discover_tests(tests ${extra_args})
+catch_discover_tests(
+  tests
+  ADD_TAGS_AS_LABELS
+  DISCOVERY_MODE PRE_TEST
+  ${extra_args}
+)
+
+# DISCOVERY_MODE <POST_BUILD|PRE_TEST>

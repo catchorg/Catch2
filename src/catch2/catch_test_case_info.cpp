@@ -22,26 +22,26 @@ namespace Catch {
         static_assert(sizeof(TestCaseProperties) == sizeof(TCP_underlying_type),
                       "The size of the TestCaseProperties is different from the assumed size");
 
-        TestCaseProperties operator|(TestCaseProperties lhs, TestCaseProperties rhs) {
+        constexpr TestCaseProperties operator|(TestCaseProperties lhs, TestCaseProperties rhs) {
             return static_cast<TestCaseProperties>(
                 static_cast<TCP_underlying_type>(lhs) | static_cast<TCP_underlying_type>(rhs)
             );
         }
 
-        TestCaseProperties& operator|=(TestCaseProperties& lhs, TestCaseProperties rhs) {
+        constexpr TestCaseProperties& operator|=(TestCaseProperties& lhs, TestCaseProperties rhs) {
             lhs = static_cast<TestCaseProperties>(
                 static_cast<TCP_underlying_type>(lhs) | static_cast<TCP_underlying_type>(rhs)
             );
             return lhs;
         }
 
-        TestCaseProperties operator&(TestCaseProperties lhs, TestCaseProperties rhs) {
+        constexpr TestCaseProperties operator&(TestCaseProperties lhs, TestCaseProperties rhs) {
             return static_cast<TestCaseProperties>(
                 static_cast<TCP_underlying_type>(lhs) & static_cast<TCP_underlying_type>(rhs)
             );
         }
 
-        bool applies(TestCaseProperties tcp) {
+        constexpr bool applies(TestCaseProperties tcp) {
             static_assert(static_cast<TCP_underlying_type>(TestCaseProperties::None) == 0,
                           "TestCaseProperties::None must be equal to 0");
             return tcp != TestCaseProperties::None;
@@ -80,7 +80,7 @@ namespace Catch {
             return "Anonymous test case " + std::to_string(++counter);
         }
 
-        StringRef extractFilenamePart(StringRef filename) {
+        constexpr StringRef extractFilenamePart(StringRef filename) {
             size_t lastDot = filename.size();
             while (lastDot > 0 && filename[lastDot - 1] != '.') {
                 --lastDot;
@@ -98,7 +98,7 @@ namespace Catch {
         }
 
         // Returns the upper bound on size of extra tags ([#file]+[.])
-        size_t sizeOfExtraTags(StringRef filepath) {
+        constexpr size_t sizeOfExtraTags(StringRef filepath) {
             // [.] is 3, [#] is another 3
             const size_t extras = 3 + 3;
             return extractFilenamePart(filepath).size() + extras;
@@ -257,10 +257,6 @@ namespace Catch {
             return cmpClassName < 0;
         }
         return lhs.tags < rhs.tags;
-    }
-
-    TestCaseInfo const& TestCaseHandle::getTestCaseInfo() const {
-        return *m_info;
     }
 
 } // end namespace Catch

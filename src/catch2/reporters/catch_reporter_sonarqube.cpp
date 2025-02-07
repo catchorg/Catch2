@@ -73,9 +73,9 @@ namespace Catch {
         if (!rootName.empty())
             name = rootName + '/' + name;
 
-        if ( sectionNode.hasAnyAssertions()
+        if ( sectionNode.stats.assertions.total() > 0
             || !sectionNode.stdOut.empty()
-            ||  !sectionNode.stdErr.empty() ) {
+            || !sectionNode.stdErr.empty() ) {
             XmlWriter::ScopedElement e = xml.scopedElement("testCase");
             xml.writeAttribute("name"_sr, name);
             xml.writeAttribute("duration"_sr, static_cast<long>(sectionNode.stats.durationInSeconds * 1000));

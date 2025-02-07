@@ -8,9 +8,9 @@
 #ifndef CATCH_MATCHERS_STRING_HPP_INCLUDED
 #define CATCH_MATCHERS_STRING_HPP_INCLUDED
 
-#include <catch2/matchers/catch_matchers.hpp>
-#include <catch2/internal/catch_case_sensitive.hpp>
 #include <catch2/internal/catch_stringref.hpp>
+#include <catch2/matchers/catch_matchers.hpp>
+#include <catch2/catch_case_sensitive.hpp>
 
 #include <string>
 

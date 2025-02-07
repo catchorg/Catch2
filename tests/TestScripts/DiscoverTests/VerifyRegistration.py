@@ -12,6 +12,10 @@ import subprocess
 import sys
 import re
 import json
+from collections import namedtuple
+from typing import List
+
+TestInfo = namedtuple('TestInfo', ['name', 'tags'])
 
 cmake_version_regex = re.compile('cmake version (\d+)\.(\d+)\.(\d+)')
 
@@ -61,7 +65,7 @@ def build_project(sources_dir, output_base_path, catch2_path):
 
 
 
-def get_test_names(build_path):
+def get_test_names(build_path: str) -> List[TestInfo]:
     # For now we assume that Windows builds are done using MSBuild under
     # Debug configuration. This means that we need to add "Debug" folder
     # to the path when constructing it. On Linux, we don't add anything.
@@ -69,15 +73,23 @@ def get_test_names(build_path):
     full_path = os.path.join(build_path, config_path, 'tests')
 
 
-    cmd = [full_path, '--reporter', 'xml', '--list-tests']
+    cmd = [full_path, '--reporter', 'json', '--list-tests']
     result = subprocess.run(cmd,
                             capture_output = True,
                             check = True,
                             text = True)
 
-    import xml.etree.ElementTree as ET
-    root = ET.fromstring(result.stdout)
-    return [tc.text for tc in root.findall('TestCase/Name')]
+    test_listing = json.loads(result.stdout)
+
+    assert test_listing['version'] == 1
+
+    tests = []
+    for test in test_listing['listings']['tests']:
+        test_name = test['name']
+        tags = test['tags']
+        tests.append(TestInfo(test_name, tags))
+
+    return tests
 
 def get_ctest_listing(build_path):
     old_path = os.getcwd()
@@ -91,20 +103,25 @@ def get_ctest_listing(build_path):
     os.chdir(old_path)
     return result.stdout
 
-def extract_tests_from_ctest(ctest_output):
+def extract_tests_from_ctest(ctest_output) -> List[TestInfo]:
     ctest_response = json.loads(ctest_output)
     tests = ctest_response['tests']
-    test_names = []
+    test_infos = []
     for test in tests:
         test_command = test['command']
         # First part of the command is the binary, second is the filter.
         # If there are less, registration has failed. If there are more,
         # registration has changed and the script needs updating.
         assert len(test_command) == 2
-        test_names.append(test_command[1])
         test_name = test_command[1]
+        labels = []
+        for prop in test['properties']:
+            if prop['name'] == 'LABELS':
+                labels = prop['value']
 
-    return test_names
+        test_infos.append(TestInfo(test_name, labels))
+
+    return test_infos
 
 def check_DL_PATHS(ctest_output):
     ctest_response = json.loads(ctest_output)
@@ -115,10 +132,14 @@ def check_DL_PATHS(ctest_output):
             if property['name'] == 'ENVIRONMENT_MODIFICATION':
                 assert len(property['value']) == 2, f"The test provides 2 arguments to DL_PATHS, but instead found {len(property['value'])}"
 
-def escape_catch2_test_name(name):
-    for char in ('\\', ',', '[', ']'):
-        name = name.replace(char, f"\\{char}")
-    return name
+def escape_catch2_test_names(infos: List[TestInfo]):
+    escaped = []
+    for info in infos:
+      name = info.name
+      for char in ('\\', ',', '[', ']'):
+          name = name.replace(char, f"\\{char}")
+      escaped.append(TestInfo(name, info.tags))
+    return escaped
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
@@ -130,7 +151,7 @@ if __name__ == '__main__':
 
     build_path = build_project(sources_dir, output_base_path, catch2_path)
 
-    catch_test_names = [escape_catch2_test_name(name) for name in get_test_names(build_path)]
+    catch_test_names = escape_catch2_test_names(get_test_names(build_path))
     ctest_output = get_ctest_listing(build_path)
     ctest_test_names = extract_tests_from_ctest(ctest_output)
 
@@ -147,6 +168,7 @@ if __name__ == '__main__':
     if mismatched:
         print(f"Found {mismatched} mismatched tests catch test names and ctest test commands!")
         exit(1)
+    print(f"{len(catch_test_names)} tests matched")
 
     cmake_version = get_cmake_version()
     if cmake_version >= (3, 27):

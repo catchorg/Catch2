@@ -26,6 +26,7 @@
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_assertion_info.hpp>
 #include <catch2/catch_assertion_result.hpp>
+#include <catch2/catch_case_sensitive.hpp>
 #include <catch2/catch_config.hpp>
 #include <catch2/catch_get_random_seed.hpp>
 #include <catch2/catch_message.hpp>
@@ -47,7 +48,6 @@
 #include <catch2/interfaces/catch_interfaces_all.hpp>
 #include <catch2/internal/catch_assertion_handler.hpp>
 #include <catch2/internal/catch_case_insensitive_comparisons.hpp>
-#include <catch2/internal/catch_case_sensitive.hpp>
 #include <catch2/internal/catch_clara.hpp>
 #include <catch2/internal/catch_commandline.hpp>
 #include <catch2/internal/catch_compare_traits.hpp>

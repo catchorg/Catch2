@@ -6,8 +6,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.6.0
-//  Generated: 2024-05-05 20:53:27.562886
+//  Catch v3.8.0
+//  Generated: 2025-01-06 00:39:54.679994
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -128,7 +128,13 @@ namespace Catch {
 namespace Catch {
     namespace Benchmark {
         namespace Detail {
+            struct do_nothing {
+                void operator()() const {}
+            };
+
             BenchmarkFunction::callable::~callable() = default;
+            BenchmarkFunction::BenchmarkFunction():
+                f( new model<do_nothing>{ {} } ){}
         } // namespace Detail
     } // namespace Benchmark
 } // namespace Catch
@@ -326,7 +332,7 @@ namespace Catch {
                                              double diff = b - m;
                                              return a + diff * diff;
                                          } ) /
-                        ( last - first );
+                        static_cast<double>( last - first );
                     return std::sqrt( variance );
                 }
 
@@ -361,7 +367,7 @@ namespace Catch {
                                               double* first,
                                               double* last ) {
                 auto count = last - first;
-                double idx = (count - 1) * k / static_cast<double>(q);
+                double idx = static_cast<double>((count - 1) * k) / static_cast<double>(q);
                 int j = static_cast<int>(idx);
                 double g = idx - j;
                 std::nth_element(first, first + j, last);
@@ -464,10 +470,10 @@ namespace Catch {
 
                 double accel = sum_cubes / ( 6 * std::pow( sum_squares, 1.5 ) );
                 long n = static_cast<long>( resample.size() );
-                double prob_n =
+                double prob_n = static_cast<double>(
                     std::count_if( resample.begin(),
                                    resample.end(),
-                                   [point]( double x ) { return x < point; } ) /
+                                   [point]( double x ) { return x < point; } )) /
                     static_cast<double>( n );
                 // degenerate case with uniform samples
                 if ( Catch::Detail::directCompare( prob_n, 0. ) ) {
@@ -621,7 +627,7 @@ std::string StringMaker<Catch::Approx>::convert(Catch::Approx const& value) {
 
 namespace Catch {
 
-    AssertionResultData::AssertionResultData(ResultWas::OfType _resultType, LazyExpression const & _lazyExpression):
+    AssertionResultData::AssertionResultData(ResultWas::OfType _resultType, LazyExpression const& _lazyExpression):
         lazyExpression(_lazyExpression),
         resultType(_resultType) {}
 
@@ -1040,6 +1046,7 @@ namespace Catch {
                     m_messages.back().message += " := ";
                     start = pos;
                 }
+                break;
             default:; // noop
             }
         }
@@ -1163,7 +1170,13 @@ namespace Catch {
 namespace Catch {
 
     namespace {
-        const int MaxExitCode = 255;
+        static constexpr int TestFailureExitCode = 42;
+        static constexpr int UnspecifiedErrorExitCode = 1;
+        static constexpr int AllTestsSkippedExitCode = 4;
+        static constexpr int NoTestsRunExitCode = 2;
+        static constexpr int UnmatchedTestSpecExitCode = 3;
+        static constexpr int InvalidTestSpecExitCode = 5;
+
 
         IEventListenerPtr createReporter(std::string const& reporterName, ReporterConfig&& config) {
             auto reporter = Catch::getRegistryHub().getReporterRegistry().create(reporterName, CATCH_MOVE(config));
@@ -1327,8 +1340,7 @@ namespace Catch {
     }
 
     int Session::applyCommandLine( int argc, char const * const * argv ) {
-        if( m_startupExceptions )
-            return 1;
+        if ( m_startupExceptions ) { return UnspecifiedErrorExitCode; }
 
         auto result = m_cli.parse( Clara::Args( argc, argv ) );
 
@@ -1344,7 +1356,7 @@ namespace Catch {
                 << TextFlow::Column( result.errorMessage() ).indent( 2 )
                 << "\n\n";
             errStream->stream() << "Run with -? for usage\n\n" << std::flush;
-            return MaxExitCode;
+            return UnspecifiedErrorExitCode;
         }
 
         if( m_configData.showHelp )
@@ -1414,8 +1426,7 @@ namespace Catch {
     }
 
     int Session::runInternal() {
-        if( m_startupExceptions )
-            return 1;
+        if ( m_startupExceptions ) { return UnspecifiedErrorExitCode; }
 
         if (m_configData.showHelp || m_configData.libIdentify) {
             return 0;
@@ -1426,7 +1437,7 @@ namespace Catch {
                           << ") must be greater than the shard index ("
                           << m_configData.shardIndex << ")\n"
                           << std::flush;
-            return 1;
+            return UnspecifiedErrorExitCode;
         }
 
         CATCH_TRY {
@@ -1449,7 +1460,7 @@ namespace Catch {
                 for ( auto const& spec : invalidSpecs ) {
                     reporter->reportInvalidTestSpec( spec );
                 }
-                return 1;
+                return InvalidTestSpecExitCode;
             }
 
 
@@ -1463,29 +1474,29 @@ namespace Catch {
 
             if ( tests.hadUnmatchedTestSpecs()
                 && m_config->warnAboutUnmatchedTestSpecs() ) {
-                return 3;
+                // UnmatchedTestSpecExitCode
+                return UnmatchedTestSpecExitCode;
             }
 
             if ( totals.testCases.total() == 0
                 && !m_config->zeroTestsCountAsSuccess() ) {
-                return 2;
+                return NoTestsRunExitCode;
             }
 
             if ( totals.testCases.total() > 0 &&
                  totals.testCases.total() == totals.testCases.skipped
                 && !m_config->zeroTestsCountAsSuccess() ) {
-                return 4;
+                return AllTestsSkippedExitCode;
             }
 
-            // Note that on unices only the lower 8 bits are usually used, clamping
-            // the return value to 255 prevents false negative when some multiple
-            // of 256 tests has failed
-            return (std::min) (MaxExitCode, static_cast<int>(totals.assertions.failed));
+            if ( totals.assertions.failed ) { return TestFailureExitCode; }
+            return 0;
+
         }
 #if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
         catch( std::exception& ex ) {
             Catch::cerr() << ex.what() << '\n' << std::flush;
-            return MaxExitCode;
+            return UnspecifiedErrorExitCode;
         }
 #endif
     }
@@ -1521,26 +1532,26 @@ namespace Catch {
         static_assert(sizeof(TestCaseProperties) == sizeof(TCP_underlying_type),
                       "The size of the TestCaseProperties is different from the assumed size");
 
-        TestCaseProperties operator|(TestCaseProperties lhs, TestCaseProperties rhs) {
+        constexpr TestCaseProperties operator|(TestCaseProperties lhs, TestCaseProperties rhs) {
             return static_cast<TestCaseProperties>(
                 static_cast<TCP_underlying_type>(lhs) | static_cast<TCP_underlying_type>(rhs)
             );
         }
 
-        TestCaseProperties& operator|=(TestCaseProperties& lhs, TestCaseProperties rhs) {
+        constexpr TestCaseProperties& operator|=(TestCaseProperties& lhs, TestCaseProperties rhs) {
             lhs = static_cast<TestCaseProperties>(
                 static_cast<TCP_underlying_type>(lhs) | static_cast<TCP_underlying_type>(rhs)
             );
             return lhs;
         }
 
-        TestCaseProperties operator&(TestCaseProperties lhs, TestCaseProperties rhs) {
+        constexpr TestCaseProperties operator&(TestCaseProperties lhs, TestCaseProperties rhs) {
             return static_cast<TestCaseProperties>(
                 static_cast<TCP_underlying_type>(lhs) & static_cast<TCP_underlying_type>(rhs)
             );
         }
 
-        bool applies(TestCaseProperties tcp) {
+        constexpr bool applies(TestCaseProperties tcp) {
             static_assert(static_cast<TCP_underlying_type>(TestCaseProperties::None) == 0,
                           "TestCaseProperties::None must be equal to 0");
             return tcp != TestCaseProperties::None;
@@ -1579,7 +1590,7 @@ namespace Catch {
             return "Anonymous test case " + std::to_string(++counter);
         }
 
-        StringRef extractFilenamePart(StringRef filename) {
+        constexpr StringRef extractFilenamePart(StringRef filename) {
             size_t lastDot = filename.size();
             while (lastDot > 0 && filename[lastDot - 1] != '.') {
                 --lastDot;
@@ -1597,7 +1608,7 @@ namespace Catch {
         }
 
         // Returns the upper bound on size of extra tags ([#file]+[.])
-        size_t sizeOfExtraTags(StringRef filepath) {
+        constexpr size_t sizeOfExtraTags(StringRef filepath) {
             // [.] is 3, [#] is another 3
             const size_t extras = 3 + 3;
             return extractFilenamePart(filepath).size() + extras;
@@ -1758,10 +1769,6 @@ namespace Catch {
         return lhs.tags < rhs.tags;
     }
 
-    TestCaseInfo const& TestCaseHandle::getTestCaseInfo() const {
-        return *m_info;
-    }
-
 } // end namespace Catch
 
 
@@ -1902,7 +1909,7 @@ namespace Catch {
 
     namespace {
         static auto getCurrentNanosecondsSinceEpoch() -> uint64_t {
-            return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+            return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
         }
     } // end unnamed namespace
 
@@ -1919,7 +1926,7 @@ namespace Catch {
         return static_cast<unsigned int>(getElapsedMicroseconds()/1000);
     }
     auto Timer::getElapsedSeconds() const -> double {
-        return getElapsedMicroseconds()/1000000.0;
+        return static_cast<double>(getElapsedMicroseconds())/1000000.0;
     }
 
 
@@ -1939,7 +1946,10 @@ namespace Detail {
         const int hexThreshold = 255;
 
         struct Endianness {
-            enum Arch { Big, Little };
+            enum Arch : uint8_t {
+                Big,
+                Little
+            };
 
             static Arch which() {
                 int one = 1;
@@ -2273,7 +2283,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 3, 6, 0, "", 0 );
+        static Version version( 3, 8, 0, "", 0 );
         return version;
     }
 
@@ -2529,8 +2539,8 @@ namespace Catch {
     void AssertionHandler::handleExpr( ITransientExpression const& expr ) {
         m_resultCapture.handleExpr( m_assertionInfo, expr, m_reaction );
     }
-    void AssertionHandler::handleMessage(ResultWas::OfType resultType, StringRef message) {
-        m_resultCapture.handleMessage( m_assertionInfo, resultType, message, m_reaction );
+    void AssertionHandler::handleMessage(ResultWas::OfType resultType, std::string&& message) {
+        m_resultCapture.handleMessage( m_assertionInfo, resultType, CATCH_MOVE(message), m_reaction );
     }
 
     auto AssertionHandler::allowThrows() const -> bool {
@@ -2676,7 +2686,7 @@ namespace Catch {
                                 { TokenType::Argument,
                                   next.substr( delimiterPos + 1, next.size() ) } );
                         } else {
-                            if ( next[1] != '-' && next.size() > 2 ) {
+                            if ( next.size() > 1 && next[1] != '-' && next.size() > 2 ) {
                                 // Combined short args, e.g. "-ab" for "-a -b"
                                 for ( size_t i = 1; i < next.size(); ++i ) {
                                     m_tokenBuffer.push_back(
@@ -3509,7 +3519,7 @@ namespace {
 #endif // Windows/ ANSI/ None
 
 
-#if defined( CATCH_PLATFORM_LINUX ) || defined( CATCH_PLATFORM_MAC )
+#if defined( CATCH_PLATFORM_LINUX ) || defined( CATCH_PLATFORM_MAC ) || defined( __GLIBC__ )
 #    define CATCH_INTERNAL_HAS_ISATTY
 #    include <unistd.h>
 #endif
@@ -3648,12 +3658,6 @@ namespace Catch {
         // NOLINTNEXTLINE(clang-analyzer-core.uninitialized.UndefReturn)
         return *Context::currentContext;
     }
-
-    void Context::setResultCapture( IResultCapture* resultCapture ) {
-        m_resultCapture = resultCapture;
-    }
-
-    void Context::setConfig( IConfig const* config ) { m_config = config; }
 
     SimplePcg32& sharedRng() {
         static SimplePcg32 s_rng;
@@ -4808,138 +4812,328 @@ namespace Catch {
 
 #include <cstdio>
 #include <cstring>
+#include <iosfwd>
 #include <sstream>
 
-#if defined(CATCH_CONFIG_NEW_CAPTURE)
-    #if defined(_MSC_VER)
-    #include <io.h>      //_dup and _dup2
-    #define dup _dup
-    #define dup2 _dup2
-    #define fileno _fileno
-    #else
-    #include <unistd.h>  // dup and dup2
-    #endif
+#if defined( CATCH_CONFIG_NEW_CAPTURE )
+#    if defined( _MSC_VER )
+#        include <io.h> //_dup and _dup2
+#        define dup _dup
+#        define dup2 _dup2
+#        define fileno _fileno
+#    else
+#        include <unistd.h> // dup and dup2
+#    endif
 #endif
-
 
 namespace Catch {
 
-    RedirectedStream::RedirectedStream( std::ostream& originalStream, std::ostream& redirectionStream )
-    :   m_originalStream( originalStream ),
-        m_redirectionStream( redirectionStream ),
-        m_prevBuf( m_originalStream.rdbuf() )
-    {
-        m_originalStream.rdbuf( m_redirectionStream.rdbuf() );
-    }
+    namespace {
+        //! A no-op implementation, used if no reporter wants output
+        //! redirection.
+        class NoopRedirect : public OutputRedirect {
+            void activateImpl() override {}
+            void deactivateImpl() override {}
+            std::string getStdout() override { return {}; }
+            std::string getStderr() override { return {}; }
+            void clearBuffers() override {}
+        };
 
-    RedirectedStream::~RedirectedStream() {
-        m_originalStream.rdbuf( m_prevBuf );
-    }
+        /**
+         * Redirects specific stream's rdbuf with another's.
+         *
+         * Redirection can be stopped and started on-demand, assumes
+         * that the underlying stream's rdbuf aren't changed by other
+         * users.
+         */
+        class RedirectedStreamNew {
+            std::ostream& m_originalStream;
+            std::ostream& m_redirectionStream;
+            std::streambuf* m_prevBuf;
 
-    RedirectedStdOut::RedirectedStdOut() : m_cout( Catch::cout(), m_rss.get() ) {}
-    auto RedirectedStdOut::str() const -> std::string { return m_rss.str(); }
+        public:
+            RedirectedStreamNew( std::ostream& originalStream,
+                                 std::ostream& redirectionStream ):
+                m_originalStream( originalStream ),
+                m_redirectionStream( redirectionStream ),
+                m_prevBuf( m_originalStream.rdbuf() ) {}
 
-    RedirectedStdErr::RedirectedStdErr()
-    :   m_cerr( Catch::cerr(), m_rss.get() ),
-        m_clog( Catch::clog(), m_rss.get() )
-    {}
-    auto RedirectedStdErr::str() const -> std::string { return m_rss.str(); }
-
-    RedirectedStreams::RedirectedStreams(std::string& redirectedCout, std::string& redirectedCerr)
-    :   m_redirectedCout(redirectedCout),
-        m_redirectedCerr(redirectedCerr)
-    {}
-
-    RedirectedStreams::~RedirectedStreams() {
-        m_redirectedCout += m_redirectedStdOut.str();
-        m_redirectedCerr += m_redirectedStdErr.str();
-    }
-
-#if defined(CATCH_CONFIG_NEW_CAPTURE)
-
-#if defined(_MSC_VER)
-    TempFile::TempFile() {
-        if (tmpnam_s(m_buffer)) {
-            CATCH_RUNTIME_ERROR("Could not get a temp filename");
-        }
-        if (fopen_s(&m_file, m_buffer, "w+")) {
-            char buffer[100];
-            if (strerror_s(buffer, errno)) {
-                CATCH_RUNTIME_ERROR("Could not translate errno to a string");
+            void startRedirect() {
+                m_originalStream.rdbuf( m_redirectionStream.rdbuf() );
             }
-            CATCH_RUNTIME_ERROR("Could not open the temp file: '" << m_buffer << "' because: " << buffer);
-        }
-    }
-#else
-    TempFile::TempFile() {
-        m_file = std::tmpfile();
-        if (!m_file) {
-            CATCH_RUNTIME_ERROR("Could not create a temp file.");
-        }
-    }
+            void stopRedirect() { m_originalStream.rdbuf( m_prevBuf ); }
+        };
 
-#endif
+        /**
+         * Redirects the `std::cout`, `std::cerr`, `std::clog` streams,
+         * but does not touch the actual `stdout`/`stderr` file descriptors.
+         */
+        class StreamRedirect : public OutputRedirect {
+            ReusableStringStream m_redirectedOut, m_redirectedErr;
+            RedirectedStreamNew m_cout, m_cerr, m_clog;
 
-    TempFile::~TempFile() {
-         // TBD: What to do about errors here?
-         std::fclose(m_file);
-         // We manually create the file on Windows only, on Linux
-         // it will be autodeleted
-#if defined(_MSC_VER)
-         std::remove(m_buffer);
-#endif
-    }
+        public:
+            StreamRedirect():
+                m_cout( Catch::cout(), m_redirectedOut.get() ),
+                m_cerr( Catch::cerr(), m_redirectedErr.get() ),
+                m_clog( Catch::clog(), m_redirectedErr.get() ) {}
 
+            void activateImpl() override {
+                m_cout.startRedirect();
+                m_cerr.startRedirect();
+                m_clog.startRedirect();
+            }
+            void deactivateImpl() override {
+                m_cout.stopRedirect();
+                m_cerr.stopRedirect();
+                m_clog.stopRedirect();
+            }
+            std::string getStdout() override { return m_redirectedOut.str(); }
+            std::string getStderr() override { return m_redirectedErr.str(); }
+            void clearBuffers() override {
+                m_redirectedOut.str( "" );
+                m_redirectedErr.str( "" );
+            }
+        };
 
-    FILE* TempFile::getFile() {
-        return m_file;
-    }
+#if defined( CATCH_CONFIG_NEW_CAPTURE )
 
-    std::string TempFile::getContents() {
-        std::stringstream sstr;
-        char buffer[100] = {};
-        std::rewind(m_file);
-        while (std::fgets(buffer, sizeof(buffer), m_file)) {
-            sstr << buffer;
-        }
-        return sstr.str();
-    }
+        // Windows's implementation of std::tmpfile is terrible (it tries
+        // to create a file inside system folder, thus requiring elevated
+        // privileges for the binary), so we have to use tmpnam(_s) and
+        // create the file ourselves there.
+        class TempFile {
+        public:
+            TempFile( TempFile const& ) = delete;
+            TempFile& operator=( TempFile const& ) = delete;
+            TempFile( TempFile&& ) = delete;
+            TempFile& operator=( TempFile&& ) = delete;
 
-    OutputRedirect::OutputRedirect(std::string& stdout_dest, std::string& stderr_dest) :
-        m_originalStdout(dup(1)),
-        m_originalStderr(dup(2)),
-        m_stdoutDest(stdout_dest),
-        m_stderrDest(stderr_dest) {
-        dup2(fileno(m_stdoutFile.getFile()), 1);
-        dup2(fileno(m_stderrFile.getFile()), 2);
-    }
+#    if defined( _MSC_VER )
+            TempFile() {
+                if ( tmpnam_s( m_buffer ) ) {
+                    CATCH_RUNTIME_ERROR( "Could not get a temp filename" );
+                }
+                if ( fopen_s( &m_file, m_buffer, "wb+" ) ) {
+                    char buffer[100];
+                    if ( strerror_s( buffer, errno ) ) {
+                        CATCH_RUNTIME_ERROR(
+                            "Could not translate errno to a string" );
+                    }
+                    CATCH_RUNTIME_ERROR( "Could not open the temp file: '"
+                                         << m_buffer
+                                         << "' because: " << buffer );
+                }
+            }
+#    else
+            TempFile() {
+                m_file = std::tmpfile();
+                if ( !m_file ) {
+                    CATCH_RUNTIME_ERROR( "Could not create a temp file." );
+                }
+            }
+#    endif
 
-    OutputRedirect::~OutputRedirect() {
-        Catch::cout() << std::flush;
-        fflush(stdout);
-        // Since we support overriding these streams, we flush cerr
-        // even though std::cerr is unbuffered
-        Catch::cerr() << std::flush;
-        Catch::clog() << std::flush;
-        fflush(stderr);
+            ~TempFile() {
+                // TBD: What to do about errors here?
+                std::fclose( m_file );
+                // We manually create the file on Windows only, on Linux
+                // it will be autodeleted
+#    if defined( _MSC_VER )
+                std::remove( m_buffer );
+#    endif
+            }
 
-        dup2(m_originalStdout, 1);
-        dup2(m_originalStderr, 2);
+            std::FILE* getFile() { return m_file; }
+            std::string getContents() {
+                ReusableStringStream sstr;
+                constexpr long buffer_size = 100;
+                char buffer[buffer_size + 1] = {};
+                long current_pos = ftell( m_file );
+                CATCH_ENFORCE( current_pos >= 0,
+                               "ftell failed, errno: " << errno );
+                std::rewind( m_file );
+                while ( current_pos > 0 ) {
+                    auto read_characters =
+                        std::fread( buffer,
+                                    1,
+                                    std::min( buffer_size, current_pos ),
+                                    m_file );
+                    buffer[read_characters] = '\0';
+                    sstr << buffer;
+                    current_pos -= static_cast<long>( read_characters );
+                }
+                return sstr.str();
+            }
 
-        m_stdoutDest += m_stdoutFile.getContents();
-        m_stderrDest += m_stderrFile.getContents();
-    }
+            void clear() { std::rewind( m_file ); }
+
+        private:
+            std::FILE* m_file = nullptr;
+            char m_buffer[L_tmpnam] = { 0 };
+        };
+
+        /**
+         * Redirects the actual `stdout`/`stderr` file descriptors.
+         *
+         * Works by replacing the file descriptors numbered 1 and 2
+         * with an open temporary file.
+         */
+        class FileRedirect : public OutputRedirect {
+            TempFile m_outFile, m_errFile;
+            int m_originalOut = -1;
+            int m_originalErr = -1;
+
+            // Flushes cout/cerr/clog streams and stdout/stderr FDs
+            void flushEverything() {
+                Catch::cout() << std::flush;
+                fflush( stdout );
+                // Since we support overriding these streams, we flush cerr
+                // even though std::cerr is unbuffered
+                Catch::cerr() << std::flush;
+                Catch::clog() << std::flush;
+                fflush( stderr );
+            }
+
+        public:
+            FileRedirect():
+                m_originalOut( dup( fileno( stdout ) ) ),
+                m_originalErr( dup( fileno( stderr ) ) ) {
+                CATCH_ENFORCE( m_originalOut >= 0, "Could not dup stdout" );
+                CATCH_ENFORCE( m_originalErr >= 0, "Could not dup stderr" );
+            }
+
+            std::string getStdout() override { return m_outFile.getContents(); }
+            std::string getStderr() override { return m_errFile.getContents(); }
+            void clearBuffers() override {
+                m_outFile.clear();
+                m_errFile.clear();
+            }
+
+            void activateImpl() override {
+                // We flush before starting redirect, to ensure that we do
+                // not capture the end of message sent before activation.
+                flushEverything();
+
+                int ret;
+                ret = dup2( fileno( m_outFile.getFile() ), fileno( stdout ) );
+                CATCH_ENFORCE( ret >= 0,
+                               "dup2 to stdout has failed, errno: " << errno );
+                ret = dup2( fileno( m_errFile.getFile() ), fileno( stderr ) );
+                CATCH_ENFORCE( ret >= 0,
+                               "dup2 to stderr has failed, errno: " << errno );
+            }
+            void deactivateImpl() override {
+                // We flush before ending redirect, to ensure that we
+                // capture all messages sent while the redirect was active.
+                flushEverything();
+
+                int ret;
+                ret = dup2( m_originalOut, fileno( stdout ) );
+                CATCH_ENFORCE(
+                    ret >= 0,
+                    "dup2 of original stdout has failed, errno: " << errno );
+                ret = dup2( m_originalErr, fileno( stderr ) );
+                CATCH_ENFORCE(
+                    ret >= 0,
+                    "dup2 of original stderr has failed, errno: " << errno );
+            }
+        };
 
 #endif // CATCH_CONFIG_NEW_CAPTURE
 
+    } // end namespace
+
+    bool isRedirectAvailable( OutputRedirect::Kind kind ) {
+        switch ( kind ) {
+        // These two are always available
+        case OutputRedirect::None:
+        case OutputRedirect::Streams:
+            return true;
+#if defined( CATCH_CONFIG_NEW_CAPTURE )
+        case OutputRedirect::FileDescriptors:
+            return true;
+#endif
+        default:
+            return false;
+        }
+    }
+
+    Detail::unique_ptr<OutputRedirect> makeOutputRedirect( bool actual ) {
+        if ( actual ) {
+            // TODO: Clean this up later
+#if defined( CATCH_CONFIG_NEW_CAPTURE )
+            return Detail::make_unique<FileRedirect>();
+#else
+            return Detail::make_unique<StreamRedirect>();
+#endif
+        } else {
+            return Detail::make_unique<NoopRedirect>();
+        }
+    }
+
+    RedirectGuard scopedActivate( OutputRedirect& redirectImpl ) {
+        return RedirectGuard( true, redirectImpl );
+    }
+
+    RedirectGuard scopedDeactivate( OutputRedirect& redirectImpl ) {
+        return RedirectGuard( false, redirectImpl );
+    }
+
+    OutputRedirect::~OutputRedirect() = default;
+
+    RedirectGuard::RedirectGuard( bool activate, OutputRedirect& redirectImpl ):
+        m_redirect( &redirectImpl ),
+        m_activate( activate ),
+        m_previouslyActive( redirectImpl.isActive() ) {
+
+        // Skip cases where there is no actual state change.
+        if ( m_activate == m_previouslyActive ) { return; }
+
+        if ( m_activate ) {
+            m_redirect->activate();
+        } else {
+            m_redirect->deactivate();
+        }
+    }
+
+    RedirectGuard::~RedirectGuard() noexcept( false ) {
+        if ( m_moved ) { return; }
+        // Skip cases where there is no actual state change.
+        if ( m_activate == m_previouslyActive ) { return; }
+
+        if ( m_activate ) {
+            m_redirect->deactivate();
+        } else {
+            m_redirect->activate();
+        }
+    }
+
+    RedirectGuard::RedirectGuard( RedirectGuard&& rhs ) noexcept:
+        m_redirect( rhs.m_redirect ),
+        m_activate( rhs.m_activate ),
+        m_previouslyActive( rhs.m_previouslyActive ),
+        m_moved( false ) {
+        rhs.m_moved = true;
+    }
+
+    RedirectGuard& RedirectGuard::operator=( RedirectGuard&& rhs ) noexcept {
+        m_redirect = rhs.m_redirect;
+        m_activate = rhs.m_activate;
+        m_previouslyActive = rhs.m_previouslyActive;
+        m_moved = false;
+        rhs.m_moved = true;
+        return *this;
+    }
+
 } // namespace Catch
 
-#if defined(CATCH_CONFIG_NEW_CAPTURE)
-    #if defined(_MSC_VER)
-    #undef dup
-    #undef dup2
-    #undef fileno
-    #endif
+#if defined( CATCH_CONFIG_NEW_CAPTURE )
+#    if defined( _MSC_VER )
+#        undef dup
+#        undef dup2
+#        undef fileno
+#    endif
 #endif
 
 
@@ -5067,7 +5261,7 @@ namespace {
     SimplePcg32::result_type SimplePcg32::operator()() {
         // prepare the output value
         const uint32_t xorshifted = static_cast<uint32_t>(((m_state >> 18u) ^ m_state) >> 27u);
-        const auto output = rotate_right(xorshifted, m_state >> 59u);
+        const auto output = rotate_right(xorshifted, static_cast<uint32_t>(m_state >> 59u));
 
         // advance state
         m_state = m_state * 6364136223846793005ULL + s_inc;
@@ -5350,26 +5544,6 @@ ReporterSpec::ReporterSpec(
 
 
 
-namespace Catch {
-
-    bool isOk( ResultWas::OfType resultType ) {
-        return ( resultType & ResultWas::FailureBit ) == 0;
-    }
-    bool isJustInfo( int flags ) {
-        return flags == ResultWas::Info;
-    }
-
-    ResultDisposition::Flags operator | ( ResultDisposition::Flags lhs, ResultDisposition::Flags rhs ) {
-        return static_cast<ResultDisposition::Flags>( static_cast<int>( lhs ) | static_cast<int>( rhs ) );
-    }
-
-    bool shouldContinueOnFailure( int flags )    { return ( flags & ResultDisposition::ContinueOnFailure ) != 0; }
-    bool shouldSuppressFailure( int flags )      { return ( flags & ResultDisposition::SuppressFail ) != 0; }
-
-} // end namespace Catch
-
-
-
 #include <cstdio>
 #include <sstream>
 #include <vector>
@@ -5573,6 +5747,7 @@ namespace Catch {
         m_config(_config),
         m_reporter(CATCH_MOVE(reporter)),
         m_lastAssertionInfo{ StringRef(), SourceLineInfo("",0), StringRef(), ResultDisposition::Normal },
+        m_outputRedirect( makeOutputRedirect( m_reporter->getPreferences().shouldRedirectStdOut ) ),
         m_includeSuccessfulResults( m_config->includeSuccessfulResults() || m_reporter->getPreferences().shouldReportAllAssertions )
     {
         getCurrentMutableContext().setResultCapture( this );
@@ -5588,6 +5763,7 @@ namespace Catch {
 
         auto const& testInfo = testCase.getTestCaseInfo();
         m_reporter->testCaseStarting(testInfo);
+        testCase.prepareTestCase();
         m_activeTestCase = &testCase;
 
 
@@ -5638,15 +5814,17 @@ namespace Catch {
             m_reporter->testCasePartialStarting(testInfo, testRuns);
 
             const auto beforeRunTotals = m_totals;
-            std::string oneRunCout, oneRunCerr;
-            runCurrentTest(oneRunCout, oneRunCerr);
+            runCurrentTest();
+            std::string oneRunCout = m_outputRedirect->getStdout();
+            std::string oneRunCerr = m_outputRedirect->getStderr();
+            m_outputRedirect->clearBuffers();
             redirectedCout += oneRunCout;
             redirectedCerr += oneRunCerr;
 
             const auto singleRunTotals = m_totals.delta(beforeRunTotals);
             auto statsForOneRun = TestCaseStats(testInfo, singleRunTotals, CATCH_MOVE(oneRunCout), CATCH_MOVE(oneRunCerr), aborting());
-
             m_reporter->testCasePartialEnded(statsForOneRun, testRuns);
+
             ++testRuns;
         } while (!m_testCaseTracker->isSuccessfullyCompleted() && !aborting());
 
@@ -5657,6 +5835,7 @@ namespace Catch {
             deltaTotals.testCases.failed++;
         }
         m_totals.testCases += deltaTotals.testCases;
+        testCase.tearDownTestCase();
         m_reporter->testCaseEnded(TestCaseStats(testInfo,
                                   deltaTotals,
                                   CATCH_MOVE(redirectedCout),
@@ -5690,7 +5869,10 @@ namespace Catch {
             m_lastAssertionPassed = true;
         }
 
-        m_reporter->assertionEnded(AssertionStats(result, m_messages, m_totals));
+        {
+            auto _ = scopedDeactivate( *m_outputRedirect );
+            m_reporter->assertionEnded( AssertionStats( result, m_messages, m_totals ) );
+        }
 
         if ( result.getResultType() != ResultWas::Warning ) {
             m_messageScopes.clear();
@@ -5707,6 +5889,7 @@ namespace Catch {
     }
 
     void RunContext::notifyAssertionStarted( AssertionInfo const& info ) {
+        auto _ = scopedDeactivate( *m_outputRedirect );
         m_reporter->assertionStarting( info );
     }
 
@@ -5725,7 +5908,10 @@ namespace Catch {
         SectionInfo sectionInfo( sectionLineInfo, static_cast<std::string>(sectionName) );
         m_lastAssertionInfo.lineInfo = sectionInfo.lineInfo;
 
-        m_reporter->sectionStarting(sectionInfo);
+        {
+            auto _ = scopedDeactivate( *m_outputRedirect );
+            m_reporter->sectionStarting( sectionInfo );
+        }
 
         assertions = m_totals.assertions;
 
@@ -5785,7 +5971,15 @@ namespace Catch {
             m_activeSections.pop_back();
         }
 
-        m_reporter->sectionEnded(SectionStats(CATCH_MOVE(endInfo.sectionInfo), assertions, endInfo.durationInSeconds, missingAssertions));
+        {
+            auto _ = scopedDeactivate( *m_outputRedirect );
+            m_reporter->sectionEnded(
+                SectionStats( CATCH_MOVE( endInfo.sectionInfo ),
+                              assertions,
+                              endInfo.durationInSeconds,
+                              missingAssertions ) );
+        }
+
         m_messages.clear();
         m_messageScopes.clear();
     }
@@ -5802,15 +5996,19 @@ namespace Catch {
     }
 
     void RunContext::benchmarkPreparing( StringRef name ) {
-        m_reporter->benchmarkPreparing(name);
+        auto _ = scopedDeactivate( *m_outputRedirect );
+        m_reporter->benchmarkPreparing( name );
     }
     void RunContext::benchmarkStarting( BenchmarkInfo const& info ) {
+        auto _ = scopedDeactivate( *m_outputRedirect );
         m_reporter->benchmarkStarting( info );
     }
     void RunContext::benchmarkEnded( BenchmarkStats<> const& stats ) {
+        auto _ = scopedDeactivate( *m_outputRedirect );
         m_reporter->benchmarkEnded( stats );
     }
     void RunContext::benchmarkFailed( StringRef error ) {
+        auto _ = scopedDeactivate( *m_outputRedirect );
         m_reporter->benchmarkFailed( error );
     }
 
@@ -5841,8 +6039,13 @@ namespace Catch {
     }
 
     void RunContext::handleFatalErrorCondition( StringRef message ) {
+        // TODO: scoped deactivate here? Just give up and do best effort?
+        //       the deactivation can break things further, OTOH so can the
+        //       capture
+        auto _ = scopedDeactivate( *m_outputRedirect );
+
         // First notify reporter that bad things happened
-        m_reporter->fatalErrorEncountered(message);
+        m_reporter->fatalErrorEncountered( message );
 
         // Don't rebuild the result -- the stringification itself can cause more fatal errors
         // Instead, fake a result data.
@@ -5869,7 +6072,7 @@ namespace Catch {
         Counts assertions;
         assertions.failed = 1;
         SectionStats testCaseSectionStats(CATCH_MOVE(testCaseSection), assertions, 0, false);
-        m_reporter->sectionEnded(testCaseSectionStats);
+        m_reporter->sectionEnded( testCaseSectionStats );
 
         auto const& testInfo = m_activeTestCase->getTestCaseInfo();
 
@@ -5900,7 +6103,7 @@ namespace Catch {
         return m_totals.assertions.failed >= static_cast<std::size_t>(m_config->abortAfter());
     }
 
-    void RunContext::runCurrentTest(std::string & redirectedCout, std::string & redirectedCerr) {
+    void RunContext::runCurrentTest() {
         auto const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
         SectionInfo testCaseSection(testCaseInfo.lineInfo, testCaseInfo.name);
         m_reporter->sectionStarting(testCaseSection);
@@ -5911,18 +6114,8 @@ namespace Catch {
 
         Timer timer;
         CATCH_TRY {
-            if (m_reporter->getPreferences().shouldRedirectStdOut) {
-#if !defined(CATCH_CONFIG_EXPERIMENTAL_REDIRECT)
-                RedirectedStreams redirectedStreams(redirectedCout, redirectedCerr);
-
-                timer.start();
-                invokeActiveTestCase();
-#else
-                OutputRedirect r(redirectedCout, redirectedCerr);
-                timer.start();
-                invokeActiveTestCase();
-#endif
-            } else {
+            {
+                auto _ = scopedActivate( *m_outputRedirect );
                 timer.start();
                 invokeActiveTestCase();
             }
@@ -5967,11 +6160,12 @@ namespace Catch {
     void RunContext::handleUnfinishedSections() {
         // If sections ended prematurely due to an exception we stored their
         // infos here so we can tear them down outside the unwind process.
-        for (auto it = m_unfinishedSections.rbegin(),
-             itEnd = m_unfinishedSections.rend();
-             it != itEnd;
-             ++it)
-            sectionEnded(CATCH_MOVE(*it));
+        for ( auto it = m_unfinishedSections.rbegin(),
+                   itEnd = m_unfinishedSections.rend();
+              it != itEnd;
+              ++it ) {
+            sectionEnded( CATCH_MOVE( *it ) );
+        }
         m_unfinishedSections.clear();
     }
 
@@ -6015,13 +6209,13 @@ namespace Catch {
     void RunContext::handleMessage(
             AssertionInfo const& info,
             ResultWas::OfType resultType,
-            StringRef message,
+            std::string&& message,
             AssertionReaction& reaction
     ) {
         m_lastAssertionInfo = info;
 
         AssertionResultData data( resultType, LazyExpression( false ) );
-        data.message = static_cast<std::string>(message);
+        data.message = CATCH_MOVE( message );
         AssertionResult assertionResult{ m_lastAssertionInfo,
                                          CATCH_MOVE( data ) };
 
@@ -6898,6 +7092,8 @@ namespace Catch {
 #include <iterator>
 
 namespace Catch {
+    void ITestInvoker::prepareTestCase() {}
+    void ITestInvoker::tearDownTestCase() {}
     ITestInvoker::~ITestInvoker() = default;
 
     namespace {
@@ -6934,7 +7130,7 @@ namespace Catch {
             TestType m_testAsFunction;
 
         public:
-            TestInvokerAsFunction( TestType testAsFunction ) noexcept:
+            constexpr TestInvokerAsFunction( TestType testAsFunction ) noexcept:
                 m_testAsFunction( testAsFunction ) {}
 
             void invoke() const override { m_testAsFunction(); }
@@ -7669,35 +7865,15 @@ namespace {
         os.flags(f);
     }
 
-    bool shouldNewline(XmlFormatting fmt) {
+    constexpr bool shouldNewline(XmlFormatting fmt) {
         return !!(static_cast<std::underlying_type_t<XmlFormatting>>(fmt & XmlFormatting::Newline));
     }
 
-    bool shouldIndent(XmlFormatting fmt) {
+    constexpr bool shouldIndent(XmlFormatting fmt) {
         return !!(static_cast<std::underlying_type_t<XmlFormatting>>(fmt & XmlFormatting::Indent));
     }
 
 } // anonymous namespace
-
-    XmlFormatting operator | (XmlFormatting lhs, XmlFormatting rhs) {
-        return static_cast<XmlFormatting>(
-            static_cast<std::underlying_type_t<XmlFormatting>>(lhs) |
-            static_cast<std::underlying_type_t<XmlFormatting>>(rhs)
-        );
-    }
-
-    XmlFormatting operator & (XmlFormatting lhs, XmlFormatting rhs) {
-        return static_cast<XmlFormatting>(
-            static_cast<std::underlying_type_t<XmlFormatting>>(lhs) &
-            static_cast<std::underlying_type_t<XmlFormatting>>(rhs)
-        );
-    }
-
-
-    XmlEncode::XmlEncode( StringRef str, ForWhat forWhat )
-    :   m_str( str ),
-        m_forWhat( forWhat )
-    {}
 
     void XmlEncode::encodeTo( std::ostream& os ) const {
         // Apostrophe escaping not necessary if we always use " to write attributes
@@ -8935,7 +9111,7 @@ struct RowBreak {};
 struct OutputFlush {};
 
 class Duration {
-    enum class Unit {
+    enum class Unit : uint8_t {
         Auto,
         Nanoseconds,
         Microseconds,
@@ -9007,7 +9183,10 @@ public:
 };
 } // end anon namespace
 
-enum class Justification { Left, Right };
+enum class Justification : uint8_t {
+    Left,
+    Right
+};
 
 struct ColumnInfo {
     std::string name;
@@ -10333,7 +10512,7 @@ namespace Catch {
             xml( m_stream )
         {
             m_preferences.shouldRedirectStdOut = true;
-            m_preferences.shouldReportAllAssertions = true;
+            m_preferences.shouldReportAllAssertions = false;
             m_shouldStoreSuccesfulAssertions = false;
         }
 
@@ -10443,7 +10622,7 @@ namespace Catch {
         if( !rootName.empty() )
             name = rootName + '/' + name;
 
-        if( sectionNode.hasAnyAssertions()
+        if ( sectionNode.stats.assertions.total() > 0
            || !sectionNode.stdOut.empty()
            || !sectionNode.stdErr.empty() ) {
             XmlWriter::ScopedElement e = xml.scopedElement( "testcase" );
@@ -10831,9 +11010,9 @@ namespace Catch {
         if (!rootName.empty())
             name = rootName + '/' + name;
 
-        if ( sectionNode.hasAnyAssertions()
+        if ( sectionNode.stats.assertions.total() > 0
             || !sectionNode.stdOut.empty()
-            ||  !sectionNode.stdErr.empty() ) {
+            || !sectionNode.stdErr.empty() ) {
             XmlWriter::ScopedElement e = xml.scopedElement("testCase");
             xml.writeAttribute("name"_sr, name);
             xml.writeAttribute("duration"_sr, static_cast<long>(sectionNode.stats.durationInSeconds * 1000));

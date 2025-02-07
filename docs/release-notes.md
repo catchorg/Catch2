@@ -2,6 +2,9 @@
 
 # Release notes
 **Contents**<br>
+[3.8.0](#380)<br>
+[3.7.1](#371)<br>
+[3.7.0](#370)<br>
 [3.6.0](#360)<br>
 [3.5.4](#354)<br>
 [3.5.3](#353)<br>
@@ -61,6 +64,71 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 3.8.0
+
+### Improvements
+* Added `std::initializer_list` overloads for `(Unordered)RangeEquals` matcher (#2915, #2919)
+* Added explicit casts to silence GCC's `Wconversion` (#2875)
+* Made the use of `builtin_constant_p` tricks in assertion macros configurable (#2925)
+  * It is used to prod GCC-like compilers into providing warnings for the asserted expressions, but the compilers miscompile it annoyingly often.
+* Cleaned out Clang-Tidy's `performance-enum-size` warnings
+* Added support for using `from_range` generator with iterators with `value_type = const T` (#2926)
+  * This is not correct `value_type` typedef, but it is used in the wild and the change does not make the code meaningfully worse.
+
+### Fixes
+* Fixed crash when stringifying pre-1970 (epoch) dates on Windows (#2944)
+
+### Miscellaneous
+* Fixes and improvements for `catch_discover_tests` CMake helper
+  * Removed redundant `CTEST_FILE` param when creating the indirection file for `PRE_TEST` discovery mode (#2936)
+  * Rewrote the test discovery logic to use output from the JSON reporter
+    * This means that `catch_discover_tests` now requires CMake 3.19 or newer
+  * Added `ADD_TAGS_AS_LABELS` option. If specified, each CTest test will be labeled with corrensponding Catch2's test tag
+* Bumped up the minimum required CMake version to build Catch2 to 3.16
+* Meson build now provides option to avoid installing Catch2
+* Bazel build is moved to Bzlmod.
+
+
+## 3.7.1
+
+### Improvements
+* Applied the JUnit reporter's optimization from last release to the SonarQube reporter
+* Suppressed `-Wuseless-cast` in `CHECK_THROWS_MATCHES` (#2904)
+* Standardize exit codes for various failures
+  * Running no tests is now guaranteed to exit with 2 (without the `--allow-running-no-tests` flag)
+  * All tests skipped is now always 4 (...)
+  * Assertion failures are now always 42
+  * and so on
+
+### Fixes
+* Fixed out-of-bounds access when the arg parser encounters single `-` as an argument (#2905)
+
+### Miscellaneous
+* Added `catch_config_prefix_messages.hpp` to meson build (#2903)
+* `catch_discover_tests` now supports skipped tests (#2873)
+  * You can get the old behaviour by calling `catch_discover_tests` with `SKIP_IS_FAILURE` option.
+
+
+## 3.7.0
+
+### Improvements
+* Slightly improved compile times of benchmarks
+* Made the resolution estimation in benchmarks slightly more precise
+* Added new test case macro, `TEST_CASE_PERSISTENT_FIXTURE` (#2885, #1602)
+  * Unlike `TEST_CASE_METHOD`, the same underlying instance is used for all partial runs of that test case
+* **MASSIVELY** improved performance of the JUnit reporter when handling successful assertions (#2897)
+  * For 1 test case and 10M assertions, the new reporter runs 3x faster and uses up only 8 MB of memory, while the old one needs 7 GB of memory.
+* Reworked how output redirects works.
+  * Combining a reporter writing to stdout with capturing reporter no longer leads to the capturing reporter seeing all of the other reporter's output.
+  * The file based redirect no longer opens up a new temporary file for each partial test case run, so it will not run out of temporary files when running many tests in single process.
+
+### Miscellaneous
+* Better documentation for matchers on thrown exceptions (`REQUIRE_THROWS_MATCHES`)
+* Improved `catch_discover_tests`'s handling of environment paths (#2878)
+  * It won't reorder paths in `DL_PATHS` or `DYLD_FRAMEWORK_PATHS` args
+  * It won't overwrite the environment paths for test discovery
 
 
 ## 3.6.0

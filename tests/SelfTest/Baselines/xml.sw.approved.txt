@@ -2056,6 +2056,56 @@ Nor would this
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="A TEST_CASE_PERSISTENT_FIXTURE based test run that fails" tags="[.][class][failing]" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+    <Section name="First partial run" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          m_a++ == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Second partial run" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="false" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          m_a == 0
+        </Original>
+        <Expanded>
+          1 == 0
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds" tags="[class]" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+    <Section name="First partial run" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          m_a++ == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Second partial run" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          m_a == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="A Template product test case - Foo&lt;float>" tags="[product][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
@@ -3254,6 +3304,57 @@ Approx( 1.23399996757507324 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="Clara::Arg does not crash on incomplete input" tags="[arg][clara][compilation]" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+      <Original>
+        name.empty()
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+      <Original>
+        result
+      </Original>
+      <Expanded>
+        {?}
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+      <Original>
+        result.type() == Catch::Clara::Detail::ResultType::Ok
+      </Original>
+      <Expanded>
+        0 == 0
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+      <Original>
+        parsed.type() == Catch::Clara::ParseResultType::NoMatch
+      </Original>
+      <Expanded>
+        1 == 1
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+      <Original>
+        parsed.remainingTokens().count() == 2
+      </Original>
+      <Expanded>
+        2 == 2
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+      <Original>
+        name.empty()
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="Clara::Arg supports single-arg parse the way Opt does" tags="[arg][clara][compilation]" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
       <Original>
@@ -4392,7 +4493,7 @@ C
     </Expression>
     <OverallResult success="false" skips="0"/>
   </TestCase>
-  <TestCase name="Enums can quickly have stringification enabled using REGISTER_ENUM" filename="tests/<exe-name>/UsageTests/EnumToString.tests.cpp" >
+  <TestCase name="Enums can quickly have stringification enabled using CATCH_REGISTER_ENUM" filename="tests/<exe-name>/UsageTests/EnumToString.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/EnumToString.tests.cpp" >
       <Original>
         stringify( EnumClass3::Value1 ) == "Value1"
@@ -4437,7 +4538,7 @@ C
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <TestCase name="Enums in namespaces can quickly have stringification enabled using REGISTER_ENUM" filename="tests/<exe-name>/UsageTests/EnumToString.tests.cpp" >
+  <TestCase name="Enums in namespaces can quickly have stringification enabled using CATCH_REGISTER_ENUM" filename="tests/<exe-name>/UsageTests/EnumToString.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/EnumToString.tests.cpp" >
       <Original>
         stringify( Bikeshed::Colours::Red ) == "Red"
@@ -17282,6 +17383,25 @@ There is no extra whitespace here
       </Expression>
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
+    <Section name="Compare against std::initializer_list" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Original>
+          array_a, RangeEquals( { 1, 2, 3 } )
+        </Original>
+        <Expanded>
+          { 1, 2, 3 } elements are { 1, 2, 3 }
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Original>
+          array_a, RangeEquals( { 2, 4, 6 }, []( int l, int r ) { return l * 2 == r; } )
+        </Original>
+        <Expanded>
+          { 1, 2, 3 } elements are { 2, 4, 6 }
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
     <Section name="Check short-circuiting behaviour" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
       <Section name="Check short-circuits on failure" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
@@ -17507,6 +17627,25 @@ There is no extra whitespace here
         </Expanded>
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Compare against std::initializer_list" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Original>
+          array_a, UnorderedRangeEquals( { 10, 20, 1 } )
+        </Original>
+        <Expanded>
+          { 1, 10, 20 } unordered elements are { 10, 20, 1 }
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Original>
+          array_a, UnorderedRangeEquals( { 11, 21, 2 }, []( int l, int r ) { return std::abs( l - r ) &lt;= 1; } )
+        </Original>
+        <Expanded>
+          { 1, 10, 20 } unordered elements are { 11, 21, 2 }
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
@@ -21832,6 +21971,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2074" failures="146" expectedFailures="35" skips="12"/>
-  <OverallResultsCases successes="311" failures="85" expectedFailures="14" skips="6"/>
+  <OverallResults successes="2087" failures="147" expectedFailures="35" skips="12"/>
+  <OverallResultsCases successes="313" failures="86" expectedFailures="14" skips="6"/>
 </Catch2TestRun>

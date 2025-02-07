@@ -1,9 +1,30 @@
 <a id="top"></a>
 # Test fixtures
 
-## Defining test fixtures
+**Contents**<br>
+[Non-Templated test fixtures](#non-templated-test-fixtures)<br>
+[Templated test fixtures](#templated-test-fixtures)<br>
+[Signature-based parameterised test fixtures](#signature-based-parametrised-test-fixtures)<br>
+[Template fixtures with types specified in template type lists](#template-fixtures-with-types-specified-in-template-type-lists)<br>
 
-Although Catch allows you to group tests together as [sections within a test case](test-cases-and-sections.md), it can still be convenient, sometimes, to group them using a more traditional test fixture. Catch fully supports this too. You define the test fixture as a simple structure:
+## Non-Templated test fixtures
+
+Although Catch2 allows you to group tests together as 
+[sections within a test case](test-cases-and-sections.md), it can still 
+be convenient, sometimes, to group them using a more traditional test. 
+Catch2 fully supports this too with 3 different macros for 
+non-templated test fixtures. They are: 
+
+| Macro    | Description |
+|----------|-------------|
+|1. `TEST_CASE_METHOD(className, ...)`| Creates a uniquely named class which inherits from the class specified by `className`. The test function will be a member of this derived class. An instance of the derived class will be created for every partial run of the test case. |
+|2. `METHOD_AS_TEST_CASE(member-function, ...)`| Uses `member-function` as the test function. An instance of the class will be created for each partial run of the test case. |
+|3. `TEST_CASE_PERSISTENT_FIXTURE(className, ...)`| Creates a uniquely named class which inherits from the class specified by `className`. The test function will be a member of this derived class. An instance of the derived class will be created at the start of the test run. That instance will be destroyed once the entire test case has ended. |
+
+### 1. `TEST_CASE_METHOD`
+
+
+You define a `TEST_CASE_METHOD` test fixture as a simple structure:
 
 ```c++
 class UniqueTestsFixture {
@@ -30,8 +51,116 @@ class UniqueTestsFixture {
  }
 ```
 
-The two test cases here will create uniquely-named derived classes of UniqueTestsFixture and thus can access the `getID()` protected method and `conn` member variables. This ensures that both the test cases are able to create a DBConnection using the same method (DRY principle) and that any ID's created are unique such that the order that tests are executed does not matter.
+The two test cases here will create uniquely-named derived classes of 
+UniqueTestsFixture and thus can access the `getID()` protected method 
+and `conn` member variables. This ensures that both the test cases 
+are able to create a DBConnection using the same method 
+(DRY principle) and that any ID's created are unique such that the 
+order that tests are executed does not matter. 
 
+### 2. `METHOD_AS_TEST_CASE`
+
+`METHOD_AS_TEST_CASE` lets you register a member function of a class 
+as a Catch2 test case. The class will be separately instantiated 
+for each method registered in this way.
+
+```cpp
+class TestClass {
+    std::string s;
+
+public:
+    TestClass()
+        :s( "hello" )
+    {}
+
+    void testCase() {
+        REQUIRE( s == "hello" );
+    }
+};
+
+
+METHOD_AS_TEST_CASE( TestClass::testCase, "Use class's method as a test case", "[class]" )
+```
+
+This type of fixture is similar to [TEST_CASE_METHOD](#1-test_case_method) except in this 
+case it will directly use the provided class to create an object rather than a derived 
+class.
+
+### 3. `TEST_CASE_PERSISTENT_FIXTURE`
+
+> [Introduced](https://github.com/catchorg/Catch2/pull/2885) in Catch2 3.7.0
+
+`TEST_CASE_PERSISTENT_FIXTURE` behaves in the same way as
+[TEST_CASE_METHOD](#1-test_case_method) except that there will only be
+one instance created throughout the entire run of a test case. To 
+demonstrate this have a look at the following example:
+
+```cpp
+class ClassWithExpensiveSetup {
+public:
+    ClassWithExpensiveSetup() {
+        // expensive construction
+        std::this_thread::sleep_for( std::chrono::seconds( 2 ) );
+    }
+
+    ~ClassWithExpensiveSetup() noexcept {
+        // expensive destruction
+        std::this_thread::sleep_for( std::chrono::seconds( 1 ) );
+    }
+
+    int getInt() const { return 42; }
+};
+
+struct MyFixture {
+    mutable int myInt = 0;
+    ClassWithExpensiveSetup expensive;
+};
+
+TEST_CASE_PERSISTENT_FIXTURE( MyFixture, "Tests with MyFixture" ) {
+
+    const int val = myInt++;
+
+    SECTION( "First partial run" ) {
+        const auto otherValue = expensive.getInt();
+        REQUIRE( val == 0 );
+        REQUIRE( otherValue == 42 );
+    }
+
+    SECTION( "Second partial run" ) { REQUIRE( val == 1 ); }
+}
+```
+
+This example demonstates two possible use-cases of this fixture type:
+1. Improve test run times by reducing the amount of expensive and 
+redundant setup and tear-down required.
+2. Reusing results from the previous partial run, in the current
+partial run.
+
+This test case will be executed twice as there are two leaf sections.
+On the first run `val` will be `0` and on the second run `val` will be 
+`1`. This demonstrates that we were able to use the results of the
+previous partial run in subsequent partial runs.
+
+Additionally, we are simulating an expensive object using 
+`std::this_thread::sleep_for`, but real world use-cases could be:
+1. Creating a D3D12/Vulkan device
+2. Connecting to a database
+3. Loading a file.
+
+The fixture object (`MyFixture`) will be constructed just before the
+test case begins, and it will be destroyed just after the test case 
+ends. Therefore, this expensive object will only be created and 
+destroyed once during the execution of this test case. If we had used 
+`TEST_CASE_METHOD`, `MyFixture` would have been created and destroyed 
+twice during the execution of this test case.
+
+NOTE: The member function which runs the test case is `const`. Therefore 
+if you want to mutate any member of the fixture it must be marked as
+`mutable` as shown in this example. This is to make it clear that
+the initial state of the fixture is intended to mutate during the
+execution of the test case.
+
+## Templated test fixtures
 
 Catch2 also provides `TEMPLATE_TEST_CASE_METHOD` and
 `TEMPLATE_PRODUCT_TEST_CASE_METHOD` that can be used together
@@ -93,7 +222,7 @@ _While there is an upper limit on the number of types you can specify
 in single `TEMPLATE_TEST_CASE_METHOD` or `TEMPLATE_PRODUCT_TEST_CASE_METHOD`,
 the limit is very high and should not be encountered in practice._
 
-## Signature-based parametrised test fixtures
+## Signature-based parameterised test fixtures
 
 > [Introduced](https://github.com/catchorg/Catch2/issues/1609) in Catch2 2.8.0.
 

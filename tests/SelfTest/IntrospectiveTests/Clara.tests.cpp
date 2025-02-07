@@ -51,6 +51,21 @@ TEST_CASE("Clara::Arg supports single-arg parse the way Opt does", "[clara][arg]
     REQUIRE(name == "foo");
 }
 
+TEST_CASE("Clara::Arg does not crash on incomplete input", "[clara][arg][compilation]") {
+    std::string name;
+    auto p = Catch::Clara::Arg(name, "-");
+
+    CHECK(name.empty());
+
+    auto result = p.parse( Catch::Clara::Args{ "UnitTest", "-" } );
+    CHECK( result );
+    CHECK( result.type() == Catch::Clara::Detail::ResultType::Ok );
+    const auto& parsed = result.value();
+    CHECK( parsed.type() == Catch::Clara::ParseResultType::NoMatch );
+    CHECK( parsed.remainingTokens().count() == 2 );
+    CHECK( name.empty() );
+}
+
 TEST_CASE("Clara::Opt supports accept-many lambdas", "[clara][opt]") {
     using namespace Catch::Clara;
     std::vector<std::string> res;

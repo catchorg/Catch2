@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.16)
 project(PackageTest CXX)
 
 find_package(Catch2 CONFIG REQUIRED)

@@ -48,7 +48,7 @@ For more detail on command line selection see [the command line docs](command-li
 Tag names are not case sensitive and can contain any ASCII characters.
 This means that tags `[tag with spaces]` and `[I said "good day"]`
 are both allowed tags and can be filtered on. However, escapes are not
-supported however and `[\]]` is not a valid tag.
+supported and `[\]]` is not a valid tag.
 
 The same tag can be specified multiple times for a single test case,
 but only one of the instances of identical tags will be kept. Which one

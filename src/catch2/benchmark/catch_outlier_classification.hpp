@@ -19,7 +19,7 @@ namespace Catch {
             int high_mild = 0;      // 1.5 to 3 times IQR above Q3
             int high_severe = 0;    // more than 3 times IQR above Q3
 
-            int total() const {
+            constexpr int total() const {
                 return low_severe + low_mild + high_mild + high_severe;
             }
         };

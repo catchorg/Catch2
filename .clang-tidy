@@ -34,7 +34,7 @@ Checks: >-
   -modernize-pass-by-value,
 
   performance-*,
-  -performance-enum-size,
+  performance-enum-size,
 
   portability-*,
 
@@ -49,6 +49,7 @@ Checks: >-
   -readability-implicit-bool-conversion,
   -readability-isolate-declaration,
   -readability-magic-numbers,
+  -readability-math-missing-parentheses, #no, 'a + B * C' obeying math rules is not confusing,
   -readability-named-parameter,
   -readability-qualified-auto,
   -readability-redundant-access-specifiers,

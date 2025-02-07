@@ -214,7 +214,7 @@ struct RowBreak {};
 struct OutputFlush {};
 
 class Duration {
-    enum class Unit {
+    enum class Unit : uint8_t {
         Auto,
         Nanoseconds,
         Microseconds,
@@ -286,7 +286,10 @@ public:
 };
 } // end anon namespace
 
-enum class Justification { Left, Right };
+enum class Justification : uint8_t {
+    Left,
+    Right
+};
 
 struct ColumnInfo {
     std::string name;

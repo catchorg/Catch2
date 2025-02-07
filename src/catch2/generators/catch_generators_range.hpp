@@ -91,7 +91,7 @@ public:
 
 template <typename InputIterator,
           typename InputSentinel,
-          typename ResultType = typename std::iterator_traits<InputIterator>::value_type>
+          typename ResultType = std::remove_const_t<typename std::iterator_traits<InputIterator>::value_type>>
 GeneratorWrapper<ResultType> from_range(InputIterator from, InputSentinel to) {
     return GeneratorWrapper<ResultType>(Catch::Detail::make_unique<IteratorGenerator<ResultType>>(from, to));
 }

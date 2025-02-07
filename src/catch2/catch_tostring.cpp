@@ -22,7 +22,10 @@ namespace Detail {
         const int hexThreshold = 255;
 
         struct Endianness {
-            enum Arch { Big, Little };
+            enum Arch : uint8_t {
+                Big,
+                Little
+            };
 
             static Arch which() {
                 int one = 1;

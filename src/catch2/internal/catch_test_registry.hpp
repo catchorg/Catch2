@@ -32,7 +32,8 @@ template<typename C>
 class TestInvokerAsMethod : public ITestInvoker {
     void (C::*m_testAsMethod)();
 public:
-    TestInvokerAsMethod( void (C::*testAsMethod)() ) noexcept : m_testAsMethod( testAsMethod ) {}
+    constexpr TestInvokerAsMethod( void ( C::*testAsMethod )() ) noexcept:
+        m_testAsMethod( testAsMethod ) {}
 
     void invoke() const override {
         C obj;
@@ -45,6 +46,34 @@ Detail::unique_ptr<ITestInvoker> makeTestInvoker( void(*testAsFunction)() );
 template<typename C>
 Detail::unique_ptr<ITestInvoker> makeTestInvoker( void (C::*testAsMethod)() ) {
     return Detail::make_unique<TestInvokerAsMethod<C>>( testAsMethod );
+}
+
+template <typename C>
+class TestInvokerFixture : public ITestInvoker {
+    void ( C::*m_testAsMethod )() const;
+    Detail::unique_ptr<C> m_fixture = nullptr;
+
+public:
+    constexpr TestInvokerFixture( void ( C::*testAsMethod )() const ) noexcept:
+        m_testAsMethod( testAsMethod ) {}
+
+    void prepareTestCase() override {
+        m_fixture = Detail::make_unique<C>();
+    }
+
+    void tearDownTestCase() override {
+        m_fixture.reset();
+    }
+
+    void invoke() const override {
+        auto* f = m_fixture.get();
+        ( f->*m_testAsMethod )();
+    }
+};
+
+template<typename C>
+Detail::unique_ptr<ITestInvoker> makeTestInvokerFixture( void ( C::*testAsMethod )() const ) {
+    return Detail::make_unique<TestInvokerFixture<C>>( testAsMethod );
 }
 
 struct NameAndTags {
@@ -142,6 +171,26 @@ static int catchInternalSectionHint = 0;
         void TestName::test()
     #define INTERNAL_CATCH_TEST_CASE_METHOD( ClassName, ... ) \
         INTERNAL_CATCH_TEST_CASE_METHOD2( INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEST_ ), ClassName, __VA_ARGS__ )
+
+    ///////////////////////////////////////////////////////////////////////////////
+    #define INTERNAL_CATCH_TEST_CASE_PERSISTENT_FIXTURE2( TestName, ClassName, ... )      \
+        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                             \
+        CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                              \
+        CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS                      \
+        namespace {                                                           \
+            struct TestName : INTERNAL_CATCH_REMOVE_PARENS( ClassName ) {     \
+                void test() const;                                            \
+            };                                                                \
+            const Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( \
+                Catch::makeTestInvokerFixture( &TestName::test ),                    \
+                CATCH_INTERNAL_LINEINFO,                                      \
+                #ClassName##_catch_sr,                                        \
+                Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */             \
+        }                                                                     \
+        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION                              \
+        void TestName::test() const
+    #define INTERNAL_CATCH_TEST_CASE_PERSISTENT_FIXTURE( ClassName, ... )    \
+        INTERNAL_CATCH_TEST_CASE_PERSISTENT_FIXTURE2( INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEST_ ), ClassName, __VA_ARGS__ )
 
 
     ///////////////////////////////////////////////////////////////////////////////

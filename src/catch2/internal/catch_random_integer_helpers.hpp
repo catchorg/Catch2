@@ -69,7 +69,7 @@ namespace Catch {
         struct ExtendedMultResult {
             T upper;
             T lower;
-            bool operator==( ExtendedMultResult const& rhs ) const {
+            constexpr bool operator==( ExtendedMultResult const& rhs ) const {
                 return upper == rhs.upper && lower == rhs.lower;
             }
         };
@@ -187,6 +187,7 @@ namespace Catch {
          * get by simple casting ([0, ..., INT_MAX, INT_MIN, ..., -1])
          */
         template <typename OriginalType, typename UnsignedType>
+        constexpr
         std::enable_if_t<std::is_signed<OriginalType>::value, UnsignedType>
         transposeToNaturalOrder( UnsignedType in ) {
             static_assert(
@@ -207,6 +208,7 @@ namespace Catch {
 
         template <typename OriginalType,
                   typename UnsignedType>
+        constexpr
         std::enable_if_t<std::is_unsigned<OriginalType>::value, UnsignedType>
             transposeToNaturalOrder(UnsignedType in) {
             static_assert(

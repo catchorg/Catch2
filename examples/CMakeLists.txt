@@ -1,4 +1,4 @@
-cmake_minimum_required( VERSION 3.10 )
+cmake_minimum_required( VERSION 3.16 )
 
 project( Catch2Examples LANGUAGES CXX )
 
@@ -28,6 +28,7 @@ set( SOURCES_IDIOMATIC_EXAMPLES
     030-Asn-Require-Check.cpp
     100-Fix-Section.cpp
     110-Fix-ClassFixture.cpp
+    111-Fix-PersistentFixture.cpp
     120-Bdd-ScenarioGivenWhenThen.cpp
     210-Evt-EventListeners.cpp
     232-Cfg-CustomMain.cpp

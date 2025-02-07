@@ -66,6 +66,8 @@
 :test-result: PASS A TEMPLATE_TEST_CASE_METHOD_SIG based test run that succeeds - 6
 :test-result: FAIL A TEST_CASE_METHOD based test run that fails
 :test-result: PASS A TEST_CASE_METHOD based test run that succeeds
+:test-result: FAIL A TEST_CASE_PERSISTENT_FIXTURE based test run that fails
+:test-result: PASS A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds
 :test-result: PASS A Template product test case - Foo<float>
 :test-result: PASS A Template product test case - Foo<int>
 :test-result: PASS A Template product test case - std::vector<float>
@@ -101,6 +103,7 @@
 :test-result: PASS CaseInsensitiveEqualsTo is case insensitive
 :test-result: PASS CaseInsensitiveLess is case insensitive
 :test-result: PASS Character pretty printing
+:test-result: PASS Clara::Arg does not crash on incomplete input
 :test-result: PASS Clara::Arg supports single-arg parse the way Opt does
 :test-result: PASS Clara::Opt supports accept-many lambdas
 :test-result: PASS ColourGuard behaviour
@@ -131,8 +134,8 @@
 :test-result: SKIP Empty generators can SKIP in constructor
 :test-result: PASS Empty stream name opens cout stream
 :test-result: FAIL EndsWith string matcher
-:test-result: PASS Enums can quickly have stringification enabled using REGISTER_ENUM
-:test-result: PASS Enums in namespaces can quickly have stringification enabled using REGISTER_ENUM
+:test-result: PASS Enums can quickly have stringification enabled using CATCH_REGISTER_ENUM
+:test-result: PASS Enums in namespaces can quickly have stringification enabled using CATCH_REGISTER_ENUM
 :test-result: PASS Epsilon only applies to Approx's value
 :test-result: XFAIL Equality checks that should fail
 :test-result: PASS Equality checks that should succeed

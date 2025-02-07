@@ -1,4 +1,4 @@
-name: M1 Mac builds
+name: Arm Mac builds
 
 on: [push, pull_request]
 

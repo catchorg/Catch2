@@ -8,6 +8,7 @@
 [`CATCH_CONFIG_*` customization options in CMake](#catch_config_-customization-options-in-cmake)<br>
 [Installing Catch2 from git repository](#installing-catch2-from-git-repository)<br>
 [Installing Catch2 from vcpkg](#installing-catch2-from-vcpkg)<br>
+[Installing Catch2 from Bazel](#installing-catch2-from-bazel)<br>
 
 Because we use CMake to build Catch2, we also provide a couple of
 integration points for our users.
@@ -80,12 +81,11 @@ to your CMake module path.
 
 `Catch.cmake` provides function `catch_discover_tests` to get tests from
 a target. This function works by running the resulting executable with
-`--list-test-names-only` flag, and then parsing the output to find all
-existing tests.
+`--list-test` flag, and then parsing the output to find all existing tests.
 
 #### Usage
 ```cmake
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.16)
 
 project(baz LANGUAGES CXX VERSION 0.0.1)
 
@@ -127,6 +127,8 @@ catch_discover_tests(target
                      [OUTPUT_PREFIX prefix]
                      [OUTPUT_SUFFIX suffix]
                      [DISCOVERY_MODE <POST_BUILD|PRE_TEST>]
+                     [SKIP_IS_FAILURE]
+                     [ADD_TAGS_AS_LABELS]
 )
 ```
 
@@ -210,6 +212,15 @@ execution (useful e.g. in cross-compilation environments).
 calling ``catch_discover_tests``. This provides a mechanism for globally
 selecting a preferred test discovery behavior.
 
+* `SKIP_IS_FAILURE`
+
+Skipped tests will be marked as failed instead.
+
+* `ADD_TAGS_AS_LABELS`
+
+Add the tags from tests as labels to CTest.
+
+
 ### `ParseAndAddCatchTests.cmake`
 
 ⚠ This script is [deprecated](https://github.com/catchorg/Catch2/pull/2120)
@@ -228,7 +239,7 @@ parsed are *silently ignored*.
 #### Usage
 
 ```cmake
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.16)
 
 project(baz LANGUAGES CXX VERSION 0.0.1)
 

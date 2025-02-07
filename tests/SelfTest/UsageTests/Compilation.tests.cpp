@@ -8,6 +8,7 @@
 
 #include <helpers/type_with_lit_0_comparisons.hpp>
 
+#include <array>
 #include <type_traits>
 
 // Setup for #1403 -- look for global overloads of operator << for classes
@@ -34,6 +35,7 @@ static std::ostream& operator<<(std::ostream& out, foo::helper_1403 const&) {
 ///////////////////////////////
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators_range.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 
 #include <cstring>
@@ -467,3 +469,57 @@ TEST_CASE( "Comparing const std::weak_ordering instances must compile",
     REQUIRE( plain_ordering_1 == const_ordering_1 );
 }
 #endif
+
+// Reproduce issue with yaml-cpp iterators, where the `const_iterator`
+// for Node type has `const T` as the value_type. This is wrong for
+// multitude of reasons, but there might be other libraries in the wild
+// that share this issue, and the workaround needed to support
+// `from_range(iter, iter)` helper with those libraries is easy enough.
+class HasBadIterator {
+    std::array<int, 10> m_arr{};
+
+public:
+    class iterator {
+        const int* m_ptr = nullptr;
+
+    public:
+        iterator( const int* ptr ): m_ptr( ptr ) {}
+
+        using difference_type = std::ptrdiff_t;
+        using value_type = const int;
+        using pointer = const int*;
+        using reference = const int&;
+        using iterator_category = std::input_iterator_tag;
+
+        iterator& operator++() {
+            ++m_ptr;
+            return *this;
+        }
+
+        iterator operator++( int ) {
+            auto ret( *this );
+            ++( *this );
+            return ret;
+        }
+
+        friend bool operator==( iterator lhs, iterator rhs ) {
+            return lhs.m_ptr == rhs.m_ptr;
+        }
+        friend bool operator!=( iterator lhs, iterator rhs ) {
+            return !( lhs == rhs );
+        }
+
+        int operator*() const { return *m_ptr; }
+    };
+
+    iterator cbegin() const { return { m_arr.data() }; }
+    iterator cend() const { return { m_arr.data() + m_arr.size() }; }
+};
+
+TEST_CASE("from_range(iter, iter) supports const_iterators", "[generators][from-range][approvals]") {
+    using namespace Catch::Generators;
+
+    HasBadIterator data;
+    auto gen = from_range(data.cbegin(), data.cend());
+    (void)gen;
+}

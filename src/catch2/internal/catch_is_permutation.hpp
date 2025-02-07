@@ -18,6 +18,7 @@ namespace Catch {
                   typename Sentinel,
                   typename T,
                   typename Comparator>
+        constexpr
         ForwardIter find_sentinel( ForwardIter start,
                                    Sentinel sentinel,
                                    T const& value,
@@ -33,6 +34,7 @@ namespace Catch {
                   typename Sentinel,
                   typename T,
                   typename Comparator>
+        constexpr
         std::ptrdiff_t count_sentinel( ForwardIter start,
                                        Sentinel sentinel,
                                        T const& value,
@@ -46,6 +48,7 @@ namespace Catch {
         }
 
         template <typename ForwardIter, typename Sentinel>
+        constexpr
         std::enable_if_t<!std::is_same<ForwardIter, Sentinel>::value,
                          std::ptrdiff_t>
         sentinel_distance( ForwardIter iter, const Sentinel sentinel ) {
@@ -58,8 +61,8 @@ namespace Catch {
         }
 
         template <typename ForwardIter>
-        std::ptrdiff_t sentinel_distance( ForwardIter first,
-                                          ForwardIter last ) {
+        constexpr std::ptrdiff_t sentinel_distance( ForwardIter first,
+                                                    ForwardIter last ) {
             return std::distance( first, last );
         }
 
@@ -68,11 +71,11 @@ namespace Catch {
                   typename ForwardIter2,
                   typename Sentinel2,
                   typename Comparator>
-        bool check_element_counts( ForwardIter1 first_1,
-                                   const Sentinel1 end_1,
-                                   ForwardIter2 first_2,
-                                   const Sentinel2 end_2,
-                                   Comparator cmp ) {
+        constexpr bool check_element_counts( ForwardIter1 first_1,
+                                             const Sentinel1 end_1,
+                                             ForwardIter2 first_2,
+                                             const Sentinel2 end_2,
+                                             Comparator cmp ) {
             auto cursor = first_1;
             while ( cursor != end_1 ) {
                 if ( find_sentinel( first_1, cursor, *cursor, cmp ) ==
@@ -102,11 +105,11 @@ namespace Catch {
                   typename ForwardIter2,
                   typename Sentinel2,
                   typename Comparator>
-        bool is_permutation( ForwardIter1 first_1,
-                             const Sentinel1 end_1,
-                             ForwardIter2 first_2,
-                             const Sentinel2 end_2,
-                             Comparator cmp ) {
+        constexpr bool is_permutation( ForwardIter1 first_1,
+                                       const Sentinel1 end_1,
+                                       ForwardIter2 first_2,
+                                       const Sentinel2 end_2,
+                                       Comparator cmp ) {
             // TODO: no optimization for stronger iterators, because we would also have to constrain on sentinel vs not sentinel types
             // TODO: Comparator has to be "both sides", e.g. a == b => b == a
             // This skips shared prefix of the two ranges

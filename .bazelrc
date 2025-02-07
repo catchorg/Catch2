@@ -1,3 +1,6 @@
+# Enable Bzlmod for every Bazel command
+common --enable_bzlmod
+
 build --enable_platform_specific_config
 
 build:gcc9 --cxxopt=-std=c++2a

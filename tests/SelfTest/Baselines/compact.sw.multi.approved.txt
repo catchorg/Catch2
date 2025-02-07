@@ -239,6 +239,10 @@ Class.tests.cpp:<line number>: passed: Nttp_Fixture<V>::value > 0 for: 3 > 0
 Class.tests.cpp:<line number>: passed: Nttp_Fixture<V>::value > 0 for: 6 > 0
 Class.tests.cpp:<line number>: failed: m_a == 2 for: 1 == 2
 Class.tests.cpp:<line number>: passed: m_a == 1 for: 1 == 1
+Class.tests.cpp:<line number>: passed: m_a++ == 0 for: 0 == 0
+Class.tests.cpp:<line number>: failed: m_a == 0 for: 1 == 0
+Class.tests.cpp:<line number>: passed: m_a++ == 0 for: 0 == 0
+Class.tests.cpp:<line number>: passed: m_a == 1 for: 1 == 1
 Misc.tests.cpp:<line number>: passed: x.size() == 0 for: 0 == 0
 Misc.tests.cpp:<line number>: passed: x.size() == 0 for: 0 == 0
 Misc.tests.cpp:<line number>: passed: x.size() == 0 for: 0 == 0
@@ -382,6 +386,12 @@ ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( 'z'
 ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( '\0' ) == "0" for: "0" == "0"
 ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( static_cast<char>(2) ) == "2" for: "2" == "2"
 ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( static_cast<char>(5) ) == "5" for: "5" == "5"
+Clara.tests.cpp:<line number>: passed: name.empty() for: true
+Clara.tests.cpp:<line number>: passed: result for: {?}
+Clara.tests.cpp:<line number>: passed: result.type() == Catch::Clara::Detail::ResultType::Ok for: 0 == 0
+Clara.tests.cpp:<line number>: passed: parsed.type() == Catch::Clara::ParseResultType::NoMatch for: 1 == 1
+Clara.tests.cpp:<line number>: passed: parsed.remainingTokens().count() == 2 for: 2 == 2
+Clara.tests.cpp:<line number>: passed: name.empty() for: true
 Clara.tests.cpp:<line number>: passed: name.empty() for: true
 Clara.tests.cpp:<line number>: passed: name == "foo" for: "foo" == "foo"
 Clara.tests.cpp:<line number>: passed: !(parse_result) for: !{?}
@@ -2267,6 +2277,8 @@ MatchersRanges.tests.cpp:<line number>: passed: vector_a, RangeEquals( vector_a_
 MatchersRanges.tests.cpp:<line number>: passed: vector_a, !RangeEquals( vector_b, close_enough ) for: { 1, 2, 3 } not elements are { 3, 3, 4 }
 MatchersRanges.tests.cpp:<line number>: passed: needs_adl1, RangeEquals( needs_adl2 ) for: { 1, 2, 3, 4, 5 } elements are { 1, 2, 3, 4, 5 }
 MatchersRanges.tests.cpp:<line number>: passed: needs_adl1, RangeEquals( needs_adl3, []( int l, int r ) { return l + 1 == r; } ) for: { 1, 2, 3, 4, 5 } elements are { 2, 3, 4, 5, 6 }
+MatchersRanges.tests.cpp:<line number>: passed: array_a, RangeEquals( { 1, 2, 3 } ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
+MatchersRanges.tests.cpp:<line number>: passed: array_a, RangeEquals( { 2, 4, 6 }, []( int l, int r ) { return l * 2 == r; } ) for: { 1, 2, 3 } elements are { 2, 4, 6 }
 MatchersRanges.tests.cpp:<line number>: passed: mocked1, !RangeEquals( arr ) for: { 1, 2, 3, 4 } not elements are { 1, 2, 4, 4 }
 MatchersRanges.tests.cpp:<line number>: passed: mocked1.m_derefed[0] for: true
 MatchersRanges.tests.cpp:<line number>: passed: mocked1.m_derefed[1] for: true
@@ -2287,6 +2299,8 @@ MatchersRanges.tests.cpp:<line number>: passed: vector_a, !UnorderedRangeEquals(
 MatchersRanges.tests.cpp:<line number>: passed: vector_a, UnorderedRangeEquals( vector_a_plus_1, close_enough ) for: { 1, 10, 20 } unordered elements are { 11, 21, 2 }
 MatchersRanges.tests.cpp:<line number>: passed: vector_a, !UnorderedRangeEquals( vector_b, close_enough ) for: { 1, 10, 21 } not unordered elements are { 11, 21, 3 }
 MatchersRanges.tests.cpp:<line number>: passed: needs_adl1, UnorderedRangeEquals( needs_adl2 ) for: { 1, 2, 3, 4, 5 } unordered elements are { 1, 2, 3, 4, 5 }
+MatchersRanges.tests.cpp:<line number>: passed: array_a, UnorderedRangeEquals( { 10, 20, 1 } ) for: { 1, 10, 20 } unordered elements are { 10, 20, 1 }
+MatchersRanges.tests.cpp:<line number>: passed: array_a, UnorderedRangeEquals( { 11, 21, 2 }, []( int l, int r ) { return std::abs( l - r ) <= 1; } ) for: { 1, 10, 20 } unordered elements are { 11, 21, 2 }
 MatchersRanges.tests.cpp:<line number>: passed: empty_vec, SizeIs(0) for: {  } has size == 0
 MatchersRanges.tests.cpp:<line number>: passed: empty_vec, !SizeIs(2) for: {  } not has size == 2
 MatchersRanges.tests.cpp:<line number>: passed: empty_vec, SizeIs(Lt(2)) for: {  } size matches is less than 2
@@ -2829,7 +2843,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  416 |  311 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2255 | 2074 passed | 146 failed | 35 failed as expected
+test cases:  419 |  313 passed |  86 failed | 6 skipped | 14 failed as expected
+assertions: 2269 | 2087 passed | 147 failed | 35 failed as expected
 
 

@@ -52,7 +52,7 @@ try:
     )
     stdout = ret.stdout
 except subprocess.SubprocessError as ex:
-    if ex.returncode == 1:
+    if ex.returncode == 42:
         # The test cases are allowed to fail.
         test_passing = False
         stdout = ex.stdout

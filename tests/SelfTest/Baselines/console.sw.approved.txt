@@ -2029,6 +2029,54 @@ with expansion:
   1 == 1
 
 -------------------------------------------------------------------------------
+A TEST_CASE_PERSISTENT_FIXTURE based test run that fails
+  First partial run
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( m_a++ == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+A TEST_CASE_PERSISTENT_FIXTURE based test run that fails
+  Second partial run
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( m_a == 0 )
+with expansion:
+  1 == 0
+
+-------------------------------------------------------------------------------
+A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds
+  First partial run
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( m_a++ == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+A TEST_CASE_PERSISTENT_FIXTURE based test run that succeeds
+  Second partial run
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( m_a == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
 A Template product test case - Foo<float>
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -2990,6 +3038,42 @@ ToStringGeneral.tests.cpp:<line number>: PASSED:
   CHECK( ::Catch::Detail::stringify( static_cast<char>(5) ) == "5" )
 with expansion:
   "5" == "5"
+
+-------------------------------------------------------------------------------
+Clara::Arg does not crash on incomplete input
+-------------------------------------------------------------------------------
+Clara.tests.cpp:<line number>
+...............................................................................
+
+Clara.tests.cpp:<line number>: PASSED:
+  CHECK( name.empty() )
+with expansion:
+  true
+
+Clara.tests.cpp:<line number>: PASSED:
+  CHECK( result )
+with expansion:
+  {?}
+
+Clara.tests.cpp:<line number>: PASSED:
+  CHECK( result.type() == Catch::Clara::Detail::ResultType::Ok )
+with expansion:
+  0 == 0
+
+Clara.tests.cpp:<line number>: PASSED:
+  CHECK( parsed.type() == Catch::Clara::ParseResultType::NoMatch )
+with expansion:
+  1 == 1
+
+Clara.tests.cpp:<line number>: PASSED:
+  CHECK( parsed.remainingTokens().count() == 2 )
+with expansion:
+  2 == 2
+
+Clara.tests.cpp:<line number>: PASSED:
+  CHECK( name.empty() )
+with expansion:
+  true
 
 -------------------------------------------------------------------------------
 Clara::Arg supports single-arg parse the way Opt does
@@ -3999,7 +4083,7 @@ with expansion:
   insensitive)
 
 -------------------------------------------------------------------------------
-Enums can quickly have stringification enabled using REGISTER_ENUM
+Enums can quickly have stringification enabled using CATCH_REGISTER_ENUM
 -------------------------------------------------------------------------------
 EnumToString.tests.cpp:<line number>
 ...............................................................................
@@ -4033,7 +4117,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Enums in namespaces can quickly have stringification enabled using
-REGISTER_ENUM
+CATCH_REGISTER_ENUM
 -------------------------------------------------------------------------------
 EnumToString.tests.cpp:<line number>
 ...............................................................................
@@ -14899,6 +14983,23 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Usage of RangeEquals range matcher
+  Compare against std::initializer_list
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( array_a, RangeEquals( { 1, 2, 3 } ) )
+with expansion:
+  { 1, 2, 3 } elements are { 1, 2, 3 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( array_a, RangeEquals( { 2, 4, 6 }, []( int l, int r ) { return l * 2 == r; } ) )
+with expansion:
+  { 1, 2, 3 } elements are { 2, 4, 6 }
+
+-------------------------------------------------------------------------------
+Usage of RangeEquals range matcher
   Check short-circuiting behaviour
   Check short-circuits on failure
 -------------------------------------------------------------------------------
@@ -15083,6 +15184,23 @@ MatchersRanges.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( needs_adl1, UnorderedRangeEquals( needs_adl2 ) )
 with expansion:
   { 1, 2, 3, 4, 5 } unordered elements are { 1, 2, 3, 4, 5 }
+
+-------------------------------------------------------------------------------
+Usage of UnorderedRangeEquals range matcher
+  Compare against std::initializer_list
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( array_a, UnorderedRangeEquals( { 10, 20, 1 } ) )
+with expansion:
+  { 1, 10, 20 } unordered elements are { 10, 20, 1 }
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( array_a, UnorderedRangeEquals( { 11, 21, 2 }, []( int l, int r ) { return std::abs( l - r ) <= 1; } ) )
+with expansion:
+  { 1, 10, 20 } unordered elements are { 11, 21, 2 }
 
 -------------------------------------------------------------------------------
 Usage of the SizeIs range matcher
@@ -18894,6 +19012,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  416 |  311 passed |  85 failed | 6 skipped | 14 failed as expected
-assertions: 2255 | 2074 passed | 146 failed | 35 failed as expected
+test cases:  419 |  313 passed |  86 failed | 6 skipped | 14 failed as expected
+assertions: 2269 | 2087 passed | 147 failed | 35 failed as expected
 

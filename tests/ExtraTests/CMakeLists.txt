@@ -2,12 +2,11 @@
 # Build extra tests.
 #
 
-cmake_minimum_required( VERSION 3.10 )
+cmake_minimum_required( VERSION 3.16 )
 
 project( Catch2ExtraTests LANGUAGES CXX )
 
 message( STATUS "Extra tests included" )
-
 
 add_test(
   NAME TestShardingIntegration

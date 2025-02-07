@@ -9,7 +9,6 @@
 #define CATCH_INTERFACES_CAPTURE_HPP_INCLUDED
 
 #include <string>
-#include <chrono>
 
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_result_type.hpp>
@@ -77,7 +76,7 @@ namespace Catch {
         virtual void handleMessage
                 (   AssertionInfo const& info,
                     ResultWas::OfType resultType,
-                    StringRef message,
+                    std::string&& message,
                     AssertionReaction& reaction ) = 0;
         virtual void handleUnexpectedExceptionNotThrown
                 (   AssertionInfo const& info,

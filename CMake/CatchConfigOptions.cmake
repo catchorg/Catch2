@@ -44,6 +44,7 @@ set(_OverridableOptions
   "WINDOWS_SEH"
   "GETENV"
   "EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT"
+  "USE_BUILTIN_CONSTANT_P"
 )
 
 foreach(OptionName ${_OverridableOptions})

@@ -88,7 +88,7 @@ namespace Catch {
             xml( m_stream )
         {
             m_preferences.shouldRedirectStdOut = true;
-            m_preferences.shouldReportAllAssertions = true;
+            m_preferences.shouldReportAllAssertions = false;
             m_shouldStoreSuccesfulAssertions = false;
         }
 
@@ -198,7 +198,7 @@ namespace Catch {
         if( !rootName.empty() )
             name = rootName + '/' + name;
 
-        if( sectionNode.hasAnyAssertions()
+        if ( sectionNode.stats.assertions.total() > 0
            || !sectionNode.stdOut.empty()
            || !sectionNode.stdErr.empty() ) {
             XmlWriter::ScopedElement e = xml.scopedElement( "testcase" );

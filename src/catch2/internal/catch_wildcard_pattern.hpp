@@ -8,7 +8,7 @@
 #ifndef CATCH_WILDCARD_PATTERN_HPP_INCLUDED
 #define CATCH_WILDCARD_PATTERN_HPP_INCLUDED
 
-#include <catch2/internal/catch_case_sensitive.hpp>
+#include <catch2/catch_case_sensitive.hpp>
 
 #include <string>
 

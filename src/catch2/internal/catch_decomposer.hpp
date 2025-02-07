@@ -157,6 +157,9 @@ namespace Catch {
         bool m_isBinaryExpression;
         bool m_result;
 
+    protected:
+        ~ITransientExpression() = default;
+
     public:
         constexpr auto isBinaryExpression() const -> bool { return m_isBinaryExpression; }
         constexpr auto getResult() const -> bool { return m_result; }
@@ -168,17 +171,13 @@ namespace Catch {
             m_result( result )
         {}
 
-        ITransientExpression() = default;
-        ITransientExpression(ITransientExpression const&) = default;
-        ITransientExpression& operator=(ITransientExpression const&) = default;
+        constexpr ITransientExpression( ITransientExpression const& ) = default;
+        constexpr ITransientExpression& operator=( ITransientExpression const& ) = default;
 
         friend std::ostream& operator<<(std::ostream& out, ITransientExpression const& expr) {
             expr.streamReconstructedExpression(out);
             return out;
         }
-
-    protected:
-        ~ITransientExpression() = default;
     };
 
     void formatReconstructedExpression( std::ostream &os, std::string const& lhs, StringRef op, std::string const& rhs );
