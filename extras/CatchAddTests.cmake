@@ -143,6 +143,12 @@ function(catch_discover_tests_impl)
   # Speed-up reparsing by cutting away unneeded parts of JSON.
   string(JSON test_listing GET "${listing_output}" "listings" "tests")
   string(JSON num_tests LENGTH "${test_listing}")
+
+  # Exit early if no tests are detected
+  if(num_tests STREQUAL "0")
+    return()
+  endif()
+
   # CMake's foreach-RANGE is inclusive, so we have to subtract 1
   math(EXPR num_tests "${num_tests} - 1")
 
