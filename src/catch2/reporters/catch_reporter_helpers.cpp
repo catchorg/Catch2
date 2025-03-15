@@ -19,6 +19,7 @@
 
 #include <algorithm>
 #include <cfloat>
+#include <cmath>
 #include <cstdio>
 #include <ostream>
 #include <iomanip>
@@ -182,9 +183,29 @@ namespace Catch {
             out << "All available tags:\n";
         }
 
+        // minimum whitespace to pad tag counts, possibly overwritten below
+        size_t maxTagCountLen = 2;
+
+        // determine necessary padding for tag count column
+        if ( ! tags.empty() ) {
+            const auto maxTagCount =
+                std::max_element( tags.begin(),
+                                  tags.end(),
+                                  []( auto const& lhs, auto const& rhs ) {
+                                      return lhs.count < rhs.count;
+                                  } )
+                    ->count;
+            
+            // more padding necessary for 3+ digits
+            if (maxTagCount >= 100) {
+                auto numDigits = 1 + std::floor( std::log10( maxTagCount ) );
+                maxTagCountLen = static_cast<size_t>( numDigits );
+            }
+        }
+
         for ( auto const& tagCount : tags ) {
             ReusableStringStream rss;
-            rss << "  " << std::setw( 2 ) << tagCount.count << "  ";
+            rss << "  " << std::setw( maxTagCountLen ) << tagCount.count << "  ";
             auto str = rss.str();
             auto wrapper = TextFlow::Column( tagCount.all() )
                                .initialIndent( 0 )
