@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/ambre/git/catch2/build/cmake_install.cmake",
+		"/home/ambre/git/catch2/build/src/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
