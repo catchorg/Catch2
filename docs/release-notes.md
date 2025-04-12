@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.8.1](#381)<br>
 [3.8.0](#380)<br>
 [3.7.1](#371)<br>
 [3.7.0](#370)<br>
@@ -64,6 +65,13 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 3.8.1
+
+### Fixes
+* Fixed bug where catch_discover_tests fails when no TEST_CASEs are present (#2962)
+* Fixed Clang 19 -Wc++20-extensions warning (#2968)
 
 
 ## 3.8.0

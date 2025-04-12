@@ -21,7 +21,10 @@ The "Generators" `TEST_CASE` will be entered 3 times, and the value of
 `i` will be 1, 3, and 5 in turn. `GENERATE`s can also be used multiple
 times at the same scope, in which case the result will be a cartesian
 product of all elements in the generators. This means that in the snippet
-below, the test case will be run 6 (2\*3) times.
+below, the test case will be run 6 (2\*3) times. The `GENERATE` macro
+is defined in the `catch_generators.hpp` header, so compiling
+the code examples below also requires
+`#include <catch2/generators/catch_generators.hpp>`.
 
 ```cpp
 TEST_CASE("Generators") {
@@ -103,7 +106,7 @@ a test case,
 * 2 fundamental generators
   * `SingleValueGenerator<T>` -- contains only single element
   * `FixedValuesGenerator<T>` -- contains multiple elements
-* 5 generic generators that modify other generators
+* 5 generic generators that modify other generators (defined in `catch2/generators/catch_generators_adapters.hpp`)
   * `FilterGenerator<T, Predicate>` -- filters out elements from a generator
   for which the predicate returns "false"
   * `TakeGenerator<T>` -- takes first `n` elements from a generator
@@ -111,11 +114,11 @@ a test case,
   * `MapGenerator<T, U, Func>` -- returns the result of applying `Func`
   on elements from a different generator
   * `ChunkGenerator<T>` -- returns chunks (inside `std::vector`) of n elements from a generator
-* 4 specific purpose generators
+* 4 specific purpose generators (defined in `catch2/generators/catch_generators_random.hpp`)
   * `RandomIntegerGenerator<Integral>` -- generates random Integrals from range
   * `RandomFloatGenerator<Float>` -- generates random Floats from range
-  * `RangeGenerator<T>(first, last)` -- generates all values inside a `[first, last)` arithmetic range
-  * `IteratorGenerator<T>` -- copies and returns values from an iterator range
+  * `RangeGenerator<T>(first, last)` -- generates all values inside a `[first, last)` arithmetic range (defined in `catch2/generators/catch_generators_range.hpp`)
+  * `IteratorGenerator<T>` -- copies and returns values from an iterator range (defined in `catch2/generators/catch_generators_range.hpp`)
 
 > `ChunkGenerator<T>`, `RandomIntegerGenerator<Integral>`, `RandomFloatGenerator<Float>` and `RangeGenerator<T>` were introduced in Catch2 2.7.0.
 
