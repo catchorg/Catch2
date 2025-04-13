@@ -10,7 +10,7 @@
 
 #include <catch2/interfaces/catch_interfaces_capture.hpp>
 #include <catch2/internal/catch_test_registry.hpp>
-#include <catch2/internal/catch_test_run_info.hpp>
+#include <catch2/catch_test_run_info.hpp>
 #include <catch2/internal/catch_fatal_condition_handler.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/catch_message.hpp>

@@ -9,11 +9,11 @@
 #define CATCH_INTERFACES_REPORTER_HPP_INCLUDED
 
 #include <catch2/catch_section_info.hpp>
+#include <catch2/catch_test_run_info.hpp>
 #include <catch2/catch_totals.hpp>
 #include <catch2/catch_assertion_result.hpp>
 #include <catch2/internal/catch_message_info.hpp>
 #include <catch2/internal/catch_stringref.hpp>
-#include <catch2/internal/catch_test_run_info.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/benchmark/detail/catch_benchmark_stats.hpp>
 
