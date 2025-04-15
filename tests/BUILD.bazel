@@ -21,6 +21,7 @@ cc_test(
     size = "small",
     srcs = [
         "SelfTest/IntrospectiveTests/Algorithms.tests.cpp",
+        "SelfTest/IntrospectiveTests/AssertionHandler.tests.cpp",
         "SelfTest/IntrospectiveTests/Clara.tests.cpp",
         "SelfTest/IntrospectiveTests/CmdLine.tests.cpp",
         "SelfTest/IntrospectiveTests/CmdLineHelpers.tests.cpp",
@@ -30,6 +31,7 @@ cc_test(
         "SelfTest/IntrospectiveTests/GeneratorsImpl.tests.cpp",
         "SelfTest/IntrospectiveTests/Integer.tests.cpp",
         "SelfTest/IntrospectiveTests/InternalBenchmark.tests.cpp",
+        "SelfTest/IntrospectiveTests/Json.tests.cpp",
         "SelfTest/IntrospectiveTests/Parse.tests.cpp",
         "SelfTest/IntrospectiveTests/PartTracker.tests.cpp",
         "SelfTest/IntrospectiveTests/RandomNumberGeneration.tests.cpp",
@@ -63,6 +65,7 @@ cc_test(
         "SelfTest/UsageTests/MatchersRanges.tests.cpp",
         "SelfTest/UsageTests/Message.tests.cpp",
         "SelfTest/UsageTests/Misc.tests.cpp",
+        "SelfTest/UsageTests/Skip.tests.cpp",
         "SelfTest/UsageTests/ToStringByte.tests.cpp",
         "SelfTest/UsageTests/ToStringChrono.tests.cpp",
         "SelfTest/UsageTests/ToStringGeneral.tests.cpp",

@@ -1,4 +1,20 @@
 load("@bazel_skylib//rules:expand_template.bzl", "expand_template")
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@rules_license//rules:license.bzl", "license")
+
+package(
+    default_applicable_licenses = [":license"],
+)
+
+exports_files([
+    "LICENSE.MIT",
+])
+
+license(
+    name = "license",
+    license_kinds = ["@rules_license//licenses/spdx:BSL-1.0"],
+    license_text = "LICENSE.MIT",
+)
 
 expand_template(
     name = "catch_user_config",
