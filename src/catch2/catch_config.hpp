@@ -35,13 +35,14 @@ namespace Catch {
         std::string outputFilename;
         ColourMode colourMode;
         std::map<std::string, std::string> customOptions;
-        friend bool operator==( ProcessedReporterSpec const& lhs,
-                                ProcessedReporterSpec const& rhs );
-        friend bool operator!=( ProcessedReporterSpec const& lhs,
-                                ProcessedReporterSpec const& rhs ) {
-            return !( lhs == rhs );
-        }
     };
+
+    bool operator==( ProcessedReporterSpec const& lhs,
+                     ProcessedReporterSpec const& rhs );
+    inline bool operator!=( ProcessedReporterSpec const& lhs,
+                     ProcessedReporterSpec const& rhs ) {
+        return !( lhs == rhs );
+    }
 
     struct ConfigData {
 

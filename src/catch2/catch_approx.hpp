@@ -50,21 +50,6 @@ namespace Catch {
         }
 
         template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
-        friend bool operator == ( Approx const& lhs, const T& rhs ) {
-            return operator==( rhs, lhs );
-        }
-
-        template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
-        friend bool operator != ( T const& lhs, Approx const& rhs ) {
-            return !operator==( lhs, rhs );
-        }
-
-        template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
-        friend bool operator != ( Approx const& lhs, T const& rhs ) {
-            return !operator==( rhs, lhs );
-        }
-
-        template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         friend bool operator <= ( T const& lhs, Approx const& rhs ) {
             return static_cast<double>(lhs) < rhs.m_value || lhs == rhs;
         }
@@ -112,6 +97,27 @@ namespace Catch {
         double m_scale;
         double m_value;
     };
+
+    template <
+        typename T,
+        typename = std::enable_if_t<std::is_constructible<double, T>::value>>
+    bool operator==( Approx const& lhs, const T& rhs ) {
+        return operator==( rhs, lhs );
+    }
+
+    template <
+        typename T,
+        typename = std::enable_if_t<std::is_constructible<double, T>::value>>
+    bool operator!=( T const& lhs, Approx const& rhs ) {
+        return !operator==( lhs, rhs );
+    }
+
+    template <
+        typename T,
+        typename = std::enable_if_t<std::is_constructible<double, T>::value>>
+    bool operator!=( Approx const& lhs, T const& rhs ) {
+        return !operator==( rhs, lhs );
+    }
 
 namespace literals {
     Approx operator ""_a(long double val);

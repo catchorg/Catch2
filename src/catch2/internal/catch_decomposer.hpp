@@ -174,12 +174,14 @@ namespace Catch {
         constexpr ITransientExpression( ITransientExpression const& ) = default;
         constexpr ITransientExpression& operator=( ITransientExpression const& ) = default;
 
-        friend std::ostream& operator<<(std::ostream& out, ITransientExpression const& expr) {
-            expr.streamReconstructedExpression(out);
-            return out;
-        }
     };
 
+    inline std::ostream& operator<<( std::ostream& out,
+                                     ITransientExpression const& expr ) {
+        expr.streamReconstructedExpression( out );
+        return out;
+    }
+    
     void formatReconstructedExpression( std::ostream &os, std::string const& lhs, StringRef op, std::string const& rhs );
 
     template<typename LhsT, typename RhsT>

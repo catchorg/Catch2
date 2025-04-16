@@ -49,13 +49,14 @@ namespace Catch {
 
         void encodeTo( std::ostream& os ) const;
 
-        friend std::ostream& operator << ( std::ostream& os, XmlEncode const& xmlEncode );
 
     private:
         StringRef m_str;
         ForWhat m_forWhat;
     };
 
+    std::ostream& operator << ( std::ostream& os, XmlEncode const& xmlEncode );
+    
     class XmlWriter {
     public:
 

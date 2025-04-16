@@ -671,28 +671,11 @@ namespace Catch {
 
             Parser& operator|=(Parser const& other);
 
-            template <typename T>
-            friend Parser operator|( Parser const& p, T&& rhs ) {
-                Parser temp( p );
-                temp |= rhs;
-                return temp;
-            }
-
-            template <typename T>
-            friend Parser operator|( Parser&& p, T&& rhs ) {
-                p |= CATCH_FORWARD(rhs);
-                return CATCH_MOVE(p);
-            }
+            
 
             std::vector<Detail::HelpColumns> getHelpColumns() const;
 
             void writeToStream(std::ostream& os) const;
-
-            friend auto operator<<(std::ostream& os, Parser const& parser)
-                -> std::ostream& {
-                parser.writeToStream(os);
-                return os;
-            }
 
             Detail::Result validate() const override;
 
@@ -701,6 +684,25 @@ namespace Catch {
                 parse(std::string const& exeName,
                       Detail::TokenStream tokens) const override;
         };
+
+        template <typename T>
+        Parser operator|( Parser const& p, T&& rhs ) {
+            Parser temp( p );
+            temp |= rhs;
+            return temp;
+        }
+
+        template<typename T>
+        Parser operator|( Parser&& p, T&& rhs ) {
+            p |= CATCH_FORWARD( rhs );
+            return CATCH_MOVE( p );
+        }
+
+        inline auto operator<<( std::ostream& os, Parser const& parser )
+            -> std::ostream& {
+            parser.writeToStream( os );
+            return os;
+        }
 
         /**
          * Wrapper over argc + argv, assumes that the inputs outlive it

@@ -97,10 +97,6 @@ namespace Catch {
         constexpr const_iterator end() const { return m_start + m_size; }
 
 
-        friend std::string& operator += (std::string& lhs, StringRef rhs);
-        friend std::ostream& operator << (std::ostream& os, StringRef str);
-        friend std::string operator+(StringRef lhs, StringRef rhs);
-
         /**
          * Provides a three-way comparison with rhs
          *
@@ -110,6 +106,9 @@ namespace Catch {
         int compare( StringRef rhs ) const;
     };
 
+    std::string& operator+=( std::string& lhs, StringRef rhs );
+    std::ostream& operator<<( std::ostream& os, StringRef str );
+    std::string operator+( StringRef lhs, StringRef rhs );
 
     constexpr auto operator ""_sr( char const* rawChars, std::size_t size ) noexcept -> StringRef {
         return StringRef( rawChars, size );
