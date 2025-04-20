@@ -26,8 +26,8 @@ TEST_CASE("Sharding Function", "[approvals]") {
         {7, {1, 1, 1, 1, 1, 1, 1}},
     };
 
-    auto shardCount = GENERATE(range(1, 7));
-    auto shardIndex = GENERATE_COPY(filter([=](int i) { return i < shardCount; }, range(0, 6)));
+    auto shardCount = GENERATE(range(1ul, 7ul));
+    auto shardIndex = GENERATE_COPY(filter([=](std::size_t i) { return i < shardCount; }, range(0ul, 6ul)));
 
     std::vector<int> result = Catch::createShard(testContainer, shardCount, shardIndex);
 
@@ -35,7 +35,7 @@ TEST_CASE("Sharding Function", "[approvals]") {
     REQUIRE(result.size() == sizes[shardIndex]);
 
     std::size_t startIndex = 0;
-    for(int i = 0; i < shardIndex; i++) {
+    for(std::size_t i = 0; i < shardIndex; i++) {
         startIndex += sizes[i];
     }
 

@@ -24,7 +24,7 @@ namespace Catch {
 
         // Keep track of how many listeners we have already inserted,
         // so that we can insert them into the main vector at the right place
-        size_t m_insertedListeners = 0;
+        std::vector<IEventListenerPtr>::difference_type m_insertedListeners = 0;
 
         void updatePreferences(IEventListener const& reporterish);
 

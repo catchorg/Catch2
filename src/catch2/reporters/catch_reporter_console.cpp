@@ -301,7 +301,7 @@ class TablePrinter {
     std::ostream& m_os;
     std::vector<ColumnInfo> m_columnInfos;
     ReusableStringStream m_oss;
-    int m_currentColumn = -1;
+    std::vector<ColumnInfo>::iterator m_currentColumn;
     bool m_isOpen = false;
 
 public:
@@ -348,13 +348,12 @@ public:
         const auto strSize = colStr.size();
         tp.m_oss.str("");
         tp.open();
-        if (tp.m_currentColumn == static_cast<int>(tp.m_columnInfos.size() - 1)) {
-            tp.m_currentColumn = -1;
+        if (tp.m_currentColumn == tp.m_columnInfos.end()) {
+            tp.m_currentColumn = tp.m_columnInfos.begin();
             tp.m_os << '\n';
         }
-        tp.m_currentColumn++;
 
-        auto colInfo = tp.m_columnInfos[tp.m_currentColumn];
+        auto colInfo = *tp.m_currentColumn;
         auto padding = (strSize + 1 < colInfo.width)
             ? std::string(colInfo.width - (strSize + 1), ' ')
             : std::string();
@@ -366,9 +365,9 @@ public:
     }
 
     friend TablePrinter& operator<< (TablePrinter& tp, RowBreak) {
-        if (tp.m_currentColumn > 0) {
+        if (tp.m_currentColumn > tp.m_columnInfos.begin()) {
             tp.m_os << '\n';
-            tp.m_currentColumn = -1;
+            tp.m_currentColumn = tp.m_columnInfos.begin();
         }
         return tp;
     }

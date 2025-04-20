@@ -1,0 +1,11 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+includedir=/usr/local/include
+libdir=/usr/local/lib
+
+Name: Catch2
+Description: A modern, C++-native, test framework for C++14 and above
+URL: https://github.com/catchorg/Catch2
+Version: 3.8.0
+Cflags: -I${includedir}
+Libs: -L${libdir} -lCatch2
