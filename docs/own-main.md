@@ -57,17 +57,18 @@ int main( int argc, char* argv[] ) {
 
   int returnCode = session.applyCommandLine( argc, argv );
   if( returnCode != 0 ) // Indicates a command line error
-        return returnCode;
+    return returnCode;
 
   // writing to session.configData() or session.Config() here
   // overrides command line args
   // only do this if you know you need to
 
-  int numFailed = session.run();
+  returnCode = session.run();
 
-  // numFailed is clamped to 255 as some unices only use the lower 8 bits.
-  // This clamping has already been applied, so just return it here
-  // You can also do any post run clean-up here
+  // returnCode encodes the type of error that occured. See the
+  // integer constants in catch_session.hpp for more information
+  // on what each return code means.
+
   return numFailed;
 }
 ```
