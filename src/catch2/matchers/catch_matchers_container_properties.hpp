@@ -79,7 +79,7 @@ namespace Catch {
         //! Creates a matcher that accepts ranges/containers with specific size
         HasSizeMatcher SizeIs(std::size_t sz);
         template <typename Matcher>
-        std::enable_if_t<Detail::is_matcher<Matcher>::value,
+        std::enable_if_t<Detail::is_matcher_v<Matcher>,
         SizeMatchesMatcher<Matcher>> SizeIs(Matcher&& m) {
             return SizeMatchesMatcher<Matcher>{CATCH_FORWARD(m)};
         }
