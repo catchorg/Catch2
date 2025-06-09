@@ -5,7 +5,7 @@ message(STATUS "Extra tests included")
 
 add_test(
   NAME TestShardingIntegration
-  COMMAND ${PYTHON_EXECUTABLE} ${CATCH_DIR}/tests/TestScripts/testSharding.py $<TARGET_FILE:SelfTest>
+  COMMAND Python3::Interpreter ${CATCH_DIR}/tests/TestScripts/testSharding.py $<TARGET_FILE:SelfTest>
 )
 set_tests_properties(TestShardingIntegration
   PROPERTIES
@@ -114,7 +114,7 @@ target_compile_definitions(BazelReporter PRIVATE CATCH_CONFIG_BAZEL_SUPPORT)
 target_link_libraries(BazelReporter Catch2_buildall_interface)
 add_test(NAME CATCH_CONFIG_BAZEL_REPORTER-1
   COMMAND
-  "${PYTHON_EXECUTABLE}" "${CATCH_DIR}/tests/TestScripts/testBazelReporter.py" $<TARGET_FILE:BazelReporter> "${CMAKE_CURRENT_BINARY_DIR}"
+  Python3::Interpreter "${CATCH_DIR}/tests/TestScripts/testBazelReporter.py" $<TARGET_FILE:BazelReporter> "${CMAKE_CURRENT_BINARY_DIR}"
 )
 set_tests_properties(CATCH_CONFIG_BAZEL_REPORTER-1
   PROPERTIES
@@ -126,7 +126,7 @@ add_executable(BazelReporterNoCatchConfig ${TESTS_DIR}/X30-BazelReporter.cpp)
 target_link_libraries(BazelReporterNoCatchConfig Catch2WithMain)
 add_test(NAME NO_CATCH_CONFIG_BAZEL_REPORTER-1
   COMMAND
-  "${PYTHON_EXECUTABLE}" "${CATCH_DIR}/tests/TestScripts/testBazelReporter.py" $<TARGET_FILE:BazelReporterNoCatchConfig> "${CMAKE_CURRENT_BINARY_DIR}"
+  Python3::Interpreter "${CATCH_DIR}/tests/TestScripts/testBazelReporter.py" $<TARGET_FILE:BazelReporterNoCatchConfig> "${CMAKE_CURRENT_BINARY_DIR}"
 )
 set_tests_properties(NO_CATCH_CONFIG_BAZEL_REPORTER-1
   PROPERTIES
@@ -146,7 +146,7 @@ set_tests_properties(BazelEnv::TESTBRIDGE_TEST_ONLY
 
 add_test(NAME BazelEnv::Sharding
   COMMAND
-    "${PYTHON_EXECUTABLE}" "${CATCH_DIR}/tests/TestScripts/testBazelSharding.py"
+    Python3::Interpreter "${CATCH_DIR}/tests/TestScripts/testBazelSharding.py"
       $<TARGET_FILE:BazelReporterNoCatchConfig>
       "${CMAKE_CURRENT_BINARY_DIR}"
 )
@@ -222,7 +222,7 @@ add_executable(PartialTestCaseEvents ${TESTS_DIR}/X21-PartialTestCaseEvents.cpp)
 target_link_libraries(PartialTestCaseEvents PRIVATE Catch2WithMain)
 add_test(
   NAME PartialTestCaseEvents
-  COMMAND ${PYTHON_EXECUTABLE} ${CATCH_DIR}/tests/TestScripts/testPartialTestCaseEvent.py $<TARGET_FILE:PartialTestCaseEvents>
+  COMMAND Python3::Interpreter ${CATCH_DIR}/tests/TestScripts/testPartialTestCaseEvent.py $<TARGET_FILE:PartialTestCaseEvents>
 )
 set_tests_properties(PartialTestCaseEvents
   PROPERTIES
