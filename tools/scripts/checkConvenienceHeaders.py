@@ -21,11 +21,11 @@ import os
 import re
 
 def normalized_path(path):
-    """Replaces \ in paths on Windows with /"""
+    r"""Replaces \ in paths on Windows with /"""
     return path.replace('\\', '/')
 
 def normalized_paths(paths):
-    """Replaces \ with / in every path"""
+    r"""Replaces \ with / in every path"""
     return [normalized_path(path) for path in paths]
 
 source_path = catchPath + '/src/catch2'

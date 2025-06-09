@@ -17,7 +17,7 @@ from typing import List
 
 TestInfo = namedtuple('TestInfo', ['name', 'tags'])
 
-cmake_version_regex = re.compile('cmake version (\d+)\.(\d+)\.(\d+)')
+cmake_version_regex = re.compile(r'cmake version (\d+)\.(\d+)\.(\d+)')
 
 def get_cmake_version():
     result = subprocess.run(['cmake', '--version'],
