@@ -1,5 +1,5 @@
 <a id="top"></a>
-![Catch2 logo](data/artwork/catch2-logo-small-with-background.png)
+![Catch2 logo](data/artwork/catch2-logo-full-with-background.svg)
 
 [![Github Releases](https://img.shields.io/github/release/catchorg/catch2.svg)](https://github.com/catchorg/catch2/releases)
 [![Linux build status](https://github.com/catchorg/Catch2/actions/workflows/linux-simple-builds.yml/badge.svg)](https://github.com/catchorg/Catch2/actions/workflows/linux-simple-builds.yml)
