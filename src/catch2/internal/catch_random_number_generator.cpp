@@ -9,7 +9,7 @@
 
 #if defined( __clang__ )
 #    define CATCH2_CLANG_NO_SANITIZE_INTEGER \
-        __attribute__( ( no_sanitize( "undefined", "integer" ) ) )
+        __attribute__( ( no_sanitize( "unsigned-integer-overflow" ) ) )
 #else
 #    define CATCH2_CLANG_NO_SANITIZE_INTEGER
 #endif
