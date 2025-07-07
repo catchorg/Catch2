@@ -262,6 +262,10 @@ Message from section two
 :test-result: PASS TemplateTest: vectors can be sized and resized - int
 :test-result: PASS TemplateTest: vectors can be sized and resized - std::string
 :test-result: PASS TemplateTest: vectors can be sized and resized - std::tuple<int,float>
+:test-result: FAIL TemplateTestSig: compiles with a single int parameter - 1
+:test-result: FAIL TemplateTestSig: compiles with a single int parameter - 3
+:test-result: FAIL TemplateTestSig: compiles with a single int parameter - 6
+:test-result: FAIL TemplateTestSig: compiles with two type parameters - int,int
 :test-result: PASS TemplateTestSig: vectors can be sized and resized - (std::tuple<int, float>), 6
 :test-result: PASS TemplateTestSig: vectors can be sized and resized - float,4
 :test-result: PASS TemplateTestSig: vectors can be sized and resized - int,5

@@ -2854,7 +2854,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  419 |  313 passed |  86 failed | 6 skipped | 14 failed as expected
-assertions: 2269 | 2087 passed | 147 failed | 35 failed as expected
+test cases:  423 |  313 passed |  90 failed | 6 skipped | 14 failed as expected
+assertions: 2273 | 2087 passed | 151 failed | 35 failed as expected
 
 

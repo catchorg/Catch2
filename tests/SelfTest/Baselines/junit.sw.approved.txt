@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="130" skipped="12" tests="2281" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="134" skipped="12" tests="2285" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1475,6 +1475,10 @@ at Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - std::tuple&lt;int,float>/resizing smaller changes size but not capacity/We can use the 'swap trick' to reset the capacity" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - std::tuple&lt;int,float>/reserving bigger changes capacity but not size" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - std::tuple&lt;int,float>/reserving smaller does not change size or capacity" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="TemplateTestSig: compiles with a single int parameter - 1" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="TemplateTestSig: compiles with a single int parameter - 3" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="TemplateTestSig: compiles with a single int parameter - 6" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="TemplateTestSig: compiles with two type parameters - int,int" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="TemplateTestSig: vectors can be sized and resized - (std::tuple&lt;int, float>), 6" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="TemplateTestSig: vectors can be sized and resized - (std::tuple&lt;int, float>), 6/resizing bigger changes size and capacity" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="TemplateTestSig: vectors can be sized and resized - (std::tuple&lt;int, float>), 6/resizing smaller changes size but not capacity" time="{duration}" status="run"/>

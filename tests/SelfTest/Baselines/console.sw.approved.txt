@@ -12527,6 +12527,42 @@ with expansion:
   5 >= 5
 
 -------------------------------------------------------------------------------
+TemplateTestSig: compiles with a single int parameter - 1
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+
+No assertions in test case 'TemplateTestSig: compiles with a single int parameter - 1'
+
+-------------------------------------------------------------------------------
+TemplateTestSig: compiles with a single int parameter - 3
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+
+No assertions in test case 'TemplateTestSig: compiles with a single int parameter - 3'
+
+-------------------------------------------------------------------------------
+TemplateTestSig: compiles with a single int parameter - 6
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+
+No assertions in test case 'TemplateTestSig: compiles with a single int parameter - 6'
+
+-------------------------------------------------------------------------------
+TemplateTestSig: compiles with two type parameters - int,int
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+
+No assertions in test case 'TemplateTestSig: compiles with two type parameters - int,int'
+
+-------------------------------------------------------------------------------
 TemplateTestSig: vectors can be sized and resized - (std::tuple<int, float>), 6
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -19012,6 +19048,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  419 |  313 passed |  86 failed | 6 skipped | 14 failed as expected
-assertions: 2269 | 2087 passed | 147 failed | 35 failed as expected
+test cases:  423 |  313 passed |  90 failed | 6 skipped | 14 failed as expected
+assertions: 2273 | 2087 passed | 151 failed | 35 failed as expected
 

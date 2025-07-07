@@ -1893,6 +1893,10 @@ at Misc.tests.cpp:<line number>
     <testCase name="TemplateTest: vectors can be sized and resized - std::tuple&lt;int,float>/resizing smaller changes size but not capacity/We can use the 'swap trick' to reset the capacity" duration="{duration}"/>
     <testCase name="TemplateTest: vectors can be sized and resized - std::tuple&lt;int,float>/reserving bigger changes capacity but not size" duration="{duration}"/>
     <testCase name="TemplateTest: vectors can be sized and resized - std::tuple&lt;int,float>/reserving smaller does not change size or capacity" duration="{duration}"/>
+    <testCase name="TemplateTestSig: compiles with a single int parameter - 1" duration="{duration}"/>
+    <testCase name="TemplateTestSig: compiles with a single int parameter - 3" duration="{duration}"/>
+    <testCase name="TemplateTestSig: compiles with a single int parameter - 6" duration="{duration}"/>
+    <testCase name="TemplateTestSig: compiles with two type parameters - int,int" duration="{duration}"/>
     <testCase name="TemplateTestSig: vectors can be sized and resized - (std::tuple&lt;int, float>), 6" duration="{duration}"/>
     <testCase name="TemplateTestSig: vectors can be sized and resized - (std::tuple&lt;int, float>), 6/resizing bigger changes size and capacity" duration="{duration}"/>
     <testCase name="TemplateTestSig: vectors can be sized and resized - (std::tuple&lt;int, float>), 6/resizing smaller changes size but not capacity" duration="{duration}"/>
