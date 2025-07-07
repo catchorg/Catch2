@@ -15,8 +15,15 @@
 #pragma GCC system_header
 #endif
 
-template<int N> struct priority_tag : priority_tag<N-1> {};
-template<> struct priority_tag<0> {};
+
+namespace Catch {
+    namespace Detail {
+        template <int N>
+        struct priority_tag : priority_tag<N - 1> {};
+        template <>
+        struct priority_tag<0> {};
+    }
+}
 
 #define CATCH_RECURSION_LEVEL0(...) __VA_ARGS__
 #define CATCH_RECURSION_LEVEL1(...) CATCH_RECURSION_LEVEL0(CATCH_RECURSION_LEVEL0(CATCH_RECURSION_LEVEL0(__VA_ARGS__)))
@@ -77,10 +84,10 @@ template<> struct priority_tag<0> {};
 #define INTERNAL_CATCH_MAKE_NAMESPACE(name) INTERNAL_CATCH_MAKE_NAMESPACE2(name)
 
 #ifndef CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
-#define INTERNAL_CATCH_MAKE_TYPE_LIST2(...) decltype(get_wrapper<INTERNAL_CATCH_REMOVE_PARENS_GEN(__VA_ARGS__)>(priority_tag<1>{}))
+#define INTERNAL_CATCH_MAKE_TYPE_LIST2(...) decltype(get_wrapper<INTERNAL_CATCH_REMOVE_PARENS_GEN(__VA_ARGS__)>(Catch::Detail::priority_tag<1>{}))
 #define INTERNAL_CATCH_MAKE_TYPE_LIST(...) INTERNAL_CATCH_MAKE_TYPE_LIST2(INTERNAL_CATCH_REMOVE_PARENS(__VA_ARGS__))
 #else
-#define INTERNAL_CATCH_MAKE_TYPE_LIST2(...) INTERNAL_CATCH_EXPAND_VARGS(decltype(get_wrapper<INTERNAL_CATCH_REMOVE_PARENS_GEN(__VA_ARGS__)>(priority_tag<1>{})))
+#define INTERNAL_CATCH_MAKE_TYPE_LIST2(...) INTERNAL_CATCH_EXPAND_VARGS(decltype(get_wrapper<INTERNAL_CATCH_REMOVE_PARENS_GEN(__VA_ARGS__)>(Catch::Detail::priority_tag<1>{})))
 #define INTERNAL_CATCH_MAKE_TYPE_LIST(...) INTERNAL_CATCH_EXPAND_VARGS(INTERNAL_CATCH_MAKE_TYPE_LIST2(INTERNAL_CATCH_REMOVE_PARENS(__VA_ARGS__)))
 #endif
 
@@ -104,10 +111,10 @@ template<> struct priority_tag<0> {};
 #define INTERNAL_CATCH_TYPE_GEN\
     template<typename...> struct TypeList {};\
     template<typename... Ts>\
-    constexpr auto get_wrapper(priority_tag<1>) noexcept -> TypeList<Ts...> { return {}; }\
+    constexpr auto get_wrapper(Catch::Detail::priority_tag<1>) noexcept -> TypeList<Ts...> { return {}; }\
     template<template<typename...> class...> struct TemplateTypeList{};\
     template<template<typename...> class...Cs>\
-    constexpr auto get_wrapper(priority_tag<1>) noexcept -> TemplateTypeList<Cs...> { return {}; }\
+    constexpr auto get_wrapper(Catch::Detail::priority_tag<1>) noexcept -> TemplateTypeList<Cs...> { return {}; }\
     template<typename...>\
     struct append;\
     template<typename...>\
@@ -137,10 +144,10 @@ template<> struct priority_tag<0> {};
 #define INTERNAL_CATCH_NTTP_1(signature, ...)\
     template<INTERNAL_CATCH_REMOVE_PARENS(signature)> struct Nttp{};\
     template<INTERNAL_CATCH_REMOVE_PARENS(signature)>\
-    constexpr auto get_wrapper(priority_tag<0>) noexcept -> Nttp<__VA_ARGS__> { return {}; } \
+    constexpr auto get_wrapper(Catch::Detail::priority_tag<0>) noexcept -> Nttp<__VA_ARGS__> { return {}; } \
     template<template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class...> struct NttpTemplateTypeList{};\
     template<template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class...Cs>\
-    constexpr auto get_wrapper(priority_tag<0>) noexcept -> NttpTemplateTypeList<Cs...> { return {}; } \
+    constexpr auto get_wrapper(Catch::Detail::priority_tag<0>) noexcept -> NttpTemplateTypeList<Cs...> { return {}; } \
     \
     template< template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class Container, template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class List, INTERNAL_CATCH_REMOVE_PARENS(signature)>\
     struct rewrap<NttpTemplateTypeList<Container>, List<__VA_ARGS__>> { using type = TypeList<Container<__VA_ARGS__>>; };\
