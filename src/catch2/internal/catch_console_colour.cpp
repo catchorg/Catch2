@@ -97,34 +97,6 @@ namespace Catch {
 
 } // namespace Catch
 
-#if defined ( CATCH_PLATFORM_WINDOWS )
-namespace Catch {
-namespace {
-
-    bool enableVirtualTerminalSupport(bool restore)
-    {
-        HANDLE outputHandle = GetStdHandle( STD_OUTPUT_HANDLE );
-        DWORD mode = 0;
-        if ( GetConsoleMode( outputHandle, &mode ) ) {
-            // VT100 style sequence processing has to be enabled by explicit
-            // opt-in.
-            DWORD newMode = mode | ENABLE_PROCESSED_OUTPUT |
-                            ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-            bool virtualTerminalSupported = SetConsoleMode( outputHandle, newMode );
-            if(restore)
-            {
-                SetConsoleMode( outputHandle, mode );
-            }
-            return virtualTerminalSupported;
-        } else {
-            return false;
-        }
-    }
-
-}
-}
-#endif
-
 #if defined ( CATCH_CONFIG_COLOUR_WIN32 ) /////////////////////////////////////////
 
 namespace Catch {
@@ -142,13 +114,13 @@ namespace {
         }
 
         static bool useImplementationForStream(IStream const& stream) {
-            // Win32 text colour APIs can only be used on console streams
-            // We cannot check that the output hasn't been redirected,
-            // so we just check that the original stream is console stream.
-            bool useColour = stream.isConsole();
-            // If available, prefer VT100 style escape sequences.
-            useColour = useColour && !enableVirtualTerminalSupport( true );
-            return useColour;
+            OSVERSIONINFOA versionInfo;
+            // Use as fallback for Windows versions <10.0 only.
+            // Newer Windows versions have full support for ANSI color codes.
+            if ( GetVersionExA( &versionInfo ) && versionInfo.dwMajorVersion < 10 ) {
+                return stream.isConsole();
+            }
+            return false;
         }
 
     private:
@@ -196,17 +168,10 @@ namespace {
     class ANSIColourImpl final : public ColourImpl {
     public:
         ANSIColourImpl( IStream* stream ): ColourImpl( stream ) {
-#if defined( CATCH_PLATFORM_WINDOWS )
-            enableVirtualTerminalSupport(false);
-#endif
         }
 
         static bool useImplementationForStream(IStream const& stream) {
-            bool useColour = stream.isConsole();
-#    if defined( CATCH_PLATFORM_WINDOWS )
-            useColour = useColour && enableVirtualTerminalSupport(true);
-#    endif
-            return useColour;
+            return stream.isConsole();
         }
 
     private:

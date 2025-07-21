@@ -6,12 +6,13 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-#include <catch2/internal/catch_istream.hpp>
-#include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_debug_console.hpp>
-#include <catch2/internal/catch_unique_ptr.hpp>
-#include <catch2/internal/catch_stdstreams.hpp>
+#include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_errno_guard.hpp>
+#include <catch2/internal/catch_istream.hpp>
+#include <catch2/internal/catch_stdstreams.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_windows_h_proxy.hpp>
 
 #include <cstdio>
 #include <fstream>
@@ -95,6 +96,28 @@ namespace Detail {
 
         ///////////////////////////////////////////////////////////////////////////
 
+#if defined( CATCH_PLATFORM_WINDOWS )
+        bool enableVirtualTerminalSupport( DWORD stdHandle ) {
+            HANDLE outputHandle = GetStdHandle( stdHandle );
+            DWORD mode = 0;
+            const DWORD requiredMode = ENABLE_PROCESSED_OUTPUT |
+                                ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+            if ( GetConsoleMode( outputHandle, &mode ) &&
+                    ( mode & requiredMode ) == requiredMode ) {
+                // VT100 style sequence processing has to be enabled by
+                // explicit opt-in.
+                const DWORD newMode = mode | requiredMode;
+                if( SetConsoleMode( outputHandle, newMode ) )
+                {
+                    return true;
+                }
+                // Restore fail-safe state.
+                SetConsoleMode( outputHandle, mode );
+            }
+            return false;
+        }
+#endif
+
         class CoutStream final : public IStream {
             std::ostream m_os;
             bool m_isatty;
@@ -108,7 +131,7 @@ namespace Detail {
                 ErrnoGuard _; // for isatty
                 m_isatty = m_isatty && isatty( STDOUT_FILENO );
 #elif defined( CATCH_PLATFORM_WINDOWS )
-                m_isatty = m_isatty && _isatty( _fileno( stdout ) );
+                m_isatty = m_isatty && enableVirtualTerminalSupport( STD_OUTPUT_HANDLE );
 #endif
 #if defined( CATCH_PLATFORM_MAC ) || defined( CATCH_PLATFORM_IPHONE )
                     m_isatty = m_isatty && !isDebuggerActive();
@@ -133,7 +156,7 @@ namespace Detail {
                 ErrnoGuard _; // for isatty
                 m_isatty = m_isatty && isatty( STDERR_FILENO );
 #elif defined( CATCH_PLATFORM_WINDOWS )
-                m_isatty = m_isatty && _isatty( _fileno( stderr ) );
+                m_isatty = m_isatty && enableVirtualTerminalSupport( STD_ERROR_HANDLE );
 #endif
 #if defined( CATCH_PLATFORM_MAC ) || defined( CATCH_PLATFORM_IPHONE )
                 m_isatty = m_isatty && !isDebuggerActive();
