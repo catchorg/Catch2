@@ -97,6 +97,42 @@ namespace Catch {
 
 } // namespace Catch
 
+#if defined( CATCH_PLATFORM_LINUX ) || defined( CATCH_PLATFORM_MAC ) || \
+    defined( __GLIBC__ )
+#    define CATCH_INTERNAL_HAS_ISATTY
+#    include <unistd.h>
+#elif defined( CATCH_PLATFORM_WINDOWS )
+#    define CATCH_INTERNAL_HAS_ISATTY
+#    include <io.h>
+#endif
+
+#if defined ( CATCH_PLATFORM_WINDOWS )
+namespace Catch {
+namespace {
+
+    bool enableVirtualTerminalSupport(bool restore)
+    {
+        HANDLE outputHandle = GetStdHandle( STD_OUTPUT_HANDLE );
+        DWORD mode = 0;
+        if ( GetConsoleMode( outputHandle, &mode ) ) {
+            // VT100 style sequence processing has to be enabled by explicit
+            // opt-in.
+            DWORD newMode = mode | ENABLE_PROCESSED_OUTPUT |
+                            ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+            bool virtualTerminalSupported = SetConsoleMode( outputHandle, newMode );
+            if(restore)
+            {
+                SetConsoleMode( outputHandle, mode );
+            }
+            return virtualTerminalSupported;
+        } else {
+            return false;
+        }
+    }
+
+}
+}
+#endif
 
 #if defined ( CATCH_CONFIG_COLOUR_WIN32 ) /////////////////////////////////////////
 
@@ -118,7 +154,11 @@ namespace {
             // Win32 text colour APIs can only be used on console streams
             // We cannot check that the output hasn't been redirected,
             // so we just check that the original stream is console stream.
-            return stream.isConsole();
+            bool useColour = stream.isConsole();
+            useColour = useColour && _isatty( _fileno( stdout ) );
+            // If available, prefer VT100 style escape sequences.
+            useColour = useColour && !enableVirtualTerminalSupport( true );
+            return useColour;
         }
 
     private:
@@ -160,18 +200,16 @@ namespace {
 
 #endif // Windows/ ANSI/ None
 
-
-#if defined( CATCH_PLATFORM_LINUX ) || defined( CATCH_PLATFORM_MAC ) || defined( __GLIBC__ )
-#    define CATCH_INTERNAL_HAS_ISATTY
-#    include <unistd.h>
-#endif
-
 namespace Catch {
 namespace {
 
     class ANSIColourImpl final : public ColourImpl {
     public:
-        ANSIColourImpl( IStream* stream ): ColourImpl( stream ) {}
+        ANSIColourImpl( IStream* stream ): ColourImpl( stream ) {
+#if defined( CATCH_PLATFORM_WINDOWS )
+            enableVirtualTerminalSupport(false);
+#endif
+        }
 
         static bool useImplementationForStream(IStream const& stream) {
             // This is kinda messy due to trying to support a bunch of
@@ -185,7 +223,10 @@ namespace {
 #if defined( CATCH_INTERNAL_HAS_ISATTY ) && \
     !( defined( __DJGPP__ ) && defined( __STRICT_ANSI__ ) )
             ErrnoGuard _; // for isatty
-            useColour = useColour && isatty( STDOUT_FILENO );
+            useColour = useColour && _isatty( _fileno( stdout ) );
+#    endif
+#    if defined( CATCH_PLATFORM_WINDOWS )
+            useColour = useColour && enableVirtualTerminalSupport(true);
 #    endif
 #    if defined( CATCH_PLATFORM_MAC ) || defined( CATCH_PLATFORM_IPHONE )
             useColour = useColour && !isDebuggerActive();
