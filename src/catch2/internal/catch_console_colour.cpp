@@ -97,15 +97,6 @@ namespace Catch {
 
 } // namespace Catch
 
-#if defined( CATCH_PLATFORM_LINUX ) || defined( CATCH_PLATFORM_MAC ) || \
-    defined( __GLIBC__ )
-#    define CATCH_INTERNAL_HAS_ISATTY
-#    include <unistd.h>
-#elif defined( CATCH_PLATFORM_WINDOWS )
-#    define CATCH_INTERNAL_HAS_ISATTY
-#    include <io.h>
-#endif
-
 #if defined ( CATCH_PLATFORM_WINDOWS )
 namespace Catch {
 namespace {
@@ -155,7 +146,6 @@ namespace {
             // We cannot check that the output hasn't been redirected,
             // so we just check that the original stream is console stream.
             bool useColour = stream.isConsole();
-            useColour = useColour && _isatty( _fileno( stdout ) );
             // If available, prefer VT100 style escape sequences.
             useColour = useColour && !enableVirtualTerminalSupport( true );
             return useColour;
@@ -212,26 +202,10 @@ namespace {
         }
 
         static bool useImplementationForStream(IStream const& stream) {
-            // This is kinda messy due to trying to support a bunch of
-            // different platforms at once.
-            // The basic idea is that if we are asked to do autodetection (as
-            // opposed to being told to use posixy colours outright), then we
-            // only want to use the colours if we are writing to console.
-            // However, console might be redirected, so we make an attempt at
-            // checking for that on platforms where we know how to do that.
             bool useColour = stream.isConsole();
-#if defined( CATCH_INTERNAL_HAS_ISATTY ) && \
-    !( defined( __DJGPP__ ) && defined( __STRICT_ANSI__ ) )
-            ErrnoGuard _; // for isatty
-            useColour = useColour && _isatty( _fileno( stdout ) );
-#    endif
 #    if defined( CATCH_PLATFORM_WINDOWS )
             useColour = useColour && enableVirtualTerminalSupport(true);
 #    endif
-#    if defined( CATCH_PLATFORM_MAC ) || defined( CATCH_PLATFORM_IPHONE )
-            useColour = useColour && !isDebuggerActive();
-#    endif
-
             return useColour;
         }
 

@@ -11,9 +11,18 @@
 #include <catch2/internal/catch_debug_console.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_stdstreams.hpp>
+#include <catch2/internal/catch_errno_guard.hpp>
 
 #include <cstdio>
 #include <fstream>
+
+#if defined( CATCH_PLATFORM_LINUX ) || defined( CATCH_PLATFORM_MAC ) || \
+    defined( __GLIBC__ )
+#    define CATCH_INTERNAL_HAS_ISATTY
+#    include <unistd.h>
+#elif defined( CATCH_PLATFORM_WINDOWS )
+#    include <io.h>
+#endif
 
 namespace Catch {
 
@@ -88,27 +97,52 @@ namespace Detail {
 
         class CoutStream final : public IStream {
             std::ostream m_os;
+            bool m_isatty;
         public:
             // Store the streambuf from cout up-front because
             // cout may get redirected when running tests
-            CoutStream() : m_os( Catch::cout().rdbuf() ) {}
+            CoutStream() : m_os( Catch::cout().rdbuf() ) {
+                m_isatty = true;
+#if defined( CATCH_INTERNAL_HAS_ISATTY ) && \
+    !( defined( __DJGPP__ ) && defined( __STRICT_ANSI__ ) )
+                ErrnoGuard _; // for isatty
+                m_isatty = m_isatty && isatty( STDOUT_FILENO );
+#elif defined( CATCH_PLATFORM_WINDOWS )
+                m_isatty = m_isatty && _isatty( _fileno( stdout ) );
+#endif
+#if defined( CATCH_PLATFORM_MAC ) || defined( CATCH_PLATFORM_IPHONE )
+                    m_isatty = m_isatty && !isDebuggerActive();
+#endif
+            }
 
         public: // IStream
             std::ostream& stream() override { return m_os; }
-            bool isConsole() const override { return true; }
+            bool isConsole() const override { return m_isatty; }
         };
 
         class CerrStream : public IStream {
             std::ostream m_os;
-
+            bool m_isatty;
         public:
             // Store the streambuf from cerr up-front because
             // cout may get redirected when running tests
-            CerrStream(): m_os( Catch::cerr().rdbuf() ) {}
+            CerrStream(): m_os( Catch::cerr().rdbuf() ) {
+                m_isatty = true;
+#if defined( CATCH_INTERNAL_HAS_ISATTY ) && \
+    !( defined( __DJGPP__ ) && defined( __STRICT_ANSI__ ) )
+                ErrnoGuard _; // for isatty
+                m_isatty = m_isatty && isatty( STDERR_FILENO );
+#elif defined( CATCH_PLATFORM_WINDOWS )
+                m_isatty = m_isatty && _isatty( _fileno( stderr ) );
+#endif
+#if defined( CATCH_PLATFORM_MAC ) || defined( CATCH_PLATFORM_IPHONE )
+                m_isatty = m_isatty && !isDebuggerActive();
+#endif
+            }
 
         public: // IStream
             std::ostream& stream() override { return m_os; }
-            bool isConsole() const override { return true; }
+            bool isConsole() const override { return m_isatty; }
         };
 
         ///////////////////////////////////////////////////////////////////////////
