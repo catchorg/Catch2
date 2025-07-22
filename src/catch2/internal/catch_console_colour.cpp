@@ -178,10 +178,7 @@ namespace {
         void use( Colour::Code _colourCode ) const override {
             auto setColour = [&out =
                                   m_stream->stream()]( char const* escapeCode ) {
-                // The escape sequence must be flushed to console, otherwise
-                // if stdin and stderr are intermixed, we'd get accidentally
-                // coloured output.
-                out << '\033' << escapeCode << std::flush;
+                out << '\033' << escapeCode;
             };
             switch( _colourCode ) {
                 case Colour::None:
