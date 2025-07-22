@@ -131,10 +131,11 @@ namespace Detail {
                 ErrnoGuard _; // for isatty
                 m_isatty = m_isatty && isatty( STDOUT_FILENO );
 #elif defined( CATCH_PLATFORM_WINDOWS )
+                m_isatty = m_isatty && _isatty( _fileno( stdout ) );
                 m_isatty = m_isatty && enableVirtualTerminalSupport( STD_OUTPUT_HANDLE );
 #endif
 #if defined( CATCH_PLATFORM_MAC ) || defined( CATCH_PLATFORM_IPHONE )
-                    m_isatty = m_isatty && !isDebuggerActive();
+                m_isatty = m_isatty && !isDebuggerActive();
 #endif
             }
 
@@ -156,6 +157,7 @@ namespace Detail {
                 ErrnoGuard _; // for isatty
                 m_isatty = m_isatty && isatty( STDERR_FILENO );
 #elif defined( CATCH_PLATFORM_WINDOWS )
+                m_isatty = m_isatty && _isatty( _fileno( stderr ) );
                 m_isatty = m_isatty && enableVirtualTerminalSupport( STD_ERROR_HANDLE );
 #endif
 #if defined( CATCH_PLATFORM_MAC ) || defined( CATCH_PLATFORM_IPHONE )
