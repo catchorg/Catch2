@@ -58,8 +58,9 @@ namespace Generators {
     class FilterGenerator final : public IGenerator<T> {
         GeneratorWrapper<T> m_generator;
         Predicate m_predicate;
+        static_assert(!std::is_reference<Predicate>::value, "This would most likely result in a dangling reference");
     public:
-        template <typename P = Predicate>
+        template <typename P>
         FilterGenerator(P&& pred, GeneratorWrapper<T>&& generator):
             m_generator(CATCH_MOVE(generator)),
             m_predicate(CATCH_FORWARD(pred))
@@ -91,7 +92,7 @@ namespace Generators {
 
     template <typename T, typename Predicate>
     GeneratorWrapper<T> filter(Predicate&& pred, GeneratorWrapper<T>&& generator) {
-        return GeneratorWrapper<T>(Catch::Detail::make_unique<FilterGenerator<T, Predicate>>(CATCH_FORWARD(pred), CATCH_MOVE(generator)));
+        return GeneratorWrapper<T>(Catch::Detail::make_unique<FilterGenerator<T, typename std::remove_reference<Predicate>::type>>(CATCH_FORWARD(pred), CATCH_MOVE(generator)));
     }
 
     template <typename T>

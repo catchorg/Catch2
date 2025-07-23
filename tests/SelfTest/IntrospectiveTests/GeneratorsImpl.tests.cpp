@@ -85,6 +85,19 @@ TEST_CASE("Generators internals", "[generators][internals]") {
                 filter([](int) { return false; }, values({ 1, 2, 3 })),
                 Catch::GeneratorException);
         }
+        
+        // Non-trivial usage
+        SECTION("Out-of-line predicates are copied into the generator") {
+            auto evilNumber = Catch::Detail::make_unique<int>(2);
+            auto gen = [&]{
+                const auto predicate = [&](int i) { return i != *evilNumber; };
+                return filter(predicate, values({ 2, 1, 2, 3, 2, 2 }));
+            }();
+            REQUIRE(gen.get() == 1);
+            REQUIRE(gen.next());
+            REQUIRE(gen.get() == 3);
+            REQUIRE_FALSE(gen.next());
+        }
     }
     SECTION("Take generator") {
         SECTION("Take less") {
