@@ -152,6 +152,7 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="Generators internals/Filter generator/Simple filtering" duration="{duration}"/>
     <testCase name="Generators internals/Filter generator/Filter out multiple elements at the start and end" duration="{duration}"/>
     <testCase name="Generators internals/Filter generator/Throws on construction if it can't get initial element" duration="{duration}"/>
+    <testCase name="Generators internals/Filter generator/Out-of-line predicates are copied into the generator" duration="{duration}"/>
     <testCase name="Generators internals/Take generator" duration="{duration}"/>
     <testCase name="Generators internals/Take generator/Take less" duration="{duration}"/>
     <testCase name="Generators internals/Take generator/Take more" duration="{duration}"/>

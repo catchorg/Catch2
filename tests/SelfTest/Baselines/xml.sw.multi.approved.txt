@@ -6916,6 +6916,44 @@ Approx( 1.30000000000000004 )
       </Section>
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
+    <Section name="Filter generator" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+      <Section name="Out-of-line predicates are copied into the generator" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen.get() == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen.next()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen.get() == 3
+          </Original>
+          <Expanded>
+            3 == 3
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            !(gen.next())
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
     <Section name="Take generator" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
       <Section name="Take less" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -22285,6 +22323,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2101" failures="157" expectedFailures="41" skips="12"/>
+  <OverallResults successes="2105" failures="157" expectedFailures="41" skips="12"/>
   <OverallResultsCases successes="317" failures="95" expectedFailures="17" skips="6"/>
 </Catch2TestRun>

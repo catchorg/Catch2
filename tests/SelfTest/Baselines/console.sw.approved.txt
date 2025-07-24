@@ -6056,6 +6056,34 @@ GeneratorsImpl.tests.cpp:<line number>: PASSED:
 
 -------------------------------------------------------------------------------
 Generators internals
+  Filter generator
+  Out-of-line predicates are copied into the generator
+-------------------------------------------------------------------------------
+GeneratorsImpl.tests.cpp:<line number>
+...............................................................................
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 1 )
+with expansion:
+  1 == 1
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.next() )
+with expansion:
+  true
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 3 )
+with expansion:
+  3 == 3
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( gen.next() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Generators internals
   Take generator
   Take less
 -------------------------------------------------------------------------------
@@ -19268,5 +19296,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  435 |  317 passed |  95 failed | 6 skipped | 17 failed as expected
-assertions: 2299 | 2101 passed | 157 failed | 41 failed as expected
+assertions: 2303 | 2105 passed | 157 failed | 41 failed as expected
 

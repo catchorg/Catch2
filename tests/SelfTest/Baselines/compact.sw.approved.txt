@@ -824,6 +824,10 @@ GeneratorsImpl.tests.cpp:<line number>: passed: filter([](int) { return false; }
 GeneratorsImpl.tests.cpp:<line number>: passed: filter([](int) { return false; }, values({ 1, 2, 3 })), Catch::GeneratorException
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 1 for: 1 == 1
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 3 for: 3 == 3
+GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 1 for: 1 == 1
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2 for: 2 == 2
 GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 1 for: 1 == 1
@@ -2885,6 +2889,6 @@ InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
 test cases:  435 |  317 passed |  95 failed | 6 skipped | 17 failed as expected
-assertions: 2299 | 2101 passed | 157 failed | 41 failed as expected
+assertions: 2303 | 2105 passed | 157 failed | 41 failed as expected
 
 
