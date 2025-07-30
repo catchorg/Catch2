@@ -4063,6 +4063,14 @@ namespace Catch {
     varName.captureValues( 0, __VA_ARGS__ )
 
 ///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CATCH_UNSCOPED_CAPTURE( varName, macroName, ... ) \
+    Catch::getResultCapture().emplaceUnscopedMessage(Catch::Capturer varName( macroName##_catch_sr,        \
+                             CATCH_INTERNAL_LINEINFO,     \
+                             Catch::ResultWas::Info,      \
+                             #__VA_ARGS__##_catch_sr );   \
+    varName.captureValues( 0, __VA_ARGS__ ))
+
+///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_INFO( macroName, log ) \
     const Catch::ScopedMessage INTERNAL_CATCH_UNIQUE_NAME( scopedMessage )( Catch::MessageBuilder( macroName##_catch_sr, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log )
 
@@ -4077,6 +4085,7 @@ namespace Catch {
   #define CATCH_UNSCOPED_INFO( msg ) INTERNAL_CATCH_UNSCOPED_INFO( "CATCH_UNSCOPED_INFO", msg )
   #define CATCH_WARN( msg ) INTERNAL_CATCH_MSG( "CATCH_WARN", Catch::ResultWas::Warning, Catch::ResultDisposition::ContinueOnFailure, msg )
   #define CATCH_CAPTURE( ... ) INTERNAL_CATCH_CAPTURE( INTERNAL_CATCH_UNIQUE_NAME(capturer), "CATCH_CAPTURE", __VA_ARGS__ )
+  #define CATCH_UNSCOPED_CAPTURE( ... ) INTERNAL_CATCH_UNSCOPED_CAPTURE( INTERNAL_CATCH_UNIQUE_NAME(capturer), "CATCH_UNSCOPED_CAPTURE", __VA_ARGS__ )
 
 #elif defined(CATCH_CONFIG_PREFIX_MESSAGES) && defined(CATCH_CONFIG_DISABLE)
 
@@ -4084,6 +4093,7 @@ namespace Catch {
   #define CATCH_UNSCOPED_INFO( msg ) (void)(0)
   #define CATCH_WARN( msg )          (void)(0)
   #define CATCH_CAPTURE( ... )       (void)(0)
+  #define UNSCOPED_CAPTURE( ... )    (void)(0)
 
 #elif !defined(CATCH_CONFIG_PREFIX_MESSAGES) && !defined(CATCH_CONFIG_DISABLE)
 
@@ -4091,13 +4101,14 @@ namespace Catch {
   #define UNSCOPED_INFO( msg ) INTERNAL_CATCH_UNSCOPED_INFO( "UNSCOPED_INFO", msg )
   #define WARN( msg ) INTERNAL_CATCH_MSG( "WARN", Catch::ResultWas::Warning, Catch::ResultDisposition::ContinueOnFailure, msg )
   #define CAPTURE( ... ) INTERNAL_CATCH_CAPTURE( INTERNAL_CATCH_UNIQUE_NAME(capturer), "CAPTURE", __VA_ARGS__ )
+  #define UNSCOPED_CAPTURE( ... ) INTERNAL_CATCH_UNSCOPED_CAPTURE( INTERNAL_CATCH_UNIQUE_NAME(capturer), "CAPTURE", __VA_ARGS__ )
 
 #elif !defined(CATCH_CONFIG_PREFIX_MESSAGES) && defined(CATCH_CONFIG_DISABLE)
-
-  #define INFO( msg )          (void)(0)
-  #define UNSCOPED_INFO( msg ) (void)(0)
-  #define WARN( msg )          (void)(0)
-  #define CAPTURE( ... )       (void)(0)
+#define INFO(msg)              (void)(0)
+#define UNSCOPED_INFO(msg)     (void)(0)
+#define WARN(msg)              (void)(0)
+#define CAPTURE(...)           (void)(0)
+#define UNSCOPED_CAPTURE(...)  (void)(0)
 
 #endif // end of user facing macro declarations
 
