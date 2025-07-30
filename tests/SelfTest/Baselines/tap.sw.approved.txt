@@ -3395,6 +3395,10 @@ ok {test-number} - a, UnorderedRangeEquals( b ) for: { 1, 2, 3 } unordered eleme
 ok {test-number} - vector_a, RangeEquals( array_a_plus_1, close_enough ) for: { 1, 2, 3 } elements are { 2, 3, 4 }
 # Type conversions of RangeEquals and similar
 ok {test-number} - vector_a, UnorderedRangeEquals( array_a_plus_1, close_enough ) for: { 1, 2, 3 } unordered elements are { 2, 3, 4 }
+# UNSCOPED CAPTURE can deal with complex expressions
+ok {test-number} - with 7 messages: 'a := 1' and 'b := 2' and 'c := 3' and 'a + b := 3' and 'a+b := 3' and 'c > b := true' and 'a == 1 := true'
+# UNSCOPED_CAPTURE parses string and character constants
+ok {test-number} - with 11 messages: '("comma, in string", "escaped, \", ") := "escaped, ", "' and '"single quote in string,'," := "single quote in string,',"' and '"some escapes, \\,\\\\" := "some escapes, \,\\"' and '"some, ), unmatched, } prenheses {[<" := "some, ), unmatched, } prenheses {[<"' and ''"' := '"'' and ''\'' := '''' and '',' := ','' and ''}' := '}'' and '')' := ')'' and ''(' := '('' and ''{' := '{''
 # Unexpected exceptions can be translated
 not ok {test-number} - unexpected exception with message: '3.14000000000000012'
 # Upcasting special member functions
@@ -4363,6 +4367,12 @@ ok {test-number} - splitStringRef("", ','), Equals(std::vector<StringRef>()) for
 ok {test-number} - splitStringRef("abc", ','), Equals(std::vector<StringRef>{"abc"}) for: { abc } Equals: { abc }
 # splitString
 ok {test-number} - splitStringRef("abc,def", ','), Equals(std::vector<StringRef>{"abc", "def"}) for: { abc, def } Equals: { abc, def }
+# stacks unscoped capture for vector
+not ok {test-number} - false with 1 message: 'input := { 7, 8, 9 }'
+# stacks unscoped capture in loops
+not ok {test-number} - false with 4 messages: '"Count 1 to 3..." := "Count 1 to 3..."' and 'input := 1' and 'input := 2' and 'input := 3'
+# stacks unscoped capture in loops
+not ok {test-number} - false with 4 messages: '"Count 4 to 6..." := "Count 4 to 6..."' and 'input := 4' and 'input := 5' and 'input := 6'
 # stacks unscoped info in loops
 not ok {test-number} - false with 4 messages: 'Count 1 to 3...' and '1' and '2' and '3'
 # stacks unscoped info in loops
@@ -4619,5 +4629,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2311
+1..2316
 

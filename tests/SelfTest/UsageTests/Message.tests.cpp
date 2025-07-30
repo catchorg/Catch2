@@ -212,6 +212,38 @@ TEST_CASE( "CAPTURE can deal with complex expressions", "[messages][capture]" ) 
     SUCCEED();
 }
 
+TEST_CASE( "UNSCOPED CAPTURE can deal with complex expressions", "[messages][unscoped][capture]" ) {
+    int a = 1;
+    int b = 2;
+    int c = 3;
+    UNSCOPED_CAPTURE( a, b, c, a + b, a+b, c > b, a == 1 );
+    SUCCEED();
+}
+template < typename T>
+static void unscoped_capture( T input ) { UNSCOPED_CAPTURE(input) }
+
+TEST_CASE( "stacks unscoped capture in loops", "[failing][unscoped][capture]" ) {
+    UNSCOPED_CAPTURE( "Count 1 to 3..." );
+    for ( int i = 1; i <= 3; i++ ) {
+        unscoped_capture( i );
+    }
+    CHECK( false );
+    UNSCOPED_CAPTURE( "Count 4 to 6..." );
+    for ( int i = 4; i <= 6; i++ ) {
+        unscoped_capture( i );
+    }
+    CHECK( false );
+}
+
+TEST_CASE( "stacks unscoped capture for vector", "[failing][unscoped][capture]" ) {
+    {
+        std::vector<int> vec { 7, 8, 9 };
+        unscoped_capture(  vec);
+    }
+    CHECK( false );
+}
+
+
 #ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value" // In (1, 2), the "1" is unused ...
@@ -287,6 +319,13 @@ TEST_CASE("CAPTURE parses string and character constants", "[messages][capture]"
     CAPTURE(("comma, in string", "escaped, \", "), "single quote in string,',", "some escapes, \\,\\\\");
     CAPTURE("some, ), unmatched, } prenheses {[<");
     CAPTURE('"', '\'', ',', '}', ')', '(', '{');
+    SUCCEED();
+}
+
+TEST_CASE("UNSCOPED_CAPTURE parses string and character constants", "[messages][capture]") {
+    UNSCOPED_CAPTURE(("comma, in string", "escaped, \", "), "single quote in string,',", "some escapes, \\,\\\\");
+    UNSCOPED_CAPTURE( "some, ), unmatched, } prenheses {[<" );
+    UNSCOPED_CAPTURE( '"', '\'', ',', '}', ')', '(', '{' );
     SUCCEED();
 }
 

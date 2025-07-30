@@ -1822,6 +1822,8 @@ at Message.tests.cpp:<line number>
     <testCase name="Standard output from all sections is reported/one" duration="{duration}"/>
     <testCase name="Standard output from all sections is reported/two" duration="{duration}"/>
     <testCase name="The NO_FAIL macro reports a failure but does not fail the test" duration="{duration}"/>
+    <testCase name="UNSCOPED CAPTURE can deal with complex expressions" duration="{duration}"/>
+    <testCase name="UNSCOPED_CAPTURE parses string and character constants" duration="{duration}"/>
     <testCase name="just failure" duration="{duration}">
       <failure message="FAIL()">
 FAILED:
@@ -1871,6 +1873,34 @@ FAILED:
 	REQUIRE( false )
 hi
 i := 7
+at Message.tests.cpp:<line number>
+      </failure>
+    </testCase>
+    <testCase name="stacks unscoped capture for vector" duration="{duration}">
+      <failure message="CHECK(false)">
+FAILED:
+	CHECK( false )
+input := { 7, 8, 9 }
+at Message.tests.cpp:<line number>
+      </failure>
+    </testCase>
+    <testCase name="stacks unscoped capture in loops" duration="{duration}">
+      <failure message="CHECK(false)">
+FAILED:
+	CHECK( false )
+"Count 1 to 3..." := "Count 1 to 3..."
+input := 1
+input := 2
+input := 3
+at Message.tests.cpp:<line number>
+      </failure>
+      <failure message="CHECK(false)">
+FAILED:
+	CHECK( false )
+"Count 4 to 6..." := "Count 4 to 6..."
+input := 4
+input := 5
+input := 6
 at Message.tests.cpp:<line number>
       </failure>
     </testCase>

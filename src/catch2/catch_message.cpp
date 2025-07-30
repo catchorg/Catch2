@@ -112,4 +112,15 @@ namespace Catch {
         m_captured++;
     }
 
+     void Capturer::captureUnscopedValue( size_t index, std::string const& value ) {
+        m_messages[index].message += value;
+        getResultCapture().emplaceUnscopedMessage(Catch::MessageBuilder(
+            m_messages[index].macroName,
+            m_messages[index].lineInfo,
+            m_messages[index].type) << m_messages[index].message);
+        if(index == m_messages.size() - 1){
+            m_messages.clear();
+        }
+    }
+
 } // end namespace Catch

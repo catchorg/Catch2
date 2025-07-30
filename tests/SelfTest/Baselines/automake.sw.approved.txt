@@ -297,6 +297,8 @@ Message from section two
 :test-result: PASS Tracker
 :test-result: PASS Trim strings
 :test-result: PASS Type conversions of RangeEquals and similar
+:test-result: PASS UNSCOPED CAPTURE can deal with complex expressions
+:test-result: PASS UNSCOPED_CAPTURE parses string and character constants
 :test-result: FAIL Unexpected exceptions can be translated
 :test-result: PASS Upcasting special member functions
 :test-result: PASS Usage of AllMatch range matcher
@@ -396,6 +398,8 @@ b1!
 :test-result: PASS shortened hide tags are split apart
 :test-result: SKIP skipped tests can optionally provide a reason
 :test-result: PASS splitString
+:test-result: FAIL stacks unscoped capture for vector
+:test-result: FAIL stacks unscoped capture in loops
 :test-result: FAIL stacks unscoped info in loops
 :test-result: PASS startsWith
 :test-result: PASS std::map is convertible string

@@ -1679,6 +1679,39 @@ explicitly with message:
   skipping because answer = 43
 
 -------------------------------------------------------------------------------
+stacks unscoped capture for vector
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: FAILED:
+  CHECK( false )
+with message:
+  input := { 7, 8, 9 }
+
+-------------------------------------------------------------------------------
+stacks unscoped capture in loops
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: FAILED:
+  CHECK( false )
+with messages:
+  "Count 1 to 3..." := "Count 1 to 3..."
+  input := 1
+  input := 2
+  input := 3
+
+Message.tests.cpp:<line number>: FAILED:
+  CHECK( false )
+with messages:
+  "Count 4 to 6..." := "Count 4 to 6..."
+  input := 4
+  input := 5
+  input := 6
+
+-------------------------------------------------------------------------------
 stacks unscoped info in loops
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -1719,6 +1752,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  435 |  335 passed |  76 failed | 7 skipped | 17 failed as expected
-assertions: 2278 | 2101 passed | 136 failed | 41 failed as expected
+test cases:  439 |  337 passed |  78 failed | 7 skipped | 17 failed as expected
+assertions: 2283 | 2103 passed | 139 failed | 41 failed as expected
 

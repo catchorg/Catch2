@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="140" skipped="12" tests="2311" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="143" skipped="12" tests="2316" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1675,6 +1675,8 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Ranges with begin that needs ADL" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Custom predicate" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Custom predicate/Two equal non-empty containers (close enough)" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="UNSCOPED CAPTURE can deal with complex expressions" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="UNSCOPED_CAPTURE parses string and character constants" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Unexpected exceptions can be translated" time="{duration}" status="run">
       <error type="TEST_CASE">
 FAILED:
@@ -2292,6 +2294,34 @@ at Skip.tests.cpp:<line number>
       </skipped>
     </testcase>
     <testcase classname="<exe-name>.global" name="splitString" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="stacks unscoped capture for vector" time="{duration}" status="run">
+      <failure message="false" type="CHECK">
+FAILED:
+  CHECK( false )
+input := { 7, 8, 9 }
+at Message.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="stacks unscoped capture in loops" time="{duration}" status="run">
+      <failure message="false" type="CHECK">
+FAILED:
+  CHECK( false )
+"Count 1 to 3..." := "Count 1 to 3..."
+input := 1
+input := 2
+input := 3
+at Message.tests.cpp:<line number>
+      </failure>
+      <failure message="false" type="CHECK">
+FAILED:
+  CHECK( false )
+"Count 4 to 6..." := "Count 4 to 6..."
+input := 4
+input := 5
+input := 6
+at Message.tests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="<exe-name>.global" name="stacks unscoped info in loops" time="{duration}" status="run">
       <failure message="false" type="CHECK">
 FAILED:

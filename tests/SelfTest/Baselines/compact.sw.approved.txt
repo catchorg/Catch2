@@ -2194,6 +2194,8 @@ MatchersRanges.tests.cpp:<line number>: passed: a, !RangeEquals( b ) for: { 1, 2
 MatchersRanges.tests.cpp:<line number>: passed: a, UnorderedRangeEquals( b ) for: { 1, 2, 3 } unordered elements are { 3, 2, 1 }
 MatchersRanges.tests.cpp:<line number>: passed: vector_a, RangeEquals( array_a_plus_1, close_enough ) for: { 1, 2, 3 } elements are { 2, 3, 4 }
 MatchersRanges.tests.cpp:<line number>: passed: vector_a, UnorderedRangeEquals( array_a_plus_1, close_enough ) for: { 1, 2, 3 } unordered elements are { 2, 3, 4 }
+Message.tests.cpp:<line number>: passed: with 7 messages: 'a := 1' and 'b := 2' and 'c := 3' and 'a + b := 3' and 'a+b := 3' and 'c > b := true' and 'a == 1 := true'
+Message.tests.cpp:<line number>: passed: with 11 messages: '("comma, in string", "escaped, \", ") := "escaped, ", "' and '"single quote in string,'," := "single quote in string,',"' and '"some escapes, \\,\\\\" := "some escapes, \,\\"' and '"some, ), unmatched, } prenheses {[<" := "some, ), unmatched, } prenheses {[<"' and ''"' := '"'' and ''\'' := '''' and '',' := ','' and ''}' := '}'' and '')' := ')'' and ''(' := '('' and ''{' := '{''
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: '3.14000000000000012'
 UniquePtr.tests.cpp:<line number>: passed: bptr->i == 3 for: 3 == 3
 UniquePtr.tests.cpp:<line number>: passed: bptr->i == 3 for: 3 == 3
@@ -2720,6 +2722,9 @@ Skip.tests.cpp:<line number>: skipped: 'skipping because answer = 43'
 StringManip.tests.cpp:<line number>: passed: splitStringRef("", ','), Equals(std::vector<StringRef>()) for: {  } Equals: {  }
 StringManip.tests.cpp:<line number>: passed: splitStringRef("abc", ','), Equals(std::vector<StringRef>{"abc"}) for: { abc } Equals: { abc }
 StringManip.tests.cpp:<line number>: passed: splitStringRef("abc,def", ','), Equals(std::vector<StringRef>{"abc", "def"}) for: { abc, def } Equals: { abc, def }
+Message.tests.cpp:<line number>: failed: false with 1 message: 'input := { 7, 8, 9 }'
+Message.tests.cpp:<line number>: failed: false with 4 messages: '"Count 1 to 3..." := "Count 1 to 3..."' and 'input := 1' and 'input := 2' and 'input := 3'
+Message.tests.cpp:<line number>: failed: false with 4 messages: '"Count 4 to 6..." := "Count 4 to 6..."' and 'input := 4' and 'input := 5' and 'input := 6'
 Message.tests.cpp:<line number>: failed: false with 4 messages: 'Count 1 to 3...' and '1' and '2' and '3'
 Message.tests.cpp:<line number>: failed: false with 4 messages: 'Count 4 to 6...' and '4' and '5' and '6'
 StringManip.tests.cpp:<line number>: passed: !(startsWith("", 'c')) for: !false
@@ -2884,7 +2889,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  435 |  317 passed |  95 failed | 6 skipped | 17 failed as expected
-assertions: 2299 | 2101 passed | 157 failed | 41 failed as expected
+test cases:  439 |  319 passed |  97 failed | 6 skipped | 17 failed as expected
+assertions: 2304 | 2103 passed | 160 failed | 41 failed as expected
 
 

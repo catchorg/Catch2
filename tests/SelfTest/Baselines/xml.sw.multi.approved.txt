@@ -16448,6 +16448,66 @@ There is no extra whitespace here
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="UNSCOPED CAPTURE can deal with complex expressions" tags="[capture][messages][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      a := 1
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      b := 2
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      c := 3
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      a + b := 3
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      a+b := 3
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      c > b := true
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      a == 1 := true
+    </Info>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="UNSCOPED_CAPTURE parses string and character constants" tags="[capture][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      ("comma, in string", "escaped, \", ") := "escaped, ", "
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      "single quote in string,'," := "single quote in string,',"
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      "some escapes, \\,\\\\" := "some escapes, \,\\"
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      "some, ), unmatched, } prenheses {[&lt;" := "some, ), unmatched, } prenheses {[&lt;"
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      '"' := '"'
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      '\'' := '''
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      ',' := ','
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      '}' := '}'
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      ')' := ')'
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      '(' := '('
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      '{' := '{'
+    </Info>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="Unexpected exceptions can be translated" tags="[!throws][.][failing]" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
     <Exception filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
       3.14000000000000012
@@ -21019,6 +21079,63 @@ Approx( -1.95996398454005449 )
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="stacks unscoped capture for vector" tags="[capture][failing][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      input := { 7, 8, 9 }
+    </Info>
+    <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      <Original>
+        false
+      </Original>
+      <Expanded>
+        false
+      </Expanded>
+    </Expression>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="stacks unscoped capture in loops" tags="[capture][failing][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      "Count 1 to 3..." := "Count 1 to 3..."
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      input := 1
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      input := 2
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      input := 3
+    </Info>
+    <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      <Original>
+        false
+      </Original>
+      <Expanded>
+        false
+      </Expanded>
+    </Expression>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      "Count 4 to 6..." := "Count 4 to 6..."
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      input := 4
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      input := 5
+    </Info>
+    <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      input := 6
+    </Info>
+    <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+      <Original>
+        false
+      </Original>
+      <Expanded>
+        false
+      </Expanded>
+    </Expression>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
   <TestCase name="stacks unscoped info in loops" tags="[.][failing][info][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       Count 1 to 3...
@@ -22285,6 +22402,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2101" failures="157" expectedFailures="41" skips="12"/>
-  <OverallResultsCases successes="317" failures="95" expectedFailures="17" skips="6"/>
+  <OverallResults successes="2103" failures="160" expectedFailures="41" skips="12"/>
+  <OverallResultsCases successes="319" failures="97" expectedFailures="17" skips="6"/>
 </Catch2TestRun>

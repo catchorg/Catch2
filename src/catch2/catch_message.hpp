@@ -73,6 +73,19 @@ namespace Catch {
 
         ~Capturer();
 
+        void captureUnscopedValue( size_t index, std::string const& value );
+
+        template<typename T>
+        void captureUnscopedValues( size_t index, T const& value ) {
+            captureUnscopedValue( index, Catch::Detail::stringify( value ) );
+        }
+
+        template<typename T, typename... Ts>
+        void captureUnscopedValues( size_t index, T const& value, Ts const&... values ) {
+            captureUnscopedValue( index, Catch::Detail::stringify(value) );
+            captureUnscopedValues( index+1, values... );
+        }
+
         void captureValue( size_t index, std::string const& value );
 
         template<typename T>
@@ -84,6 +97,10 @@ namespace Catch {
         void captureValues( size_t index, T const& value, Ts const&... values ) {
             captureValue( index, Catch::Detail::stringify(value) );
             captureValues( index+1, values... );
+        }
+
+         std::vector<MessageInfo> getMessageDetails() const {
+            return m_messages;
         }
     };
 
@@ -106,6 +123,14 @@ namespace Catch {
     varName.captureValues( 0, __VA_ARGS__ )
 
 ///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CATCH_UNSCOPED_CAPTURE( varName, macroName, ... ) \
+    Catch::Capturer varName( macroName##_catch_sr,                 \
+                             CATCH_INTERNAL_LINEINFO,              \
+                             Catch::ResultWas::Info,               \
+                             #__VA_ARGS__##_catch_sr );            \
+    varName.captureUnscopedValues( 0, __VA_ARGS__ );
+
+///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_INFO( macroName, log ) \
     const Catch::ScopedMessage INTERNAL_CATCH_UNIQUE_NAME( scopedMessage )( Catch::MessageBuilder( macroName##_catch_sr, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log )
 
@@ -120,6 +145,7 @@ namespace Catch {
   #define CATCH_UNSCOPED_INFO( msg ) INTERNAL_CATCH_UNSCOPED_INFO( "CATCH_UNSCOPED_INFO", msg )
   #define CATCH_WARN( msg ) INTERNAL_CATCH_MSG( "CATCH_WARN", Catch::ResultWas::Warning, Catch::ResultDisposition::ContinueOnFailure, msg )
   #define CATCH_CAPTURE( ... ) INTERNAL_CATCH_CAPTURE( INTERNAL_CATCH_UNIQUE_NAME(capturer), "CATCH_CAPTURE", __VA_ARGS__ )
+  #define CATCH_UNSCOPED_CAPTURE( ... ) INTERNAL_CATCH_UNSCOPED_CAPTURE( INTERNAL_CATCH_UNIQUE_NAME(capturer), "CATCH_UNSCOPED_CAPTURE", __VA_ARGS__ )
 
 #elif defined(CATCH_CONFIG_PREFIX_MESSAGES) && defined(CATCH_CONFIG_DISABLE)
 
@@ -127,6 +153,8 @@ namespace Catch {
   #define CATCH_UNSCOPED_INFO( msg ) (void)(0)
   #define CATCH_WARN( msg )          (void)(0)
   #define CATCH_CAPTURE( ... )       (void)(0)
+  #define CATCH_UNSCOPED_CAPTURE( ... ) (void)(0)
+
 
 #elif !defined(CATCH_CONFIG_PREFIX_MESSAGES) && !defined(CATCH_CONFIG_DISABLE)
 
@@ -134,6 +162,8 @@ namespace Catch {
   #define UNSCOPED_INFO( msg ) INTERNAL_CATCH_UNSCOPED_INFO( "UNSCOPED_INFO", msg )
   #define WARN( msg ) INTERNAL_CATCH_MSG( "WARN", Catch::ResultWas::Warning, Catch::ResultDisposition::ContinueOnFailure, msg )
   #define CAPTURE( ... ) INTERNAL_CATCH_CAPTURE( INTERNAL_CATCH_UNIQUE_NAME(capturer), "CAPTURE", __VA_ARGS__ )
+  #define UNSCOPED_CAPTURE( ... ) INTERNAL_CATCH_UNSCOPED_CAPTURE( INTERNAL_CATCH_UNIQUE_NAME(capturer), "UNSCOPED_CAPTURE", __VA_ARGS__ )
+
 
 #elif !defined(CATCH_CONFIG_PREFIX_MESSAGES) && defined(CATCH_CONFIG_DISABLE)
 
@@ -141,6 +171,7 @@ namespace Catch {
   #define UNSCOPED_INFO( msg ) (void)(0)
   #define WARN( msg )          (void)(0)
   #define CAPTURE( ... )       (void)(0)
+  #define UNSCOPED_CAPTURE( ... ) (void)(0)
 
 #endif // end of user facing macro declarations
 
