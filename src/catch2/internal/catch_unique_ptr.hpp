@@ -92,7 +92,7 @@ namespace Detail {
         }
 
         explicit operator bool() const {
-            return m_ptr;
+            return m_ptr != nullptr;
         }
 
         friend void swap(unique_ptr& lhs, unique_ptr& rhs) {
