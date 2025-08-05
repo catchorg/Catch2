@@ -114,11 +114,12 @@ a test case,
   * `MapGenerator<T, U, Func>` -- returns the result of applying `Func`
   on elements from a different generator
   * `ChunkGenerator<T>` -- returns chunks (inside `std::vector`) of n elements from a generator
-* 4 specific purpose generators (defined in `catch2/generators/catch_generators_random.hpp`)
+* 2 random generators (defined in `catch2/generators/catch_generators_random.hpp`)
   * `RandomIntegerGenerator<Integral>` -- generates random Integrals from range
   * `RandomFloatGenerator<Float>` -- generates random Floats from range
-  * `RangeGenerator<T>(first, last)` -- generates all values inside a `[first, last)` arithmetic range (defined in `catch2/generators/catch_generators_range.hpp`)
-  * `IteratorGenerator<T>` -- copies and returns values from an iterator range (defined in `catch2/generators/catch_generators_range.hpp`)
+* 2 range generators (defined in `catch2/generators/catch_generators_range.hpp`)
+  * `RangeGenerator<T>(first, last)` -- generates all values inside a `[first, last)` arithmetic range
+  * `IteratorGenerator<T>` -- copies and returns values from an iterator range
 
 > `ChunkGenerator<T>`, `RandomIntegerGenerator<Integral>`, `RandomFloatGenerator<Float>` and `RangeGenerator<T>` were introduced in Catch2 2.7.0.
 
