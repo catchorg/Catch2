@@ -2878,7 +2878,12 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
+<<<<<<< HEAD
 test cases:  439 |  319 passed |  97 failed | 6 skipped | 17 failed as expected
 assertions: 2304 | 2103 passed | 160 failed | 41 failed as expected
+=======
+test cases:  438 |  318 passed |  97 failed | 6 skipped | 17 failed as expected
+assertions: 2297 | 2096 passed | 160 failed | 41 failed as expected
+>>>>>>> abfdfcf0 (Editing Baseline Files to Accomodate tests for UNSCOPED CAPTURE)
 
 

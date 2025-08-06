@@ -222,7 +222,7 @@ TEST_CASE( "UNSCOPED CAPTURE can deal with complex expressions", "[messages][uns
 template < typename T>
 static void unscoped_capture( T input ) { UNSCOPED_CAPTURE(input) }
 
-TEST_CASE( "stacks unscoped capture in loops", "[failing][unscoped][capture]" ) {
+TEST_CASE( "stacks unscoped capture in loops", "[failing][.][unscoped][capture]" ) {
     UNSCOPED_CAPTURE( "Count 1 to 3..." );
     for ( int i = 1; i <= 3; i++ ) {
         unscoped_capture( i );
@@ -235,7 +235,7 @@ TEST_CASE( "stacks unscoped capture in loops", "[failing][unscoped][capture]" ) 
     CHECK( false );
 }
 
-TEST_CASE( "stacks unscoped capture for vector", "[failing][unscoped][capture]" ) {
+TEST_CASE( "stacks unscoped capture for vector", "[failing][.][unscoped][capture]" ) {
     {
         std::vector<int> vec { 7, 8, 9 };
         unscoped_capture(  vec);

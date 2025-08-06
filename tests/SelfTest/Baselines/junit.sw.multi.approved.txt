@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
+<<<<<<< HEAD
   <testsuite name="<exe-name>" errors="17" failures="143" skipped="12" tests="2316" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+=======
+  <testsuite name="<exe-name>" errors="17" failures="143" skipped="12" tests="2309" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+>>>>>>> abfdfcf0 (Editing Baseline Files to Accomodate tests for UNSCOPED CAPTURE)
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>

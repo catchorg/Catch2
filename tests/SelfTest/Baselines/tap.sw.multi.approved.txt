@@ -4618,5 +4618,9 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
+<<<<<<< HEAD
 1..2316
+=======
+1..2309
+>>>>>>> abfdfcf0 (Editing Baseline Files to Accomodate tests for UNSCOPED CAPTURE)
 

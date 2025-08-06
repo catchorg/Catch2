@@ -21079,7 +21079,7 @@ Approx( -1.95996398454005449 )
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <TestCase name="stacks unscoped capture for vector" tags="[capture][failing][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+  <TestCase name="stacks unscoped capture for vector" tags="[.][capture][failing][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       input := { 7, 8, 9 }
     </Info>
@@ -21093,7 +21093,7 @@ Approx( -1.95996398454005449 )
     </Expression>
     <OverallResult success="false" skips="0"/>
   </TestCase>
-  <TestCase name="stacks unscoped capture in loops" tags="[capture][failing][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
+  <TestCase name="stacks unscoped capture in loops" tags="[.][capture][failing][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       "Count 1 to 3..." := "Count 1 to 3..."
     </Info>
@@ -22402,6 +22402,11 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+<<<<<<< HEAD
   <OverallResults successes="2103" failures="160" expectedFailures="41" skips="12"/>
   <OverallResultsCases successes="319" failures="97" expectedFailures="17" skips="6"/>
+=======
+  <OverallResults successes="2096" failures="160" expectedFailures="41" skips="12"/>
+  <OverallResultsCases successes="318" failures="97" expectedFailures="17" skips="6"/>
+>>>>>>> abfdfcf0 (Editing Baseline Files to Accomodate tests for UNSCOPED CAPTURE)
 </Catch2TestRun>
