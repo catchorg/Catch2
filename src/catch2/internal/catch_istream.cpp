@@ -6,14 +6,24 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-#include <catch2/internal/catch_istream.hpp>
-#include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_debug_console.hpp>
-#include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_enforce.hpp>
+#include <catch2/internal/catch_errno_guard.hpp>
+#include <catch2/internal/catch_istream.hpp>
 #include <catch2/internal/catch_stdstreams.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_windows_h_proxy.hpp>
 
 #include <cstdio>
 #include <fstream>
+
+#if defined( CATCH_PLATFORM_LINUX ) || defined( CATCH_PLATFORM_MAC ) || \
+    defined( __GLIBC__ )
+#    define CATCH_INTERNAL_HAS_ISATTY
+#    include <unistd.h>
+#elif defined( CATCH_PLATFORM_WINDOWS )
+#    include <io.h>
+#endif
 
 namespace Catch {
 
@@ -86,29 +96,78 @@ namespace Detail {
 
         ///////////////////////////////////////////////////////////////////////////
 
+#if defined( CATCH_PLATFORM_WINDOWS )
+        bool enableVirtualTerminalSupport( DWORD stdHandle ) {
+            HANDLE outputHandle = GetStdHandle( stdHandle );
+            DWORD mode = 0;
+            const DWORD requiredMode = ENABLE_PROCESSED_OUTPUT |
+                                ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+            if ( GetConsoleMode( outputHandle, &mode ) &&
+                    ( mode & requiredMode ) == requiredMode ) {
+                // VT100 style sequence processing has to be enabled by
+                // explicit opt-in.
+                const DWORD newMode = mode | requiredMode;
+                if( SetConsoleMode( outputHandle, newMode ) )
+                {
+                    return true;
+                }
+                // Restore fail-safe state.
+                SetConsoleMode( outputHandle, mode );
+            }
+            return false;
+        }
+#endif
+
         class CoutStream final : public IStream {
             std::ostream m_os;
+            bool m_isatty;
         public:
             // Store the streambuf from cout up-front because
             // cout may get redirected when running tests
-            CoutStream() : m_os( Catch::cout().rdbuf() ) {}
+            CoutStream() : m_os( Catch::cout().rdbuf() ) {
+                m_isatty = true;
+#if defined( CATCH_INTERNAL_HAS_ISATTY ) && \
+    !( defined( __DJGPP__ ) && defined( __STRICT_ANSI__ ) )
+                ErrnoGuard _; // for isatty
+                m_isatty = m_isatty && isatty( STDOUT_FILENO );
+#elif defined( CATCH_PLATFORM_WINDOWS )
+                m_isatty = m_isatty && _isatty( _fileno( stdout ) );
+                m_isatty = m_isatty && enableVirtualTerminalSupport( STD_OUTPUT_HANDLE );
+#endif
+#if defined( CATCH_PLATFORM_MAC ) || defined( CATCH_PLATFORM_IPHONE )
+                m_isatty = m_isatty && !isDebuggerActive();
+#endif
+            }
 
         public: // IStream
             std::ostream& stream() override { return m_os; }
-            bool isConsole() const override { return true; }
+            bool isConsole() const override { return m_isatty; }
         };
 
         class CerrStream : public IStream {
             std::ostream m_os;
-
+            bool m_isatty;
         public:
             // Store the streambuf from cerr up-front because
             // cout may get redirected when running tests
-            CerrStream(): m_os( Catch::cerr().rdbuf() ) {}
+            CerrStream(): m_os( Catch::cerr().rdbuf() ) {
+                m_isatty = true;
+#if defined( CATCH_INTERNAL_HAS_ISATTY ) && \
+    !( defined( __DJGPP__ ) && defined( __STRICT_ANSI__ ) )
+                ErrnoGuard _; // for isatty
+                m_isatty = m_isatty && isatty( STDERR_FILENO );
+#elif defined( CATCH_PLATFORM_WINDOWS )
+                m_isatty = m_isatty && _isatty( _fileno( stderr ) );
+                m_isatty = m_isatty && enableVirtualTerminalSupport( STD_ERROR_HANDLE );
+#endif
+#if defined( CATCH_PLATFORM_MAC ) || defined( CATCH_PLATFORM_IPHONE )
+                m_isatty = m_isatty && !isDebuggerActive();
+#endif
+            }
 
         public: // IStream
             std::ostream& stream() override { return m_os; }
-            bool isConsole() const override { return true; }
+            bool isConsole() const override { return m_isatty; }
         };
 
         ///////////////////////////////////////////////////////////////////////////

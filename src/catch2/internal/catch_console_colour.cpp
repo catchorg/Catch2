@@ -97,7 +97,6 @@ namespace Catch {
 
 } // namespace Catch
 
-
 #if defined ( CATCH_CONFIG_COLOUR_WIN32 ) /////////////////////////////////////////
 
 namespace Catch {
@@ -115,10 +114,13 @@ namespace {
         }
 
         static bool useImplementationForStream(IStream const& stream) {
-            // Win32 text colour APIs can only be used on console streams
-            // We cannot check that the output hasn't been redirected,
-            // so we just check that the original stream is console stream.
-            return stream.isConsole();
+            OSVERSIONINFOA versionInfo;
+            // Use as fallback for Windows versions <10.0 only.
+            // Newer Windows versions have full support for ANSI color codes.
+            if ( GetVersionExA( &versionInfo ) && versionInfo.dwMajorVersion < 10 ) {
+                return stream.isConsole();
+            }
+            return false;
         }
 
     private:
@@ -160,48 +162,23 @@ namespace {
 
 #endif // Windows/ ANSI/ None
 
-
-#if defined( CATCH_PLATFORM_LINUX ) || defined( CATCH_PLATFORM_MAC ) || defined( __GLIBC__ )
-#    define CATCH_INTERNAL_HAS_ISATTY
-#    include <unistd.h>
-#endif
-
 namespace Catch {
 namespace {
 
     class ANSIColourImpl final : public ColourImpl {
     public:
-        ANSIColourImpl( IStream* stream ): ColourImpl( stream ) {}
+        ANSIColourImpl( IStream* stream ): ColourImpl( stream ) {
+        }
 
         static bool useImplementationForStream(IStream const& stream) {
-            // This is kinda messy due to trying to support a bunch of
-            // different platforms at once.
-            // The basic idea is that if we are asked to do autodetection (as
-            // opposed to being told to use posixy colours outright), then we
-            // only want to use the colours if we are writing to console.
-            // However, console might be redirected, so we make an attempt at
-            // checking for that on platforms where we know how to do that.
-            bool useColour = stream.isConsole();
-#if defined( CATCH_INTERNAL_HAS_ISATTY ) && \
-    !( defined( __DJGPP__ ) && defined( __STRICT_ANSI__ ) )
-            ErrnoGuard _; // for isatty
-            useColour = useColour && isatty( STDOUT_FILENO );
-#    endif
-#    if defined( CATCH_PLATFORM_MAC ) || defined( CATCH_PLATFORM_IPHONE )
-            useColour = useColour && !isDebuggerActive();
-#    endif
-
-            return useColour;
+            return stream.isConsole();
         }
 
     private:
         void use( Colour::Code _colourCode ) const override {
             auto setColour = [&out =
                                   m_stream->stream()]( char const* escapeCode ) {
-                // The escape sequence must be flushed to console, otherwise
-                // if stdin and stderr are intermixed, we'd get accidentally
-                // coloured output.
-                out << '\033' << escapeCode << std::flush;
+                out << '\033' << escapeCode;
             };
             switch( _colourCode ) {
                 case Colour::None:
