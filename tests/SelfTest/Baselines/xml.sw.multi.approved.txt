@@ -16450,61 +16450,61 @@ There is no extra whitespace here
   </TestCase>
   <TestCase name="UNSCOPED CAPTURE can deal with complex expressions" tags="[capture][messages][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      a := 1
+      1
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      b := 2
+      2
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      c := 3
+      3
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      a + b := 3
+      3
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      a+b := 3
+      3
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      c > b := true
+      true
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      a == 1 := true
+      true
     </Info>
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="UNSCOPED_CAPTURE parses string and character constants" tags="[capture][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      ("comma, in string", "escaped, \", ") := "escaped, ", "
+      "escaped, ", "
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      "single quote in string,'," := "single quote in string,',"
+      "single quote in string,',"
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      "some escapes, \\,\\\\" := "some escapes, \,\\"
+      "some escapes, \,\\"
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      "some, ), unmatched, } prenheses {[&lt;" := "some, ), unmatched, } prenheses {[&lt;"
+      "some, ), unmatched, } prenheses {[&lt;"
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      '"' := '"'
+      '"'
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      '\'' := '''
+      '''
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      ',' := ','
+      ','
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      '}' := '}'
+      '}'
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      ')' := ')'
+      ')'
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      '(' := '('
+      '('
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      '{' := '{'
+      '{'
     </Info>
     <OverallResult success="true" skips="0"/>
   </TestCase>
@@ -21081,7 +21081,7 @@ Approx( -1.95996398454005449 )
   </TestCase>
   <TestCase name="stacks unscoped capture for vector" tags="[.][capture][failing][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      input := { 7, 8, 9 }
+      { 7, 8, 9 }
     </Info>
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       <Original>
@@ -21095,16 +21095,16 @@ Approx( -1.95996398454005449 )
   </TestCase>
   <TestCase name="stacks unscoped capture in loops" tags="[.][capture][failing][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      "Count 1 to 3..." := "Count 1 to 3..."
+      "Count 1 to 3..."
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      input := 1
+      1
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      input := 2
+      2
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      input := 3
+      3
     </Info>
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       <Original>
@@ -21115,16 +21115,16 @@ Approx( -1.95996398454005449 )
       </Expanded>
     </Expression>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      "Count 4 to 6..." := "Count 4 to 6..."
+      "Count 4 to 6..."
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      input := 4
+      4
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      input := 5
+      5
     </Info>
     <Info filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
-      input := 6
+      6
     </Info>
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       <Original>
@@ -22402,11 +22402,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-<<<<<<< HEAD
   <OverallResults successes="2103" failures="160" expectedFailures="41" skips="12"/>
   <OverallResultsCases successes="319" failures="97" expectedFailures="17" skips="6"/>
-=======
-  <OverallResults successes="2096" failures="160" expectedFailures="41" skips="12"/>
-  <OverallResultsCases successes="318" failures="97" expectedFailures="17" skips="6"/>
->>>>>>> abfdfcf0 (Editing Baseline Files to Accomodate tests for UNSCOPED CAPTURE)
 </Catch2TestRun>

@@ -65,26 +65,14 @@ namespace Catch {
         std::vector<MessageInfo> m_messages;
         IResultCapture& m_resultCapture;
         size_t m_captured = 0;
+        bool isScoped;
     public:
-        Capturer( StringRef macroName, SourceLineInfo const& lineInfo, ResultWas::OfType resultType, StringRef names );
+        Capturer( StringRef macroName, SourceLineInfo const& lineInfo, ResultWas::OfType resultType, StringRef names, bool scoped );
 
         Capturer(Capturer const&) = delete;
         Capturer& operator=(Capturer const&) = delete;
 
         ~Capturer();
-
-        void captureUnscopedValue( size_t index, std::string const& value );
-
-        template<typename T>
-        void captureUnscopedValues( size_t index, T const& value ) {
-            captureUnscopedValue( index, Catch::Detail::stringify( value ) );
-        }
-
-        template<typename T, typename... Ts>
-        void captureUnscopedValues( size_t index, T const& value, Ts const&... values ) {
-            captureUnscopedValue( index, Catch::Detail::stringify(value) );
-            captureUnscopedValues( index+1, values... );
-        }
 
         void captureValue( size_t index, std::string const& value );
 
@@ -97,10 +85,6 @@ namespace Catch {
         void captureValues( size_t index, T const& value, Ts const&... values ) {
             captureValue( index, Catch::Detail::stringify(value) );
             captureValues( index+1, values... );
-        }
-
-         std::vector<MessageInfo> getMessageDetails() const {
-            return m_messages;
         }
     };
 
@@ -119,7 +103,8 @@ namespace Catch {
     Catch::Capturer varName( macroName##_catch_sr,        \
                              CATCH_INTERNAL_LINEINFO,     \
                              Catch::ResultWas::Info,      \
-                             #__VA_ARGS__##_catch_sr );   \
+                             #__VA_ARGS__##_catch_sr,     \
+                             true );                      \
     varName.captureValues( 0, __VA_ARGS__ )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -127,8 +112,9 @@ namespace Catch {
     Catch::Capturer varName( macroName##_catch_sr,                 \
                              CATCH_INTERNAL_LINEINFO,              \
                              Catch::ResultWas::Info,               \
-                             #__VA_ARGS__##_catch_sr );            \
-    varName.captureUnscopedValues( 0, __VA_ARGS__ );
+                             #__VA_ARGS__##_catch_sr,              \
+                             false );                              \
+    varName.captureValues( 0, __VA_ARGS__ );
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_INFO( macroName, log ) \
@@ -149,12 +135,11 @@ namespace Catch {
 
 #elif defined(CATCH_CONFIG_PREFIX_MESSAGES) && defined(CATCH_CONFIG_DISABLE)
 
-  #define CATCH_INFO( msg )          (void)(0)
-  #define CATCH_UNSCOPED_INFO( msg ) (void)(0)
-  #define CATCH_WARN( msg )          (void)(0)
-  #define CATCH_CAPTURE( ... )       (void)(0)
-  #define CATCH_UNSCOPED_CAPTURE( ... ) (void)(0)
-
+  #define CATCH_INFO( msg )              (void)(0)
+  #define CATCH_UNSCOPED_INFO( msg )     (void)(0)
+  #define CATCH_WARN( msg )              (void)(0)
+  #define CATCH_CAPTURE( ... )           (void)(0)
+  #define CATCH_UNSCOPED_CAPTURE( ... )  (void)(0)
 
 #elif !defined(CATCH_CONFIG_PREFIX_MESSAGES) && !defined(CATCH_CONFIG_DISABLE)
 
@@ -167,12 +152,11 @@ namespace Catch {
 
 #elif !defined(CATCH_CONFIG_PREFIX_MESSAGES) && defined(CATCH_CONFIG_DISABLE)
 
-  #define INFO( msg )          (void)(0)
-  #define UNSCOPED_INFO( msg ) (void)(0)
-  #define WARN( msg )          (void)(0)
-  #define CAPTURE( ... )       (void)(0)
-  #define UNSCOPED_CAPTURE( ... ) (void)(0)
-
+  #define INFO(msg)                (void)(0)
+  #define UNSCOPED_INFO(msg)       (void)(0)
+  #define WARN(msg)                (void)(0)
+  #define CAPTURE(...)             (void)(0)
+  #define UNSCOPED_CAPTURE(...)    (void)(0)
 #endif // end of user facing macro declarations
 
 

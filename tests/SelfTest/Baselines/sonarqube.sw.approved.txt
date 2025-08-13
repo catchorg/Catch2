@@ -1880,7 +1880,7 @@ at Message.tests.cpp:<line number>
       <failure message="CHECK(false)">
 FAILED:
 	CHECK( false )
-input := { 7, 8, 9 }
+{ 7, 8, 9 }
 at Message.tests.cpp:<line number>
       </failure>
     </testCase>
@@ -1888,19 +1888,19 @@ at Message.tests.cpp:<line number>
       <failure message="CHECK(false)">
 FAILED:
 	CHECK( false )
-"Count 1 to 3..." := "Count 1 to 3..."
-input := 1
-input := 2
-input := 3
+"Count 1 to 3..."
+1
+2
+3
 at Message.tests.cpp:<line number>
       </failure>
       <failure message="CHECK(false)">
 FAILED:
 	CHECK( false )
-"Count 4 to 6..." := "Count 4 to 6..."
-input := 4
-input := 5
-input := 6
+"Count 4 to 6..."
+4
+5
+6
 at Message.tests.cpp:<line number>
       </failure>
     </testCase>

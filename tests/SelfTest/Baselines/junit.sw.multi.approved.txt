@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-<<<<<<< HEAD
   <testsuite name="<exe-name>" errors="17" failures="143" skipped="12" tests="2316" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
-=======
-  <testsuite name="<exe-name>" errors="17" failures="143" skipped="12" tests="2309" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
->>>>>>> abfdfcf0 (Editing Baseline Files to Accomodate tests for UNSCOPED CAPTURE)
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -2301,7 +2297,7 @@ at Skip.tests.cpp:<line number>
       <failure message="false" type="CHECK">
 FAILED:
   CHECK( false )
-input := { 7, 8, 9 }
+{ 7, 8, 9 }
 at Message.tests.cpp:<line number>
       </failure>
     </testcase>
@@ -2309,19 +2305,19 @@ at Message.tests.cpp:<line number>
       <failure message="false" type="CHECK">
 FAILED:
   CHECK( false )
-"Count 1 to 3..." := "Count 1 to 3..."
-input := 1
-input := 2
-input := 3
+"Count 1 to 3..."
+1
+2
+3
 at Message.tests.cpp:<line number>
       </failure>
       <failure message="false" type="CHECK">
 FAILED:
   CHECK( false )
-"Count 4 to 6..." := "Count 4 to 6..."
-input := 4
-input := 5
-input := 6
+"Count 4 to 6..."
+4
+5
+6
 at Message.tests.cpp:<line number>
       </failure>
     </testcase>

@@ -238,7 +238,7 @@ TEST_CASE( "stacks unscoped capture in loops", "[failing][.][unscoped][capture]"
 TEST_CASE( "stacks unscoped capture for vector", "[failing][.][unscoped][capture]" ) {
     {
         std::vector<int> vec { 7, 8, 9 };
-        unscoped_capture(  vec);
+        unscoped_capture( vec );
     }
     CHECK( false );
 }

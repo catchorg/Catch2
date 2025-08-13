@@ -14240,13 +14240,13 @@ Message.tests.cpp:<line number>
 
 Message.tests.cpp:<line number>: PASSED:
 with messages:
-  a := 1
-  b := 2
-  c := 3
-  a + b := 3
-  a+b := 3
-  c > b := true
-  a == 1 := true
+  1
+  2
+  3
+  3
+  3
+  true
+  true
 
 -------------------------------------------------------------------------------
 UNSCOPED_CAPTURE parses string and character constants
@@ -14256,18 +14256,17 @@ Message.tests.cpp:<line number>
 
 Message.tests.cpp:<line number>: PASSED:
 with messages:
-  ("comma, in string", "escaped, \", ") := "escaped, ", "
-  "single quote in string,'," := "single quote in string,',"
-  "some escapes, \\,\\\\" := "some escapes, \,\\"
-  "some, ), unmatched, } prenheses {[<" := "some, ), unmatched, } prenheses {[
-  <"
-  '"' := '"'
-  '\'' := '''
-  ',' := ','
-  '}' := '}'
-  ')' := ')'
-  '(' := '('
-  '{' := '{'
+  "escaped, ", "
+  "single quote in string,',"
+  "some escapes, \,\\"
+  "some, ), unmatched, } prenheses {[<"
+  '"'
+  '''
+  ','
+  '}'
+  ')'
+  '('
+  '{'
 
 -------------------------------------------------------------------------------
 Unexpected exceptions can be translated
@@ -18163,7 +18162,7 @@ Message.tests.cpp:<line number>
 Message.tests.cpp:<line number>: FAILED:
   CHECK( false )
 with message:
-  input := { 7, 8, 9 }
+  { 7, 8, 9 }
 
 -------------------------------------------------------------------------------
 stacks unscoped capture in loops
@@ -18174,18 +18173,18 @@ Message.tests.cpp:<line number>
 Message.tests.cpp:<line number>: FAILED:
   CHECK( false )
 with messages:
-  "Count 1 to 3..." := "Count 1 to 3..."
-  input := 1
-  input := 2
-  input := 3
+  "Count 1 to 3..."
+  1
+  2
+  3
 
 Message.tests.cpp:<line number>: FAILED:
   CHECK( false )
 with messages:
-  "Count 4 to 6..." := "Count 4 to 6..."
-  input := 4
-  input := 5
-  input := 6
+  "Count 4 to 6..."
+  4
+  5
+  6
 
 -------------------------------------------------------------------------------
 stacks unscoped info in loops
@@ -19337,11 +19336,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-<<<<<<< HEAD
 test cases:  439 |  319 passed |  97 failed | 6 skipped | 17 failed as expected
 assertions: 2304 | 2103 passed | 160 failed | 41 failed as expected
-=======
-test cases:  438 |  318 passed |  97 failed | 6 skipped | 17 failed as expected
-assertions: 2297 | 2096 passed | 160 failed | 41 failed as expected
->>>>>>> abfdfcf0 (Editing Baseline Files to Accomodate tests for UNSCOPED CAPTURE)
 

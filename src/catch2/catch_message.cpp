@@ -39,8 +39,9 @@ namespace Catch {
     Capturer::Capturer( StringRef macroName,
                         SourceLineInfo const& lineInfo,
                         ResultWas::OfType resultType,
-                        StringRef names ):
+                        StringRef names, bool scoped):
         m_resultCapture( getResultCapture() ) {
+        isScoped = scoped;
         auto trimmed = [&] (size_t start, size_t end) {
             while (names[start] == ',' || isspace(static_cast<unsigned char>(names[start]))) {
                 ++start;
@@ -106,20 +107,19 @@ namespace Catch {
     }
 
     void Capturer::captureValue( size_t index, std::string const& value ) {
-        assert( index < m_messages.size() );
-        m_messages[index].message += value;
-        m_resultCapture.pushScopedMessage( m_messages[index] );
-        m_captured++;
-    }
-
-     void Capturer::captureUnscopedValue( size_t index, std::string const& value ) {
-        m_messages[index].message += value;
-        getResultCapture().emplaceUnscopedMessage(Catch::MessageBuilder(
-            m_messages[index].macroName,
-            m_messages[index].lineInfo,
-            m_messages[index].type) << m_messages[index].message);
-        if(index == m_messages.size() - 1){
-            m_messages.clear();
+        if(isScoped){
+            assert( index < m_messages.size() );
+            m_messages[index].message += value;
+            m_resultCapture.pushScopedMessage( m_messages[index] );
+            m_captured++;
+        } else {
+            getResultCapture().emplaceUnscopedMessage(Catch::MessageBuilder(
+                m_messages[index].macroName,
+                m_messages[index].lineInfo,
+                m_messages[index].type) << value);
+            if(index == m_messages.size() - 1){
+                m_messages.clear();
+            }
         }
     }
 
