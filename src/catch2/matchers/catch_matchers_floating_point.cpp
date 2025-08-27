@@ -5,12 +5,15 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
+// OpenIndiana/Solaris g++14 requires polyfills to be at top, otherwise ADL will fail for Catch::isnan
+// clang-format off
+#include <catch2/internal/catch_polyfills.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 #include <catch2/internal/catch_enforce.hpp>
-#include <catch2/internal/catch_polyfills.hpp>
 #include <catch2/internal/catch_to_string.hpp>
 #include <catch2/catch_tostring.hpp>
 #include <catch2/internal/catch_floating_point_helpers.hpp>
+// clang-format on
 
 #include <algorithm>
 #include <cmath>
