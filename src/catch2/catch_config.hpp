@@ -61,6 +61,7 @@ namespace Catch {
 
         int abortAfter = -1;
         uint32_t rngSeed = generateRandomSeed(GenerateFrom::Default);
+        bool rngSeedSpecified = false;
 
         unsigned int shardCount = 1;
         unsigned int shardIndex = 0;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="140" skipped="12" tests="2315" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="140" skipped="12" tests="2316" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -574,6 +574,7 @@ at Matchers.tests.cpp:<line number>
     </testcase>
     <testcase classname="<exe-name>.global" name="Enums can quickly have stringification enabled using CATCH_REGISTER_ENUM" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Enums in namespaces can quickly have stringification enabled using CATCH_REGISTER_ENUM" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Env TEST_RANDOM_SEED sets seed when CLI not provided" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Epsilon only applies to Approx's value" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Equality checks that should fail" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>

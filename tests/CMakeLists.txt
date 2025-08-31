@@ -69,6 +69,7 @@ endif() #Temporary workaround
 # Please keep these ordered alphabetically
 set(TEST_SOURCES
   ${SELF_TEST_DIR}/TestRegistrations.cpp
+  ${SELF_TEST_DIR}/BazelEnvSeed.tests.cpp 
   ${SELF_TEST_DIR}/IntrospectiveTests/Algorithms.tests.cpp
   ${SELF_TEST_DIR}/IntrospectiveTests/AssertionHandler.tests.cpp
   ${SELF_TEST_DIR}/IntrospectiveTests/Clara.tests.cpp
@@ -369,6 +370,14 @@ set_tests_properties(VersionCheck PROPERTIES PASS_REGULAR_EXPRESSION "Catch2 v${
 
 add_test(NAME LibIdentityTest COMMAND $<TARGET_FILE:SelfTest> --libidentify)
 set_tests_properties(LibIdentityTest PROPERTIES PASS_REGULAR_EXPRESSION "description:    A Catch2 test executable")
+
+add_test(NAME BazelEnvSeedTest
+  COMMAND $<TARGET_FILE:SelfTest> "[bazel-seed]"
+)
+set_tests_properties(BazelEnvSeedTest PROPERTIES
+  ENVIRONMENT "TEST_RANDOM_SEED=12345"
+  COST 1
+)
 
 add_test(NAME FilenameAsTagsTest COMMAND $<TARGET_FILE:SelfTest> -\# --list-tags)
 set_tests_properties(FilenameAsTagsTest PROPERTIES PASS_REGULAR_EXPRESSION "\\[#Approx.tests\\]")

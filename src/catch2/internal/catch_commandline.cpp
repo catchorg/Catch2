@@ -72,9 +72,11 @@ namespace Catch {
         auto const setRngSeed = [&]( std::string const& seed ) {
                 if( seed == "time" ) {
                     config.rngSeed = generateRandomSeed(GenerateFrom::Time);
+                    config.rngSeedSpecified = true;
                     return ParserResult::ok(ParseResultType::Matched);
                 } else if (seed == "random-device") {
                     config.rngSeed = generateRandomSeed(GenerateFrom::RandomDevice);
+                    config.rngSeedSpecified = true;
                     return ParserResult::ok(ParseResultType::Matched);
                 }
 
@@ -85,6 +87,7 @@ namespace Catch {
                     return ParserResult::runtimeError( "Could not parse '" + seed + "' as seed" );
                 }
                 config.rngSeed = *parsedSeed;
+                config.rngSeedSpecified = true;
                 return ParserResult::ok( ParseResultType::Matched );
             };
         auto const setDefaultColourMode = [&]( std::string const& colourMode ) {

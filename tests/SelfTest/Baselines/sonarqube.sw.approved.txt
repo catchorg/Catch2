@@ -2,6 +2,9 @@
 <!-- filters='"*" ~[!nonportable] ~[!benchmark] ~[approvals]' rng-seed=1 -->
 <testExecutions version="1"loose text artifact
 >
+  <file path="tests/<exe-name>/BazelEnvSeed.tests.cpp">
+    <testCase name="Env TEST_RANDOM_SEED sets seed when CLI not provided" duration="{duration}"/>
+  </file>
   <file path="tests/<exe-name>/IntrospectiveTests/AssertionHandler.tests.cpp">
     <testCase name="Assertions can be nested - CHECK" duration="{duration}">
       <skipped message="REQUIRE(i > 10)">

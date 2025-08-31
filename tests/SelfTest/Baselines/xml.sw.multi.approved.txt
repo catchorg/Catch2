@@ -4742,6 +4742,9 @@ C
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="Env TEST_RANDOM_SEED sets seed when CLI not provided" tags="[bazel-seed]" filename="tests/<exe-name>/BazelEnvSeed.tests.cpp" >
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="Epsilon only applies to Approx's value" tags="[Approx]" filename="tests/<exe-name>/UsageTests/Approx.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Approx.tests.cpp" >
       <Original>
@@ -22323,6 +22326,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2105" failures="157" expectedFailures="41" skips="12"/>
-  <OverallResultsCases successes="317" failures="95" expectedFailures="17" skips="6"/>
+  <OverallResults successes="2106" failures="157" expectedFailures="41" skips="12"/>
+  <OverallResultsCases successes="318" failures="95" expectedFailures="17" skips="6"/>
 </Catch2TestRun>

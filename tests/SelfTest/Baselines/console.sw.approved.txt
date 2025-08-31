@@ -4260,6 +4260,16 @@ with expansion:
   "Blue" == "Blue"
 
 -------------------------------------------------------------------------------
+Env TEST_RANDOM_SEED sets seed when CLI not provided
+-------------------------------------------------------------------------------
+BazelEnvSeed.tests.cpp:<line number>
+...............................................................................
+
+BazelEnvSeed.tests.cpp:<line number>: PASSED:
+with message:
+  TEST_RANDOM_SEED not set; skipping env-specific check
+
+-------------------------------------------------------------------------------
 Epsilon only applies to Approx's value
 -------------------------------------------------------------------------------
 Approx.tests.cpp:<line number>
@@ -19295,6 +19305,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  435 |  317 passed |  95 failed | 6 skipped | 17 failed as expected
-assertions: 2303 | 2105 passed | 157 failed | 41 failed as expected
+test cases:  436 |  318 passed |  95 failed | 6 skipped | 17 failed as expected
+assertions: 2304 | 2106 passed | 157 failed | 41 failed as expected
 

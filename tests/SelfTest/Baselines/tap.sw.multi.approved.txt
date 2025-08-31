@@ -1050,6 +1050,8 @@ ok {test-number} - stringify( ec3 ) == "Value2" for: "Value2" == "Value2"
 ok {test-number} - stringify( Bikeshed::Colours::Red ) == "Red" for: "Red" == "Red"
 # Enums in namespaces can quickly have stringification enabled using CATCH_REGISTER_ENUM
 ok {test-number} - stringify( Bikeshed::Colours::Blue ) == "Blue" for: "Blue" == "Blue"
+# Env TEST_RANDOM_SEED sets seed when CLI not provided
+ok {test-number} - with 1 message: 'TEST_RANDOM_SEED not set; skipping env-specific check'
 # Epsilon only applies to Approx's value
 ok {test-number} - 101.01 != Approx(100).epsilon(0.01) for: 101.01000000000000512 != Approx( 100.0 )
 # Equality checks that should fail
@@ -4616,5 +4618,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2315
+1..2316
 

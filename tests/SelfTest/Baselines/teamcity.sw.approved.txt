@@ -337,6 +337,8 @@
 ##teamcity[testFinished name='Enums can quickly have stringification enabled using CATCH_REGISTER_ENUM' duration="{duration}"]
 ##teamcity[testStarted name='Enums in namespaces can quickly have stringification enabled using CATCH_REGISTER_ENUM']
 ##teamcity[testFinished name='Enums in namespaces can quickly have stringification enabled using CATCH_REGISTER_ENUM' duration="{duration}"]
+##teamcity[testStarted name='Env TEST_RANDOM_SEED sets seed when CLI not provided']
+##teamcity[testFinished name='Env TEST_RANDOM_SEED sets seed when CLI not provided' duration="{duration}"]
 ##teamcity[testStarted name='Epsilon only applies to Approx|'s value']
 ##teamcity[testFinished name='Epsilon only applies to Approx|'s value' duration="{duration}"]
 ##teamcity[testStarted name='Equality checks that should fail']

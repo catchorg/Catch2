@@ -29,6 +29,9 @@
 #include <exception>
 #include <iomanip>
 #include <set>
+#include <cstdlib>
+#include <cstdint>
+#include <climits>
 
 namespace Catch {
 
@@ -296,6 +299,17 @@ namespace Catch {
         }
 
         CATCH_TRY {
+        if (!m_configData.rngSeedSpecified) {
+    if (const char* v = std::getenv("TEST_RANDOM_SEED")) {
+        char* end = nullptr;
+        unsigned long long parsed = std::strtoull(v, &end, 10);
+        if (end != v && *end == '\0' && parsed <= UINT32_MAX) {
+            m_configData.rngSeed = static_cast<std::uint32_t>(parsed);
+            // intentionally NOT setting rngSeedSpecified; CLI should still override if provided
+        }
+        // malformed/out-of-range -> ignore and keep existing default
+    }
+}
             config(); // Force config to be constructed
 
             seedRng( *m_config );

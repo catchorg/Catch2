@@ -578,6 +578,7 @@ EnumToString.tests.cpp:<line number>: passed: stringify( EnumClass3::Value4 ) ==
 EnumToString.tests.cpp:<line number>: passed: stringify( ec3 ) == "Value2" for: "Value2" == "Value2"
 EnumToString.tests.cpp:<line number>: passed: stringify( Bikeshed::Colours::Red ) == "Red" for: "Red" == "Red"
 EnumToString.tests.cpp:<line number>: passed: stringify( Bikeshed::Colours::Blue ) == "Blue" for: "Blue" == "Blue"
+BazelEnvSeed.tests.cpp:<line number>: passed: with 1 message: 'TEST_RANDOM_SEED not set; skipping env-specific check'
 Approx.tests.cpp:<line number>: passed: 101.01 != Approx(100).epsilon(0.01) for: 101.01000000000000512 != Approx( 100.0 )
 Condition.tests.cpp:<line number>: failed: data.int_seven == 6 for: 7 == 6
 Condition.tests.cpp:<line number>: failed: data.int_seven == 8 for: 7 == 8
@@ -2877,7 +2878,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  435 |  317 passed |  95 failed | 6 skipped | 17 failed as expected
-assertions: 2303 | 2105 passed | 157 failed | 41 failed as expected
+test cases:  436 |  318 passed |  95 failed | 6 skipped | 17 failed as expected
+assertions: 2304 | 2106 passed | 157 failed | 41 failed as expected
 
 
