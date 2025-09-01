@@ -15,7 +15,7 @@ namespace Catch {
     // Fwd decls
     class TablePrinter;
 
-    class ConsoleReporter final : public StreamingReporterBase {
+    class ConsoleReporter : public StreamingReporterBase {
         Detail::unique_ptr<TablePrinter> m_tablePrinter;
 
     public:
