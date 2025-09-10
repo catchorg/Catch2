@@ -436,6 +436,10 @@ namespace Catch {
         constexpr auto makeUnaryExpr() const -> UnaryExpr<LhsT> {
             return UnaryExpr<LhsT>{ m_lhs };
         }
+
+        constexpr auto getResult() const -> bool {
+            return makeUnaryExpr().getResult();
+        }
     };
 
     struct Decomposer {

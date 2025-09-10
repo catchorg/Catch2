@@ -684,6 +684,30 @@ ok {test-number} - with 7 messages: 'a := 1' and 'b := 2' and 'c := 3' and 'a + 
 ok {test-number} - with 7 messages: 'custom_index_op<int>{1, 2, 3}[0, 1, 2] := 0' and 'custom_index_op<int>{1, 2, 3}[(0, 1)] := 0' and 'custom_index_op<int>{1, 2, 3}[0] := 0' and '(helper_1436<int, int>{12, -12}) := { 12, -12 }' and '(helper_1436<int, int>(-12, 12)) := { -12, 12 }' and '(1, 2) := 2' and '(2, 3) := 3'
 # CAPTURE parses string and character constants
 ok {test-number} - with 11 messages: '("comma, in string", "escaped, \", ") := "escaped, ", "' and '"single quote in string,'," := "single quote in string,',"' and '"some escapes, \\,\\\\" := "some escapes, \,\\"' and '"some, ), unmatched, } prenheses {[<" := "some, ), unmatched, } prenheses {[<"' and ''"' := '"'' and ''\'' := '''' and '',' := ','' and ''}' := '}'' and '')' := ')'' and ''(' := '('' and ''{' := '{''
+# CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of failure
+ok {test-number} - numberOfCalls < 2 for: 1 < 2
+# CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of failure
+not ok {test-number} - ( lambda() != 50 ) for: false
+# CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of failure
+ok {test-number} - numberOfCalls < 2 for: 1 < 2
+# CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of failure
+not ok {test-number} - lambda() != 50 for: 50 != 50
+# CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of failure
+ok {test-number} - with 1 message: 'Silent empty section warning'
+# CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of success
+ok {test-number} - with 1 message: 'Silent empty section warning (at runtime, CONSTEXPR_REQUIRE does nothing if passed)'
+# CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of success
+ok {test-number} - with 1 message: 'Silent empty section warning'
+# CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of success
+ok {test-number} - with 1 message: 'Silent empty section warning (at runtime, CONSTEXPR_REQUIRE does nothing if passed)'
+# CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of success
+ok {test-number} - with 1 message: 'Silent empty section warning'
+# CONSTEXPR_SECTION, CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE behavior during compilation
+ok {test-number} - [Passed during compilation] with 1 message: '[Passed during compilation]'
+# CONSTEXPR_SECTION, CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE behavior during compilation
+ok {test-number} - [Passed during compilation] with 1 message: '[Passed during compilation]'
+# CONSTEXPR_SECTION, CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE behavior during compilation
+ok {test-number} - [Passed during compilation] with 1 message: '[Passed during compilation]'
 # Capture and info messages
 ok {test-number} - true with 1 message: 'i := 2'
 # Capture and info messages
@@ -2677,6 +2701,8 @@ not ok {test-number} - false with 1 message: 'Should survive a section end'
 A string sent directly to stdout
 A string sent directly to stderr
 A string sent to stderr via clog
+# Simple compile time section
+ok {test-number} - [Passed during compilation] with 1 message: '[Passed during compilation]'
 # Some simple comparisons between doubles
 ok {test-number} - d == Approx( 1.23 ) for: 1.22999999999999998 == Approx( 1.22999999999999998 )
 # Some simple comparisons between doubles
@@ -4627,5 +4653,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2315
+1..2328
 

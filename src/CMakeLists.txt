@@ -80,6 +80,8 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/internal/catch_config_wchar.hpp
   ${SOURCES_DIR}/internal/catch_console_colour.hpp
   ${SOURCES_DIR}/internal/catch_console_width.hpp
+  ${SOURCES_DIR}/internal/catch_constexpr_asserts.hpp
+  ${SOURCES_DIR}/internal/catch_constexpr_section.hpp
   ${SOURCES_DIR}/internal/catch_container_nonmembers.hpp
   ${SOURCES_DIR}/internal/catch_context.hpp
   ${SOURCES_DIR}/internal/catch_debug_console.hpp
@@ -173,6 +175,7 @@ set(IMPL_SOURCES
   ${SOURCES_DIR}/internal/catch_clara.cpp
   ${SOURCES_DIR}/internal/catch_commandline.cpp
   ${SOURCES_DIR}/internal/catch_console_colour.cpp
+  ${SOURCES_DIR}/internal/catch_constexpr_section.cpp
   ${SOURCES_DIR}/internal/catch_context.cpp
   ${SOURCES_DIR}/internal/catch_debug_console.cpp
   ${SOURCES_DIR}/internal/catch_debugger.cpp

@@ -104,6 +104,9 @@ Nor would this
 :test-result: PASS CAPTURE can deal with complex expressions
 :test-result: PASS CAPTURE can deal with complex expressions involving commas
 :test-result: PASS CAPTURE parses string and character constants
+:test-result: FAIL CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of failure
+:test-result: PASS CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of success
+:test-result: PASS CONSTEXPR_SECTION, CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE behavior during compilation
 :test-result: PASS Capture and info messages
 :test-result: FAIL Captures do not leave block with an exception
 :test-result: FAIL Captures outlive section end
@@ -241,6 +244,7 @@ A string sent directly to stdout
 A string sent directly to stderr
 A string sent to stderr via clog
 :test-result: FAIL Sends stuff to stdout and stderr
+:test-result: PASS Simple compile time section
 :test-result: PASS Some simple comparisons between doubles
 Message from section one
 Message from section two

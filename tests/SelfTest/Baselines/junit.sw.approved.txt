@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="140" skipped="12" tests="2315" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="142" skipped="12" tests="2328" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -441,6 +441,32 @@ at AssertionHandler.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="CAPTURE can deal with complex expressions" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="CAPTURE can deal with complex expressions involving commas" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="CAPTURE parses string and character constants" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of failure" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of failure/Unary -> Expression should be evaluated only once" time="{duration}" status="run">
+      <failure message="( lambda() != 50 )" type="CONSTEXPR_REQUIRE">
+FAILED:
+  CONSTEXPR_REQUIRE( ( lambda() != 50 ) )
+with expansion:
+  false
+at CompileTimeTests.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of failure/Binary -> Expression should be evaluated only once" time="{duration}" status="run">
+      <failure message="lambda() != 50" type="CONSTEXPR_REQUIRE">
+FAILED:
+  CONSTEXPR_REQUIRE( lambda() != 50 )
+with expansion:
+  50 != 50
+at CompileTimeTests.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of success" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of success/Unary -> Expression should be evaluated only once" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of success/Binary -> Expression should be evaluated only once" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="CONSTEXPR_SECTION, CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE behavior during compilation" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="CONSTEXPR_SECTION, CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE behavior during compilation/[Passed during compilation] First" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="CONSTEXPR_SECTION, CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE behavior during compilation/[Passed during compilation] Second" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="CONSTEXPR_SECTION, CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE behavior during compilation/[Passed during compilation] Third" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Capture and info messages" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Capture and info messages/Capture should stringify like assertions" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Capture and info messages/Info should NOT stringify the way assertions do" time="{duration}" status="run"/>
@@ -1456,6 +1482,8 @@ A string sent directly to stderr
 A string sent to stderr via clog
       </system-err>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Simple compile time section" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Simple compile time section/[Passed during compilation] Simple compile time section" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Some simple comparisons between doubles" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Standard output from all sections is reported" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Standard output from all sections is reported/one" time="{duration}" status="run"/>

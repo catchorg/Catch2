@@ -380,6 +380,32 @@ due to unexpected exception with message:
   { nested assertion failed }
 
 -------------------------------------------------------------------------------
+CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only
+once at runtime in case of failure
+  Unary -> Expression should be evaluated only once
+-------------------------------------------------------------------------------
+CompileTimeTests.tests.cpp:<line number>
+...............................................................................
+
+CompileTimeTests.tests.cpp:<line number>: FAILED:
+  CONSTEXPR_REQUIRE( ( lambda() != 50 ) )
+with expansion:
+  false
+
+-------------------------------------------------------------------------------
+CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only
+once at runtime in case of failure
+  Binary -> Expression should be evaluated only once
+-------------------------------------------------------------------------------
+CompileTimeTests.tests.cpp:<line number>
+...............................................................................
+
+CompileTimeTests.tests.cpp:<line number>: FAILED:
+  CONSTEXPR_REQUIRE( lambda() != 50 )
+with expansion:
+  50 != 50
+
+-------------------------------------------------------------------------------
 Captures do not leave block with an exception
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -1719,6 +1745,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  435 |  335 passed |  76 failed | 7 skipped | 17 failed as expected
-assertions: 2282 | 2105 passed | 136 failed | 41 failed as expected
+test cases:  439 |  338 passed |  77 failed | 7 skipped | 17 failed as expected
+assertions: 2295 | 2116 passed | 138 failed | 41 failed as expected
 

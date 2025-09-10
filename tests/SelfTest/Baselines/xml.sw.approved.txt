@@ -3127,6 +3127,92 @@ Approx( 1.23399996757507324 )
     </Info>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of failure" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
+    <Section name="Unary -> Expression should be evaluated only once" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
+        <Original>
+          numberOfCalls &lt; 2
+        </Original>
+        <Expanded>
+          1 &lt; 2
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CONSTEXPR_REQUIRE" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
+        <Original>
+          ( lambda() != 50 )
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Binary -> Expression should be evaluated only once" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
+        <Original>
+          numberOfCalls &lt; 2
+        </Original>
+        <Expanded>
+          1 &lt; 2
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CONSTEXPR_REQUIRE" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
+        <Original>
+          lambda() != 50
+        </Original>
+        <Expanded>
+          50 != 50
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of success" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
+    <Section name="Unary -> Expression should be evaluated only once" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Binary -> Expression should be evaluated only once" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="CONSTEXPR_SECTION, CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE behavior during compilation" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
+    <Section name="[Passed during compilation] First" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
+      <Expression success="true" type="CONSTEXPR_SECTION" filename="unknown-file" >
+        <Original>
+          [Passed during compilation]
+        </Original>
+        <Expanded>
+          [Passed during compilation]
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="[Passed during compilation] Second" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
+      <Expression success="true" type="CONSTEXPR_SECTION" filename="unknown-file" >
+        <Original>
+          [Passed during compilation]
+        </Original>
+        <Expanded>
+          [Passed during compilation]
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="[Passed during compilation] Third" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
+      <Expression success="true" type="CONSTEXPR_SECTION" filename="unknown-file" >
+        <Original>
+          [Passed during compilation]
+        </Original>
+        <Expanded>
+          [Passed during compilation]
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="Capture and info messages" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
     <Section name="Capture should stringify like assertions" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
       <Info filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
@@ -13208,6 +13294,20 @@ A string sent to stderr via clog
       </StdErr>
     </OverallResult>
   </TestCase>
+  <TestCase name="Simple compile time section" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
+    <Section name="[Passed during compilation] Simple compile time section" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
+      <Expression success="true" type="CONSTEXPR_SECTION" filename="unknown-file" >
+        <Original>
+          [Passed during compilation]
+        </Original>
+        <Expanded>
+          [Passed during compilation]
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="Some simple comparisons between doubles" tags="[Approx]" filename="tests/<exe-name>/UsageTests/Approx.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Approx.tests.cpp" >
       <Original>
@@ -22324,6 +22424,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2105" failures="157" expectedFailures="41" skips="12"/>
-  <OverallResultsCases successes="317" failures="95" expectedFailures="17" skips="6"/>
+  <OverallResults successes="2116" failures="159" expectedFailures="41" skips="12"/>
+  <OverallResultsCases successes="320" failures="96" expectedFailures="17" skips="6"/>
 </Catch2TestRun>

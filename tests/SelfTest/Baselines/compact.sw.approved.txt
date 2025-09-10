@@ -368,6 +368,18 @@ MatchersRanges.tests.cpp:<line number>: passed: unrelated::ADL_empty{}, IsEmpty(
 Message.tests.cpp:<line number>: passed: with 7 messages: 'a := 1' and 'b := 2' and 'c := 3' and 'a + b := 3' and 'a+b := 3' and 'c > b := true' and 'a == 1 := true'
 Message.tests.cpp:<line number>: passed: with 7 messages: 'custom_index_op<int>{1, 2, 3}[0, 1, 2] := 0' and 'custom_index_op<int>{1, 2, 3}[(0, 1)] := 0' and 'custom_index_op<int>{1, 2, 3}[0] := 0' and '(helper_1436<int, int>{12, -12}) := { 12, -12 }' and '(helper_1436<int, int>(-12, 12)) := { -12, 12 }' and '(1, 2) := 2' and '(2, 3) := 3'
 Message.tests.cpp:<line number>: passed: with 11 messages: '("comma, in string", "escaped, \", ") := "escaped, ", "' and '"single quote in string,'," := "single quote in string,',"' and '"some escapes, \\,\\\\" := "some escapes, \,\\"' and '"some, ), unmatched, } prenheses {[<" := "some, ), unmatched, } prenheses {[<"' and ''"' := '"'' and ''\'' := '''' and '',' := ','' and ''}' := '}'' and '')' := ')'' and ''(' := '('' and ''{' := '{''
+CompileTimeTests.tests.cpp:<line number>: passed: numberOfCalls < 2 for: 1 < 2
+CompileTimeTests.tests.cpp:<line number>: failed: ( lambda() != 50 ) for: false
+CompileTimeTests.tests.cpp:<line number>: passed: numberOfCalls < 2 for: 1 < 2
+CompileTimeTests.tests.cpp:<line number>: failed: lambda() != 50 for: 50 != 50
+CompileTimeTests.tests.cpp:<line number>: passed: with 1 message: 'Silent empty section warning'
+CompileTimeTests.tests.cpp:<line number>: passed: with 1 message: 'Silent empty section warning (at runtime, CONSTEXPR_REQUIRE does nothing if passed)'
+CompileTimeTests.tests.cpp:<line number>: passed: with 1 message: 'Silent empty section warning'
+CompileTimeTests.tests.cpp:<line number>: passed: with 1 message: 'Silent empty section warning (at runtime, CONSTEXPR_REQUIRE does nothing if passed)'
+CompileTimeTests.tests.cpp:<line number>: passed: with 1 message: 'Silent empty section warning'
+unknown-file:0: passed: [Passed during compilation] with 1 message: '[Passed during compilation]'
+unknown-file:0: passed: [Passed during compilation] with 1 message: '[Passed during compilation]'
+unknown-file:0: passed: [Passed during compilation] with 1 message: '[Passed during compilation]'
 ToStringGeneral.tests.cpp:<line number>: passed: true with 1 message: 'i := 2'
 ToStringGeneral.tests.cpp:<line number>: passed: true with 1 message: '3'
 Message.tests.cpp:<line number>: failed: false with 1 message: 'a := 1'
@@ -1766,6 +1778,7 @@ Message.tests.cpp:<line number>: failed: false with 1 message: 'Should survive a
 A string sent directly to stdout
 A string sent directly to stderr
 A string sent to stderr via clog
+unknown-file:0: passed: [Passed during compilation] with 1 message: '[Passed during compilation]'
 Approx.tests.cpp:<line number>: passed: d == Approx( 1.23 ) for: 1.22999999999999998
 ==
 Approx( 1.22999999999999998 )
@@ -2888,7 +2901,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  435 |  317 passed |  95 failed | 6 skipped | 17 failed as expected
-assertions: 2303 | 2105 passed | 157 failed | 41 failed as expected
+test cases:  439 |  320 passed |  96 failed | 6 skipped | 17 failed as expected
+assertions: 2316 | 2116 passed | 159 failed | 41 failed as expected
 
 
