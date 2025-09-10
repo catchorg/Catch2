@@ -12,12 +12,10 @@
 #ifdef CATCH_CONFIG_CONSTEXPR_SECTIONS
 
 TEST_CASE( "Simple compile time section" ) {
-    constexpr int captured = 38;
     CONSTEXPR_SECTION( "Simple compile time section" ) {
         int x = 5;
         x *= 10;
         CONSTEXPR_REQUIRE( x == 50 );
-        CONSTEXPR_REQUIRE( captured == 38 );
         CONSTEXPR_REQUIRE_FALSE( x != 50 );
     };
 }

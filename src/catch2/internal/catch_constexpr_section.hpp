@@ -8,8 +8,8 @@
 #ifndef CATCH_CONSTEXPR_SECTION_HPP_INCLUDED
 #define CATCH_CONSTEXPR_SECTION_HPP_INCLUDED
 
-#if defined(CATCH_CPP17_OR_GREATER) && __cpp_constexpr >= 201603
-#define CATCH_CONFIG_CONSTEXPR_SECTIONS
+#if defined( CATCH_CPP17_OR_GREATER ) && __cpp_constexpr >= 201603
+#    define CATCH_CONFIG_CONSTEXPR_SECTIONS
 #endif
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
@@ -31,9 +31,7 @@ namespace Catch {
                 }(),
                 "compile time section error" );
             addFakeAssertion( "unknown-file", 0 );
-#ifdef CATCH_CONFIG_RUNTIME_CONSTEXPR_SECTIONS
             callable();
-#endif
         }
 
         // Add a fake assertion to the section to avoid failures because the
@@ -47,13 +45,13 @@ namespace Catch {
 #    define INTERNAL_CATCH_CONSTEXPR_SECTION( ... )                          \
         INTERNAL_CATCH_SECTION( "[Passed during compilation] " __VA_ARGS__ ) \
         [[maybe_unused]] const ::Catch::ConstexprSection                     \
-        INTERNAL_CATCH_UNIQUE_NAME(                                       \
+        INTERNAL_CATCH_UNIQUE_NAME(                                          \
             catch_internal_CompileTimeSection ) = [&]()
 
 #else
 #    define INTERNAL_CATCH_CONSTEXPR_SECTION( ... )                        \
         static_assert( false, "C++17 is required for CONSTEXPR_SECTION" ); \
-        if ( false ) {                                                  \
+        if ( false ) {                                                     \
         } else
 #endif
 
