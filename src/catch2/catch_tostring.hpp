@@ -8,7 +8,7 @@
 #ifndef CATCH_TOSTRING_HPP_INCLUDED
 #define CATCH_TOSTRING_HPP_INCLUDED
 
-
+#include <ctime>
 #include <vector>
 #include <cstddef>
 #include <type_traits>
@@ -41,6 +41,8 @@ namespace Catch {
     namespace Detail {
 
         std::size_t catch_strnlen(const char *str, std::size_t n);
+
+        std::string formatTimeT( std::time_t time );
 
         constexpr StringRef unprintableString = "{?}"_sr;
 
@@ -629,28 +631,7 @@ struct ratio_string<std::milli> {
             const auto systemish = std::chrono::time_point_cast<
                 std::chrono::system_clock::duration>( time_point );
             const auto as_time_t = std::chrono::system_clock::to_time_t( systemish );
-
-#ifdef _MSC_VER
-            std::tm timeInfo = {};
-            const auto err = gmtime_s( &timeInfo, &as_time_t );
-            if ( err ) {
-                return "gmtime from provided timepoint has failed. This "
-                       "happens e.g. with pre-1970 dates using Microsoft libc";
-            }
-#else
-            std::tm* timeInfo = std::gmtime( &as_time_t );
-#endif
-
-            auto const timeStampSize = sizeof("2017-01-16T17:06:45Z");
-            char timeStamp[timeStampSize];
-            const char * const fmt = "%Y-%m-%dT%H:%M:%SZ";
-
-#ifdef _MSC_VER
-            std::strftime(timeStamp, timeStampSize, fmt, &timeInfo);
-#else
-            std::strftime(timeStamp, timeStampSize, fmt, timeInfo);
-#endif
-            return std::string(timeStamp, timeStampSize - 1);
+            return ::Catch::Detail::formatTimeT( as_time_t );
         }
     };
 }
