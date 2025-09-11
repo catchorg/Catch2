@@ -57,6 +57,12 @@ namespace Detail {
         }
     } // end unnamed namespace
 
+    std::size_t catch_strnlen( const char* str, std::size_t n ) {
+        auto ret = std::char_traits<char>::find( str, n, '\0' );
+        if ( ret != nullptr ) { return static_cast<std::size_t>( ret - str ); }
+        return n;
+    }
+
     std::string convertIntoString(StringRef string, bool escapeInvisibles) {
         std::string ret;
         // This is enough for the "don't escape invisibles" case, and a good
