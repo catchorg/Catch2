@@ -407,44 +407,38 @@ namespace Catch {
 
 // Separate std::tuple specialization
 #if defined(CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER)
-#include <tuple>
+#    include <tuple>
+#    include <utility>
 namespace Catch {
     namespace Detail {
-        template<
-            typename Tuple,
-            std::size_t N = 0,
-            bool = (N < std::tuple_size<Tuple>::value)
-            >
-            struct TupleElementPrinter {
-            static void print(const Tuple& tuple, std::ostream& os) {
-                os << (N ? ", " : " ")
-                    << ::Catch::Detail::stringify(std::get<N>(tuple));
-                TupleElementPrinter<Tuple, N + 1>::print(tuple, os);
-            }
-        };
+        template <typename Tuple, std::size_t... Is>
+        void PrintTuple( const Tuple& tuple,
+                         std::ostream& os,
+                         std::index_sequence<Is...> ) {
+            // 1 + Account for when the tuple is empty
+            char a[1 + sizeof...( Is )] = {
+                ( ( os << ( Is ? ", " : " " )
+                       << ::Catch::Detail::stringify( std::get<Is>( tuple ) ) ),
+                  '\0' )... };
+            (void)a;
+        }
 
-        template<
-            typename Tuple,
-            std::size_t N
-        >
-            struct TupleElementPrinter<Tuple, N, false> {
-            static void print(const Tuple&, std::ostream&) {}
-        };
+    } // namespace Detail
 
-    }
-
-
-    template<typename ...Types>
+    template <typename... Types>
     struct StringMaker<std::tuple<Types...>> {
-        static std::string convert(const std::tuple<Types...>& tuple) {
+        static std::string convert( const std::tuple<Types...>& tuple ) {
             ReusableStringStream rss;
             rss << '{';
-            Detail::TupleElementPrinter<std::tuple<Types...>>::print(tuple, rss.get());
+            Detail::PrintTuple(
+                tuple,
+                rss.get(),
+                std::make_index_sequence<sizeof...( Types )>{} );
             rss << " }";
             return rss.str();
         }
     };
-}
+} // namespace Catch
 #endif // CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER
 
 #if defined(CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER) && defined(CATCH_CONFIG_CPP17_VARIANT)
