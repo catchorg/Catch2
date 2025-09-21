@@ -667,22 +667,22 @@ at Class.tests.cpp:<line number>
   <file path="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp">
     <testCase name="CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of failure" duration="{duration}"/>
     <testCase name="CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of failure/Unary -> Expression should be evaluated only once" duration="{duration}">
-      <failure message="CONSTEXPR_REQUIRE(( lambda() != 50 ))">
+      <skipped message="CONSTEXPR_REQUIRE(( lambda() != 50 ))">
 FAILED:
 	CONSTEXPR_REQUIRE( ( lambda() != 50 ) )
 with expansion:
 	false
 at CompileTimeTests.tests.cpp:<line number>
-      </failure>
+      </skipped>
     </testCase>
     <testCase name="CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of failure/Binary -> Expression should be evaluated only once" duration="{duration}">
-      <failure message="CONSTEXPR_REQUIRE(lambda() != 50)">
+      <skipped message="CONSTEXPR_REQUIRE(lambda() != 50)">
 FAILED:
 	CONSTEXPR_REQUIRE( lambda() != 50 )
 with expansion:
 	50 != 50
 at CompileTimeTests.tests.cpp:<line number>
-      </failure>
+      </skipped>
     </testCase>
     <testCase name="CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of success" duration="{duration}"/>
     <testCase name="CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of success/Unary -> Expression should be evaluated only once" duration="{duration}"/>

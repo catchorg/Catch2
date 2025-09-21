@@ -10,11 +10,10 @@
 #include <catch2/internal/catch_constexpr_section.hpp>
 
 namespace Catch {
-    void ConstexprSection::addFakeAssertion( const char* file,
-                                             size_t lineNumber ) {
+    void ConstexprSection::addFakeAssertion() {
         AssertionHandler catchAssertionHandler(
             "CONSTEXPR_SECTION",
-            SourceLineInfo( file, lineNumber ),
+            SourceLineInfo( "unknown-file", 0 ),
             "[Passed during compilation]",
             ResultDisposition::Normal );
         catchAssertionHandler.handleMessage( ResultWas::Ok,

@@ -104,7 +104,7 @@ Nor would this
 :test-result: PASS CAPTURE can deal with complex expressions
 :test-result: PASS CAPTURE can deal with complex expressions involving commas
 :test-result: PASS CAPTURE parses string and character constants
-:test-result: FAIL CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of failure
+:test-result: XFAIL CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of failure
 :test-result: PASS CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of success
 :test-result: PASS CONSTEXPR_SECTION, CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE behavior during compilation
 :test-result: PASS Capture and info messages

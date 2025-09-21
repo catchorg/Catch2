@@ -3127,7 +3127,7 @@ Approx( 1.23399996757507324 )
     </Info>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <TestCase name="CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of failure" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
+  <TestCase name="CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of failure" tags="[!shouldfail]" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
     <Section name="Unary -> Expression should be evaluated only once" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
         <Original>
@@ -3145,7 +3145,7 @@ Approx( 1.23399996757507324 )
           false
         </Expanded>
       </Expression>
-      <OverallResults successes="1" failures="1" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="1" failures="0" expectedFailures="1" skipped="false"/>
     </Section>
     <Section name="Binary -> Expression should be evaluated only once" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
@@ -3164,9 +3164,9 @@ Approx( 1.23399996757507324 )
           50 != 50
         </Expanded>
       </Expression>
-      <OverallResults successes="1" failures="1" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="1" failures="0" expectedFailures="1" skipped="false"/>
     </Section>
-    <OverallResult success="false" skips="0"/>
+    <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate the expression only once at runtime in case of success" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
     <Section name="Unary -> Expression should be evaluated only once" filename="tests/<exe-name>/UsageTests/CompileTimeTests.tests.cpp" >
@@ -22423,6 +22423,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2116" failures="159" expectedFailures="41" skips="12"/>
-  <OverallResultsCases successes="320" failures="96" expectedFailures="17" skips="6"/>
+  <OverallResults successes="2116" failures="157" expectedFailures="43" skips="12"/>
+  <OverallResultsCases successes="320" failures="95" expectedFailures="18" skips="6"/>
 </Catch2TestRun>

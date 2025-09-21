@@ -19430,6 +19430,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  439 |  320 passed |  96 failed | 6 skipped | 17 failed as expected
-assertions: 2316 | 2116 passed | 159 failed | 41 failed as expected
+test cases:  439 |  320 passed |  95 failed | 6 skipped | 18 failed as expected
+assertions: 2316 | 2116 passed | 157 failed | 43 failed as expected
 

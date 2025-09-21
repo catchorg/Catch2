@@ -19,11 +19,7 @@ namespace Catch {
                            ExpressionType decomposedExpression ) {
         AssertionHandler catchAssertionHandler(
             macroName, lineInfo, capturedExpression, resultDisposition );
-        CATCH_TRY {
-            catchAssertionHandler.handleExpr( decomposedExpression );
-        } CATCH_CATCH_ALL {
-            catchAssertionHandler.handleUnexpectedInflightException();
-        }
+        catchAssertionHandler.handleExpr( decomposedExpression );
         catchAssertionHandler.complete();
     }
 } // namespace Catch

@@ -30,13 +30,13 @@ namespace Catch {
                     return true;
                 }(),
                 "compile time section error" );
-            addFakeAssertion( "unknown-file", 0 );
+            addFakeAssertion();
             callable();
         }
 
         // Add a fake assertion to the section to avoid failures because the
         // section is empty
-        static void addFakeAssertion( const char* file, size_t lineNumber );
+        static void addFakeAssertion();
     };
 } // namespace Catch
 

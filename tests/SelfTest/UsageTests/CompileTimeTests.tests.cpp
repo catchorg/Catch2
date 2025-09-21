@@ -9,7 +9,29 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/internal/catch_constexpr_section.hpp>
 
-#ifdef CATCH_CONFIG_CONSTEXPR_SECTIONS
+// In C++14, CONSTEXPR_SECTIONS are not supported.
+// For consistency between test results across C++ standard versions, we
+// redefine here CONSTEXPR_SECTION as a SECTION with a mock assertion.
+#ifndef CATCH_CONFIG_CONSTEXPR_SECTIONS
+
+#    if defined( __GNUC__ ) && !defined( __clang__ ) && !defined( __ICC ) && \
+        !defined( __CUDACC__ ) && !defined( __LCC__ ) &&                     \
+        !defined( __NVCOMPILER ) && __GNUC__ <= 9
+#        define SUPPRESS_MISLEADING_INDENTATION_WARNINGS \
+            _Pragma( "GCC diagnostic ignored \"-Wmisleading-indentation\"" )
+#    else
+#        define SUPPRESS_MISLEADING_INDENTATION_WARNINGS
+#    endif
+
+#    undef CONSTEXPR_SECTION
+#    define CONSTEXPR_SECTION( ... )                            \
+        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION               \
+        SUPPRESS_MISLEADING_INDENTATION_WARNINGS                \
+        SECTION( "[Passed during compilation] " __VA_ARGS__ ) { \
+            Catch::ConstexprSection::addFakeAssertion();        \
+        }                                                       \
+        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
+#endif
 
 TEST_CASE( "Simple compile time section" ) {
     CONSTEXPR_SECTION( "Simple compile time section" ) {
@@ -80,7 +102,8 @@ TEST_CASE( "CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate "
 }
 
 TEST_CASE( "CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate "
-           "the expression only once at runtime in case of failure" ) {
+           "the expression only once at runtime in case of failure",
+           "[!shouldfail]" ) {
     SECTION( "Unary -> Expression should be evaluated only once" ) {
         int numberOfCalls = 0;
         auto lambda = [&] {
@@ -101,5 +124,3 @@ TEST_CASE( "CONSTEXPR_REQUIRE, CONSTEXPR_REQUIRE_FALSE should evaluate "
     }
     SUCCEED( "Silent empty section warning" );
 }
-
-#endif
