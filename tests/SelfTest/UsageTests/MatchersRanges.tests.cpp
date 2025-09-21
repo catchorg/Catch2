@@ -123,7 +123,7 @@ TEST_CASE("Basic use of the Empty range matcher", "[matchers][templated][empty]"
         REQUIRE_THAT(non_empty_vec, !IsEmpty());
 
         std::list<std::list<std::list<int>>> inner_lists_are_empty;
-        inner_lists_are_empty.push_back({});
+        inner_lists_are_empty.emplace_back();
         REQUIRE_THAT(inner_lists_are_empty, !IsEmpty());
         REQUIRE_THAT(inner_lists_are_empty.front(), IsEmpty());
     }
@@ -592,11 +592,6 @@ TEST_CASE("All/Any/None True matchers support types with ADL begin",
     }
 }
 
-// Range loop iterating over range with different types for begin and end is a
-// C++17 feature, and GCC refuses to compile such code unless the lang mode is
-// set to C++17 or later.
-#if defined(CATCH_CPP17_OR_GREATER)
-
 TEST_CASE( "The quantifier range matchers support types with different types returned from begin and end",
            "[matchers][templated][quantifiers][approvals]" ) {
     using Catch::Matchers::AllMatch;
@@ -655,8 +650,6 @@ TEST_CASE( "RangeContains supports ranges with different types returned from "
     REQUIRE_THAT( diff_types, Contains( size_t( 3 ) ) );
     REQUIRE_THAT( diff_types, Contains( LessThanMatcher( size_t( 4 ) ) ) );
 }
-
-#endif
 
 TEST_CASE( "Usage of RangeEquals range matcher", "[matchers][templated][quantifiers]" ) {
     using Catch::Matchers::RangeEquals;
@@ -849,8 +842,8 @@ static constexpr bool ContainerIsRandomAccess( const Container& ) {
     using array_iter_category = typename std::iterator_traits<
         typename Container::iterator>::iterator_category;
 
-    return std::is_base_of<std::random_access_iterator_tag,
-                           array_iter_category>::value;
+    return std::is_base_of_v<std::random_access_iterator_tag,
+                             array_iter_category>;
 }
 
 TEST_CASE( "Type conversions of RangeEquals and similar",

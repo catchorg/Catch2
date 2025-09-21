@@ -214,7 +214,7 @@ TEMPLATE_TEST_CASE( "uniform_integer_distribution can handle full width ranges",
     constexpr auto lowest = std::numeric_limits<TestType>::min();
     constexpr auto highest = std::numeric_limits<TestType>::max();
     Catch::uniform_integer_distribution<TestType> dist( lowest, highest );
-    STATIC_REQUIRE( std::is_same<TestType, decltype( dist( pcg ) )>::value );
+    STATIC_REQUIRE( std::is_same_v<TestType, decltype( dist( pcg ) )> );
 
     // We need to do bit operations on the results, so we will have to
     // cast them to unsigned type.
@@ -451,21 +451,6 @@ namespace {
                                                 381264073 };
     };
 
-    // We need these definitions for C++14 and earlier, but
-    // GCC will complain about them in newer C++ standards
-#if __cplusplus <= 201402L
-    constexpr bool uniform_integer_test_params<bool>::expected[];
-    constexpr char uniform_integer_test_params<char>::expected[];
-    constexpr uint8_t uniform_integer_test_params<uint8_t>::expected[];
-    constexpr int8_t uniform_integer_test_params<int8_t>::expected[];
-    constexpr uint16_t uniform_integer_test_params<uint16_t>::expected[];
-    constexpr int16_t uniform_integer_test_params<int16_t>::expected[];
-    constexpr uint32_t uniform_integer_test_params<uint32_t>::expected[];
-    constexpr int32_t uniform_integer_test_params<int32_t>::expected[];
-    constexpr uint64_t uniform_integer_test_params<uint64_t>::expected[];
-    constexpr int64_t uniform_integer_test_params<int64_t>::expected[];
-#endif
-
 }
 
 TEMPLATE_TEST_CASE( "uniform_integer_distribution is reproducible",
@@ -559,13 +544,6 @@ namespace {
                                                60912.7615841752,
                                                -149060.05936760217 };
     };
-
-// We need these definitions for C++14 and earlier, but
-// GCC will complain about them in newer C++ standards
-#if __cplusplus <= 201402L
-    constexpr float uniform_fp_test_params<float>::expected[];
-    constexpr double uniform_fp_test_params<double>::expected[];
-#endif
 } // namespace
 
 TEMPLATE_TEST_CASE( "uniform_floating_point_distribution is reproducible",

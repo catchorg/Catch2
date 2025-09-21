@@ -22,24 +22,21 @@ struct TestSubject {
 
 
 TEST_CASE("Table allows pre-computed test inputs and outputs", "[example][generator]") {
-    using std::make_tuple;
     // do setup here as normal
     TestSubject subj;
 
     SECTION("This section is run for each row in the table") {
-        std::string test_input;
-        size_t expected_output;
-        std::tie( test_input, expected_output ) =
+        const auto [test_input, expected_output] =
             GENERATE( table<std::string, size_t>(
                 { /* In this case one of the parameters to our test case is the
                    * expected output, but this is not required. There could be
                    * multiple expected values in the table, which can have any
                    * (fixed) number of columns.
                    */
-                  make_tuple( "one", 3 ),
-                  make_tuple( "two", 3 ),
-                  make_tuple( "three", 5 ),
-                  make_tuple( "four", 4 ) } ) );
+                  { "one", 3 },
+                  { "two", 3 },
+                  { "three", 5 },
+                  { "four", 4 } } ) );
 
         // run the test
         auto result = subj.GetLength(test_input);
@@ -50,14 +47,4 @@ TEST_CASE("Table allows pre-computed test inputs and outputs", "[example][genera
     }   // end section
 }
 
-/* Possible simplifications where less legacy toolchain support is needed:
- *
- * - With libstdc++6 or newer, the make_tuple() calls can be omitted
- * (technically C++17 but does not require -std in GCC/Clang). See
- *   https://stackoverflow.com/questions/12436586/tuple-vector-and-initializer-list
- *
- * - In C++17 mode std::tie() and the preceding variable declarations can be
- * replaced by structured bindings: auto [test_input, expected] = GENERATE(
- * table<std::string, size_t>({ ...
- */
 // Compiling and running this file will result in 4 successful assertions

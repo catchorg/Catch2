@@ -21,7 +21,7 @@ namespace Catch {
     namespace Benchmark {
         namespace Detail {
             template <typename T, typename U>
-            static constexpr bool is_related_v = std::is_same<std::decay_t<T>, std::decay_t<U>>::value;
+            static constexpr bool is_related_v = std::is_same_v<std::decay_t<T>, std::decay_t<U>>;
 
             /// We need to reinvent std::function because every piece of code that might add overhead
             /// in a measurement context needs to have consistent performance characteristics so that we

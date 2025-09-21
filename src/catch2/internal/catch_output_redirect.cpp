@@ -311,23 +311,6 @@ namespace Catch {
         }
     }
 
-    RedirectGuard::RedirectGuard( RedirectGuard&& rhs ) noexcept:
-        m_redirect( rhs.m_redirect ),
-        m_activate( rhs.m_activate ),
-        m_previouslyActive( rhs.m_previouslyActive ),
-        m_moved( false ) {
-        rhs.m_moved = true;
-    }
-
-    RedirectGuard& RedirectGuard::operator=( RedirectGuard&& rhs ) noexcept {
-        m_redirect = rhs.m_redirect;
-        m_activate = rhs.m_activate;
-        m_previouslyActive = rhs.m_previouslyActive;
-        m_moved = false;
-        rhs.m_moved = true;
-        return *this;
-    }
-
 } // namespace Catch
 
 #if defined( CATCH_CONFIG_NEW_CAPTURE )

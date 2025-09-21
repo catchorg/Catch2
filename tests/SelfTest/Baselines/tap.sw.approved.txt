@@ -39,7 +39,7 @@ Nor would this
 # #1514: stderr/stdout is not captured in tests aborted by an exception
 not ok {test-number} - explicitly with 1 message: '1514'
 # #1548
-ok {test-number} - std::is_same<TypeList<int>, TypeList<int>>::value for: true
+ok {test-number} - std::is_same_v<TypeList<int>, TypeList<int>> for: true
 # #1905 -- test spec parser properly clears internal state between compound tests
 ok {test-number} - spec.matches(*fakeTestCase("spec . char")) for: true
 # #1905 -- test spec parser properly clears internal state between compound tests
@@ -773,57 +773,57 @@ ok {test-number} - streamWrapper.str() == "1\nUsing code: 2\n2\nUsing code: 0\n3
 # ColourGuard behaviour
 ok {test-number} - streamWrapper.str() == "Using code: 2\nA\nB\nUsing code: 0\nC\n" for: "Using code: 2 A B Using code: 0 C " == "Using code: 2 A B Using code: 0 C "
 # Combining MatchAllOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype( ( MatcherA() && MatcherB() ) && MatcherC() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
+ok {test-number} - with 1 message: 'std::is_same_v< decltype( ( MatcherA() && MatcherB() ) && MatcherC() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>'
 # Combining MatchAllOfGeneric does not nest
 ok {test-number} - 1, ( MatcherA() && MatcherB() ) && MatcherC() for: 1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T) 1 )
 # Combining MatchAllOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype( MatcherA() && ( MatcherB() && MatcherC() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
+ok {test-number} - with 1 message: 'std::is_same_v< decltype( MatcherA() && ( MatcherB() && MatcherC() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>'
 # Combining MatchAllOfGeneric does not nest
 ok {test-number} - 1, MatcherA() && ( MatcherB() && MatcherC() ) for: 1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T) 1 )
 # Combining MatchAllOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype( ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>:: value'
+ok {test-number} - with 1 message: 'std::is_same_v< decltype( ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>'
 # Combining MatchAllOfGeneric does not nest
 ok {test-number} - 1, ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) for: 1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T) 1 and equals: true )
 # Combining MatchAnyOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype( ( MatcherA() || MatcherB() ) || MatcherC() ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
+ok {test-number} - with 1 message: 'std::is_same_v< decltype( ( MatcherA() || MatcherB() ) || MatcherC() ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>'
 # Combining MatchAnyOfGeneric does not nest
 ok {test-number} - 1, ( MatcherA() || MatcherB() ) || MatcherC() for: 1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1 )
 # Combining MatchAnyOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype( MatcherA() || ( MatcherB() || MatcherC() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
+ok {test-number} - with 1 message: 'std::is_same_v< decltype( MatcherA() || ( MatcherB() || MatcherC() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>'
 # Combining MatchAnyOfGeneric does not nest
 ok {test-number} - 1, MatcherA() || ( MatcherB() || MatcherC() ) for: 1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1 )
 # Combining MatchAnyOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype( ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>:: value'
+ok {test-number} - with 1 message: 'std::is_same_v< decltype( ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>'
 # Combining MatchAnyOfGeneric does not nest
 ok {test-number} - 1, ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) for: 1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1 or equals: true )
 # Combining MatchNotOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype( !MatcherA() ), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>::value'
+ok {test-number} - with 1 message: 'std::is_same_v< decltype( !MatcherA() ), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>'
 # Combining MatchNotOfGeneric does not nest
 ok {test-number} - 0, !MatcherA() for: 0 not equals: (int) 1 or (string) "1"
 # Combining MatchNotOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same<decltype( !!MatcherA() ), MatcherA const&>::value'
+ok {test-number} - with 1 message: 'std::is_same_v<decltype( !!MatcherA() ), MatcherA const&>'
 # Combining MatchNotOfGeneric does not nest
 ok {test-number} - 1, !!MatcherA() for: 1 equals: (int) 1 or (string) "1"
 # Combining MatchNotOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype( !!!MatcherA() ), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>::value'
+ok {test-number} - with 1 message: 'std::is_same_v< decltype( !!!MatcherA() ), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>'
 # Combining MatchNotOfGeneric does not nest
 ok {test-number} - 0, !!!MatcherA() for: 0 not equals: (int) 1 or (string) "1"
 # Combining MatchNotOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same<decltype( !!!!MatcherA() ), MatcherA const&>::value'
+ok {test-number} - with 1 message: 'std::is_same_v<decltype( !!!!MatcherA() ), MatcherA const&>'
 # Combining MatchNotOfGeneric does not nest
 ok {test-number} - 1, !!!!MatcherA() for: 1 equals: (int) 1 or (string) "1"
 # Combining concrete matchers does not use templated matchers
-ok {test-number} - with 1 message: 'std::is_same<decltype( StartsWith( "foo" ) || ( StartsWith( "bar" ) && EndsWith( "bar" ) && !EndsWith( "foo" ) ) ), Catch::Matchers::Detail::MatchAnyOf<std::string>>::value'
+ok {test-number} - with 1 message: 'std::is_same_v<decltype( StartsWith( "foo" ) || ( StartsWith( "bar" ) && EndsWith( "bar" ) && !EndsWith( "foo" ) ) ), Catch::Matchers::Detail::MatchAnyOf<std::string>>'
 # Combining only templated matchers
-ok {test-number} - with 1 message: 'std::is_same<decltype( MatcherA() || MatcherB() ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB>>::value'
+ok {test-number} - with 1 message: 'std::is_same_v<decltype( MatcherA() || MatcherB() ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB>>'
 # Combining only templated matchers
 ok {test-number} - 1, MatcherA() || MatcherB() for: 1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 )
 # Combining only templated matchers
-ok {test-number} - with 1 message: 'std::is_same<decltype( MatcherA() && MatcherB() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB>>::value'
+ok {test-number} - with 1 message: 'std::is_same_v<decltype( MatcherA() && MatcherB() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB>>'
 # Combining only templated matchers
 ok {test-number} - 1, MatcherA() && MatcherB() for: 1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 )
 # Combining only templated matchers
-ok {test-number} - with 1 message: 'std::is_same< decltype( MatcherA() || !MatcherB() ), Catch::Matchers::Detail::MatchAnyOfGeneric< MatcherA, Catch::Matchers::Detail::MatchNotOfGeneric<MatcherB>>>::value'
+ok {test-number} - with 1 message: 'std::is_same_v< decltype( MatcherA() || !MatcherB() ), Catch::Matchers::Detail::MatchAnyOfGeneric< MatcherA, Catch::Matchers::Detail::MatchNotOfGeneric<MatcherB>>>'
 # Combining only templated matchers
 ok {test-number} - 1, MatcherA() || !MatcherB() for: 1 ( equals: (int) 1 or (string) "1" or not equals: (long long) 1 )
 # Combining templated and concrete matchers
@@ -2085,13 +2085,13 @@ ok {test-number} - !False for: true
 # Objects that evaluated in boolean contexts can be checked
 ok {test-number} - !(False) for: !{?}
 # Optionally static assertions
-ok {test-number} - with 1 message: 'std::is_void<void>::value'
+ok {test-number} - with 1 message: 'std::is_void_v<void>'
 # Optionally static assertions
-ok {test-number} - with 1 message: '!(std::is_void<int>::value)'
+ok {test-number} - with 1 message: '!(std::is_void_v<int>)'
 # Optionally static assertions
-ok {test-number} - with 1 message: 'std::is_void<void>::value'
+ok {test-number} - with 1 message: 'std::is_void_v<void>'
 # Optionally static assertions
-ok {test-number} - with 1 message: '!(std::is_void<int>::value)'
+ok {test-number} - with 1 message: '!(std::is_void_v<int>)'
 # Ordering comparison checks that should fail
 not ok {test-number} - data.int_seven > 7 for: 7 > 7
 # Ordering comparison checks that should fail
@@ -2497,11 +2497,11 @@ ok {test-number} - cli.parse({ "test", "--benchmark-warmup-time=10" }) for: {?}
 # Process can be configured on command line
 ok {test-number} - config.benchmarkWarmupTime == 10 for: 10 == 10
 # Product with differing arities - std::tuple<int, double, float>
-ok {test-number} - std::tuple_size<TestType>::value >= 1 for: 3 >= 1
+ok {test-number} - std::tuple_size_v<TestType> >= 1 for: 3 >= 1
 # Product with differing arities - std::tuple<int, double>
-ok {test-number} - std::tuple_size<TestType>::value >= 1 for: 2 >= 1
+ok {test-number} - std::tuple_size_v<TestType> >= 1 for: 2 >= 1
 # Product with differing arities - std::tuple<int>
-ok {test-number} - std::tuple_size<TestType>::value >= 1 for: 1 >= 1
+ok {test-number} - std::tuple_size_v<TestType> >= 1 for: 1 >= 1
 # Random seed generation accepts known methods
 ok {test-number} - Catch::generateRandomSeed(method)
 # Random seed generation accepts known methods
@@ -2882,19 +2882,19 @@ ok {test-number} - Template_Fixture<TestType>::m_a == 1 for: 1 == 1
 # Template test case method with test types specified inside std::tuple - MyTypes - 2
 ok {test-number} - Template_Fixture<TestType>::m_a == 1 for: 1.0 == 1
 # Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 0
-ok {test-number} - std::is_default_constructible<TestType>::value for: true
+ok {test-number} - std::is_default_constructible_v<TestType> for: true
 # Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 1
-ok {test-number} - std::is_default_constructible<TestType>::value for: true
+ok {test-number} - std::is_default_constructible_v<TestType> for: true
 # Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 0
-ok {test-number} - std::is_trivially_copyable<TestType>::value for: true
+ok {test-number} - std::is_trivially_copyable_v<TestType> for: true
 # Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 1
-ok {test-number} - std::is_trivially_copyable<TestType>::value for: true
+ok {test-number} - std::is_trivially_copyable_v<TestType> for: true
 # Template test case with test types specified inside std::tuple - MyTypes - 0
-ok {test-number} - std::is_arithmetic<TestType>::value for: true
+ok {test-number} - std::is_arithmetic_v<TestType> for: true
 # Template test case with test types specified inside std::tuple - MyTypes - 1
-ok {test-number} - std::is_arithmetic<TestType>::value for: true
+ok {test-number} - std::is_arithmetic_v<TestType> for: true
 # Template test case with test types specified inside std::tuple - MyTypes - 2
-ok {test-number} - std::is_arithmetic<TestType>::value for: true
+ok {test-number} - std::is_arithmetic_v<TestType> for: true
 # TemplateTest: vectors can be sized and resized - float
 ok {test-number} - v.size() == 5 for: 5 == 5
 # TemplateTest: vectors can be sized and resized - float

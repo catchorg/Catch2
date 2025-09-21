@@ -31,12 +31,12 @@ namespace Detail {
             m_ptr(ptr)
         {}
 
-        template <typename U, typename = std::enable_if_t<std::is_base_of<T, U>::value>>
+        template <typename U, typename = std::enable_if_t<std::is_base_of_v<T, U>>>
         unique_ptr(unique_ptr<U>&& from):
             m_ptr(from.release())
         {}
 
-        template <typename U, typename = std::enable_if_t<std::is_base_of<T, U>::value>>
+        template <typename U, typename = std::enable_if_t<std::is_base_of_v<T, U>>>
         unique_ptr& operator=(unique_ptr<U>&& from) {
             reset(from.release());
 

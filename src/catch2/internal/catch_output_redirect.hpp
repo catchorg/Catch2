@@ -63,10 +63,6 @@ namespace Catch {
 
         RedirectGuard( RedirectGuard const& ) = delete;
         RedirectGuard& operator=( RedirectGuard const& ) = delete;
-
-        // C++14 needs move-able guards to return them from functions
-        RedirectGuard( RedirectGuard&& rhs ) noexcept;
-        RedirectGuard& operator=( RedirectGuard&& rhs ) noexcept;
     };
 
     RedirectGuard scopedActivate( OutputRedirect& redirectImpl );

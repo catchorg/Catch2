@@ -20,7 +20,7 @@ struct ZeroLiteralAsPointer {
     constexpr ZeroLiteralAsPointer( ZeroLiteralAsPointer* ) noexcept {}
 
     template <typename T,
-              typename = std::enable_if_t<!std::is_same<T, int>::value>>
+              typename = std::enable_if_t<!std::is_same_v<T, int>>>
     constexpr ZeroLiteralAsPointer( T ) = delete;
 };
 

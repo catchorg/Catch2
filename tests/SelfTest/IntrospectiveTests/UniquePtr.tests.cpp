@@ -83,12 +83,12 @@ namespace {
 
 } // end unnamed namespace
 
-static_assert( std::is_constructible<Catch::Detail::unique_ptr<base>,
-                                     Catch::Detail::unique_ptr<derived>>::value, "Upcasting is supported");
-static_assert(!std::is_constructible<Catch::Detail::unique_ptr<derived>,
-                                     Catch::Detail::unique_ptr<base>>::value, "Downcasting is not supported");
-static_assert(!std::is_constructible<Catch::Detail::unique_ptr<base>,
-                                     Catch::Detail::unique_ptr<unrelated>>::value, "Cannot just convert one ptr type to another");
+static_assert( std::is_constructible_v<Catch::Detail::unique_ptr<base>,
+                                     Catch::Detail::unique_ptr<derived>>, "Upcasting is supported");
+static_assert(!std::is_constructible_v<Catch::Detail::unique_ptr<derived>,
+                                     Catch::Detail::unique_ptr<base>>, "Downcasting is not supported");
+static_assert(!std::is_constructible_v<Catch::Detail::unique_ptr<base>,
+                                     Catch::Detail::unique_ptr<unrelated>>, "Cannot just convert one ptr type to another");
 
 TEST_CASE("Upcasting special member functions", "[internals][unique-ptr]") {
     using Catch::Detail::unique_ptr;

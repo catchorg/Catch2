@@ -9,8 +9,6 @@
 #define CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER
 #include <catch2/catch_test_macros.hpp>
 
-#if defined(CATCH_CONFIG_CPP17_OPTIONAL)
-
 TEST_CASE( "std::optional<int> -> toString", "[toString][optional][approvals]" ) {
     using type = std::optional<int>;
     REQUIRE( "{ }" == ::Catch::Detail::stringify( type{} ) );
@@ -31,5 +29,3 @@ TEST_CASE( "std::vector<std::optional<int> > -> toString", "[toString][optional]
 TEST_CASE( "std::nullopt -> toString", "[toString][optional][approvals]" ) {
     REQUIRE( "{ }" == ::Catch::Detail::stringify( std::nullopt ) );
 }
-
-#endif // CATCH_INTERNAL_CONFIG_CPP17_OPTIONAL

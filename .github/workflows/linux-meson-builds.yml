@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: meson ${{matrix.cxx}}, C++${{matrix.std}}, ${{matrix.build_type}}
+    name: meson ${{matrix.cxx}}, ${{matrix.build_type}}
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
@@ -13,7 +13,6 @@ jobs:
           - g++-11
           - clang++-11
         build_type: [debug, release]
-        std: [14, 17]
         include:
           - cxx: clang++-11
             other_pkgs: clang-11
@@ -29,7 +28,7 @@ jobs:
     - name: Configure
       env:
         CXX: ${{matrix.cxx}}
-        CXXFLAGS: -std=c++${{matrix.std}} ${{matrix.cxxflags}}
+        CXXFLAGS: -std=c++17 ${{matrix.cxxflags}}
       # Note: $GITHUB_WORKSPACE is distinct from ${{runner.workspace}}.
       #       This is important
       run: |

@@ -13,6 +13,7 @@
 #include <catch2/internal/catch_polyfills.hpp>
 
 #include <iomanip>
+#include <cstddef>
 
 namespace Catch {
 
@@ -135,11 +136,9 @@ std::string StringMaker<std::string>::convert(const std::string& str) {
     return Detail::convertIntoString( str );
 }
 
-#ifdef CATCH_CONFIG_CPP17_STRING_VIEW
 std::string StringMaker<std::string_view>::convert(std::string_view str) {
     return Detail::convertIntoString( StringRef( str.data(), str.size() ) );
 }
-#endif
 
 std::string StringMaker<char const*>::convert(char const* str) {
     if (str) {
@@ -166,11 +165,9 @@ std::string StringMaker<std::wstring>::convert(const std::wstring& wstr) {
     return ::Catch::Detail::stringify(s);
 }
 
-# ifdef CATCH_CONFIG_CPP17_STRING_VIEW
 std::string StringMaker<std::wstring_view>::convert(std::wstring_view str) {
     return StringMaker<std::wstring>::convert(std::wstring(str));
 }
-# endif
 
 std::string StringMaker<wchar_t const*>::convert(wchar_t const * str) {
     if (str) {
@@ -188,12 +185,9 @@ std::string StringMaker<wchar_t *>::convert(wchar_t * str) {
 }
 #endif
 
-#if defined(CATCH_CONFIG_CPP17_BYTE)
-#include <cstddef>
 std::string StringMaker<std::byte>::convert(std::byte value) {
     return ::Catch::Detail::stringify(std::to_integer<unsigned long long>(value));
 }
-#endif // defined(CATCH_CONFIG_CPP17_BYTE)
 
 std::string StringMaker<int>::convert(int value) {
     return ::Catch::Detail::stringify(static_cast<long long>(value));

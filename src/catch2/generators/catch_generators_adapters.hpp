@@ -58,7 +58,7 @@ namespace Generators {
     class FilterGenerator final : public IGenerator<T> {
         GeneratorWrapper<T> m_generator;
         Predicate m_predicate;
-        static_assert(!std::is_reference<Predicate>::value, "This would most likely result in a dangling reference");
+        static_assert(!std::is_reference_v<Predicate>, "This would most likely result in a dangling reference");
     public:
         template <typename P>
         FilterGenerator(P&& pred, GeneratorWrapper<T>&& generator):
@@ -97,7 +97,7 @@ namespace Generators {
 
     template <typename T>
     class RepeatGenerator final : public IGenerator<T> {
-        static_assert(!std::is_same<T, bool>::value,
+        static_assert(!std::is_same_v<T, bool>,
             "RepeatGenerator currently does not support bools"
             "because of std::vector<bool> specialization");
         GeneratorWrapper<T> m_generator;

@@ -10,7 +10,6 @@
 [Default reporter](#default-reporter)<br>
 [Bazel support](#bazel-support)<br>
 [C++11 toggles](#c11-toggles)<br>
-[C++17 toggles](#c17-toggles)<br>
 [Other toggles](#other-toggles)<br>
 [Enabling stringification](#enabling-stringification)<br>
 [Disabling exceptions](#disabling-exceptions)<br>
@@ -128,23 +127,6 @@ Catch's selection, by defining either `CATCH_CONFIG_CPP11_TO_STRING` or
 `CATCH_CONFIG_NO_CPP11_TO_STRING`.
 
 
-## C++17 toggles
-
-    CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS  // Override std::uncaught_exceptions (instead of std::uncaught_exception) support detection
-    CATCH_CONFIG_CPP17_STRING_VIEW          // Override std::string_view support detection (Catch provides a StringMaker specialization by default)
-    CATCH_CONFIG_CPP17_VARIANT              // Override std::variant support detection (checked by CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER)
-    CATCH_CONFIG_CPP17_OPTIONAL             // Override std::optional support detection (checked by CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER)
-    CATCH_CONFIG_CPP17_BYTE                 // Override std::byte support detection (Catch provides a StringMaker specialization by default)
-
-> `CATCH_CONFIG_CPP17_STRING_VIEW` was [introduced](https://github.com/catchorg/Catch2/issues/1376) in Catch2 2.4.1.
-
-Catch contains basic compiler/standard detection and attempts to use
-some C++17 features whenever appropriate. This automatic detection
-can be manually overridden in both directions, that is, a feature
-can be enabled by defining the macro in the table above, and disabled
-by using `_NO_` in the macro, e.g. `CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS`.
-
-
 ## Other toggles
 
     CATCH_CONFIG_COUNTER                    // Use __COUNTER__ to generate unique names for test cases
@@ -221,8 +203,8 @@ By default, Catch does not stringify some types from the standard library. This 
 
     CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER     // Provide StringMaker specialization for std::pair
     CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER    // Provide StringMaker specialization for std::tuple
-    CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER  // Provide StringMaker specialization for std::variant, std::monostate (on C++17)
-    CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER // Provide StringMaker specialization for std::optional (on C++17)
+    CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER  // Provide StringMaker specialization for std::variant, std::monostate
+    CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER // Provide StringMaker specialization for std::optional
     CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS     // Defines all of the above
 
 > `CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER` was [introduced](https://github.com/catchorg/Catch2/issues/1380) in Catch2 2.4.1.

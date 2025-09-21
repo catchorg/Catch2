@@ -1,6 +1,6 @@
 ---
 Language: Cpp
-Standard: c++14
+Standard: c++17
 
 # Note that we cannot use IncludeIsMainRegex functionality, because it
 # does not support includes in angle brackets (<>)

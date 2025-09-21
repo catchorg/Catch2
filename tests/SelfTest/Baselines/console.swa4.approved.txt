@@ -159,7 +159,7 @@ Compilation.tests.cpp:<line number>
 ...............................................................................
 
 Compilation.tests.cpp:<line number>: PASSED:
-  REQUIRE( std::is_same<TypeList<int>, TypeList<int>>::value )
+  REQUIRE( std::is_same_v<TypeList<int>, TypeList<int>> )
 with expansion:
   true
 

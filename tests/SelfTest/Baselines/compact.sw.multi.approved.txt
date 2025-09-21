@@ -19,7 +19,7 @@ Message.tests.cpp:<line number>: warning: '
 This info message starts with a linebreak' with 1 message: '
 This warning message starts with a linebreak'
 Tricky.tests.cpp:<line number>: failed: explicitly with 1 message: '1514'
-Compilation.tests.cpp:<line number>: passed: std::is_same<TypeList<int>, TypeList<int>>::value for: true
+Compilation.tests.cpp:<line number>: passed: std::is_same_v<TypeList<int>, TypeList<int>> for: true
 TestSpec.tests.cpp:<line number>: passed: spec.matches(*fakeTestCase("spec . char")) for: true
 TestSpec.tests.cpp:<line number>: passed: spec.matches(*fakeTestCase("spec , char")) for: true
 TestSpec.tests.cpp:<line number>: passed: !(spec.matches(*fakeTestCase(R"(spec \, char)"))) for: !false
@@ -434,32 +434,32 @@ B
 Using code: 0
 C
 "
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( ( MatcherA() && MatcherB() ) && MatcherC() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same_v< decltype( ( MatcherA() && MatcherB() ) && MatcherC() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>'
 Matchers.tests.cpp:<line number>: passed: 1, ( MatcherA() && MatcherB() ) && MatcherC() for: 1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T) 1 )
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( MatcherA() && ( MatcherB() && MatcherC() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same_v< decltype( MatcherA() && ( MatcherB() && MatcherC() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>'
 Matchers.tests.cpp:<line number>: passed: 1, MatcherA() && ( MatcherB() && MatcherC() ) for: 1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T) 1 )
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>:: value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same_v< decltype( ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>'
 Matchers.tests.cpp:<line number>: passed: 1, ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) for: 1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T) 1 and equals: true )
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( ( MatcherA() || MatcherB() ) || MatcherC() ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same_v< decltype( ( MatcherA() || MatcherB() ) || MatcherC() ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>'
 Matchers.tests.cpp:<line number>: passed: 1, ( MatcherA() || MatcherB() ) || MatcherC() for: 1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1 )
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( MatcherA() || ( MatcherB() || MatcherC() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same_v< decltype( MatcherA() || ( MatcherB() || MatcherC() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>'
 Matchers.tests.cpp:<line number>: passed: 1, MatcherA() || ( MatcherB() || MatcherC() ) for: 1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1 )
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>:: value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same_v< decltype( ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>'
 Matchers.tests.cpp:<line number>: passed: 1, ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) for: 1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1 or equals: true )
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( !MatcherA() ), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same_v< decltype( !MatcherA() ), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>'
 Matchers.tests.cpp:<line number>: passed: 0, !MatcherA() for: 0 not equals: (int) 1 or (string) "1"
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same<decltype( !!MatcherA() ), MatcherA const&>::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same_v<decltype( !!MatcherA() ), MatcherA const&>'
 Matchers.tests.cpp:<line number>: passed: 1, !!MatcherA() for: 1 equals: (int) 1 or (string) "1"
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( !!!MatcherA() ), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same_v< decltype( !!!MatcherA() ), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>'
 Matchers.tests.cpp:<line number>: passed: 0, !!!MatcherA() for: 0 not equals: (int) 1 or (string) "1"
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same<decltype( !!!!MatcherA() ), MatcherA const&>::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same_v<decltype( !!!!MatcherA() ), MatcherA const&>'
 Matchers.tests.cpp:<line number>: passed: 1, !!!!MatcherA() for: 1 equals: (int) 1 or (string) "1"
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same<decltype( StartsWith( "foo" ) || ( StartsWith( "bar" ) && EndsWith( "bar" ) && !EndsWith( "foo" ) ) ), Catch::Matchers::Detail::MatchAnyOf<std::string>>::value'
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same<decltype( MatcherA() || MatcherB() ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB>>::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same_v<decltype( StartsWith( "foo" ) || ( StartsWith( "bar" ) && EndsWith( "bar" ) && !EndsWith( "foo" ) ) ), Catch::Matchers::Detail::MatchAnyOf<std::string>>'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same_v<decltype( MatcherA() || MatcherB() ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB>>'
 Matchers.tests.cpp:<line number>: passed: 1, MatcherA() || MatcherB() for: 1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 )
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same<decltype( MatcherA() && MatcherB() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB>>::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same_v<decltype( MatcherA() && MatcherB() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB>>'
 Matchers.tests.cpp:<line number>: passed: 1, MatcherA() && MatcherB() for: 1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 )
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( MatcherA() || !MatcherB() ), Catch::Matchers::Detail::MatchAnyOfGeneric< MatcherA, Catch::Matchers::Detail::MatchNotOfGeneric<MatcherB>>>::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same_v< decltype( MatcherA() || !MatcherB() ), Catch::Matchers::Detail::MatchAnyOfGeneric< MatcherA, Catch::Matchers::Detail::MatchNotOfGeneric<MatcherB>>>'
 Matchers.tests.cpp:<line number>: passed: 1, MatcherA() || !MatcherB() for: 1 ( equals: (int) 1 or (string) "1" or not equals: (long long) 1 )
 Matchers.tests.cpp:<line number>: passed: vec, Predicate<std::vector<int>>( []( auto const& v ) { return std::all_of( v.begin(), v.end(), []( int elem ) { return elem % 2 == 1; } ); }, "All elements are odd" ) && !EqualsRange( a ) for: { 1, 3, 5 } ( matches predicate: "All elements are odd" and not Equals: { 5, 3, 1 } )
 Matchers.tests.cpp:<line number>: passed: str, StartsWith( "foo" ) && EqualsRange( arr ) && EndsWith( "bar" ) for: "foobar" ( starts with: "foo" and Equals: { 'f', 'o', 'o', 'b', 'a', 'r' } and ends with: "bar" )
@@ -1271,10 +1271,10 @@ Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'c
 Tricky.tests.cpp:<line number>: passed: True for: {?}
 Tricky.tests.cpp:<line number>: passed: !False for: true
 Tricky.tests.cpp:<line number>: passed: !(False) for: !{?}
-Compilation.tests.cpp:<line number>: passed: with 1 message: 'std::is_void<void>::value'
-Compilation.tests.cpp:<line number>: passed: with 1 message: '!(std::is_void<int>::value)'
-Compilation.tests.cpp:<line number>: passed: with 1 message: 'std::is_void<void>::value'
-Compilation.tests.cpp:<line number>: passed: with 1 message: '!(std::is_void<int>::value)'
+Compilation.tests.cpp:<line number>: passed: with 1 message: 'std::is_void_v<void>'
+Compilation.tests.cpp:<line number>: passed: with 1 message: '!(std::is_void_v<int>)'
+Compilation.tests.cpp:<line number>: passed: with 1 message: 'std::is_void_v<void>'
+Compilation.tests.cpp:<line number>: passed: with 1 message: '!(std::is_void_v<int>)'
 Condition.tests.cpp:<line number>: failed: data.int_seven > 7 for: 7 > 7
 Condition.tests.cpp:<line number>: failed: data.int_seven < 7 for: 7 < 7
 Condition.tests.cpp:<line number>: failed: data.int_seven > 8 for: 7 > 8
@@ -1509,9 +1509,9 @@ CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-no-ana
 CmdLine.tests.cpp:<line number>: passed: config.benchmarkNoAnalysis for: true
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-warmup-time=10" }) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.benchmarkWarmupTime == 10 for: 10 == 10
-Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 3 >= 1
-Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 2 >= 1
-Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 1 >= 1
+Misc.tests.cpp:<line number>: passed: std::tuple_size_v<TestType> >= 1 for: 3 >= 1
+Misc.tests.cpp:<line number>: passed: std::tuple_size_v<TestType> >= 1 for: 2 >= 1
+Misc.tests.cpp:<line number>: passed: std::tuple_size_v<TestType> >= 1 for: 1 >= 1
 RandomNumberGeneration.tests.cpp:<line number>: passed: Catch::generateRandomSeed(method)
 RandomNumberGeneration.tests.cpp:<line number>: passed: Catch::generateRandomSeed(method)
 RandomNumberGeneration.tests.cpp:<line number>: passed: Catch::generateRandomSeed(method)
@@ -1899,13 +1899,13 @@ Tag.tests.cpp:<line number>: passed: testCase.tags, VectorContains( Tag( "tag wi
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1 == 1
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1 == 1
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1.0 == 1
-Misc.tests.cpp:<line number>: passed: std::is_default_constructible<TestType>::value for: true
-Misc.tests.cpp:<line number>: passed: std::is_default_constructible<TestType>::value for: true
-Misc.tests.cpp:<line number>: passed: std::is_trivially_copyable<TestType>::value for: true
-Misc.tests.cpp:<line number>: passed: std::is_trivially_copyable<TestType>::value for: true
-Misc.tests.cpp:<line number>: passed: std::is_arithmetic<TestType>::value for: true
-Misc.tests.cpp:<line number>: passed: std::is_arithmetic<TestType>::value for: true
-Misc.tests.cpp:<line number>: passed: std::is_arithmetic<TestType>::value for: true
+Misc.tests.cpp:<line number>: passed: std::is_default_constructible_v<TestType> for: true
+Misc.tests.cpp:<line number>: passed: std::is_default_constructible_v<TestType> for: true
+Misc.tests.cpp:<line number>: passed: std::is_trivially_copyable_v<TestType> for: true
+Misc.tests.cpp:<line number>: passed: std::is_trivially_copyable_v<TestType> for: true
+Misc.tests.cpp:<line number>: passed: std::is_arithmetic_v<TestType> for: true
+Misc.tests.cpp:<line number>: passed: std::is_arithmetic_v<TestType> for: true
+Misc.tests.cpp:<line number>: passed: std::is_arithmetic_v<TestType> for: true
 Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
 Misc.tests.cpp:<line number>: passed: v.size() == 10 for: 10 == 10

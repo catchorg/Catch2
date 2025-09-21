@@ -27,7 +27,7 @@ namespace Catch {
          */
         template <typename FloatType>
         FloatType gamma(FloatType a, FloatType b) {
-            static_assert( std::is_floating_point<FloatType>::value,
+            static_assert( std::is_floating_point_v<FloatType>,
                            "gamma returns the largest ULP magnitude within "
                            "floating point range [a, b]. This only makes sense "
                            "for floating point types" );

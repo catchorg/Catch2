@@ -28,13 +28,12 @@ Checks: >-
   -modernize-concat-nested-namespaces,
   -modernize-use-nodiscard,
   -modernize-use-default-member-init,
-  -modernize-type-traits,# we need to support C++14,
   -modernize-deprecated-headers,
   ,# There's a lot of these and most of them are probably not useful,
   -modernize-pass-by-value,
 
   performance-*,
-  performance-enum-size,
+  -performance-enum-size,
 
   portability-*,
 

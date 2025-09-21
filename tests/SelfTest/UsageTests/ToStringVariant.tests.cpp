@@ -9,8 +9,6 @@
 #define CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER
 #include <catch2/catch_test_macros.hpp>
 
-#if defined(CATCH_CONFIG_CPP17_VARIANT)
-
 #include <string>
 #include <variant>
 
@@ -95,5 +93,3 @@ TEST_CASE( "variant<nullptr,int,const char *>", "[toString][variant][approvals]"
     CHECK( "42" == ::Catch::Detail::stringify(type{42}) );
     CHECK( "\"Catch me\"" == ::Catch::Detail::stringify(type{"Catch me"}) );
 }
-
-#endif // CATCH_INTERNAL_CONFIG_CPP17_VARIANT

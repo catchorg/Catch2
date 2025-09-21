@@ -83,11 +83,9 @@ internal_headers = [
   'internal/catch_config_counter.hpp',
   'internal/catch_config_prefix_messages.hpp',
   'internal/catch_config_static_analysis_support.hpp',
-  'internal/catch_config_uncaught_exceptions.hpp',
   'internal/catch_config_wchar.hpp',
   'internal/catch_console_colour.hpp',
   'internal/catch_console_width.hpp',
-  'internal/catch_container_nonmembers.hpp',
   'internal/catch_context.hpp',
   'internal/catch_debug_console.hpp',
   'internal/catch_debugger.hpp',
@@ -106,7 +104,6 @@ internal_headers = [
   'internal/catch_lazy_expr.hpp',
   'internal/catch_leak_detector.hpp',
   'internal/catch_list.hpp',
-  'internal/catch_logical_traits.hpp',
   'internal/catch_message_info.hpp',
   'internal/catch_meta.hpp',
   'internal/catch_move_and_forward.hpp',
@@ -374,7 +371,7 @@ if get_option('install')
   pkg.generate(
     catch2,
     filebase: 'catch2',
-    description: 'A modern, C++-native, test framework for C++14 and above',
+    description: 'A modern, C++-native, test framework for C++17 and above',
     url: 'https://github.com/catchorg/Catch2',
   )
 endif
@@ -396,7 +393,7 @@ if get_option('install')
   pkg.generate(
     catch2_with_main,
     filebase: 'catch2-with-main',
-    description: 'A modern, C++-native, test framework for C++14 and above (links in default main)',
+    description: 'A modern, C++-native, test framework for C++17 and above (links in default main)',
     requires: 'catch2 = ' + meson.project_version(),
   )
 endif

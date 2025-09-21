@@ -264,7 +264,7 @@ You can also have different arities in the _template-arg_ packs:
 ```cpp
 TEMPLATE_PRODUCT_TEST_CASE("Product with differing arities", "[template][product]", std::tuple, (int, (int, double), (int, double, float))) {
     TestType x;
-    REQUIRE(std::tuple_size<TestType>::value >= 1);
+    REQUIRE(std::tuple_size_v<TestType> >= 1);
 }
 ```
 

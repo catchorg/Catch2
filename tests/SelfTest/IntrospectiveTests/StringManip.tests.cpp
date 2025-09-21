@@ -17,8 +17,8 @@ static const char * const whitespace_at_both_ends = " \r\n \t There is no extra 
 
 TEST_CASE("Trim strings", "[string-manip]") {
     using Catch::trim; using Catch::StringRef;
-    static_assert(std::is_same<std::string, decltype(trim(std::string{}))>::value, "Trimming std::string should return std::string");
-    static_assert(std::is_same<StringRef, decltype(trim(StringRef{}))>::value, "Trimming StringRef should return StringRef");
+    static_assert(std::is_same_v<std::string, decltype(trim(std::string{}))>, "Trimming std::string should return std::string");
+    static_assert(std::is_same_v<StringRef, decltype(trim(StringRef{}))>, "Trimming StringRef should return StringRef");
 
     REQUIRE(trim(std::string(no_whitespace)) == no_whitespace);
     REQUIRE(trim(std::string(leading_whitespace)) == no_whitespace);

@@ -194,15 +194,15 @@ TEST_CASE("#1403", "[compilation]") {
 }
 
 TEST_CASE("Optionally static assertions", "[compilation]") {
-    STATIC_REQUIRE( std::is_void<void>::value );
-    STATIC_REQUIRE_FALSE( std::is_void<int>::value );
-    STATIC_CHECK( std::is_void<void>::value );
-    STATIC_CHECK_FALSE( std::is_void<int>::value );
+    STATIC_REQUIRE( std::is_void_v<void> );
+    STATIC_REQUIRE_FALSE( std::is_void_v<int> );
+    STATIC_CHECK( std::is_void_v<void> );
+    STATIC_CHECK_FALSE( std::is_void_v<int> );
 }
 
 TEST_CASE("#1548", "[compilation]") {
     using namespace bar;
-    REQUIRE(std::is_same<TypeList<int>, TypeList<int>>::value);
+    REQUIRE(std::is_same_v<TypeList<int>, TypeList<int>>);
 }
 
     // #925

@@ -88,7 +88,7 @@ namespace Detail {
 
     template<typename T>
     class FixedValuesGenerator final : public IGenerator<T> {
-        static_assert(!std::is_same<T, bool>::value,
+        static_assert(!std::is_same_v<T, bool>,
             "FixedValuesGenerator does not support bools because of std::vector<bool>"
             "specialization, use SingleValue Generator instead.");
         std::vector<T> m_values;
@@ -131,7 +131,7 @@ namespace Detail {
             m_generators.emplace_back( value( CATCH_MOVE( val ) ) );
         }
         template <typename U>
-        std::enable_if_t<!std::is_same<std::decay_t<U>, T>::value>
+        std::enable_if_t<!std::is_same_v<std::decay_t<U>, T>>
         add_generator( U&& val ) {
             add_generator( T( CATCH_FORWARD( val ) ) );
         }

@@ -879,10 +879,10 @@ TEST_CASE( "Combining concrete matchers does not use templated matchers",
     using Catch::Matchers::StartsWith;
 
     STATIC_REQUIRE(
-        std::is_same<decltype( StartsWith( "foo" ) ||
+        std::is_same_v<decltype( StartsWith( "foo" ) ||
                                ( StartsWith( "bar" ) && EndsWith( "bar" ) &&
                                  !EndsWith( "foo" ) ) ),
-                     Catch::Matchers::Detail::MatchAnyOf<std::string>>::value );
+                     Catch::Matchers::Detail::MatchAnyOf<std::string>> );
 }
 
 struct MatcherA : Catch::Matchers::MatcherGenericBase {
@@ -910,25 +910,25 @@ struct MatcherD : Catch::Matchers::MatcherGenericBase {
 
 TEST_CASE( "Combining only templated matchers", "[matchers][templated]" ) {
     STATIC_REQUIRE(
-        std::is_same<decltype( MatcherA() || MatcherB() ),
+        std::is_same_v<decltype( MatcherA() || MatcherB() ),
                      Catch::Matchers::Detail::
-                         MatchAnyOfGeneric<MatcherA, MatcherB>>::value );
+                         MatchAnyOfGeneric<MatcherA, MatcherB>> );
 
     REQUIRE_THAT( 1, MatcherA() || MatcherB() );
 
     STATIC_REQUIRE(
-        std::is_same<decltype( MatcherA() && MatcherB() ),
+        std::is_same_v<decltype( MatcherA() && MatcherB() ),
                      Catch::Matchers::Detail::
-                         MatchAllOfGeneric<MatcherA, MatcherB>>::value );
+                         MatchAllOfGeneric<MatcherA, MatcherB>> );
 
     REQUIRE_THAT( 1, MatcherA() && MatcherB() );
 
     STATIC_REQUIRE(
-        std::is_same<
+        std::is_same_v<
             decltype( MatcherA() || !MatcherB() ),
             Catch::Matchers::Detail::MatchAnyOfGeneric<
                 MatcherA,
-                Catch::Matchers::Detail::MatchNotOfGeneric<MatcherB>>>::value );
+                Catch::Matchers::Detail::MatchNotOfGeneric<MatcherB>>> );
 
     REQUIRE_THAT( 1, MatcherA() || !MatcherB() );
 }
@@ -937,30 +937,29 @@ TEST_CASE( "Combining MatchAnyOfGeneric does not nest",
            "[matchers][templated]" ) {
     // MatchAnyOfGeneric LHS + some matcher RHS
     STATIC_REQUIRE(
-        std::is_same<
+        std::is_same_v<
             decltype( ( MatcherA() || MatcherB() ) || MatcherC() ),
             Catch::Matchers::Detail::
-                MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value );
+                MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>> );
 
     REQUIRE_THAT( 1, ( MatcherA() || MatcherB() ) || MatcherC() );
 
     // some matcher LHS + MatchAnyOfGeneric RHS
     STATIC_REQUIRE(
-        std::is_same<
+        std::is_same_v<
             decltype( MatcherA() || ( MatcherB() || MatcherC() ) ),
             Catch::Matchers::Detail::
-                MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value );
+                MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>> );
 
     REQUIRE_THAT( 1, MatcherA() || ( MatcherB() || MatcherC() ) );
 
     // MatchAnyOfGeneric LHS + MatchAnyOfGeneric RHS
     STATIC_REQUIRE(
-        std::is_same<
+        std::is_same_v<
             decltype( ( MatcherA() || MatcherB() ) ||
                       ( MatcherC() || MatcherD() ) ),
             Catch::Matchers::Detail::
-                MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>::
-            value );
+                MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>);
 
     REQUIRE_THAT(
         1, ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) );
@@ -970,30 +969,29 @@ TEST_CASE( "Combining MatchAllOfGeneric does not nest",
            "[matchers][templated]" ) {
     // MatchAllOfGeneric lhs + some matcher RHS
     STATIC_REQUIRE(
-        std::is_same<
+        std::is_same_v<
             decltype( ( MatcherA() && MatcherB() ) && MatcherC() ),
             Catch::Matchers::Detail::
-                MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value );
+                MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>> );
 
     REQUIRE_THAT( 1, ( MatcherA() && MatcherB() ) && MatcherC() );
 
     // some matcher LHS + MatchAllOfGeneric RSH
     STATIC_REQUIRE(
-        std::is_same<
+        std::is_same_v<
             decltype( MatcherA() && ( MatcherB() && MatcherC() ) ),
             Catch::Matchers::Detail::
-                MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value );
+                MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>> );
 
     REQUIRE_THAT( 1, MatcherA() && ( MatcherB() && MatcherC() ) );
 
     // MatchAllOfGeneric LHS + MatchAllOfGeneric RHS
     STATIC_REQUIRE(
-        std::is_same<
+        std::is_same_v<
             decltype( ( MatcherA() && MatcherB() ) &&
                       ( MatcherC() && MatcherD() ) ),
             Catch::Matchers::Detail::
-                MatchAllOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>::
-            value );
+                MatchAllOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>);
 
     REQUIRE_THAT(
         1, ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) );
@@ -1002,26 +1000,26 @@ TEST_CASE( "Combining MatchAllOfGeneric does not nest",
 TEST_CASE( "Combining MatchNotOfGeneric does not nest",
            "[matchers][templated]" ) {
     STATIC_REQUIRE(
-        std::is_same<
+        std::is_same_v<
             decltype( !MatcherA() ),
-            Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>::value );
+            Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>> );
 
     REQUIRE_THAT( 0, !MatcherA() );
 
     STATIC_REQUIRE(
-        std::is_same<decltype( !!MatcherA() ), MatcherA const&>::value );
+        std::is_same_v<decltype( !!MatcherA() ), MatcherA const&> );
 
     REQUIRE_THAT( 1, !!MatcherA() );
 
     STATIC_REQUIRE(
-        std::is_same<
+        std::is_same_v<
             decltype( !!!MatcherA() ),
-            Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>::value );
+            Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>> );
 
     REQUIRE_THAT( 0, !!!MatcherA() );
 
     STATIC_REQUIRE(
-        std::is_same<decltype( !!!!MatcherA() ), MatcherA const&>::value );
+        std::is_same_v<decltype( !!!!MatcherA() ), MatcherA const&> );
 
     REQUIRE_THAT( 1, !!!!MatcherA() );
 }

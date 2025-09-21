@@ -20,14 +20,7 @@
 #    pragma GCC diagnostic ignored "-Wsign-conversion"
 #endif
 
-#ifndef CLARA_CONFIG_OPTIONAL_TYPE
-#    ifdef __has_include
-#        if __has_include( <optional>) && __cplusplus >= 201703L
-#            include <optional>
-#            define CLARA_CONFIG_OPTIONAL_TYPE std::optional
-#        endif
-#    endif
-#endif
+#include <optional>
 
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
@@ -328,10 +321,9 @@ namespace Catch {
                                       std::string& target );
             ParserResult convertInto( std::string const& source, bool& target );
 
-#ifdef CLARA_CONFIG_OPTIONAL_TYPE
             template <typename T>
             auto convertInto( std::string const& source,
-                              CLARA_CONFIG_OPTIONAL_TYPE<T>& target )
+                              std::optional<T>& target )
                 -> ParserResult {
                 T temp;
                 auto result = convertInto( source, temp );
@@ -339,7 +331,6 @@ namespace Catch {
                     target = CATCH_MOVE( temp );
                 return result;
             }
-#endif // CLARA_CONFIG_OPTIONAL_TYPE
 
             struct BoundRef : Catch::Detail::NonCopyable {
                 virtual ~BoundRef() = default;
@@ -393,7 +384,7 @@ namespace Catch {
 
             template <typename ReturnType> struct LambdaInvoker {
                 static_assert(
-                    std::is_same<ReturnType, ParserResult>::value,
+                    std::is_same_v<ReturnType, ParserResult>,
                     "Lambda must return void or clara::ParserResult" );
 
                 template <typename L, typename ArgType>
@@ -449,8 +440,8 @@ namespace Catch {
                     UnaryLambdaTraits<L>::isValid,
                     "Supplied lambda must take exactly one argument" );
                 static_assert(
-                    std::is_same<typename UnaryLambdaTraits<L>::ArgType,
-                                 bool>::value,
+                    std::is_same_v<typename UnaryLambdaTraits<L>::ArgType,
+                                   bool>,
                     "flags must be boolean" );
 
                 explicit BoundFlagLambda( L const& lambda ):

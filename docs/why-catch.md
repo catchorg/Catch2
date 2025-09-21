@@ -15,7 +15,7 @@ So what does Catch2 bring to the party that differentiates it from these? Apart 
 ## Key Features
 
 * Quick and easy to get started. Just download two files, add them into your project and you're away.
-* No external dependencies. As long as you can compile C++14 and have the C++ standard library available.
+* No external dependencies. As long as you can compile C++17 and have the C++ standard library available.
 * Write test cases as, self-registering, functions (or methods, if you prefer).
 * Divide test cases into sections, each of which is run in isolation (eliminates the need for fixtures).
 * Use BDD-style Given-When-Then sections as well as traditional unit test cases.

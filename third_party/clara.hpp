@@ -18,14 +18,7 @@
 #define CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH CLARA_CONFIG_CONSOLE_WIDTH
 #endif
 
-#ifndef CLARA_CONFIG_OPTIONAL_TYPE
-#ifdef __has_include
-#if __has_include(<optional>) && __cplusplus >= 201703L
 #include <optional>
-#define CLARA_CONFIG_OPTIONAL_TYPE std::optional
-#endif
-#endif
-#endif
 
 
 // ----------- #included from clara_textflow.hpp -----------
@@ -676,16 +669,14 @@ namespace detail {
             return ParserResult::runtimeError( "Expected a boolean value but did not recognise: '" + source + "'" );
         return ParserResult::ok( ParseResultType::Matched );
     }
-#ifdef CLARA_CONFIG_OPTIONAL_TYPE
     template<typename T>
-    inline auto convertInto( std::string const &source, CLARA_CONFIG_OPTIONAL_TYPE<T>& target ) -> ParserResult {
+    inline auto convertInto( std::string const &source, std::optional<T>& target ) -> ParserResult {
         T temp;
         auto result = convertInto( source, temp );
         if( result )
             target = std::move(temp);
         return result;
     }
-#endif // CLARA_CONFIG_OPTIONAL_TYPE
 
     struct NonCopyable {
         NonCopyable() = default;
@@ -749,7 +740,7 @@ namespace detail {
 
     template<typename ReturnType>
     struct LambdaInvoker {
-        static_assert( std::is_same<ReturnType, ParserResult>::value, "Lambda must return void or clara::ParserResult" );
+        static_assert( std::is_same_v<ReturnType, ParserResult>, "Lambda must return void or clara::ParserResult" );
 
         template<typename L, typename ArgType>
         static auto invoke( L const &lambda, ArgType const &arg ) -> ParserResult {
@@ -793,7 +784,7 @@ namespace detail {
         L m_lambda;
 
         static_assert( UnaryLambdaTraits<L>::isValid, "Supplied lambda must take exactly one argument" );
-        static_assert( std::is_same<typename UnaryLambdaTraits<L>::ArgType, bool>::value, "flags must be boolean" );
+        static_assert( std::is_same_v<typename UnaryLambdaTraits<L>::ArgType, bool>, "flags must be boolean" );
 
         explicit BoundFlagLambda( L const &lambda ) : m_lambda( lambda ) {}
 

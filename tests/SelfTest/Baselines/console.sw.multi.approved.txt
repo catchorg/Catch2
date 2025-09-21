@@ -157,7 +157,7 @@ Compilation.tests.cpp:<line number>
 ...............................................................................
 
 Compilation.tests.cpp:<line number>: PASSED:
-  REQUIRE( std::is_same<TypeList<int>, TypeList<int>>::value )
+  REQUIRE( std::is_same_v<TypeList<int>, TypeList<int>> )
 with expansion:
   true
 
@@ -3272,8 +3272,8 @@ Matchers.tests.cpp:<line number>
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype( ( MatcherA() && MatcherB() ) && MatcherC() ), Catch::
-  Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value
+  std::is_same_v< decltype( ( MatcherA() && MatcherB() ) && MatcherC() ),
+  Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, ( MatcherA() && MatcherB() ) && MatcherC() )
@@ -3283,8 +3283,8 @@ with expansion:
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype( MatcherA() && ( MatcherB() && MatcherC() ) ), Catch::
-  Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value
+  std::is_same_v< decltype( MatcherA() && ( MatcherB() && MatcherC() ) ),
+  Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, MatcherA() && ( MatcherB() && MatcherC() ) )
@@ -3294,9 +3294,9 @@ with expansion:
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype( ( MatcherA() && MatcherB() ) && ( MatcherC() &&
+  std::is_same_v< decltype( ( MatcherA() && MatcherB() ) && ( MatcherC() &&
   MatcherD() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA,
-  MatcherB, MatcherC, MatcherD>>:: value
+  MatcherB, MatcherC, MatcherD>>
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) )
@@ -3312,8 +3312,8 @@ Matchers.tests.cpp:<line number>
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype( ( MatcherA() || MatcherB() ) || MatcherC() ), Catch::
-  Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value
+  std::is_same_v< decltype( ( MatcherA() || MatcherB() ) || MatcherC() ),
+  Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, ( MatcherA() || MatcherB() ) || MatcherC() )
@@ -3323,8 +3323,8 @@ with expansion:
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype( MatcherA() || ( MatcherB() || MatcherC() ) ), Catch::
-  Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value
+  std::is_same_v< decltype( MatcherA() || ( MatcherB() || MatcherC() ) ),
+  Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, MatcherA() || ( MatcherB() || MatcherC() ) )
@@ -3334,9 +3334,9 @@ with expansion:
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype( ( MatcherA() || MatcherB() ) || ( MatcherC() ||
+  std::is_same_v< decltype( ( MatcherA() || MatcherB() ) || ( MatcherC() ||
   MatcherD() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA,
-  MatcherB, MatcherC, MatcherD>>:: value
+  MatcherB, MatcherC, MatcherD>>
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) )
@@ -3352,8 +3352,8 @@ Matchers.tests.cpp:<line number>
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype( !MatcherA() ), Catch::Matchers::Detail::
-  MatchNotOfGeneric<MatcherA>>::value
+  std::is_same_v< decltype( !MatcherA() ), Catch::Matchers::Detail::
+  MatchNotOfGeneric<MatcherA>>
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 0, !MatcherA() )
@@ -3362,7 +3362,7 @@ with expansion:
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same<decltype( !!MatcherA() ), MatcherA const&>::value
+  std::is_same_v<decltype( !!MatcherA() ), MatcherA const&>
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, !!MatcherA() )
@@ -3371,8 +3371,8 @@ with expansion:
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype( !!!MatcherA() ), Catch::Matchers::Detail::
-  MatchNotOfGeneric<MatcherA>>::value
+  std::is_same_v< decltype( !!!MatcherA() ), Catch::Matchers::Detail::
+  MatchNotOfGeneric<MatcherA>>
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 0, !!!MatcherA() )
@@ -3381,7 +3381,7 @@ with expansion:
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same<decltype( !!!!MatcherA() ), MatcherA const&>::value
+  std::is_same_v<decltype( !!!!MatcherA() ), MatcherA const&>
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, !!!!MatcherA() )
@@ -3396,9 +3396,9 @@ Matchers.tests.cpp:<line number>
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same<decltype( StartsWith( "foo" ) || ( StartsWith( "bar" ) &&
+  std::is_same_v<decltype( StartsWith( "foo" ) || ( StartsWith( "bar" ) &&
   EndsWith( "bar" ) && !EndsWith( "foo" ) ) ), Catch::Matchers::Detail::
-  MatchAnyOf<std::string>>::value
+  MatchAnyOf<std::string>>
 
 -------------------------------------------------------------------------------
 Combining only templated matchers
@@ -3408,8 +3408,8 @@ Matchers.tests.cpp:<line number>
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same<decltype( MatcherA() || MatcherB() ), Catch::Matchers::Detail::
-  MatchAnyOfGeneric<MatcherA, MatcherB>>::value
+  std::is_same_v<decltype( MatcherA() || MatcherB() ), Catch::Matchers::Detail:
+  : MatchAnyOfGeneric<MatcherA, MatcherB>>
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, MatcherA() || MatcherB() )
@@ -3418,8 +3418,8 @@ with expansion:
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same<decltype( MatcherA() && MatcherB() ), Catch::Matchers::Detail::
-  MatchAllOfGeneric<MatcherA, MatcherB>>::value
+  std::is_same_v<decltype( MatcherA() && MatcherB() ), Catch::Matchers::Detail:
+  : MatchAllOfGeneric<MatcherA, MatcherB>>
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, MatcherA() && MatcherB() )
@@ -3428,9 +3428,9 @@ with expansion:
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype( MatcherA() || !MatcherB() ), Catch::Matchers::Detail:
-  :MatchAnyOfGeneric< MatcherA, Catch::Matchers::Detail::MatchNotOfGeneric
-  <MatcherB>>>::value
+  std::is_same_v< decltype( MatcherA() || !MatcherB() ), Catch::Matchers::
+  Detail::MatchAnyOfGeneric< MatcherA, Catch::Matchers::Detail::
+  MatchNotOfGeneric<MatcherB>>>
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, MatcherA() || !MatcherB() )
@@ -8473,19 +8473,19 @@ Compilation.tests.cpp:<line number>
 
 Compilation.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_void<void>::value
+  std::is_void_v<void>
 
 Compilation.tests.cpp:<line number>: PASSED:
 with message:
-  !(std::is_void<int>::value)
+  !(std::is_void_v<int>)
 
 Compilation.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_void<void>::value
+  std::is_void_v<void>
 
 Compilation.tests.cpp:<line number>: PASSED:
 with message:
-  !(std::is_void<int>::value)
+  !(std::is_void_v<int>)
 
 -------------------------------------------------------------------------------
 Ordering comparison checks that should fail
@@ -10050,7 +10050,7 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( std::tuple_size<TestType>::value >= 1 )
+  REQUIRE( std::tuple_size_v<TestType> >= 1 )
 with expansion:
   3 >= 1
 
@@ -10061,7 +10061,7 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( std::tuple_size<TestType>::value >= 1 )
+  REQUIRE( std::tuple_size_v<TestType> >= 1 )
 with expansion:
   2 >= 1
 
@@ -10072,7 +10072,7 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( std::tuple_size<TestType>::value >= 1 )
+  REQUIRE( std::tuple_size_v<TestType> >= 1 )
 with expansion:
   1 >= 1
 
@@ -12099,7 +12099,7 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( std::is_default_constructible<TestType>::value )
+  REQUIRE( std::is_default_constructible_v<TestType> )
 with expansion:
   true
 
@@ -12111,7 +12111,7 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( std::is_default_constructible<TestType>::value )
+  REQUIRE( std::is_default_constructible_v<TestType> )
 with expansion:
   true
 
@@ -12123,7 +12123,7 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( std::is_trivially_copyable<TestType>::value )
+  REQUIRE( std::is_trivially_copyable_v<TestType> )
 with expansion:
   true
 
@@ -12135,7 +12135,7 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( std::is_trivially_copyable<TestType>::value )
+  REQUIRE( std::is_trivially_copyable_v<TestType> )
 with expansion:
   true
 
@@ -12146,7 +12146,7 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( std::is_arithmetic<TestType>::value )
+  REQUIRE( std::is_arithmetic_v<TestType> )
 with expansion:
   true
 
@@ -12157,7 +12157,7 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( std::is_arithmetic<TestType>::value )
+  REQUIRE( std::is_arithmetic_v<TestType> )
 with expansion:
   true
 
@@ -12168,7 +12168,7 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( std::is_arithmetic<TestType>::value )
+  REQUIRE( std::is_arithmetic_v<TestType> )
 with expansion:
   true
 

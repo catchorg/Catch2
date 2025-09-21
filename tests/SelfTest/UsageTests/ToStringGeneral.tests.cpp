@@ -106,8 +106,6 @@ TEST_CASE("Static arrays are convertible to string", "[toString]") {
     }
 }
 
-#ifdef CATCH_CONFIG_CPP17_STRING_VIEW
-
 TEST_CASE("String views are stringified like other strings", "[toString][approvals]") {
     std::string_view view{"abc"};
     CHECK(Catch::Detail::stringify(view) == R"("abc")");
@@ -115,8 +113,6 @@ TEST_CASE("String views are stringified like other strings", "[toString][approva
     std::string_view arr[] { view };
     CHECK(Catch::Detail::stringify(arr) == R"({ "abc" })");
 }
-
-#endif
 
 TEST_CASE("Precision of floating point stringification can be set", "[toString][floatingPoint]") {
     SECTION("Floats") {

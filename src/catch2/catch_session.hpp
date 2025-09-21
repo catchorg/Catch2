@@ -16,7 +16,6 @@
 
 namespace Catch {
 
-    // TODO: Use C++17 `inline` variables
     constexpr int UnspecifiedErrorExitCode = 1;
     constexpr int NoTestsRunExitCode = 2;
     constexpr int UnmatchedTestSpecExitCode = 3;

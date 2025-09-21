@@ -146,11 +146,11 @@ TEST_CASE( "SizedUnsignedType helpers", "[integer][approvals]" ) {
     STATIC_REQUIRE( sizeof( SizedUnsignedType_t<8> ) == 8 );
 
     STATIC_REQUIRE( sizeof( DoubleWidthUnsignedType_t<std::uint8_t> ) == 2 );
-    STATIC_REQUIRE( std::is_unsigned<DoubleWidthUnsignedType_t<std::uint8_t>>::value );
+    STATIC_REQUIRE( std::is_unsigned_v<DoubleWidthUnsignedType_t<std::uint8_t>> );
     STATIC_REQUIRE( sizeof( DoubleWidthUnsignedType_t<std::uint16_t> ) == 4 );
-    STATIC_REQUIRE( std::is_unsigned<DoubleWidthUnsignedType_t<std::uint16_t>>::value );
+    STATIC_REQUIRE( std::is_unsigned_v<DoubleWidthUnsignedType_t<std::uint16_t>> );
     STATIC_REQUIRE( sizeof( DoubleWidthUnsignedType_t<std::uint32_t> ) == 8 );
-    STATIC_REQUIRE( std::is_unsigned<DoubleWidthUnsignedType_t<std::uint32_t>>::value );
+    STATIC_REQUIRE( std::is_unsigned_v<DoubleWidthUnsignedType_t<std::uint32_t>> );
 }
 
 TEST_CASE( "extendedMult 32x32", "[integer][approvals]" ) {

@@ -154,7 +154,7 @@ Nor would this
   <TestCase name="#1548" tags="[compilation]" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
       <Original>
-        std::is_same&lt;TypeList&lt;int>, TypeList&lt;int>>::value
+        std::is_same_v&lt;TypeList&lt;int>, TypeList&lt;int>>
       </Original>
       <Expanded>
         true
@@ -12057,7 +12057,7 @@ Approx( 0.98999999999999999 )
   <TestCase name="Product with differing arities - std::tuple&lt;int, double, float>" tags="[product][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        std::tuple_size&lt;TestType>::value >= 1
+        std::tuple_size_v&lt;TestType> >= 1
       </Original>
       <Expanded>
         3 >= 1
@@ -12068,7 +12068,7 @@ Approx( 0.98999999999999999 )
   <TestCase name="Product with differing arities - std::tuple&lt;int, double>" tags="[product][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        std::tuple_size&lt;TestType>::value >= 1
+        std::tuple_size_v&lt;TestType> >= 1
       </Original>
       <Expanded>
         2 >= 1
@@ -12079,7 +12079,7 @@ Approx( 0.98999999999999999 )
   <TestCase name="Product with differing arities - std::tuple&lt;int>" tags="[product][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        std::tuple_size&lt;TestType>::value >= 1
+        std::tuple_size_v&lt;TestType> >= 1
       </Original>
       <Expanded>
         1 >= 1
@@ -14113,7 +14113,7 @@ Message from section two
   <TestCase name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 0" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        std::is_default_constructible&lt;TestType>::value
+        std::is_default_constructible_v&lt;TestType>
       </Original>
       <Expanded>
         true
@@ -14124,7 +14124,7 @@ Message from section two
   <TestCase name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 1" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        std::is_default_constructible&lt;TestType>::value
+        std::is_default_constructible_v&lt;TestType>
       </Original>
       <Expanded>
         true
@@ -14135,7 +14135,7 @@ Message from section two
   <TestCase name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 0" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        std::is_trivially_copyable&lt;TestType>::value
+        std::is_trivially_copyable_v&lt;TestType>
       </Original>
       <Expanded>
         true
@@ -14146,7 +14146,7 @@ Message from section two
   <TestCase name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 1" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        std::is_trivially_copyable&lt;TestType>::value
+        std::is_trivially_copyable_v&lt;TestType>
       </Original>
       <Expanded>
         true
@@ -14157,7 +14157,7 @@ Message from section two
   <TestCase name="Template test case with test types specified inside std::tuple - MyTypes - 0" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        std::is_arithmetic&lt;TestType>::value
+        std::is_arithmetic_v&lt;TestType>
       </Original>
       <Expanded>
         true
@@ -14168,7 +14168,7 @@ Message from section two
   <TestCase name="Template test case with test types specified inside std::tuple - MyTypes - 1" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        std::is_arithmetic&lt;TestType>::value
+        std::is_arithmetic_v&lt;TestType>
       </Original>
       <Expanded>
         true
@@ -14179,7 +14179,7 @@ Message from section two
   <TestCase name="Template test case with test types specified inside std::tuple - MyTypes - 2" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        std::is_arithmetic&lt;TestType>::value
+        std::is_arithmetic_v&lt;TestType>
       </Original>
       <Expanded>
         true

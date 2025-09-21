@@ -60,56 +60,6 @@
 
 
 
-#cmakedefine CATCH_CONFIG_CPP17_BYTE
-#cmakedefine CATCH_CONFIG_NO_CPP17_BYTE
-
-#if defined( CATCH_CONFIG_CPP17_BYTE ) && \
-    defined( CATCH_CONFIG_NO_CPP17_BYTE )
-#    error Cannot force CPP17_BYTE to both ON and OFF
-#endif
-
-
-
-#cmakedefine CATCH_CONFIG_CPP17_OPTIONAL
-#cmakedefine CATCH_CONFIG_NO_CPP17_OPTIONAL
-
-#if defined( CATCH_CONFIG_CPP17_OPTIONAL ) && \
-    defined( CATCH_CONFIG_NO_CPP17_OPTIONAL )
-#    error Cannot force CPP17_OPTIONAL to both ON and OFF
-#endif
-
-
-
-#cmakedefine CATCH_CONFIG_CPP17_STRING_VIEW
-#cmakedefine CATCH_CONFIG_NO_CPP17_STRING_VIEW
-
-#if defined( CATCH_CONFIG_CPP17_STRING_VIEW ) && \
-    defined( CATCH_CONFIG_NO_CPP17_STRING_VIEW )
-#    error Cannot force CPP17_STRING_VIEW to both ON and OFF
-#endif
-
-
-
-#cmakedefine CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
-#cmakedefine CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS
-
-#if defined( CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS ) && \
-    defined( CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS )
-#    error Cannot force CPP17_UNCAUGHT_EXCEPTIONS to both ON and OFF
-#endif
-
-
-
-#cmakedefine CATCH_CONFIG_CPP17_VARIANT
-#cmakedefine CATCH_CONFIG_NO_CPP17_VARIANT
-
-#if defined( CATCH_CONFIG_CPP17_VARIANT ) && \
-    defined( CATCH_CONFIG_NO_CPP17_VARIANT )
-#    error Cannot force CPP17_VARIANT to both ON and OFF
-#endif
-
-
-
 #cmakedefine CATCH_CONFIG_GLOBAL_NEXTAFTER
 #cmakedefine CATCH_CONFIG_NO_GLOBAL_NEXTAFTER
 

@@ -193,13 +193,13 @@ TEST_CASE("Generators -- adapters", "[generators][generic]") {
 TEST_CASE("Random generator", "[generators][approvals]") {
     SECTION("Infer int from integral arguments") {
         auto val = GENERATE(take(4, random(0, 1)));
-        STATIC_REQUIRE(std::is_same<decltype(val), int>::value);
+        STATIC_REQUIRE(std::is_same_v<decltype(val), int>);
         REQUIRE(0 <= val);
         REQUIRE(val <= 1);
     }
     SECTION("Infer double from double arguments") {
         auto val = GENERATE(take(4, random(0., 1.)));
-        STATIC_REQUIRE(std::is_same<decltype(val), double>::value);
+        STATIC_REQUIRE(std::is_same_v<decltype(val), double>);
         REQUIRE(0. <= val);
         REQUIRE(val < 1);
     }

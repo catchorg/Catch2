@@ -122,7 +122,7 @@ namespace Catch {
 
         template <typename UInt>
         constexpr ExtendedMultResult<UInt> extendedMult( UInt lhs, UInt rhs ) {
-            static_assert( std::is_unsigned<UInt>::value,
+            static_assert( std::is_unsigned_v<UInt>,
                            "extendedMult can only handle unsigned integers" );
             static_assert( sizeof( UInt ) < sizeof( std::uint64_t ),
                            "Generic extendedMult can only handle types smaller "
@@ -141,7 +141,7 @@ namespace Catch {
             std::enable_if_t<sizeof(typename Generator::result_type) >= sizeof(TargetType),
             TargetType> fillBitsFrom(Generator& gen) {
             using gresult_type = typename Generator::result_type;
-            static_assert( std::is_unsigned<TargetType>::value, "Only unsigned integers are supported" );
+            static_assert( std::is_unsigned_v<TargetType>, "Only unsigned integers are supported" );
             static_assert( Generator::min() == 0 &&
                            Generator::max() == static_cast<gresult_type>( -1 ),
                            "Generator must be able to output all numbers in its result type (effectively it must be a random bit generator)" );
@@ -160,7 +160,7 @@ namespace Catch {
             std::enable_if_t<sizeof(typename Generator::result_type) < sizeof(TargetType),
             TargetType> fillBitsFrom(Generator& gen) {
             using gresult_type = typename Generator::result_type;
-            static_assert( std::is_unsigned<TargetType>::value,
+            static_assert( std::is_unsigned_v<TargetType>,
                            "Only unsigned integers are supported" );
             static_assert( Generator::min() == 0 &&
                            Generator::max() == static_cast<gresult_type>( -1 ),
@@ -188,12 +188,12 @@ namespace Catch {
          */
         template <typename OriginalType, typename UnsignedType>
         constexpr
-        std::enable_if_t<std::is_signed<OriginalType>::value, UnsignedType>
+        std::enable_if_t<std::is_signed_v<OriginalType>, UnsignedType>
         transposeToNaturalOrder( UnsignedType in ) {
             static_assert(
                 sizeof( OriginalType ) == sizeof( UnsignedType ),
                 "reordering requires the same sized types on both sides" );
-            static_assert( std::is_unsigned<UnsignedType>::value,
+            static_assert( std::is_unsigned_v<UnsignedType>,
                            "Input type must be unsigned" );
             // Assuming 2s complement (standardized in current C++), the
             // positive and negative numbers are already internally ordered,
@@ -209,12 +209,12 @@ namespace Catch {
         template <typename OriginalType,
                   typename UnsignedType>
         constexpr
-        std::enable_if_t<std::is_unsigned<OriginalType>::value, UnsignedType>
+        std::enable_if_t<std::is_unsigned_v<OriginalType>, UnsignedType>
             transposeToNaturalOrder(UnsignedType in) {
             static_assert(
                 sizeof( OriginalType ) == sizeof( UnsignedType ),
                 "reordering requires the same sized types on both sides" );
-            static_assert( std::is_unsigned<UnsignedType>::value, "Input type must be unsigned" );
+            static_assert( std::is_unsigned_v<UnsignedType>, "Input type must be unsigned" );
             // No reordering is needed for unsigned -> unsigned
             return in;
         }

@@ -21,7 +21,7 @@ TEST_CASE( "std::pair<int,const std::string> -> toString", "[toString][pair]" ) 
 
 TEST_CASE( "std::vector<std::pair<std::string,int> > -> toString", "[toString][pair]" ) {
     std::vector<std::pair<std::string,int> > pr;
-    pr.push_back( std::make_pair("green", 55 ) );
+    pr.emplace_back( "green", 55 );
     REQUIRE( ::Catch::Detail::stringify( pr ) == "{ { \"green\", 55 } }" );
 }
 

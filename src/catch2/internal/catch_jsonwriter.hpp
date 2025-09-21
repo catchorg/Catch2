@@ -35,7 +35,7 @@ namespace Catch {
 
         template <typename T>
         void write( T const& value ) && {
-            writeImpl( value, !std::is_arithmetic<T>::value );
+            writeImpl( value, !std::is_arithmetic_v<T> );
         }
         void write( StringRef value ) &&;
         void write( bool value ) &&;
@@ -49,7 +49,7 @@ namespace Catch {
         // and multiple iteration over the strings
         template <typename T,
                   typename = typename std::enable_if_t<
-                      !std::is_convertible<T, StringRef>::value>>
+                      !std::is_convertible_v<T, StringRef>>>
         void writeImpl( T const& value, bool quote_value ) {
             m_sstream << value;
             writeImpl( m_sstream.str(), quote_value );

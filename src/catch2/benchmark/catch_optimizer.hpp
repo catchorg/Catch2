@@ -64,12 +64,12 @@ namespace Catch {
         }
 
         template <typename Fn, typename... Args>
-        inline auto invoke_deoptimized(Fn&& fn, Args&&... args) -> std::enable_if_t<!std::is_same<void, decltype(fn(args...))>::value> {
+        inline auto invoke_deoptimized(Fn&& fn, Args&&... args) -> std::enable_if_t<!std::is_same_v<void, decltype(fn(args...))>> {
             deoptimize_value(CATCH_FORWARD(fn) (CATCH_FORWARD(args)...));
         }
 
         template <typename Fn, typename... Args>
-        inline auto invoke_deoptimized(Fn&& fn, Args&&... args) -> std::enable_if_t<std::is_same<void, decltype(fn(args...))>::value> {
+        inline auto invoke_deoptimized(Fn&& fn, Args&&... args) -> std::enable_if_t<std::is_same_v<void, decltype(fn(args...))>> {
             CATCH_FORWARD((fn)) (CATCH_FORWARD(args)...);
         }
     } // namespace Benchmark

@@ -72,8 +72,8 @@ including the Catch2 header.
 Example:
 ```cpp
 TEST_CASE("STATIC_REQUIRE showcase", "[traits]") {
-    STATIC_REQUIRE( std::is_void<void>::value );
-    STATIC_REQUIRE_FALSE( std::is_void<int>::value );
+    STATIC_REQUIRE( std::is_void_v<void> );
+    STATIC_REQUIRE_FALSE( std::is_void_v<int> );
 }
 ```
 
@@ -86,8 +86,8 @@ becomes equivalent to `CHECK` instead of `REQUIRE`.
 Example:
 ```cpp
 TEST_CASE("STATIC_CHECK showcase", "[traits]") {
-    STATIC_CHECK( std::is_void<void>::value );
-    STATIC_CHECK_FALSE( std::is_void<int>::value );
+    STATIC_CHECK( std::is_void_v<void> );
+    STATIC_CHECK_FALSE( std::is_void_v<int> );
 }
 ```
 

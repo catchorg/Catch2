@@ -211,15 +211,9 @@ and so on.
 
 ### C++ standard version
 
-Catch2 currently targets C++14 as the minimum supported C++ version.
+Catch2 currently targets C++17 as the minimum supported C++ version.
 Features from higher language versions should be used only sparingly,
 when the benefits from using them outweigh the maintenance overhead.
-
-Example of good use of polyfilling features is our use of `conjunction`,
-where if available we use `std::conjunction` and otherwise provide our
-own implementation. The reason it is good is that the surface area for
-maintenance is quite small, and `std::conjunction` can directly use
-compiler built-ins, thus providing significant compilation benefits.
 
 Example of bad use of polyfilling features would be to keep around two
 sets of metaprogramming in the stringification implementation, once

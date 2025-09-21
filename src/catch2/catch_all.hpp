@@ -57,11 +57,9 @@
 #include <catch2/internal/catch_config_counter.hpp>
 #include <catch2/internal/catch_config_prefix_messages.hpp>
 #include <catch2/internal/catch_config_static_analysis_support.hpp>
-#include <catch2/internal/catch_config_uncaught_exceptions.hpp>
 #include <catch2/internal/catch_config_wchar.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_console_width.hpp>
-#include <catch2/internal/catch_container_nonmembers.hpp>
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/internal/catch_debug_console.hpp>
 #include <catch2/internal/catch_debugger.hpp>
@@ -80,7 +78,6 @@
 #include <catch2/internal/catch_lazy_expr.hpp>
 #include <catch2/internal/catch_leak_detector.hpp>
 #include <catch2/internal/catch_list.hpp>
-#include <catch2/internal/catch_logical_traits.hpp>
 #include <catch2/internal/catch_message_info.hpp>
 #include <catch2/internal/catch_meta.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>

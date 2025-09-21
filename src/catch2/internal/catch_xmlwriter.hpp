@@ -81,7 +81,7 @@ namespace Catch {
                       // While it would still work, it would cause code bloat
                       // and multiple iteration over the strings
                       typename = typename std::enable_if_t<
-                          !std::is_convertible<T, StringRef>::value>>
+                          !std::is_convertible_v<T, StringRef>>>
             ScopedElement& writeAttribute( StringRef name,
                                            T const& attribute ) {
                 m_writer->writeAttribute( name, attribute );
@@ -122,7 +122,7 @@ namespace Catch {
                   // While it would still work, it would cause code bloat
                   // and multiple iteration over the strings
                   typename = typename std::enable_if_t<
-                      !std::is_convertible<T, StringRef>::value>>
+                      !std::is_convertible_v<T, StringRef>>>
         XmlWriter& writeAttribute( StringRef name, T const& attribute ) {
             ReusableStringStream rss;
             rss << attribute;

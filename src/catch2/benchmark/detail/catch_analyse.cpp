@@ -46,7 +46,7 @@ namespace Catch {
                     std::vector<FDuration> samples2;
                     samples2.reserve(samples.size());
                     for (auto s : samples) {
-                        samples2.push_back( FDuration( s ) );
+                        samples2.emplace_back( s );
                     }
 
                     return {

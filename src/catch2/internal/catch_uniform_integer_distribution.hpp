@@ -26,7 +26,7 @@ namespace Catch {
  */
 template <typename IntegerType>
 class uniform_integer_distribution {
-    static_assert(std::is_integral<IntegerType>::value, "...");
+    static_assert(std::is_integral_v<IntegerType>, "...");
 
     using UnsignedIntegerType = Detail::SizedUnsignedType_t<sizeof(IntegerType)>;
 

@@ -49,7 +49,7 @@ namespace Catch {
 
         template <typename ForwardIter, typename Sentinel>
         constexpr
-        std::enable_if_t<!std::is_same<ForwardIter, Sentinel>::value,
+        std::enable_if_t<!std::is_same_v<ForwardIter, Sentinel>,
                          std::ptrdiff_t>
         sentinel_distance( ForwardIter iter, const Sentinel sentinel ) {
             std::ptrdiff_t dist = 0;

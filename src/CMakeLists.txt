@@ -76,11 +76,9 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/internal/catch_config_counter.hpp
   ${SOURCES_DIR}/internal/catch_config_prefix_messages.hpp
   ${SOURCES_DIR}/internal/catch_config_static_analysis_support.hpp
-  ${SOURCES_DIR}/internal/catch_config_uncaught_exceptions.hpp
   ${SOURCES_DIR}/internal/catch_config_wchar.hpp
   ${SOURCES_DIR}/internal/catch_console_colour.hpp
   ${SOURCES_DIR}/internal/catch_console_width.hpp
-  ${SOURCES_DIR}/internal/catch_container_nonmembers.hpp
   ${SOURCES_DIR}/internal/catch_context.hpp
   ${SOURCES_DIR}/internal/catch_debug_console.hpp
   ${SOURCES_DIR}/internal/catch_debugger.hpp
@@ -99,7 +97,6 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/internal/catch_lazy_expr.hpp
   ${SOURCES_DIR}/internal/catch_leak_detector.hpp
   ${SOURCES_DIR}/internal/catch_list.hpp
-  ${SOURCES_DIR}/internal/catch_logical_traits.hpp
   ${SOURCES_DIR}/internal/catch_message_info.hpp
   ${SOURCES_DIR}/internal/catch_meta.hpp
   ${SOURCES_DIR}/internal/catch_move_and_forward.hpp
@@ -365,8 +362,8 @@ set_target_properties(Catch2 PROPERTIES
   SOVERSION ${PROJECT_VERSION}
 )
 
-# require C++14
-target_compile_features(Catch2 PUBLIC cxx_std_14)
+# require C++17
+target_compile_features(Catch2 PUBLIC cxx_std_17)
 
 configure_file(
   "${SOURCES_DIR}/catch_user_config.hpp.in"
@@ -450,7 +447,7 @@ if(CATCH_BUILD_EXAMPLES OR CATCH_BUILD_EXTRA_TESTS)
       $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   )
   target_compile_definitions(Catch2_buildall_interface INTERFACE CATCH_CONFIG_STATIC)
-  target_compile_features(Catch2_buildall_interface INTERFACE cxx_std_14)
+  target_compile_features(Catch2_buildall_interface INTERFACE cxx_std_17)
 endif()
 
 list(APPEND CATCH_IMPL_TARGETS Catch2 Catch2WithMain)

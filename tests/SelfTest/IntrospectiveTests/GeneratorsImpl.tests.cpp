@@ -427,7 +427,7 @@ TEST_CASE("GENERATE handles function (pointers)", "[generators][compilation][app
 TEST_CASE("GENERATE decays arrays", "[generators][compilation][approvals]") {
     auto str = GENERATE("abc", "def", "gh");
     (void)str;
-    STATIC_REQUIRE(std::is_same<decltype(str), const char*>::value);
+    STATIC_REQUIRE(std::is_same_v<decltype(str), const char*>);
 }
 
 TEST_CASE("Generators count returned elements", "[generators][approvals]") {

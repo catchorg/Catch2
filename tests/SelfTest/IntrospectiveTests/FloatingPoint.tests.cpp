@@ -130,10 +130,10 @@ TEST_CASE( "count_equidistant_floats",
                                          std::numeric_limits<double>::max() ) ==
            18014398509481982 ); // (1 << 54) - 2 due to not including infinities
 
-    STATIC_REQUIRE( std::is_same<std::uint64_t,
-                                 decltype( count_floats_with_scaled_ulp(
-                                     0., 1. ) )>::value );
-    STATIC_REQUIRE( std::is_same<std::uint32_t,
-                                 decltype( count_floats_with_scaled_ulp(
-                                     0.f, 1.f ) )>::value );
+    STATIC_REQUIRE( std::is_same_v<std::uint64_t,
+                                   decltype( count_floats_with_scaled_ulp(
+                                     0., 1. ) )> );
+    STATIC_REQUIRE( std::is_same_v<std::uint32_t,
+                                   decltype( count_floats_with_scaled_ulp(
+                                     0.f, 1.f ) )> );
 }

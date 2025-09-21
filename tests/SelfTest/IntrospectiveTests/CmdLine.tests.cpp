@@ -443,13 +443,9 @@ TEST_CASE( "Parse rng seed in different formats", "[approvals][cli][rng-seed]" )
     auto cli = Catch::makeCommandLineParser( config );
 
     SECTION("well formed cases") {
-        char const* seed_string;
-        uint32_t seed_value;
-        // GCC-5 workaround
-        using gen_type = std::tuple<char const*, uint32_t>;
-        std::tie( seed_string, seed_value ) = GENERATE( table<char const*, uint32_t>({
-            gen_type{ "0xBEEF", 0xBEEF },
-            gen_type{ "12345678", 12345678 }
+        auto [seed_string, seed_value] = GENERATE( table<char const*, uint32_t>({
+            { "0xBEEF", 0xBEEF },
+            { "12345678", 12345678 }
         } ) );
         CAPTURE( seed_string );
 

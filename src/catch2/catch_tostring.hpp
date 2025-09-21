@@ -20,9 +20,7 @@
 #include <catch2/internal/catch_void_type.hpp>
 #include <catch2/interfaces/catch_interfaces_enum_values_registry.hpp>
 
-#ifdef CATCH_CONFIG_CPP17_STRING_VIEW
 #include <string_view>
-#endif
 
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -78,13 +76,13 @@ namespace Catch {
 
         template<typename T>
         std::enable_if_t<
-            !std::is_enum<T>::value && !std::is_base_of<std::exception, T>::value,
+            !std::is_enum_v<T> && !std::is_base_of_v<std::exception, T>,
         std::string> convertUnstreamable( T const& ) {
             return std::string(Detail::unprintableString);
         }
         template<typename T>
         std::enable_if_t<
-            !std::is_enum<T>::value && std::is_base_of<std::exception, T>::value,
+            !std::is_enum_v<T> && std::is_base_of_v<std::exception, T>,
          std::string> convertUnstreamable(T const& ex) {
             return ex.what();
         }
@@ -92,7 +90,7 @@ namespace Catch {
 
         template<typename T>
         std::enable_if_t<
-            std::is_enum<T>::value,
+            std::is_enum_v<T>,
         std::string> convertUnstreamable( T const& value ) {
             return convertUnknownEnumToString( value );
         }
@@ -173,12 +171,10 @@ namespace Catch {
         static std::string convert(const std::string& str);
     };
 
-#ifdef CATCH_CONFIG_CPP17_STRING_VIEW
     template<>
     struct StringMaker<std::string_view> {
         static std::string convert(std::string_view str);
     };
-#endif
 
     template<>
     struct StringMaker<char const *> {
@@ -195,12 +191,10 @@ namespace Catch {
         static std::string convert(const std::wstring& wstr);
     };
 
-# ifdef CATCH_CONFIG_CPP17_STRING_VIEW
     template<>
     struct StringMaker<std::wstring_view> {
         static std::string convert(std::wstring_view str);
     };
-# endif
 
     template<>
     struct StringMaker<wchar_t const *> {
@@ -236,12 +230,10 @@ namespace Catch {
         }
     };
 
-#if defined(CATCH_CONFIG_CPP17_BYTE)
     template<>
     struct StringMaker<std::byte> {
         static std::string convert(std::byte value);
     };
-#endif // defined(CATCH_CONFIG_CPP17_BYTE)
     template<>
     struct StringMaker<int> {
         static std::string convert(int value);
@@ -387,7 +379,7 @@ namespace Catch {
 }
 #endif // CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER
 
-#if defined(CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER) && defined(CATCH_CONFIG_CPP17_OPTIONAL)
+#if defined(CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER)
 #include <optional>
 namespace Catch {
     template<typename T>
@@ -417,7 +409,7 @@ namespace Catch {
         template<
             typename Tuple,
             std::size_t N = 0,
-            bool = (N < std::tuple_size<Tuple>::value)
+            bool = (N < std::tuple_size_v<Tuple>)
             >
             struct TupleElementPrinter {
             static void print(const Tuple& tuple, std::ostream& os) {
@@ -451,7 +443,7 @@ namespace Catch {
 }
 #endif // CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER
 
-#if defined(CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER) && defined(CATCH_CONFIG_CPP17_VARIANT)
+#if defined(CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER)
 #include <variant>
 namespace Catch {
     template<>

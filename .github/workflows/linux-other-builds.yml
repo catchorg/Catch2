@@ -7,7 +7,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: ${{matrix.build_description}}, ${{matrix.cxx}}, C++${{matrix.std}} ${{matrix.build_type}}
+    name: ${{matrix.build_description}}, ${{matrix.cxx}}, ${{matrix.build_type}}
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
@@ -20,7 +20,6 @@ jobs:
           - cxx: clang++-14
             build_description: Surrogates build
             build_type: Debug
-            std: 14
             other_pkgs: clang-14
             cmake_configurations: -DCATCH_BUILD_SURROGATES=ON
 
@@ -28,13 +27,11 @@ jobs:
           - cxx: g++-11
             build_description: Extras + Examples
             build_type: Debug
-            std: 14
             other_pkgs: g++-11
             cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_BUILD_EXAMPLES=ON -DCATCH_ENABLE_CMAKE_HELPER_TESTS=ON
           - cxx: g++-11
             build_description: Extras + Examples
             build_type: Release
-            std: 14
             other_pkgs: g++-11
             cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_BUILD_EXAMPLES=ON -DCATCH_ENABLE_CMAKE_HELPER_TESTS=ON
 
@@ -42,29 +39,18 @@ jobs:
           - cxx: clang++-14
             build_description: Extras + Examples
             build_type: Debug
-            std: 17
             other_pkgs: clang-14
             cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_BUILD_EXAMPLES=ON -DCATCH_ENABLE_CMAKE_HELPER_TESTS=ON
           - cxx: clang++-14
             build_description: Extras + Examples
             build_type: Release
-            std: 17
             other_pkgs: clang-14
             cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_BUILD_EXAMPLES=ON -DCATCH_ENABLE_CMAKE_HELPER_TESTS=ON
-
-          # Configure tests with Clang-14
-          - cxx: clang++-14
-            build_description: CMake configuration tests
-            build_type: Debug
-            std: 14
-            other_pkgs: clang-14
-            cmake_configurations: -DCATCH_ENABLE_CONFIGURE_TESTS=ON
 
           # Valgrind test Clang-14
           # - cxx: clang++-14
           #   build_description: Valgrind tests
           #   build_type: Debug
-          #   std: 14
           #   other_pkgs: clang-14 valgrind
           #   cmake_configurations: -DMEMORYCHECK_COMMAND=`which valgrind` -DMEMORYCHECK_COMMAND_OPTIONS="-q --track-origins=yes --leak-check=full --num-callers=50 --show-leak-kinds=definite --error-exitcode=1"
           #   other_ctest_args: -T memcheck -LE uses-python
@@ -83,7 +69,6 @@ jobs:
         cmake --preset basic-tests -GNinja \
               -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
               -DCMAKE_CXX_COMPILER=${{matrix.cxx}} \
-              -DCMAKE_CXX_STANDARD=${{matrix.std}} \
               ${{matrix.cmake_configurations}}
 
     - name: Build
@@ -116,7 +101,6 @@ jobs:
               -DCMAKE_CXX_COMPILER_LAUNCHER=/usr/bin/true \
               -DCMAKE_CXX_COMPILER=clang++-15 \
               -DCMAKE_CXX_LINK_EXECUTABLE=/usr/bin/true \
-              -DCMAKE_CXX_STANDARD=17 \
               -DCMAKE_RANLIB=/usr/bin/true \
               -DCATCH_BUILD_EXAMPLES=ON \
               -DCATCH_ENABLE_CMAKE_HELPER_TESTS=ON

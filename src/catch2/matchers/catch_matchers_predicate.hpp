@@ -49,7 +49,7 @@ public:
     template<typename T, typename Pred>
     PredicateMatcher<T, Pred> Predicate(Pred&& predicate, std::string const& description = "") {
         static_assert(is_callable<Pred(T)>::value, "Predicate not callable with argument T");
-        static_assert(std::is_same<bool, FunctionReturnType<Pred, T>>::value, "Predicate does not return bool");
+        static_assert(std::is_same_v<bool, FunctionReturnType<Pred, T>>, "Predicate does not return bool");
         return PredicateMatcher<T, Pred>(CATCH_FORWARD(predicate), description);
     }
 

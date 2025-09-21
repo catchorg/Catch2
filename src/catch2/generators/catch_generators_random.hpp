@@ -83,7 +83,7 @@ public:
 };
 
 template <typename T>
-std::enable_if_t<std::is_integral<T>::value, GeneratorWrapper<T>>
+std::enable_if_t<std::is_integral_v<T>, GeneratorWrapper<T>>
 random(T a, T b) {
     return GeneratorWrapper<T>(
         Catch::Detail::make_unique<RandomIntegerGenerator<T>>(a, b, Detail::getSeed())
@@ -91,7 +91,7 @@ random(T a, T b) {
 }
 
 template <typename T>
-std::enable_if_t<std::is_floating_point<T>::value,
+std::enable_if_t<std::is_floating_point_v<T>,
 GeneratorWrapper<T>>
 random(T a, T b) {
     return GeneratorWrapper<T>(

@@ -52,20 +52,20 @@ public:
 
 template <typename T>
 GeneratorWrapper<T> range(T const& start, T const& end, T const& step) {
-    static_assert(std::is_arithmetic<T>::value && !std::is_same<T, bool>::value, "Type must be numeric");
+    static_assert(std::is_arithmetic_v<T> && !std::is_same_v<T, bool>, "Type must be numeric");
     return GeneratorWrapper<T>(Catch::Detail::make_unique<RangeGenerator<T>>(start, end, step));
 }
 
 template <typename T>
 GeneratorWrapper<T> range(T const& start, T const& end) {
-    static_assert(std::is_integral<T>::value && !std::is_same<T, bool>::value, "Type must be an integer");
+    static_assert(std::is_integral_v<T> && !std::is_same_v<T, bool>, "Type must be an integer");
     return GeneratorWrapper<T>(Catch::Detail::make_unique<RangeGenerator<T>>(start, end));
 }
 
 
 template <typename T>
 class IteratorGenerator final : public IGenerator<T> {
-    static_assert(!std::is_same<T, bool>::value,
+    static_assert(!std::is_same_v<T, bool>,
         "IteratorGenerator currently does not support bools"
         "because of std::vector<bool> specialization");
 

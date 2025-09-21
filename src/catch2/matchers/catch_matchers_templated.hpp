@@ -11,7 +11,6 @@
 #include <catch2/matchers/catch_matchers.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
-#include <catch2/internal/catch_logical_traits.hpp>
 
 #include <array>
 #include <algorithm>
@@ -58,19 +57,19 @@ namespace Matchers {
         }
 
         template<typename T>
-        static constexpr bool is_generic_matcher_v = std::is_base_of<
+        static constexpr bool is_generic_matcher_v = std::is_base_of_v<
             Catch::Matchers::MatcherGenericBase,
             std::remove_cv_t<std::remove_reference_t<T>>
-        >::value;
+        >;
 
         template<typename... Ts>
-        static constexpr bool are_generic_matchers_v = Catch::Detail::conjunction<std::integral_constant<bool,is_generic_matcher_v<Ts>>...>::value;
+        static constexpr bool are_generic_matchers_v = std::conjunction_v<std::integral_constant<bool,is_generic_matcher_v<Ts>>...>;
 
         template<typename T>
-        static constexpr bool is_matcher_v = std::is_base_of<
+        static constexpr bool is_matcher_v = std::is_base_of_v<
             Catch::Matchers::MatcherUntypedBase,
             std::remove_cv_t<std::remove_reference_t<T>>
-        >::value;
+        >;
 
 
         template<std::size_t N, typename Arg>

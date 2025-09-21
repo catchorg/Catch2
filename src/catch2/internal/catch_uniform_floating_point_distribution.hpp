@@ -67,8 +67,8 @@ namespace Catch {
  */
 template <typename FloatType>
 class uniform_floating_point_distribution {
-    static_assert(std::is_floating_point<FloatType>::value, "...");
-    static_assert(!std::is_same<FloatType, long double>::value,
+    static_assert(std::is_floating_point_v<FloatType>, "...");
+    static_assert(!std::is_same_v<FloatType, long double>,
                   "We do not support long double due to inconsistent behaviour between platforms");
 
     using WidthType = Detail::DistanceType<FloatType>;

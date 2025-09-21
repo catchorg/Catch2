@@ -114,8 +114,7 @@ namespace Catch {
 
         // First part is always reporter name, so we skip it
         for ( size_t i = 1; i < parts.size(); ++i ) {
-            auto kv = splitKVPair( parts[i] );
-            auto key = kv.key, value = kv.value;
+            const auto [key, value] = splitKVPair( parts[i] );
 
             if ( key.empty() || value.empty() ) { // NOLINT(bugprone-branch-clone)
                 return {};
@@ -126,7 +125,7 @@ namespace Catch {
                     return {};
                 }
 
-                auto ret = kvPairs.emplace( std::string(kv.key), std::string(kv.value) );
+                auto ret = kvPairs.emplace( std::string(key), std::string(value) );
                 if ( !ret.second ) {
                     // Duplicated key. We might want to handle this differently,
                     // e.g. by overwriting the existing value?
@@ -137,7 +136,7 @@ namespace Catch {
                 if ( outputFileName ) {
                     return {};
                 }
-                outputFileName = static_cast<std::string>( value );
+                outputFileName = std::string( value );
             } else if ( key == "colour-mode" ) {
                 // Duplicated key
                 if ( colourMode ) {

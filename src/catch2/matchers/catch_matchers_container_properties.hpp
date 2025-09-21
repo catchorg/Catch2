@@ -9,7 +9,6 @@
 #define CATCH_MATCHERS_CONTAINER_PROPERTIES_HPP_INCLUDED
 
 #include <catch2/matchers/catch_matchers_templated.hpp>
-#include <catch2/internal/catch_container_nonmembers.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
