@@ -11,8 +11,8 @@
 #include <catch2/reporters/catch_reporter_common_base.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
-#include <catch2/internal/catch_optional.hpp>
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -25,8 +25,8 @@ namespace Catch {
             // This should really be a variant, but this is much faster
             // to write and the data layout here is already terrible
             // enough that we do not have to care about the object size.
-            Optional<AssertionStats> m_assertion;
-            Optional<BenchmarkStats<>> m_benchmark;
+            std::optional<AssertionStats> m_assertion;
+            std::optional<BenchmarkStats<>> m_benchmark;
         public:
             AssertionOrBenchmarkResult(AssertionStats const& assertion);
             AssertionOrBenchmarkResult(BenchmarkStats<> const& benchmark);

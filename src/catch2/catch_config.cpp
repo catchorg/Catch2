@@ -17,6 +17,7 @@
 #include <catch2/internal/catch_getenv.hpp>
 
 #include <fstream>
+#include <optional>
 
 namespace Catch {
 
@@ -34,7 +35,7 @@ namespace Catch {
             std::string shardFilePath;
         };
 
-        static Optional<bazelShardingOptions> readBazelShardingOptions() {
+        static std::optional<bazelShardingOptions> readBazelShardingOptions() {
             const auto bazelShardIndex = Detail::getEnv( "TEST_SHARD_INDEX" );
             const auto bazelShardTotal = Detail::getEnv( "TEST_TOTAL_SHARDS" );
             const auto bazelShardInfoFile = Detail::getEnv( "TEST_SHARD_STATUS_FILE" );
@@ -142,7 +143,7 @@ namespace Catch {
             // We do the default-output check separately, while always
             // using the default output below to make the code simpler
             // and avoid superfluous copies.
-            if ( reporterSpec.outputFile().none() ) {
+            if ( !reporterSpec.outputFile() ) {
                 CATCH_ENFORCE( !defaultOutputUsed,
                                "Internal error: cannot use default output for "
                                "multiple reporters" );
@@ -153,7 +154,7 @@ namespace Catch {
                 reporterSpec.name(),
                 reporterSpec.outputFile() ? *reporterSpec.outputFile()
                                           : data.defaultOutputFilename,
-                reporterSpec.colourMode().valueOr( data.defaultColourMode ),
+                reporterSpec.colourMode().value_or( data.defaultColourMode ),
                 reporterSpec.customOptions() } );
         }
     }

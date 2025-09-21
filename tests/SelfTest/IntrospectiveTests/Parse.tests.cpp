@@ -12,14 +12,13 @@
 
 TEST_CASE("Parse uints", "[parse-numbers]") {
 	using Catch::parseUInt;
-	using Catch::Optional;
 
 	SECTION("proper inputs") {
-        REQUIRE( parseUInt( "0" ) == Optional<unsigned int>{ 0 } );
-        REQUIRE( parseUInt( "100" ) == Optional<unsigned int>{ 100 } );
+        REQUIRE( parseUInt( "0" ) == std::optional<unsigned int>{ 0 } );
+        REQUIRE( parseUInt( "100" ) == std::optional<unsigned int>{ 100 } );
         REQUIRE( parseUInt( "4294967295" ) ==
-                 Optional<unsigned int>{ 4294967295 } );
-        REQUIRE( parseUInt( "0xFF", 16 ) == Optional<unsigned int>{ 255 } );
+                 std::optional<unsigned int>{ 4294967295 } );
+        REQUIRE( parseUInt( "0xFF", 16 ) == std::optional<unsigned int>{ 255 } );
     }
     SECTION( "Bad inputs" ) {
         // empty

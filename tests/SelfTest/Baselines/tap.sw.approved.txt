@@ -2207,13 +2207,13 @@ ok {test-number} - EvilMatcher() || ( EvilMatcher() && !EvilMatcher() )
 # Overloaded comma or address-of operators are not used
 ok {test-number} - ( EvilMatcher() && EvilMatcher() ) || !EvilMatcher()
 # Parse uints
-ok {test-number} - parseUInt( "0" ) == Optional<unsigned int>{ 0 } for: {?} == {?}
+ok {test-number} - parseUInt( "0" ) == std::optional<unsigned int>{ 0 } for: {?} == {?}
 # Parse uints
-ok {test-number} - parseUInt( "100" ) == Optional<unsigned int>{ 100 } for: {?} == {?}
+ok {test-number} - parseUInt( "100" ) == std::optional<unsigned int>{ 100 } for: {?} == {?}
 # Parse uints
-ok {test-number} - parseUInt( "4294967295" ) == Optional<unsigned int>{ 4294967295 } for: {?} == {?}
+ok {test-number} - parseUInt( "4294967295" ) == std::optional<unsigned int>{ 4294967295 } for: {?} == {?}
 # Parse uints
-ok {test-number} - parseUInt( "0x<hex digits>", 16 ) == Optional<unsigned int>{ 255 } for: {?} == {?}
+ok {test-number} - parseUInt( "0x<hex digits>", 16 ) == std::optional<unsigned int>{ 255 } for: {?} == {?}
 # Parse uints
 ok {test-number} - !(parseUInt( "" )) for: !{?}
 # Parse uints

@@ -12,10 +12,11 @@
 
 #include <limits>
 #include <stdexcept>
+#include <optional>
 
 namespace Catch {
 
-    Optional<unsigned int> parseUInt(std::string const& input, int base) {
+    std::optional<unsigned int> parseUInt(std::string const& input, int base) {
         auto trimmed = trim( input );
         // std::stoull is annoying and accepts numbers starting with '-',
         // it just negates them into unsigned int

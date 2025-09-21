@@ -88,7 +88,7 @@ namespace Catch {
                 return ParserResult::ok( ParseResultType::Matched );
             };
         auto const setDefaultColourMode = [&]( std::string const& colourMode ) {
-            Optional<ColourMode> maybeMode = Catch::Detail::stringToColourMode(toLower( colourMode ));
+            std::optional<ColourMode> maybeMode = Catch::Detail::stringToColourMode(toLower( colourMode ));
             if ( !maybeMode ) {
                 return ParserResult::runtimeError(
                     "colour mode must be one of: default, ansi, win32, "
@@ -135,7 +135,7 @@ namespace Catch {
                 return ParserResult::runtimeError( "Received empty reporter spec." );
             }
 
-            Optional<ReporterSpec> parsed =
+            std::optional<ReporterSpec> parsed =
                 parseReporterSpec( userReporterSpec );
             if ( !parsed ) {
                 return ParserResult::runtimeError(
@@ -156,7 +156,7 @@ namespace Catch {
             }
 
 
-            const bool hadOutputFile = reporterSpec.outputFile().some();
+            const bool hadOutputFile = reporterSpec.outputFile().has_value();
             config.reporterSpecifications.push_back( CATCH_MOVE( *parsed ) );
             // It would be enough to check this only once at the very end, but
             // there is  not a place where we could call this check, so do it
@@ -165,7 +165,7 @@ namespace Catch {
             if (!hadOutputFile) {
                 int n_reporters_without_file = 0;
                 for (auto const& spec : config.reporterSpecifications) {
-                    if (spec.outputFile().none()) {
+                    if (!spec.outputFile()) {
                         n_reporters_without_file++;
                     }
                 }

@@ -10530,7 +10530,7 @@ Approx( 1.21999999999999997 )
     <Section name="proper inputs" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
         <Original>
-          parseUInt( "0" ) == Optional&lt;unsigned int>{ 0 }
+          parseUInt( "0" ) == std::optional&lt;unsigned int>{ 0 }
         </Original>
         <Expanded>
           {?} == {?}
@@ -10538,7 +10538,7 @@ Approx( 1.21999999999999997 )
       </Expression>
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
         <Original>
-          parseUInt( "100" ) == Optional&lt;unsigned int>{ 100 }
+          parseUInt( "100" ) == std::optional&lt;unsigned int>{ 100 }
         </Original>
         <Expanded>
           {?} == {?}
@@ -10546,7 +10546,7 @@ Approx( 1.21999999999999997 )
       </Expression>
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
         <Original>
-          parseUInt( "4294967295" ) == Optional&lt;unsigned int>{ 4294967295 }
+          parseUInt( "4294967295" ) == std::optional&lt;unsigned int>{ 4294967295 }
         </Original>
         <Expanded>
           {?} == {?}
@@ -10554,7 +10554,7 @@ Approx( 1.21999999999999997 )
       </Expression>
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
         <Original>
-          parseUInt( "0x<hex digits>", 16 ) == Optional&lt;unsigned int>{ 255 }
+          parseUInt( "0x<hex digits>", 16 ) == std::optional&lt;unsigned int>{ 255 }
         </Original>
         <Expanded>
           {?} == {?}

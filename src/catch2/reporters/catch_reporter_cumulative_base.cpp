@@ -42,19 +42,19 @@ namespace Catch {
             m_benchmark( benchmark ) {}
 
         bool AssertionOrBenchmarkResult::isAssertion() const {
-            return m_assertion.some();
+            return m_assertion.has_value();
         }
         bool AssertionOrBenchmarkResult::isBenchmark() const {
-            return m_benchmark.some();
+            return m_benchmark.has_value();
         }
 
         AssertionStats const& AssertionOrBenchmarkResult::asAssertion() const {
-            assert(m_assertion.some());
+            assert(m_assertion.has_value());
 
             return *m_assertion;
         }
         BenchmarkStats<> const& AssertionOrBenchmarkResult::asBenchmark() const {
-            assert(m_benchmark.some());
+            assert(m_benchmark.has_value());
 
             return *m_benchmark;
         }

@@ -9,12 +9,12 @@
 #define CATCH_REPORTER_SPEC_PARSER_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_config.hpp>
-#include <catch2/internal/catch_optional.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
 #include <map>
 #include <string>
 #include <vector>
+#include <optional>
 
 namespace Catch {
 
@@ -24,7 +24,7 @@ namespace Catch {
         //! Splits the reporter spec into reporter name and kv-pair options
         std::vector<std::string> splitReporterSpec( StringRef reporterSpec );
 
-        Optional<ColourMode> stringToColourMode( StringRef colourMode );
+        std::optional<ColourMode> stringToColourMode( StringRef colourMode );
     }
 
     /**
@@ -37,8 +37,8 @@ namespace Catch {
      */
     class ReporterSpec {
         std::string m_name;
-        Optional<std::string> m_outputFileName;
-        Optional<ColourMode> m_colourMode;
+        std::optional<std::string> m_outputFileName;
+        std::optional<ColourMode> m_colourMode;
         std::map<std::string, std::string> m_customOptions;
 
         friend bool operator==( ReporterSpec const& lhs,
@@ -51,17 +51,17 @@ namespace Catch {
     public:
         ReporterSpec(
             std::string name,
-            Optional<std::string> outputFileName,
-            Optional<ColourMode> colourMode,
+            std::optional<std::string> outputFileName,
+            std::optional<ColourMode> colourMode,
             std::map<std::string, std::string> customOptions );
 
         std::string const& name() const { return m_name; }
 
-        Optional<std::string> const& outputFile() const {
+        std::optional<std::string> const& outputFile() const {
             return m_outputFileName;
         }
 
-        Optional<ColourMode> const& colourMode() const { return m_colourMode; }
+        std::optional<ColourMode> const& colourMode() const { return m_colourMode; }
 
         std::map<std::string, std::string> const& customOptions() const {
             return m_customOptions;
@@ -78,7 +78,7 @@ namespace Catch {
      *  * empty key/value in an custom kv pair
      *  * ...
      */
-    Optional<ReporterSpec> parseReporterSpec( StringRef reporterSpec );
+    std::optional<ReporterSpec> parseReporterSpec( StringRef reporterSpec );
 
 }
 

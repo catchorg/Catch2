@@ -8848,22 +8848,22 @@ Parse.tests.cpp:<line number>
 ...............................................................................
 
 Parse.tests.cpp:<line number>: PASSED:
-  REQUIRE( parseUInt( "0" ) == Optional<unsigned int>{ 0 } )
+  REQUIRE( parseUInt( "0" ) == std::optional<unsigned int>{ 0 } )
 with expansion:
   {?} == {?}
 
 Parse.tests.cpp:<line number>: PASSED:
-  REQUIRE( parseUInt( "100" ) == Optional<unsigned int>{ 100 } )
+  REQUIRE( parseUInt( "100" ) == std::optional<unsigned int>{ 100 } )
 with expansion:
   {?} == {?}
 
 Parse.tests.cpp:<line number>: PASSED:
-  REQUIRE( parseUInt( "4294967295" ) == Optional<unsigned int>{ 4294967295 } )
+  REQUIRE( parseUInt( "4294967295" ) == std::optional<unsigned int>{ 4294967295 } )
 with expansion:
   {?} == {?}
 
 Parse.tests.cpp:<line number>: PASSED:
-  REQUIRE( parseUInt( "0x<hex digits>", 16 ) == Optional<unsigned int>{ 255 } )
+  REQUIRE( parseUInt( "0x<hex digits>", 16 ) == std::optional<unsigned int>{ 255 } )
 with expansion:
   {?} == {?}
 

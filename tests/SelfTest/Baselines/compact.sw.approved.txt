@@ -1364,10 +1364,10 @@ Matchers.tests.cpp:<line number>: passed: ( EvilMatcher(), EvilMatcher() ), Evil
 Matchers.tests.cpp:<line number>: passed: &EvilMatcher(), EvilAddressOfOperatorUsed
 Matchers.tests.cpp:<line number>: passed: EvilMatcher() || ( EvilMatcher() && !EvilMatcher() )
 Matchers.tests.cpp:<line number>: passed: ( EvilMatcher() && EvilMatcher() ) || !EvilMatcher()
-Parse.tests.cpp:<line number>: passed: parseUInt( "0" ) == Optional<unsigned int>{ 0 } for: {?} == {?}
-Parse.tests.cpp:<line number>: passed: parseUInt( "100" ) == Optional<unsigned int>{ 100 } for: {?} == {?}
-Parse.tests.cpp:<line number>: passed: parseUInt( "4294967295" ) == Optional<unsigned int>{ 4294967295 } for: {?} == {?}
-Parse.tests.cpp:<line number>: passed: parseUInt( "0x<hex digits>", 16 ) == Optional<unsigned int>{ 255 } for: {?} == {?}
+Parse.tests.cpp:<line number>: passed: parseUInt( "0" ) == std::optional<unsigned int>{ 0 } for: {?} == {?}
+Parse.tests.cpp:<line number>: passed: parseUInt( "100" ) == std::optional<unsigned int>{ 100 } for: {?} == {?}
+Parse.tests.cpp:<line number>: passed: parseUInt( "4294967295" ) == std::optional<unsigned int>{ 4294967295 } for: {?} == {?}
+Parse.tests.cpp:<line number>: passed: parseUInt( "0x<hex digits>", 16 ) == std::optional<unsigned int>{ 255 } for: {?} == {?}
 Parse.tests.cpp:<line number>: passed: !(parseUInt( "" )) for: !{?}
 Parse.tests.cpp:<line number>: passed: !(parseUInt( "!!KJHF*#" )) for: !{?}
 Parse.tests.cpp:<line number>: passed: !(parseUInt( "-1" )) for: !{?}

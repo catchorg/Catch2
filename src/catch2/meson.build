@@ -108,7 +108,6 @@ internal_headers = [
   'internal/catch_meta.hpp',
   'internal/catch_move_and_forward.hpp',
   'internal/catch_noncopyable.hpp',
-  'internal/catch_optional.hpp',
   'internal/catch_output_redirect.hpp',
   'internal/catch_parse_numbers.hpp',
   'internal/catch_platform.hpp',

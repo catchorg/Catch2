@@ -9,7 +9,6 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_case_insensitive_comparisons.hpp>
-#include <catch2/internal/catch_optional.hpp>
 
 #include <helpers/type_with_lit_0_comparisons.hpp>
 
@@ -59,74 +58,6 @@ TEST_CASE( "CaseInsensitiveEqualsTo is case insensitive",
         REQUIRE( eq( "A", "A" ) );
         REQUIRE_FALSE( eq( "a", "b" ) );
         REQUIRE_FALSE( eq( "a", "B" ) );
-    }
-}
-
-TEST_CASE("Optional comparison ops", "[optional][approvals]") {
-    using Catch::Optional;
-
-    Optional<int> a, b;
-
-    SECTION( "Empty optionals are equal" ) {
-        REQUIRE( a == b );
-        REQUIRE_FALSE( a != b );
-    }
-    SECTION( "Empty and non-empty optionals are never equal" ) {
-        a = 1;
-        REQUIRE_FALSE( a == b );
-        REQUIRE( a != b );
-    }
-    SECTION(
-        "non-empty optionals are equal if the contained elements are equal") {
-        a = 1;
-        b = 2;
-        REQUIRE( a != b );
-        REQUIRE_FALSE( a == b );
-
-        a = 2;
-        REQUIRE( a == b );
-        REQUIRE_FALSE( a != b );
-    }
-}
-
-namespace {
-    struct MoveChecker {
-        bool has_moved = false;
-        MoveChecker() = default;
-        MoveChecker( MoveChecker const& rhs ) = default;
-        MoveChecker& operator=( MoveChecker const& rhs ) = default;
-        MoveChecker( MoveChecker&& rhs ) noexcept { rhs.has_moved = true; }
-        MoveChecker& operator=( MoveChecker&& rhs ) noexcept {
-            rhs.has_moved = true;
-            return *this;
-        }
-    };
-}
-
-TEST_CASE( "Optional supports move ops", "[optional][approvals]" ) {
-    using Catch::Optional;
-    MoveChecker a;
-    Optional<MoveChecker> opt_A( a );
-    REQUIRE_FALSE( a.has_moved );
-    REQUIRE_FALSE( opt_A->has_moved );
-
-    SECTION( "Move construction from element" ) {
-        Optional<MoveChecker> opt_B( CATCH_MOVE( a ) );
-        REQUIRE( a.has_moved );
-    }
-    SECTION( "Move assignment from element" ) {
-        opt_A = CATCH_MOVE( a );
-        REQUIRE( a.has_moved );
-    }
-    SECTION( "Move construction from optional" ) {
-        Optional<MoveChecker> opt_B( CATCH_MOVE( opt_A ) );
-        REQUIRE( opt_A->has_moved ); // NOLINT(clang-analyzer-cplusplus.Move)
-    }
-    SECTION( "Move assignment from optional" ) {
-        Optional<MoveChecker> opt_B( opt_A );
-        REQUIRE_FALSE( opt_A->has_moved );
-        opt_B = CATCH_MOVE( opt_A );
-        REQUIRE( opt_A->has_moved ); // NOLINT(clang-analyzer-cplusplus.Move)
     }
 }
 

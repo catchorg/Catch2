@@ -355,7 +355,7 @@ namespace Catch {
 
         // Reset working state. assertion info will be reset after
         // populateReaction is run if it is needed
-        m_lastResult = CATCH_MOVE( result );
+        m_lastResult.emplace(CATCH_MOVE( result ));
     }
 
     void RunContext::notifyAssertionStarted( AssertionInfo const& info ) {

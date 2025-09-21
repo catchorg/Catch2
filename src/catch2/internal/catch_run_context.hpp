@@ -18,10 +18,10 @@
 #include <catch2/internal/catch_test_case_tracker.hpp>
 #include <catch2/catch_assertion_info.hpp>
 #include <catch2/catch_assertion_result.hpp>
-#include <catch2/internal/catch_optional.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_thread_support.hpp>
 
+#include <optional>
 #include <string>
 
 namespace Catch {
@@ -144,7 +144,7 @@ namespace Catch {
         TestRunInfo m_runInfo;
         TestCaseHandle const* m_activeTestCase = nullptr;
         ITracker* m_testCaseTracker = nullptr;
-        Optional<AssertionResult> m_lastResult;
+        std::optional<AssertionResult> m_lastResult;
         IConfig const* m_config;
         Totals m_totals;
         Detail::AtomicCounts m_atomicAssertionCount;

@@ -80,7 +80,7 @@ namespace Catch {
             return parts;
         }
 
-        Optional<ColourMode> stringToColourMode( StringRef colourMode ) {
+        std::optional<ColourMode> stringToColourMode( StringRef colourMode ) {
             if ( colourMode == "default" ) {
                 return ColourMode::PlatformDefault;
             } else if ( colourMode == "ansi" ) {
@@ -103,14 +103,14 @@ namespace Catch {
                lhs.m_customOptions == rhs.m_customOptions;
     }
 
-    Optional<ReporterSpec> parseReporterSpec( StringRef reporterSpec ) {
+    std::optional<ReporterSpec> parseReporterSpec( StringRef reporterSpec ) {
         auto parts = Detail::splitReporterSpec( reporterSpec );
 
         assert( parts.size() > 0 && "Split should never return empty vector" );
 
         std::map<std::string, std::string> kvPairs;
-        Optional<std::string> outputFileName;
-        Optional<ColourMode> colourMode;
+        std::optional<std::string> outputFileName;
+        std::optional<ColourMode> colourMode;
 
         // First part is always reporter name, so we skip it
         for ( size_t i = 1; i < parts.size(); ++i ) {
@@ -161,8 +161,8 @@ namespace Catch {
 
 ReporterSpec::ReporterSpec(
         std::string name,
-        Optional<std::string> outputFileName,
-        Optional<ColourMode> colourMode,
+        std::optional<std::string> outputFileName,
+        std::optional<ColourMode> colourMode,
         std::map<std::string, std::string> customOptions ):
         m_name( CATCH_MOVE( name ) ),
         m_outputFileName( CATCH_MOVE( outputFileName ) ),

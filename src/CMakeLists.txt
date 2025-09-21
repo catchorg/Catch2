@@ -101,7 +101,6 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/internal/catch_meta.hpp
   ${SOURCES_DIR}/internal/catch_move_and_forward.hpp
   ${SOURCES_DIR}/internal/catch_noncopyable.hpp
-  ${SOURCES_DIR}/internal/catch_optional.hpp
   ${SOURCES_DIR}/internal/catch_output_redirect.hpp
   ${SOURCES_DIR}/internal/catch_parse_numbers.hpp
   ${SOURCES_DIR}/internal/catch_platform.hpp
