@@ -44,25 +44,25 @@ namespace Catch {
         m_reporterLikes.push_back( CATCH_MOVE( reporter ) );
     }
 
-    void MultiReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
+    void MultiReporter::noMatchingTestCases( std::string_view unmatchedSpec ) {
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->noMatchingTestCases( unmatchedSpec );
         }
     }
 
-    void MultiReporter::fatalErrorEncountered( StringRef error ) {
+    void MultiReporter::fatalErrorEncountered( std::string_view error ) {
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->fatalErrorEncountered( error );
         }
     }
 
-    void MultiReporter::reportInvalidTestSpec( StringRef arg ) {
+    void MultiReporter::reportInvalidTestSpec( std::string_view arg ) {
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->reportInvalidTestSpec( arg );
         }
     }
 
-    void MultiReporter::benchmarkPreparing( StringRef name ) {
+    void MultiReporter::benchmarkPreparing( std::string_view name ) {
         for (auto& reporterish : m_reporterLikes) {
             reporterish->benchmarkPreparing(name);
         }
@@ -78,7 +78,7 @@ namespace Catch {
         }
     }
 
-    void MultiReporter::benchmarkFailed( StringRef error ) {
+    void MultiReporter::benchmarkFailed( std::string_view error ) {
         for (auto& reporterish : m_reporterLikes) {
             reporterish->benchmarkFailed(error);
         }

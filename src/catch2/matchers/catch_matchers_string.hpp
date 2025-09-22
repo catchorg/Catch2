@@ -8,11 +8,11 @@
 #ifndef CATCH_MATCHERS_STRING_HPP_INCLUDED
 #define CATCH_MATCHERS_STRING_HPP_INCLUDED
 
-#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/matchers/catch_matchers.hpp>
 #include <catch2/catch_case_sensitive.hpp>
 
 #include <string>
+#include <string_view>
 
 namespace Catch {
 namespace Matchers {
@@ -20,7 +20,7 @@ namespace Matchers {
     struct CasedString {
         CasedString( std::string const& str, CaseSensitive caseSensitivity );
         std::string adjustString( std::string const& str ) const;
-        StringRef caseSensitivitySuffix() const;
+        std::string_view caseSensitivitySuffix() const;
 
         CaseSensitive m_caseSensitivity;
         std::string m_str;
@@ -29,10 +29,10 @@ namespace Matchers {
     class StringMatcherBase : public MatcherBase<std::string> {
     protected:
         CasedString m_comparator;
-        StringRef m_operation;
+        std::string_view m_operation;
 
     public:
-        StringMatcherBase( StringRef operation,
+        StringMatcherBase( std::string_view operation,
                            CasedString const& comparator );
         std::string describe() const override;
     };

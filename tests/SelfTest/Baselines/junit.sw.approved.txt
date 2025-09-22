@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="140" skipped="12" tests="2315" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="140" skipped="12" tests="2262" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1487,33 +1487,6 @@ at Matchers.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Static arrays are convertible to string/Multiple" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Static arrays are convertible to string/Non-trivial inner items" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="String matchers" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/Empty string" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/From string literal" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/From sub-string" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/Copy construction is shallow" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/Copy assignment is shallow" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/Substrings" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/Substrings/zero-based substring" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/Substrings/non-zero-based substring" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/Substrings/Pointer values of full refs should match" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/Substrings/Pointer values of substring refs should also match" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/Substrings/Past the end substring" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/Substrings/Substring off the end are trimmed" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/Substrings/substring start after the end is empty" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/Comparisons are deep" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/from std::string" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/from std::string/implicitly constructed" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/from std::string/explicitly constructed" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/from std::string/assigned" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/to std::string" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/to std::string/explicitly constructed" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/to std::string/assigned" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/std::string += StringRef" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/StringRef + StringRef" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef at compilation time" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef at compilation time/Simple constructors" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef at compilation time/UDL construction" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Stringifying char arrays with statically known sizes - char" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Stringifying char arrays with statically known sizes - signed char" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Stringifying char arrays with statically known sizes - unsigned char" time="{duration}" status="run"/>

@@ -22,7 +22,6 @@
 
 #include <optional>
 
-#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_void_type.hpp>
@@ -93,13 +92,13 @@ namespace Catch {
             enum class TokenType { Option, Argument };
             struct Token {
                 TokenType type;
-                StringRef token;
+                std::string_view token;
             };
 
             // Abstracts iterators into args as a stream of tokens, with option
             // arguments uniformly handled
             class TokenStream {
-                using Iterator = std::vector<StringRef>::const_iterator;
+                using Iterator = std::vector<std::string_view>::const_iterator;
                 Iterator it;
                 Iterator itEnd;
                 std::vector<Token> m_tokenBuffer;
@@ -302,7 +301,7 @@ namespace Catch {
 
             struct HelpColumns {
                 std::string left;
-                StringRef descriptions;
+                std::string_view descriptions;
             };
 
             template <typename T>
@@ -480,8 +479,8 @@ namespace Catch {
             protected:
                 Optionality m_optionality = Optionality::Optional;
                 std::shared_ptr<BoundRef> m_ref;
-                StringRef m_hint;
-                StringRef m_description;
+                std::string_view m_hint;
+                std::string_view m_description;
 
                 explicit ParserRefImpl( std::shared_ptr<BoundRef> const& ref ):
                     m_ref( ref ) {}
@@ -490,29 +489,29 @@ namespace Catch {
                 template <typename LambdaT>
                 ParserRefImpl( accept_many_t,
                                LambdaT const& ref,
-                               StringRef hint ):
+                               std::string_view hint ):
                     m_ref( std::make_shared<BoundManyLambda<LambdaT>>( ref ) ),
                     m_hint( hint ) {}
 
                 template <typename T,
                           typename = typename std::enable_if_t<
                               !Detail::is_unary_function_v<T>>>
-                ParserRefImpl( T& ref, StringRef hint ):
+                ParserRefImpl( T& ref, std::string_view hint ):
                     m_ref( std::make_shared<BoundValueRef<T>>( ref ) ),
                     m_hint( hint ) {}
 
                 template <typename LambdaT,
                           typename = typename std::enable_if_t<
                               Detail::is_unary_function_v<LambdaT>>>
-                ParserRefImpl( LambdaT const& ref, StringRef hint ):
+                ParserRefImpl( LambdaT const& ref, std::string_view hint ):
                     m_ref( std::make_shared<BoundLambda<LambdaT>>( ref ) ),
                     m_hint( hint ) {}
 
-                DerivedT& operator()( StringRef description ) & {
+                DerivedT& operator()( std::string_view description ) & {
                     m_description = description;
                     return static_cast<DerivedT&>( *this );
                 }
-                DerivedT&& operator()( StringRef description ) && {
+                DerivedT&& operator()( std::string_view description ) && {
                     m_description = description;
                     return static_cast<DerivedT&&>( *this );
                 }
@@ -538,7 +537,7 @@ namespace Catch {
                         return 1;
                 }
 
-                StringRef hint() const { return m_hint; }
+                std::string_view hint() const { return m_hint; }
             };
 
         } // namespace detail
@@ -558,7 +557,7 @@ namespace Catch {
         // A parser for options
         class Opt : public Detail::ParserRefImpl<Opt> {
         protected:
-            std::vector<StringRef> m_optNames;
+            std::vector<std::string_view> m_optNames;
 
         public:
             template <typename LambdaT>
@@ -571,31 +570,31 @@ namespace Catch {
             template <typename LambdaT,
                       typename = typename std::enable_if_t<
                           Detail::is_unary_function_v<LambdaT>>>
-            Opt( LambdaT const& ref, StringRef hint ):
+            Opt( LambdaT const& ref, std::string_view hint ):
                 ParserRefImpl( ref, hint ) {}
 
             template <typename LambdaT>
-            Opt( accept_many_t, LambdaT const& ref, StringRef hint ):
+            Opt( accept_many_t, LambdaT const& ref, std::string_view hint ):
                 ParserRefImpl( accept_many, ref, hint ) {}
 
             template <typename T,
                       typename = typename std::enable_if_t<
                           !Detail::is_unary_function_v<T>>>
-            Opt( T& ref, StringRef hint ):
+            Opt( T& ref, std::string_view hint ):
                 ParserRefImpl( ref, hint ) {}
 
-            Opt& operator[]( StringRef optName ) & {
+            Opt& operator[]( std::string_view optName ) & {
                 m_optNames.push_back(optName);
                 return *this;
             }
-            Opt&& operator[]( StringRef optName ) && {
+            Opt&& operator[]( std::string_view optName ) && {
                 m_optNames.push_back( optName );
                 return CATCH_MOVE(*this);
             }
 
             Detail::HelpColumns getHelpColumns() const;
 
-            bool isMatch(StringRef optToken) const;
+            bool isMatch(std::string_view optToken) const;
 
             using ParserBase::parse;
 
@@ -696,15 +695,15 @@ namespace Catch {
          */
         class Args {
             friend Detail::TokenStream;
-            StringRef m_exeName;
-            std::vector<StringRef> m_args;
+            std::string_view m_exeName;
+            std::vector<std::string_view> m_args;
 
         public:
             Args(int argc, char const* const* argv);
             // Helper constructor for testing
-            Args(std::initializer_list<StringRef> args);
+            Args(std::initializer_list<std::string_view> args);
 
-            StringRef exeName() const { return m_exeName; }
+            std::string_view exeName() const { return m_exeName; }
         };
 
 

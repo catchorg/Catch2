@@ -13,7 +13,6 @@
 #include <catch2/catch_totals.hpp>
 #include <catch2/catch_assertion_result.hpp>
 #include <catch2/internal/catch_message_info.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/benchmark/detail/catch_benchmark_stats.hpp>
 
@@ -154,9 +153,9 @@ namespace Catch {
         }
 
         //! Called when no test cases match provided test spec
-        virtual void noMatchingTestCases( StringRef unmatchedSpec ) = 0;
+        virtual void noMatchingTestCases( std::string_view unmatchedSpec ) = 0;
         //! Called for all invalid test specs from the cli
-        virtual void reportInvalidTestSpec( StringRef invalidArgument ) = 0;
+        virtual void reportInvalidTestSpec( std::string_view invalidArgument ) = 0;
 
         /**
          * Called once in a testing run before tests are started
@@ -173,13 +172,13 @@ namespace Catch {
         virtual void sectionStarting( SectionInfo const& sectionInfo ) = 0;
 
         //! Called when user-code is being probed before the actual benchmark runs
-        virtual void benchmarkPreparing( StringRef benchmarkName ) = 0;
+        virtual void benchmarkPreparing( std::string_view benchmarkName ) = 0;
         //! Called after probe but before the user-code is being benchmarked
         virtual void benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) = 0;
         //! Called with the benchmark results if benchmark successfully finishes
         virtual void benchmarkEnded( BenchmarkStats<> const& benchmarkStats ) = 0;
         //! Called if running the benchmarks fails for any reason
-        virtual void benchmarkFailed( StringRef benchmarkName ) = 0;
+        virtual void benchmarkFailed( std::string_view benchmarkName ) = 0;
 
         //! Called before assertion success/failure is evaluated
         virtual void assertionStarting( AssertionInfo const& assertionInfo ) = 0;
@@ -209,7 +208,7 @@ namespace Catch {
         virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
 
         //! Called if a fatal error (signal/structured exception) occurred
-        virtual void fatalErrorEncountered( StringRef error ) = 0;
+        virtual void fatalErrorEncountered( std::string_view error ) = 0;
 
         //! Writes out information about provided reporters using reporter-specific format
         virtual void listReporters(std::vector<ReporterDescription> const& descriptions) = 0;

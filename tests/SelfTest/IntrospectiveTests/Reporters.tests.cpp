@@ -53,7 +53,7 @@ TEST_CASE( "The default listing implementation write to provided stream",
     StringIStream sstream;
     SECTION( "Listing tags" ) {
         std::vector<Catch::TagInfo> tags(1);
-        tags[0].add("fakeTag"_catch_sr);
+        tags[0].add("fakeTag");
         Catch::defaultListTags(sstream.stream(), tags, false);
 
         auto listingString = sstream.str();
@@ -72,7 +72,7 @@ TEST_CASE( "The default listing implementation write to provided stream",
     SECTION( "Listing tests" ) {
         Catch::TestCaseInfo fakeInfo{
             ""s,
-            { "fake test name"_catch_sr, "[fakeTestTag]"_catch_sr },
+            { "fake test name", "[fakeTestTag]" },
             { "fake-file.cpp", 123456789 } };
         std::vector<Catch::TestCaseHandle> tests({ {&fakeInfo, nullptr} });
         auto colour = Catch::makeColourImpl( Catch::ColourMode::None, &sstream);
@@ -85,7 +85,7 @@ TEST_CASE( "The default listing implementation write to provided stream",
     }
     SECTION( "Listing listeners" ) {
         std::vector<Catch::ListenerDescription> listeners(
-            { { "fakeListener"_catch_sr, "fake description" } } );
+            { { "fakeListener", "fake description" } } );
 
         Catch::defaultListListeners( sstream.stream(), listeners );
         auto listingString = sstream.str();
@@ -117,7 +117,7 @@ TEST_CASE( "Reporter's write listings to provided stream", "[reporters]" ) {
 
         DYNAMIC_SECTION( factory.first << " reporter lists tags" ) {
             std::vector<Catch::TagInfo> tags(1);
-            tags[0].add("fakeTag"_catch_sr);
+            tags[0].add("fakeTag");
             reporter->listTags(tags);
 
             auto listingString = sstreamRef.str();
@@ -136,7 +136,7 @@ TEST_CASE( "Reporter's write listings to provided stream", "[reporters]" ) {
         DYNAMIC_SECTION( factory.first << " reporter lists tests" ) {
             Catch::TestCaseInfo fakeInfo{
                 ""s,
-                { "fake test name"_catch_sr, "[fakeTestTag]"_catch_sr },
+                { "fake test name", "[fakeTestTag]" },
                 { "fake-file.cpp", 123456789 } };
             std::vector<Catch::TestCaseHandle> tests({ {&fakeInfo, nullptr} });
             reporter->listTests(tests);

@@ -12,26 +12,30 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <algorithm>
+#include <cassert>
 
 namespace Catch {
 
     namespace {
         struct kvPair {
-            StringRef key, value;
+            std::string_view key, value;
         };
 
-        kvPair splitKVPair(StringRef kvString) {
-            auto splitPos = static_cast<size_t>(
-                std::find( kvString.begin(), kvString.end(), '=' ) -
-                kvString.begin() );
+        kvPair splitKVPair(std::string_view kvString) {
+            const auto splitPos = kvString.find_first_of('=');
 
-            return { kvString.substr( 0, splitPos ),
-                     kvString.substr( splitPos + 1, kvString.size() ) };
+            const std::string_view key = kvString.substr( 0, splitPos );
+
+            std::string_view value;
+            if (splitPos < kvString.size())
+                value = kvString.substr( splitPos + 1, kvString.size() );
+
+            return { key, value };
         }
     }
 
     namespace Detail {
-        std::vector<std::string> splitReporterSpec( StringRef reporterSpec ) {
+        std::vector<std::string> splitReporterSpec( std::string_view reporterSpec ) {
             static constexpr auto separator = "::";
             static constexpr size_t separatorSize = 2;
 
@@ -80,7 +84,7 @@ namespace Catch {
             return parts;
         }
 
-        std::optional<ColourMode> stringToColourMode( StringRef colourMode ) {
+        std::optional<ColourMode> stringToColourMode( std::string_view colourMode ) {
             if ( colourMode == "default" ) {
                 return ColourMode::PlatformDefault;
             } else if ( colourMode == "ansi" ) {
@@ -103,7 +107,7 @@ namespace Catch {
                lhs.m_customOptions == rhs.m_customOptions;
     }
 
-    std::optional<ReporterSpec> parseReporterSpec( StringRef reporterSpec ) {
+    std::optional<ReporterSpec> parseReporterSpec( std::string_view reporterSpec ) {
         auto parts = Detail::splitReporterSpec( reporterSpec );
 
         assert( parts.size() > 0 && "Split should never return empty vector" );

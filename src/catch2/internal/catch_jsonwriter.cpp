@@ -17,21 +17,21 @@ namespace Catch {
                    c == '\n' || c == '\r' || c == '\t';
         }
 
-        static Catch::StringRef makeEscapeStringRef( char c ) {
+        static std::string_view makeEscapeStringRef( char c ) {
             if ( c == '"' ) {
-                return "\\\""_sr;
+                return "\\\"";
             } else if ( c == '\\' ) {
-                return "\\\\"_sr;
+                return "\\\\";
             } else if ( c == '\b' ) {
-                return "\\b"_sr;
+                return "\\b";
             } else if ( c == '\f' ) {
-                return "\\f"_sr;
+                return "\\f";
             } else if ( c == '\n' ) {
-                return "\\n"_sr;
+                return "\\n";
             } else if ( c == '\r' ) {
-                return "\\r"_sr;
+                return "\\r";
             } else if ( c == '\t' ) {
-                return "\\t"_sr;
+                return "\\t";
             }
             Catch::Detail::Unreachable();
         }
@@ -75,7 +75,7 @@ namespace Catch {
         m_os << '}';
     }
 
-    JsonValueWriter JsonObjectWriter::write( StringRef key ) {
+    JsonValueWriter JsonObjectWriter::write( std::string_view key ) {
         JsonUtils::appendCommaNewline(
             m_os, m_should_comma, m_indent_level + 1 );
 
@@ -136,15 +136,15 @@ namespace Catch {
         return JsonArrayWriter{ m_os, m_indent_level };
     }
 
-    void JsonValueWriter::write( Catch::StringRef value ) && {
+    void JsonValueWriter::write( std::string_view value ) && {
         writeImpl( value, true );
     }
 
     void JsonValueWriter::write( bool value ) && {
-        writeImpl( value ? "true"_sr : "false"_sr, false );
+        writeImpl( value ? "true" : "false", false );
     }
 
-    void JsonValueWriter::writeImpl( Catch::StringRef value, bool quote ) {
+    void JsonValueWriter::writeImpl( std::string_view value, bool quote ) {
         if ( quote ) { m_os << '"'; }
         size_t current_start = 0;
         for ( size_t i = 0; i < value.size(); ++i ) {

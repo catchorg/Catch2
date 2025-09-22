@@ -35,10 +35,10 @@ namespace Catch {
     }
 
 
-    Capturer::Capturer( StringRef macroName,
+    Capturer::Capturer( std::string_view macroName,
                         SourceLineInfo const& lineInfo,
                         ResultWas::OfType resultType,
-                        StringRef names ):
+                        std::string_view names ):
         m_resultCapture( getResultCapture() ) {
         auto trimmed = [&] (size_t start, size_t end) {
             while (names[start] == ',' || isspace(static_cast<unsigned char>(names[start]))) {
@@ -86,7 +86,7 @@ namespace Catch {
                 if (start != pos && openings.empty()) {
                     m_messages.emplace_back(macroName, lineInfo, resultType);
                     m_messages.back().message += trimmed(start, pos);
-                    m_messages.back().message += " := "_sr;
+                    m_messages.back().message += " := ";
                     start = pos;
                 }
                 break;
@@ -96,7 +96,7 @@ namespace Catch {
         assert(openings.empty() && "Mismatched openings");
         m_messages.emplace_back(macroName, lineInfo, resultType);
         m_messages.back().message += trimmed(start, names.size() - 1);
-        m_messages.back().message += " := "_sr;
+        m_messages.back().message += " := ";
     }
     Capturer::~Capturer() {
         assert( m_captured == m_messages.size() );

@@ -30,7 +30,7 @@ namespace Catch {
             auto const& testSpec = config.testSpec();
             std::vector<TestCaseHandle> matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
 
-            std::map<StringRef, TagInfo, Detail::CaseInsensitiveLess> tagCounts;
+            std::map<std::string_view, TagInfo, Detail::CaseInsensitiveLess> tagCounts;
             for (auto const& testCase : matchedTestCases) {
                 for (auto const& tagName : testCase.getTestCaseInfo().tags) {
                     auto it = tagCounts.find(tagName.original);
@@ -75,7 +75,7 @@ namespace Catch {
 
     } // end anonymous namespace
 
-    void TagInfo::add( StringRef spelling ) {
+    void TagInfo::add( std::string_view spelling ) {
         ++count;
         spellings.insert( spelling );
     }

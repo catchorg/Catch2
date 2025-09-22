@@ -43,10 +43,10 @@ namespace Catch {
 
         void testRunEnded(TestRunStats const& testRunStats) override;
 
-        void benchmarkPreparing( StringRef name ) override;
+        void benchmarkPreparing( std::string_view name ) override;
         void benchmarkStarting(BenchmarkInfo const&) override;
         void benchmarkEnded(BenchmarkStats<> const&) override;
-        void benchmarkFailed( StringRef error ) override;
+        void benchmarkFailed( std::string_view error ) override;
 
         void listReporters(std::vector<ReporterDescription> const& descriptions) override;
         void listListeners(std::vector<ListenerDescription> const& descriptions) override;

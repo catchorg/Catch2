@@ -25,7 +25,7 @@ namespace Catch {
 
         static std::string getDescription();
 
-        void noMatchingTestCases( StringRef unmatchedSpec ) override;
+        void noMatchingTestCases( std::string_view unmatchedSpec ) override;
 
         void testRunStarting( TestRunInfo const& _testInfo ) override;
 

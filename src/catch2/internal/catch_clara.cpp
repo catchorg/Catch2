@@ -25,7 +25,7 @@ namespace {
             ;
     }
 
-    Catch::StringRef normaliseOpt( Catch::StringRef optName ) {
+    std::string_view normaliseOpt( std::string_view optName ) {
         if ( optName[0] == '-'
 #if defined(CATCH_PLATFORM_WINDOWS)
              || optName[0] == '/'
@@ -37,7 +37,7 @@ namespace {
         return optName;
     }
 
-    static size_t find_first_separator(Catch::StringRef sr) {
+    static size_t find_first_separator(std::string_view sr) {
         auto is_separator = []( char c ) {
             return c == ' ' || c == ':' || c == '=';
         };
@@ -47,7 +47,7 @@ namespace {
             ++pos;
         }
 
-        return Catch::StringRef::npos;
+        return std::string_view::npos;
     }
 
 } // namespace
@@ -65,10 +65,10 @@ namespace Catch {
                 }
 
                 if ( it != itEnd ) {
-                    StringRef next = *it;
+                    std::string_view next = *it;
                     if ( isOptPrefix( next[0] ) ) {
                         auto delimiterPos = find_first_separator(next);
-                        if ( delimiterPos != StringRef::npos ) {
+                        if ( delimiterPos != std::string_view::npos ) {
                             m_tokenBuffer.push_back(
                                 { TokenType::Option,
                                   next.substr( 0, delimiterPos ) } );
@@ -205,7 +205,7 @@ namespace Catch {
             return { oss.str(), m_description };
         }
 
-        bool Opt::isMatch(StringRef optToken) const {
+        bool Opt::isMatch(std::string_view optToken) const {
             auto normalisedToken = normaliseOpt(optToken);
             for (auto const& name : m_optNames) {
                 if (normaliseOpt(name) == normalisedToken)
@@ -243,12 +243,12 @@ namespace Catch {
                         if (!tokens)
                             return Detail::InternalParseResult::runtimeError(
                                 "Expected argument following " +
-                                token.token);
+                                std::string(token.token));
                         auto const& argToken = *tokens;
                         if (argToken.type != Detail::TokenType::Argument)
                             return Detail::InternalParseResult::runtimeError(
                                 "Expected argument following " +
-                                token.token);
+                                std::string(token.token));
                         const auto result = valueRef->setValue(static_cast<std::string>(argToken.token));
                         if (!result)
                             return Detail::InternalParseResult(result);
@@ -436,7 +436,7 @@ namespace Catch {
                 if ( !tokenParsed )
                     return Detail::InternalParseResult::runtimeError(
                         "Unrecognised token: " +
-                        result.value().remainingTokens()->token );
+                        std::string(result.value().remainingTokens()->token) );
             }
             // !TBD Check missing required options
             return result;
@@ -445,7 +445,7 @@ namespace Catch {
         Args::Args(int argc, char const* const* argv) :
             m_exeName(argv[0]), m_args(argv + 1, argv + argc) {}
 
-        Args::Args(std::initializer_list<StringRef> args) :
+        Args::Args(std::initializer_list<std::string_view> args) :
             m_exeName(*args.begin()),
             m_args(args.begin() + 1, args.end()) {}
 

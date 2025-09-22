@@ -21,8 +21,8 @@ namespace Catch {
     namespace {
         // Yes, this has to be outside the class and namespaced by naming.
         // Making older compiler happy is hard.
-        static constexpr StringRef tapFailedString = "not ok"_sr;
-        static constexpr StringRef tapPassedString = "ok"_sr;
+        static constexpr std::string_view tapFailedString = "not ok";
+        static constexpr std::string_view tapPassedString = "ok";
         static constexpr Colour::Code tapDimColour = Colour::FileName;
 
         class TapAssertionPrinter {
@@ -66,42 +66,42 @@ namespace Catch {
                     break;
                 case ResultWas::ThrewException:
                     printResultType(tapFailedString);
-                    printIssue("unexpected exception with message:"_sr);
+                    printIssue("unexpected exception with message:");
                     printMessage();
                     printExpressionWas();
                     printRemainingMessages();
                     break;
                 case ResultWas::FatalErrorCondition:
                     printResultType(tapFailedString);
-                    printIssue("fatal error condition with message:"_sr);
+                    printIssue("fatal error condition with message:");
                     printMessage();
                     printExpressionWas();
                     printRemainingMessages();
                     break;
                 case ResultWas::DidntThrowException:
                     printResultType(tapFailedString);
-                    printIssue("expected exception, got none"_sr);
+                    printIssue("expected exception, got none");
                     printExpressionWas();
                     printRemainingMessages();
                     break;
                 case ResultWas::Info:
-                    printResultType("info"_sr);
+                    printResultType("info");
                     printMessage();
                     printRemainingMessages();
                     break;
                 case ResultWas::Warning:
-                    printResultType("warning"_sr);
+                    printResultType("warning");
                     printMessage();
                     printRemainingMessages();
                     break;
                 case ResultWas::ExplicitFailure:
                     printResultType(tapFailedString);
-                    printIssue("explicitly"_sr);
+                    printIssue("explicitly");
                     printRemainingMessages(Colour::None);
                     break;
                 case ResultWas::ExplicitSkip:
                     printResultType(tapPassedString);
-                    printIssue(" # SKIP"_sr);
+                    printIssue(" # SKIP");
                     printMessage();
                     printRemainingMessages();
                     break;
@@ -109,19 +109,19 @@ namespace Catch {
                 case ResultWas::Unknown:
                 case ResultWas::FailureBit:
                 case ResultWas::Exception:
-                    printResultType("** internal error **"_sr);
+                    printResultType("** internal error **");
                     break;
                 }
             }
 
         private:
-            void printResultType(StringRef passOrFail) const {
+            void printResultType(std::string_view passOrFail) const {
                 if (!passOrFail.empty()) {
                     stream << passOrFail << ' ' << counter << " -";
                 }
             }
 
-            void printIssue(StringRef issue) const {
+            void printIssue(std::string_view issue) const {
                 stream << ' ' << issue;
             }
 
@@ -167,7 +167,7 @@ namespace Catch {
                 const std::size_t N = static_cast<std::size_t>(itEnd - itMessage);
 
                 stream << colourImpl->guardColour( colour ) << " with "
-                       << pluralise( N, "message"_sr ) << ':';
+                       << pluralise( N, "message" ) << ':';
 
                 for (; itMessage != itEnd; ) {
                     // If this assertion is a warning ignore any INFO messages
@@ -200,7 +200,7 @@ namespace Catch {
                  << std::flush;
     }
 
-    void TAPReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
+    void TAPReporter::noMatchingTestCases( std::string_view unmatchedSpec ) {
         m_stream << "# No test cases matched '" << unmatchedSpec << "'\n";
     }
 

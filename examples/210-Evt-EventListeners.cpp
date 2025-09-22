@@ -131,7 +131,7 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 }
 
 //    struct Tag {
-//        StringRef original, lowerCased;
+//        std::string_view original, lowerCased;
 //    };
 //
 //
@@ -221,9 +221,9 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 
 // struct AssertionInfo
 // {
-//     StringRef macroName;
+//     std::string_view macroName;
 //     SourceLineInfo lineInfo;
-//     StringRef capturedExpression;
+//     std::string_view capturedExpression;
 //     ResultDisposition::Flags resultDisposition;
 // };
 

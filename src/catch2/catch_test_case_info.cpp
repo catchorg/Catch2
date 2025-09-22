@@ -14,6 +14,7 @@
 #include <cassert>
 #include <cctype>
 #include <algorithm>
+#include <string_view>
 
 namespace Catch {
 
@@ -47,28 +48,28 @@ namespace Catch {
             return tcp != TestCaseProperties::None;
         }
 
-        TestCaseProperties parseSpecialTag( StringRef tag ) {
+        TestCaseProperties parseSpecialTag( std::string_view tag ) {
             if( !tag.empty() && tag[0] == '.' )
                 return TestCaseProperties::IsHidden;
-            else if( tag == "!throws"_sr )
+            else if( tag == "!throws" )
                 return TestCaseProperties::Throws;
-            else if( tag == "!shouldfail"_sr )
+            else if( tag == "!shouldfail" )
                 return TestCaseProperties::ShouldFail;
-            else if( tag == "!mayfail"_sr )
+            else if( tag == "!mayfail" )
                 return TestCaseProperties::MayFail;
-            else if( tag == "!nonportable"_sr )
+            else if( tag == "!nonportable" )
                 return TestCaseProperties::NonPortable;
-            else if( tag == "!benchmark"_sr )
+            else if( tag == "!benchmark" )
                 return TestCaseProperties::Benchmark | TestCaseProperties::IsHidden;
             else
                 return TestCaseProperties::None;
         }
-        bool isReservedTag( StringRef tag ) {
+        bool isReservedTag( std::string_view tag ) {
             return parseSpecialTag( tag ) == TestCaseProperties::None
                 && tag.size() > 0
                 && !std::isalnum( static_cast<unsigned char>(tag[0]) );
         }
-        void enforceNotReservedTag( StringRef tag, SourceLineInfo const& _lineInfo ) {
+        void enforceNotReservedTag( std::string_view tag, SourceLineInfo const& _lineInfo ) {
             CATCH_ENFORCE( !isReservedTag(tag),
                           "Tag name: [" << tag << "] is not allowed.\n"
                           << "Tag names starting with non alphanumeric characters are reserved\n"
@@ -80,13 +81,13 @@ namespace Catch {
             return "Anonymous test case " + std::to_string(++counter);
         }
 
-        constexpr StringRef extractFilenamePart(StringRef filename) {
+        constexpr std::string_view extractFilenamePart(std::string_view filename) {
             size_t lastDot = filename.size();
             while (lastDot > 0 && filename[lastDot - 1] != '.') {
                 --lastDot;
             }
             // In theory we could have filename without any extension in it
-            if ( lastDot == 0 ) { return StringRef(); }
+            if ( lastDot == 0 ) { return std::string_view(); }
 
             --lastDot;
             size_t nameStart = lastDot;
@@ -98,7 +99,7 @@ namespace Catch {
         }
 
         // Returns the upper bound on size of extra tags ([#file]+[.])
-        constexpr size_t sizeOfExtraTags(StringRef filepath) {
+        constexpr size_t sizeOfExtraTags(std::string_view filepath) {
             // [.] is 3, [#] is another 3
             const size_t extras = 3 + 3;
             return extractFilenamePart(filepath).size() + extras;
@@ -115,20 +116,20 @@ namespace Catch {
     }
 
     Detail::unique_ptr<TestCaseInfo>
-        makeTestCaseInfo(StringRef _className,
+        makeTestCaseInfo(std::string_view _className,
                          NameAndTags const& nameAndTags,
                          SourceLineInfo const& _lineInfo ) {
         return Detail::make_unique<TestCaseInfo>(_className, nameAndTags, _lineInfo);
     }
 
-    TestCaseInfo::TestCaseInfo(StringRef _className,
+    TestCaseInfo::TestCaseInfo(std::string_view _className,
                                NameAndTags const& _nameAndTags,
                                SourceLineInfo const& _lineInfo):
         name( _nameAndTags.name.empty() ? makeDefaultName() : _nameAndTags.name ),
         className( _className ),
         lineInfo( _lineInfo )
     {
-        StringRef originalTags = _nameAndTags.tags;
+        std::string_view originalTags = _nameAndTags.tags;
         // We need to reserve enough space to store all of the tags
         // (including optional hidden tag and filename tag)
         auto requiredSize = originalTags.size() + sizeOfExtraTags(_lineInfo.file);
@@ -163,7 +164,7 @@ namespace Catch {
                 // We need to check the tag for special meanings, copy
                 // it over to backing storage and actually reference the
                 // backing storage in the saved tags
-                StringRef tagStr = originalTags.substr(tagStart+1, tagEnd - tagStart - 1);
+                std::string_view tagStr = originalTags.substr(tagStart+1, tagEnd - tagStart - 1);
                 CATCH_ENFORCE( !tagStr.empty(),
                                "Found an empty tag while registering test case '"
                                    << _nameAndTags.name << "' at "
@@ -190,7 +191,7 @@ namespace Catch {
 
         // Add [.] if relevant
         if (isHidden()) {
-            internalAppendTag("."_sr);
+            internalAppendTag(".");
         }
 
         // Sort and prepare tags
@@ -235,13 +236,13 @@ namespace Catch {
         return ret;
     }
 
-    void TestCaseInfo::internalAppendTag(StringRef tagStr) {
+    void TestCaseInfo::internalAppendTag(std::string_view tagStr) {
         backingTags += '[';
         const auto backingStart = backingTags.size();
         backingTags += tagStr;
         const auto backingEnd = backingTags.size();
         backingTags += ']';
-        tags.emplace_back(StringRef(backingTags.c_str() + backingStart, backingEnd - backingStart));
+        tags.emplace_back(std::string_view(backingTags.c_str() + backingStart, backingEnd - backingStart));
     }
 
     bool operator<( TestCaseInfo const& lhs, TestCaseInfo const& rhs ) {

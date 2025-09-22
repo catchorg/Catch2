@@ -24,14 +24,14 @@ namespace Catch {
         {}
         ~StreamingReporterBase() override;
 
-        void benchmarkPreparing( StringRef ) override {}
+        void benchmarkPreparing( std::string_view ) override {}
         void benchmarkStarting( BenchmarkInfo const& ) override {}
         void benchmarkEnded( BenchmarkStats<> const& ) override {}
-        void benchmarkFailed( StringRef ) override {}
+        void benchmarkFailed( std::string_view ) override {}
 
-        void fatalErrorEncountered( StringRef /*error*/ ) override {}
-        void noMatchingTestCases( StringRef /*unmatchedSpec*/ ) override {}
-        void reportInvalidTestSpec( StringRef /*invalidArgument*/ ) override {}
+        void fatalErrorEncountered( std::string_view /*error*/ ) override {}
+        void noMatchingTestCases( std::string_view /*unmatchedSpec*/ ) override {}
+        void reportInvalidTestSpec( std::string_view /*invalidArgument*/ ) override {}
 
         void testRunStarting( TestRunInfo const& _testRunInfo ) override;
 
@@ -61,7 +61,7 @@ namespace Catch {
         }
 
     protected:
-        TestRunInfo currentTestRunInfo{ "test run has not started yet"_sr };
+        TestRunInfo currentTestRunInfo{ "test run has not started yet" };
         TestCaseInfo const* currentTestCaseInfo = nullptr;
 
         //! Stack of all _active_ sections in the _current_ test case

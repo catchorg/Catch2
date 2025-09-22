@@ -10,7 +10,7 @@
 
 TEST_CASE( "Incomplete AssertionHandler", "[assertion-handler][!shouldfail]" ) {
     Catch::AssertionHandler catchAssertionHandler(
-        "REQUIRE"_catch_sr,
+        "REQUIRE",
         CATCH_INTERNAL_LINEINFO,
         "Dummy",
         Catch::ResultDisposition::Normal );

@@ -47,7 +47,7 @@ namespace {
 
     void hexEscapeChar(std::ostream& os, unsigned char c) {
         std::ios_base::fmtflags f(os.flags());
-        os << "\\x"_sr
+        os << "\\x"
             << std::uppercase << std::hex << std::setfill('0') << std::setw(2)
             << static_cast<int>(c);
         os.flags(f);
@@ -79,25 +79,25 @@ namespace {
             switch ( c ) {
             case '<':
                 write_to( idx );
-                os << "&lt;"_sr;
+                os << "&lt;";
                 break;
             case '&':
                 write_to( idx );
-                os << "&amp;"_sr;
+                os << "&amp;";
                 break;
 
             case '>':
                 // See: http://www.w3.org/TR/xml/#syntax
                 if ( idx > 2 && m_str[idx - 1] == ']' && m_str[idx - 2] == ']' ) {
                     write_to( idx );
-                    os << "&gt;"_sr;
+                    os << "&gt;";
                 }
                 break;
 
             case '\"':
                 if ( m_forWhat == ForAttributes ) {
                     write_to( idx );
-                    os << "&quot;"_sr;
+                    os << "&quot;";
                 }
                 break;
 
@@ -209,14 +209,14 @@ namespace {
     }
 
     XmlWriter::ScopedElement&
-    XmlWriter::ScopedElement::writeText( StringRef text, XmlFormatting fmt ) {
+    XmlWriter::ScopedElement::writeText( std::string_view text, XmlFormatting fmt ) {
         m_writer->writeText( text, fmt );
         return *this;
     }
 
     XmlWriter::ScopedElement&
-    XmlWriter::ScopedElement::writeAttribute( StringRef name,
-                                              StringRef attribute ) {
+    XmlWriter::ScopedElement::writeAttribute( std::string_view name,
+                                              std::string_view attribute ) {
         m_writer->writeAttribute( name, attribute );
         return *this;
     }
@@ -273,25 +273,25 @@ namespace {
         return *this;
     }
 
-    XmlWriter& XmlWriter::writeAttribute( StringRef name,
-                                          StringRef attribute ) {
+    XmlWriter& XmlWriter::writeAttribute( std::string_view name,
+                                          std::string_view attribute ) {
         if( !name.empty() && !attribute.empty() )
             m_os << ' ' << name << "=\"" << XmlEncode( attribute, XmlEncode::ForAttributes ) << '"';
         return *this;
     }
 
-    XmlWriter& XmlWriter::writeAttribute( StringRef name, bool attribute ) {
-        writeAttribute(name, (attribute ? "true"_sr : "false"_sr));
+    XmlWriter& XmlWriter::writeAttribute( std::string_view name, bool attribute ) {
+        writeAttribute(name, (attribute ? "true" : "false"));
         return *this;
     }
 
-    XmlWriter& XmlWriter::writeAttribute( StringRef name,
+    XmlWriter& XmlWriter::writeAttribute( std::string_view name,
                                           char const* attribute ) {
-        writeAttribute( name, StringRef( attribute ) );
+        writeAttribute( name, std::string_view( attribute ) );
         return *this;
     }
 
-    XmlWriter& XmlWriter::writeText( StringRef text, XmlFormatting fmt ) {
+    XmlWriter& XmlWriter::writeText( std::string_view text, XmlFormatting fmt ) {
         CATCH_ENFORCE(!m_tags.empty(), "Cannot write text as top level element");
         if( !text.empty() ){
             bool tagWasOpen = m_tagIsOpen;
@@ -305,7 +305,7 @@ namespace {
         return *this;
     }
 
-    XmlWriter& XmlWriter::writeComment( StringRef text, XmlFormatting fmt ) {
+    XmlWriter& XmlWriter::writeComment( std::string_view text, XmlFormatting fmt ) {
         ensureTagClosed();
         if (shouldIndent(fmt)) {
             m_os << m_indent;
@@ -315,7 +315,7 @@ namespace {
         return *this;
     }
 
-    void XmlWriter::writeStylesheetRef( StringRef url ) {
+    void XmlWriter::writeStylesheetRef( std::string_view url ) {
         m_os << R"(<?xml-stylesheet type="text/xsl" href=")" << url << R"("?>)" << '\n';
     }
 

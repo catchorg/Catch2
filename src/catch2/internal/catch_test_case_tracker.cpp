@@ -157,7 +157,7 @@ namespace TestCaseTracking {
 
     SectionTracker::SectionTracker( NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent )
     :   TrackerBase( CATCH_MOVE(nameAndLocation), ctx, parent ),
-        m_trimmed_name(trim(StringRef(ITracker::nameAndLocation().name)))
+        m_trimmed_name(trim(std::string_view(ITracker::nameAndLocation().name)))
     {
         if( parent ) {
             while ( !parent->isSectionTracker() ) {
@@ -216,17 +216,17 @@ namespace TestCaseTracking {
     void SectionTracker::addInitialFilters( std::vector<std::string> const& filters ) {
         if( !filters.empty() ) {
             m_filters.reserve( m_filters.size() + filters.size() + 2 );
-            m_filters.emplace_back(StringRef{}); // Root - should never be consulted
-            m_filters.emplace_back(StringRef{}); // Test Case - not a section filter
+            m_filters.emplace_back(); // Root - should never be consulted
+            m_filters.emplace_back(); // Test Case - not a section filter
             m_filters.insert( m_filters.end(), filters.begin(), filters.end() );
         }
     }
-    void SectionTracker::addNextFilters( std::vector<StringRef> const& filters ) {
+    void SectionTracker::addNextFilters( std::vector<std::string_view> const& filters ) {
         if( filters.size() > 1 )
             m_filters.insert( m_filters.end(), filters.begin()+1, filters.end() );
     }
 
-    StringRef SectionTracker::trimmedName() const {
+    std::string_view SectionTracker::trimmedName() const {
         return m_trimmed_name;
     }
 

@@ -213,7 +213,7 @@ namespace Catch {
                                .width( CATCH_CONFIG_CONSOLE_WIDTH - 10 );
             out << str << wrapper << '\n';
         }
-        out << pluralise(tags.size(), "tag"_sr) << "\n\n" << std::flush;
+        out << pluralise(tags.size(), "tag") << "\n\n" << std::flush;
     }
 
     void defaultListTests(std::ostream& out, ColourImpl* streamColour, std::vector<TestCaseHandle> const& tests, bool isFiltered, Verbosity verbosity) {
@@ -249,9 +249,9 @@ namespace Catch {
         }
 
         if (isFiltered) {
-            out << pluralise(tests.size(), "matching test case"_sr);
+            out << pluralise(tests.size(), "matching test case");
         } else {
-            out << pluralise(tests.size(), "test case"_sr);
+            out << pluralise(tests.size(), "test case");
         }
         out << "\n\n" << std::flush;
     }
@@ -292,7 +292,7 @@ namespace Catch {
 
         void printSummaryRow( std::ostream& stream,
                               ColourImpl& colour,
-                              StringRef label,
+                              std::string_view label,
                               std::vector<SummaryColumn> const& cols,
                               std::size_t row ) {
             for ( auto const& col : cols ) {
@@ -329,9 +329,9 @@ namespace Catch {
             stream << streamColour.guardColour( Colour::ResultSuccess )
                    << "All tests passed";
             stream << " ("
-                   << pluralise( totals.assertions.passed, "assertion"_sr )
+                   << pluralise( totals.assertions.passed, "assertion" )
                    << " in "
-                   << pluralise( totals.testCases.passed, "test case"_sr )
+                   << pluralise( totals.testCases.passed, "test case" )
                    << ')' << '\n';
             return;
         }
@@ -357,8 +357,8 @@ namespace Catch {
             SummaryColumn( "failed as expected", Colour::ResultExpectedFailure )
                 .addRow( totals.testCases.failedButOk )
                 .addRow( totals.assertions.failedButOk ) );
-        printSummaryRow( stream, streamColour, "test cases"_sr, columns, 0 );
-        printSummaryRow( stream, streamColour, "assertions"_sr, columns, 1 );
+        printSummaryRow( stream, streamColour, "test cases", columns, 0 );
+        printSummaryRow( stream, streamColour, "assertions", columns, 1 );
     }
 
 } // namespace Catch

@@ -11,12 +11,12 @@
 #include <catch2/interfaces/catch_interfaces_test_invoker.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
 
 #include <cstdint>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #ifdef __clang__
@@ -34,10 +34,10 @@ namespace Catch {
      * as "cool-tag" internally.
      */
     struct Tag {
-        constexpr Tag(StringRef original_):
+        constexpr Tag(std::string_view original_):
             original(original_)
         {}
-        StringRef original;
+        std::string_view original;
 
         friend bool operator< ( Tag const& lhs, Tag const& rhs );
         friend bool operator==( Tag const& lhs, Tag const& rhs );
@@ -67,7 +67,7 @@ namespace Catch {
      */
     struct TestCaseInfo : Detail::NonCopyable {
 
-        TestCaseInfo(StringRef _className,
+        TestCaseInfo(std::string_view _className,
                      NameAndTags const& _nameAndTags,
                      SourceLineInfo const& _lineInfo);
 
@@ -87,12 +87,12 @@ namespace Catch {
         std::string tagsAsString() const;
 
         std::string name;
-        StringRef className;
+        std::string_view className;
     private:
         std::string backingTags;
         // Internally we copy tags to the backing storage and then add
         // refs to this storage to the tags vector.
-        void internalAppendTag(StringRef tagString);
+        void internalAppendTag(std::string_view tagString);
     public:
         std::vector<Tag> tags;
         SourceLineInfo lineInfo;
@@ -130,7 +130,7 @@ namespace Catch {
     };
 
     Detail::unique_ptr<TestCaseInfo>
-    makeTestCaseInfo( StringRef className,
+    makeTestCaseInfo( std::string_view className,
                       NameAndTags const& nameAndTags,
                       SourceLineInfo const& lineInfo );
 }

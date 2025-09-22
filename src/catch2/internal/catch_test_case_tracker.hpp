@@ -10,9 +10,9 @@
 
 #include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace Catch {
@@ -45,10 +45,10 @@ namespace TestCaseTracking {
      * around the owning variant.
      */
     struct NameAndLocationRef {
-        StringRef name;
+        std::string_view name;
         SourceLineInfo location;
 
-        constexpr NameAndLocationRef( StringRef name_,
+        constexpr NameAndLocationRef( std::string_view name_,
                                       SourceLineInfo location_ ):
             name( name_ ), location( location_ ) {}
 
@@ -59,7 +59,7 @@ namespace TestCaseTracking {
             // cost of repeating is trivial at that point (we will be paying
             // multiple strcmp/memcmps at that point).
             if ( lhs.location.line != rhs.location.line ) { return false; }
-            return StringRef( lhs.name ) == rhs.name &&
+            return std::string_view( lhs.name ) == rhs.name &&
                    lhs.location == rhs.location;
         }
         friend bool operator==( NameAndLocationRef const& lhs,
@@ -208,12 +208,12 @@ namespace TestCaseTracking {
     };
 
     class SectionTracker : public TrackerBase {
-        std::vector<StringRef> m_filters;
+        std::vector<std::string_view> m_filters;
         // Note that lifetime-wise we piggy back off the name stored in the `ITracker` parent`.
         // Currently it allocates owns the name, so this is safe. If it is later refactored
         // to not own the name, the name still has to outlive the `ITracker` parent, so
         // this should still be safe.
-        StringRef m_trimmed_name;
+        std::string_view m_trimmed_name;
     public:
         SectionTracker( NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent );
 
@@ -226,11 +226,11 @@ namespace TestCaseTracking {
         void tryOpen();
 
         void addInitialFilters( std::vector<std::string> const& filters );
-        void addNextFilters( std::vector<StringRef> const& filters );
+        void addNextFilters( std::vector<std::string_view> const& filters );
         //! Returns filters active in this tracker
-        std::vector<StringRef> const& getFilters() const { return m_filters; }
+        std::vector<std::string_view> const& getFilters() const { return m_filters; }
         //! Returns whitespace-trimmed name of the tracked section
-        StringRef trimmedName() const;
+        std::string_view trimmedName() const;
     };
 
 } // namespace TestCaseTracking

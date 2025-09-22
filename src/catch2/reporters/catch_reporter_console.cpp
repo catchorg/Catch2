@@ -14,7 +14,6 @@
 #include <catch2/catch_version.hpp>
 #include <catch2/internal/catch_textflow.hpp>
 #include <catch2/internal/catch_reusable_string_stream.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/internal/catch_console_width.hpp>
 #include <catch2/reporters/catch_reporter_helpers.hpp>
@@ -22,6 +21,7 @@
 #include <catch2/catch_get_random_seed.hpp>
 
 #include <cstdio>
+#include <string_view>
 
 #if defined(_MSC_VER)
 #pragma warning(push)
@@ -57,78 +57,78 @@ public:
         switch (result.getResultType()) {
         case ResultWas::Ok:
             colour = Colour::Success;
-            passOrFail = "PASSED"_sr;
+            passOrFail = "PASSED";
             //if( result.hasMessage() )
             if (messages.size() == 1)
-                messageLabel = "with message"_sr;
+                messageLabel = "with message";
             if (messages.size() > 1)
-                messageLabel = "with messages"_sr;
+                messageLabel = "with messages";
             break;
         case ResultWas::ExpressionFailed:
             if (result.isOk()) {
                 colour = Colour::Success;
-                passOrFail = "FAILED - but was ok"_sr;
+                passOrFail = "FAILED - but was ok";
             } else {
                 colour = Colour::Error;
-                passOrFail = "FAILED"_sr;
+                passOrFail = "FAILED";
             }
             if (messages.size() == 1)
-                messageLabel = "with message"_sr;
+                messageLabel = "with message";
             if (messages.size() > 1)
-                messageLabel = "with messages"_sr;
+                messageLabel = "with messages";
             break;
         case ResultWas::ThrewException:
             colour = Colour::Error;
-            passOrFail = "FAILED"_sr;
+            passOrFail = "FAILED";
             // todo switch
             switch (messages.size()) { case 0:
-                messageLabel = "due to unexpected exception with "_sr;
+                messageLabel = "due to unexpected exception with ";
                 break;
             case 1:
-                messageLabel = "due to unexpected exception with message"_sr;
+                messageLabel = "due to unexpected exception with message";
                 break;
             default:
-                messageLabel = "due to unexpected exception with messages"_sr;
+                messageLabel = "due to unexpected exception with messages";
                 break;
             }
             break;
         case ResultWas::FatalErrorCondition:
             colour = Colour::Error;
-            passOrFail = "FAILED"_sr;
-            messageLabel = "due to a fatal error condition"_sr;
+            passOrFail = "FAILED";
+            messageLabel = "due to a fatal error condition";
             break;
         case ResultWas::DidntThrowException:
             colour = Colour::Error;
-            passOrFail = "FAILED"_sr;
-            messageLabel = "because no exception was thrown where one was expected"_sr;
+            passOrFail = "FAILED";
+            messageLabel = "because no exception was thrown where one was expected";
             break;
         case ResultWas::Info:
-            messageLabel = "info"_sr;
+            messageLabel = "info";
             break;
         case ResultWas::Warning:
-            messageLabel = "warning"_sr;
+            messageLabel = "warning";
             break;
         case ResultWas::ExplicitFailure:
-            passOrFail = "FAILED"_sr;
+            passOrFail = "FAILED";
             colour = Colour::Error;
             if (messages.size() == 1)
-                messageLabel = "explicitly with message"_sr;
+                messageLabel = "explicitly with message";
             if (messages.size() > 1)
-                messageLabel = "explicitly with messages"_sr;
+                messageLabel = "explicitly with messages";
             break;
         case ResultWas::ExplicitSkip:
             colour = Colour::Skip;
-            passOrFail = "SKIPPED"_sr;
+            passOrFail = "SKIPPED";
             if (messages.size() == 1)
-                messageLabel = "explicitly with message"_sr;
+                messageLabel = "explicitly with message";
             if (messages.size() > 1)
-                messageLabel = "explicitly with messages"_sr;
+                messageLabel = "explicitly with messages";
             break;
             // These cases are here to prevent compiler warnings
         case ResultWas::Unknown:
         case ResultWas::FailureBit:
         case ResultWas::Exception:
-            passOrFail = "** internal error **"_sr;
+            passOrFail = "** internal error **";
             colour = Colour::Error;
             break;
         }
@@ -185,8 +185,8 @@ private:
     AssertionStats const& stats;
     AssertionResult const& result;
     Colour::Code colour;
-    StringRef passOrFail;
-    StringRef messageLabel;
+    std::string_view passOrFail;
+    std::string_view messageLabel;
     std::vector<MessageInfo> const& messages;
     ColourImpl* colourImpl;
     bool printInfoMessages;
@@ -263,20 +263,20 @@ public:
             return m_inNanoseconds;
         }
     }
-    StringRef unitsAsString() const {
+    std::string_view unitsAsString() const {
         switch (m_units) {
         case Unit::Nanoseconds:
-            return "ns"_sr;
+            return "ns";
         case Unit::Microseconds:
-            return "us"_sr;
+            return "us";
         case Unit::Milliseconds:
-            return "ms"_sr;
+            return "ms";
         case Unit::Seconds:
-            return "s"_sr;
+            return "s";
         case Unit::Minutes:
-            return "m"_sr;
+            return "m";
         default:
-            return "** internal error **"_sr;
+            return "** internal error **";
         }
 
     }
@@ -411,11 +411,11 @@ std::string ConsoleReporter::getDescription() {
     return "Reports test results as plain lines of text";
 }
 
-void ConsoleReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
+void ConsoleReporter::noMatchingTestCases( std::string_view unmatchedSpec ) {
     m_stream << "No test cases matched '" << unmatchedSpec << "'\n";
 }
 
-void ConsoleReporter::reportInvalidTestSpec( StringRef arg ) {
+void ConsoleReporter::reportInvalidTestSpec( std::string_view arg ) {
     m_stream << "Invalid Filter: " << arg << '\n';
 }
 
@@ -463,7 +463,7 @@ void ConsoleReporter::sectionEnded(SectionStats const& _sectionStats) {
     StreamingReporterBase::sectionEnded(_sectionStats);
 }
 
-void ConsoleReporter::benchmarkPreparing( StringRef name ) {
+void ConsoleReporter::benchmarkPreparing( std::string_view name ) {
 	lazyPrintWithoutClosingBenchmarkTable();
 
 	auto nameCol = TextFlow::Column( static_cast<std::string>( name ) )
@@ -506,7 +506,7 @@ void ConsoleReporter::benchmarkEnded(BenchmarkStats<> const& stats) {
     }
 }
 
-void ConsoleReporter::benchmarkFailed( StringRef error ) {
+void ConsoleReporter::benchmarkFailed( std::string_view error ) {
     auto guard = m_colour->guardColour( Colour::Red ).engage( m_stream );
     (*m_tablePrinter)
         << "Benchmark failed (" << error << ')'

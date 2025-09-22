@@ -124,7 +124,6 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/internal/catch_stdstreams.hpp
   ${SOURCES_DIR}/internal/catch_stream_end_stop.hpp
   ${SOURCES_DIR}/internal/catch_string_manip.hpp
-  ${SOURCES_DIR}/internal/catch_stringref.hpp
   ${SOURCES_DIR}/internal/catch_tag_alias_registry.hpp
   ${SOURCES_DIR}/internal/catch_template_test_registry.hpp
   ${SOURCES_DIR}/internal/catch_test_case_info_hasher.hpp
@@ -201,7 +200,6 @@ set(IMPL_SOURCES
   ${SOURCES_DIR}/internal/catch_startup_exception_registry.cpp
   ${SOURCES_DIR}/internal/catch_stdstreams.cpp
   ${SOURCES_DIR}/internal/catch_string_manip.cpp
-  ${SOURCES_DIR}/internal/catch_stringref.cpp
   ${SOURCES_DIR}/internal/catch_tag_alias_registry.cpp
   ${SOURCES_DIR}/internal/catch_test_case_info_hasher.cpp
   ${SOURCES_DIR}/internal/catch_test_case_registry_impl.cpp

@@ -73,7 +73,7 @@ namespace Catch {
                     AssertionReaction &reaction ) override;
 
         void notifyAssertionStarted( AssertionInfo const& info ) override;
-        bool sectionStarted( StringRef sectionName,
+        bool sectionStarted( std::string_view sectionName,
                              SourceLineInfo const& sectionLineInfo,
                              Counts& assertions ) override;
 
@@ -81,18 +81,18 @@ namespace Catch {
         void sectionEndedEarly( SectionEndInfo&& endInfo ) override;
 
         IGeneratorTracker*
-        acquireGeneratorTracker( StringRef generatorName,
+        acquireGeneratorTracker( std::string_view generatorName,
                                  SourceLineInfo const& lineInfo ) override;
         IGeneratorTracker* createGeneratorTracker(
-            StringRef generatorName,
+            std::string_view generatorName,
             SourceLineInfo lineInfo,
             Generators::GeneratorBasePtr&& generator ) override;
 
 
-        void benchmarkPreparing( StringRef name ) override;
+        void benchmarkPreparing( std::string_view name ) override;
         void benchmarkStarting( BenchmarkInfo const& info ) override;
         void benchmarkEnded( BenchmarkStats<> const& stats ) override;
-        void benchmarkFailed( StringRef error ) override;
+        void benchmarkFailed( std::string_view error ) override;
 
         void pushScopedMessage( MessageInfo&& message ) override;
         void popScopedMessage( unsigned int messageId ) override;
@@ -105,7 +105,7 @@ namespace Catch {
 
         void exceptionEarlyReported() override;
 
-        void handleFatalErrorCondition( StringRef message ) override;
+        void handleFatalErrorCondition( std::string_view message ) override;
 
         bool lastAssertionPassed() override;
 

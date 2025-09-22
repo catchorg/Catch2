@@ -8,7 +8,7 @@
 #ifndef CATCH_STREAM_END_STOP_HPP_INCLUDED
 #define CATCH_STREAM_END_STOP_HPP_INCLUDED
 
-#include <catch2/internal/catch_stringref.hpp>
+#include <string_view>
 
 namespace Catch {
 
@@ -17,7 +17,7 @@ namespace Catch {
     // as well as
     //    << stuff +StreamEndStop
     struct StreamEndStop {
-        constexpr StringRef operator+() const { return StringRef(); }
+        constexpr std::string_view operator+() const { return std::string_view(); }
 
         template <typename T>
         constexpr friend T const& operator+( T const& value, StreamEndStop ) {

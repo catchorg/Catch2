@@ -24,14 +24,14 @@ namespace Matchers {
                ? toLower( str )
                : str;
     }
-    StringRef CasedString::caseSensitivitySuffix() const {
+    std::string_view CasedString::caseSensitivitySuffix() const {
         return m_caseSensitivity == CaseSensitive::Yes
-                   ? StringRef()
-                   : " (case insensitive)"_sr;
+                   ? std::string_view()
+                   : " (case insensitive)";
     }
 
 
-    StringMatcherBase::StringMatcherBase( StringRef operation, CasedString const& comparator )
+    StringMatcherBase::StringMatcherBase( std::string_view operation, CasedString const& comparator )
     : m_comparator( comparator ),
       m_operation( operation ) {
     }
@@ -48,28 +48,28 @@ namespace Matchers {
         return description;
     }
 
-    StringEqualsMatcher::StringEqualsMatcher( CasedString const& comparator ) : StringMatcherBase( "equals"_sr, comparator ) {}
+    StringEqualsMatcher::StringEqualsMatcher( CasedString const& comparator ) : StringMatcherBase( "equals", comparator ) {}
 
     bool StringEqualsMatcher::match( std::string const& source ) const {
         return m_comparator.adjustString( source ) == m_comparator.m_str;
     }
 
 
-    StringContainsMatcher::StringContainsMatcher( CasedString const& comparator ) : StringMatcherBase( "contains"_sr, comparator ) {}
+    StringContainsMatcher::StringContainsMatcher( CasedString const& comparator ) : StringMatcherBase( "contains", comparator ) {}
 
     bool StringContainsMatcher::match( std::string const& source ) const {
         return contains( m_comparator.adjustString( source ), m_comparator.m_str );
     }
 
 
-    StartsWithMatcher::StartsWithMatcher( CasedString const& comparator ) : StringMatcherBase( "starts with"_sr, comparator ) {}
+    StartsWithMatcher::StartsWithMatcher( CasedString const& comparator ) : StringMatcherBase( "starts with", comparator ) {}
 
     bool StartsWithMatcher::match( std::string const& source ) const {
         return startsWith( m_comparator.adjustString( source ), m_comparator.m_str );
     }
 
 
-    EndsWithMatcher::EndsWithMatcher( CasedString const& comparator ) : StringMatcherBase( "ends with"_sr, comparator ) {}
+    EndsWithMatcher::EndsWithMatcher( CasedString const& comparator ) : StringMatcherBase( "ends with", comparator ) {}
 
     bool EndsWithMatcher::match( std::string const& source ) const {
         return endsWith( m_comparator.adjustString( source ), m_comparator.m_str );

@@ -91,14 +91,14 @@ namespace Catch {
                 : expr;
     }
 
-    StringRef AssertionResult::getMessage() const {
+    std::string_view AssertionResult::getMessage() const {
         return m_resultData.message;
     }
     SourceLineInfo AssertionResult::getSourceInfo() const {
         return m_info.lineInfo;
     }
 
-    StringRef AssertionResult::getTestMacroName() const {
+    std::string_view AssertionResult::getTestMacroName() const {
         return m_info.macroName;
     }
 

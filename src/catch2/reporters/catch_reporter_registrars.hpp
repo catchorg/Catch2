@@ -67,7 +67,7 @@ namespace Catch {
     class ListenerRegistrar {
 
         class TypedListenerFactory : public EventListenerFactory {
-            StringRef m_listenerName;
+            std::string_view m_listenerName;
 
             std::string getDescriptionImpl( std::true_type ) const {
                 return T::getDescription();
@@ -78,14 +78,14 @@ namespace Catch {
             }
 
         public:
-            TypedListenerFactory( StringRef listenerName ):
+            TypedListenerFactory( std::string_view listenerName ):
                 m_listenerName( listenerName ) {}
 
             IEventListenerPtr create( IConfig const* config ) const override {
                 return Detail::make_unique<T>( config );
             }
 
-            StringRef getName() const override {
+            std::string_view getName() const override {
                 return m_listenerName;
             }
 
@@ -95,7 +95,7 @@ namespace Catch {
         };
 
     public:
-        ListenerRegistrar(StringRef listenerName) {
+        ListenerRegistrar(std::string_view listenerName) {
             registerListenerImpl( Detail::make_unique<TypedListenerFactory>(listenerName) );
         }
     };
@@ -119,7 +119,7 @@ namespace Catch {
         namespace {                                                        \
             const Catch::ListenerRegistrar<listenerType>                   \
                 INTERNAL_CATCH_UNIQUE_NAME( catch_internal_RegistrarFor )( \
-                    #listenerType##_catch_sr );                            \
+                    #listenerType );                                       \
         }                                                                  \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 

@@ -43,10 +43,10 @@ namespace Catch {
 
         //void testRunEndedCumulative() override;
 
-        void benchmarkPreparing( StringRef name ) override;
+        void benchmarkPreparing( std::string_view name ) override;
         void benchmarkStarting( BenchmarkInfo const& ) override;
         void benchmarkEnded( BenchmarkStats<> const& ) override;
-        void benchmarkFailed( StringRef error ) override;
+        void benchmarkFailed( std::string_view error ) override;
 
         void listReporters(
             std::vector<ReporterDescription> const& descriptions ) override;
@@ -63,10 +63,10 @@ namespace Catch {
         };
 
         JsonArrayWriter& startArray();
-        JsonArrayWriter& startArray( StringRef key );
+        JsonArrayWriter& startArray( std::string_view key );
 
         JsonObjectWriter& startObject();
-        JsonObjectWriter& startObject( StringRef key );
+        JsonObjectWriter& startObject( std::string_view key );
 
         void endObject();
         void endArray();

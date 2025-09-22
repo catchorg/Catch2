@@ -9,7 +9,6 @@
 #define CATCH_INTERFACES_CONFIG_HPP_INCLUDED
 
 #include <catch2/internal/catch_noncopyable.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 
 #include <chrono>
 #include <string>
@@ -66,7 +65,7 @@ namespace Catch {
         virtual ~IConfig();
 
         virtual bool allowThrows() const = 0;
-        virtual StringRef name() const = 0;
+        virtual std::string_view name() const = 0;
         virtual bool includeSuccessfulResults() const = 0;
         virtual bool shouldDebugBreak() const = 0;
         virtual bool warnAboutMissingAssertions() const = 0;

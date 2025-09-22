@@ -41,14 +41,14 @@ namespace Catch {
 
     public: // IEventListener
 
-        void noMatchingTestCases( StringRef unmatchedSpec ) override;
-        void fatalErrorEncountered( StringRef error ) override;
-        void reportInvalidTestSpec( StringRef arg ) override;
+        void noMatchingTestCases( std::string_view unmatchedSpec ) override;
+        void fatalErrorEncountered( std::string_view error ) override;
+        void reportInvalidTestSpec( std::string_view arg ) override;
 
-        void benchmarkPreparing( StringRef name ) override;
+        void benchmarkPreparing( std::string_view name ) override;
         void benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) override;
         void benchmarkEnded( BenchmarkStats<> const& benchmarkStats ) override;
-        void benchmarkFailed( StringRef error ) override;
+        void benchmarkFailed( std::string_view error ) override;
 
         void testRunStarting( TestRunInfo const& testRunInfo ) override;
         void testCaseStarting( TestCaseInfo const& testInfo ) override;

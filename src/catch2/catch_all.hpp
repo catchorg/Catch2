@@ -106,7 +106,6 @@
 #include <catch2/internal/catch_stdstreams.hpp>
 #include <catch2/internal/catch_stream_end_stop.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_tag_alias_registry.hpp>
 #include <catch2/internal/catch_template_test_registry.hpp>
 #include <catch2/internal/catch_test_case_info_hasher.hpp>

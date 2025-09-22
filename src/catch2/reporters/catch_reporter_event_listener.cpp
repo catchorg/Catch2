@@ -10,12 +10,12 @@
 
 namespace Catch {
 
-    void EventListenerBase::fatalErrorEncountered( StringRef ) {}
+    void EventListenerBase::fatalErrorEncountered( std::string_view ) {}
 
-    void EventListenerBase::benchmarkPreparing( StringRef ) {}
+    void EventListenerBase::benchmarkPreparing( std::string_view ) {}
     void EventListenerBase::benchmarkStarting( BenchmarkInfo const& ) {}
     void EventListenerBase::benchmarkEnded( BenchmarkStats<> const& ) {}
-    void EventListenerBase::benchmarkFailed( StringRef ) {}
+    void EventListenerBase::benchmarkFailed( std::string_view ) {}
 
     void EventListenerBase::assertionStarting( AssertionInfo const& ) {}
 
@@ -26,8 +26,8 @@ namespace Catch {
         std::vector<ListenerDescription> const& ) {}
     void EventListenerBase::listTests( std::vector<TestCaseHandle> const& ) {}
     void EventListenerBase::listTags( std::vector<TagInfo> const& ) {}
-    void EventListenerBase::noMatchingTestCases( StringRef ) {}
-    void EventListenerBase::reportInvalidTestSpec( StringRef ) {}
+    void EventListenerBase::noMatchingTestCases( std::string_view ) {}
+    void EventListenerBase::reportInvalidTestSpec( std::string_view ) {}
     void EventListenerBase::testRunStarting( TestRunInfo const& ) {}
     void EventListenerBase::testCaseStarting( TestCaseInfo const& ) {}
     void EventListenerBase::testCasePartialStarting(TestCaseInfo const&, uint64_t) {}

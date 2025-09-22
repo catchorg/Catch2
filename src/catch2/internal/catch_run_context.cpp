@@ -366,7 +366,7 @@ namespace Catch {
         }
     }
 
-    bool RunContext::sectionStarted( StringRef sectionName,
+    bool RunContext::sectionStarted( std::string_view sectionName,
                                      SourceLineInfo const& sectionLineInfo,
                                      Counts& assertions ) {
         ITracker& sectionTracker =
@@ -392,7 +392,7 @@ namespace Catch {
         return true;
     }
     IGeneratorTracker*
-    RunContext::acquireGeneratorTracker( StringRef generatorName,
+    RunContext::acquireGeneratorTracker( std::string_view generatorName,
                                          SourceLineInfo const& lineInfo ) {
         auto* tracker = Generators::GeneratorTracker::acquire(
             m_trackerContext,
@@ -403,7 +403,7 @@ namespace Catch {
     }
 
     IGeneratorTracker* RunContext::createGeneratorTracker(
-        StringRef generatorName,
+        std::string_view generatorName,
         SourceLineInfo lineInfo,
         Generators::GeneratorBasePtr&& generator ) {
 
@@ -466,7 +466,7 @@ namespace Catch {
         m_unfinishedSections.push_back(CATCH_MOVE(endInfo));
     }
 
-    void RunContext::benchmarkPreparing( StringRef name ) {
+    void RunContext::benchmarkPreparing( std::string_view name ) {
         auto _ = scopedDeactivate( *m_outputRedirect );
         m_reporter->benchmarkPreparing( name );
     }
@@ -478,7 +478,7 @@ namespace Catch {
         auto _ = scopedDeactivate( *m_outputRedirect );
         m_reporter->benchmarkEnded( stats );
     }
-    void RunContext::benchmarkFailed( StringRef error ) {
+    void RunContext::benchmarkFailed( std::string_view error ) {
         auto _ = scopedDeactivate( *m_outputRedirect );
         m_reporter->benchmarkFailed( error );
     }
@@ -531,7 +531,7 @@ namespace Catch {
         m_shouldReportUnexpected = false;
     }
 
-    void RunContext::handleFatalErrorCondition( StringRef message ) {
+    void RunContext::handleFatalErrorCondition( std::string_view message ) {
         // We lock only when touching the reporters directly, to avoid
         // deadlocks when we call into other functions that also want
         // to lock the mutex before touching reporters.
@@ -791,9 +791,9 @@ namespace Catch {
             m_activeTestCase->getTestCaseInfo().lineInfo;
 
         return AssertionInfo{
-            testCaseJustStarted ? "TEST_CASE"_sr : StringRef(),
+            testCaseJustStarted ? "TEST_CASE" : std::string_view(),
             Detail::g_lastKnownLineInfo,
-            testCaseJustStarted ? StringRef() : "{Unknown expression after the reported line}"_sr,
+            testCaseJustStarted ? std::string_view() : "{Unknown expression after the reported line}",
             ResultDisposition::Normal
         };
     }

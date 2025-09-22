@@ -241,8 +241,6 @@
 :test-result: FAIL StartsWith string matcher
 :test-result: PASS Static arrays are convertible to string
 :test-result: PASS String matchers
-:test-result: PASS StringRef
-:test-result: PASS StringRef at compilation time
 :test-result: PASS Stringifying char arrays with statically known sizes - char
 :test-result: PASS Stringifying char arrays with statically known sizes - signed char
 :test-result: PASS Stringifying char arrays with statically known sizes - unsigned char

@@ -9,7 +9,6 @@
 #define CATCH_REPORTER_SPEC_PARSER_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_config.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 
 #include <map>
 #include <string>
@@ -22,9 +21,9 @@ namespace Catch {
 
     namespace Detail {
         //! Splits the reporter spec into reporter name and kv-pair options
-        std::vector<std::string> splitReporterSpec( StringRef reporterSpec );
+        std::vector<std::string> splitReporterSpec( std::string_view reporterSpec );
 
-        std::optional<ColourMode> stringToColourMode( StringRef colourMode );
+        std::optional<ColourMode> stringToColourMode( std::string_view colourMode );
     }
 
     /**
@@ -78,7 +77,7 @@ namespace Catch {
      *  * empty key/value in an custom kv pair
      *  * ...
      */
-    std::optional<ReporterSpec> parseReporterSpec( StringRef reporterSpec );
+    std::optional<ReporterSpec> parseReporterSpec( std::string_view reporterSpec );
 
 }
 

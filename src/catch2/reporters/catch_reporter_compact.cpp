@@ -14,9 +14,9 @@
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 
 #include <ostream>
+#include <string_view>
 
 namespace Catch {
 namespace {
@@ -25,11 +25,11 @@ namespace {
     static constexpr Colour::Code compactDimColour = Colour::FileName;
 
 #ifdef CATCH_PLATFORM_MAC
-    static constexpr Catch::StringRef compactFailedString = "FAILED"_sr;
-    static constexpr Catch::StringRef compactPassedString = "PASSED"_sr;
+    static constexpr std::string_view compactFailedString = "FAILED";
+    static constexpr std::string_view compactPassedString = "PASSED";
 #else
-    static constexpr Catch::StringRef compactFailedString = "failed"_sr;
-    static constexpr Catch::StringRef compactPassedString = "passed"_sr;
+    static constexpr std::string_view compactFailedString = "failed";
+    static constexpr std::string_view compactPassedString = "passed";
 #endif
 
 // Implementation of CompactReporter formatting
@@ -63,7 +63,7 @@ public:
             break;
         case ResultWas::ExpressionFailed:
             if (result.isOk())
-                printResultType(Colour::ResultSuccess, compactFailedString + " - but was ok"_sr);
+                printResultType(Colour::ResultSuccess, std::string(compactFailedString) + " - but was ok");
             else
                 printResultType(Colour::Error, compactFailedString);
             printOriginalExpression();
@@ -91,12 +91,12 @@ public:
             printRemainingMessages();
             break;
         case ResultWas::Info:
-            printResultType(Colour::None, "info"_sr);
+            printResultType(Colour::None, "info");
             printMessage();
             printRemainingMessages();
             break;
         case ResultWas::Warning:
-            printResultType(Colour::None, "warning"_sr);
+            printResultType(Colour::None, "warning");
             printMessage();
             printRemainingMessages();
             break;
@@ -106,7 +106,7 @@ public:
             printRemainingMessages(Colour::None);
             break;
         case ResultWas::ExplicitSkip:
-            printResultType(Colour::Skip, "skipped"_sr);
+            printResultType(Colour::Skip, "skipped");
             printMessage();
             printRemainingMessages();
             break;
@@ -125,7 +125,7 @@ private:
                << result.getSourceInfo() << ':';
     }
 
-    void printResultType(Colour::Code colour, StringRef passOrFail) const {
+    void printResultType(Colour::Code colour, std::string_view passOrFail) const {
         if (!passOrFail.empty()) {
             stream << colourImpl->guardColour(colour) << ' ' << passOrFail;
             stream << ':';
@@ -174,7 +174,7 @@ private:
         const auto N = static_cast<std::size_t>(itEnd - itMessage);
 
         stream << colourImpl->guardColour( colour ) << " with "
-               << pluralise( N, "message"_sr ) << ':';
+               << pluralise( N, "message" ) << ':';
 
         while (itMessage != itEnd) {
             // If this assertion is a warning ignore any INFO messages
@@ -204,7 +204,7 @@ private:
             return "Reports test results on a single line, suitable for IDEs";
         }
 
-        void CompactReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
+        void CompactReporter::noMatchingTestCases( std::string_view unmatchedSpec ) {
             m_stream << "No test cases matched '" << unmatchedSpec << "'\n";
         }
 

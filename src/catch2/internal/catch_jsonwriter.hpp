@@ -9,7 +9,6 @@
 #define CATCH_JSONWRITER_HPP_INCLUDED
 
 #include <catch2/internal/catch_reusable_string_stream.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 
 #include <cstdint>
 #include <sstream>
@@ -37,11 +36,11 @@ namespace Catch {
         void write( T const& value ) && {
             writeImpl( value, !std::is_arithmetic_v<T> );
         }
-        void write( StringRef value ) &&;
+        void write( std::string_view value ) &&;
         void write( bool value ) &&;
 
     private:
-        void writeImpl( StringRef value, bool quote );
+        void writeImpl( std::string_view value, bool quote );
 
         // Without this SFINAE, this overload is a better match
         // for `std::string`, `char const*`, `char const[N]` args.
@@ -49,7 +48,7 @@ namespace Catch {
         // and multiple iteration over the strings
         template <typename T,
                   typename = typename std::enable_if_t<
-                      !std::is_convertible_v<T, StringRef>>>
+                      !std::is_convertible_v<T, std::string_view>>>
         void writeImpl( T const& value, bool quote_value ) {
             m_sstream << value;
             writeImpl( m_sstream.str(), quote_value );
@@ -70,7 +69,7 @@ namespace Catch {
 
         ~JsonObjectWriter();
 
-        JsonValueWriter write( StringRef key );
+        JsonValueWriter write( std::string_view key );
 
     private:
         std::ostream& m_os;

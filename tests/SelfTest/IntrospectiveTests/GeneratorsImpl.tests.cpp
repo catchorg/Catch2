@@ -446,11 +446,11 @@ TEST_CASE( "Generators can stringify their elements",
     auto generator =
         Catch::Generators::FixedValuesGenerator<int>( { 1, 2, 3 } );
 
-    REQUIRE( generator.currentElementAsString() == "1"_catch_sr );
+    REQUIRE( generator.currentElementAsString() == "1" );
     REQUIRE( generator.countedNext() );
-    REQUIRE( generator.currentElementAsString() == "2"_catch_sr );
+    REQUIRE( generator.currentElementAsString() == "2" );
     REQUIRE( generator.countedNext() );
-    REQUIRE( generator.currentElementAsString() == "3"_catch_sr );
+    REQUIRE( generator.currentElementAsString() == "3" );
 }
 
 namespace {
@@ -481,9 +481,9 @@ namespace {
 TEST_CASE( "Generators can override element stringification",
            "[generators][approvals]" ) {
     CustomStringifyGenerator generator;
-    REQUIRE( generator.currentElementAsString() == "first"_catch_sr );
+    REQUIRE( generator.currentElementAsString() == "first" );
     REQUIRE( generator.countedNext() );
-    REQUIRE( generator.currentElementAsString() == "second"_catch_sr );
+    REQUIRE( generator.currentElementAsString() == "second" );
 }
 
 namespace {
@@ -519,11 +519,11 @@ namespace {
 TEST_CASE( "Generator element stringification is cached",
            "[generators][approvals]" ) {
     StringifyCountingGenerator generator;
-    REQUIRE( generator.currentElementAsString() == "first"_catch_sr );
-    REQUIRE( generator.currentElementAsString() == "first"_catch_sr );
-    REQUIRE( generator.currentElementAsString() == "first"_catch_sr );
-    REQUIRE( generator.currentElementAsString() == "first"_catch_sr );
-    REQUIRE( generator.currentElementAsString() == "first"_catch_sr );
+    REQUIRE( generator.currentElementAsString() == "first" );
+    REQUIRE( generator.currentElementAsString() == "first" );
+    REQUIRE( generator.currentElementAsString() == "first" );
+    REQUIRE( generator.currentElementAsString() == "first" );
+    REQUIRE( generator.currentElementAsString() == "first" );
 
     REQUIRE( generator.stringificationCalls() == 1 );
 }

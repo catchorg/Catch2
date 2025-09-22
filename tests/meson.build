@@ -25,7 +25,6 @@ self_test_sources = files(
   'SelfTest/IntrospectiveTests/Reporters.tests.cpp',
   'SelfTest/IntrospectiveTests/Sharding.tests.cpp',
   'SelfTest/IntrospectiveTests/Stream.tests.cpp',
-  'SelfTest/IntrospectiveTests/String.tests.cpp',
   'SelfTest/IntrospectiveTests/StringManip.tests.cpp',
   'SelfTest/IntrospectiveTests/Tag.tests.cpp',
   'SelfTest/IntrospectiveTests/TestCaseInfoHasher.tests.cpp',

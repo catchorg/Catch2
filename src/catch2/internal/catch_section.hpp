@@ -22,7 +22,7 @@ namespace Catch {
     public:
         Section( SectionInfo&& info );
         Section( SourceLineInfo const& _lineInfo,
-                 StringRef _name,
+                 std::string_view _name,
                  const char* const = nullptr );
         ~Section();
 
@@ -71,7 +71,7 @@ namespace Catch {
         // symbol for static analysis.
         // The arguments are used as a dummy for checking warnings in the passed
         // expressions.
-        int GetNewSectionHint( StringRef, const char* const = nullptr );
+        int GetNewSectionHint( std::string_view, const char* const = nullptr );
     } // namespace Detail
 } // namespace Catch
 

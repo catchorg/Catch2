@@ -311,35 +311,6 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="request an unknown %-starting stream fails" duration="{duration}"/>
     <testCase name="stdout and stderr streams have %-starting name" duration="{duration}"/>
   </file>
-  <file path="tests/<exe-name>/IntrospectiveTests/String.tests.cpp">
-    <testCase name="StringRef" duration="{duration}"/>
-    <testCase name="StringRef/Empty string" duration="{duration}"/>
-    <testCase name="StringRef/From string literal" duration="{duration}"/>
-    <testCase name="StringRef/From sub-string" duration="{duration}"/>
-    <testCase name="StringRef/Copy construction is shallow" duration="{duration}"/>
-    <testCase name="StringRef/Copy assignment is shallow" duration="{duration}"/>
-    <testCase name="StringRef/Substrings" duration="{duration}"/>
-    <testCase name="StringRef/Substrings/zero-based substring" duration="{duration}"/>
-    <testCase name="StringRef/Substrings/non-zero-based substring" duration="{duration}"/>
-    <testCase name="StringRef/Substrings/Pointer values of full refs should match" duration="{duration}"/>
-    <testCase name="StringRef/Substrings/Pointer values of substring refs should also match" duration="{duration}"/>
-    <testCase name="StringRef/Substrings/Past the end substring" duration="{duration}"/>
-    <testCase name="StringRef/Substrings/Substring off the end are trimmed" duration="{duration}"/>
-    <testCase name="StringRef/Substrings/substring start after the end is empty" duration="{duration}"/>
-    <testCase name="StringRef/Comparisons are deep" duration="{duration}"/>
-    <testCase name="StringRef/from std::string" duration="{duration}"/>
-    <testCase name="StringRef/from std::string/implicitly constructed" duration="{duration}"/>
-    <testCase name="StringRef/from std::string/explicitly constructed" duration="{duration}"/>
-    <testCase name="StringRef/from std::string/assigned" duration="{duration}"/>
-    <testCase name="StringRef/to std::string" duration="{duration}"/>
-    <testCase name="StringRef/to std::string/explicitly constructed" duration="{duration}"/>
-    <testCase name="StringRef/to std::string/assigned" duration="{duration}"/>
-    <testCase name="StringRef/std::string += StringRef" duration="{duration}"/>
-    <testCase name="StringRef/StringRef + StringRef" duration="{duration}"/>
-    <testCase name="StringRef at compilation time" duration="{duration}"/>
-    <testCase name="StringRef at compilation time/Simple constructors" duration="{duration}"/>
-    <testCase name="StringRef at compilation time/UDL construction" duration="{duration}"/>
-  </file>
   <file path="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp">
     <testCase name="Trim strings" duration="{duration}"/>
     <testCase name="replaceInPlace" duration="{duration}"/>

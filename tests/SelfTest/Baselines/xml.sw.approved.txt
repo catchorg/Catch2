@@ -4619,7 +4619,7 @@ C
         enumInfo->lookup(0) == "Value1"
       </Original>
       <Expanded>
-        Value1 == "Value1"
+        "Value1" == "Value1"
       </Expanded>
     </Expression>
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
@@ -4627,7 +4627,7 @@ C
         enumInfo->lookup(1) == "Value2"
       </Original>
       <Expanded>
-        Value2 == "Value2"
+        "Value2" == "Value2"
       </Expanded>
     </Expression>
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
@@ -4635,7 +4635,7 @@ C
         enumInfo->lookup(3) == "{** unexpected enum value **}"
       </Original>
       <Expanded>
-        {** unexpected enum value **}
+        "{** unexpected enum value **}"
 ==
 "{** unexpected enum value **}"
       </Expanded>
@@ -13429,412 +13429,6 @@ Message from section two
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <TestCase name="StringRef" tags="[StringRef][Strings]" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-    <Section name="Empty string" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Original>
-          empty.empty()
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Original>
-          empty.size() == 0
-        </Original>
-        <Expanded>
-          0 == 0
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Original>
-          std::strcmp( empty.data(), "" ) == 0
-        </Original>
-        <Expanded>
-          0 == 0
-        </Expanded>
-      </Expression>
-      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="From string literal" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Original>
-          s.empty() == false
-        </Original>
-        <Expanded>
-          false == false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Original>
-          s.size() == 5
-        </Original>
-        <Expanded>
-          5 == 5
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Original>
-          std::strcmp( rawChars, "hello" ) == 0
-        </Original>
-        <Expanded>
-          0 == 0
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Original>
-          s.data() == rawChars
-        </Original>
-        <Expanded>
-          "hello" == "hello"
-        </Expanded>
-      </Expression>
-      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="From sub-string" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Original>
-          original == "original"
-        </Original>
-        <Expanded>
-          original == "original"
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Original>
-          original.data()
-        </Original>
-        <Expanded>
-          original.data()
-        </Expanded>
-      </Expression>
-      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Copy construction is shallow" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Original>
-          original.begin() == copy.begin()
-        </Original>
-        <Expanded>
-          "original string" == "original string"
-        </Expanded>
-      </Expression>
-      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Copy assignment is shallow" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Original>
-          original.begin() == copy.begin()
-        </Original>
-        <Expanded>
-          "original string" == "original string"
-        </Expanded>
-      </Expression>
-      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Substrings" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Section name="zero-based substring" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            ss.empty() == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            ss.size() == 5
-          </Original>
-          <Expanded>
-            5 == 5
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            std::strncmp( ss.data(), "hello", 5 ) == 0
-          </Original>
-          <Expanded>
-            0 == 0
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            ss == "hello"
-          </Original>
-          <Expanded>
-            hello == "hello"
-          </Expanded>
-        </Expression>
-        <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Substrings" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Section name="non-zero-based substring" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            ss.size() == 6
-          </Original>
-          <Expanded>
-            6 == 6
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            std::strcmp( ss.data(), "world!" ) == 0
-          </Original>
-          <Expanded>
-            0 == 0
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Substrings" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Section name="Pointer values of full refs should match" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            s.data() == s2.data()
-          </Original>
-          <Expanded>
-            "hello world!" == "hello world!"
-          </Expanded>
-        </Expression>
-        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Substrings" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Section name="Pointer values of substring refs should also match" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            s.data() == ss.data()
-          </Original>
-          <Expanded>
-            "hello world!" == "hello world!"
-          </Expanded>
-        </Expression>
-        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Substrings" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Section name="Past the end substring" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            s.substr(s.size() + 1, 123).empty()
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Substrings" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Section name="Substring off the end are trimmed" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            std::strcmp(ss.data(), "world!") == 0
-          </Original>
-          <Expanded>
-            0 == 0
-          </Expanded>
-        </Expression>
-        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Substrings" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Section name="substring start after the end is empty" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            s.substr(1'000'000, 1).empty()
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Comparisons are deep" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Original>
-          reinterpret_cast&lt;char*>(buffer1) != reinterpret_cast&lt;char*>(buffer2)
-        </Original>
-        <Expanded>
-          "Hello" != "Hello"
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Original>
-          left == right
-        </Original>
-        <Expanded>
-          Hello == Hello
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Original>
-          left != left.substr(0, 3)
-        </Original>
-        <Expanded>
-          Hello != Hel
-        </Expanded>
-      </Expression>
-      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="from std::string" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Section name="implicitly constructed" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            sr == "a standard string"
-          </Original>
-          <Expanded>
-            a standard string == "a standard string"
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            sr.size() == stdStr.size()
-          </Original>
-          <Expanded>
-            17 == 17
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="from std::string" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Section name="explicitly constructed" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            sr == "a standard string"
-          </Original>
-          <Expanded>
-            a standard string == "a standard string"
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            sr.size() == stdStr.size()
-          </Original>
-          <Expanded>
-            17 == 17
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="from std::string" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Section name="assigned" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            sr == "a standard string"
-          </Original>
-          <Expanded>
-            a standard string == "a standard string"
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            sr.size() == stdStr.size()
-          </Original>
-          <Expanded>
-            17 == 17
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="to std::string" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Section name="explicitly constructed" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            stdStr == "a stringref"
-          </Original>
-          <Expanded>
-            "a stringref" == "a stringref"
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            stdStr.size() == sr.size()
-          </Original>
-          <Expanded>
-            11 == 11
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="to std::string" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Section name="assigned" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            stdStr == "a stringref"
-          </Original>
-          <Expanded>
-            "a stringref" == "a stringref"
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            stdStr.size() == sr.size()
-          </Original>
-          <Expanded>
-            11 == 11
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="std::string += StringRef" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Original>
-          lhs == "some string += the stringref contents"
-        </Original>
-        <Expanded>
-          "some string += the stringref contents"
-==
-"some string += the stringref contents"
-        </Expanded>
-      </Expression>
-      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="StringRef + StringRef" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Original>
-          together == "abrakadabra"
-        </Original>
-        <Expanded>
-          "abrakadabra" == "abrakadabra"
-        </Expanded>
-      </Expression>
-      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <OverallResult success="true" skips="0"/>
-  </TestCase>
-  <TestCase name="StringRef at compilation time" tags="[constexpr][StringRef][Strings]" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-    <Section name="Simple constructors" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <OverallResults successes="12" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="UDL construction" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <OverallResult success="true" skips="0"/>
-  </TestCase>
   <TestCase name="Stringifying char arrays with statically known sizes - char" tags="[toString]" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
       <Original>
@@ -14069,7 +13663,7 @@ Message from section two
     </Expression>
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
       <Original>
-        testCase.tags, VectorContains( Tag( "tag with spaces" ) ) &amp;&amp; VectorContains( Tag( "I said \"good day\" sir!"_catch_sr ) )
+        testCase.tags, VectorContains( Tag( "tag with spaces" ) ) &amp;&amp; VectorContains( Tag( "I said \"good day\" sir!" ) )
       </Original>
       <Expanded>
         { {?}, {?} } ( Contains: {?} and Contains: {?} )
@@ -16270,42 +15864,42 @@ Message from section two
     </Expression>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
       <Original>
-        trim(StringRef(no_whitespace)) == StringRef(no_whitespace)
+        trim(std::string_view(no_whitespace)) == std::string_view(no_whitespace)
       </Original>
       <Expanded>
-        There is no extra whitespace here
+        "There is no extra whitespace here"
 ==
-There is no extra whitespace here
+"There is no extra whitespace here"
       </Expanded>
     </Expression>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
       <Original>
-        trim(StringRef(leading_whitespace)) == StringRef(no_whitespace)
+        trim(std::string_view(leading_whitespace)) == std::string_view(no_whitespace)
       </Original>
       <Expanded>
-        There is no extra whitespace here
+        "There is no extra whitespace here"
 ==
-There is no extra whitespace here
+"There is no extra whitespace here"
       </Expanded>
     </Expression>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
       <Original>
-        trim(StringRef(trailing_whitespace)) == StringRef(no_whitespace)
+        trim(std::string_view(trailing_whitespace)) == std::string_view(no_whitespace)
       </Original>
       <Expanded>
-        There is no extra whitespace here
+        "There is no extra whitespace here"
 ==
-There is no extra whitespace here
+"There is no extra whitespace here"
       </Expanded>
     </Expression>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
       <Original>
-        trim(StringRef(whitespace_at_both_ends)) == StringRef(no_whitespace)
+        trim(std::string_view(whitespace_at_both_ends)) == std::string_view(no_whitespace)
       </Original>
       <Expanded>
-        There is no extra whitespace here
+        "There is no extra whitespace here"
 ==
-There is no extra whitespace here
+"There is no extra whitespace here"
       </Expanded>
     </Expression>
     <OverallResult success="true" skips="0"/>
@@ -20331,7 +19925,7 @@ Approx( -1.95996398454005449 )
     <Section name="No enums" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
         <Original>
-          parseEnums( "" ), Equals( std::vector&lt;Catch::StringRef>{} )
+          parseEnums( "" ), Equals( std::vector&lt;std::string_view>{} )
         </Original>
         <Expanded>
           {  } Equals: {  }
@@ -20342,26 +19936,26 @@ Approx( -1.95996398454005449 )
     <Section name="One enum value" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
         <Original>
-          parseEnums( "ClassName::EnumName::Value1" ), Equals(std::vector&lt;Catch::StringRef>{"Value1"} )
+          parseEnums( "ClassName::EnumName::Value1" ), Equals(std::vector&lt;std::string_view>{"Value1"} )
         </Original>
         <Expanded>
-          { Value1 } Equals: { Value1 }
+          { "Value1" } Equals: { "Value1" }
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
         <Original>
-          parseEnums( "Value1" ), Equals( std::vector&lt;Catch::StringRef>{"Value1"} )
+          parseEnums( "Value1" ), Equals( std::vector&lt;std::string_view>{"Value1"} )
         </Original>
         <Expanded>
-          { Value1 } Equals: { Value1 }
+          { "Value1" } Equals: { "Value1" }
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
         <Original>
-          parseEnums( "EnumName::Value1" ), Equals(std::vector&lt;Catch::StringRef>{"Value1"} )
+          parseEnums( "EnumName::Value1" ), Equals(std::vector&lt;std::string_view>{"Value1"} )
         </Original>
         <Expanded>
-          { Value1 } Equals: { Value1 }
+          { "Value1" } Equals: { "Value1" }
         </Expanded>
       </Expression>
       <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
@@ -20369,26 +19963,26 @@ Approx( -1.95996398454005449 )
     <Section name="Multiple enum values" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
         <Original>
-          parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2" ), Equals( std::vector&lt;Catch::StringRef>{"Value1", "Value2"} )
+          parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2" ), Equals( std::vector&lt;std::string_view>{"Value1", "Value2"} )
         </Original>
         <Expanded>
-          { Value1, Value2 } Equals: { Value1, Value2 }
+          { "Value1", "Value2" } Equals: { "Value1", "Value2" }
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
         <Original>
-          parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2, ClassName::EnumName::Value3" ), Equals( std::vector&lt;Catch::StringRef>{"Value1", "Value2", "Value3"} )
+          parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2, ClassName::EnumName::Value3" ), Equals( std::vector&lt;std::string_view>{"Value1", "Value2", "Value3"} )
         </Original>
         <Expanded>
-          { Value1, Value2, Value3 } Equals: { Value1, Value2, Value3 }
+          { "Value1", "Value2", "Value3" } Equals: { "Value1", "Value2", "Value3" }
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
         <Original>
-          parseEnums( "ClassName::EnumName::Value1,ClassName::EnumName::Value2 , ClassName::EnumName::Value3" ), Equals( std::vector&lt;Catch::StringRef>{"Value1", "Value2", "Value3"} )
+          parseEnums( "ClassName::EnumName::Value1,ClassName::EnumName::Value2 , ClassName::EnumName::Value3" ), Equals( std::vector&lt;std::string_view>{"Value1", "Value2", "Value3"} )
         </Original>
         <Expanded>
-          { Value1, Value2, Value3 } Equals: { Value1, Value2, Value3 }
+          { "Value1", "Value2", "Value3" } Equals: { "Value1", "Value2", "Value3" }
         </Expanded>
       </Expression>
       <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
@@ -21017,7 +20611,7 @@ Approx( -1.95996398454005449 )
   <TestCase name="shortened hide tags are split apart" tags="[tags]" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
       <Original>
-        testcase.tags, VectorContains( Tag( "magic-tag" ) ) &amp;&amp; VectorContains( Tag( "."_catch_sr ) )
+        testcase.tags, VectorContains( Tag( "magic-tag" ) ) &amp;&amp; VectorContains( Tag( "." ) )
       </Original>
       <Expanded>
         { {?}, {?} } ( Contains: {?} and Contains: {?} )
@@ -21034,7 +20628,7 @@ Approx( -1.95996398454005449 )
   <TestCase name="splitString" tags="[string-manip]" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
     <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
       <Original>
-        splitStringRef("", ','), Equals(std::vector&lt;StringRef>())
+        splitStringRef("", ','), Equals(std::vector&lt;std::string_view>())
       </Original>
       <Expanded>
         {  } Equals: {  }
@@ -21042,18 +20636,18 @@ Approx( -1.95996398454005449 )
     </Expression>
     <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
       <Original>
-        splitStringRef("abc", ','), Equals(std::vector&lt;StringRef>{"abc"})
+        splitStringRef("abc", ','), Equals(std::vector&lt;std::string_view>{"abc"})
       </Original>
       <Expanded>
-        { abc } Equals: { abc }
+        { "abc" } Equals: { "abc" }
       </Expanded>
     </Expression>
     <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
       <Original>
-        splitStringRef("abc,def", ','), Equals(std::vector&lt;StringRef>{"abc", "def"})
+        splitStringRef("abc,def", ','), Equals(std::vector&lt;std::string_view>{"abc", "def"})
       </Original>
       <Expanded>
-        { abc, def } Equals: { abc, def }
+        { "abc", "def" } Equals: { "abc", "def" }
       </Expanded>
     </Expression>
     <OverallResult success="true" skips="0"/>
@@ -21120,7 +20714,7 @@ Approx( -1.95996398454005449 )
     </Expression>
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
       <Original>
-        startsWith("def"_catch_sr, 'd')
+        startsWith("def", 'd')
       </Original>
       <Expanded>
         true
@@ -21493,10 +21087,10 @@ Approx( -1.95996398454005449 )
     </Expression>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
       <Original>
-        testcase.tags[0].original == "magic.tag"_catch_sr
+        testcase.tags[0].original == "magic.tag"
       </Original>
       <Expanded>
-        magic.tag == magic.tag
+        "magic.tag" == "magic.tag"
       </Expanded>
     </Expression>
     <OverallResult success="true" skips="0"/>
@@ -22324,6 +21918,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2105" failures="157" expectedFailures="41" skips="12"/>
-  <OverallResultsCases successes="317" failures="95" expectedFailures="17" skips="6"/>
+  <OverallResults successes="2052" failures="157" expectedFailures="41" skips="12"/>
+  <OverallResultsCases successes="315" failures="95" expectedFailures="17" skips="6"/>
 </Catch2TestRun>

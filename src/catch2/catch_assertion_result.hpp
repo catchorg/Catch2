@@ -11,7 +11,6 @@
 #include <catch2/catch_assertion_info.hpp>
 #include <catch2/internal/catch_result_type.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_lazy_expr.hpp>
 
 #include <string>
@@ -46,9 +45,9 @@ namespace Catch {
         std::string getExpressionInMacro() const;
         bool hasExpandedExpression() const;
         std::string getExpandedExpression() const;
-        StringRef getMessage() const;
+        std::string_view getMessage() const;
         SourceLineInfo getSourceInfo() const;
-        StringRef getTestMacroName() const;
+        std::string_view getTestMacroName() const;
 
     //protected:
         AssertionInfo m_info;

@@ -13,7 +13,7 @@ namespace Matchers {
 
     namespace Detail {
 
-        std::string describe_multi_matcher(StringRef combine, std::string const* descriptions_begin, std::string const* descriptions_end) {
+        std::string describe_multi_matcher(std::string_view combine, std::string const* descriptions_begin, std::string const* descriptions_end) {
             std::string description;
             std::size_t combined_size = 4;
             for ( auto desc = descriptions_begin; desc != descriptions_end; ++desc ) {

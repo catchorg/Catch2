@@ -23,18 +23,18 @@ namespace Catch {
         ~ConsoleReporter() override;
         static std::string getDescription();
 
-        void noMatchingTestCases( StringRef unmatchedSpec ) override;
-        void reportInvalidTestSpec( StringRef arg ) override;
+        void noMatchingTestCases( std::string_view unmatchedSpec ) override;
+        void reportInvalidTestSpec( std::string_view arg ) override;
 
         void assertionEnded(AssertionStats const& _assertionStats) override;
 
         void sectionStarting(SectionInfo const& _sectionInfo) override;
         void sectionEnded(SectionStats const& _sectionStats) override;
 
-        void benchmarkPreparing( StringRef name ) override;
+        void benchmarkPreparing( std::string_view name ) override;
         void benchmarkStarting(BenchmarkInfo const& info) override;
         void benchmarkEnded(BenchmarkStats<> const& stats) override;
-        void benchmarkFailed( StringRef error ) override;
+        void benchmarkFailed( std::string_view error ) override;
 
         void testCaseEnded(TestCaseStats const& _testCaseStats) override;
         void testRunEnded(TestRunStats const& _testRunStats) override;

@@ -46,22 +46,20 @@ TEST_CASE( "Tag alias can be registered against tag patterns" ) {
 static constexpr Catch::SourceLineInfo dummySourceLineInfo = CATCH_INTERNAL_LINEINFO;
 
 TEST_CASE("shortened hide tags are split apart", "[tags]") {
-    using Catch::StringRef;
     using Catch::Tag;
     using Catch::Matchers::VectorContains;
 
     Catch::TestCaseInfo testcase("", {"fake test name", "[.magic-tag]"}, dummySourceLineInfo);
     REQUIRE_THAT( testcase.tags, VectorContains( Tag( "magic-tag" ) )
-                              && VectorContains( Tag( "."_catch_sr ) ) );
+                              && VectorContains( Tag( "." ) ) );
 }
 
 TEST_CASE("tags with dots in later positions are not parsed as hidden", "[tags]") {
-    using Catch::StringRef;
     using Catch::Matchers::VectorContains;
     Catch::TestCaseInfo testcase("", { "fake test name", "[magic.tag]" }, dummySourceLineInfo);
 
     REQUIRE(testcase.tags.size() == 1);
-    REQUIRE(testcase.tags[0].original == "magic.tag"_catch_sr);
+    REQUIRE(testcase.tags[0].original == "magic.tag");
 }
 
 TEST_CASE( "empty tags are not allowed", "[tags]" ) {
@@ -83,7 +81,7 @@ TEST_CASE( "Tags with spaces and non-alphanumerical characters are accepted",
     REQUIRE( testCase.tags.size() == 2 );
     REQUIRE_THAT( testCase.tags,
                   VectorContains( Tag( "tag with spaces" ) ) &&
-                  VectorContains( Tag( "I said \"good day\" sir!"_catch_sr ) ) );
+                  VectorContains( Tag( "I said \"good day\" sir!" ) ) );
 }
 
 TEST_CASE( "Test case with identical tags keeps just one", "[tags]" ) {

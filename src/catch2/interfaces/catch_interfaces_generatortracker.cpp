@@ -21,7 +21,7 @@ namespace Catch {
             return ret;
         }
 
-        StringRef GeneratorUntypedBase::currentElementAsString() const {
+        std::string_view GeneratorUntypedBase::currentElementAsString() const {
             if ( m_stringReprCache.empty() ) {
                 m_stringReprCache = stringifyImpl();
             }

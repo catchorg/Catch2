@@ -176,7 +176,7 @@ namespace Catch {
     template<typename... Ts>\
     void reg_test(TypeList<Ts...>, Catch::NameAndTags nameAndTags)\
     {\
-        Catch::AutoReg( Catch::makeTestInvoker(&TestFunc<Ts...>), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), nameAndTags);\
+        Catch::AutoReg( Catch::makeTestInvoker(&TestFunc<Ts...>), CATCH_INTERNAL_LINEINFO, std::string_view(), nameAndTags);\
     }
 
 #define INTERNAL_CATCH_NTTP_REGISTER0(TestFunc, signature, ...)
@@ -184,19 +184,19 @@ namespace Catch {
     template<INTERNAL_CATCH_REMOVE_PARENS(signature)>\
     void reg_test(Nttp<__VA_ARGS__>, Catch::NameAndTags nameAndTags)\
     {\
-        Catch::AutoReg( Catch::makeTestInvoker(&TestFunc<__VA_ARGS__>), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), nameAndTags);\
+        Catch::AutoReg( Catch::makeTestInvoker(&TestFunc<__VA_ARGS__>), CATCH_INTERNAL_LINEINFO, std::string_view(), nameAndTags);\
     }
 
 #define INTERNAL_CATCH_NTTP_REGISTER_METHOD0(TestName, signature, ...)\
     template<typename Type>\
-    void reg_test(TypeList<Type>, Catch::StringRef className, Catch::NameAndTags nameAndTags)\
+    void reg_test(TypeList<Type>, std::string_view className, Catch::NameAndTags nameAndTags)\
     {\
         Catch::AutoReg( Catch::makeTestInvoker(&TestName<Type>::test), CATCH_INTERNAL_LINEINFO, className, nameAndTags);\
     }
 
 #define INTERNAL_CATCH_NTTP_REGISTER_METHOD(TestName, signature, ...)\
     template<INTERNAL_CATCH_REMOVE_PARENS(signature)>\
-    void reg_test(Nttp<__VA_ARGS__>, Catch::StringRef className, Catch::NameAndTags nameAndTags)\
+    void reg_test(Nttp<__VA_ARGS__>, std::string_view className, Catch::NameAndTags nameAndTags)\
     {\
         Catch::AutoReg( Catch::makeTestInvoker(&TestName<__VA_ARGS__>::test), CATCH_INTERNAL_LINEINFO, className, nameAndTags);\
     }

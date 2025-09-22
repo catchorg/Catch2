@@ -14,7 +14,7 @@
 using namespace Catch;
 
 namespace {
-Catch::TestCaseTracking::NameAndLocationRef makeNAL( StringRef name ) {
+Catch::TestCaseTracking::NameAndLocationRef makeNAL( std::string_view name ) {
     return Catch::TestCaseTracking::NameAndLocationRef( name, Catch::SourceLineInfo("",0) );
 }
 }

@@ -40,7 +40,7 @@ namespace Catch {
 
         void writeRun( TestRunNode const& runNode );
 
-        void writeTestFile(StringRef filename, std::vector<TestCaseNode const*> const& testCaseNodes);
+        void writeTestFile(std::string_view filename, std::vector<TestCaseNode const*> const& testCaseNodes);
 
         void writeTestCase(TestCaseNode const& testCaseNode);
 

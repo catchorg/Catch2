@@ -132,28 +132,28 @@ namespace Catch {
         XmlWriter::ScopedElement e = xml.scopedElement( "testsuite" );
 
         TestRunStats const& stats = testRunNode.value;
-        xml.writeAttribute( "name"_sr, stats.runInfo.name );
-        xml.writeAttribute( "errors"_sr, unexpectedExceptions );
-        xml.writeAttribute( "failures"_sr, stats.totals.assertions.failed-unexpectedExceptions );
-        xml.writeAttribute( "skipped"_sr, stats.totals.assertions.skipped );
-        xml.writeAttribute( "tests"_sr, stats.totals.assertions.total() );
-        xml.writeAttribute( "hostname"_sr, "tbd"_sr ); // !TBD
+        xml.writeAttribute( "name", stats.runInfo.name );
+        xml.writeAttribute( "errors", unexpectedExceptions );
+        xml.writeAttribute( "failures", stats.totals.assertions.failed-unexpectedExceptions );
+        xml.writeAttribute( "skipped", stats.totals.assertions.skipped );
+        xml.writeAttribute( "tests", stats.totals.assertions.total() );
+        xml.writeAttribute( "hostname", "tbd" ); // !TBD
         if( m_config->showDurations() == ShowDurations::Never )
-            xml.writeAttribute( "time"_sr, ""_sr );
+            xml.writeAttribute( "time", "" );
         else
-            xml.writeAttribute( "time"_sr, formatDuration( suiteTime ) );
-        xml.writeAttribute( "timestamp"_sr, getCurrentTimestamp() );
+            xml.writeAttribute( "time", formatDuration( suiteTime ) );
+        xml.writeAttribute( "timestamp", getCurrentTimestamp() );
 
         // Write properties
         {
             auto properties = xml.scopedElement("properties");
             xml.scopedElement("property")
-                .writeAttribute("name"_sr, "random-seed"_sr)
-                .writeAttribute("value"_sr, m_config->rngSeed());
+                .writeAttribute("name", "random-seed")
+                .writeAttribute("value", m_config->rngSeed());
             if (m_config->testSpec().hasFilters()) {
                 xml.scopedElement("property")
-                    .writeAttribute("name"_sr, "filters"_sr)
-                    .writeAttribute("value"_sr, m_config->testSpec());
+                    .writeAttribute("name", "filters")
+                    .writeAttribute("value", m_config->testSpec());
             }
         }
 
@@ -204,19 +204,19 @@ namespace Catch {
            || !sectionNode.stdErr.empty() ) {
             XmlWriter::ScopedElement e = xml.scopedElement( "testcase" );
             if( className.empty() ) {
-                xml.writeAttribute( "classname"_sr, name );
-                xml.writeAttribute( "name"_sr, "root"_sr );
+                xml.writeAttribute( "classname", name );
+                xml.writeAttribute( "name", "root" );
             }
             else {
-                xml.writeAttribute( "classname"_sr, className );
-                xml.writeAttribute( "name"_sr, name );
+                xml.writeAttribute( "classname", className );
+                xml.writeAttribute( "name", name );
             }
-            xml.writeAttribute( "time"_sr, formatDuration( sectionNode.stats.durationInSeconds ) );
+            xml.writeAttribute( "time", formatDuration( sectionNode.stats.durationInSeconds ) );
             // This is not ideal, but it should be enough to mimic gtest's
             // junit output.
             // Ideally the JUnit reporter would also handle `skipTest`
             // events and write those out appropriately.
-            xml.writeAttribute( "status"_sr, "run"_sr );
+            xml.writeAttribute( "status", "run" );
 
             if (sectionNode.stats.assertions.failedButOk) {
                 xml.scopedElement("skipped")
@@ -277,8 +277,8 @@ namespace Catch {
 
             XmlWriter::ScopedElement e = xml.scopedElement( elementName );
 
-            xml.writeAttribute( "message"_sr, result.getExpression() );
-            xml.writeAttribute( "type"_sr, result.getTestMacroName() );
+            xml.writeAttribute( "message", result.getExpression() );
+            xml.writeAttribute( "type", result.getTestMacroName() );
 
             ReusableStringStream rss;
             if ( result.getResultType() == ResultWas::ExplicitSkip ) {

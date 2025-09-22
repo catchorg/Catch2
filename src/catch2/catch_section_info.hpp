@@ -10,7 +10,6 @@
 
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/catch_totals.hpp>
 
 #include <string>

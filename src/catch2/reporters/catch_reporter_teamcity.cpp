@@ -32,7 +32,7 @@ namespace Catch {
                   .initialIndent(indent) << '\n';
         }
 
-        std::string escape(StringRef str) {
+        std::string escape(std::string_view str) {
             std::string escaped = static_cast<std::string>(str);
             replaceInPlace(escaped, "|", "||");
             replaceInPlace(escaped, "'", "|'");

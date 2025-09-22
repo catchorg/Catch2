@@ -21,7 +21,7 @@ namespace Catch {
     ITestInvoker::~ITestInvoker() = default;
 
     namespace {
-        static StringRef extractClassName( StringRef classOrMethodName ) {
+        static std::string_view extractClassName( std::string_view classOrMethodName ) {
             if ( !startsWith( classOrMethodName, '&' ) ) {
                 return classOrMethodName;
             }
@@ -66,7 +66,7 @@ namespace Catch {
         return Detail::make_unique<TestInvokerAsFunction>( testAsFunction );
     }
 
-    AutoReg::AutoReg( Detail::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, StringRef classOrMethod, NameAndTags const& nameAndTags ) noexcept {
+    AutoReg::AutoReg( Detail::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, std::string_view classOrMethod, NameAndTags const& nameAndTags ) noexcept {
         CATCH_TRY {
             getMutableRegistryHub()
                     .registerTest(

@@ -109,10 +109,10 @@ and then `assertionEnded` event is emitted.
 > [Introduced](https://github.com/catchorg/Catch2/issues/1616) in Catch2 2.9.0.
 
 ```cpp
-void benchmarkPreparing( StringRef name ) override;
+void benchmarkPreparing( std::string_view name ) override;
 void benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) override;
 void benchmarkEnded( BenchmarkStats<> const& benchmarkStats ) override;
-void benchmarkFailed( StringRef error ) override;
+void benchmarkFailed( std::string_view error ) override;
 ```
 
 Due to the benchmark lifecycle being bit more complicated, the benchmarking
@@ -153,9 +153,9 @@ void listTags( std::vector<TagInfo> const& tagInfos );
 ## Miscellaneous events
 
 ```cpp
-void reportInvalidTestSpec( StringRef unmatchedSpec );
-void fatalErrorEncountered( StringRef error );
-void noMatchingTestCases( StringRef unmatchedSpec );
+void reportInvalidTestSpec( std::string_view unmatchedSpec );
+void fatalErrorEncountered( std::string_view error );
+void noMatchingTestCases( std::string_view unmatchedSpec );
 ```
 
 These are one-off events that do not neatly fit into other categories.

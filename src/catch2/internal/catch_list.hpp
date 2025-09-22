@@ -8,10 +8,9 @@
 #ifndef CATCH_LIST_HPP_INCLUDED
 #define CATCH_LIST_HPP_INCLUDED
 
-#include <catch2/internal/catch_stringref.hpp>
-
 #include <set>
 #include <string>
+#include <string_view>
 
 
 namespace Catch {
@@ -24,15 +23,15 @@ namespace Catch {
         std::string name, description;
     };
     struct ListenerDescription {
-        StringRef name;
+        std::string_view name;
         std::string description;
     };
 
     struct TagInfo {
-        void add(StringRef spelling);
+        void add(std::string_view spelling);
         std::string all() const;
 
-        std::set<StringRef> spellings;
+        std::set<std::string_view> spellings;
         std::size_t count = 0;
     };
 

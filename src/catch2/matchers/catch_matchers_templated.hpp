@@ -9,12 +9,12 @@
 #define CATCH_MATCHERS_TEMPLATED_HPP_INCLUDED
 
 #include <catch2/matchers/catch_matchers.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <array>
 #include <algorithm>
 #include <string>
+#include <string_view>
 #include <type_traits>
 
 namespace Catch {
@@ -93,10 +93,10 @@ namespace Matchers {
             return static_cast<T const*>(matchers[Idx])->match(arg) || match_any_of<MatcherTs...>(arg, matchers, std::index_sequence<Indices...>{});
         }
 
-        std::string describe_multi_matcher(StringRef combine, std::string const* descriptions_begin, std::string const* descriptions_end);
+        std::string describe_multi_matcher(std::string_view combine, std::string const* descriptions_begin, std::string const* descriptions_end);
 
         template<typename... MatcherTs, std::size_t... Idx>
-        std::string describe_multi_matcher(StringRef combine, std::array<void const*, sizeof...(MatcherTs)> const& matchers, std::index_sequence<Idx...>) {
+        std::string describe_multi_matcher(std::string_view combine, std::array<void const*, sizeof...(MatcherTs)> const& matchers, std::index_sequence<Idx...>) {
             std::array<std::string, sizeof...(MatcherTs)> descriptions {{
                 static_cast<MatcherTs const*>(matchers[Idx])->toString()...
             }};
@@ -122,7 +122,7 @@ namespace Matchers {
             }
 
             std::string describe() const override {
-                return describe_multi_matcher<MatcherTs...>(" and "_sr, m_matchers, std::index_sequence_for<MatcherTs...>{});
+                return describe_multi_matcher<MatcherTs...>(" and ", m_matchers, std::index_sequence_for<MatcherTs...>{});
             }
 
             // Has to be public to enable the concatenating operators
@@ -177,7 +177,7 @@ namespace Matchers {
             }
 
             std::string describe() const override {
-                return describe_multi_matcher<MatcherTs...>(" or "_sr, m_matchers, std::index_sequence_for<MatcherTs...>{});
+                return describe_multi_matcher<MatcherTs...>(" or ", m_matchers, std::index_sequence_for<MatcherTs...>{});
             }
 
 

@@ -8,13 +8,13 @@
 #ifndef CATCH_TEST_RUN_INFO_HPP_INCLUDED
 #define CATCH_TEST_RUN_INFO_HPP_INCLUDED
 
-#include <catch2/internal/catch_stringref.hpp>
+#include <string_view>
 
 namespace Catch {
 
     struct TestRunInfo {
-        constexpr TestRunInfo(StringRef _name) : name(_name) {}
-        StringRef name;
+        constexpr TestRunInfo(std::string_view _name) : name(_name) {}
+        std::string_view name;
     };
 
 } // end namespace Catch

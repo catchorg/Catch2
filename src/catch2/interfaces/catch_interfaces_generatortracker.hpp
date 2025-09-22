@@ -9,7 +9,6 @@
 #define CATCH_INTERFACES_GENERATORTRACKER_HPP_INCLUDED
 
 #include <catch2/internal/catch_unique_ptr.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 
 #include <string>
 
@@ -71,7 +70,7 @@ namespace Catch {
              * is destructed, or it moves onto the next element, whichever
              * comes first.
              */
-            StringRef currentElementAsString() const;
+            std::string_view currentElementAsString() const;
         };
         using GeneratorBasePtr = Catch::Detail::unique_ptr<GeneratorUntypedBase>;
 

@@ -11,7 +11,6 @@
 #include <catch2/catch_tostring.hpp>
 #include <catch2/interfaces/catch_interfaces_generatortracker.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_unique_name.hpp>
 
@@ -197,14 +196,14 @@ namespace Detail {
         return makeGenerators( value( T( CATCH_FORWARD( val ) ) ), CATCH_FORWARD( moreGenerators )... );
     }
 
-    IGeneratorTracker* acquireGeneratorTracker( StringRef generatorName,
+    IGeneratorTracker* acquireGeneratorTracker( std::string_view generatorName,
                                                 SourceLineInfo const& lineInfo );
-    IGeneratorTracker* createGeneratorTracker( StringRef generatorName,
+    IGeneratorTracker* createGeneratorTracker( std::string_view generatorName,
                                                SourceLineInfo lineInfo,
                                                GeneratorBasePtr&& generator );
 
     template<typename L>
-    auto generate( StringRef generatorName, SourceLineInfo const& lineInfo, L const& generatorExpression ) -> typename decltype(generatorExpression())::type {
+    auto generate( std::string_view generatorName, SourceLineInfo const& lineInfo, L const& generatorExpression ) -> typename decltype(generatorExpression())::type {
         using UnderlyingType = typename decltype(generatorExpression())::type;
 
         IGeneratorTracker* tracker = acquireGeneratorTracker( generatorName, lineInfo );
@@ -225,7 +224,7 @@ namespace Detail {
 } // namespace Generators
 } // namespace Catch
 
-#define CATCH_INTERNAL_GENERATOR_STRINGIZE_IMPL( ... ) #__VA_ARGS__##_catch_sr
+#define CATCH_INTERNAL_GENERATOR_STRINGIZE_IMPL( ... ) #__VA_ARGS__
 #define CATCH_INTERNAL_GENERATOR_STRINGIZE(...) CATCH_INTERNAL_GENERATOR_STRINGIZE_IMPL(__VA_ARGS__)
 
 #define GENERATE( ... ) \

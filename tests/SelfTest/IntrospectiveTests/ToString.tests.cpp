@@ -29,24 +29,24 @@ TEST_CASE( "parseEnums", "[Strings][enums]" ) {
     using Catch::Detail::parseEnums;
 
     SECTION( "No enums" )
-        CHECK_THAT( parseEnums( "" ), Equals( std::vector<Catch::StringRef>{} ) );
+        CHECK_THAT( parseEnums( "" ), Equals( std::vector<std::string_view>{} ) );
 
     SECTION( "One enum value" ) {
         CHECK_THAT( parseEnums( "ClassName::EnumName::Value1" ),
-                Equals(std::vector<Catch::StringRef>{"Value1"} ) );
+                Equals(std::vector<std::string_view>{"Value1"} ) );
         CHECK_THAT( parseEnums( "Value1" ),
-                Equals( std::vector<Catch::StringRef>{"Value1"} ) );
+                Equals( std::vector<std::string_view>{"Value1"} ) );
         CHECK_THAT( parseEnums( "EnumName::Value1" ),
-                Equals(std::vector<Catch::StringRef>{"Value1"} ) );
+                Equals(std::vector<std::string_view>{"Value1"} ) );
     }
 
     SECTION( "Multiple enum values" ) {
         CHECK_THAT( parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2" ),
-                    Equals( std::vector<Catch::StringRef>{"Value1", "Value2"} ) );
+                    Equals( std::vector<std::string_view>{"Value1", "Value2"} ) );
         CHECK_THAT( parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2, ClassName::EnumName::Value3" ),
-                    Equals( std::vector<Catch::StringRef>{"Value1", "Value2", "Value3"} ) );
+                    Equals( std::vector<std::string_view>{"Value1", "Value2", "Value3"} ) );
         CHECK_THAT( parseEnums( "ClassName::EnumName::Value1,ClassName::EnumName::Value2 , ClassName::EnumName::Value3" ),
-                    Equals( std::vector<Catch::StringRef>{"Value1", "Value2", "Value3"} ) );
+                    Equals( std::vector<std::string_view>{"Value1", "Value2", "Value3"} ) );
     }
 }
 
@@ -70,19 +70,19 @@ TEST_CASE("convertIntoString stringification helper", "[toString][approvals]") {
     using namespace Catch;
 
     SECTION("No escaping") {
-        CHECK(convertIntoString(""_sr, false) == R"("")"s);
-        CHECK(convertIntoString("abcd"_sr, false) == R"("abcd")"s);
-        CHECK(convertIntoString("ab\ncd"_sr, false) == "\"ab\ncd\""s);
-        CHECK(convertIntoString("ab\r\ncd"_sr, false) == "\"ab\r\ncd\""s);
-        CHECK(convertIntoString("ab\"cd"_sr, false) == R"("ab"cd")"s);
+        CHECK(convertIntoString("", false) == R"("")"s);
+        CHECK(convertIntoString("abcd", false) == R"("abcd")"s);
+        CHECK(convertIntoString("ab\ncd", false) == "\"ab\ncd\""s);
+        CHECK(convertIntoString("ab\r\ncd", false) == "\"ab\r\ncd\""s);
+        CHECK(convertIntoString("ab\"cd", false) == R"("ab"cd")"s);
     }
     SECTION("Escaping invisibles") {
-        CHECK(convertIntoString(""_sr, true) == R"("")"s);
-        CHECK(convertIntoString("ab\ncd"_sr, true) == R"("ab\ncd")"s);
-        CHECK(convertIntoString("ab\r\ncd"_sr, true) == R"("ab\r\ncd")"s);
-        CHECK(convertIntoString("ab\tcd"_sr, true) == R"("ab\tcd")"s);
-        CHECK(convertIntoString("ab\fcd"_sr, true) == R"("ab\fcd")"s);
-        CHECK(convertIntoString("ab\"cd"_sr, true) == R"("ab"cd")"s);
+        CHECK(convertIntoString("", true) == R"("")"s);
+        CHECK(convertIntoString("ab\ncd", true) == R"("ab\ncd")"s);
+        CHECK(convertIntoString("ab\r\ncd", true) == R"("ab\r\ncd")"s);
+        CHECK(convertIntoString("ab\tcd", true) == R"("ab\tcd")"s);
+        CHECK(convertIntoString("ab\fcd", true) == R"("ab\fcd")"s);
+        CHECK(convertIntoString("ab\"cd", true) == R"("ab"cd")"s);
     }
 }
 

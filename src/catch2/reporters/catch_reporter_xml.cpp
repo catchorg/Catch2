@@ -45,8 +45,8 @@ namespace Catch {
 
     void XmlReporter::writeSourceInfo( SourceLineInfo const& sourceInfo ) {
         m_xml
-            .writeAttribute( "filename"_sr, sourceInfo.file )
-            .writeAttribute( "line"_sr, sourceInfo.line );
+            .writeAttribute( "filename", sourceInfo.file )
+            .writeAttribute( "line", sourceInfo.line );
     }
 
     void XmlReporter::testRunStarting( TestRunInfo const& testInfo ) {
@@ -55,20 +55,20 @@ namespace Catch {
         if( !stylesheetRef.empty() )
             m_xml.writeStylesheetRef( stylesheetRef );
         m_xml.startElement("Catch2TestRun")
-             .writeAttribute("name"_sr, m_config->name())
-             .writeAttribute("rng-seed"_sr, m_config->rngSeed())
-             .writeAttribute("xml-format-version"_sr, 3)
-             .writeAttribute("catch2-version"_sr, libraryVersion());
+             .writeAttribute("name", m_config->name())
+             .writeAttribute("rng-seed", m_config->rngSeed())
+             .writeAttribute("xml-format-version", 3)
+             .writeAttribute("catch2-version", libraryVersion());
         if ( m_config->testSpec().hasFilters() ) {
-            m_xml.writeAttribute( "filters"_sr, m_config->testSpec() );
+            m_xml.writeAttribute( "filters", m_config->testSpec() );
         }
     }
 
     void XmlReporter::testCaseStarting( TestCaseInfo const& testInfo ) {
         StreamingReporterBase::testCaseStarting(testInfo);
         m_xml.startElement( "TestCase" )
-            .writeAttribute( "name"_sr, trim( StringRef(testInfo.name) ) )
-            .writeAttribute( "tags"_sr, testInfo.tagsAsString() );
+            .writeAttribute( "name", trim( std::string_view(testInfo.name) ) )
+            .writeAttribute( "tags", testInfo.tagsAsString() );
 
         writeSourceInfo( testInfo.lineInfo );
 
@@ -81,7 +81,7 @@ namespace Catch {
         StreamingReporterBase::sectionStarting( sectionInfo );
         if( m_sectionDepth++ > 0 ) {
             m_xml.startElement( "Section" )
-                .writeAttribute( "name"_sr, trim( StringRef(sectionInfo.name) ) );
+                .writeAttribute( "name", trim( std::string_view(sectionInfo.name) ) );
             writeSourceInfo( sectionInfo.lineInfo );
             m_xml.ensureTagClosed();
         }
@@ -117,8 +117,8 @@ namespace Catch {
         // Print the expression if there is one.
         if( result.hasExpression() ) {
             m_xml.startElement( "Expression" )
-                .writeAttribute( "success"_sr, result.succeeded() )
-                .writeAttribute( "type"_sr, result.getTestMacroName() );
+                .writeAttribute( "success", result.succeeded() )
+                .writeAttribute( "type", result.getTestMacroName() );
 
             writeSourceInfo( result.getSourceInfo() );
 
@@ -174,13 +174,13 @@ namespace Catch {
         if ( --m_sectionDepth > 0 ) {
             {
                 XmlWriter::ScopedElement e = m_xml.scopedElement( "OverallResults" );
-                e.writeAttribute( "successes"_sr, sectionStats.assertions.passed );
-                e.writeAttribute( "failures"_sr, sectionStats.assertions.failed );
-                e.writeAttribute( "expectedFailures"_sr, sectionStats.assertions.failedButOk );
-                e.writeAttribute( "skipped"_sr, sectionStats.assertions.skipped > 0 );
+                e.writeAttribute( "successes", sectionStats.assertions.passed );
+                e.writeAttribute( "failures", sectionStats.assertions.failed );
+                e.writeAttribute( "expectedFailures", sectionStats.assertions.failedButOk );
+                e.writeAttribute( "skipped", sectionStats.assertions.skipped > 0 );
 
                 if ( m_config->showDurations() == ShowDurations::Always )
-                    e.writeAttribute( "durationInSeconds"_sr, sectionStats.durationInSeconds );
+                    e.writeAttribute( "durationInSeconds", sectionStats.durationInSeconds );
             }
             // Ends assertion tag
             m_xml.endElement();
@@ -190,15 +190,15 @@ namespace Catch {
     void XmlReporter::testCaseEnded( TestCaseStats const& testCaseStats ) {
         StreamingReporterBase::testCaseEnded( testCaseStats );
         XmlWriter::ScopedElement e = m_xml.scopedElement( "OverallResult" );
-        e.writeAttribute( "success"_sr, testCaseStats.totals.assertions.allOk() );
-        e.writeAttribute( "skips"_sr, testCaseStats.totals.assertions.skipped );
+        e.writeAttribute( "success", testCaseStats.totals.assertions.allOk() );
+        e.writeAttribute( "skips", testCaseStats.totals.assertions.skipped );
 
         if ( m_config->showDurations() == ShowDurations::Always )
-            e.writeAttribute( "durationInSeconds"_sr, m_testCaseTimer.getElapsedSeconds() );
+            e.writeAttribute( "durationInSeconds", m_testCaseTimer.getElapsedSeconds() );
         if( !testCaseStats.stdOut.empty() )
-            m_xml.scopedElement( "StdOut" ).writeText( trim( StringRef(testCaseStats.stdOut) ), XmlFormatting::Newline );
+            m_xml.scopedElement( "StdOut" ).writeText( trim( std::string_view(testCaseStats.stdOut) ), XmlFormatting::Newline );
         if( !testCaseStats.stdErr.empty() )
-            m_xml.scopedElement( "StdErr" ).writeText( trim( StringRef(testCaseStats.stdErr) ), XmlFormatting::Newline );
+            m_xml.scopedElement( "StdErr" ).writeText( trim( std::string_view(testCaseStats.stdErr) ), XmlFormatting::Newline );
 
         m_xml.endElement();
     }
@@ -206,55 +206,55 @@ namespace Catch {
     void XmlReporter::testRunEnded( TestRunStats const& testRunStats ) {
         StreamingReporterBase::testRunEnded( testRunStats );
         m_xml.scopedElement( "OverallResults" )
-            .writeAttribute( "successes"_sr, testRunStats.totals.assertions.passed )
-            .writeAttribute( "failures"_sr, testRunStats.totals.assertions.failed )
-            .writeAttribute( "expectedFailures"_sr, testRunStats.totals.assertions.failedButOk )
-            .writeAttribute( "skips"_sr, testRunStats.totals.assertions.skipped );
+            .writeAttribute( "successes", testRunStats.totals.assertions.passed )
+            .writeAttribute( "failures", testRunStats.totals.assertions.failed )
+            .writeAttribute( "expectedFailures", testRunStats.totals.assertions.failedButOk )
+            .writeAttribute( "skips", testRunStats.totals.assertions.skipped );
         m_xml.scopedElement( "OverallResultsCases")
-            .writeAttribute( "successes"_sr, testRunStats.totals.testCases.passed )
-            .writeAttribute( "failures"_sr, testRunStats.totals.testCases.failed )
-            .writeAttribute( "expectedFailures"_sr, testRunStats.totals.testCases.failedButOk )
-            .writeAttribute( "skips"_sr, testRunStats.totals.testCases.skipped );
+            .writeAttribute( "successes", testRunStats.totals.testCases.passed )
+            .writeAttribute( "failures", testRunStats.totals.testCases.failed )
+            .writeAttribute( "expectedFailures", testRunStats.totals.testCases.failedButOk )
+            .writeAttribute( "skips", testRunStats.totals.testCases.skipped );
         m_xml.endElement();
     }
 
-    void XmlReporter::benchmarkPreparing( StringRef name ) {
+    void XmlReporter::benchmarkPreparing( std::string_view name ) {
         m_xml.startElement("BenchmarkResults")
-             .writeAttribute("name"_sr, name);
+             .writeAttribute("name", name);
     }
 
     void XmlReporter::benchmarkStarting(BenchmarkInfo const &info) {
-        m_xml.writeAttribute("samples"_sr, info.samples)
-            .writeAttribute("resamples"_sr, info.resamples)
-            .writeAttribute("iterations"_sr, info.iterations)
-            .writeAttribute("clockResolution"_sr, info.clockResolution)
-            .writeAttribute("estimatedDuration"_sr, info.estimatedDuration)
-            .writeComment("All values in nano seconds"_sr);
+        m_xml.writeAttribute("samples", info.samples)
+            .writeAttribute("resamples", info.resamples)
+            .writeAttribute("iterations", info.iterations)
+            .writeAttribute("clockResolution", info.clockResolution)
+            .writeAttribute("estimatedDuration", info.estimatedDuration)
+            .writeComment("All values in nano seconds");
     }
 
     void XmlReporter::benchmarkEnded(BenchmarkStats<> const& benchmarkStats) {
         m_xml.scopedElement("mean")
-            .writeAttribute("value"_sr, benchmarkStats.mean.point.count())
-            .writeAttribute("lowerBound"_sr, benchmarkStats.mean.lower_bound.count())
-            .writeAttribute("upperBound"_sr, benchmarkStats.mean.upper_bound.count())
-            .writeAttribute("ci"_sr, benchmarkStats.mean.confidence_interval);
+            .writeAttribute("value", benchmarkStats.mean.point.count())
+            .writeAttribute("lowerBound", benchmarkStats.mean.lower_bound.count())
+            .writeAttribute("upperBound", benchmarkStats.mean.upper_bound.count())
+            .writeAttribute("ci", benchmarkStats.mean.confidence_interval);
         m_xml.scopedElement("standardDeviation")
-            .writeAttribute("value"_sr, benchmarkStats.standardDeviation.point.count())
-            .writeAttribute("lowerBound"_sr, benchmarkStats.standardDeviation.lower_bound.count())
-            .writeAttribute("upperBound"_sr, benchmarkStats.standardDeviation.upper_bound.count())
-            .writeAttribute("ci"_sr, benchmarkStats.standardDeviation.confidence_interval);
+            .writeAttribute("value", benchmarkStats.standardDeviation.point.count())
+            .writeAttribute("lowerBound", benchmarkStats.standardDeviation.lower_bound.count())
+            .writeAttribute("upperBound", benchmarkStats.standardDeviation.upper_bound.count())
+            .writeAttribute("ci", benchmarkStats.standardDeviation.confidence_interval);
         m_xml.scopedElement("outliers")
-            .writeAttribute("variance"_sr, benchmarkStats.outlierVariance)
-            .writeAttribute("lowMild"_sr, benchmarkStats.outliers.low_mild)
-            .writeAttribute("lowSevere"_sr, benchmarkStats.outliers.low_severe)
-            .writeAttribute("highMild"_sr, benchmarkStats.outliers.high_mild)
-            .writeAttribute("highSevere"_sr, benchmarkStats.outliers.high_severe);
+            .writeAttribute("variance", benchmarkStats.outlierVariance)
+            .writeAttribute("lowMild", benchmarkStats.outliers.low_mild)
+            .writeAttribute("lowSevere", benchmarkStats.outliers.low_severe)
+            .writeAttribute("highMild", benchmarkStats.outliers.high_mild)
+            .writeAttribute("highSevere", benchmarkStats.outliers.high_severe);
         m_xml.endElement();
     }
 
-    void XmlReporter::benchmarkFailed(StringRef error) {
+    void XmlReporter::benchmarkFailed(std::string_view error) {
         m_xml.scopedElement("failed").
-            writeAttribute("message"_sr, error);
+            writeAttribute("message", error);
         m_xml.endElement();
     }
 

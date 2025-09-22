@@ -30,9 +30,9 @@ namespace Catch {
 
     public:
         AssertionHandler
-            (   StringRef macroName,
+            (   std::string_view macroName,
                 SourceLineInfo const& lineInfo,
-                StringRef capturedExpression,
+                std::string_view capturedExpression,
                 ResultDisposition::Flags resultDisposition );
         ~AssertionHandler() {
             if ( !m_completed ) {

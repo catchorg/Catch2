@@ -12,18 +12,11 @@
 #include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/interfaces/catch_interfaces_test_invoker.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_unique_name.hpp>
 #include <catch2/internal/catch_preprocessor_remove_parens.hpp>
 
-// GCC 5 and older do not properly handle disabling unused-variable warning
-// with a _Pragma. This means that we have to leak the suppression to the
-// user code as well :-(
-#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ <= 5
-#pragma GCC diagnostic ignored "-Wunused-variable"
-#endif
-
+#include <string_view>
 
 
 namespace Catch {
@@ -77,15 +70,15 @@ Detail::unique_ptr<ITestInvoker> makeTestInvokerFixture( void ( C::*testAsMethod
 }
 
 struct NameAndTags {
-    constexpr NameAndTags( StringRef name_ = StringRef(),
-                           StringRef tags_ = StringRef() ) noexcept:
+    constexpr NameAndTags( std::string_view name_ = {},
+                           std::string_view tags_ = {} ) noexcept:
         name( name_ ), tags( tags_ ) {}
-    StringRef name;
-    StringRef tags;
+    std::string_view name;
+    std::string_view tags;
 };
 
 struct AutoReg : Detail::NonCopyable {
-    AutoReg( Detail::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, StringRef classOrMethod, NameAndTags const& nameAndTags ) noexcept;
+    AutoReg( Detail::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, std::string_view classOrMethod, NameAndTags const& nameAndTags ) noexcept;
 };
 
 } // end namespace Catch
@@ -111,7 +104,7 @@ struct AutoReg : Detail::NonCopyable {
         CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
         CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
-        namespace{ const Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( &TestName ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); } /* NOLINT */ \
+        namespace{ const Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( &TestName ), CATCH_INTERNAL_LINEINFO, std::string_view(), Catch::NameAndTags{ __VA_ARGS__ } ); } /* NOLINT */ \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         static void TestName()
     #define INTERNAL_CATCH_TESTCASE( ... ) \
@@ -164,7 +157,7 @@ static int catchInternalSectionHint = 0;
             const Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( \
             Catch::makeTestInvoker( &TestName::test ),                    \
             CATCH_INTERNAL_LINEINFO,                                      \
-            #ClassName##_catch_sr,                                        \
+            #ClassName,                                        \
             Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
         } \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
@@ -184,7 +177,7 @@ static int catchInternalSectionHint = 0;
             const Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( \
                 Catch::makeTestInvokerFixture( &TestName::test ),                    \
                 CATCH_INTERNAL_LINEINFO,                                      \
-                #ClassName##_catch_sr,                                        \
+                #ClassName,                                        \
                 Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */             \
         }                                                                     \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION                              \
@@ -202,7 +195,7 @@ static int catchInternalSectionHint = 0;
         const Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( \
             Catch::makeTestInvoker( &QualifiedMethod ),                   \
             CATCH_INTERNAL_LINEINFO,                                      \
-            "&" #QualifiedMethod##_catch_sr,                              \
+            "&" #QualifiedMethod,                              \
             Catch::NameAndTags{ __VA_ARGS__ } );                          \
     } /* NOLINT */ \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
@@ -214,7 +207,7 @@ static int catchInternalSectionHint = 0;
             CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
             CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
             CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
-            Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( Function ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
+            Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( Function ), CATCH_INTERNAL_LINEINFO, std::string_view(), Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
             CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         } while(false)
 

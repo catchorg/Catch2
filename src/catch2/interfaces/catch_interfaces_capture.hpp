@@ -10,7 +10,6 @@
 
 #include <string>
 
-#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_result_type.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/benchmark/detail/catch_benchmark_stats_fwd.hpp>
@@ -43,31 +42,31 @@ namespace Catch {
         virtual ~IResultCapture();
 
         virtual void notifyAssertionStarted( AssertionInfo const& info ) = 0;
-        virtual bool sectionStarted( StringRef sectionName,
+        virtual bool sectionStarted( std::string_view sectionName,
                                      SourceLineInfo const& sectionLineInfo,
                                      Counts& assertions ) = 0;
         virtual void sectionEnded( SectionEndInfo&& endInfo ) = 0;
         virtual void sectionEndedEarly( SectionEndInfo&& endInfo ) = 0;
 
         virtual IGeneratorTracker*
-        acquireGeneratorTracker( StringRef generatorName,
+        acquireGeneratorTracker( std::string_view generatorName,
                                  SourceLineInfo const& lineInfo ) = 0;
         virtual IGeneratorTracker*
-        createGeneratorTracker( StringRef generatorName,
+        createGeneratorTracker( std::string_view generatorName,
                                 SourceLineInfo lineInfo,
                                 Generators::GeneratorBasePtr&& generator ) = 0;
 
-        virtual void benchmarkPreparing( StringRef name ) = 0;
+        virtual void benchmarkPreparing( std::string_view name ) = 0;
         virtual void benchmarkStarting( BenchmarkInfo const& info ) = 0;
         virtual void benchmarkEnded( BenchmarkStats<> const& stats ) = 0;
-        virtual void benchmarkFailed( StringRef error ) = 0;
+        virtual void benchmarkFailed( std::string_view error ) = 0;
 
         virtual void pushScopedMessage( MessageInfo&& message ) = 0;
         virtual void popScopedMessage( unsigned int messageId ) = 0;
 
         virtual void emplaceUnscopedMessage( MessageBuilder&& builder ) = 0;
 
-        virtual void handleFatalErrorCondition( StringRef message ) = 0;
+        virtual void handleFatalErrorCondition( std::string_view message ) = 0;
 
         virtual void handleExpr
                 (   AssertionInfo const& info,

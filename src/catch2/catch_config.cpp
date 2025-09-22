@@ -10,7 +10,6 @@
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_parse_numbers.hpp>
 #include <catch2/internal/catch_stdstreams.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_test_spec_parser.hpp>
 #include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
@@ -186,7 +185,7 @@ namespace Catch {
 
     // IConfig interface
     bool Config::allowThrows() const                   { return !m_data.noThrow; }
-    StringRef Config::name() const { return m_data.name.empty() ? m_data.processName : m_data.name; }
+    std::string_view Config::name() const { return m_data.name.empty() ? m_data.processName : m_data.name; }
     bool Config::includeSuccessfulResults() const      { return m_data.showSuccessfulTests; }
     bool Config::warnAboutMissingAssertions() const {
         return !!( m_data.warnings & WarnAbout::NoAssertions );

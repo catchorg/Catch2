@@ -10,16 +10,17 @@
 
 #include <catch2/internal/catch_result_type.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
-#include <catch2/internal/catch_stringref.hpp>
+
+#include <string_view>
 
 namespace Catch {
 
     struct AssertionInfo {
         // AssertionInfo() = delete;
 
-        StringRef macroName;
+        std::string_view macroName;
         SourceLineInfo lineInfo;
-        StringRef capturedExpression;
+        std::string_view capturedExpression;
         ResultDisposition::Flags resultDisposition;
     };
 

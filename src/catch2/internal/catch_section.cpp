@@ -24,7 +24,7 @@ namespace Catch {
     }
 
     Section::Section( SourceLineInfo const& _lineInfo,
-                      StringRef _name,
+                      std::string_view _name,
                       const char* const ):
         m_info( { "invalid", static_cast<std::size_t>( -1 ) }, std::string{} ),
         m_sectionIncluded(

@@ -7,28 +7,28 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 
 #include <ostream>
 #include <cstring>
 #include <cctype>
+#include <string_view>
 #include <vector>
 
 namespace Catch {
 
-    bool startsWith( std::string const& s, std::string const& prefix ) {
+    bool startsWith( std::string_view s, std::string_view prefix ) {
         return s.size() >= prefix.size() && std::equal(prefix.begin(), prefix.end(), s.begin());
     }
-    bool startsWith( StringRef s, char prefix ) {
+    bool startsWith( std::string_view s, char prefix ) {
         return !s.empty() && s[0] == prefix;
     }
-    bool endsWith( std::string const& s, std::string const& suffix ) {
+    bool endsWith( std::string_view s, std::string_view suffix ) {
         return s.size() >= suffix.size() && std::equal(suffix.rbegin(), suffix.rend(), s.rbegin());
     }
-    bool endsWith( std::string const& s, char suffix ) {
+    bool endsWith( std::string_view s, char suffix ) {
         return !s.empty() && s[s.size()-1] == suffix;
     }
-    bool contains( std::string const& s, std::string const& infix ) {
+    bool contains( std::string_view s, std::string_view infix ) {
         return s.find( infix ) != std::string::npos;
     }
     void toLowerInPlace( std::string& s ) {
@@ -36,8 +36,8 @@ namespace Catch {
             c = toLower( c );
         }
     }
-    std::string toLower( std::string const& s ) {
-        std::string lc = s;
+    std::string toLower( std::string_view s ) {
+        std::string lc(s);
         toLowerInPlace( lc );
         return lc;
     }
@@ -53,7 +53,7 @@ namespace Catch {
         return start != std::string::npos ? str.substr( start, 1+end-start ) : std::string();
     }
 
-    StringRef trim(StringRef ref) {
+    std::string_view trim(std::string_view ref) {
         const auto is_ws = [](char c) {
             return c == ' ' || c == '\t' || c == '\n' || c == '\r';
         };
@@ -65,7 +65,7 @@ namespace Catch {
         return ref.substr(real_begin, real_end - real_begin);
     }
 
-    bool replaceInPlace( std::string& str, std::string const& replaceThis, std::string const& withThis ) {
+    bool replaceInPlace( std::string& str, std::string_view replaceThis, std::string_view withThis ) {
         std::size_t i = str.find( replaceThis );
         if (i == std::string::npos) {
             return false;
@@ -91,8 +91,8 @@ namespace Catch {
         return true;
     }
 
-    std::vector<StringRef> splitStringRef( StringRef str, char delimiter ) {
-        std::vector<StringRef> subStrings;
+    std::vector<std::string_view> splitStringRef( std::string_view str, char delimiter ) {
+        std::vector<std::string_view> subStrings;
         std::size_t start = 0;
         for(std::size_t pos = 0; pos < str.size(); ++pos ) {
             if( str[pos] == delimiter ) {

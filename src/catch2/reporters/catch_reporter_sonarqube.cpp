@@ -36,11 +36,11 @@ namespace Catch {
 
         xml.writeComment( createMetadataString( *m_config ) );
         xml.startElement("testExecutions");
-        xml.writeAttribute("version"_sr, '1');
+        xml.writeAttribute("version", '1');
     }
 
     void SonarQubeReporter::writeRun( TestRunNode const& runNode ) {
-        std::map<StringRef, std::vector<TestCaseNode const*>> testsPerFile;
+        std::map<std::string_view, std::vector<TestCaseNode const*>> testsPerFile;
 
         for ( auto const& child : runNode.children ) {
             testsPerFile[child->value.testInfo->lineInfo.file].push_back(
@@ -52,9 +52,9 @@ namespace Catch {
         }
     }
 
-    void SonarQubeReporter::writeTestFile(StringRef filename, std::vector<TestCaseNode const*> const& testCaseNodes) {
+    void SonarQubeReporter::writeTestFile(std::string_view filename, std::vector<TestCaseNode const*> const& testCaseNodes) {
         XmlWriter::ScopedElement e = xml.scopedElement("file");
-        xml.writeAttribute("path"_sr, filename);
+        xml.writeAttribute("path", filename);
 
         for (auto const& child : testCaseNodes)
             writeTestCase(*child);
@@ -77,8 +77,8 @@ namespace Catch {
             || !sectionNode.stdOut.empty()
             || !sectionNode.stdErr.empty() ) {
             XmlWriter::ScopedElement e = xml.scopedElement("testCase");
-            xml.writeAttribute("name"_sr, name);
-            xml.writeAttribute("duration"_sr, static_cast<long>(sectionNode.stats.durationInSeconds * 1000));
+            xml.writeAttribute("name", name);
+            xml.writeAttribute("duration", static_cast<long>(sectionNode.stats.durationInSeconds * 1000));
 
             writeAssertions(sectionNode, okToFail);
         }
@@ -132,7 +132,7 @@ namespace Catch {
 
             ReusableStringStream messageRss;
             messageRss << result.getTestMacroName() << '(' << result.getExpression() << ')';
-            xml.writeAttribute("message"_sr, messageRss.str());
+            xml.writeAttribute("message", messageRss.str());
 
             ReusableStringStream textRss;
             if ( result.getResultType() == ResultWas::ExplicitSkip ) {

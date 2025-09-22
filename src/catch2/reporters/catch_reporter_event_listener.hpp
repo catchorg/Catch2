@@ -23,13 +23,13 @@ namespace Catch {
     public:
         using IEventListener::IEventListener;
 
-        void reportInvalidTestSpec( StringRef unmatchedSpec ) override;
-        void fatalErrorEncountered( StringRef error ) override;
+        void reportInvalidTestSpec( std::string_view unmatchedSpec ) override;
+        void fatalErrorEncountered( std::string_view error ) override;
 
-        void benchmarkPreparing( StringRef name ) override;
+        void benchmarkPreparing( std::string_view name ) override;
         void benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) override;
         void benchmarkEnded( BenchmarkStats<> const& benchmarkStats ) override;
-        void benchmarkFailed( StringRef error ) override;
+        void benchmarkFailed( std::string_view error ) override;
 
         void assertionStarting( AssertionInfo const& assertionInfo ) override;
         void assertionEnded( AssertionStats const& assertionStats ) override;
@@ -41,7 +41,7 @@ namespace Catch {
         void listTests( std::vector<TestCaseHandle> const& tests ) override;
         void listTags( std::vector<TagInfo> const& tagInfos ) override;
 
-        void noMatchingTestCases( StringRef unmatchedSpec ) override;
+        void noMatchingTestCases( std::string_view unmatchedSpec ) override;
         void testRunStarting( TestRunInfo const& testRunInfo ) override;
         void testCaseStarting( TestCaseInfo const& testInfo ) override;
         void testCasePartialStarting( TestCaseInfo const& testInfo,

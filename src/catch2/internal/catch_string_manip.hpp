@@ -8,31 +8,30 @@
 #ifndef CATCH_STRING_MANIP_HPP_INCLUDED
 #define CATCH_STRING_MANIP_HPP_INCLUDED
 
-#include <catch2/internal/catch_stringref.hpp>
-
 #include <cstdint>
 #include <string>
+#include <string_view>
 #include <iosfwd>
 #include <vector>
 
 namespace Catch {
 
-    bool startsWith( std::string const& s, std::string const& prefix );
-    bool startsWith( StringRef s, char prefix );
-    bool endsWith( std::string const& s, std::string const& suffix );
-    bool endsWith( std::string const& s, char suffix );
-    bool contains( std::string const& s, std::string const& infix );
+    bool startsWith( std::string_view s, std::string_view prefix );
+    bool startsWith( std::string_view s, char prefix );
+    bool endsWith( std::string_view s, std::string_view suffix );
+    bool endsWith( std::string_view s, char suffix );
+    bool contains( std::string_view s, std::string_view infix );
     void toLowerInPlace( std::string& s );
-    std::string toLower( std::string const& s );
+    std::string toLower( std::string_view s );
     char toLower( char c );
     //! Returns a new string without whitespace at the start/end
     std::string trim( std::string const& str );
     //! Returns a substring of the original ref without whitespace. Beware lifetimes!
-    StringRef trim(StringRef ref);
+    std::string_view trim(std::string_view ref);
 
     // !!! Be aware, returns refs into original string - make sure original string outlives them
-    std::vector<StringRef> splitStringRef( StringRef str, char delimiter );
-    bool replaceInPlace( std::string& str, std::string const& replaceThis, std::string const& withThis );
+    std::vector<std::string_view> splitStringRef( std::string_view str, char delimiter );
+    bool replaceInPlace( std::string& str, std::string_view replaceThis, std::string_view withThis );
 
     /**
      * Helper for streaming a "count [maybe-plural-of-label]" human-friendly string
@@ -46,10 +45,10 @@ namespace Catch {
      */
     class pluralise {
         std::uint64_t m_count;
-        StringRef m_label;
+        std::string_view m_label;
 
     public:
-        constexpr pluralise(std::uint64_t count, StringRef label):
+        constexpr pluralise(std::uint64_t count, std::string_view label):
             m_count(count),
             m_label(label)
         {}

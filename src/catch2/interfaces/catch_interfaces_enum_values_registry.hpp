@@ -8,20 +8,19 @@
 #ifndef CATCH_INTERFACES_ENUM_VALUES_REGISTRY_HPP_INCLUDED
 #define CATCH_INTERFACES_ENUM_VALUES_REGISTRY_HPP_INCLUDED
 
-#include <catch2/internal/catch_stringref.hpp>
-
+#include <string_view>
 #include <vector>
 
 namespace Catch {
 
     namespace Detail {
         struct EnumInfo {
-            StringRef m_name;
-            std::vector<std::pair<int, StringRef>> m_values;
+            std::string_view m_name;
+            std::vector<std::pair<int, std::string_view>> m_values;
 
             ~EnumInfo();
 
-            StringRef lookup( int value ) const;
+            std::string_view lookup( int value ) const;
         };
     } // namespace Detail
 
@@ -29,10 +28,10 @@ namespace Catch {
     public:
         virtual ~IMutableEnumValuesRegistry(); // = default;
 
-        virtual Detail::EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::vector<int> const& values ) = 0;
+        virtual Detail::EnumInfo const& registerEnum( std::string_view enumName, std::string_view allEnums, std::vector<int> const& values ) = 0;
 
         template<typename E>
-        Detail::EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::initializer_list<E> values ) {
+        Detail::EnumInfo const& registerEnum( std::string_view enumName, std::string_view allEnums, std::initializer_list<E> values ) {
             static_assert(sizeof(int) >= sizeof(E), "Cannot serialize enum to int");
             std::vector<int> intValues;
             intValues.reserve( values.size() );

@@ -28,7 +28,7 @@ namespace Catch {
 
         void testRunStarting( TestRunInfo const& testInfo ) override;
 
-        void noMatchingTestCases( StringRef unmatchedSpec ) override;
+        void noMatchingTestCases( std::string_view unmatchedSpec ) override;
 
         void assertionEnded(AssertionStats const& _assertionStats) override;
 

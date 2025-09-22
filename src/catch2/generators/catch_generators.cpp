@@ -27,11 +27,11 @@ namespace Detail {
 
     GeneratorUntypedBase::~GeneratorUntypedBase() = default;
 
-    IGeneratorTracker* acquireGeneratorTracker(StringRef generatorName, SourceLineInfo const& lineInfo ) {
+    IGeneratorTracker* acquireGeneratorTracker(std::string_view generatorName, SourceLineInfo const& lineInfo ) {
         return getResultCapture().acquireGeneratorTracker( generatorName, lineInfo );
     }
 
-    IGeneratorTracker* createGeneratorTracker( StringRef generatorName,
+    IGeneratorTracker* createGeneratorTracker( std::string_view generatorName,
                                  SourceLineInfo lineInfo,
                                  GeneratorBasePtr&& generator ) {
         return getResultCapture().createGeneratorTracker(

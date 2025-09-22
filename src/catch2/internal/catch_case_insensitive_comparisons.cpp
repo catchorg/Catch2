@@ -14,8 +14,8 @@
 namespace Catch {
     namespace Detail {
 
-        bool CaseInsensitiveLess::operator()( StringRef lhs,
-                                              StringRef rhs ) const {
+        bool CaseInsensitiveLess::operator()( std::string_view lhs,
+                                              std::string_view rhs ) const {
             return std::lexicographical_compare(
                 lhs.begin(), lhs.end(),
                 rhs.begin(), rhs.end(),
@@ -23,8 +23,8 @@ namespace Catch {
         }
 
         bool
-        CaseInsensitiveEqualTo::operator()( StringRef lhs,
-                                            StringRef rhs ) const {
+        CaseInsensitiveEqualTo::operator()( std::string_view lhs,
+                                            std::string_view rhs ) const {
             return std::equal(
                 lhs.begin(), lhs.end(),
                 rhs.begin(), rhs.end(),

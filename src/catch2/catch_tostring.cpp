@@ -58,7 +58,7 @@ namespace Detail {
         }
     } // end unnamed namespace
 
-    std::string convertIntoString(StringRef string, bool escapeInvisibles) {
+    std::string convertIntoString(std::string_view string, bool escapeInvisibles) {
         std::string ret;
         // This is enough for the "don't escape invisibles" case, and a good
         // lower bound on the "escape invisibles" case.
@@ -96,7 +96,7 @@ namespace Detail {
         return ret;
     }
 
-    std::string convertIntoString(StringRef string) {
+    std::string convertIntoString(std::string_view string) {
         return convertIntoString(string, getCurrentContext().getConfig()->showInvisibles());
     }
 
@@ -137,7 +137,7 @@ std::string StringMaker<std::string>::convert(const std::string& str) {
 }
 
 std::string StringMaker<std::string_view>::convert(std::string_view str) {
-    return Detail::convertIntoString( StringRef( str.data(), str.size() ) );
+    return Detail::convertIntoString( std::string_view( str.data(), str.size() ) );
 }
 
 std::string StringMaker<char const*>::convert(char const* str) {

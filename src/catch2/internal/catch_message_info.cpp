@@ -10,7 +10,7 @@
 
 namespace Catch {
 
-    MessageInfo::MessageInfo( StringRef _macroName,
+    MessageInfo::MessageInfo( std::string_view _macroName,
                               SourceLineInfo const& _lineInfo,
                               ResultWas::OfType _type )
     :   macroName( _macroName ),

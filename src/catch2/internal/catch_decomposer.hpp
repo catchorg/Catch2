@@ -9,7 +9,6 @@
 #define CATCH_DECOMPOSER_HPP_INCLUDED
 
 #include <catch2/catch_tostring.hpp>
-#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_compare_traits.hpp>
 #include <catch2/internal/catch_test_failure_exception.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
@@ -189,12 +188,12 @@ namespace Catch {
         }
     };
 
-    void formatReconstructedExpression( std::ostream &os, std::string const& lhs, StringRef op, std::string const& rhs );
+    void formatReconstructedExpression( std::ostream &os, std::string const& lhs, std::string_view op, std::string const& rhs );
 
     template<typename LhsT, typename RhsT>
     class BinaryExpr  : public ITransientExpression {
         LhsT m_lhs;
-        StringRef m_op;
+        std::string_view m_op;
         RhsT m_rhs;
 
         void streamReconstructedExpression( std::ostream &os ) const override {
@@ -203,7 +202,7 @@ namespace Catch {
         }
 
     public:
-        constexpr BinaryExpr( bool comparisonResult, LhsT lhs, StringRef op, RhsT rhs )
+        constexpr BinaryExpr( bool comparisonResult, LhsT lhs, std::string_view op, RhsT rhs )
         :   ITransientExpression{ true, comparisonResult },
             m_lhs( lhs ),
             m_op( op ),
@@ -298,7 +297,7 @@ namespace Catch {
                                     Detail::RemoveCVRef_t<RhsT>>>>,            \
             BinaryExpr<LhsT, RhsT const&>> {                                   \
         return {                                                               \
-            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
+            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op, rhs }; \
     }                                                                          \
     template <typename RhsT>                                                   \
     constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
@@ -307,7 +306,7 @@ namespace Catch {
                                 capture_by_value<RhsT>>,                       \
             BinaryExpr<LhsT, RhsT>> {                                          \
         return {                                                               \
-            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
+            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op, rhs }; \
     }                                                                          \
     template <typename RhsT>                                                   \
     constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
@@ -321,7 +320,7 @@ namespace Catch {
             BinaryExpr<LhsT, RhsT>> {                                          \
         if ( rhs != 0 ) { throw_test_failure_exception(); }                    \
         return {                                                               \
-            static_cast<bool>( lhs.m_lhs op 0 ), lhs.m_lhs, #op##_sr, rhs };   \
+            static_cast<bool>( lhs.m_lhs op 0 ), lhs.m_lhs, #op, rhs };   \
     }                                                                          \
     template <typename RhsT>                                                   \
     constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
@@ -334,7 +333,7 @@ namespace Catch {
                                     std::is_same<LhsT, long>>>,                \
             BinaryExpr<LhsT, RhsT>> {                                          \
         if ( lhs.m_lhs != 0 ) { throw_test_failure_exception(); }              \
-        return { static_cast<bool>( 0 op rhs ), lhs.m_lhs, #op##_sr, rhs };    \
+        return { static_cast<bool>( 0 op rhs ), lhs.m_lhs, #op, rhs };    \
     }
 
         CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR( eq, == )
@@ -352,7 +351,7 @@ namespace Catch {
                                     Detail::RemoveCVRef_t<RhsT>>>>,            \
             BinaryExpr<LhsT, RhsT const&>> {                                   \
         return {                                                               \
-            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
+            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op, rhs }; \
     }                                                                          \
     template <typename RhsT>                                                   \
     constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
@@ -361,7 +360,7 @@ namespace Catch {
                                 capture_by_value<RhsT>>      ,                 \
             BinaryExpr<LhsT, RhsT>> {                                          \
         return {                                                               \
-            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
+            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op, rhs }; \
     }                                                                          \
     template <typename RhsT>                                                   \
     constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
@@ -373,7 +372,7 @@ namespace Catch {
             BinaryExpr<LhsT, RhsT>> {                                          \
         if ( rhs != 0 ) { throw_test_failure_exception(); }                    \
         return {                                                               \
-            static_cast<bool>( lhs.m_lhs op 0 ), lhs.m_lhs, #op##_sr, rhs };   \
+            static_cast<bool>( lhs.m_lhs op 0 ), lhs.m_lhs, #op, rhs };   \
     }                                                                          \
     template <typename RhsT>                                                   \
     constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
@@ -384,7 +383,7 @@ namespace Catch {
                 std::is_same<LhsT, int>>,                                      \
             BinaryExpr<LhsT, RhsT>> {                                          \
         if ( lhs.m_lhs != 0 ) { throw_test_failure_exception(); }              \
-        return { static_cast<bool>( 0 op rhs ), lhs.m_lhs, #op##_sr, rhs };    \
+        return { static_cast<bool>( 0 op rhs ), lhs.m_lhs, #op, rhs };    \
     }
 
         CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( lt, < )
@@ -402,14 +401,14 @@ namespace Catch {
             !capture_by_value<Detail::RemoveCVRef_t<RhsT>>::value,             \
             BinaryExpr<LhsT, RhsT const&>> {                                   \
         return {                                                               \
-            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
+            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op, rhs }; \
     }                                                                          \
     template <typename RhsT>                                                   \
     constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
         -> std::enable_if_t<capture_by_value<RhsT>::value,                     \
                             BinaryExpr<LhsT, RhsT>> {                          \
         return {                                                               \
-            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
+            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op, rhs }; \
     }
 
         CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(|)

@@ -96,14 +96,14 @@ namespace Catch {
         {}
         ~CumulativeReporterBase() override;
 
-        void benchmarkPreparing( StringRef ) override {}
+        void benchmarkPreparing( std::string_view ) override {}
         void benchmarkStarting( BenchmarkInfo const& ) override {}
         void benchmarkEnded( BenchmarkStats<> const& benchmarkStats ) override;
-        void benchmarkFailed( StringRef ) override {}
+        void benchmarkFailed( std::string_view ) override {}
 
-        void noMatchingTestCases( StringRef ) override {}
-        void reportInvalidTestSpec( StringRef ) override {}
-        void fatalErrorEncountered( StringRef /*error*/ ) override {}
+        void noMatchingTestCases( std::string_view ) override {}
+        void reportInvalidTestSpec( std::string_view ) override {}
+        void fatalErrorEncountered( std::string_view /*error*/ ) override {}
 
         void testRunStarting( TestRunInfo const& ) override {}
 
