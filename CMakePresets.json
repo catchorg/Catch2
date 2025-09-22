@@ -11,7 +11,8 @@
                 "CMAKE_CXX_EXTENSIONS": "OFF",
                 "CMAKE_CXX_STANDARD_REQUIRED": "ON",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-                "CATCH_DEVELOPMENT_BUILD": "ON"
+                "CATCH_DEVELOPMENT_BUILD": "ON",
+                "CATCH_ENABLE_REPRODUCIBLE_BUILD": "OFF"
             }
         },
         {
