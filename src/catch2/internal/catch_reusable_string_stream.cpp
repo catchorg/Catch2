@@ -12,6 +12,7 @@
 
 #include <cstdio>
 #include <sstream>
+#include <tuple>
 #include <vector>
 
 namespace Catch {
@@ -23,16 +24,16 @@ namespace Catch {
         std::ostringstream m_referenceStream; // Used for copy state/ flags from
         Detail::Mutex m_mutex;
 
-        auto add() -> std::size_t {
+        auto add() -> std::pair<std::size_t, std::ostringstream*> {
             Detail::LockGuard _( m_mutex );
             if( m_unused.empty() ) {
                 m_streams.push_back( Detail::make_unique<std::ostringstream>() );
-                return m_streams.size()-1;
+                return { m_streams.size()-1, m_streams.back().get() };
             }
             else {
                 auto index = m_unused.back();
                 m_unused.pop_back();
-                return index;
+                return { index, m_streams[index].get() };
             }
         }
 
@@ -46,10 +47,10 @@ namespace Catch {
         }
     };
 
-    ReusableStringStream::ReusableStringStream()
-    :   m_index( Singleton<StringStreams>::getMutable().add() ),
-        m_oss( Singleton<StringStreams>::getMutable().m_streams[m_index].get() )
-    {}
+    ReusableStringStream::ReusableStringStream() {
+        std::tie( m_index, m_oss ) =
+            Singleton<StringStreams>::getMutable().add();
+    }
 
     ReusableStringStream::~ReusableStringStream() {
         static_cast<std::ostringstream*>( m_oss )->str("");
