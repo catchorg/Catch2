@@ -78,5 +78,5 @@ WarningsAsErrors: >-
   readability-duplicate-include,
 HeaderFilterRegex: '.*\.(c|cxx|cpp)$'
 FormatStyle:     none
-CheckOptions: {}
+CheckOptions: []
 ...
