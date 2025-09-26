@@ -86,22 +86,26 @@ namespace Catch {
         { EXCEPTION_INT_DIVIDE_BY_ZERO, "Divide by zero error" },
     };
 
+    // Since we do not support multiple instantiations, we put these
+    // into global variables and rely on cleaning them up in outlined
+    // constructors/destructors
+    static LPTOP_LEVEL_EXCEPTION_FILTER previousTopLevelExceptionFilter = nullptr;
+
+
     static LONG CALLBACK topLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo) {
         for (auto const& def : signalDefs) {
             if (ExceptionInfo->ExceptionRecord->ExceptionCode == def.id) {
                 reportFatal(def.name);
             }
         }
-        // If its not an exception we care about, pass it along.
+        // If a filter was previously registered, invoke it
+        if (previousTopLevelExceptionFilter) {
+            return previousTopLevelExceptionFilter(ExceptionInfo);
+        }
+        // Otherwise, pass along all exceptions.
         // This stops us from eating debugger breaks etc.
         return EXCEPTION_CONTINUE_SEARCH;
     }
-
-    // Since we do not support multiple instantiations, we put these
-    // into global variables and rely on cleaning them up in outlined
-    // constructors/destructors
-    static LPTOP_LEVEL_EXCEPTION_FILTER previousTopLevelExceptionFilter = nullptr;
-
 
     // For MSVC, we reserve part of the stack memory for handling
     // memory overflow structured exception.
