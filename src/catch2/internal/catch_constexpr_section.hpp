@@ -21,15 +21,7 @@ namespace Catch {
     struct ConstexprSection {
         template <typename Callable>
         ConstexprSection( Callable callable ) {
-            static_assert(
-                [&] // error: CONSTEXPR_SECTION failure. Check the compiler
-                    // output to find the cause. You can make the section a
-                    // SECTION to investigate at runtime.
-                {
-                    callable();
-                    return true;
-                }(),
-                "compile time section error" );
+            static_assert( ( callable(), true ), "CONSTEXPR_SECTION failure" );
             addFakeAssertion();
             callable();
         }
@@ -51,8 +43,7 @@ namespace Catch {
 #else
 #    define INTERNAL_CATCH_CONSTEXPR_SECTION( ... )                        \
         static_assert( false, "C++17 is required for CONSTEXPR_SECTION" ); \
-        if ( false ) {                                                     \
-        } else
+        if ( false )
 #endif
 
 #endif // CATCH_CONSTEXPR_SECTION_HPP_INCLUDED
