@@ -21,8 +21,8 @@ to the codebase itself.
 
 ## Using Git(Hub)
 
-Ongoing development happens in the `devel` branch for Catch2 v3, and in
-`v2.x` for maintenance updates to the v2 versions.
+Ongoing development happens in the `devel` branch for Catch2 v3.
+The `v2.x` branch is in maintenance mode for critical fixes only.
 
 Commits should be small and atomic. A commit is atomic when, after it is
 applied, the codebase, tests and all, still works as expected. Small
