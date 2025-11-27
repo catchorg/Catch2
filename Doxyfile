@@ -576,7 +576,7 @@ INTERNAL_DOCS          = NO
 # filesystem is case sensitive (i.e. it supports files in the same directory
 # whose names only differ in casing), the option must be set to YES to properly
 # deal with such files in case they appear in the input. For filesystems that
-# are not case sensitive the option should be be set to NO to properly deal with
+# are not case sensitive the option should be set to NO to properly deal with
 # output files written for symbols that only differ in casing, such as for two
 # classes, one named CLASS and the other named Class, and to also support
 # references to files without having to specify the exact matching casing. On

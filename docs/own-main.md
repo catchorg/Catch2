@@ -65,7 +65,7 @@ int main( int argc, char* argv[] ) {
 
   returnCode = session.run();
 
-  // returnCode encodes the type of error that occured. See the
+  // returnCode encodes the type of error that occurred. See the
   // integer constants in catch_session.hpp for more information
   // on what each return code means.
 

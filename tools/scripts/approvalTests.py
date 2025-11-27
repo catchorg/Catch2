@@ -56,7 +56,7 @@ filelocParser = re.compile(r'''
 ''', re.VERBOSE)
 lineNumberParser = re.compile(r' line="[0-9]*"')
 hexParser = re.compile(r'\b(0[xX][0-9a-fA-F]+)\b')
-# Note: junit must serialize time with 3 (or or less) decimal places
+# Note: junit must serialize time with 3 (or less) decimal places
 #       before generalizing this parser, make sure that this is checked
 #       in other places too.
 junitDurationsParser = re.compile(r' time="[0-9]+\.[0-9]{3}"')
