@@ -16,23 +16,21 @@
 namespace Catch {
     namespace Generators {
         namespace Detail {
+            template <typename Ret, typename Tup, typename Fun, std::size_t N>
+            constexpr Ret access_tuple( Tup& tuple, Fun& fun ) {
+                return fun( std::get<N>( tuple ) );
+            }
 
             template <typename Ret,
                       typename Tup,
                       typename Fun,
                       std::size_t... Idxs>
-            struct TupleRuntimeAccessTable {
-                template <std::size_t N>
-                static constexpr Ret access_tuple( Tup& tuple, Fun& fun ) {
-                    return fun( std::get<N>( tuple ) );
-                }
-
+            constexpr auto tuple_runtime_access_table() {
                 using AccessorFunPtr = Ret ( * )( Tup&, Fun& );
-                static constexpr std::size_t table_size{ sizeof...( Idxs ) };
-
-                static constexpr std::array<AccessorFunPtr, table_size>
-                    lookup_table{ { access_tuple<Idxs>... } };
-            };
+                constexpr std::size_t table_size{ sizeof...( Idxs ) };
+                return std::array<AccessorFunPtr, table_size>{
+                    { access_tuple<Ret, Tup, Fun, Idxs>... } };
+            }
 
             template <typename Tup, typename Fun, std::size_t... Idxs>
             constexpr auto
@@ -42,11 +40,16 @@ namespace Catch {
                                   std::index_sequence<Idxs...> ) {
                 using FirstTupleIndexType = decltype( std::get<0>( tuple ) );
                 using FunReturnType =
+#ifdef __cpp_lib_is_invocable // C++ >= 17
                     std::invoke_result_t<Fun, FirstTupleIndexType>;
+#else
+                    std::result_of_t<Fun( FirstTupleIndexType )>;
+#endif
 
-                constexpr auto& table{
-                    TupleRuntimeAccessTable<FunReturnType, Tup, Fun, Idxs...>::
-                        lookup_table };
+                constexpr auto table{ tuple_runtime_access_table<FunReturnType,
+                                                                 Tup,
+                                                                 Fun,
+                                                                 Idxs...>() };
                 return table[index]( tuple, fun );
             }
 
@@ -57,7 +60,7 @@ namespace Catch {
                     tuple,
                     index,
                     CATCH_FORWARD( fun ),
-                    std::make_index_sequence<std::tuple_size_v<Tup>>{} );
+                    std::make_index_sequence<std::tuple_size<Tup>::value>{} );
             }
 
             template <typename Tup>
@@ -76,7 +79,7 @@ namespace Catch {
                 }
 
                 constexpr operator bool() const {
-                    return m_current_index < std::tuple_size_v<Tup>;
+                    return m_current_index < std::tuple_size<Tup>::value;
                 }
 
                 template <typename Fun>
