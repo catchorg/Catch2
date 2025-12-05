@@ -7,12 +7,15 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_tostring.hpp>
 #include <catch2/generators/catch_generator_exception.hpp>
 #include <catch2/generators/catch_generators_adapters.hpp>
 #include <catch2/generators/catch_generators_random.hpp>
 #include <catch2/generators/catch_generators_range.hpp>
+#include <catch2/generators/catch_generators_tuple.hpp>
 
 #include <cstring>
+#include <sstream>
 
 
 // Generators and sections can be nested freely
@@ -320,4 +323,37 @@ TEST_CASE( "GENERATE can combine literals and generators", "[generators]" ) {
                              filter( []( int val ) { return val % 2 == 0; },
                                      random( -100, 100 ) ) ) );
     REQUIRE( i % 2 == 0 );
+}
+
+TEST_CASE( "Tuple", "[generators]" ) {
+    // imagine two different serialization to test
+    // once a serialization is tested, the second must be identical
+    static const auto std_serialization{ []( const auto& element ) {
+        std::stringstream ss;
+        ss << element;
+        return ss.str();
+    } };
+    static const auto catch2_serialization{ []( const auto& element ) {
+        return Catch::StringMaker<decltype( element )>::convert( element );
+    } };
+
+    int counter{ 0 };
+
+    const auto accessor = GENERATE( tuple_as_range( 42, "foo", 3.14 ) );
+    accessor.perform( [&]( const auto& element ) {
+        REQUIRE( std_serialization( element ) ==
+                 catch2_serialization( element ) );
+        ++counter;
+    } );
+
+    // also work with std::pair or a tuple-like
+    const auto accessor_pair =
+        GENERATE( tuple_as_range<std::pair<int, std::string>>( 42, "foo" ) );
+    accessor_pair.perform( [&]( const auto& element ) {
+        REQUIRE( std_serialization( element ) ==
+                 catch2_serialization( element ) );
+        ++counter;
+    } );
+    
+    REQUIRE( counter == 2 );
 }
