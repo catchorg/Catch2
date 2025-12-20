@@ -310,6 +310,15 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
                 ContainsSubstring("Benchmark samples must be greater than 0"));
         }
 
+        SECTION("samples must be parseable") {
+            auto result = cli.parse({"test", "--benchmark-samples=abc"});
+
+            CHECK_FALSE(result);
+            REQUIRE_THAT(
+                result.errorMessage(),
+                ContainsSubstring("Could not parse 'abc' as benchmark samples"));
+        }
+
         SECTION("resamples") {
             CHECK(cli.parse({ "test", "--benchmark-resamples=20000" }));
 

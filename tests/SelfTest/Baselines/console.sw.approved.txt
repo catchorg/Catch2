@@ -10009,6 +10009,25 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   Benchmark options
+  samples must be parseable
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( result )
+with expansion:
+  !{?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( result.errorMessage(), ContainsSubstring("Could not parse 'abc' as benchmark samples") )
+with expansion:
+  "Could not parse 'abc' as benchmark samples" contains: "Could not parse 'abc'
+  as benchmark samples"
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  Benchmark options
   resamples
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
@@ -19331,5 +19350,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  436 |  317 passed |  95 failed | 6 skipped | 18 failed as expected
-assertions: 2307 | 2108 passed | 157 failed | 42 failed as expected
+assertions: 2309 | 2110 passed | 157 failed | 42 failed as expected
 

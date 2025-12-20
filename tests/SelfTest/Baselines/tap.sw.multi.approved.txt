@@ -2487,6 +2487,10 @@ ok {test-number} - !(result) for: !{?}
 # Process can be configured on command line
 ok {test-number} - result.errorMessage(), ContainsSubstring("Benchmark samples must be greater than 0") for: "Benchmark samples must be greater than 0" contains: "Benchmark samples must be greater than 0"
 # Process can be configured on command line
+ok {test-number} - !(result) for: !{?}
+# Process can be configured on command line
+ok {test-number} - result.errorMessage(), ContainsSubstring("Could not parse 'abc' as benchmark samples") for: "Could not parse 'abc' as benchmark samples" contains: "Could not parse 'abc' as benchmark samples"
+# Process can be configured on command line
 ok {test-number} - cli.parse({ "test", "--benchmark-resamples=20000" }) for: {?}
 # Process can be configured on command line
 ok {test-number} - config.benchmarkResamples == 20000 for: 20000 (0x<hex digits>) == 20000 (0x<hex digits>)
@@ -4624,5 +4628,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2319
+1..2321
 

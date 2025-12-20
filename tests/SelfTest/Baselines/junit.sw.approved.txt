@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="140" skipped="12" tests="2319" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="140" skipped="12" tests="2321" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1326,6 +1326,7 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/samples" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/samples must be greater than zero" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/samples must be parseable" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/resamples" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/confidence-interval" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/no-analysis" time="{duration}" status="run"/>
