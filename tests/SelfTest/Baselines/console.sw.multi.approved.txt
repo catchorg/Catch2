@@ -9988,6 +9988,25 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   Benchmark options
+  samples must be greater than zero
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( result )
+with expansion:
+  !{?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( result.errorMessage(), ContainsSubstring("Benchmark samples must be greater than 0") )
+with expansion:
+  "Benchmark samples must be greater than 0" contains: "Benchmark samples must
+  be greater than 0"
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  Benchmark options
   resamples
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
@@ -19301,5 +19320,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  436 |  317 passed |  95 failed | 6 skipped | 18 failed as expected
-assertions: 2305 | 2106 passed | 157 failed | 42 failed as expected
+assertions: 2307 | 2108 passed | 157 failed | 42 failed as expected
 

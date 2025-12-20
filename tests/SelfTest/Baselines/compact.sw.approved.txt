@@ -1503,6 +1503,8 @@ CmdLine.tests.cpp:<line number>: passed: !result for: true
 CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) for: "colour mode must be one of: default, ansi, win32, or none. 'wrong' is not recognised" contains: "colour mode must be one of"
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-samples=200" }) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.benchmarkSamples == 200 for: 200 == 200
+CmdLine.tests.cpp:<line number>: passed: !(result) for: !{?}
+CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring("Benchmark samples must be greater than 0") for: "Benchmark samples must be greater than 0" contains: "Benchmark samples must be greater than 0"
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-resamples=20000" }) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.benchmarkResamples == 20000 for: 20000 (0x<hex digits>) == 20000 (0x<hex digits>)
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-confidence-interval=0.99" }) for: {?}
@@ -2891,6 +2893,6 @@ InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
 test cases:  436 |  317 passed |  95 failed | 6 skipped | 18 failed as expected
-assertions: 2305 | 2106 passed | 157 failed | 42 failed as expected
+assertions: 2307 | 2108 passed | 157 failed | 42 failed as expected
 
 
