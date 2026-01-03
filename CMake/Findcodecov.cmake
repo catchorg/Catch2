@@ -68,7 +68,7 @@ endif ()
 
 
 
-# Find the required flags foreach language.
+# Find the reuired flags foreach language.
 set(CMAKE_REQUIRED_QUIET_SAVE ${CMAKE_REQUIRED_QUIET})
 set(CMAKE_REQUIRED_QUIET ${codecov_FIND_QUIETLY})
 
