@@ -372,6 +372,16 @@ TEST_CASE( "Tuple", "[generators]" ) {
             } );
         }
 
+        SECTION( "Array" ) {
+            const auto accessor_array =
+                GENERATE( tuple_as_range<std::array<int, 3>>( 1, 2, 3 ) );
+            accessor_array.perform( [&]( const auto& element ) {
+                REQUIRE( std_serialization( element ) ==
+                         catch2_serialization( element ) );
+                ++counter;
+            } );
+        }
+
         REQUIRE( counter == 1 );
     }
 
@@ -385,6 +395,13 @@ TEST_CASE( "Tuple", "[generators]" ) {
 
         SECTION( "Pair" ) {
             auto test = std::pair<int, std::string>( 42, "foo" );
+            const auto accessor = GENERATE_REF( tuple_as_range( test ) );
+            SUCCEED();
+            std::ignore = accessor;
+        }
+
+        SECTION( "Array" ) {
+            auto test = std::array<int, 3>{ { 1, 2, 3 } };
             const auto accessor = GENERATE_REF( tuple_as_range( test ) );
             SUCCEED();
             std::ignore = accessor;
