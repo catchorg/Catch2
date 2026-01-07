@@ -326,34 +326,74 @@ TEST_CASE( "GENERATE can combine literals and generators", "[generators]" ) {
 }
 
 TEST_CASE( "Tuple", "[generators]" ) {
-    // imagine two different serialization to test
-    // once a serialization is tested, the second must be identical
-    static const auto std_serialization{ []( const auto& element ) {
-        std::stringstream ss;
-        ss << element;
-        return ss.str();
-    } };
-    static const auto catch2_serialization{ []( const auto& element ) {
-        return Catch::StringMaker<decltype( element )>::convert( element );
-    } };
+    SECTION( "Basic Use Case" ) {
+        // imagine two different serialization to test
+        // once a serialization is tested, the second must be identical
+        static const auto std_serialization{ []( const auto& element ) {
+            std::stringstream ss;
+            ss << element;
+            return ss.str();
+        } };
+        static const auto catch2_serialization{ []( const auto& element ) {
+            return Catch::StringMaker<decltype( element )>::convert( element );
+        } };
 
-    int counter{ 0 };
+        int counter{ 0 };
 
-    const auto accessor = GENERATE( tuple_as_range( 42, "foo", 3.14 ) );
-    accessor.perform( [&]( const auto& element ) {
-        REQUIRE( std_serialization( element ) ==
-                 catch2_serialization( element ) );
-        ++counter;
-    } );
+        SECTION( "Tuple Implicit" ) {
+            const auto accessor = GENERATE( tuple_as_range( 42, "foo", 3.14 ) );
+            accessor.perform( [&]( const auto& element ) {
+                REQUIRE( std_serialization( element ) ==
+                         catch2_serialization( element ) );
+                ++counter;
+            } );
+        }
 
-    // also work with std::pair or a tuple-like
-    const auto accessor_pair =
-        GENERATE( tuple_as_range<std::pair<int, std::string>>( 42, "foo" ) );
-    accessor_pair.perform( [&]( const auto& element ) {
-        REQUIRE( std_serialization( element ) ==
-                 catch2_serialization( element ) );
-        ++counter;
-    } );
-    
-    REQUIRE( counter == 2 );
+        SECTION( "Tuple Explicit" ) {
+            const auto accessor =
+                GENERATE( tuple_as_range<std::tuple<int, std::string, double>>(
+                    42, "foo", 3.14 ) );
+            accessor.perform( [&]( const auto& element ) {
+                REQUIRE( std_serialization( element ) ==
+                         catch2_serialization( element ) );
+                ++counter;
+            } );
+        }
+
+        // also work with std::pair or a tuple-like
+
+        SECTION( "Pair" ) {
+            const auto accessor_pair = GENERATE(
+                tuple_as_range<std::pair<int, std::string>>( 42, "foo" ) );
+            accessor_pair.perform( [&]( const auto& element ) {
+                REQUIRE( std_serialization( element ) ==
+                         catch2_serialization( element ) );
+                ++counter;
+            } );
+        }
+
+        REQUIRE( counter == 1 );
+    }
+
+    SECTION( "Single Parameter" ) {
+        SECTION( "Tuple" ) {
+            auto test = std::tuple<int, double, float>( 1, 2.0, 3.0f );
+            const auto accessor = GENERATE_REF( tuple_as_range( test ) );
+            SUCCEED();
+            std::ignore = accessor;
+        }
+
+        SECTION( "Pair" ) {
+            auto test = std::pair<int, std::string>( 42, "foo" );
+            const auto accessor = GENERATE_REF( tuple_as_range( test ) );
+            SUCCEED();
+            std::ignore = accessor;
+        }
+
+        SECTION( "Any" ) {
+            const auto accessor = GENERATE( tuple_as_range( 1 ) );
+            SUCCEED();
+            std::ignore = accessor;
+        }
+    }
 }

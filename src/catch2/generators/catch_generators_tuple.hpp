@@ -16,25 +16,39 @@
 namespace Catch {
     namespace Generators {
         namespace Detail {
-            template <typename Ret, typename Tup, typename Fun, std::size_t N>
-            constexpr Ret access_tuple( Tup& tuple, Fun& fun ) {
+
+            template <typename T, typename = void>
+            struct is_tuple_like : std::false_type {};
+
+            template <typename T>
+            struct is_tuple_like<
+                T,
+                std::void_t<decltype( std::tuple_size<T>::value ),
+                            decltype( std::get<0>( std::declval<T>() ) )>>
+                : std::true_type {};
+
+            template <typename Ret,
+                      typename TupleType,
+                      typename Fun,
+                      std::size_t N>
+            constexpr Ret access_tuple( TupleType& tuple, Fun& fun ) {
                 return fun( std::get<N>( tuple ) );
             }
 
             template <typename Ret,
-                      typename Tup,
+                      typename TupleType,
                       typename Fun,
                       std::size_t... Idxs>
             constexpr auto tuple_runtime_access_table() {
-                using AccessorFunPtr = Ret ( * )( Tup&, Fun& );
+                using AccessorFunPtr = Ret ( * )( TupleType&, Fun& );
                 constexpr std::size_t table_size{ sizeof...( Idxs ) };
                 return std::array<AccessorFunPtr, table_size>{
-                    { access_tuple<Ret, Tup, Fun, Idxs>... } };
+                    { access_tuple<Ret, TupleType, Fun, Idxs>... } };
             }
 
-            template <typename Tup, typename Fun, std::size_t... Idxs>
+            template <typename TupleType, typename Fun, std::size_t... Idxs>
             constexpr auto
-            call_access_function( Tup& tuple,
+            call_access_function( TupleType& tuple,
                                   std::size_t index,
                                   Fun fun,
                                   std::index_sequence<Idxs...> ) {
@@ -47,39 +61,40 @@ namespace Catch {
 #endif
 
                 constexpr auto table{ tuple_runtime_access_table<FunReturnType,
-                                                                 Tup,
+                                                                 TupleType,
                                                                  Fun,
                                                                  Idxs...>() };
                 return table[index]( tuple, fun );
             }
 
-            template <typename Tup, typename Fun>
+            template <typename TupleType, typename Fun>
             constexpr auto
-            runtime_get( Tup& tuple, std::size_t index, Fun fun ) {
+            runtime_get( TupleType& tuple, std::size_t index, Fun fun ) {
                 return call_access_function(
                     tuple,
                     index,
                     CATCH_FORWARD( fun ),
-                    std::make_index_sequence<std::tuple_size<Tup>::value>{} );
+                    std::make_index_sequence<
+                        std::tuple_size<TupleType>::value>{} );
             }
 
-            template <typename Tup>
+            template <typename TupleType>
             class TupleAccessor {
-                Tup m_tuple;
+                TupleType m_tuple;
                 std::size_t m_current_index;
 
             public:
+                template <typename TupleLike>
+                constexpr TupleAccessor( TupleLike&& tuple ):
+                    m_tuple{ CATCH_FORWARD( tuple ) }, m_current_index{ 0 } {}
+
                 template <typename... Args>
                 constexpr TupleAccessor( Args&&... args ):
                     m_tuple{ CATCH_FORWARD( args )... }, m_current_index{ 0 } {}
 
-                constexpr TupleAccessor& operator++() {
+                constexpr bool next() {
                     ++m_current_index;
-                    return *this;
-                }
-
-                constexpr operator bool() const {
-                    return m_current_index < std::tuple_size<Tup>::value;
+                    return m_current_index < std::tuple_size<TupleType>::value;
                 }
 
                 template <typename Fun>
@@ -91,28 +106,44 @@ namespace Catch {
 
         } // namespace Detail
 
-        template <typename Tup>
+        template <typename TupleType>
         class TupleGenerator final
-            : public IGenerator<Detail::TupleAccessor<Tup>> {
-            Detail::TupleAccessor<Tup> m_iterator;
+            : public IGenerator<Detail::TupleAccessor<TupleType>> {
+            Detail::TupleAccessor<TupleType> m_iterator;
 
         public:
+            template <typename TupleLike>
+            TupleGenerator( TupleLike&& tuple ):
+                m_iterator{ CATCH_FORWARD( tuple ) } {}
+
             template <typename... Args>
             TupleGenerator( Args&&... args ):
                 m_iterator{ CATCH_FORWARD( args )... } {}
 
-            const Detail::TupleAccessor<Tup>& get() const override {
+            const Detail::TupleAccessor<TupleType>& get() const override {
                 return m_iterator;
             }
 
-            bool next() override { return ++m_iterator; }
+            bool next() override { return m_iterator.next(); }
         };
 
-        template <typename Tup, typename... Args>
+        template <typename TupleType,
+                  typename... Args,
+                  typename =
+                      std::enable_if_t<Detail::is_tuple_like<TupleType>::value>>
         auto tuple_as_range( Args&&... args ) {
-            return GeneratorWrapper<Detail::TupleAccessor<Tup>>(
-                Catch::Detail::make_unique<TupleGenerator<Tup>>(
+            return GeneratorWrapper<Detail::TupleAccessor<TupleType>>(
+                Catch::Detail::make_unique<TupleGenerator<TupleType>>(
                     CATCH_FORWARD( args )... ) );
+        }
+
+        template <typename TupleLike,
+                  typename TupleType =
+                      std::remove_cv_t<std::remove_reference_t<TupleLike>>,
+                  typename =
+                      std::enable_if_t<Detail::is_tuple_like<TupleType>::value>>
+        auto tuple_as_range( TupleLike&& tuple ) {
+            return tuple_as_range<TupleType>( CATCH_FORWARD( tuple ) );
         }
 
         template <typename... Args>
