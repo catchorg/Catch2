@@ -83,6 +83,22 @@ namespace Catch {
                 TupleType m_tuple;
                 std::size_t m_current_index;
 
+                template <typename TupleLike>
+                struct in_place_tuple {
+                    template <typename... Args>
+                    static constexpr TupleType make( Args&&... args ) {
+                        return TupleType{ CATCH_FORWARD( args )... };
+                    }
+                };
+
+                template <typename T, std::size_t N>
+                struct in_place_tuple<std::array<T, N>> {
+                    template <typename... Args>
+                    static constexpr TupleType make( Args&&... args ) {
+                        return TupleType{ { CATCH_FORWARD( args )... } };
+                    }
+                };
+
             public:
                 template <typename TupleLike>
                 constexpr TupleAccessor( TupleLike&& tuple ):
@@ -90,7 +106,9 @@ namespace Catch {
 
                 template <typename... Args>
                 constexpr TupleAccessor( Args&&... args ):
-                    m_tuple{ CATCH_FORWARD( args )... }, m_current_index{ 0 } {}
+                    m_tuple{ in_place_tuple<TupleType>::make(
+                        CATCH_FORWARD( args )... ) },
+                    m_current_index{ 0 } {}
 
                 constexpr bool next() {
                     ++m_current_index;
