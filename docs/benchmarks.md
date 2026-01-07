@@ -45,6 +45,9 @@ User code that cannot be executed repeatedly will lead to bogus results or
 crashes.
 
 ## Benchmark specification
+```cpp
+#include <catch2/benchmark/catch_benchmark.hpp>
+```
 
 Benchmarks can be specified anywhere inside a Catch test case.
 There is a simple and a slightly more advanced version of the `BENCHMARK` macro.
