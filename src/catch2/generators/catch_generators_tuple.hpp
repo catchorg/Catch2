@@ -21,10 +21,10 @@ namespace Catch {
             struct is_tuple_like : std::false_type {};
 
             template <typename T>
-            struct is_tuple_like<
-                T,
-                std::void_t<decltype( std::tuple_size<T>::value ),
-                            decltype( std::get<0>( std::declval<T>() ) )>>
+            struct is_tuple_like<T,
+                                 decltype( void( std::tuple_size<T>::value ),
+                                           void( std::get<0>(
+                                               std::declval<T>() ) ) )>
                 : std::true_type {};
 
             template <typename Ret,
