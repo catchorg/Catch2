@@ -273,7 +273,7 @@ set_tests_properties(Reporters::CapturedStdOutInEvents
     FAIL_REGULAR_EXPRESSION "X27 ERROR"
 )
 
-if(MSVC)
+if(WIN32)
   set(_NullFile "NUL")
 else()
   set(_NullFile "/dev/null")

@@ -483,7 +483,7 @@ set_tests_properties("ErrorHandling::InvalidTestSpecExitsEarly"
     FAIL_REGULAR_EXPRESSION "No tests ran"
 )
 
-if(MSVC)
+if(WIN32)
   set(_NullFile "NUL")
 else()
   set(_NullFile "/dev/null")
