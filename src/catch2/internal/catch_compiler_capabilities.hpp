@@ -208,7 +208,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Visual C++
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && !defined(__clang__)
 
 // We want to defer to nvcc-specific warning suppression if we are compiled
 // with nvcc masquerading for MSVC.
