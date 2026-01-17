@@ -354,7 +354,8 @@ public:
         }
         tp.m_currentColumn++;
 
-        auto colInfo = tp.m_columnInfos[tp.m_currentColumn];
+        auto colInfo =
+            tp.m_columnInfos[static_cast<size_t>( tp.m_currentColumn )];
         auto padding = (strSize + 1 < colInfo.width)
             ? std::string(colInfo.width - (strSize + 1), ' ')
             : std::string();

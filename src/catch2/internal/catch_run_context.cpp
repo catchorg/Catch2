@@ -278,7 +278,7 @@ namespace Catch {
         m_config(_config),
         m_reporter(CATCH_MOVE(reporter)),
         m_outputRedirect( makeOutputRedirect( m_reporter->getPreferences().shouldRedirectStdOut ) ),
-        m_abortAfterXFailedAssertions( m_config->abortAfter() ),
+        m_abortAfterXFailedAssertions( static_cast<size_t>(m_config->abortAfter()) ),
         m_reportAssertionStarting( m_reporter->getPreferences().shouldReportAllAssertionStarts ),
         m_includeSuccessfulResults( m_config->includeSuccessfulResults() || m_reporter->getPreferences().shouldReportAllAssertions ),
         m_shouldDebugBreak( m_config->shouldDebugBreak() )
