@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.13.0](#3130)<br>
 [3.12.0](#3120)<br>
 [3.11.0](#3110)<br>
 [3.10.0](#3100)<br>
@@ -70,6 +71,16 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 3.13.0
+
+### Improvements
+* Improved debugger support for reproducible builds
+  * Changed `-ffile-prefix-map` to use `/Catch2` prefix instead of empty string
+  * This avoids conflicts when multiple libraries use reproducible builds
+  * Updated `gdbinit` and `lldbinit` with path substitution instructions
+  * Users need to add `set substitute-path /Catch2 <path>` to their debugger config
 
 
 ## 3.12.0
