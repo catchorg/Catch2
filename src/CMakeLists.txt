@@ -355,6 +355,21 @@ add_library(Catch2 ${ALL_FILES})
 if(CATCH_ENABLE_REPRODUCIBLE_BUILD)
   add_build_reproducibility_settings(Catch2)
 endif()
+
+if(MSVC)
+    target_compile_options(Catch2 PUBLIC /MP)
+endif()
+
+target_compile_features(Catch2 PRIVATE cxx_std_17)
+
+# Batch size 8 avoids operator<< conflicts while maintaining speed
+set_target_properties(Catch2
+    PROPERTIES
+        UNITY_BUILD ON
+        UNITY_BUILD_BATCH_SIZE 8
+)
+
+
 add_library(Catch2::Catch2 ALIAS Catch2)
 
 if(ANDROID)
@@ -368,7 +383,6 @@ set_target_properties(Catch2 PROPERTIES
 )
 
 # require C++14
-target_compile_features(Catch2 PUBLIC cxx_std_14)
 
 configure_file(
   "${SOURCES_DIR}/catch_user_config.hpp.in"
