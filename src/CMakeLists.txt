@@ -355,6 +355,21 @@ add_library(Catch2 ${ALL_FILES})
 if(CATCH_ENABLE_REPRODUCIBLE_BUILD)
   add_build_reproducibility_settings(Catch2)
 endif()
+
+# i think this will reduce build time from 70sec to 15 sec for sure!!!
+if(MSVC)
+    target_compile_options(Catch2 PUBLIC /MP)
+endif()
+
+target_compile_features(Catch2 PRIVATE cxx_std_17)
+
+# Enable Unity Builds  combines source files for faster compilation
+set_target_properties(Catch2
+    PROPERTIES
+        UNITY_BUILD ON
+        UNITY_BUILD_BATCH_SIZE 25
+)
+
 add_library(Catch2::Catch2 ALIAS Catch2)
 
 if(ANDROID)
