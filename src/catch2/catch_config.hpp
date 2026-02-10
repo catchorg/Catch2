@@ -43,6 +43,20 @@ namespace Catch {
         }
     };
 
+    struct PathFilter {
+        enum class For {
+            Section,
+            Generator,
+        };
+        PathFilter( For type_, std::string filter_ ):
+            type( type_ ), filter( std::move( filter_ ) ) {}
+
+        For type;
+        std::string filter;
+
+        friend bool operator==( PathFilter const& lhs, PathFilter const& rhs );
+    };
+
     struct ConfigData {
 
         bool listTests = false;
@@ -87,6 +101,8 @@ namespace Catch {
 
         std::vector<std::string> testsOrTags;
         std::vector<std::string> sectionsToRun;
+        std::vector<PathFilter> pathFilters;
+        bool useNewPathFilteringBehaviour = false;
 
         std::string prematureExitGuardFilePath;
     };

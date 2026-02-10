@@ -2328,6 +2328,42 @@ ok {test-number} - spec.hasFilters() for: true
 ok {test-number} - spec.getInvalidSpecs().empty() for: true
 # Parsed tags are matched case insensitive
 ok {test-number} - spec.matches( testCase ) for: true
+# Parsing path filter specs
+ok {test-number} - result for: {?}
+# Parsing path filter specs
+ok {test-number} - !(config.useNewPathFilteringBehaviour) for: !false
+# Parsing path filter specs
+ok {test-number} - result for: {?}
+# Parsing path filter specs
+ok {test-number} - config.useNewPathFilteringBehaviour for: true
+# Parsing path filter specs
+ok {test-number} - !(result) for: !{?}
+# Parsing path filter specs
+ok {test-number} - result for: {?}
+# Parsing path filter specs
+ok {test-number} - config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "*" ) for: {?} == {?}
+# Parsing path filter specs
+ok {test-number} - !(result) for: !{?}
+# Parsing path filter specs
+ok {test-number} - result for: {?}
+# Parsing path filter specs
+ok {test-number} - config.useNewPathFilteringBehaviour for: true
+# Parsing path filter specs
+ok {test-number} - config.pathFilters[0] == PathFilter( PathFilter::For::Generator, "1" ) for: {?} == {?}
+# Parsing path filter specs
+ok {test-number} - config.pathFilters[1] == PathFilter( PathFilter::For::Section, "foobar" ) for: {?} == {?}
+# Parsing path filter specs
+ok {test-number} - !(result) for: !{?}
+# Parsing path filter specs
+ok {test-number} - result for: {?}
+# Parsing path filter specs
+ok {test-number} - config.pathFilters[0] == PathFilter( PathFilter::For::Section, "foo-bar" ) for: {?} == {?}
+# Parsing path filter specs
+ok {test-number} - config.pathFilters[1] == PathFilter( PathFilter::For::Generator, "3" ) for: {?} == {?}
+# Parsing path filter specs
+ok {test-number} - config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "123" ) for: {?} == {?}
+# Parsing path filter specs
+ok {test-number} - config.pathFilters[3] == PathFilter( PathFilter::For::Section, "baz" ) for: {?} == {?}
 # Parsing sharding-related cli flags
 ok {test-number} - cli.parse({ "test", "--shard-count=8" }) for: {?}
 # Parsing sharding-related cli flags
@@ -4771,5 +4807,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2388
+1..2406
 

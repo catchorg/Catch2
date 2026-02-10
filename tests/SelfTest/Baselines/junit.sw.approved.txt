@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2388" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2406" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1276,6 +1276,15 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Parse uints/proper inputs" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parse uints/Bad inputs" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsed tags are matched case insensitive" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Parsing path filter specs" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Parsing path filter specs/Only section specs leads to old filter behaviour" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Parsing path filter specs/Generator specs enable new filter behaviour" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Parsing path filter specs/Generator specs do not accept stringish arguments" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Parsing path filter specs/Generator specs accept star as argument" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Parsing path filter specs/Generator specs do not accept negative numbers" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Parsing path filter specs/Generic path spec enables new filter behaviour" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Parsing path filter specs/Generic path spec for generator is validated" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Parsing path filter specs/Using both section and generator filters creates filter stack" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing sharding-related cli flags" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing sharding-related cli flags/shard-count" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing sharding-related cli flags/Negative shard count reports error" time="{duration}" status="run"/>

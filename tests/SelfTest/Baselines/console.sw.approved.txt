@@ -9231,6 +9231,152 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
+Parsing path filter specs
+  Only section specs leads to old filter behaviour
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( result )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( config.useNewPathFilteringBehaviour )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Parsing path filter specs
+  Generator specs enable new filter behaviour
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( result )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.useNewPathFilteringBehaviour )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Parsing path filter specs
+  Generator specs do not accept stringish arguments
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( result )
+with expansion:
+  !{?}
+
+-------------------------------------------------------------------------------
+Parsing path filter specs
+  Generator specs accept star as argument
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( result )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "*" ) )
+with expansion:
+  {?} == {?}
+
+-------------------------------------------------------------------------------
+Parsing path filter specs
+  Generator specs do not accept negative numbers
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( result )
+with expansion:
+  !{?}
+
+-------------------------------------------------------------------------------
+Parsing path filter specs
+  Generic path spec enables new filter behaviour
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( result )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.useNewPathFilteringBehaviour )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.pathFilters[0] == PathFilter( PathFilter::For::Generator, "1" ) )
+with expansion:
+  {?} == {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.pathFilters[1] == PathFilter( PathFilter::For::Section, "foobar" ) )
+with expansion:
+  {?} == {?}
+
+-------------------------------------------------------------------------------
+Parsing path filter specs
+  Generic path spec for generator is validated
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( result )
+with expansion:
+  !{?}
+
+-------------------------------------------------------------------------------
+Parsing path filter specs
+  Using both section and generator filters creates filter stack
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( result )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.pathFilters[0] == PathFilter( PathFilter::For::Section, "foo-bar" ) )
+with expansion:
+  {?} == {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.pathFilters[1] == PathFilter( PathFilter::For::Generator, "3" ) )
+with expansion:
+  {?} == {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "123" ) )
+with expansion:
+  {?} == {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.pathFilters[3] == PathFilter( PathFilter::For::Section, "baz" ) )
+with expansion:
+  {?} == {?}
+
+-------------------------------------------------------------------------------
 Parsing sharding-related cli flags
   shard-count
 -------------------------------------------------------------------------------
@@ -19844,6 +19990,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  448 |  328 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2376 | 2175 passed | 158 failed | 43 failed as expected
+test cases:  449 |  329 passed |  96 failed | 6 skipped | 18 failed as expected
+assertions: 2394 | 2193 passed | 158 failed | 43 failed as expected
 

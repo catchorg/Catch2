@@ -11071,6 +11071,177 @@ Approx( 1.21999999999999997 )
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="Parsing path filter specs" tags="[cli][section-spec]" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+    <Section name="Only section specs leads to old filter behaviour" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          result
+        </Original>
+        <Expanded>
+          {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          !(config.useNewPathFilteringBehaviour)
+        </Original>
+        <Expanded>
+          !false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Generator specs enable new filter behaviour" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          result
+        </Original>
+        <Expanded>
+          {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          config.useNewPathFilteringBehaviour
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Generator specs do not accept stringish arguments" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          !(result)
+        </Original>
+        <Expanded>
+          !{?}
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Generator specs accept star as argument" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          result
+        </Original>
+        <Expanded>
+          {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "*" )
+        </Original>
+        <Expanded>
+          {?} == {?}
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Generator specs do not accept negative numbers" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          !(result)
+        </Original>
+        <Expanded>
+          !{?}
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Generic path spec enables new filter behaviour" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          result
+        </Original>
+        <Expanded>
+          {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          config.useNewPathFilteringBehaviour
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          config.pathFilters[0] == PathFilter( PathFilter::For::Generator, "1" )
+        </Original>
+        <Expanded>
+          {?} == {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          config.pathFilters[1] == PathFilter( PathFilter::For::Section, "foobar" )
+        </Original>
+        <Expanded>
+          {?} == {?}
+        </Expanded>
+      </Expression>
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Generic path spec for generator is validated" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          !(result)
+        </Original>
+        <Expanded>
+          !{?}
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Using both section and generator filters creates filter stack" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          result
+        </Original>
+        <Expanded>
+          {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          config.pathFilters[0] == PathFilter( PathFilter::For::Section, "foo-bar" )
+        </Original>
+        <Expanded>
+          {?} == {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          config.pathFilters[1] == PathFilter( PathFilter::For::Generator, "3" )
+        </Original>
+        <Expanded>
+          {?} == {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "123" )
+        </Original>
+        <Expanded>
+          {?} == {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          config.pathFilters[3] == PathFilter( PathFilter::For::Section, "baz" )
+        </Original>
+        <Expanded>
+          {?} == {?}
+        </Expanded>
+      </Expression>
+      <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="Parsing sharding-related cli flags" tags="[sharding]" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
     <Section name="shard-count" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -23019,6 +23190,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2175" failures="158" expectedFailures="43" skips="12"/>
-  <OverallResultsCases successes="328" failures="96" expectedFailures="18" skips="6"/>
+  <OverallResults successes="2193" failures="158" expectedFailures="43" skips="12"/>
+  <OverallResultsCases successes="329" failures="96" expectedFailures="18" skips="6"/>
 </Catch2TestRun>

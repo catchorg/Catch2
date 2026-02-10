@@ -92,6 +92,10 @@ namespace Catch {
                lhs.customOptions == rhs.customOptions;
     }
 
+    bool operator==( PathFilter const& lhs, PathFilter const& rhs ) {
+        return lhs.type == rhs.type && lhs.filter == rhs.filter;
+    }
+
     Config::Config( ConfigData const& data ):
         m_data( data ) {
         // We need to trim filter specs to avoid trouble with superfluous

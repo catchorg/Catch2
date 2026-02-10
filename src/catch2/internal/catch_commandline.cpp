@@ -216,6 +216,42 @@ namespace Catch {
             return ParserResult::ok( ParseResultType::Matched );
         };
 
+        auto const setSectionFilter = [&]( std::string const& sectionFilter ) {
+            config.sectionsToRun.push_back( sectionFilter );
+            config.pathFilters.emplace_back( PathFilter::For::Section, sectionFilter );
+            return ParserResult::ok( ParseResultType::Matched );
+        };
+        auto const setGeneratorFilter = [&]( std::string const& generatorFilter ) {
+            // TODO: avoid re-parsing the index?
+            auto parsedIndex = parseUInt( generatorFilter );
+            if ( !parsedIndex ) {
+                return ParserResult::runtimeError( "Could not parse '" +
+                                                   generatorFilter +
+                                                   "' as generator index" );
+            }
+            config.useNewPathFilteringBehaviour = true;
+            config.pathFilters.emplace_back( PathFilter::For::Generator, generatorFilter );
+            return ParserResult::ok( ParseResultType::Matched );
+        };
+        // Copy-capturing other `setFoo` functions enables calling them later,
+        // as the config ref remains valid, but the local lambda vars won't.
+        auto const setPathFilter = [=, &config]( std::string const& pathFilter ) {
+            config.useNewPathFilteringBehaviour = true;
+            if ( pathFilter.size() < 3 ) {
+                return ParserResult::runtimeError(
+                    "Path filter '" + pathFilter + "' is too short" );
+            }
+            if ( pathFilter[0] == 'g' ) {
+                return setGeneratorFilter( pathFilter.substr(2) );
+            }
+            if ( pathFilter[0] == 'c' ) {
+                return setSectionFilter( pathFilter.substr( 2 ) );
+            }
+            return ParserResult::runtimeError( "Path filter '" + pathFilter +
+                                               "' has unknown type prefix" );
+        };
+
+
         auto cli
             = ExeName( config.processName )
             | Help( config.showHelp )
@@ -261,9 +297,15 @@ namespace Catch {
             | Opt( config.filenamesAsTags )
                 ["-#"]["--filenames-as-tags"]
                 ( "adds a tag for the filename" )
-            | Opt( config.sectionsToRun, "section name" )
+            | Opt( accept_many, setSectionFilter, "section name" )
                 ["-c"]["--section"]
                 ( "specify section to run" )
+            | Opt( accept_many, setGeneratorFilter, "index spec" )
+                ["-g"]["--generator-index"]
+                ( "specify generator elements to try" )
+            | Opt( accept_many, setPathFilter, "path filter spec" )
+                ["-p"]["--path-filter"]
+                ( "qualified path filter" )
             | Opt( setVerbosity, "quiet|normal|high" )
                 ["-v"]["--verbosity"]
                 ( "set output verbosity" )
