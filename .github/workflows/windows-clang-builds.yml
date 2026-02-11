@@ -24,7 +24,7 @@ jobs:
         run: |
           cmake --preset all-tests `
                 -DCMAKE_CXX_STANDARD=${{matrix.std}} `
-                -DCMAKE_C_COMPILER=clang `
+                -G Ninja `
                 -DCMAKE_CXX_COMPILER=clang++ `
 
       - name: Build tests
