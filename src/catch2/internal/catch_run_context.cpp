@@ -126,16 +126,17 @@ namespace Catch {
                         assert( parent &&
                                 "Missing root (test case) level section" );
 
-                        auto const& parentSection =
-                            static_cast<SectionTracker const&>( *parent );
-                        auto const& filters = parentSection.getFilters();
-                        // No filters -> no restrictions on running sections
-                        if ( filters.empty() ) { return true; }
+                        // No filters left -> no restrictions on running sections
+                        size_t childDepth = m_sectionOnlyDepth + 1;
+                        if ( childDepth >= m_filterRef->size() ) {
+                            return true;
+                        }
 
+                        // Look for any child section that could match the remaining filters
                         for ( auto const& child : m_children ) {
                             if ( child->isSectionTracker() &&
                                  static_cast<SectionTracker const&>( *child )
-                                         .trimmedName() == filters[0] ) {
+                                         .trimmedName() == StringRef((*m_filterRef)[childDepth]) ) {
                                 return true;
                             }
                         }
@@ -312,7 +313,8 @@ namespace Catch {
 
         ITracker& rootTracker = m_trackerContext.startRun();
         assert(rootTracker.isSectionTracker());
-        static_cast<SectionTracker&>(rootTracker).addInitialFilters(m_config->getSectionsToRun());
+        rootTracker.setFilters( &m_config->getSectionsToRun(),
+                                m_config->useNewFilterBehaviour() );
 
         // We intentionally only seed the internal RNG once per test case,
         // before it is first invoked. The reason for that is a complex

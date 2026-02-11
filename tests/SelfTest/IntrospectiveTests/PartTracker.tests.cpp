@@ -22,7 +22,9 @@ Catch::TestCaseTracking::NameAndLocationRef makeNAL( StringRef name ) {
 TEST_CASE( "Tracker" ) {
 
     TrackerContext ctx;
-    ctx.startRun();
+    ITracker& root = ctx.startRun();
+    std::vector<std::string> dummyFilters{ std::string(), std::string() };
+    root.setFilters( &dummyFilters, false );
     ctx.startCycle();
 
 

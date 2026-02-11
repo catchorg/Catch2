@@ -105,8 +105,12 @@ namespace Catch {
         for (auto& elem : m_data.testsOrTags) {
             elem = trim(elem);
         }
+        // TBD: Maybe trim these when parsing them already?
         for (auto& elem : m_data.sectionsToRun) {
             elem = trim(elem);
+        }
+        for (auto& elem : m_data.pathFilters) {
+            elem.filter = trim( elem.filter );
         }
 
         // Insert the default reporter if user hasn't asked for a specific one
@@ -174,6 +178,8 @@ namespace Catch {
 
     std::vector<std::string> const& Config::getTestsOrTags() const { return m_data.testsOrTags; }
     std::vector<std::string> const& Config::getSectionsToRun() const { return m_data.sectionsToRun; }
+    std::vector<PathFilter> const& Config::getPathFilters() const { return m_data.pathFilters; }
+    bool Config::useNewFilterBehaviour() const { return m_data.useNewPathFilteringBehaviour; }
 
     std::vector<ReporterSpec> const& Config::getReporterSpecs() const {
         return m_data.reporterSpecifications;

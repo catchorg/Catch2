@@ -62,6 +62,7 @@ namespace Catch {
 
     class TestSpec;
     class IStream;
+    struct PathFilter;
 
     class IConfig : public Detail::NonCopyable {
     public:
@@ -88,6 +89,9 @@ namespace Catch {
         virtual unsigned int shardIndex() const = 0;
         virtual ColourMode defaultColourMode() const = 0;
         virtual std::vector<std::string> const& getSectionsToRun() const = 0;
+        virtual std::vector<PathFilter> const& getPathFilters() const = 0;
+        virtual bool useNewFilterBehaviour() const = 0;
+
         virtual Verbosity verbosity() const = 0;
 
         virtual bool skipBenchmarks() const = 0;

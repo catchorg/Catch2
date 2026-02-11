@@ -100,7 +100,8 @@ namespace Catch {
         std::vector<ReporterSpec> reporterSpecifications;
 
         std::vector<std::string> testsOrTags;
-        std::vector<std::string> sectionsToRun;
+        // TODO: 2 dummy filters at the start
+        std::vector<std::string> sectionsToRun = { std::string(), std::string() };
         std::vector<PathFilter> pathFilters;
         bool useNewPathFilteringBehaviour = false;
 
@@ -126,6 +127,8 @@ namespace Catch {
 
         std::vector<std::string> const& getTestsOrTags() const override;
         std::vector<std::string> const& getSectionsToRun() const override;
+        std::vector<PathFilter> const& getPathFilters() const override;
+        bool useNewFilterBehaviour() const override;
 
         TestSpec const& testSpec() const override;
         bool hasTestFilters() const override;

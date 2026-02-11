@@ -89,15 +89,18 @@ namespace TestCaseTracking {
         };
 
         ITracker* m_parent = nullptr;
+        std::vector<std::string> const* m_filterRef = nullptr;
+        // Transitory: Remove once we remove backwards compatibility with v3.x filters
+        bool m_newStyleFilters = false;
         Children m_children;
         CycleState m_runState = NotStarted;
+        // These are only copied here, it is up to the derived classes to update
+        size_t m_allTrackerDepth = 0;
+        // This only serves to support the old style filters, we can remove it afterwards
+        size_t m_sectionOnlyDepth = 0;
 
     public:
-        ITracker( NameAndLocation&& nameAndLoc, ITracker* parent ):
-            m_nameAndLocation( CATCH_MOVE(nameAndLoc) ),
-            m_parent( parent )
-        {}
-
+        ITracker( NameAndLocation&& nameAndLoc, ITracker* parent );
 
         // static queries
         NameAndLocation const& nameAndLocation() const {
@@ -122,6 +125,11 @@ namespace TestCaseTracking {
         bool isOpen() const;
         //! Returns true iff tracker has started
         bool hasStarted() const;
+
+        void setFilters( std::vector<std::string> const* filters, bool newStyleFilters ) {
+            m_filterRef = filters;
+            m_newStyleFilters = newStyleFilters;
+        }
 
         // actions
         virtual void close() = 0; // Successfully complete
@@ -208,8 +216,7 @@ namespace TestCaseTracking {
         void moveToThis();
     };
 
-    class SectionTracker : public TrackerBase {
-        std::vector<StringRef> m_filters;
+    class SectionTracker final : public TrackerBase {
         // Note that lifetime-wise we piggy back off the name stored in the `ITracker` parent`.
         // Currently it allocates owns the name, so this is safe. If it is later refactored
         // to not own the name, the name still has to outlive the `ITracker` parent, so
@@ -226,10 +233,6 @@ namespace TestCaseTracking {
 
         void tryOpen();
 
-        void addInitialFilters( std::vector<std::string> const& filters );
-        void addNextFilters( std::vector<StringRef> const& filters );
-        //! Returns filters active in this tracker
-        std::vector<StringRef> const& getFilters() const { return m_filters; }
         //! Returns whitespace-trimmed name of the tracked section
         StringRef trimmedName() const;
     };
