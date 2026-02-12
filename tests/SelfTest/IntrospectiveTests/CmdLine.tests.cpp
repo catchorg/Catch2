@@ -522,9 +522,9 @@ TEST_CASE( "Parsing path filter specs",
         REQUIRE( result );
         REQUIRE( config.useNewPathFilteringBehaviour );
 
-        REQUIRE( config.pathFilters[0] ==
+        REQUIRE( config.pathFilters[2] ==
                  PathFilter( PathFilter::For::Generator, "1" ) );
-        REQUIRE( config.pathFilters[1] ==
+        REQUIRE( config.pathFilters[3] ==
                  PathFilter( PathFilter::For::Section, "foobar" ) );
     }
     SECTION( "Generic path spec for generator is validated" ) {
@@ -539,9 +539,9 @@ TEST_CASE( "Parsing path filter specs",
                                    "-c", "baz"
         });
         REQUIRE( result );
-        REQUIRE( config.pathFilters[0] == PathFilter( PathFilter::For::Section, "foo-bar" ) );
-        REQUIRE( config.pathFilters[1] == PathFilter( PathFilter::For::Generator, "3" ) );
-        REQUIRE( config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "123" ) );
-        REQUIRE( config.pathFilters[3] == PathFilter( PathFilter::For::Section, "baz" ) );
+        REQUIRE( config.pathFilters[2] == PathFilter( PathFilter::For::Section, "foo-bar" ) );
+        REQUIRE( config.pathFilters[3] == PathFilter( PathFilter::For::Generator, "3" ) );
+        REQUIRE( config.pathFilters[4] == PathFilter( PathFilter::For::Generator, "123" ) );
+        REQUIRE( config.pathFilters[5] == PathFilter( PathFilter::For::Section, "baz" ) );
     }
 }

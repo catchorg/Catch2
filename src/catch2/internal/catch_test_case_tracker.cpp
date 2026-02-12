@@ -8,8 +8,9 @@
 #include <catch2/internal/catch_test_case_tracker.hpp>
 
 #include <catch2/internal/catch_enforce.hpp>
-#include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_path_filter.hpp>
+#include <catch2/internal/catch_string_manip.hpp>
 
 #include <algorithm>
 #include <cassert>
@@ -21,6 +22,8 @@
 
 namespace Catch {
 namespace TestCaseTracking {
+
+    static constexpr size_t kFirstFilterableDepth = 2;
 
     NameAndLocation::NameAndLocation( std::string&& _name, SourceLineInfo const& _location )
     :   name( CATCH_MOVE(_name) ),
@@ -179,15 +182,16 @@ namespace TestCaseTracking {
     }
 
     bool SectionTracker::isComplete() const {
-        bool complete = true;
-
-        if (m_sectionOnlyDepth >= m_filterRef->size()
-            || (*m_filterRef)[m_sectionOnlyDepth].empty()
-            || StringRef((*m_filterRef)[m_sectionOnlyDepth]) == m_trimmed_name) {
-            complete = TrackerBase::isComplete();
+        // If there are active filters AND we do not pass them,
+        // the section is always "completed"
+        if ( m_sectionOnlyDepth < m_filterRef->size() &&
+             m_sectionOnlyDepth >= kFirstFilterableDepth &&
+             m_trimmed_name !=
+                 StringRef( ( *m_filterRef )[m_sectionOnlyDepth].filter ) ) {
+            return true;
         }
-
-        return complete;
+        // Otherwise we delegate to the generic processing
+        return TrackerBase::isComplete();
     }
 
     bool SectionTracker::isSectionTracker() const { return true; }

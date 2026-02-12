@@ -9321,12 +9321,12 @@ with expansion:
   true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.pathFilters[0] == PathFilter( PathFilter::For::Generator, "1" ) )
+  REQUIRE( config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "1" ) )
 with expansion:
   {?} == {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.pathFilters[1] == PathFilter( PathFilter::For::Section, "foobar" ) )
+  REQUIRE( config.pathFilters[3] == PathFilter( PathFilter::For::Section, "foobar" ) )
 with expansion:
   {?} == {?}
 
@@ -9355,22 +9355,22 @@ with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.pathFilters[0] == PathFilter( PathFilter::For::Section, "foo-bar" ) )
+  REQUIRE( config.pathFilters[2] == PathFilter( PathFilter::For::Section, "foo-bar" ) )
 with expansion:
   {?} == {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.pathFilters[1] == PathFilter( PathFilter::For::Generator, "3" ) )
+  REQUIRE( config.pathFilters[3] == PathFilter( PathFilter::For::Generator, "3" ) )
 with expansion:
   {?} == {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "123" ) )
+  REQUIRE( config.pathFilters[4] == PathFilter( PathFilter::For::Generator, "123" ) )
 with expansion:
   {?} == {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.pathFilters[3] == PathFilter( PathFilter::For::Section, "baz" ) )
+  REQUIRE( config.pathFilters[5] == PathFilter( PathFilter::For::Section, "baz" ) )
 with expansion:
   {?} == {?}
 

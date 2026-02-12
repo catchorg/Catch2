@@ -12,6 +12,7 @@
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_optional.hpp>
+#include <catch2/internal/catch_path_filter.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_random_seed_generation.hpp>
 #include <catch2/internal/catch_reporter_spec_parser.hpp>
@@ -41,20 +42,6 @@ namespace Catch {
                                 ProcessedReporterSpec const& rhs ) {
             return !( lhs == rhs );
         }
-    };
-
-    struct PathFilter {
-        enum class For {
-            Section,
-            Generator,
-        };
-        PathFilter( For type_, std::string filter_ ):
-            type( type_ ), filter( std::move( filter_ ) ) {}
-
-        For type;
-        std::string filter;
-
-        friend bool operator==( PathFilter const& lhs, PathFilter const& rhs );
     };
 
     struct ConfigData {
@@ -100,9 +87,13 @@ namespace Catch {
         std::vector<ReporterSpec> reporterSpecifications;
 
         std::vector<std::string> testsOrTags;
-        // TODO: 2 dummy filters at the start
-        std::vector<std::string> sectionsToRun = { std::string(), std::string() };
-        std::vector<PathFilter> pathFilters;
+        // TODO: 2 dummy filters at the start -- handle them differently,
+        //       e.g. by starting the root tracker at -2, so that the following
+        //       trackers overflow and first section tracker is at 0.
+        std::vector<PathFilter> pathFilters = {
+            PathFilter( PathFilter::For::Section, "root dummy" ),
+            PathFilter( PathFilter::For::Section, "test case dummy" )
+        };
         bool useNewPathFilteringBehaviour = false;
 
         std::string prematureExitGuardFilePath;
@@ -126,7 +117,6 @@ namespace Catch {
         getProcessedReporterSpecs() const;
 
         std::vector<std::string> const& getTestsOrTags() const override;
-        std::vector<std::string> const& getSectionsToRun() const override;
         std::vector<PathFilter> const& getPathFilters() const override;
         bool useNewFilterBehaviour() const override;
 

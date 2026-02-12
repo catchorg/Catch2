@@ -115,6 +115,7 @@ internal_headers = [
   'internal/catch_optional.hpp',
   'internal/catch_output_redirect.hpp',
   'internal/catch_parse_numbers.hpp',
+  'internal/catch_path_filter.hpp',
   'internal/catch_platform.hpp',
   'internal/catch_polyfills.hpp',
   'internal/catch_preprocessor.hpp',

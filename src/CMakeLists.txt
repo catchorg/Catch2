@@ -108,6 +108,7 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/internal/catch_optional.hpp
   ${SOURCES_DIR}/internal/catch_output_redirect.hpp
   ${SOURCES_DIR}/internal/catch_parse_numbers.hpp
+  ${SOURCES_DIR}/internal/catch_path_filter.hpp
   ${SOURCES_DIR}/internal/catch_platform.hpp
   ${SOURCES_DIR}/internal/catch_polyfills.hpp
   ${SOURCES_DIR}/internal/catch_preprocessor.hpp

@@ -9,6 +9,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/internal/catch_test_case_tracker.hpp>
+#include <catch2/internal/catch_path_filter.hpp>
 
 
 using namespace Catch;
@@ -23,7 +24,10 @@ TEST_CASE( "Tracker" ) {
 
     TrackerContext ctx;
     ITracker& root = ctx.startRun();
-    std::vector<std::string> dummyFilters{ std::string(), std::string() };
+    std::vector<PathFilter> dummyFilters{
+        PathFilter( PathFilter::For::Section, "dummy root" ),
+        PathFilter( PathFilter::For::Section, "dummy test case" )
+    };
     root.setFilters( &dummyFilters, false );
     ctx.startCycle();
 

@@ -217,7 +217,6 @@ namespace Catch {
         };
 
         auto const setSectionFilter = [&]( std::string const& sectionFilter ) {
-            config.sectionsToRun.push_back( sectionFilter );
             config.pathFilters.emplace_back( PathFilter::For::Section, sectionFilter );
             return ParserResult::ok( ParseResultType::Matched );
         };

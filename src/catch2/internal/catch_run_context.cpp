@@ -19,6 +19,7 @@
 #include <catch2/catch_timer.hpp>
 #include <catch2/internal/catch_output_redirect.hpp>
 #include <catch2/internal/catch_assertion_handler.hpp>
+#include <catch2/internal/catch_path_filter.hpp>
 #include <catch2/internal/catch_test_failure_exception.hpp>
 #include <catch2/internal/catch_thread_local.hpp>
 #include <catch2/internal/catch_unreachable.hpp>
@@ -136,7 +137,7 @@ namespace Catch {
                         for ( auto const& child : m_children ) {
                             if ( child->isSectionTracker() &&
                                  static_cast<SectionTracker const&>( *child )
-                                         .trimmedName() == StringRef((*m_filterRef)[childDepth]) ) {
+                                         .trimmedName() == StringRef((*m_filterRef)[childDepth].filter) ) {
                                 return true;
                             }
                         }
@@ -313,7 +314,7 @@ namespace Catch {
 
         ITracker& rootTracker = m_trackerContext.startRun();
         assert(rootTracker.isSectionTracker());
-        rootTracker.setFilters( &m_config->getSectionsToRun(),
+        rootTracker.setFilters( &m_config->getPathFilters(),
                                 m_config->useNewFilterBehaviour() );
 
         // We intentionally only seed the internal RNG once per test case,

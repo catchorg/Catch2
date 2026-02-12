@@ -17,6 +17,9 @@
 #include <vector>
 
 namespace Catch {
+
+struct PathFilter;
+
 namespace TestCaseTracking {
 
     struct NameAndLocation {
@@ -89,7 +92,7 @@ namespace TestCaseTracking {
         };
 
         ITracker* m_parent = nullptr;
-        std::vector<std::string> const* m_filterRef = nullptr;
+        std::vector<PathFilter> const* m_filterRef = nullptr;
         // Transitory: Remove once we remove backwards compatibility with v3.x filters
         bool m_newStyleFilters = false;
         Children m_children;
@@ -126,7 +129,7 @@ namespace TestCaseTracking {
         //! Returns true iff tracker has started
         bool hasStarted() const;
 
-        void setFilters( std::vector<std::string> const* filters, bool newStyleFilters ) {
+        void setFilters( std::vector<PathFilter> const* filters, bool newStyleFilters ) {
             m_filterRef = filters;
             m_newStyleFilters = newStyleFilters;
         }

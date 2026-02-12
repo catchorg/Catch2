@@ -88,7 +88,6 @@ namespace Catch {
         virtual unsigned int shardCount() const = 0;
         virtual unsigned int shardIndex() const = 0;
         virtual ColourMode defaultColourMode() const = 0;
-        virtual std::vector<std::string> const& getSectionsToRun() const = 0;
         virtual std::vector<PathFilter> const& getPathFilters() const = 0;
         virtual bool useNewFilterBehaviour() const = 0;
 
