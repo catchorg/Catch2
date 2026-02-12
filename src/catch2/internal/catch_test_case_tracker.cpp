@@ -184,12 +184,23 @@ namespace TestCaseTracking {
     bool SectionTracker::isComplete() const {
         // If there are active filters AND we do not pass them,
         // the section is always "completed"
-        if ( m_sectionOnlyDepth < m_filterRef->size() &&
-             m_sectionOnlyDepth >= kFirstFilterableDepth &&
-             m_trimmed_name !=
-                 StringRef( ( *m_filterRef )[m_sectionOnlyDepth].filter ) ) {
-            return true;
+        const size_t filterIndex =
+            m_newStyleFilters ? m_allTrackerDepth : m_sectionOnlyDepth;
+        if ( filterIndex < m_filterRef->size() &&
+             filterIndex >= kFirstFilterableDepth ) {
+            // There is active filter, check it
+            // 1) New style filter must explicitly target section
+            if ( m_newStyleFilters && ( *m_filterRef )[filterIndex].type !=
+                                          PathFilter::For::Section ) {
+                return true;
+            }
+            // 2) Both style filters must match the trimmed name exactly
+            if ( m_trimmed_name !=
+                 StringRef( ( *m_filterRef )[filterIndex].filter ) ) {
+                return true;
+            }
         }
+
         // Otherwise we delegate to the generic processing
         return TrackerBase::isComplete();
     }

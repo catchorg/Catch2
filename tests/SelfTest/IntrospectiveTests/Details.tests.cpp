@@ -219,7 +219,7 @@ TEST_CASE( "corge", "[approvals]" ) {
     REQUIRE( true );
 }
 
-TEST_CASE("grault", "[approvals]") {
+TEST_CASE( "grault", "[approvals]" ) {
     REQUIRE( true );
     SECTION( "A" ) {
         REQUIRE( true );
@@ -232,3 +232,18 @@ TEST_CASE("grault", "[approvals]") {
     }
     REQUIRE( true );
 }
+
+TEST_CASE( "garply", "[approvals]" ) {
+    auto i = GENERATE( 1, 10, 100 );
+    CAPTURE( i );
+    REQUIRE( true );
+}
+
+TEST_CASE( "waldo", "[approvals]" ) {
+    auto i = GENERATE( 1, 10, 100 );
+    auto j = GENERATE( 2, 20, 200 );
+    CAPTURE( i, j );
+    REQUIRE( true );
+}
+
+// More names: fred, plugh, xyzzy, thud

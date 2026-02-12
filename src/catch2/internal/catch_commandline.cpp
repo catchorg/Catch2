@@ -221,12 +221,14 @@ namespace Catch {
             return ParserResult::ok( ParseResultType::Matched );
         };
         auto const setGeneratorFilter = [&]( std::string const& generatorFilter ) {
-            // TODO: avoid re-parsing the index?
-            auto parsedIndex = parseUInt( generatorFilter );
-            if ( !parsedIndex ) {
-                return ParserResult::runtimeError( "Could not parse '" +
-                                                   generatorFilter +
-                                                   "' as generator index" );
+            if (generatorFilter != "*") {
+                // TODO: avoid re-parsing the index?
+                auto parsedIndex = parseUInt( generatorFilter );
+                if ( !parsedIndex ) {
+                    return ParserResult::runtimeError( "Could not parse '" +
+                                                       generatorFilter +
+                                                       "' as generator index" );
+                }
             }
             config.useNewPathFilteringBehaviour = true;
             config.pathFilters.emplace_back( PathFilter::For::Generator, generatorFilter );

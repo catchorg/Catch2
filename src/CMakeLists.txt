@@ -256,11 +256,13 @@ set(GENERATOR_HEADERS
   ${SOURCES_DIR}/generators/catch_generators_all.hpp
   ${SOURCES_DIR}/generators/catch_generators_random.hpp
   ${SOURCES_DIR}/generators/catch_generators_range.hpp
+  ${SOURCES_DIR}/generators/catch_generators_throw.hpp
 )
 set(GENERATOR_SOURCES
   ${SOURCES_DIR}/generators/catch_generator_exception.cpp
   ${SOURCES_DIR}/generators/catch_generators.cpp
   ${SOURCES_DIR}/generators/catch_generators_random.cpp
+  ${SOURCES_DIR}/generators/catch_generators_throw.cpp
 )
 set(GENERATOR_FILES ${GENERATOR_HEADERS} ${GENERATOR_SOURCES})
 

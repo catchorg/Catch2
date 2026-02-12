@@ -8,6 +8,7 @@
 #include <catch2/internal/catch_run_context.hpp>
 
 #include <catch2/catch_user_config.hpp>
+#include <catch2/generators/catch_generators_throw.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/interfaces/catch_interfaces_generatortracker.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
@@ -36,6 +37,7 @@ namespace Catch {
             struct GeneratorTracker final : TestCaseTracking::TrackerBase,
                                       IGeneratorTracker {
                 GeneratorBasePtr m_generator;
+                bool m_isFiltered = false;
 
                 GeneratorTracker(
                     TestCaseTracking::NameAndLocation&& nameAndLocation,
@@ -46,6 +48,28 @@ namespace Catch {
                     m_generator( CATCH_MOVE( generator ) ) {
                     assert( m_generator &&
                             "Cannot create tracker without generator" );
+
+                    // Handle potential filter and move forward here...
+                    // Old style filters do not affect generators at all
+                    if (m_newStyleFilters && m_allTrackerDepth < m_filterRef->size()) {
+                        auto const& filter =
+                            ( *m_filterRef )[m_allTrackerDepth];
+                        // Generator cannot be un-entered the way a section
+                        // can be, so a bad filter has to throw.
+                        if (filter.type == PathFilter::For::Section) {
+                            Detail::throw_generator_exception(
+                                "Generator encountered section filter" );
+                        }
+                        // '*' is the wildcard for "all elements in generator"
+                        // used for filtering sections below the generator, but
+                        // not the generator itself.
+                        if ( filter.filter != "*" ) {
+                            m_isFiltered = true;
+                            // TODO: We assume this is safe and the filter was validated upon parsing
+                            size_t targetIndex = std::stoul( filter.filter );
+                            m_generator->skipToNthElement( targetIndex );
+                        }
+                    }
                 }
 
                 static GeneratorTracker*
@@ -118,21 +142,19 @@ namespace Catch {
                         // _can_ start, and thus we should wait for them, or
                         // they cannot start (due to filters), and we shouldn't
                         // wait for them
-                        ITracker* parent = m_parent;
-                        // This is safe: there is always at least one section
-                        // tracker in a test case tracking tree
-                        while ( !parent->isSectionTracker() ) {
-                            parent = parent->parent();
-                        }
-                        assert( parent &&
-                                "Missing root (test case) level section" );
 
                         // No filters left -> no restrictions on running sections
-                        size_t childDepth = m_sectionOnlyDepth + 1;
+                        size_t childDepth = 1 + (m_newStyleFilters ? m_allTrackerDepth : m_sectionOnlyDepth);
                         if ( childDepth >= m_filterRef->size() ) {
                             return true;
                         }
 
+                        // If we are using the new style filters, we need to check
+                        // whether the successive filter is for section or a generator.
+                        if ( m_newStyleFilters
+                            && (*m_filterRef)[childDepth].type != PathFilter::For::Section ) {
+                            return false;
+                        }
                         // Look for any child section that could match the remaining filters
                         for ( auto const& child : m_children ) {
                             if ( child->isSectionTracker() &&
@@ -149,9 +171,10 @@ namespace Catch {
                     // value, but we do not want to invoke the side-effect if
                     // this generator is still waiting for any child to start.
                     assert( m_generator && "Tracker without generator" );
-                    if ( should_wait_for_child ||
-                         ( m_runState == CompletedSuccessfully &&
-                           m_generator->countedNext() ) ) {
+                    if ( should_wait_for_child
+                        ||  ( m_runState == CompletedSuccessfully
+                            && !m_isFiltered // filtered generators cannot meaningfully move forward, as they would get past the filter
+                            && m_generator->countedNext() ) ) {
                         m_children.clear();
                         m_runState = Executing;
                     }
