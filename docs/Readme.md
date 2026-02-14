@@ -24,7 +24,8 @@ Once you're up and running consider the following reference material.
 * [String Conversions](tostring.md#top)
 
 **Running:**
-* [Command line](command-line.md#top)
+* [Command line reference](command-line.md#top)
+* [Running specific section/generator](filtering-execution-path.md#top)
 
 **Odds and ends:**
 * [Frequently Asked Questions (FAQ)](faq.md#top)
