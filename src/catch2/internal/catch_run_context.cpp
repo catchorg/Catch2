@@ -37,6 +37,8 @@ namespace Catch {
             struct GeneratorTracker final : TestCaseTracking::TrackerBase,
                                       IGeneratorTracker {
                 GeneratorBasePtr m_generator;
+                // Filtered generator has moved to specific index due to
+                // a filter, it needs special handling of `countedNext()`
                 bool m_isFiltered = false;
 
                 GeneratorTracker(
@@ -55,17 +57,21 @@ namespace Catch {
                         auto const& filter =
                             ( *m_filterRef )[m_allTrackerDepth];
                         // Generator cannot be un-entered the way a section
-                        // can be, so a bad filter has to throw.
+                        // can be, so the tracker has to throw for a wrong
+                        // filter to stop the execution flow.
                         if (filter.type == PathFilter::For::Section) {
-                            Detail::throw_generator_exception(
-                                "Generator encountered section filter" );
+                            // TBD: Explicit SKIP, or new exception that says
+                            //      "don't continue", but doesn't show in totals?
+                            SKIP();
                         }
                         // '*' is the wildcard for "all elements in generator"
                         // used for filtering sections below the generator, but
                         // not the generator itself.
                         if ( filter.filter != "*" ) {
                             m_isFiltered = true;
-                            // TODO: We assume this is safe and the filter was validated upon parsing
+                            // TBD: We assume that the filter was validated as
+                            //      number during parsing. We should pass it
+                            //      as number from the CLI parser.
                             size_t targetIndex = std::stoul( filter.filter );
                             m_generator->skipToNthElement( targetIndex );
                         }
@@ -510,6 +516,7 @@ namespace Catch {
         SourceLineInfo lineInfo,
         Generators::GeneratorBasePtr&& generator ) {
 
+        // TBD: Do we want to avoid the warning if the generator is filtered?
         if ( m_config->warnAboutInfiniteGenerators() &&
              !generator->isFinite() ) {
             // TBD: Would it be better to expand this macro inline?
