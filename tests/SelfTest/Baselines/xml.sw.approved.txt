@@ -11132,7 +11132,7 @@ Approx( 1.21999999999999997 )
       </Expression>
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "*" )
+          config.pathFilters[0] == PathFilter( PathFilter::For::Generator, "*" )
         </Original>
         <Expanded>
           {?} == {?}
@@ -11170,7 +11170,7 @@ Approx( 1.21999999999999997 )
       </Expression>
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "1" )
+          config.pathFilters[0] == PathFilter( PathFilter::For::Generator, "1" )
         </Original>
         <Expanded>
           {?} == {?}
@@ -11178,7 +11178,7 @@ Approx( 1.21999999999999997 )
       </Expression>
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          config.pathFilters[3] == PathFilter( PathFilter::For::Section, "foobar" )
+          config.pathFilters[1] == PathFilter( PathFilter::For::Section, "foobar" )
         </Original>
         <Expanded>
           {?} == {?}
@@ -11227,7 +11227,7 @@ Approx( 1.21999999999999997 )
       </Expression>
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          config.pathFilters[2] == PathFilter( PathFilter::For::Section, "foo-bar" )
+          config.pathFilters[0] == PathFilter( PathFilter::For::Section, "foo-bar" )
         </Original>
         <Expanded>
           {?} == {?}
@@ -11235,7 +11235,7 @@ Approx( 1.21999999999999997 )
       </Expression>
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          config.pathFilters[3] == PathFilter( PathFilter::For::Generator, "3" )
+          config.pathFilters[1] == PathFilter( PathFilter::For::Generator, "3" )
         </Original>
         <Expanded>
           {?} == {?}
@@ -11243,7 +11243,7 @@ Approx( 1.21999999999999997 )
       </Expression>
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          config.pathFilters[4] == PathFilter( PathFilter::For::Generator, "123" )
+          config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "123" )
         </Original>
         <Expanded>
           {?} == {?}
@@ -11251,7 +11251,7 @@ Approx( 1.21999999999999997 )
       </Expression>
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          config.pathFilters[5] == PathFilter( PathFilter::For::Section, "baz" )
+          config.pathFilters[3] == PathFilter( PathFilter::For::Section, "baz" )
         </Original>
         <Expanded>
           {?} == {?}
@@ -11270,7 +11270,7 @@ Approx( 1.21999999999999997 )
       </Expression>
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          config.pathFilters[2] == PathFilter(PathFilter::For::Section, "untrimmed" )
+          config.pathFilters[0] == PathFilter(PathFilter::For::Section, "untrimmed" )
         </Original>
         <Expanded>
           {?} == {?}
@@ -11278,7 +11278,7 @@ Approx( 1.21999999999999997 )
       </Expression>
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          config.pathFilters[3] == PathFilter(PathFilter::For::Generator, "42" )
+          config.pathFilters[1] == PathFilter(PathFilter::For::Generator, "42" )
         </Original>
         <Expanded>
           {?} == {?}

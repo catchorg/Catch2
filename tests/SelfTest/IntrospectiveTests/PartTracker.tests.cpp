@@ -24,10 +24,7 @@ TEST_CASE( "Tracker" ) {
 
     TrackerContext ctx;
     ITracker& root = ctx.startRun();
-    std::vector<PathFilter> dummyFilters{
-        PathFilter( PathFilter::For::Section, "dummy root" ),
-        PathFilter( PathFilter::For::Section, "dummy test case" )
-    };
+    std::vector<PathFilter> dummyFilters;
     root.setFilters( &dummyFilters, false );
     ctx.startCycle();
 

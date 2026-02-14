@@ -2339,7 +2339,7 @@ ok {test-number} - !(result) for: !{?}
 # Parsing path filter specs
 ok {test-number} - result for: {?}
 # Parsing path filter specs
-ok {test-number} - config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "*" ) for: {?} == {?}
+ok {test-number} - config.pathFilters[0] == PathFilter( PathFilter::For::Generator, "*" ) for: {?} == {?}
 # Parsing path filter specs
 ok {test-number} - !(result) for: !{?}
 # Parsing path filter specs
@@ -2347,9 +2347,9 @@ ok {test-number} - result for: {?}
 # Parsing path filter specs
 ok {test-number} - config.useNewPathFilteringBehaviour for: true
 # Parsing path filter specs
-ok {test-number} - config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "1" ) for: {?} == {?}
+ok {test-number} - config.pathFilters[0] == PathFilter( PathFilter::For::Generator, "1" ) for: {?} == {?}
 # Parsing path filter specs
-ok {test-number} - config.pathFilters[3] == PathFilter( PathFilter::For::Section, "foobar" ) for: {?} == {?}
+ok {test-number} - config.pathFilters[1] == PathFilter( PathFilter::For::Section, "foobar" ) for: {?} == {?}
 # Parsing path filter specs
 ok {test-number} - !(result) for: !{?}
 # Parsing path filter specs
@@ -2359,19 +2359,19 @@ ok {test-number} - !(result2) for: !{?}
 # Parsing path filter specs
 ok {test-number} - result for: {?}
 # Parsing path filter specs
-ok {test-number} - config.pathFilters[2] == PathFilter( PathFilter::For::Section, "foo-bar" ) for: {?} == {?}
+ok {test-number} - config.pathFilters[0] == PathFilter( PathFilter::For::Section, "foo-bar" ) for: {?} == {?}
 # Parsing path filter specs
-ok {test-number} - config.pathFilters[3] == PathFilter( PathFilter::For::Generator, "3" ) for: {?} == {?}
+ok {test-number} - config.pathFilters[1] == PathFilter( PathFilter::For::Generator, "3" ) for: {?} == {?}
 # Parsing path filter specs
-ok {test-number} - config.pathFilters[4] == PathFilter( PathFilter::For::Generator, "123" ) for: {?} == {?}
+ok {test-number} - config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "123" ) for: {?} == {?}
 # Parsing path filter specs
-ok {test-number} - config.pathFilters[5] == PathFilter( PathFilter::For::Section, "baz" ) for: {?} == {?}
+ok {test-number} - config.pathFilters[3] == PathFilter( PathFilter::For::Section, "baz" ) for: {?} == {?}
 # Parsing path filter specs
 ok {test-number} - result for: {?}
 # Parsing path filter specs
-ok {test-number} - config.pathFilters[2] == PathFilter(PathFilter::For::Section, "untrimmed" ) for: {?} == {?}
+ok {test-number} - config.pathFilters[0] == PathFilter(PathFilter::For::Section, "untrimmed" ) for: {?} == {?}
 # Parsing path filter specs
-ok {test-number} - config.pathFilters[3] == PathFilter(PathFilter::For::Generator, "42" ) for: {?} == {?}
+ok {test-number} - config.pathFilters[1] == PathFilter(PathFilter::For::Generator, "42" ) for: {?} == {?}
 # Parsing sharding-related cli flags
 ok {test-number} - cli.parse({ "test", "--shard-count=8" }) for: {?}
 # Parsing sharding-related cli flags

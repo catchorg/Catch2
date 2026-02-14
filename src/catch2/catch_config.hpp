@@ -87,13 +87,7 @@ namespace Catch {
         std::vector<ReporterSpec> reporterSpecifications;
 
         std::vector<std::string> testsOrTags;
-        // TODO: 2 dummy filters at the start -- handle them differently,
-        //       e.g. by starting the root tracker at -2, so that the following
-        //       trackers overflow and first section tracker is at 0.
-        std::vector<PathFilter> pathFilters = {
-            PathFilter( PathFilter::For::Section, "root dummy" ),
-            PathFilter( PathFilter::For::Section, "test case dummy" )
-        };
+        std::vector<PathFilter> pathFilters;
         bool useNewPathFilteringBehaviour = false;
 
         std::string prematureExitGuardFilePath;

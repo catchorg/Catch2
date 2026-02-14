@@ -1431,23 +1431,23 @@ CmdLine.tests.cpp:<line number>: passed: result for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.useNewPathFilteringBehaviour for: true
 CmdLine.tests.cpp:<line number>: passed: !(result) for: !{?}
 CmdLine.tests.cpp:<line number>: passed: result for: {?}
-CmdLine.tests.cpp:<line number>: passed: config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "*" ) for: {?} == {?}
+CmdLine.tests.cpp:<line number>: passed: config.pathFilters[0] == PathFilter( PathFilter::For::Generator, "*" ) for: {?} == {?}
 CmdLine.tests.cpp:<line number>: passed: !(result) for: !{?}
 CmdLine.tests.cpp:<line number>: passed: result for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.useNewPathFilteringBehaviour for: true
-CmdLine.tests.cpp:<line number>: passed: config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "1" ) for: {?} == {?}
-CmdLine.tests.cpp:<line number>: passed: config.pathFilters[3] == PathFilter( PathFilter::For::Section, "foobar" ) for: {?} == {?}
+CmdLine.tests.cpp:<line number>: passed: config.pathFilters[0] == PathFilter( PathFilter::For::Generator, "1" ) for: {?} == {?}
+CmdLine.tests.cpp:<line number>: passed: config.pathFilters[1] == PathFilter( PathFilter::For::Section, "foobar" ) for: {?} == {?}
 CmdLine.tests.cpp:<line number>: passed: !(result) for: !{?}
 CmdLine.tests.cpp:<line number>: passed: !(result1) for: !{?}
 CmdLine.tests.cpp:<line number>: passed: !(result2) for: !{?}
 CmdLine.tests.cpp:<line number>: passed: result for: {?}
-CmdLine.tests.cpp:<line number>: passed: config.pathFilters[2] == PathFilter( PathFilter::For::Section, "foo-bar" ) for: {?} == {?}
-CmdLine.tests.cpp:<line number>: passed: config.pathFilters[3] == PathFilter( PathFilter::For::Generator, "3" ) for: {?} == {?}
-CmdLine.tests.cpp:<line number>: passed: config.pathFilters[4] == PathFilter( PathFilter::For::Generator, "123" ) for: {?} == {?}
-CmdLine.tests.cpp:<line number>: passed: config.pathFilters[5] == PathFilter( PathFilter::For::Section, "baz" ) for: {?} == {?}
+CmdLine.tests.cpp:<line number>: passed: config.pathFilters[0] == PathFilter( PathFilter::For::Section, "foo-bar" ) for: {?} == {?}
+CmdLine.tests.cpp:<line number>: passed: config.pathFilters[1] == PathFilter( PathFilter::For::Generator, "3" ) for: {?} == {?}
+CmdLine.tests.cpp:<line number>: passed: config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "123" ) for: {?} == {?}
+CmdLine.tests.cpp:<line number>: passed: config.pathFilters[3] == PathFilter( PathFilter::For::Section, "baz" ) for: {?} == {?}
 CmdLine.tests.cpp:<line number>: passed: result for: {?}
-CmdLine.tests.cpp:<line number>: passed: config.pathFilters[2] == PathFilter(PathFilter::For::Section, "untrimmed" ) for: {?} == {?}
-CmdLine.tests.cpp:<line number>: passed: config.pathFilters[3] == PathFilter(PathFilter::For::Generator, "42" ) for: {?} == {?}
+CmdLine.tests.cpp:<line number>: passed: config.pathFilters[0] == PathFilter(PathFilter::For::Section, "untrimmed" ) for: {?} == {?}
+CmdLine.tests.cpp:<line number>: passed: config.pathFilters[1] == PathFilter(PathFilter::For::Generator, "42" ) for: {?} == {?}
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--shard-count=8" }) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.shardCount == 8 for: 8 == 8
 CmdLine.tests.cpp:<line number>: passed: !(result) for: !{?}

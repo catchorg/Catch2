@@ -23,8 +23,6 @@
 namespace Catch {
 namespace TestCaseTracking {
 
-    static constexpr size_t kFirstFilterableDepth = 2;
-
     NameAndLocation::NameAndLocation( std::string&& _name, SourceLineInfo const& _location )
     :   name( CATCH_MOVE(_name) ),
         location( _location )
@@ -186,8 +184,7 @@ namespace TestCaseTracking {
         // the section is always "completed"
         const size_t filterIndex =
             m_newStyleFilters ? m_allTrackerDepth : m_sectionOnlyDepth;
-        if ( filterIndex < m_filterRef->size() &&
-             filterIndex >= kFirstFilterableDepth ) {
+        if ( filterIndex < m_filterRef->size() ) {
             // There is active filter, check it
             // 1) New style filter must explicitly target section
             if ( m_newStyleFilters && ( *m_filterRef )[filterIndex].type !=

@@ -97,11 +97,16 @@ namespace TestCaseTracking {
 
         // Members for path filtering
         std::vector<PathFilter> const* m_filterRef = nullptr;
+
+        // Note: There are 2 dummy section trackers (root, test-case) before
+        //       the first "real" section tracker can be encountered. We start
+        //       the default tracker at -2, so that the first "real" section
+        //       tracker overflows to index 0.
         // Nesting depth of this tracker, used to decide which new-style filter applies.
-        size_t m_allTrackerDepth = 0;
+        size_t m_allTrackerDepth = static_cast<size_t>( -2 );
         // Nesting depth of sections (inc. this tracker), used for old-style filters.
         // Must be updated by the section tracker on its own.
-        size_t m_sectionOnlyDepth = 0;
+        size_t m_sectionOnlyDepth = static_cast<size_t>( -2 );
         // Transitory: Remove once we remove backwards compatibility with old-style (v3.x) filters
         bool m_newStyleFilters = false;
 

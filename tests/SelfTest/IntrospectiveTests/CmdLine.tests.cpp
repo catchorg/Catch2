@@ -509,7 +509,7 @@ TEST_CASE( "Parsing path filter specs",
         auto result = cli.parse( { "tests", "--generator-index", "*" } );
         REQUIRE( result );
 
-        REQUIRE( config.pathFilters[2] ==
+        REQUIRE( config.pathFilters[0] ==
                  PathFilter( PathFilter::For::Generator, "*" ) );
     }
     SECTION( "Generator specs do not accept negative numbers" ) {
@@ -522,9 +522,9 @@ TEST_CASE( "Parsing path filter specs",
         REQUIRE( result );
         REQUIRE( config.useNewPathFilteringBehaviour );
 
-        REQUIRE( config.pathFilters[2] ==
+        REQUIRE( config.pathFilters[0] ==
                  PathFilter( PathFilter::For::Generator, "1" ) );
-        REQUIRE( config.pathFilters[3] ==
+        REQUIRE( config.pathFilters[1] ==
                  PathFilter( PathFilter::For::Section, "foobar" ) );
     }
     SECTION( "Generic path spec for generator is validated" ) {
@@ -545,10 +545,10 @@ TEST_CASE( "Parsing path filter specs",
                                    "-c", "baz"
         });
         REQUIRE( result );
-        REQUIRE( config.pathFilters[2] == PathFilter( PathFilter::For::Section, "foo-bar" ) );
-        REQUIRE( config.pathFilters[3] == PathFilter( PathFilter::For::Generator, "3" ) );
-        REQUIRE( config.pathFilters[4] == PathFilter( PathFilter::For::Generator, "123" ) );
-        REQUIRE( config.pathFilters[5] == PathFilter( PathFilter::For::Section, "baz" ) );
+        REQUIRE( config.pathFilters[0] == PathFilter( PathFilter::For::Section, "foo-bar" ) );
+        REQUIRE( config.pathFilters[1] == PathFilter( PathFilter::For::Generator, "3" ) );
+        REQUIRE( config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "123" ) );
+        REQUIRE( config.pathFilters[3] == PathFilter( PathFilter::For::Section, "baz" ) );
     }
     SECTION( "Section/generator filters are whitespace trimmed" ) {
         auto result = cli.parse( { "tests",
@@ -556,7 +556,7 @@ TEST_CASE( "Parsing path filter specs",
                                    "--generator-index", "  42  "
         });
         REQUIRE( result );
-        REQUIRE( config.pathFilters[2] == PathFilter(PathFilter::For::Section, "untrimmed" ) );
-        REQUIRE( config.pathFilters[3] == PathFilter(PathFilter::For::Generator, "42" ) );
+        REQUIRE( config.pathFilters[0] == PathFilter(PathFilter::For::Section, "untrimmed" ) );
+        REQUIRE( config.pathFilters[1] == PathFilter(PathFilter::For::Generator, "42" ) );
     }
 }
