@@ -132,6 +132,13 @@ old_section_tests = {
 }
 
 new_filter_tests = {
+  'grault': (
+    ((), 12),
+    (('c:B', 'g:1'), 3),
+    (('c:B', 'g:1', 'c:i=2'), 3),
+    # We filter the generator to different element than the dynamic section
+    (('c:B', 'g:1', 'c:i=1'), 2),
+  ),
   'garply': (
     ((), 3),
     (('g:1',), 1),
@@ -149,13 +156,6 @@ new_filter_tests = {
     (('g:0', 'g:*'), 3),
     (('g:*', 'g:*'), 9),
     (('g:*', 'g:1', 'c:abcdef'), 3),
-  ),
-  'grault': (
-    ((), 12),
-    (('c:B', 'g:1'), 3),
-    (('c:B', 'g:1', 'c:i=2'), 3),
-    # We filter the generator to different element than the dynamic section
-    (('c:B', 'g:1', 'c:i=1'), 2),
   ),
   'fred': (
     ((), 24),
