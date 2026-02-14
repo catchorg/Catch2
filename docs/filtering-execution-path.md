@@ -46,6 +46,7 @@ the section can be opened. If not, Catch2 will skip over that section.
 
 ### Examples
 
+#### Simple section nesting
 Given
 ```cpp
 TEST_CASE( "foo" ) {
@@ -69,6 +70,7 @@ TEST_CASE( "foo" ) {
    resulting in 2 assertions.
 
 
+#### Sections with nested generators
 Note that old behaviour completely _ignores_ generators. This means both
 that they can't be filtered, but also that they aren't taken into account
 for the filter depth. In other words, given
@@ -94,6 +96,7 @@ TEST_CASE( "bar" ) {
   even though the dynamic section will never be entered.
 
 
+#### Section with sibling generators
 For cases where sections have sibling generators, the filtering can get
 even more surprising.
 ```cpp
@@ -146,7 +149,7 @@ equivalent, causing the section to be considered skipped.
 
 ### Examples
 
-**nested generators**
+#### Nested generators
 ```cpp
 TEST_CASE( "waldo" ) {
     auto i = GENERATE( 1, 10, 100 );
@@ -166,7 +169,7 @@ TEST_CASE( "waldo" ) {
   second generator does not have 3rd element, but we have to exhaust the
   first generator.
 
-**generators child dynamic section**
+#### Generator with a nested dynamic section
 ```cpp
 TEST_CASE( "grault" ) {
     REQUIRE( true );
@@ -183,7 +186,7 @@ TEST_CASE( "grault" ) {
 * `./tests grault -p g:1 -p c:i=3` results in 1 assertion, as the generator
   is limited to only try `i := 2` and the dynamic section is filtered out.
 
-**section with sibling generator**
+#### Section with a sibling generator
 Because generators have to stop test execution when they don't pass filter,
 it is impossible to run only a section with sibling generator without
 triggering a test case skip. Consider this test case from an earlier example:
