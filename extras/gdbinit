@@ -14,3 +14,19 @@
 # 
 
 skip -rfu Catch
+
+#
+# Path substitution for reproducible builds
+#
+# If Catch2 was built with CATCH_ENABLE_REPRODUCIBLE_BUILD=ON (the default),
+# source paths in debug symbols use the prefix /Catch2 instead of the full
+# build path. To allow GDB to find the actual source files, you need to tell
+# GDB where your Catch2 sources are located.
+#
+# Uncomment and adjust the path below to match your Catch2 installation.
+# For example, if you built Catch2 in /home/user/Catch2, use:
+#
+# set substitute-path /Catch2 /home/user/Catch2
+#
+# If you are also using reproducible builds in your own project, you should
+# use a different unique prefix (e.g., /MyProject) to avoid conflicts.

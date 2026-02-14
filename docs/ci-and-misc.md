@@ -100,10 +100,45 @@ can use `pkg-config` to get its include path: `pkg-config --cflags catch2`.
 
 ### gdb and lldb scripts
 
-Catch2's `extras` folder also contains two simple debugger scripts,
-`gdbinit` for `gdb` and `lldbinit` for `lldb`. If loaded into their
-respective debugger, these will tell it to step over Catch2's internals
-when stepping through code.
+Catch2's `extras` folder contains debugger helper scripts,
+`gdbinit` for `gdb` and `lldbinit` for `lldb`. These scripts provide
+two features:
+
+#### Skipping Catch2 internals
+
+The scripts configure the debugger to skip stepping into Catch2's
+internal implementation when debugging your tests. This allows you to
+focus on debugging your test code rather than stepping through the
+framework internals.
+
+To use this feature, copy the `skip` command from the appropriate file
+to your `~/.gdbinit` or `~/.lldbinit` file.
+
+#### Path substitution for reproducible builds
+
+If Catch2 is built with `CATCH_ENABLE_REPRODUCIBLE_BUILD=ON` (the default),
+the compiler remaps source file paths in debug symbols to use the prefix
+`/Catch2` instead of the full build path. This makes builds reproducible
+but requires debuggers to be told where to find the actual source files.
+
+The helper scripts include commented-out `set substitute-path` (gdb) or
+`settings set target.source-map` (lldb) commands that you can uncomment
+and customize to point to your Catch2 installation.
+
+For example, if you built Catch2 in `/home/user/Catch2`, add this to
+your `~/.gdbinit`:
+```gdb
+set substitute-path /Catch2 /home/user/Catch2
+```
+
+Or for lldb, add to `~/.lldbinit`:
+```lldb
+settings set target.source-map /Catch2 /home/user/Catch2
+```
+
+If you are also using reproducible builds in your own project, use a
+different unique prefix (e.g., `/MyProject`) to avoid conflicts with
+Catch2's prefix.
 
 
 ## CMake
