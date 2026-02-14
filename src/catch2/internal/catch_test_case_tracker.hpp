@@ -92,15 +92,18 @@ namespace TestCaseTracking {
         };
 
         ITracker* m_parent = nullptr;
-        std::vector<PathFilter> const* m_filterRef = nullptr;
-        // Transitory: Remove once we remove backwards compatibility with v3.x filters
-        bool m_newStyleFilters = false;
         Children m_children;
         CycleState m_runState = NotStarted;
-        // These are only copied here, it is up to the derived classes to update
+
+        // Members for path filtering
+        std::vector<PathFilter> const* m_filterRef = nullptr;
+        // Nesting depth of this tracker, used to decide which new-style filter applies.
         size_t m_allTrackerDepth = 0;
-        // This only serves to support the old style filters, we can remove it afterwards
+        // Nesting depth of sections (inc. this tracker), used for old-style filters.
+        // Must be updated by the section tracker on its own.
         size_t m_sectionOnlyDepth = 0;
+        // Transitory: Remove once we remove backwards compatibility with old-style (v3.x) filters
+        bool m_newStyleFilters = false;
 
     public:
         ITracker( NameAndLocation&& nameAndLoc, ITracker* parent );
