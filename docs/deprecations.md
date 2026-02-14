@@ -48,6 +48,17 @@ If you are mutating the fixture instance from within the test case, and
 want to keep doing so in the future, mark the mutated members as `mutable`.
 
 
+### Section-only filtering with `-c/--section`
+
+> Deprecated in Catch2 vX.Y.Z
+
+Currently, if you use only `-c/--section` parameters to decide which
+sections to enter, the filtering ignores generators completely. In the
+future, using only `-c/--section` will behave the same way as if you
+specified the filters through the new `-p/--path-filter` parameter, which
+means that generators are taken into account.
+
+
 ### Generator interfaces
 
 #### Defaulted `UntypedGeneratorBase::isFinite()`
