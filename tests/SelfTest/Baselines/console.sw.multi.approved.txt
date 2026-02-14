@@ -9344,6 +9344,23 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Parsing path filter specs
+  Generic path spec without semicolon is rejected
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( result1 )
+with expansion:
+  !{?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( result2 )
+with expansion:
+  !{?}
+
+-------------------------------------------------------------------------------
+Parsing path filter specs
   Using both section and generator filters creates filter stack
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
@@ -9371,6 +9388,28 @@ with expansion:
 
 CmdLine.tests.cpp:<line number>: PASSED:
   REQUIRE( config.pathFilters[5] == PathFilter( PathFilter::For::Section, "baz" ) )
+with expansion:
+  {?} == {?}
+
+-------------------------------------------------------------------------------
+Parsing path filter specs
+  Section/generator filters are whitespace trimmed
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( result )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.pathFilters[2] == PathFilter(PathFilter::For::Section, "untrimmed" ) )
+with expansion:
+  {?} == {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.pathFilters[3] == PathFilter(PathFilter::For::Generator, "42" ) )
 with expansion:
   {?} == {?}
 
@@ -19980,5 +20019,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  449 |  329 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2394 | 2193 passed | 158 failed | 43 failed as expected
+assertions: 2399 | 2198 passed | 158 failed | 43 failed as expected
 

@@ -11197,6 +11197,25 @@ Approx( 1.21999999999999997 )
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
+    <Section name="Generic path spec without semicolon is rejected" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          !(result1)
+        </Original>
+        <Expanded>
+          !{?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          !(result2)
+        </Original>
+        <Expanded>
+          !{?}
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
     <Section name="Using both section and generator filters creates filter stack" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
@@ -11239,6 +11258,33 @@ Approx( 1.21999999999999997 )
         </Expanded>
       </Expression>
       <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Section/generator filters are whitespace trimmed" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          result
+        </Original>
+        <Expanded>
+          {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          config.pathFilters[2] == PathFilter(PathFilter::For::Section, "untrimmed" )
+        </Original>
+        <Expanded>
+          {?} == {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          config.pathFilters[3] == PathFilter(PathFilter::For::Generator, "42" )
+        </Original>
+        <Expanded>
+          {?} == {?}
+        </Expanded>
+      </Expression>
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
@@ -23191,6 +23237,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2193" failures="158" expectedFailures="43" skips="12"/>
+  <OverallResults successes="2198" failures="158" expectedFailures="43" skips="12"/>
   <OverallResultsCases successes="329" failures="96" expectedFailures="18" skips="6"/>
 </Catch2TestRun>

@@ -2355,6 +2355,10 @@ ok {test-number} - config.pathFilters[3] == PathFilter( PathFilter::For::Section
 # Parsing path filter specs
 ok {test-number} - !(result) for: !{?}
 # Parsing path filter specs
+ok {test-number} - !(result1) for: !{?}
+# Parsing path filter specs
+ok {test-number} - !(result2) for: !{?}
+# Parsing path filter specs
 ok {test-number} - result for: {?}
 # Parsing path filter specs
 ok {test-number} - config.pathFilters[2] == PathFilter( PathFilter::For::Section, "foo-bar" ) for: {?} == {?}
@@ -2364,6 +2368,12 @@ ok {test-number} - config.pathFilters[3] == PathFilter( PathFilter::For::Generat
 ok {test-number} - config.pathFilters[4] == PathFilter( PathFilter::For::Generator, "123" ) for: {?} == {?}
 # Parsing path filter specs
 ok {test-number} - config.pathFilters[5] == PathFilter( PathFilter::For::Section, "baz" ) for: {?} == {?}
+# Parsing path filter specs
+ok {test-number} - result for: {?}
+# Parsing path filter specs
+ok {test-number} - config.pathFilters[2] == PathFilter(PathFilter::For::Section, "untrimmed" ) for: {?} == {?}
+# Parsing path filter specs
+ok {test-number} - config.pathFilters[3] == PathFilter(PathFilter::For::Generator, "42" ) for: {?} == {?}
 # Parsing sharding-related cli flags
 ok {test-number} - cli.parse({ "test", "--shard-count=8" }) for: {?}
 # Parsing sharding-related cli flags
@@ -4807,5 +4817,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2406
+1..2411
 

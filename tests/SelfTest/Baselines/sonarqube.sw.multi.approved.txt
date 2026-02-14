@@ -71,7 +71,9 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="Parsing path filter specs/Generator specs do not accept negative numbers" duration="{duration}"/>
     <testCase name="Parsing path filter specs/Generic path spec enables new filter behaviour" duration="{duration}"/>
     <testCase name="Parsing path filter specs/Generic path spec for generator is validated" duration="{duration}"/>
+    <testCase name="Parsing path filter specs/Generic path spec without semicolon is rejected" duration="{duration}"/>
     <testCase name="Parsing path filter specs/Using both section and generator filters creates filter stack" duration="{duration}"/>
+    <testCase name="Parsing path filter specs/Section/generator filters are whitespace trimmed" duration="{duration}"/>
     <testCase name="Parsing sharding-related cli flags" duration="{duration}"/>
     <testCase name="Parsing sharding-related cli flags/shard-count" duration="{duration}"/>
     <testCase name="Parsing sharding-related cli flags/Negative shard count reports error" duration="{duration}"/>

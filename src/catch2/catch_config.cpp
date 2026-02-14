@@ -105,10 +105,6 @@ namespace Catch {
         for (auto& elem : m_data.testsOrTags) {
             elem = trim(elem);
         }
-        // TBD: Maybe trim these when parsing them already?
-        for (auto& elem : m_data.pathFilters) {
-            elem.filter = trim( elem.filter );
-        }
 
         // Insert the default reporter if user hasn't asked for a specific one
         if ( m_data.reporterSpecifications.empty() ) {

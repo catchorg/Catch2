@@ -1438,11 +1438,16 @@ CmdLine.tests.cpp:<line number>: passed: config.useNewPathFilteringBehaviour for
 CmdLine.tests.cpp:<line number>: passed: config.pathFilters[2] == PathFilter( PathFilter::For::Generator, "1" ) for: {?} == {?}
 CmdLine.tests.cpp:<line number>: passed: config.pathFilters[3] == PathFilter( PathFilter::For::Section, "foobar" ) for: {?} == {?}
 CmdLine.tests.cpp:<line number>: passed: !(result) for: !{?}
+CmdLine.tests.cpp:<line number>: passed: !(result1) for: !{?}
+CmdLine.tests.cpp:<line number>: passed: !(result2) for: !{?}
 CmdLine.tests.cpp:<line number>: passed: result for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.pathFilters[2] == PathFilter( PathFilter::For::Section, "foo-bar" ) for: {?} == {?}
 CmdLine.tests.cpp:<line number>: passed: config.pathFilters[3] == PathFilter( PathFilter::For::Generator, "3" ) for: {?} == {?}
 CmdLine.tests.cpp:<line number>: passed: config.pathFilters[4] == PathFilter( PathFilter::For::Generator, "123" ) for: {?} == {?}
 CmdLine.tests.cpp:<line number>: passed: config.pathFilters[5] == PathFilter( PathFilter::For::Section, "baz" ) for: {?} == {?}
+CmdLine.tests.cpp:<line number>: passed: result for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.pathFilters[2] == PathFilter(PathFilter::For::Section, "untrimmed" ) for: {?} == {?}
+CmdLine.tests.cpp:<line number>: passed: config.pathFilters[3] == PathFilter(PathFilter::For::Generator, "42" ) for: {?} == {?}
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--shard-count=8" }) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.shardCount == 8 for: 8 == 8
 CmdLine.tests.cpp:<line number>: passed: !(result) for: !{?}
@@ -2979,6 +2984,6 @@ InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
 test cases:  449 |  329 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2394 | 2193 passed | 158 failed | 43 failed as expected
+assertions: 2399 | 2198 passed | 158 failed | 43 failed as expected
 
 

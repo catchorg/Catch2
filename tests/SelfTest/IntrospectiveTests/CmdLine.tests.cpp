@@ -531,6 +531,12 @@ TEST_CASE( "Parsing path filter specs",
         auto result = cli.parse( { "tests", "-p", "g:foo-bar" } );
         REQUIRE_FALSE( result );
     }
+    SECTION( "Generic path spec without semicolon is rejected" ) {
+        auto result1 = cli.parse( { "tests", "-p", "g123" } );
+        REQUIRE_FALSE( result1 );
+        auto result2 = cli.parse( { "tests", "-p", "carp" } );
+        REQUIRE_FALSE( result2 );
+    }
     SECTION( "Using both section and generator filters creates filter stack" ) {
         auto result = cli.parse( { "tests",
                                    "--section", "foo-bar",
@@ -543,5 +549,14 @@ TEST_CASE( "Parsing path filter specs",
         REQUIRE( config.pathFilters[3] == PathFilter( PathFilter::For::Generator, "3" ) );
         REQUIRE( config.pathFilters[4] == PathFilter( PathFilter::For::Generator, "123" ) );
         REQUIRE( config.pathFilters[5] == PathFilter( PathFilter::For::Section, "baz" ) );
+    }
+    SECTION( "Section/generator filters are whitespace trimmed" ) {
+        auto result = cli.parse( { "tests",
+                                   "--section", "  untrimmed  ",
+                                   "--generator-index", "  42  "
+        });
+        REQUIRE( result );
+        REQUIRE( config.pathFilters[2] == PathFilter(PathFilter::For::Section, "untrimmed" ) );
+        REQUIRE( config.pathFilters[3] == PathFilter(PathFilter::For::Generator, "42" ) );
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2406" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2411" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1283,7 +1283,9 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Parsing path filter specs/Generator specs do not accept negative numbers" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing path filter specs/Generic path spec enables new filter behaviour" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing path filter specs/Generic path spec for generator is validated" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Parsing path filter specs/Generic path spec without semicolon is rejected" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing path filter specs/Using both section and generator filters creates filter stack" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Parsing path filter specs/Section/generator filters are whitespace trimmed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing sharding-related cli flags" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing sharding-related cli flags/shard-count" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing sharding-related cli flags/Negative shard count reports error" time="{duration}" status="run"/>

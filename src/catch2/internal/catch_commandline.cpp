@@ -217,7 +217,7 @@ namespace Catch {
         };
 
         auto const setSectionFilter = [&]( std::string const& sectionFilter ) {
-            config.pathFilters.emplace_back( PathFilter::For::Section, sectionFilter );
+            config.pathFilters.emplace_back( PathFilter::For::Section, trim(sectionFilter) );
             return ParserResult::ok( ParseResultType::Matched );
         };
         auto const setGeneratorFilter = [&]( std::string const& generatorFilter ) {
@@ -231,7 +231,7 @@ namespace Catch {
                 }
             }
             config.useNewPathFilteringBehaviour = true;
-            config.pathFilters.emplace_back( PathFilter::For::Generator, generatorFilter );
+            config.pathFilters.emplace_back( PathFilter::For::Generator, trim(generatorFilter) );
             return ParserResult::ok( ParseResultType::Matched );
         };
         // Copy-capturing other `setFoo` functions enables calling them later,
@@ -242,10 +242,10 @@ namespace Catch {
                 return ParserResult::runtimeError(
                     "Path filter '" + pathFilter + "' is too short" );
             }
-            if ( pathFilter[0] == 'g' ) {
-                return setGeneratorFilter( pathFilter.substr(2) );
+            if ( startsWith( pathFilter, "g:" ) ) {
+                return setGeneratorFilter( pathFilter.substr( 2 ) );
             }
-            if ( pathFilter[0] == 'c' ) {
+            if ( startsWith( pathFilter, "c:" ) ) {
                 return setSectionFilter( pathFilter.substr( 2 ) );
             }
             return ParserResult::runtimeError( "Path filter '" + pathFilter +
