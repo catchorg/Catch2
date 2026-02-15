@@ -140,8 +140,8 @@ Note that using `p`/`--path-filter` enables new filtering behaviour, even
 if it is only used to add section filters.
 
 There is another important difference between filtering out sections and
-generators. A section can be left un-entered unentered, but a generator
-has to always be active. For this reason, if generator fails a filter
+generators. A section can be left un-entered, but a generator always has
+to be active. For this reason, if generator fails a filter
 (e.g. there is a section filter at given depth instead), it has to stop
 the execution of the test case. Currently, this is done via `SKIP()`
 equivalent, causing the section to be considered skipped.
@@ -204,9 +204,8 @@ TEST_CASE( "qux" ) {
   entered only once.
 * `./tests qux -p g:1 -p c:i=1` results in 1 assertion, as the dynamic
   section filter is incompatible with the generator filter.
-* `./tests qux -p c:A` results in 2 assertions **and a skipped test case**,
-  unlike the old-behaviour where it was 
-  This is because the generator si sibling to section "A", and thus reads
+* `./tests qux -p c:A` results in 2 assertions **and a skipped test case**.
+  This is because the generator is sibling to section "A", and thus reads
   the same section filter. However, it is not a section and as thus cannot
   proceed.
 * `./tests qux -p c:i=2` results in 1 assertion **and a skipped test case**.

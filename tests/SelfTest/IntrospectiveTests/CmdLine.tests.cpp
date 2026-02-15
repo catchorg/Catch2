@@ -531,7 +531,7 @@ TEST_CASE( "Parsing path filter specs",
         auto result = cli.parse( { "tests", "-p", "g:foo-bar" } );
         REQUIRE_FALSE( result );
     }
-    SECTION( "Generic path spec without semicolon is rejected" ) {
+    SECTION( "Generic path spec without colon is rejected" ) {
         auto result1 = cli.parse( { "tests", "-p", "g123" } );
         REQUIRE_FALSE( result1 );
         auto result2 = cli.parse( { "tests", "-p", "carp" } );

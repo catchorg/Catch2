@@ -11197,7 +11197,7 @@ Approx( 1.21999999999999997 )
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Generic path spec without semicolon is rejected" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+    <Section name="Generic path spec without colon is rejected" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
           !(result1)

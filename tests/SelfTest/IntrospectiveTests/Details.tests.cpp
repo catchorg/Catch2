@@ -261,4 +261,4 @@ TEST_CASE( "fred", "[approvals][path-filters]" ) {
         SECTION( "B2" ) { REQUIRE( true ); }
     }
 }
-// More metasyncratic names if needed: plugh, xyzzy, thud
+// More metasyntactic names if needed: plugh, xyzzy, thud

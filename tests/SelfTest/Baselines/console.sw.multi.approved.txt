@@ -9344,7 +9344,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Parsing path filter specs
-  Generic path spec without semicolon is rejected
+  Generic path spec without colon is rejected
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................

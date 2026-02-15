@@ -171,11 +171,8 @@ namespace TestCaseTracking {
     :   TrackerBase( CATCH_MOVE(nameAndLocation), ctx, parent ),
         m_trimmed_name(trim(StringRef(ITracker::nameAndLocation().name)))
     {
-        if( parent ) {
+        if( m_parent ) {
             ++m_sectionOnlyDepth;
-            while ( !parent->isSectionTracker() ) {
-                parent = parent->parent();
-            }
         }
     }
 

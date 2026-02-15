@@ -8,6 +8,8 @@
 #ifndef CATCH_PATH_FILTER_HPP_INCLUDED
 #define CATCH_PATH_FILTER_HPP_INCLUDED
 
+#include <catch2/internal/catch_move_and_forward.hpp>
+
 #include <string>
 
 namespace Catch {
@@ -18,7 +20,7 @@ namespace Catch {
             Generator,
         };
         PathFilter( For type_, std::string filter_ ):
-            type( type_ ), filter( std::move( filter_ ) ) {}
+            type( type_ ), filter( CATCH_MOVE( filter_ ) ) {}
 
         For type;
         std::string filter;
