@@ -146,6 +146,7 @@ function(catch_discover_tests_impl)
 
   # Exit early if no tests are detected
   if(num_tests STREQUAL "0")
+    file(WRITE "${_CTEST_FILE}" "")
     return()
   endif()
 
