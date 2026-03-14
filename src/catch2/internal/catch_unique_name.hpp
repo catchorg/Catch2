@@ -15,6 +15,7 @@
 #ifdef CATCH_CONFIG_COUNTER
 #  ifdef __clang__
 #    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunknown-warning-option"
 #    pragma clang diagnostic ignored "-Wc2y-extensions"
 #  endif
 #  define INTERNAL_CATCH_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_LINE( name, __COUNTER__ )
