@@ -218,12 +218,13 @@ namespace Catch {
             // events and write those out appropriately.
             xml.writeAttribute( "status"_sr, "run"_sr );
 
+            bool resultElementEmitted = false;
             if (sectionNode.stats.assertions.failedButOk) {
                 xml.scopedElement("skipped")
                     .writeAttribute("message", "TEST_CASE tagged with !mayfail");
             }
 
-            writeAssertions( sectionNode );
+            writeAssertions( sectionNode, resultElementEmitted );
 
 
             if( !sectionNode.stdOut.empty() )
@@ -238,18 +239,26 @@ namespace Catch {
                 writeSection( className, name, *childNode, testOkToFail );
     }
 
-    void JunitReporter::writeAssertions( SectionNode const& sectionNode ) {
+    void JunitReporter::writeAssertions( SectionNode const& sectionNode,
+                                           bool& resultElementEmitted ) {
         for (auto const& assertionOrBenchmark : sectionNode.assertionsAndBenchmarks) {
             if (assertionOrBenchmark.isAssertion()) {
-                writeAssertion(assertionOrBenchmark.asAssertion());
+                writeAssertion(assertionOrBenchmark.asAssertion(),
+                               resultElementEmitted);
             }
         }
     }
 
-    void JunitReporter::writeAssertion( AssertionStats const& stats ) {
+    void JunitReporter::writeAssertion( AssertionStats const& stats,
+                                        bool& resultElementEmitted ) {
         AssertionResult const& result = stats.assertionResult;
         if ( !result.isOk() ||
              result.getResultType() == ResultWas::ExplicitSkip ) {
+            // JUnit XML allows at most one of failure/error/skipped per testcase
+            if (resultElementEmitted) {
+                return;
+            }
+            resultElementEmitted = true;
             std::string elementName;
             switch( result.getResultType() ) {
                 case ResultWas::ThrewException:
