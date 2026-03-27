@@ -110,7 +110,7 @@
 #        define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS \
 	         _Pragma( "clang diagnostic ignored \"-Wc++20-extensions\"" )
 #    else
-#        define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS
+#        define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS \
              _Pragma( "clang diagnostic ignored \"-Wgnu-zero-variadic-macro-arguments\"" )
 #    endif
 
