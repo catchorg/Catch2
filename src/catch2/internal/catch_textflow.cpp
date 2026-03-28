@@ -26,6 +26,10 @@ namespace {
         return std::memchr( chars, c, sizeof( chars ) - 1 ) != nullptr;
     }
 
+    bool isUtf8ContinuationByte( char c ) {
+        return ( static_cast<unsigned char>( c ) & 0xC0 ) == 0x80;
+    }
+
 } // namespace
 
 namespace Catch {
@@ -52,6 +56,11 @@ namespace Catch {
                 if ( it != m_string.end() ) {
                     ++m_size;
                     ++it;
+                    // Skip UTF-8 continuation bytes
+                    while ( it != m_string.end() &&
+                            isUtf8ContinuationByte( *it ) ) {
+                        ++it;
+                    }
                 }
             }
         }
@@ -114,6 +123,11 @@ namespace Catch {
         void AnsiSkippingString::const_iterator::advance() {
             assert( m_it != m_string->end() );
             m_it++;
+            // Skip UTF-8 continuation bytes
+            while ( m_it != m_string->end() &&
+                    isUtf8ContinuationByte( *m_it ) ) {
+                m_it++;
+            }
             tryParseAnsiEscapes();
         }
 
@@ -131,6 +145,11 @@ namespace Catch {
                 // skipped over ansi sequences at the start of a string
                 assert( m_it != m_string->begin() );
                 assert( *m_it == '\033' );
+                m_it--;
+            }
+            // Skip back over UTF-8 continuation bytes to the leading byte
+            while ( isUtf8ContinuationByte( *m_it ) ) {
+                assert( m_it != m_string->begin() );
                 m_it--;
             }
         }
