@@ -27,7 +27,7 @@
         INTERNAL_CATCH_DEFINE_SIG_TEST(TestFunc, INTERNAL_CATCH_REMOVE_PARENS(Signature))
     #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_NO_REGISTRATION_2( TestNameClass, TestName, ClassName, Name, Tags, Signature, ... )    \
         namespace{                                                                                  \
-            namespace INTERNAL_CATCH_MAKE_NAMESPACE(TestName) {                                      \
+            namespace TestName {                                      \
             INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD(TestName, ClassName, INTERNAL_CATCH_REMOVE_PARENS(Signature));\
         }                                                                                           \
         }                                                                                           \
@@ -77,7 +77,7 @@
         CATCH_INTERNAL_SUPPRESS_COMMA_WARNINGS \
         INTERNAL_CATCH_DECLARE_SIG_TEST(TestFunc, INTERNAL_CATCH_REMOVE_PARENS(Signature));\
         namespace {\
-        namespace INTERNAL_CATCH_MAKE_NAMESPACE(TestName){\
+        namespace TestName {\
             INTERNAL_CATCH_TYPE_GEN\
             INTERNAL_CATCH_NTTP_GEN(INTERNAL_CATCH_REMOVE_PARENS(Signature))\
             INTERNAL_CATCH_NTTP_REG_GEN(TestFunc,INTERNAL_CATCH_REMOVE_PARENS(Signature))\
@@ -124,7 +124,7 @@
         CATCH_INTERNAL_SUPPRESS_COMMA_WARNINGS \
         template<typename TestType> static void TestFuncName();       \
         namespace {\
-        namespace INTERNAL_CATCH_MAKE_NAMESPACE(TestName) {                                     \
+        namespace TestName {                                     \
             INTERNAL_CATCH_TYPE_GEN                                                  \
             INTERNAL_CATCH_NTTP_GEN(INTERNAL_CATCH_REMOVE_PARENS(Signature))         \
             template<typename... Types>                               \
@@ -174,7 +174,7 @@
         CATCH_INTERNAL_SUPPRESS_COMMA_WARNINGS \
         template<typename TestType> static void TestFunc();       \
         namespace {\
-        namespace INTERNAL_CATCH_MAKE_NAMESPACE(TestName){\
+        namespace TestName{\
         INTERNAL_CATCH_TYPE_GEN\
         template<typename... Types>                               \
         struct TestName {                                         \
@@ -206,7 +206,7 @@
         CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
         CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
         namespace {\
-        namespace INTERNAL_CATCH_MAKE_NAMESPACE(TestName){ \
+        namespace TestName { \
             INTERNAL_CATCH_TYPE_GEN\
             INTERNAL_CATCH_NTTP_GEN(INTERNAL_CATCH_REMOVE_PARENS(Signature))\
             INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD(TestName, ClassName, INTERNAL_CATCH_REMOVE_PARENS(Signature));\
@@ -256,7 +256,7 @@
                 void test();\
             };\
         namespace {\
-        namespace INTERNAL_CATCH_MAKE_NAMESPACE(TestNameClass) {\
+        namespace TestNameClass {\
             INTERNAL_CATCH_TYPE_GEN                  \
             INTERNAL_CATCH_NTTP_GEN(INTERNAL_CATCH_REMOVE_PARENS(Signature))\
             template<typename...Types>\
@@ -309,7 +309,7 @@
             void test();\
         };\
         namespace {\
-        namespace INTERNAL_CATCH_MAKE_NAMESPACE(TestName){ \
+        namespace INTERNAL_CATCH_UNIQUE_NAME(NsTestName) { \
             INTERNAL_CATCH_TYPE_GEN\
             template<typename...Types>\
             struct TestNameClass{\

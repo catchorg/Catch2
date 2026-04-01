@@ -6,15 +6,6 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-#ifdef __clang__
-#   pragma clang diagnostic push
-#   pragma clang diagnostic ignored "-Wpadded"
-// Wdouble-promotion is not supported until 3.8
-#   if (__clang_major__ > 3) || (__clang_major__ == 3 && __clang_minor__ > 7)
-#       pragma clang diagnostic ignored "-Wdouble-promotion"
-#   endif
-#endif
-
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
 
@@ -23,6 +14,16 @@ using Catch::Approx;
 #include <string>
 #include <limits>
 #include <cstdint>
+
+#ifdef __clang__
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wpadded"
+// Wdouble-promotion is not supported until 3.8
+#    if ( __clang_major__ > 3 ) || \
+        ( __clang_major__ == 3 && __clang_minor__ > 7 )
+#        pragma clang diagnostic ignored "-Wdouble-promotion"
+#    endif
+#endif
 
 namespace {
 

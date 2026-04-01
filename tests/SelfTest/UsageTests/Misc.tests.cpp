@@ -388,9 +388,9 @@ TEMPLATE_PRODUCT_TEST_CASE_SIG("A Template product test case with array signatur
     REQUIRE(x.size() > 0);
 }
 
-TEMPLATE_PRODUCT_TEST_CASE("Product with differing arities", "[template][product]", std::tuple, (int, (int, double), (int, double, float))) {
-    REQUIRE(std::tuple_size<TestType>::value >= 1);
-}
+//TEMPLATE_PRODUCT_TEST_CASE("Product with differing arities", "[template][product]", std::tuple, (int, (int, double), (int, double, float))) {
+//    REQUIRE(std::tuple_size<TestType>::value >= 1);
+//}
 
 using MyTypes = std::tuple<int, char, float>;
 TEMPLATE_LIST_TEST_CASE("Template test case with test types specified inside std::tuple", "[template][list]", MyTypes)

@@ -80,9 +80,6 @@ namespace Catch {
 #define INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS(param) (INTERNAL_CATCH_STRINGIZE(INTERNAL_CATCH_REMOVE_PARENS(param)) + 1)
 #endif
 
-#define INTERNAL_CATCH_MAKE_NAMESPACE2(...) ns_##__VA_ARGS__
-#define INTERNAL_CATCH_MAKE_NAMESPACE(name) INTERNAL_CATCH_MAKE_NAMESPACE2(name)
-
 #ifndef CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
 #define INTERNAL_CATCH_MAKE_TYPE_LIST2(...) decltype(get_wrapper<INTERNAL_CATCH_REMOVE_PARENS_GEN(__VA_ARGS__)>(Catch::Detail::priority_tag<1>{}))
 #define INTERNAL_CATCH_MAKE_TYPE_LIST(...) INTERNAL_CATCH_MAKE_TYPE_LIST2(INTERNAL_CATCH_REMOVE_PARENS(__VA_ARGS__))
@@ -217,10 +214,10 @@ namespace Catch {
 #define INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD0(TestName)
 #define INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD1(TestName, signature)\
     template<typename TestType> \
-    void INTERNAL_CATCH_MAKE_NAMESPACE(TestName)::TestName<TestType>::test()
+    void TestName::TestName<TestType>::test()
 #define INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X(TestName, signature, ...)\
     template<INTERNAL_CATCH_REMOVE_PARENS(signature)> \
-    void INTERNAL_CATCH_MAKE_NAMESPACE(TestName)::TestName<__VA_ARGS__>::test()
+    void TestName::TestName<__VA_ARGS__>::test()
 
 #ifndef CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
 #define INTERNAL_CATCH_NTTP_0

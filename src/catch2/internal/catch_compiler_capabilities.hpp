@@ -114,6 +114,11 @@
              _Pragma( "clang diagnostic ignored \"-Wgnu-zero-variadic-macro-arguments\"" )
 #    endif
 
+#    if ( __clang_major__ >= 22 )
+#        define CATCH_INTERNAL_SUPPRESS_COUNTER_WARNINGS \
+            _Pragma( "clang diagnostic ignored \"-Wc2y-extensions\"" )
+#    endif
+
 #    define CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
          _Pragma( "clang diagnostic ignored \"-Wunused-template\"" )
 
@@ -428,6 +433,9 @@
 #endif
 #if !defined( CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS )
 #    define CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS
+#endif
+#if !defined( CATCH_INTERNAL_SUPPRESS_COUNTER_WARNINGS )
+#    define CATCH_INTERNAL_SUPPRESS_COUNTER_WARNINGS
 #endif
 
 #if defined(__APPLE__) && defined(__apple_build_version__) && (__clang_major__ < 10)
