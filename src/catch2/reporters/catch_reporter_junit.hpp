@@ -40,8 +40,7 @@ namespace Catch {
                            SectionNode const& sectionNode,
                            bool testOkToFail );
 
-        void writeAssertions(SectionNode const& sectionNode,
-                             bool& resultElementEmitted);
+        void writeAssertions(SectionNode const& sectionNode);
         void writeAssertion(AssertionStats const& stats, bool& resultElementEmitted);
 
         XmlWriter xml;

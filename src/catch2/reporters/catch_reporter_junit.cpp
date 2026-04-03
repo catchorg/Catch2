@@ -218,13 +218,12 @@ namespace Catch {
             // events and write those out appropriately.
             xml.writeAttribute( "status"_sr, "run"_sr );
 
-            bool resultElementEmitted = false;
             if (sectionNode.stats.assertions.failedButOk) {
                 xml.scopedElement("skipped")
                     .writeAttribute("message", "TEST_CASE tagged with !mayfail");
             }
 
-            writeAssertions( sectionNode, resultElementEmitted );
+            writeAssertions( sectionNode );
 
 
             if( !sectionNode.stdOut.empty() )
@@ -239,8 +238,8 @@ namespace Catch {
                 writeSection( className, name, *childNode, testOkToFail );
     }
 
-    void JunitReporter::writeAssertions( SectionNode const& sectionNode,
-                                           bool& resultElementEmitted ) {
+    void JunitReporter::writeAssertions( SectionNode const& sectionNode ) {
+        bool resultElementEmitted = false;
         for (auto const& assertionOrBenchmark : sectionNode.assertionsAndBenchmarks) {
             if (assertionOrBenchmark.isAssertion()) {
                 writeAssertion(assertionOrBenchmark.asAssertion(),
