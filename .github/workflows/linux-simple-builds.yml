@@ -83,7 +83,7 @@ jobs:
             other_pkgs: g++-11
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Add repositories for older compilers
       run: |

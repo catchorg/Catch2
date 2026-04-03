@@ -16,10 +16,10 @@ jobs:
         compilation_mode: [fastbuild, dbg, opt]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Mount Bazel cache
-      uses: actions/cache@v3
+      uses: actions/cache@v5
       with:
         path: "/home/runner/.cache/bazel"
         key: bazel-ubuntu22-gcc11

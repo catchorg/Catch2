@@ -17,7 +17,7 @@ jobs:
         std: [14, 17]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Configure
       run: |
