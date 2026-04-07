@@ -140,6 +140,7 @@ same as the Catch name; see also ``TEST_PREFIX`` and ``TEST_SUFFIX``.
     behavior is not desirable. By contrast, ``PRE_TEST`` delays test discovery until
     just prior to test execution. This way test discovery occurs in the target environment
     where the test has a better chance at finding appropriate runtime dependencies.
+    If required, discovery can also be completely disabled, by using ``DISABLED``.
 
     ``DISCOVERY_MODE`` defaults to the value of the
     ``CMAKE_CATCH_DISCOVER_TESTS_DISCOVERY_MODE`` variable if it is not passed when
@@ -187,7 +188,7 @@ function(catch_discover_tests TARGET)
     endif()
     set(_DISCOVERY_MODE ${CMAKE_CATCH_DISCOVER_TESTS_DISCOVERY_MODE})
   endif()
-  if(NOT _DISCOVERY_MODE MATCHES "^(POST_BUILD|PRE_TEST)$")
+  if(NOT _DISCOVERY_MODE MATCHES "^(POST_BUILD|PRE_TEST|DISABLED)$")
     message(FATAL_ERROR "Unknown DISCOVERY_MODE: ${_DISCOVERY_MODE}")
   endif()
 
@@ -208,7 +209,9 @@ function(catch_discover_tests TARGET)
     set(_PROPERTIES ${_PROPERTIES} SKIP_RETURN_CODE 4)
   endif()
 
-  if(_DISCOVERY_MODE STREQUAL "POST_BUILD")
+  if(_DISCOVERY_MODE STREQUAL "DISABLED")
+    return()
+  elseif(_DISCOVERY_MODE STREQUAL "POST_BUILD")
     add_custom_command(
       TARGET ${TARGET} POST_BUILD
       BYPRODUCTS "${ctest_tests_file}"
