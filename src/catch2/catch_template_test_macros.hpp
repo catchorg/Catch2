@@ -8,6 +8,8 @@
 #ifndef CATCH_TEMPLATE_TEST_MACROS_HPP_INCLUDED
 #define CATCH_TEMPLATE_TEST_MACROS_HPP_INCLUDED
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+
 // We need this suppression to leak, because it took until GCC 10
 // for the front end to handle local suppression via _Pragma properly
 // inside templates (so `TEMPLATE_TEST_CASE` and co).
@@ -15,6 +17,10 @@
 #if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC) && __GNUC__ < 10
 #pragma GCC diagnostic ignored "-Wparentheses"
 #endif
+
+CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
+CATCH_INTERNAL_SUPPRESS_EFFCPP_WARNINGS
+CATCH_INTERNAL_SUPPRESS_CTOR_DTOR_PRIVACY_WARNINGS
 
 
 #include <catch2/catch_test_macros.hpp>
@@ -120,5 +126,6 @@
 
 #endif // end of user facing macro declarations
 
+CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
 #endif // CATCH_TEMPLATE_TEST_MACROS_HPP_INCLUDED

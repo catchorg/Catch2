@@ -8,6 +8,12 @@
 #ifndef CATCH_TEST_MACROS_HPP_INCLUDED
 #define CATCH_TEST_MACROS_HPP_INCLUDED
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+
+CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
+CATCH_INTERNAL_SUPPRESS_EFFCPP_WARNINGS
+CATCH_INTERNAL_SUPPRESS_CTOR_DTOR_PRIVACY_WARNINGS
+
 #include <catch2/internal/catch_test_macro_impl.hpp>
 #include <catch2/catch_message.hpp>
 #include <catch2/catch_user_config.hpp>
@@ -239,5 +245,7 @@
 #endif // ^^ unprefixed, disabled
 
 // end of user facing macros
+
+CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
 #endif // CATCH_TEST_MACROS_HPP_INCLUDED

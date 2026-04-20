@@ -8,6 +8,12 @@
 #ifndef CATCH_MATCHERS_HPP_INCLUDED
 #define CATCH_MATCHERS_HPP_INCLUDED
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+
+CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
+CATCH_INTERNAL_SUPPRESS_EFFCPP_WARNINGS
+CATCH_INTERNAL_SUPPRESS_CTOR_DTOR_PRIVACY_WARNINGS
+
 #include <catch2/matchers/internal/catch_matchers_impl.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_lifetimebound.hpp>
@@ -249,5 +255,7 @@ namespace Matchers {
   #define REQUIRE_THAT( arg, matcher )                           (void)(0)
 
 #endif // end of user facing macro declarations
+
+CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
 #endif // CATCH_MATCHERS_HPP_INCLUDED

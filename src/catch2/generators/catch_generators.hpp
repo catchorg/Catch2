@@ -8,6 +8,12 @@
 #ifndef CATCH_GENERATORS_HPP_INCLUDED
 #define CATCH_GENERATORS_HPP_INCLUDED
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+
+CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
+CATCH_INTERNAL_SUPPRESS_EFFCPP_WARNINGS
+CATCH_INTERNAL_SUPPRESS_CTOR_DTOR_PRIVACY_WARNINGS
+
 #include <catch2/catch_tostring.hpp>
 #include <catch2/generators/catch_generators_throw.hpp>
 #include <catch2/interfaces/catch_interfaces_generatortracker.hpp>
@@ -257,5 +263,7 @@ namespace Generators {
     Catch::Generators::generate( CATCH_INTERNAL_GENERATOR_STRINGIZE(INTERNAL_CATCH_UNIQUE_NAME(generator)), \
                                  CATCH_INTERNAL_LINEINFO, \
                                  [&]{ using namespace Catch::Generators; return makeGenerators( __VA_ARGS__ ); } ) //NOLINT(google-build-using-namespace)
+
+CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
 #endif // CATCH_GENERATORS_HPP_INCLUDED

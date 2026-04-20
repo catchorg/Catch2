@@ -53,6 +53,9 @@
 #include <catch2/internal/catch_commandline.hpp>
 #include <catch2/internal/catch_compare_traits.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
+CATCH_INTERNAL_SUPPRESS_EFFCPP_WARNINGS
+CATCH_INTERNAL_SUPPRESS_CTOR_DTOR_PRIVACY_WARNINGS
 #include <catch2/internal/catch_config_android_logwrite.hpp>
 #include <catch2/internal/catch_config_counter.hpp>
 #include <catch2/internal/catch_config_prefix_messages.hpp>
@@ -137,5 +140,7 @@
 #include <catch2/internal/catch_xmlwriter.hpp>
 #include <catch2/matchers/catch_matchers_all.hpp>
 #include <catch2/reporters/catch_reporters_all.hpp>
+
+CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
 #endif // CATCH_ALL_HPP_INCLUDED

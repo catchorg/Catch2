@@ -8,6 +8,12 @@
 #ifndef CATCH_SESSION_HPP_INCLUDED
 #define CATCH_SESSION_HPP_INCLUDED
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+
+CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
+CATCH_INTERNAL_SUPPRESS_EFFCPP_WARNINGS
+CATCH_INTERNAL_SUPPRESS_CTOR_DTOR_PRIVACY_WARNINGS
+
 #include <catch2/internal/catch_commandline.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/catch_config.hpp>
@@ -66,5 +72,7 @@ namespace Catch {
     };
 
 } // end namespace Catch
+
+CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
 #endif // CATCH_SESSION_HPP_INCLUDED

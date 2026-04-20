@@ -62,6 +62,12 @@
 #    define CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS \
          _Pragma( "GCC diagnostic ignored \"-Wshadow\"" )
 
+#    define CATCH_INTERNAL_SUPPRESS_EFFCPP_WARNINGS \
+         _Pragma( "GCC diagnostic ignored \"-Weffc++\"" )
+
+#    define CATCH_INTERNAL_SUPPRESS_CTOR_DTOR_PRIVACY_WARNINGS \
+         _Pragma( "GCC diagnostic ignored \"-Wctor-dtor-privacy\"" )
+
 #    define CATCH_INTERNAL_CONFIG_USE_BUILTIN_CONSTANT_P
 
 #endif
@@ -428,6 +434,12 @@
 #endif
 #if !defined( CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS )
 #    define CATCH_INTERNAL_SUPPRESS_SHADOW_WARNINGS
+#endif
+#if !defined( CATCH_INTERNAL_SUPPRESS_EFFCPP_WARNINGS )
+#    define CATCH_INTERNAL_SUPPRESS_EFFCPP_WARNINGS
+#endif
+#if !defined( CATCH_INTERNAL_SUPPRESS_CTOR_DTOR_PRIVACY_WARNINGS )
+#    define CATCH_INTERNAL_SUPPRESS_CTOR_DTOR_PRIVACY_WARNINGS
 #endif
 
 #if defined(__APPLE__) && defined(__apple_build_version__) && (__clang_major__ < 10)
