@@ -9,8 +9,6 @@
 
 namespace Catch {
 namespace Matchers {
-    MatcherGenericBase::~MatcherGenericBase() = default;
-
     namespace Detail {
 
         std::string describe_multi_matcher(StringRef combine, std::string const* descriptions_begin, std::string const* descriptions_end) {

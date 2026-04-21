@@ -24,7 +24,7 @@ namespace Matchers {
     class MatcherGenericBase : public MatcherUntypedBase {
     public:
         MatcherGenericBase() = default;
-        ~MatcherGenericBase() override; // = default;
+        ~MatcherGenericBase() override = default;
 
         MatcherGenericBase(MatcherGenericBase const&) = default;
         MatcherGenericBase(MatcherGenericBase&&) = default;

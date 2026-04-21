@@ -19,7 +19,5 @@ namespace Matchers {
         return m_cachedToString;
     }
 
-    MatcherUntypedBase::~MatcherUntypedBase() = default;
-
 } // namespace Matchers
 } // namespace Catch
