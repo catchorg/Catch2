@@ -126,6 +126,12 @@
 #    endif
 #endif
 
+#    if defined( __cpp_deleted_function_with_reason )
+#    define CATCH_INTERNAL_DELETE( x ) delete (x)
+#else
+#    define CATCH_INTERNAL_DELETE( x ) delete
+#endif
+
 namespace Catch {
 
     namespace Detail {
@@ -159,9 +165,6 @@ namespace Catch {
     template <>
     struct capture_by_value<std::partial_ordering> : std::true_type {};
 #endif
-
-    template <typename T>
-    struct always_false : std::false_type {};
 
     class ITransientExpression {
         bool m_isBinaryExpression;
@@ -211,61 +214,38 @@ namespace Catch {
             m_rhs( rhs )
         {}
 
-        template<typename T>
-        auto operator && ( T ) const -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<T>::value,
-            "chained comparisons are not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
 
         template<typename T>
-        auto operator || ( T ) const -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<T>::value,
-            "chained comparisons are not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
+        auto operator&&( T ) const -> BinaryExpr<LhsT, RhsT const&> const =
+            CATCH_INTERNAL_DELETE( "chained comparisons are not supported" );
 
         template<typename T>
-        auto operator == ( T ) const -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<T>::value,
-            "chained comparisons are not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
+        auto operator||( T ) const -> BinaryExpr<LhsT, RhsT const&> const =
+            CATCH_INTERNAL_DELETE( "chained comparisons are not supported" );
 
         template<typename T>
-        auto operator != ( T ) const -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<T>::value,
-            "chained comparisons are not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
+        auto operator==( T ) const -> BinaryExpr<LhsT, RhsT const&> const =
+            CATCH_INTERNAL_DELETE( "chained comparisons are not supported" );
 
         template<typename T>
-        auto operator > ( T ) const -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<T>::value,
-            "chained comparisons are not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
+        auto operator!=( T ) const -> BinaryExpr<LhsT, RhsT const&> const =
+            CATCH_INTERNAL_DELETE( "chained comparisons are not supported" );
 
         template<typename T>
-        auto operator < ( T ) const -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<T>::value,
-            "chained comparisons are not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
+        auto operator>( T ) const -> BinaryExpr<LhsT, RhsT const&> const =
+            CATCH_INTERNAL_DELETE( "chained comparisons are not supported" );
 
         template<typename T>
-        auto operator >= ( T ) const -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<T>::value,
-            "chained comparisons are not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
+        auto operator<( T ) const -> BinaryExpr<LhsT, RhsT const&> const =
+            CATCH_INTERNAL_DELETE( "chained comparisons are not supported" );
 
         template<typename T>
-        auto operator <= ( T ) const -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<T>::value,
-            "chained comparisons are not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
+        auto operator>=( T ) const -> BinaryExpr<LhsT, RhsT const&> const =
+            CATCH_INTERNAL_DELETE( "chained comparisons are not supported" );
+
+        template<typename T>
+        auto operator<=( T ) const -> BinaryExpr<LhsT, RhsT const&> const =
+            CATCH_INTERNAL_DELETE( "chained comparisons are not supported" );
     };
 
     template<typename LhsT>
@@ -419,19 +399,16 @@ namespace Catch {
 
     #undef CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR
 
-        template<typename RhsT>
-        friend auto operator && ( ExprLhs &&, RhsT && ) -> BinaryExpr<LhsT, RhsT const&> {
-            static_assert(always_false<RhsT>::value,
-            "operator&& is not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
 
         template<typename RhsT>
-        friend auto operator || ( ExprLhs &&, RhsT && ) -> BinaryExpr<LhsT, RhsT const&> {
-            static_assert(always_false<RhsT>::value,
-            "operator|| is not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
+        friend auto operator&&( ExprLhs&&, RhsT&& )
+            -> BinaryExpr<LhsT, RhsT const&> = CATCH_INTERNAL_DELETE(
+                "'&&' is not supported inside assertions" );
+
+        template<typename RhsT>
+        friend auto operator||( ExprLhs&&, RhsT&& )
+            -> BinaryExpr<LhsT, RhsT const&> = CATCH_INTERNAL_DELETE(
+                "'||' is not supported inside assertions" );
 
         constexpr auto makeUnaryExpr() const -> UnaryExpr<LhsT> {
             return UnaryExpr<LhsT>{ m_lhs };
