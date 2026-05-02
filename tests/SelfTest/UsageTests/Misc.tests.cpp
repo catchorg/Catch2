@@ -384,7 +384,7 @@ TEMPLATE_PRODUCT_TEST_CASE("A Template product test case", "[template][product]"
 }
 
 TEMPLATE_PRODUCT_TEST_CASE_SIG("A Template product test case with array signature", "[template][product][nttp]", ((typename T, size_t S), T, S), (std::array, Bar), ((int, 9), (float, 42))) {
-    TestType x;
+    TestType x{};
     REQUIRE(x.size() > 0);
 }
 

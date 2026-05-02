@@ -328,6 +328,8 @@ namespace Catch {
 
         bool lastAssertionPassed() { return Detail::g_lastAssertionPassed; }
 
+        volatile bool volatileFalse = false;
+
     } // namespace Detail
 
     RunContext::RunContext(IConfig const* _config, IEventListenerPtr&& reporter)
