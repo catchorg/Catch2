@@ -25,6 +25,10 @@
 #include <string_view>
 #endif
 
+#ifdef CATCH_CONFIG_CPP17_OPTIONAL
+#include <optional>
+#endif
+
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable:4180) // We attempt to stream a function (address) by const&, which MSVC complains about but is harmless
@@ -481,6 +485,16 @@ namespace Catch {
 
         template <typename T>
         struct is_range_impl<T, void_t<decltype(begin(std::declval<T>()))>> : std::true_type {};
+
+        // Used to exclude std::optional from the generic range StringMaker so it
+        // does not collide with the dedicated optional StringMaker (or a
+        // user-provided one). std::optional models std::ranges::range since
+        // C++26 (P3168), so is_range<std::optional<T>> is true and both partial
+        // specializations would otherwise match StringMaker<std::optional<T>>.
+        template <typename T> struct is_optional : std::false_type {};
+#if defined(CATCH_CONFIG_CPP17_OPTIONAL)
+        template <typename T> struct is_optional<std::optional<T>> : std::true_type {};
+#endif
     } // namespace Detail
 
     template <typename T>
@@ -516,7 +530,9 @@ namespace Catch {
     }
 
     template<typename R>
-    struct StringMaker<R, std::enable_if_t<is_range<R>::value && !::Catch::Detail::IsStreamInsertable_v<R>>> {
+    struct StringMaker<R, std::enable_if_t<is_range<R>::value
+                                           && !::Catch::Detail::IsStreamInsertable_v<R>
+                                           && !::Catch::Detail::is_optional<R>::value>> {
         static std::string convert( R const& range ) {
             return rangeToString( range );
         }

@@ -32,4 +32,19 @@ TEST_CASE( "std::nullopt -> toString", "[toString][optional][approvals]" ) {
     REQUIRE( "{ }" == ::Catch::Detail::stringify( std::nullopt ) );
 }
 
+namespace {
+    struct NonStreamable { int v; };
+}
+
+// Regression: under C++26, std::optional models std::ranges::range (P3168), so
+// without the is_optional carve-out in the range StringMaker the dedicated
+// optional StringMaker collides with the range one and instantiation becomes
+// ambiguous. This test just needs to compile.
+TEST_CASE( "std::optional<NonStreamable> -> toString does not collide with range StringMaker",
+           "[toString][optional][approvals]" ) {
+    using type = std::optional<NonStreamable>;
+    REQUIRE( "{ }" == ::Catch::Detail::stringify( type{} ) );
+    REQUIRE( "{?}" == ::Catch::Detail::stringify( type{ NonStreamable{ 42 } } ) );
+}
+
 #endif // CATCH_INTERNAL_CONFIG_CPP17_OPTIONAL
