@@ -199,7 +199,7 @@ namespace Catch {
         }
 
         // minimum whitespace to pad tag counts, possibly overwritten below
-        size_t maxTagCountLen = 2;
+        int maxTagCountLen = 2;
 
         // determine necessary padding for tag count column
         if ( ! tags.empty() ) {
@@ -214,7 +214,7 @@ namespace Catch {
             // more padding necessary for 3+ digits
             if (maxTagCount >= 100) {
                 auto numDigits = 1 + std::floor( std::log10( maxTagCount ) );
-                maxTagCountLen = static_cast<size_t>( numDigits );
+                maxTagCountLen = static_cast<int>( numDigits );
             }
         }
 
