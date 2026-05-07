@@ -148,8 +148,8 @@ namespace Catch {
                 m_it--;
             }
             // Skip back over UTF-8 continuation bytes to the leading byte
-            while ( isUtf8ContinuationByte( *m_it ) ) {
-                assert( m_it != m_string->begin() );
+            while ( m_it != m_string->begin() &&
+                    isUtf8ContinuationByte( *m_it ) ) {
                 m_it--;
             }
         }

@@ -437,6 +437,25 @@ TEST_CASE( "TextFlow::AnsiSkippingString iterates UTF-8 codepoints",
     }
 }
 
+TEST_CASE( "TextFlow::AnsiSkippingString handles invalid UTF-8",
+           "[TextFlow][ansiskippingstring][approvals]" ) {
+    SECTION( "Continuation byte at the start" ) {
+        // 0x80 is a continuation byte
+        AnsiSkippingString str( "\x80" );
+        auto it = str.end();
+        --it;
+        CHECK( it == str.begin() );
+        CHECK( *it == static_cast<char>( 0x80 ) );
+    }
+    SECTION( "Multiple continuation bytes at the start" ) {
+        AnsiSkippingString str( "\x80\x80\x80" );
+        auto it = str.end();
+        --it;
+        CHECK( it == str.begin() );
+        CHECK( *it == static_cast<char>( 0x80 ) );
+    }
+}
+
 TEST_CASE( "TextFlow::Column wraps UTF-8 text correctly",
            "[TextFlow][column][approvals]" ) {
     // "äöü äöü äöü" = 11 codepoints, 17 bytes
