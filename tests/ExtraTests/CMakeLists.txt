@@ -541,6 +541,7 @@ set(EXTRA_TEST_BINARIES
   NoTests
   ListenersGetEventsBeforeReporters
   MixingClearedAndUnclearedMessages
+  FastCompile
 #  DebugBreakMacros
 )
 
@@ -602,4 +603,17 @@ set_tests_properties(Warnings::InfiniteGenerators
     # One test case fails with infinite generator, but the other one runs
     PASS_REGULAR_EXPRESSION "test cases: 2 \\| 1 passed \\| 1 failed"
     TIMEOUT 5
+)
+
+add_executable(FastCompile ${TESTS_DIR}/X96-FastCompile.cpp)
+target_compile_definitions(FastCompile PRIVATE CATCH_CONFIG_FAST_COMPILE)
+target_link_libraries(FastCompile PRIVATE Catch2::Catch2WithMain)
+
+add_test(
+  NAME CATCH_CONFIG_FAST_COMPILE
+  COMMAND $<TARGET_FILE:FastCompile>
+)
+set_tests_properties(CATCH_CONFIG_FAST_COMPILE
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "All tests passed"
 )
