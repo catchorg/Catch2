@@ -91,7 +91,7 @@ Now when `[@nhf]` is used on the command line this matches all tests that are ta
 
 ## BDD-style test cases
 
-In addition to Catch's take on the classic style of test cases, Catch supports an alternative syntax that allow tests to be written as "executable specifications" (one of the early goals of [Behaviour Driven Development](http://dannorth.net/introducing-bdd/)). This set of macros map on to ```TEST_CASE```s and ```SECTION```s, with a little internal support to make them smoother to work with.
+In addition to Catch's take on the classic style of test cases, Catch supports an alternative syntax that allow tests to be written as "executable specifications" (one of the early goals of [Behaviour Driven Development](https://dannorth.net/introducing-bdd/)). This set of macros map on to ```TEST_CASE```s and ```SECTION```s, with a little internal support to make them smoother to work with.
 
 * **SCENARIO(** _scenario name_ \[, _tags_ \] **)**
 
@@ -103,8 +103,8 @@ This macro maps onto ```TEST_CASE``` and works in the same way, except that the 
 
 These macros map onto ```SECTION```s except that the section names are the _something_ texts prefixed by
 "given: ", "when: " or "then: " respectively. These macros also map onto the AAA or A<sup>3</sup> test pattern
-(standing either for [Assemble-Activate-Assert](http://wiki.c2.com/?AssembleActivateAssert) or
-[Arrange-Act-Assert](http://wiki.c2.com/?ArrangeActAssert)), and in this context, the macros provide both code
+(standing either for [Assemble-Activate-Assert](https://wiki.c2.com/?AssembleActivateAssert) or
+[Arrange-Act-Assert](https://wiki.c2.com/?ArrangeActAssert)), and in this context, the macros provide both code
 documentation and reporting of these parts of a test case without the need for extra comments or code to do so.
 
 Semantically, a `GIVEN` clause may have multiple _independent_ `WHEN` clauses within it. This allows a test

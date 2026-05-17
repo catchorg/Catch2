@@ -17,7 +17,7 @@ proceed.
 
 ### Incrementing version number
 
-Catch uses a variant of [semantic versioning](http://semver.org/), with breaking API changes (and thus major version increments) being very rare. Thus, the release will usually increment the patch version, when it only contains couple of bugfixes, or minor version, when it contains new functionality, or larger changes in implementation of current functionality.
+Catch uses a variant of [semantic versioning](https://semver.org/), with breaking API changes (and thus major version increments) being very rare. Thus, the release will usually increment the patch version, when it only contains couple of bugfixes, or minor version, when it contains new functionality, or larger changes in implementation of current functionality.
 
 After deciding which part of version number should be incremented, you can use one of the `*Release.py` scripts to perform the required changes to Catch.
 

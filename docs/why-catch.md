@@ -3,11 +3,11 @@
 
 Good question. For C++ there are quite a number of established frameworks,
 including (but not limited to),
-[Google Test](http://code.google.com/p/googletest/),
-[Boost.Test](http://www.boost.org/doc/libs/1_49_0/libs/test/doc/html/index.html),
-[CppUnit](http://sourceforge.net/apps/mediawiki/cppunit/index.php?title=Main_Page),
-[Cute](http://www.cute-test.com), and
-[many, many more](http://en.wikipedia.org/wiki/List_of_unit_testing_frameworks#C.2B.2B).
+[Google Test](https://github.com/google/googletest),
+[Boost.Test](https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html),
+[CppUnit](https://freedesktop.org/wiki/Software/cppunit/),
+[Cute](https://www.cute-test.com), and
+[many, many more](https://en.wikipedia.org/wiki/List_of_unit_testing_frameworks#C++).
 
 So what does Catch2 bring to the party that differentiates it from these? Apart from the catchy name, of course.
 

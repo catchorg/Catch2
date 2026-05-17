@@ -498,7 +498,7 @@ estimates for the mean and standard deviation. The estimates come with a lower
 bound and an upper bound, and the confidence interval (which is configurable but
 defaults to 95%).
 
- [bootstrapping]: http://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29
+ [bootstrapping]: https://en.wikipedia.org/wiki/Bootstrapping_(statistics)
 
 <a id="benchmark-confidence-interval"></a>
 ## Specify the confidence-interval for bootstrapping
