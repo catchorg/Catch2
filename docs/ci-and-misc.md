@@ -6,6 +6,7 @@
 [Bazel test runner integration](#bazel-test-runner-integration)<br>
 [Low-level tools](#low-level-tools)<br>
 [CMake](#cmake)<br>
+[Try Catch2 online (Compiler Explorer)](#try-catch2-online-compiler-explorer)<br>
 
 This page talks about Catch2's integration with other related tooling,
 like Continuous Integration and 3rd party test runners.
@@ -110,6 +111,17 @@ when stepping through code.
 
 [As it has been getting kinda long, the documentation of Catch2's
 integration with CMake has been moved to its own page.](cmake-integration.md#top)
+
+
+## Try Catch2 online (Compiler Explorer)
+
+You can experiment with Catch2 without installing it by using the
+**Try online** badge in the [project README](../README.md). It opens a
+Compiler Explorer session with Catch2 linked as a prebuilt library.
+
+Maintainers: when preparing a release, see the
+["Try online" link (Compiler Explorer)](release-process.md#try-online-link-compiler-explorer)
+section in the release process documentation for how to refresh the badge URL.
 
 
 ---

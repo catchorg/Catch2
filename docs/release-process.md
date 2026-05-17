@@ -10,9 +10,8 @@ These steps are necessary and have to be performed before each new release. They
 
 ### Testing
 
-All of the tests are currently run in our CI setup based on TravisCI and
-AppVeyor. As long as the last commit tested green, the release can
-proceed.
+All of the tests are run in GitHub Actions and AppVeyor. As long as the
+last commit on the release branch tested green, the release can proceed.
 
 
 ### Incrementing version number
@@ -21,8 +20,29 @@ Catch uses a variant of [semantic versioning](http://semver.org/), with breaking
 
 After deciding which part of version number should be incremented, you can use one of the `*Release.py` scripts to perform the required changes to Catch.
 
-This will take care of generating the single include header, updating
-version numbers everywhere and pushing the new version to Wandbox.
+This will take care of generating the single include header and updating
+version numbers everywhere.
+
+
+### "Try online" link (Compiler Explorer)
+
+The README **Try online** badge should point to a [Compiler Explorer](https://godbolt.org/)
+session that uses Catch2's prebuilt library (not uploaded sources). CE refreshes
+its library builds on a regular schedule, so a link created for release `X.Y.Z`
+may only show that exact version after CE has picked up the package.
+
+When cutting a release:
+
+1. Open Compiler Explorer and configure a C++23 (or your target) environment with
+   the **Catch2** library enabled (the packaged `catchorg/catch2` entry).
+2. Add a minimal example (e.g. the factorial test from the README) and confirm it
+   compiles and runs.
+3. Use **Share** → **Permanent link** and copy the short URL (`https://godbolt.org/z/...`).
+4. Update the badge URL in the root [`README.md`](../README.md) (`[![Try online](...)]`).
+5. Optionally add a similar link to the new GitHub release description.
+
+Full automation is tracked in [#2330](https://github.com/catchorg/Catch2/issues/2330);
+until then this step is manual.
 
 
 ### Release notes
