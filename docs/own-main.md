@@ -111,8 +111,7 @@ int main( int argc, char* argv[] ) {
 }
 ```
 
-See the [Clara documentation](https://github.com/catchorg/Clara/blob/master/README.md)
-for more details on how to use the Clara parser.
+See [clara.md](clara.md) for more details on the embedded `Catch::Clara` parser.
 
 
 ## Version detection

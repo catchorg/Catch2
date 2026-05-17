@@ -41,8 +41,8 @@ A, header-only, embedded scripting language designed from the ground up to direc
 ### [ChakraCore](https://github.com/Microsoft/ChakraCore)
 The core part of the Chakra JavaScript engine that powers Microsoft Edge.
 
-### [Clara](https://github.com/philsquared/Clara)
-A, single-header-only, type-safe, command line parser - which also prints formatted usage strings.
+### Clara (embedded in Catch2)
+Catch2's built-in type-safe command-line parser ([clara.md](clara.md)); formerly a separate project.
 
 ### [Couchbase-lite-core](https://github.com/couchbase/couchbase-lite-core)
 The next-generation core storage and query engine for Couchbase Lite.
