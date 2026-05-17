@@ -7,6 +7,7 @@
 [Why cannot I derive from the built-in reporters?](#why-cannot-i-derive-from-the-built-in-reporters)<br>
 [What is Catch2's ABI stability policy?](#what-is-catch2s-abi-stability-policy)<br>
 [What is Catch2's API stability policy?](#what-is-catch2s-api-stability-policy)<br>
+[How do I run tests that live in my library's source tree?](#how-do-i-run-tests-that-live-in-my-librarys-source-tree)<br>
 [Does Catch2 support running tests in parallel?](#does-catch2-support-running-tests-in-parallel)<br>
 [Can I compile Catch2 into a dynamic library?](#can-i-compile-catch2-into-a-dynamic-library)<br>
 [What repeatability guarantees does Catch2 provide?](#what-repeatability-guarantees-does-catch2-provide)<br>
@@ -49,6 +50,17 @@ should really be able to compile everything with the same compiler binary.
 Catch2 follows [semver](https://semver.org/) to the best of our ability.
 This means that we will not knowingly make backwards-incompatible changes
 without incrementing the major version number.
+
+
+## How do I run tests that live in my library's source tree?
+
+Put every translation unit that defines `TEST_CASE`s into **one** test
+executable and link it with `Catch2::Catch2WithMain` (or a single custom
+`main` plus `Catch2::Catch2`). Do not rely on tests compiled only into a
+static library unless you know they are pulled into the runner's link.
+
+See [Tests inside a library project](library-tests.md#top) for a CMake
+example and common pitfalls.
 
 
 ## Does Catch2 support running tests in parallel?

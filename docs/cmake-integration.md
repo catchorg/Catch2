@@ -13,6 +13,10 @@
 Because we use CMake to build Catch2, we also provide a couple of
 integration points for our users.
 
+If you ship tests with a library across multiple `.cpp` files, see
+[Tests inside a library project](library-tests.md#top) so every
+`TEST_CASE` is linked into the same test executable.
+
 1) Catch2 exports a (namespaced) CMake target
 2) Catch2's repository contains CMake scripts for automatic registration
 of `TEST_CASE`s in CTest
