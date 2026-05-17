@@ -2,6 +2,7 @@
 # Test cases and sections
 
 **Contents**<br>
+[How many times does a `TEST_CASE` run?](#how-many-times-does-a-test_case-run)<br>
 [Tags](#tags)<br>
 [Tag aliases](#tag-aliases)<br>
 [BDD-style test cases](#bdd-style-test-cases)<br>
@@ -29,6 +30,68 @@ of a section while keeping the _section name_ short for use with the
 executable.**
 
 For examples see the [Tutorial](tutorial.md#top)
+
+
+<a id="how-many-times-does-a-test_case-run"></a>
+## How many times does a `TEST_CASE` run?
+
+Catch2 re-enters a `TEST_CASE` from the top **once for each leaf `SECTION`**
+in the section tree. On every re-entry, Catch2 follows a single path through
+nested `SECTION`s and skips the other branches. Code before the first
+`SECTION` on that path, and code in each entered `SECTION` along the path, runs
+for that execution.
+
+This means:
+
+* A `TEST_CASE` with **no** `SECTION`s runs **once**.
+* A `TEST_CASE` with **one** top-level `SECTION` also runs **once** (only
+  that leaf path exists).
+* A `TEST_CASE` with **two or more sibling** `SECTION`s at the same level
+  runs **once per sibling**, plus an additional run that **does not enter any
+  of those siblings** (the path that skips them). That extra run is what
+  makes code after a `SECTION` block execute both with and without entering
+  the section.
+
+Example from [issue #552](https://github.com/catchorg/Catch2/issues/552):
+
+```c++
+TEST_CASE("run once with section") {
+    printf("a0\n");
+    SECTION("foo") {
+        printf("a1\n");
+    }
+    printf("a2\n");
+}
+```
+
+prints `a0`, `a1`, `a2` once, because there is only one leaf section (`foo`).
+
+```c++
+TEST_CASE("run twice with and without section") {
+    int error = 0;
+    printf("b0\n");
+    try {
+        printf("b1\n");
+        SECTION("bar") {
+            printf("b2\n");
+            throw 1;
+        }
+        printf("b3\n");
+    } catch (int e) {
+        printf("b4\n");
+        error = e;
+    }
+    printf("b5\n");
+    REQUIRE(error > 0);
+}
+```
+
+prints the `b2` path once and the `b3` path once (two leaf paths at the same
+level: enter `bar`, or skip it). See also [issue #191](https://github.com/catchorg/Catch2/issues/191).
+
+For setup that must run on every path, keep it **before** the first `SECTION`
+or use a [test fixture](test-fixtures.md#top) / [event listener](event-listeners.md#top).
+
 
 ## Tags
 

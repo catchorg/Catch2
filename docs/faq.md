@@ -7,6 +7,7 @@
 [Why cannot I derive from the built-in reporters?](#why-cannot-i-derive-from-the-built-in-reporters)<br>
 [What is Catch2's ABI stability policy?](#what-is-catch2s-abi-stability-policy)<br>
 [What is Catch2's API stability policy?](#what-is-catch2s-api-stability-policy)<br>
+[When are test cases run without sections?](#when-are-test-cases-run-without-sections)<br>
 [Does Catch2 support running tests in parallel?](#does-catch2-support-running-tests-in-parallel)<br>
 [Can I compile Catch2 into a dynamic library?](#can-i-compile-catch2-into-a-dynamic-library)<br>
 [What repeatability guarantees does Catch2 provide?](#what-repeatability-guarantees-does-catch2-provide)<br>
@@ -49,6 +50,15 @@ should really be able to compile everything with the same compiler binary.
 Catch2 follows [semver](https://semver.org/) to the best of our ability.
 This means that we will not knowingly make backwards-incompatible changes
 without incrementing the major version number.
+
+
+## When are test cases run without sections?
+
+Catch2 runs a `TEST_CASE` once per **leaf** `SECTION` path. With multiple
+sibling `SECTION`s at the same level, there is also a run that skips all of
+them; with only one `SECTION`, you get a single run. See
+[How many times does a `TEST_CASE` run?](test-cases-and-sections.md#how-many-times-does-a-test_case-run)
+for examples (including [issue #552](https://github.com/catchorg/Catch2/issues/552)).
 
 
 ## Does Catch2 support running tests in parallel?
