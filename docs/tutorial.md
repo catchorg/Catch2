@@ -13,6 +13,10 @@
 ## Getting Catch2
 
 Ideally you should be using Catch2 through its [CMake integration](cmake-integration.md#top).
+Start with the [Getting started with CMake](cmake-integration.md#getting-started-with-cmake)
+section there if you are unsure where CMake snippets go, whether you need your
+own `main`, or what files to create in a new project.
+
 Catch2 also provides pkg-config files and two file (header + cpp)
 distribution, but this documentation will assume you are using CMake. If
 you are using the two file distribution instead, remember to replace

@@ -17,14 +17,55 @@ integration points for our users.
 2) Catch2's repository contains CMake scripts for automatic registration
 of `TEST_CASE`s in CTest
 
+## Getting started with CMake
+
+If you are new to Catch2, the steps below are the usual layout. All of the
+CMake snippets on this page belong in your project's top-level
+`CMakeLists.txt` (or in a `CMakeLists.txt` that defines a test executable).
+
+**Minimal project layout**
+
+```
+my_project/
+  CMakeLists.txt    # build rules (include the snippets below here)
+  test.cpp          # your tests (see the tutorial for what to put inside)
+```
+
+**Do I need a custom `main` function?**
+
+For most projects, **no**. Link against `Catch2::Catch2WithMain`: Catch2
+supplies a `main` that parses the command line and runs your `TEST_CASE`s.
+
+Use `Catch2::Catch2` (without `WithMain`) only when you need your own
+`main`, for example to run extra setup before/after tests or to combine
+Catch2 with another testing framework. In that case you provide a
+`test-main.cpp` (or similar) with a `main` that calls
+`Catch2::Session::instance().run(argc, argv)`.
+
+**Smallest working example**
+
+After [fetching or adding Catch2](#installing-catch2-from-git-repository)
+(see below), a complete `CMakeLists.txt` can be as small as:
+
+```cmake
+cmake_minimum_required(VERSION 3.16)
+project(my_project LANGUAGES CXX)
+
+add_executable(tests test.cpp)
+target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
+```
+
+Create `test.cpp` using the examples in the [tutorial](tutorial.md#writing-tests).
+Build with `cmake -B build && cmake --build build`, then run `./build/tests`.
+
 ## CMake targets
 
 Catch2's CMake build exports two targets, `Catch2::Catch2`, and
-`Catch2::Catch2WithMain`. If you do not need custom `main` function,
+`Catch2::Catch2WithMain`. If you do not need a custom `main` function,
 you should be using the latter (and only the latter). Linking against
 it will add the proper include paths and link your target together with
 2 static libraries that implement Catch2 and its main respectively.
-If you need custom `main`, you should link only against `Catch2::Catch2`.
+If you need a custom `main`, you should link only against `Catch2::Catch2`.
 
 This means that if Catch2 has been installed on the system, it should
 be enough to do
