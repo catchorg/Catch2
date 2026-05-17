@@ -47,7 +47,7 @@ above still works.
 
 Another possibility is to use [FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html):
 ```cmake
-Include(FetchContent)
+include(FetchContent)
 
 FetchContent_Declare(
   Catch2
