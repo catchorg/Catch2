@@ -12,6 +12,11 @@ While Catch fully supports the traditional, xUnit, style of class-based fixtures
 
 Instead Catch provides a powerful mechanism for nesting test case sections within a test case. For a more detailed discussion see the [tutorial](tutorial.md#test-cases-and-sections).
 
+To use the macros described on this page, include:
+```cpp
+#include <catch2/catch_test_macros.hpp>
+```
+
 Test cases and sections are very easy to use in practice:
 
 * **TEST_CASE(** _test name_ \[, _tags_ \] **)**
