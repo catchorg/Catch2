@@ -75,6 +75,9 @@ namespace Catch {
                 m_predicate( CATCH_FORWARD( predicate ) ) {}
 
             template <typename RangeLike>
+#if defined( CATCH_INTERNAL_CONSTEXPR_MATCHERS_ENABLED )
+            constexpr
+#endif
             bool match( RangeLike&& rng ) const {
                 using std::begin;
                 using std::end;
