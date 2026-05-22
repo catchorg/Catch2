@@ -2440,6 +2440,7 @@ MatchersRanges.tests.cpp:<line number>: passed: array_a, !UnorderedRangeEquals( 
 MatchersRanges.tests.cpp:<line number>: passed: vector_a, !UnorderedRangeEquals( vector_b ) for: { 1, 2, 3 } not unordered elements are { 1, 2, 3, 4 }
 MatchersRanges.tests.cpp:<line number>: passed: vector_a, UnorderedRangeEquals( vector_a_plus_1, close_enough ) for: { 1, 10, 20 } unordered elements are { 11, 21, 2 }
 MatchersRanges.tests.cpp:<line number>: passed: vector_a, !UnorderedRangeEquals( vector_b, close_enough ) for: { 1, 10, 21 } not unordered elements are { 11, 21, 3 }
+MatchersRanges.tests.cpp:<line number>: passed: actual, UnorderedRangeEquals( expected, []( UnorderedRangeActual const& lhs, UnorderedRangeExpected const& rhs ) { return lhs.value == rhs.value; } ) for: { 1, 2, 3, 4 } unordered elements are { 4, 2, 3, 1 }
 MatchersRanges.tests.cpp:<line number>: passed: needs_adl1, UnorderedRangeEquals( needs_adl2 ) for: { 1, 2, 3, 4, 5 } unordered elements are { 1, 2, 3, 4, 5 }
 MatchersRanges.tests.cpp:<line number>: passed: array_a, UnorderedRangeEquals( { 10, 20, 1 } ) for: { 1, 10, 20 } unordered elements are { 10, 20, 1 }
 MatchersRanges.tests.cpp:<line number>: passed: array_a, UnorderedRangeEquals( { 11, 21, 2 }, []( int l, int r ) { return std::abs( l - r ) <= 1; } ) for: { 1, 10, 20 } unordered elements are { 11, 21, 2 }
@@ -3001,6 +3002,6 @@ InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
 test cases:  451 |  331 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2416 | 2215 passed | 158 failed | 43 failed as expected
+assertions: 2417 | 2216 passed | 158 failed | 43 failed as expected
 
 

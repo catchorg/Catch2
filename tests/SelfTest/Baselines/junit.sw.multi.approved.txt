@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2428" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2429" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1416,6 +1416,7 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher/Custom predicate" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher/Custom predicate/Two equal non-empty containers (close enough)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher/Custom predicate/Two non-equal non-empty containers (close enough)" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher/Custom predicate/Different element types keep predicate argument order" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher/Ranges that need ADL begin/end" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of UnorderedRangeEquals range matcher/Compare against std::initializer_list" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of the SizeIs range matcher" time="{duration}" status="run"/>

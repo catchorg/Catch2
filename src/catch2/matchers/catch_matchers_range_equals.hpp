@@ -12,6 +12,7 @@
 #include <catch2/matchers/catch_matchers_templated.hpp>
 
 #include <functional>
+#include <vector>
 
 namespace Catch {
     namespace Matchers {
@@ -74,15 +75,38 @@ namespace Catch {
                 m_predicate( CATCH_FORWARD( predicate ) ) {}
 
             template <typename RangeLike>
-            constexpr
             bool match( RangeLike&& rng ) const {
                 using std::begin;
                 using std::end;
-                return Catch::Detail::is_permutation( begin( m_desired ),
-                                                      end( m_desired ),
-                                                      begin( rng ),
-                                                      end( rng ),
-                                                      m_predicate );
+
+                const auto target_begin = begin( m_desired );
+                const auto target_end = end( m_desired );
+                const auto target_size = static_cast<size_t>(
+                    Catch::Detail::sentinel_distance( target_begin,
+                                                      target_end ) );
+                std::vector<bool> matched( target_size, false );
+
+                size_t matched_count = 0;
+                for ( auto&& element : rng ) {
+                    if ( matched_count == target_size ) { return false; }
+
+                    auto target = target_begin;
+                    bool found_match = false;
+                    for ( size_t index = 0; target != target_end;
+                          ++target, ++index ) {
+                        if ( !matched[index] &&
+                             m_predicate( element, *target ) ) {
+                            matched[index] = true;
+                            ++matched_count;
+                            found_match = true;
+                            break;
+                        }
+                    }
+
+                    if ( !found_match ) { return false; }
+                }
+
+                return matched_count == target_size;
             }
 
             std::string describe() const override {

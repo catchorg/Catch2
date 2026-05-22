@@ -1744,5 +1744,5 @@ due to unexpected exception with message:
 
 ===============================================================================
 test cases:  451 |  349 passed |  76 failed | 7 skipped | 19 failed as expected
-assertions: 2394 | 2215 passed | 136 failed | 43 failed as expected
+assertions: 2395 | 2216 passed | 136 failed | 43 failed as expected
 
