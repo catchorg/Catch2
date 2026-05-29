@@ -36,10 +36,12 @@ Tags allow an arbitrary number of additional strings to be associated with a tes
 
 As an example - given the following test cases:
 
-    TEST_CASE( "A", "[widget]" ) { /* ... */ }
-    TEST_CASE( "B", "[widget]" ) { /* ... */ }
-    TEST_CASE( "C", "[gadget]" ) { /* ... */ }
-    TEST_CASE( "D", "[widget][gadget]" ) { /* ... */ }
+```cpp
+TEST_CASE( "A", "[widget]" ) { /* ... */ }
+TEST_CASE( "B", "[widget]" ) { /* ... */ }
+TEST_CASE( "C", "[gadget]" ) { /* ... */ }
+TEST_CASE( "D", "[widget][gadget]" ) { /* ... */ }
+```
 
 The tag expression, ```"[widget]"``` selects A, B & D. ```"[gadget]"``` selects C & D. ```"[widget][gadget]"``` selects just D and ```"[widget],[gadget]"``` selects all four test cases.
 
