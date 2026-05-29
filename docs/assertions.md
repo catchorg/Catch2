@@ -26,7 +26,7 @@ The ```CHECK``` family are equivalent but execution continues in the same test c
 Evaluates the expression and records the result. If an exception is thrown, it is caught, reported, and counted as a failure. These are the macros you will use most of the time.
 
 Examples:
-```
+```cpp
 CHECK( str == "string value" );
 CHECK( thisReturnsTrue() );
 REQUIRE( i == 42 );
