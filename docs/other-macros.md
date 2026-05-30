@@ -19,6 +19,8 @@ is entered only if the _expr_ evaluated to `false`.
 
 Example:
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
 int a = ...;
 int b = ...;
 CHECKED_IF( a == b ) {
@@ -53,6 +55,8 @@ means that the test has been a success.
 
 Example usage:
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
 TEST_CASE( "SUCCEED showcase" ) {
     int I = 1;
     SUCCEED( "I is " << I );
@@ -71,6 +75,10 @@ including the Catch2 header.
 
 Example:
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
+#include <type_traits>
+
 TEST_CASE("STATIC_REQUIRE showcase", "[traits]") {
     STATIC_REQUIRE( std::is_void<void>::value );
     STATIC_REQUIRE_FALSE( std::is_void<int>::value );
@@ -85,6 +93,10 @@ becomes equivalent to `CHECK` instead of `REQUIRE`.
 
 Example:
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
+#include <type_traits>
+
 TEST_CASE("STATIC_CHECK showcase", "[traits]") {
     STATIC_CHECK( std::is_void<void>::value );
     STATIC_CHECK_FALSE( std::is_void<int>::value );
@@ -106,6 +118,9 @@ configuration option.
 
 Example:
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_templated.hpp>
+
 TEST_CASE("Constexpr support for matchers", "[constexpr][matchers]") {
     STATIC_REQUIRE_THAT( 1, MatchAll() );
     STATIC_REQUIRE_THAT( 1, MatchAll() && MatchAll() );

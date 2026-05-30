@@ -7,6 +7,8 @@ all assertions in the scope, regardless of whether they pass or fail.
 
 **example**
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
 TEST_CASE("Simple info") {
     INFO("Test case start");
     SECTION("A") {
@@ -43,6 +45,8 @@ to the next assertion, e.g. from helper functions or inner scopes.
 
 An example:
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
 void print_some_info() {
     UNSCOPED_INFO("Info from helper");
 }
