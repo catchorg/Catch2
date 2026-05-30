@@ -49,6 +49,8 @@ programmatically change the resulting configuration of Catch2 run,
 you can do it in two ways:
 
 ```c++
+#include <catch2/catch_session.hpp>
+
 int main( int argc, char* argv[] ) {
   Catch::Session session; // There must be exactly one instance
 
@@ -82,6 +84,10 @@ You can add new command line options to Catch2, by composing the premade
 CLI parser (called Clara), and add your own options.
 
 ```cpp
+#include <catch2/catch_session.hpp>
+
+#include <iostream>
+
 int main( int argc, char* argv[] ) {
   Catch::Session session; // There must be exactly one instance
 
