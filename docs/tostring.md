@@ -64,6 +64,8 @@ namespace Catch {
 By default all exceptions deriving from `std::exception` will be translated to strings by calling the `what()` method. For exception types that do not derive from `std::exception` - or if `what()` does not return a suitable string - use `CATCH_TRANSLATE_EXCEPTION`. This defines a function that takes your exception type, by reference, and returns a string. It can appear anywhere in the code - it doesn't have to be in the same translation unit. For example:
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
 CATCH_TRANSLATE_EXCEPTION( MyType const& ex ) {
     return ex.message();
 }
@@ -81,6 +83,8 @@ Simply provide it the (qualified) enum name, followed by all the enum values, an
 E.g.
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
 enum class Fruits { Banana, Apple, Mango };
 
 CATCH_REGISTER_ENUM( Fruits, Fruits::Banana, Fruits::Apple, Fruits::Mango )
@@ -92,6 +96,8 @@ TEST_CASE() {
 
 ... or if the enum is in a namespace:
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
 namespace Bikeshed {
     enum class Colours { Red, Green, Blue };
 }
@@ -118,6 +124,8 @@ but you can customize it by modifying the `precision` static variable
 inside the `StringMaker` specialization, like so:
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
         Catch::StringMaker<float>::precision = 15;
         const float testFloat1 = 1.12345678901234567899f;
         const float testFloat2 = 1.12345678991234567899f;

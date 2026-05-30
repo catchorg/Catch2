@@ -57,6 +57,11 @@ std::uint64_t Fibonacci(std::uint64_t number) {
 ```
 Now the most straight forward way to benchmark this function, is just adding a `BENCHMARK` macro to our test case:
 ```c++
+#include <catch2/benchmark/catch_benchmark.hpp>
+#include <catch2/catch_test_macros.hpp>
+
+#include <cstdint>
+
 TEST_CASE("Fibonacci") {
     CHECK(Fibonacci(0) == 1);
     // some more asserts..
@@ -122,6 +127,8 @@ while the blocks of the advanced benchmarks are invoked exactly twice:
 once during the estimation phase, and another time during the execution phase.
 
 ```c++
+#include <catch2/benchmark/catch_benchmark.hpp>
+
 BENCHMARK("simple"){ return long_computation(); };
 
 BENCHMARK_ADVANCED("advanced")(Catch::Benchmark::Chronometer meter) {
@@ -146,6 +153,8 @@ The callable object passed in to `measure` can optionally accept an `int`
 parameter.
 
 ```c++
+#include <catch2/benchmark/catch_benchmark.hpp>
+
 meter.measure([](int i) { return long_computation(i); });
 ```
 
@@ -156,6 +165,11 @@ for example. The number of runs can be known beforehand by calling
 mutated by each run.
 
 ```c++
+#include <catch2/benchmark/catch_benchmark.hpp>
+
+#include <string>
+#include <vector>
+
 std::vector<std::string> v(meter.runs());
 std::fill(v.begin(), v.end(), test_string());
 meter.measure([&v](int i) { in_place_escape(v[i]); });
@@ -186,6 +200,8 @@ construct and destroy objects without dynamic allocation and in a way that lets
 you measure construction and destruction separately.
 
 ```c++
+#include <catch2/benchmark/catch_benchmark.hpp>
+
 BENCHMARK_ADVANCED("construct")(Catch::Benchmark::Chronometer meter) {
     std::vector<Catch::Benchmark::storage_for<std::string>> storage(meter.runs());
     meter.measure([&](int i) { storage[i].construct("thing"); });
@@ -232,6 +248,8 @@ That helps with keeping the code in a natural fashion.
 Here's an example:
 
 ```c++
+#include <catch2/benchmark/catch_benchmark.hpp>
+
 // may measure nothing at all by skipping the long calculation since its
 // result is not used
 BENCHMARK("no return"){ long_calculation(); };
