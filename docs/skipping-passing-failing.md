@@ -21,6 +21,8 @@ SKIP( [streamable expression] )
 Example usage:
 
 ```c++
+#include <catch2/catch_test_macros.hpp>
+
 TEST_CASE("copy files between drives") {
     if(getNumberOfHardDrives() < 2) {
         SKIP("at least two hard drives required");
@@ -72,6 +74,9 @@ Sections, nested sections as well as specific outputs from [generators](generato
 can all be individually skipped, with the rest executing as usual:
 
 ```c++
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
+
 TEST_CASE("complex test case") {
   int value = GENERATE(2, 4, 6);
   SECTION("a") {
