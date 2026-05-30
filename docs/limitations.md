@@ -15,6 +15,10 @@ different name per loop's iteration. The recommended way to do so is to
 incorporate the loop's counter into section's name, like so:
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
+#include <string>
+
 TEST_CASE( "Looped section" ) {
     for (char i = '0'; i < '5'; ++i) {
         SECTION(std::string("Looped section ") + i) {
@@ -27,6 +31,8 @@ TEST_CASE( "Looped section" ) {
 or with a `DYNAMIC_SECTION` macro (that was made for exactly this purpose):
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
 TEST_CASE( "Looped section" ) {
     for (char i = '0'; i < '5'; ++i) {
         DYNAMIC_SECTION( "Looped section " << i) {
@@ -93,6 +99,8 @@ to trigger the compilation error:
 ```cpp
 #include <catch2/catch_test_macros.hpp>
 
+#include <string>
+
 TEST_CASE("test") {
     CHECK(std::string(R"("\)") == "\"\\");
 }
@@ -104,6 +112,8 @@ like so:
 ```cpp
 #define CATCH_CONFIG_DISABLE_STRINGIFICATION
 #include <catch2/catch_test_macros.hpp>
+
+#include <string>
 
 TEST_CASE("test") {
     CHECK(std::string(R"("\)") == "\"\\");

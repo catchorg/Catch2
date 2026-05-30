@@ -125,6 +125,10 @@ the description can contain both name and tags.
 
 Example:
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
+void someFunction();
+
 REGISTER_TEST_CASE( someFunction, "ManuallyRegistered", "[tags]" );
 ```
 
@@ -143,6 +147,8 @@ generators, or when creating a `SECTION` dynamically, within a loop.
 
 Example:
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
 TEST_CASE( "looped SECTION tests" ) {
     int a = 1;
 

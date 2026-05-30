@@ -259,6 +259,10 @@ happens instead of exception being thrown. To use it, define
 and provide a definition for this function:
 
 ```cpp
+#include <catch2/catch_config.hpp>
+
+#include <exception>
+
 namespace Catch {
     [[noreturn]]
     void throw_exception(std::exception const&);
