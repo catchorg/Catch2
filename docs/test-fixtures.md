@@ -27,6 +27,10 @@ non-templated test fixtures. They are:
 You define a `TEST_CASE_METHOD` test fixture as a simple structure:
 
 ```c++
+#include <catch2/catch_test_macros.hpp>
+
+#include <string>
+
 class UniqueTestsFixture {
   private:
    static int uniqueID;
@@ -65,6 +69,10 @@ as a Catch2 test case. The class will be separately instantiated
 for each method registered in this way.
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
+#include <string>
+
 class TestClass {
     std::string s;
 
@@ -96,6 +104,11 @@ one instance created throughout the entire run of a test case. To
 demonstrate this have a look at the following example:
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
+#include <chrono>
+#include <thread>
+
 class ClassWithExpensiveSetup {
 public:
     ClassWithExpensiveSetup() {
@@ -181,6 +194,13 @@ in another pair of parentheses, e.g. `(std::map, std::pair)` and
 
 Example:
 ```cpp
+#include <catch2/catch_template_test_macros.hpp>
+#include <catch2/catch_test_macros.hpp>
+
+#include <cstddef>
+#include <string>
+#include <vector>
+
 template< typename T >
 struct Template_Fixture {
     Template_Fixture(): m_a(1) {}
@@ -232,6 +252,13 @@ with additional positional argument for [signature](test-cases-and-sections.md#s
 
 Example:
 ```cpp
+#include <catch2/catch_template_test_macros.hpp>
+#include <catch2/catch_test_macros.hpp>
+
+#include <array>
+#include <cstddef>
+#include <string>
+
 template <int V>
 struct Nttp_Fixture{
     int value = V;
@@ -277,6 +304,11 @@ only difference is the source of types. This allows you to reuse the template ty
 
 Example:
 ```cpp
+#include <catch2/catch_template_test_macros.hpp>
+#include <catch2/catch_test_macros.hpp>
+
+#include <tuple>
+
 using MyTypes = std::tuple<int, char, double>;
 TEMPLATE_LIST_TEST_CASE_METHOD(Template_Fixture,
                                "Template test case method with test types specified inside std::tuple",
