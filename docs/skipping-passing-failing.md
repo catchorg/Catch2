@@ -127,6 +127,8 @@ _In practice, `SUCCEED` is usually used as a test placeholder, to avoid
 [failing a test case due to missing assertions](command-line.md#warnings)._
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
 TEST_CASE( "SUCCEED showcase" ) {
     int I = 1;
     SUCCEED( "I is " << I );
@@ -142,6 +144,8 @@ _In practice, `FAIL` is usually used to stop executing test that is currently
 known to be broken, but has to be fixed later._
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
 TEST_CASE( "FAIL showcase" ) {
     FAIL( "This test case causes segfault, which breaks CI." );
     // ... this will not be executed ...
