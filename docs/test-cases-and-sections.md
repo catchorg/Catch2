@@ -198,6 +198,13 @@ parentheses, e.g. `std::map<int, std::string>` needs to be passed as
 
 Example:
 ```cpp
+#include <catch2/catch_template_test_macros.hpp>
+#include <catch2/catch_test_macros.hpp>
+
+#include <string>
+#include <tuple>
+#include <vector>
+
 TEMPLATE_TEST_CASE( "vectors can be sized and resized", "[vector][template]", int, std::string, (std::tuple<int,float>) ) {
 
     std::vector<TestType> v( 5 );
@@ -253,6 +260,13 @@ or the _template-args_.
 
 Example:
 ```cpp
+#include <catch2/catch_template_test_macros.hpp>
+#include <catch2/catch_test_macros.hpp>
+
+#include <cstddef>
+#include <tuple>
+#include <vector>
+
 template< typename T>
 struct Foo {
     size_t size() {
@@ -268,6 +282,11 @@ TEMPLATE_PRODUCT_TEST_CASE("A Template product test case", "[template][product]"
 
 You can also have different arities in the _template-arg_ packs:
 ```cpp
+#include <catch2/catch_template_test_macros.hpp>
+#include <catch2/catch_test_macros.hpp>
+
+#include <tuple>
+
 TEMPLATE_PRODUCT_TEST_CASE("Product with differing arities", "[template][product]", std::tuple, (int, (int, double), (int, double, float))) {
     TestType x;
     REQUIRE(std::tuple_size<TestType>::value >= 1);
@@ -286,6 +305,11 @@ This allows you to reuse the _type list_ in multiple test cases.
 
 Example:
 ```cpp
+#include <catch2/catch_template_test_macros.hpp>
+#include <catch2/catch_test_macros.hpp>
+
+#include <tuple>
+
 using MyTypes = std::tuple<int, char, float>;
 TEMPLATE_LIST_TEST_CASE("Template test case with test types specified inside std::tuple", "[template][list]", MyTypes)
 {
@@ -323,6 +347,13 @@ Currently Catch2 support up to 11 template parameters in signature
 Inside `TEMPLATE_TEST_CASE_SIG` test case you can use the names of template parameters as defined in _signature_.
 
 ```cpp
+#include <catch2/catch_template_test_macros.hpp>
+#include <catch2/catch_test_macros.hpp>
+
+#include <array>
+#include <string>
+#include <tuple>
+
 TEMPLATE_TEST_CASE_SIG("TemplateTestSig: arrays can be created from NTTP arguments", "[vector][template][nttp]",
   ((typename T, int V), T, V), (int,5), (float,4), (std::string,15), ((std::tuple<int, float>), 6)) {
 
@@ -334,6 +365,11 @@ TEMPLATE_TEST_CASE_SIG("TemplateTestSig: arrays can be created from NTTP argumen
 * **TEMPLATE_PRODUCT_TEST_CASE_SIG(** _test name_ , _tags_, _signature_, (_template-type1_, _template-type2_, ..., _template-typen_), (_template-arg1_, _template-arg2_, ..., _template-argm_) **)**
 
 ```cpp
+#include <catch2/catch_template_test_macros.hpp>
+#include <catch2/catch_test_macros.hpp>
+
+#include <array>
+#include <cstddef>
 
 template<typename T, size_t S>
 struct Bar {
