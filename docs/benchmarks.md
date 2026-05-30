@@ -183,6 +183,8 @@ It is also possible to just provide an argument name to the simple `BENCHMARK` m
 the same semantics as providing a callable to `meter.measure` with `int` argument:
 
 ```c++
+#include <catch2/benchmark/catch_benchmark.hpp>
+
 BENCHMARK("indexed", i){ return long_computation(i); };
 ```
 
