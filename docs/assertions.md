@@ -45,6 +45,8 @@ because there is no added value in decomposing them.
 
 Example:
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
 Status ret = someFunction();
 REQUIRE_FALSE(ret); // ret must evaluate to false, and Catch2 will print
                     // out the value of ret if possibly
@@ -110,6 +112,11 @@ Expects that an exception is thrown that, when converted to a string, matches th
 
 e.g.
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_string.hpp>
+
+using Catch::Matchers::ContainsSubstring;
+
 REQUIRE_THROWS_WITH( openThePodBayDoors(), ContainsSubstring( "afraid" ) && ContainsSubstring( "can't do that" ) );
 REQUIRE_THROWS_WITH( dismantleHal(), "My mind is going" );
 ```
@@ -123,6 +130,8 @@ Expects that exception of _exception type_ is thrown and it matches provided mat
 _Please note that the `THROW` family of assertions expects to be passed a single expression, not a statement or series of statements. If you want to check a more complicated sequence of operations, you can use a C++11 lambda function._
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
 REQUIRE_NOTHROW([&](){
     int i = 1;
     int j = 2;

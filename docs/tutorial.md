@@ -118,6 +118,10 @@ instead use _sections_ to share setup and teardown code between test code.
 This is best explained through an example ([code](../examples/100-Fix-Section.cpp)):
 
 ```c++
+#include <catch2/catch_test_macros.hpp>
+
+#include <vector>
+
 TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
     // This setup will be done 4 times in total, once for each section
     std::vector<int> v( 5 );
