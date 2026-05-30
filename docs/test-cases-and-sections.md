@@ -121,6 +121,12 @@ These are used to chain ```GIVEN```s, ```WHEN```s and ```THEN```s together. The 
 _inside_ the clause on which it depends. There can be multiple _independent_ clauses that are all _dependent_
 on a single outer clause.
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_bdd_macros.hpp>
+
+#include <string>
+#include <vector>
+
 SCENARIO( "vector can be sized and resized" ) {
     GIVEN( "An empty vector" ) {
         auto v = std::vector<std::string>{};
