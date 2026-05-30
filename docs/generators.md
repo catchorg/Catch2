@@ -17,6 +17,9 @@ are run once per each value in a generator.
 
 This is best explained with an example:
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
+
 TEST_CASE("Generators") {
     auto i = GENERATE(1, 3, 5);
     REQUIRE(is_odd(i));
@@ -33,6 +36,9 @@ the code examples below also requires
 `#include <catch2/generators/catch_generators.hpp>`.
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
+
 TEST_CASE("Generators") {
     auto i = GENERATE(1, 2);
     auto j = GENERATE(3, 4, 5);
@@ -165,6 +171,11 @@ And can be used as shown in the example below to create a generator
 that returns 100 odd random number:
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
+#include <catch2/generators/catch_generators_adapters.hpp>
+#include <catch2/generators/catch_generators_random.hpp>
+
 TEST_CASE("Generating random ints", "[example][generator]") {
     SECTION("Deducing functions") {
         auto i = GENERATE(take(100, filter([](int i) { return i % 2 == 1; }, random(-100, 100))));
