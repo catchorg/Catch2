@@ -70,6 +70,11 @@ thread will not be seen by the main thread, and vice versa.
 ### `REQUIRE` from the main thread, `CHECK` from spawned threads
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
+#include <thread>
+#include <vector>
+
 TEST_CASE( "Failed REQUIRE in the main thread is fine" ) {
     std::vector<std::jthread> threads;
     for ( size_t t = 0; t < 16; ++t) {
@@ -94,6 +99,11 @@ the spawned threads will keep running.
 ### `REQUIRE` from spawned threads
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
+#include <thread>
+#include <vector>
+
 TEST_CASE( "Successful REQUIRE in spawned thread is fine" ) {
     std::vector<std::jthread> threads;
     for ( size_t t = 0; t < 16; ++t) {
@@ -108,6 +118,11 @@ TEST_CASE( "Successful REQUIRE in spawned thread is fine" ) {
 This will also work as expected, because the `REQUIRE` is successful.
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
+#include <thread>
+#include <vector>
+
 TEST_CASE( "Failed REQUIRE in spawned thread kills the process" ) {
     std::vector<std::jthread> threads;
     for ( size_t t = 0; t < 16; ++t) {
@@ -125,6 +140,10 @@ This will fail catastrophically and terminate the process.
 ### INFO across threads
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
+#include <thread>
+
 TEST_CASE( "messages don't cross threads" ) {
     std::jthread t1( [&]() {
         for ( size_t i = 0; i < 100; ++i ) {
@@ -156,6 +175,11 @@ assertions in `t2`.
 ### FAIL/SKIP from the main thread
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
+#include <thread>
+#include <vector>
+
 TEST_CASE( "FAIL in the main thread is fine" ) {
     std::vector<std::jthread> threads;
     for ( size_t t = 0; t < 16; ++t) {
@@ -185,6 +209,11 @@ the spawned threads will keep running and may fail the test case.
 ### FAIL/SKIP from spawned threads
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
+#include <thread>
+#include <vector>
+
 TEST_CASE( "FAIL/SKIP in spawned thread kills the process" ) {
     std::vector<std::jthread> threads;
     for ( size_t t = 0; t < 16; ++t) {

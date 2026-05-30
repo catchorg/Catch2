@@ -49,6 +49,8 @@ the section can be opened. If not, Catch2 will skip over that section.
 #### Simple section nesting
 Given
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
 TEST_CASE( "foo" ) {
     REQUIRE( true );
     SECTION( "A" ) {
@@ -75,6 +77,9 @@ Note that old behaviour completely _ignores_ generators. This means both
 that they can't be filtered, but also that they aren't taken into account
 for the filter depth. In other words, given
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
+
 TEST_CASE( "bar" ) {
     REQUIRE( true );
     SECTION( "A" ) { REQUIRE( true ); }
@@ -100,6 +105,9 @@ TEST_CASE( "bar" ) {
 For cases where sections have sibling generators, the filtering can get
 even more surprising.
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
+
 TEST_CASE( "qux" ) {
     REQUIRE( true );
     SECTION( "A" ) { REQUIRE( true ); }
@@ -151,6 +159,9 @@ equivalent, causing the section to be considered skipped.
 
 #### Nested generators
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
+
 TEST_CASE( "waldo" ) {
     auto i = GENERATE( 1, 10, 100 );
     auto j = GENERATE( 2, 20, 200 );
@@ -171,6 +182,9 @@ TEST_CASE( "waldo" ) {
 
 #### Generator with a nested dynamic section
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
+
 TEST_CASE( "grault" ) {
     REQUIRE( true );
     auto i = GENERATE( 1, 2, 3 );
@@ -191,6 +205,9 @@ Because generators have to stop test execution when they don't pass filter,
 it is impossible to run only a section with sibling generator without
 triggering a test case skip. Consider this test case from an earlier example:
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
+
 TEST_CASE( "qux" ) {
     REQUIRE( true );
     SECTION( "A" ) { REQUIRE( true ); }
