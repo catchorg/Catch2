@@ -34,6 +34,9 @@ a known good value within 0.1% or is close enough (no different to 5
 decimal places) to zero, we would write this assertion:
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_floating_point.hpp>
+
     REQUIRE_THAT( computation(input),
         Catch::Matchers::WithinRel(expected, 0.001)
      || Catch::Matchers::WithinAbs(0, 0.000001) );
@@ -48,6 +51,11 @@ can be converted to `double` without losing precision, only `double`
 overload exists.
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_floating_point.hpp>
+
+using Catch::Matchers::WithinAbs;
+
 REQUIRE_THAT(1.0, WithinAbs(1.2, 0.2));
 REQUIRE_THAT(0.f, !WithinAbs(1.0, 0.5));
 // Notice that infinity == infinity for WithinAbs
@@ -65,6 +73,11 @@ specify `eps`, `std::numeric_limits<FloatingPoint>::epsilon * 100`
 is used as the default.
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_floating_point.hpp>
+
+using Catch::Matchers::WithinRel;
+
 // Notice that WithinRel comparison is symmetric, unlike Approx's.
 REQUIRE_THAT(1.0, WithinRel(1.1, 0.1));
 REQUIRE_THAT(1.1, WithinRel(1.0, 0.1));
@@ -98,6 +111,11 @@ Catch2's ULP calculation obeys these relations:
 floating point numbers.
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_floating_point.hpp>
+
+using Catch::Matchers::WithinULP;
+
 REQUIRE_THAT( -0.f, WithinULP( 0.f, 0 ) );
 ```
 
@@ -116,6 +134,9 @@ Catch2 provides one more way to handle floating point comparisons. It is
 be used in standard assertions, e.g.
 
 ```cpp
+#include <catch2/catch_approx.hpp>
+#include <catch2/catch_test_macros.hpp>
+
 REQUIRE(0.99999 == Catch::Approx(1));
 ```
 
