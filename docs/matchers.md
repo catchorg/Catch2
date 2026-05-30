@@ -26,6 +26,9 @@ For example, to assert that a string ends with the "as a service"
 substring, you can write the following assertion
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_string.hpp>
+
 using Catch::Matchers::EndsWith;
 
 REQUIRE_THAT( getSomeString(), EndsWith("as a service") );
@@ -35,6 +38,9 @@ Individual matchers can also be combined using the C++ logical
 operators, that is `&&`, `||`, and `!`, like so:
 
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_string.hpp>
+
 using Catch::Matchers::EndsWith;
 using Catch::Matchers::ContainsSubstring;
 
