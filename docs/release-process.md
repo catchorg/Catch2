@@ -3,6 +3,8 @@
 
 When enough changes have accumulated, it is time to release new version of Catch. This document describes the process in doing so, that no steps are forgotten. Note that all referenced scripts can be found in the `tools/scripts/` directory.
 
+For documentation and coding guidelines when preparing a release, see [contributing.md](contributing.md#top).
+
 ## Necessary steps
 
 These steps are necessary and have to be performed before each new release. They serve to make sure that the new release is correct and linked-to from the standard places.
