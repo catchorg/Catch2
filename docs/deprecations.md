@@ -47,6 +47,8 @@ be `const` qualified, just as `TEST_CASE_PERSISTENT_FIXTURE` does.
 If you are mutating the fixture instance from within the test case, and
 want to keep doing so in the future, mark the mutated members as `mutable`.
 
+See also the [v2 to v3 migration guide](migrate-v2-to-v3.md#top) for header and API changes.
+
 
 ### Section-only filtering with `-c/--section`
 
