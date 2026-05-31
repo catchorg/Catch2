@@ -4,6 +4,8 @@
 To get the most out of Catch2, start with the [tutorial](tutorial.md#top).
 Once you're up and running consider the following reference material.
 
+Documentation examples show the Catch2 headers needed for each feature (see [#2519](https://github.com/catchorg/Catch2/issues/2519)).
+
 **Writing tests:**
 * [Assertion macros](assertions.md#top)
 * [Matchers (asserting complex properties)](matchers.md#top)
