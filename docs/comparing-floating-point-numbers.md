@@ -1,6 +1,8 @@
 <a id="top"></a>
 # Comparing floating point numbers with Catch2
 
+Code examples list required Catch2 headers ([#2519](https://github.com/catchorg/Catch2/issues/2519)).
+
 If you are not deeply familiar with them, floating point numbers can be
 unintuitive. This also applies to comparing floating point numbers for
 (in)equality.
