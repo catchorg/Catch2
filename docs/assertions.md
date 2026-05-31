@@ -174,6 +174,8 @@ less clear.
 
 2) Parenthesize the expression:
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
 TEST_CASE_METHOD((Fixture<int, int>), "foo", "[bar]") {
     SUCCEED();
 }
