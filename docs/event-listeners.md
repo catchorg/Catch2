@@ -16,6 +16,8 @@ only override events you care for. Afterwards you have to register it
 with Catch2 using `CATCH_REGISTER_LISTENER` macro, so that Catch2 knows
 about it and instantiates it before running tests.
 
+The example below includes the headers needed for custom listeners ([#2519](https://github.com/catchorg/Catch2/issues/2519)); see also [reporter events](reporter-events.md#top).
+
 Example event listener:
 ```cpp
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
