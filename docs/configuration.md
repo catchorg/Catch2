@@ -1,6 +1,8 @@
 <a id="top"></a>
 # Compile-time configuration
 
+Reference examples list the Catch2 headers needed for each configuration ([#2519](https://github.com/catchorg/Catch2/issues/2519)).
+
 **Contents**<br>
 [Prefixing Catch macros](#prefixing-catch-macros)<br>
 [Terminal colour](#terminal-colour)<br>
