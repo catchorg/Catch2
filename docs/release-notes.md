@@ -1,6 +1,9 @@
 <a id="top"></a>
 
 # Release notes
+
+For contribution and documentation guidelines, see [contributing.md](contributing.md#top).
+
 **Contents**<br>
 [3.15.0](#3150)<br>
 [3.14.0](#3140)<br>
