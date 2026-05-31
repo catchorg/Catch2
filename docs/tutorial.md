@@ -222,6 +222,9 @@ can get you quite far, but there are many more. However, you can read
 about these as you go, in the ever-growing [reference section](Readme.md#top)
 of the documentation.
 
+For full, compilable sample programs, see the [list of examples](list-of-examples.md#top)
+in `examples/` ([#1037](https://github.com/catchorg/Catch2/issues/1037)).
+
 
 ---
 
