@@ -160,6 +160,11 @@ but the macro accepts only 2. There are two possible workarounds.
 
 1) Use typedef:
 ```cpp
+#include <catch2/catch_test_macros.hpp>
+
+#include <stdexcept>
+#include <utility>
+
 using int_pair = std::pair<int, int>;
 REQUIRE_THROWS_AS(int_pair(1, 2), std::invalid_argument);
 ```
