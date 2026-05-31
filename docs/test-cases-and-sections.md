@@ -1,6 +1,8 @@
 <a id="top"></a>
 # Test cases and sections
 
+Code examples list required Catch2 headers ([#2519](https://github.com/catchorg/Catch2/issues/2519)).
+
 **Contents**<br>
 [Tags](#tags)<br>
 [Tag aliases](#tag-aliases)<br>
