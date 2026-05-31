@@ -30,6 +30,75 @@ executable.**
 
 For examples see the [Tutorial](tutorial.md#top)
 
+## How SECTION discovery affects TEST_CASE execution
+
+When a `TEST_CASE` contains `SECTION`s, Catch2 executes the test case once for each
+**leaf** section (see the [tutorial](tutorial.md#test-cases-and-sections)). On every such
+run, the `TEST_CASE` body is **entered from the start**; setup code before a `SECTION`
+runs again for each leaf path.
+
+Under the hood, `SECTION` macros expand to conditionals that consult an internal table
+of which paths have already run. Catch2 must **execute code sequentially until it reaches
+a `SECTION`** before it knows that section exists.
+
+Implications:
+
+* Code outside any `SECTION` can run multiple times — once per leaf-section run, and
+  sometimes on additional discovery passes (see below).
+* After Catch2 has entered a leaf section and run through to the end of the test case,
+  it knows no further sections remain on that path and does not re-enter unless another
+  leaf section needs running.
+* If a `SECTION` exits early (for example by throwing an exception), Catch2 may not yet
+  know whether more `SECTION`s appear later in the test case. In that case it
+  **re-executes the test case while skipping the section(s) already run**, to discover
+  and run any remaining sections. If none exist, this pass executes the test case without
+  entering a `SECTION` — which can surprise users who expect exactly one run per
+  `SECTION`.
+
+Example adapted from [#552](https://github.com/catchorg/Catch2/issues/552):
+
+```cpp
+#include <catch2/catch_test_macros.hpp>
+
+#include <cstdio>
+
+TEST_CASE("run once with section", "[.][552]") {
+    printf("a0\n");
+    SECTION("foo") {
+        printf("a1\n");
+    }
+    printf("a2\n");
+}
+
+TEST_CASE("run twice with and without section", "[.][552]") {
+    int error = 0;
+
+    printf("b0\n");
+    try {
+        printf("b1\n");
+        SECTION("bar") {
+            printf("b2\n");
+            throw 1;
+        }
+        printf("b3\n");
+    } catch (int e) {
+        printf("b4\n");
+        error = e;
+    }
+    printf("b5\n");
+
+    REQUIRE(error > 0);
+}
+```
+
+The first test case prints `a0`, `a1`, `a2` once. The second prints `b0`–`b5` twice:
+first when `SECTION("bar")` runs and throws, then again on a discovery re-run that skips
+`bar` and reaches `b3`.
+
+If this behavior is problematic for your test, prefer keeping expensive setup in
+fixtures, `TEST_CASE` methods, or `SECTION` layouts where sections do not exit early
+before later sections are registered.
+
 ## Tags
 
 Tags allow an arbitrary number of additional strings to be associated with a test case. Test cases can be selected (for running, or just for listing) by tag - or even by an expression that combines several tags. At their most basic level they provide a simple way to group several related tests together.
