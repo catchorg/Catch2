@@ -99,6 +99,11 @@ If this behavior is problematic for your test, prefer keeping expensive setup in
 fixtures, `TEST_CASE` methods, or `SECTION` layouts where sections do not exit early
 before later sections are registered.
 
+Avoid mutating global or static state inside `SECTION`s when sibling sections exist at
+the same level. Because Catch2 re-executes the `TEST_CASE` body for each leaf path,
+shared mutable state can leak between runs and make tests order-dependent. This was a
+common source of confusion in older Catch versions ([#485](https://github.com/catchorg/Catch2/issues/485)).
+
 ## Tags
 
 Tags allow an arbitrary number of additional strings to be associated with a test case. Test cases can be selected (for running, or just for listing) by tag - or even by an expression that combines several tags. At their most basic level they provide a simple way to group several related tests together.
