@@ -39,6 +39,9 @@ add_executable(custom-main-tests test.cpp test-main.cpp)
 target_link_libraries(custom-main-tests PRIVATE Catch2::Catch2)
 ```
 
+In `test.cpp`, include the Catch2 headers for the macros you use (for example
+`#include <catch2/catch_test_macros.hpp>`). See [#2519](https://github.com/catchorg/Catch2/issues/2519).
+
 These targets are also provided when Catch2 is used as a subdirectory.
 Assuming Catch2 has been cloned to `lib/Catch2`, you only need to replace
 the `find_package` call with `add_subdirectory(lib/Catch2)` and the snippet
