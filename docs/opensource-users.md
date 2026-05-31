@@ -11,6 +11,8 @@ obviously never be complete (and does not have the ambition to be
 complete). Note that the list below is intended to be in alphabetical
 order, to avoid implications of relative importance of the projects.
 
+To add a project, see [contributing.md](contributing.md#top).
+
 _Please only add projects here if you are their maintainer, or have the
 maintainer's explicit consent._
 
