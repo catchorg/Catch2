@@ -26,6 +26,8 @@ distribution but do not consider it the primarily supported option. You
 should also expect that the compilation times will be worse if you use
 this option._
 
+After migration, prefer listing the modular headers each test needs in documentation and examples ([#2519](https://github.com/catchorg/Catch2/issues/2519)).
+
 
 ## How to migrate projects from v2 to v3
 
