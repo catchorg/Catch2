@@ -12,6 +12,8 @@
 [What repeatability guarantees does Catch2 provide?](#what-repeatability-guarantees-does-catch2-provide)<br>
 [My build cannot find `catch2/catch_user_config.hpp`, how can I fix it?](#my-build-cannot-find-catch2catch_user_confighpp-how-can-i-fix-it)<br>
 
+Documentation examples list the Catch2 headers required for each feature ([#2519](https://github.com/catchorg/Catch2/issues/2519)).
+
 
 ## How do I run global setup/teardown only if tests will be run?
 
