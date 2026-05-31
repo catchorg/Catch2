@@ -19,6 +19,20 @@ event groups:
 * listings (3 events)
 * miscellaneous (4 events)
 
+## Headers for custom reporters and listeners
+
+When overriding these events in a [reporter](reporters.md#writing-your-own-reporter) or
+[event listener](event-listeners.md#top), include the Catch2 reporter headers you need:
+
+```cpp
+#include <catch2/reporters/catch_reporter_event_listener.hpp>
+#include <catch2/reporters/catch_reporter_registrars.hpp>
+```
+
+Custom reporters that derive from `Catch::StreamingReporterBase` or
+`Catch::CumulativeReporterBase` should include the corresponding base header; see
+[Writing your own reporter](reporters.md#writing-your-own-reporter).
+
 ## Test running events
 
 Test running events are always paired so that for each `fooStarting` event,
