@@ -19,6 +19,25 @@ questions, but generally it is a better idea to ask questions in our
 This page covers some guidelines and helpful tips for contributing
 to the codebase itself.
 
+## Supported platforms and compilers
+
+Catch2 v3 requires **C++14** or later (`cxx_std_14` in CMake). Catch2 v2
+supported C++11, but new development happens on v3 in the `devel` branch.
+
+We do not maintain an exhaustive compatibility matrix, but the following
+configurations are **regularly tested in CI** (see
+[`.github/workflows/`](https://github.com/catchorg/Catch2/tree/devel/.github/workflows)):
+
+| Platform | Compilers / images | C++ standards |
+|----------|-------------------|---------------|
+| Linux (Ubuntu 22.04) | GCC 9–12, Clang 6.0–14+ | 14 (and selected 17 builds) |
+| macOS | Apple Clang on macOS 14–15 (incl. Intel runner) | 14, 17 |
+| Windows | MSVC on Windows Server 2022/2025, Win32 and x64 | 14, 17 |
+
+Additional Linux jobs cover Meson, Bazel, sanitizers, and other build setups.
+If you use a compiler not listed here, please report success or failure in an
+issue — community reports help others ([#103](https://github.com/catchorg/Catch2/issues/103)).
+
 ## Using Git(Hub)
 
 Ongoing development happens in the `devel` branch for Catch2 v3, and in
@@ -133,6 +152,9 @@ If you have added new feature to Catch2, it needs documentation, so that
 other people can use it as well. This section collects some technical
 information that you will need for updating Catch2's documentation, and
 possibly some generic advise as well.
+
+When adding or updating code examples, include the Catch2 headers required
+for the feature (see [#2519](https://github.com/catchorg/Catch2/issues/2519)).
 
 
 ### Technicalities
