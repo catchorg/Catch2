@@ -82,6 +82,19 @@ When writing your reporter, you have two options:
 
 Generally we recommend doing the latter, as it is less work.
 
+Include the reporter base header you derive from and
+`<catch2/reporters/catch_reporter_registrars.hpp>` to register the reporter
+with Catch2. For example, a streaming reporter typically needs:
+
+```cpp
+#include <catch2/reporters/catch_reporter_streaming_base.hpp>
+#include <catch2/reporters/catch_reporter_registrars.hpp>
+```
+
+[Event listeners](event-listeners.md#top) use
+`<catch2/reporters/catch_reporter_event_listener.hpp>` instead. The full list
+of [reporter events](reporter-events.md#top) shows which methods to override.
+
 Apart from overriding handling of the individual reporter events, reporters
 have access to some extra customization points, described below.
 
