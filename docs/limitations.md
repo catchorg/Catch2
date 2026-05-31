@@ -6,6 +6,8 @@ to implementation details that cannot be easily changed, some of these
 are due to lack of development resources on our part, and some of these
 are due to plain old 3rd party bugs.
 
+Code examples in the reference documentation list required Catch2 headers ([#2519](https://github.com/catchorg/Catch2/issues/2519)).
+
 
 ## Implementation limits
 ### Sections nested in loops
