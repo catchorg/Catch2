@@ -1,6 +1,9 @@
 <a id="top"></a>
 # Best practices and other tips on using Catch2
 
+Reference pages list the Catch2 headers required for each feature ([#2519](https://github.com/catchorg/Catch2/issues/2519)).
+Compilable samples live under [`examples/`](list-of-examples.md#top) ([#1037](https://github.com/catchorg/Catch2/issues/1037)).
+
 ## Running tests
 
 Your tests should be run in a manner roughly equivalent with:
