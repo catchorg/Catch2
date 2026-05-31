@@ -65,6 +65,18 @@ to piecemeal includes. You will likely want to start by including
 `<catch2/catch_test_macros.hpp>`, and then go from there. (see
 [other notes](#other-notes) for further ideas)
 
+For example, a test file that only uses `TEST_CASE` and `REQUIRE` might look like:
+
+```cpp
+#include <catch2/catch_test_macros.hpp>
+
+TEST_CASE("example") {
+    REQUIRE(1 + 1 == 2);
+}
+```
+
+See [#2519](https://github.com/catchorg/Catch2/issues/2519) for documenting required headers in the reference pages.
+
 ## Other notes
 
 * The main test include is now `<catch2/catch_test_macros.hpp>`
