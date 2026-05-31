@@ -35,6 +35,8 @@
 [Create file to guard against silent early termination](#create-file-to-guard-against-silent-early-termination)<br>
 
 Catch works quite nicely without any command line options at all - but for those times when you want greater control the following options are available.
+Reference pages list the Catch2 headers required in test code ([#2519](https://github.com/catchorg/Catch2/issues/2519)).
+
 Click one of the following links to take you straight to that option - or scroll on to browse the available options.
 
 <a href="#specifying-which-tests-to-run">               `    <test-spec> ...`</a><br />
