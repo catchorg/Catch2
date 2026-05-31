@@ -11,6 +11,8 @@ including (but not limited to),
 
 So what does Catch2 bring to the party that differentiates it from these? Apart from the catchy name, of course.
 
+For getting started with Catch2 v3, see the [tutorial](tutorial.md#top) and [reference](Readme.md#top); modular headers are documented per feature ([#2519](https://github.com/catchorg/Catch2/issues/2519)).
+
 
 ## Key Features
 
