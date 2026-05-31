@@ -1,6 +1,12 @@
 <a id="top"></a>
 # List of examples
 
+The `.cpp` files under [`examples/`](../examples/) are complete, compilable programs
+referenced throughout the docs. They are built and run as part of Catch2's CMake/CI
+test suite, so they stay in sync with the library.
+
+The reference documentation lists the Catch2 headers each feature needs ([#2519](https://github.com/catchorg/Catch2/issues/2519)); the sources here follow the same modular includes as the docs ([#1037](https://github.com/catchorg/Catch2/issues/1037)).
+
 ## Already available
 
 - Test Case: [Single-file](../examples/010-TestCase.cpp)
@@ -12,6 +18,7 @@
 - BDD: [SCENARIO, GIVEN, WHEN, THEN](../examples/120-Bdd-ScenarioGivenWhenThen.cpp)
 - Listener: [Listeners](../examples/210-Evt-EventListeners.cpp)
 - Configuration: [Provide your own output streams](../examples/231-Cfg-OutputStreams.cpp)
+- Configuration: [Provide your own main()](../examples/232-Cfg-CustomMain.cpp)
 - Generators: [Create your own generator](../examples/300-Gen-OwnGenerator.cpp)
 - Generators: [Use map to convert types in GENERATE expression](../examples/301-Gen-MapTypeConversion.cpp)
 - Generators: [Run test with a table of input values](../examples/302-Gen-Table.cpp)
