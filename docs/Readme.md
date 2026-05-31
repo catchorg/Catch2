@@ -4,6 +4,9 @@
 To get the most out of Catch2, start with the [tutorial](tutorial.md#top).
 Once you're up and running consider the following reference material.
 
+For complete, compilable sample programs, see the [list of examples](list-of-examples.md#top)
+in `examples/` (built as part of CI). Related: [#1037](https://github.com/catchorg/Catch2/issues/1037).
+
 **Writing tests:**
 * [Assertion macros](assertions.md#top)
 * [Matchers (asserting complex properties)](matchers.md#top)
