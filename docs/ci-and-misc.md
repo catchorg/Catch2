@@ -10,6 +10,9 @@
 This page talks about Catch2's integration with other related tooling,
 like Continuous Integration and 3rd party test runners.
 
+For CMake targets and linking tests, see [CMake integration](cmake-integration.md#top).
+Documentation examples list required Catch2 headers ([#2519](https://github.com/catchorg/Catch2/issues/2519)).
+
 
 ## Continuous Integration systems
 
