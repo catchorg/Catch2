@@ -106,6 +106,25 @@ respective debugger, these will tell it to step over Catch2's internals
 when stepping through code.
 
 
+## IDE integration
+
+Catch2 works with most C++ IDEs through CMake/CTest integration:
+
+* **CLion** — open a CMake project that uses Catch2; CLion discovers tests via CTest
+  and lets you run or debug individual `TEST_CASE`s from the editor gutter.
+* **Visual Studio** — with CMake integration enabled, tests registered through CTest
+  appear in Test Explorer. Use Catch2 reporters (see above) for CI-friendly output.
+* **VS Code** — use the CMake Tools and C/C++ extensions; run `ctest` from the
+  integrated terminal or your `tasks.json`. The [gdb/lldb scripts](#gdb-and-lldb-scripts)
+  below help when stepping through tests in the debugger.
+
+Catch2 does not ship adapters for specific mocking frameworks. For mocking,
+use your preferred library (e.g. Trompeloeil, Google Mock) alongside Catch2
+assertions in the usual way.
+
+Related: [#300](https://github.com/catchorg/Catch2/issues/300).
+
+
 ## CMake
 
 [As it has been getting kinda long, the documentation of Catch2's
