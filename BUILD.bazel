@@ -73,6 +73,7 @@ expand_template(
         "#cmakedefine CATCH_CONFIG_USE_ASYNC": "",
         "#cmakedefine CATCH_CONFIG_WCHAR": "",
         "#cmakedefine CATCH_CONFIG_WINDOWS_CRTDBG": "",
+        "#cmakedefine CATCH_CONFIG_RUN_ORDER_DECLARED": "",
         "#cmakedefine CATCH_CONFIG_WINDOWS_SEH": "",
         "#cmakedefine CATCH_CONFIG_USE_BUILTIN_CONSTANT_P": "",
         "#cmakedefine CATCH_CONFIG_NO_USE_BUILTIN_CONSTANT_P": "",

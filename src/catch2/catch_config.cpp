@@ -96,6 +96,12 @@ namespace Catch {
         return lhs.type == rhs.type && lhs.filter == rhs.filter;
     }
 
+    ConfigData::ConfigData() {
+#if defined( CATCH_CONFIG_RUN_ORDER_DECLARED )
+        runOrder = TestRunOrder::Declared;
+#endif
+    }
+
     Config::Config( ConfigData const& data ):
         m_data( data ) {
         // We need to trim filter specs to avoid trouble with superfluous

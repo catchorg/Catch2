@@ -152,6 +152,7 @@ by using `_NO_` in the macro, e.g. `CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS`.
     CATCH_CONFIG_FAST_COMPILE               // Sacrifices some (rather minor) features for compilation speed
     CATCH_CONFIG_POSIX_SIGNALS              // Enable handling POSIX signals
     CATCH_CONFIG_WINDOWS_CRTDBG             // Enable leak checking using Windows's CRT Debug Heap
+    CATCH_CONFIG_RUN_ORDER_DECLARED         // Changes the default tests run behavior to declaration ordered
     CATCH_CONFIG_DISABLE_STRINGIFICATION    // Disable stringifying the original expression
     CATCH_CONFIG_DISABLE                    // Disables assertions and test case registration
     CATCH_CONFIG_WCHAR                      // Enables use of wchart_t
@@ -180,6 +181,9 @@ Playstation).
 CRT is used to check for memory leaks, and displays them after the tests
 finish running. This option only works when linking against the default
 main, and must be defined for the whole library build.
+
+`CATCH_CONFIG_RUN_ORDER_DECLARED` is off by default. If enabled, it restores
+the tests run ordering as it was before Catch2 3.9.0.
 
 `CATCH_CONFIG_WCHAR` is on by default, but can be disabled. Currently
 it is only used in support for DJGPP cross-compiler.

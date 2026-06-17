@@ -46,6 +46,8 @@ namespace Catch {
 
     struct ConfigData {
 
+        ConfigData();
+
         bool listTests = false;
         bool listTags = false;
         bool listReporters = false;
