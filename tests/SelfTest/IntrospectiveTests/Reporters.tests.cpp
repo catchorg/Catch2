@@ -16,6 +16,7 @@
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_list.hpp>
+#include <catch2/internal/catch_path_filter.hpp>
 #include <catch2/internal/catch_reporter_registry.hpp>
 #include <catch2/internal/catch_istream.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
@@ -93,6 +94,35 @@ TEST_CASE( "The default listing implementation write to provided stream",
         REQUIRE_THAT( listingString,
                       ContainsSubstring( "fakeListener"s ) &&
                           ContainsSubstring( "fake description"s ) );
+    }
+}
+
+TEST_CASE( "serializePathFilters serializes the section/generator selection",
+           "[reporters][reporter-helpers]" ) {
+    using Catch::PathFilter;
+    using Catch::serializePathFilters;
+
+    SECTION( "No filters serialize to an empty string" ) {
+        REQUIRE( serializePathFilters( {} ).empty() );
+    }
+    SECTION( "Section filters are labelled and quoted" ) {
+        std::vector<PathFilter> filters{ { PathFilter::For::Section, "a section" } };
+        REQUIRE( serializePathFilters( filters ) == "  - Section: \"a section\"" );
+    }
+    SECTION( "Generator filters are labelled and quoted" ) {
+        std::vector<PathFilter> filters{ { PathFilter::For::Generator, "0" } };
+        REQUIRE( serializePathFilters( filters ) == "  - Generator: \"0\"" );
+    }
+    SECTION( "Multiple filters keep their order, one per line" ) {
+        std::vector<PathFilter> filters{
+            { PathFilter::For::Section, "A" },
+            { PathFilter::For::Generator, "1" },
+            { PathFilter::For::Section, "B" },
+        };
+        REQUIRE( serializePathFilters( filters ) ==
+                 "  - Section: \"A\"\n"
+                 "  - Generator: \"1\"\n"
+                 "  - Section: \"B\"" );
     }
 }
 

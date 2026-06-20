@@ -2820,6 +2820,20 @@ Skip.tests.cpp:<line number>: skipped:
 Skip.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: failed: false with 1 message: '3'
 Message.tests.cpp:<line number>: failed: false with 2 messages: 'hi' and 'i := 7'
+Reporters.tests.cpp:<line number>: passed: serializePathFilters( {} ).empty() for: true
+Reporters.tests.cpp:<line number>: passed: serializePathFilters( filters ) == "  - Section: \"a section\"" for: "  - Section: "a section""
+==
+"  - Section: "a section""
+Reporters.tests.cpp:<line number>: passed: serializePathFilters( filters ) == "  - Generator: \"0\"" for: "  - Generator: "0""
+==
+"  - Generator: "0""
+Reporters.tests.cpp:<line number>: passed: serializePathFilters( filters ) == "  - Section: \"A\"\n" "  - Generator: \"1\"\n" "  - Section: \"B\"" for: "  - Section: "A"
+  - Generator: "1"
+  - Section: "B""
+==
+"  - Section: "A"
+  - Generator: "1"
+  - Section: "B""
 Tag.tests.cpp:<line number>: passed: testcase.tags, VectorContains( Tag( "magic-tag" ) ) && VectorContains( Tag( "."_catch_sr ) ) for: { {?}, {?} } ( Contains: {?} and Contains: {?} )
 Skip.tests.cpp:<line number>: skipped: 'skipping because answer = 43'
 StringManip.tests.cpp:<line number>: passed: splitStringRef("", ','), Equals(std::vector<StringRef>()) for: {  } Equals: {  }
@@ -2989,7 +3003,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  451 |  331 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2416 | 2215 passed | 158 failed | 43 failed as expected
+test cases:  452 |  332 passed |  96 failed | 6 skipped | 18 failed as expected
+assertions: 2420 | 2219 passed | 158 failed | 43 failed as expected
 
 

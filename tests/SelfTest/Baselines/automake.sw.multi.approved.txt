@@ -398,6 +398,7 @@
 :test-result: SKIP sections can be skipped dynamically at runtime
 :test-result: FAIL send a single char to INFO
 :test-result: FAIL sends information to INFO
+:test-result: PASS serializePathFilters serializes the section/generator selection
 :test-result: PASS shortened hide tags are split apart
 :test-result: SKIP skipped tests can optionally provide a reason
 :test-result: PASS splitString

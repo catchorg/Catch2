@@ -22075,6 +22075,63 @@ Approx( -1.95996398454005449 )
     </Expression>
     <OverallResult success="false" skips="0"/>
   </TestCase>
+  <TestCase name="serializePathFilters serializes the section/generator selection" tags="[reporter-helpers][reporters]" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="No filters serialize to an empty string" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          serializePathFilters( {} ).empty()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Section filters are labelled and quoted" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          serializePathFilters( filters ) == "  - Section: \"a section\""
+        </Original>
+        <Expanded>
+          "  - Section: "a section""
+==
+"  - Section: "a section""
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Generator filters are labelled and quoted" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          serializePathFilters( filters ) == "  - Generator: \"0\""
+        </Original>
+        <Expanded>
+          "  - Generator: "0""
+==
+"  - Generator: "0""
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Multiple filters keep their order, one per line" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          serializePathFilters( filters ) == "  - Section: \"A\"\n" "  - Generator: \"1\"\n" "  - Section: \"B\""
+        </Original>
+        <Expanded>
+          "  - Section: "A"
+  - Generator: "1"
+  - Section: "B""
+==
+"  - Section: "A"
+  - Generator: "1"
+  - Section: "B""
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="shortened hide tags are split apart" tags="[tags]" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
       <Original>
@@ -23385,6 +23442,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2215" failures="158" expectedFailures="43" skips="12"/>
-  <OverallResultsCases successes="331" failures="96" expectedFailures="18" skips="6"/>
+  <OverallResults successes="2219" failures="158" expectedFailures="43" skips="12"/>
+  <OverallResultsCases successes="332" failures="96" expectedFailures="18" skips="6"/>
 </Catch2TestRun>

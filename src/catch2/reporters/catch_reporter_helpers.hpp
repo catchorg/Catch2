@@ -21,6 +21,7 @@ namespace Catch {
     class IConfig;
     class TestCaseHandle;
     class ColourImpl;
+    struct PathFilter;
 
     // Returns double formatted as %.3f (format expected on output)
     std::string getFormattedDuration( double duration );
@@ -29,6 +30,18 @@ namespace Catch {
     bool shouldShowDuration( IConfig const& config, double duration );
 
     std::string serializeFilters( std::vector<std::string> const& filters );
+
+    /**
+     * Serializes the active section/generator path filters into a
+     * human-readable, indented list, one filter per line and in the order
+     * in which they were specified, e.g.
+     *
+     *     - Section: "A"
+     *     - Generator: "0"
+     *
+     * The returned string has no trailing newline.
+     */
+    std::string serializePathFilters( std::vector<PathFilter> const& filters );
 
     struct lineOfChars {
         char c;

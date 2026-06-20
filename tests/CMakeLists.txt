@@ -666,6 +666,33 @@ foreach(reporterName # "Automake" - the simple .trs format does not support any 
   )
 endforeach()
 
+# The console and compact reporters print the active section/generator
+# selection (path filters), so that it is obvious what has been selected.
+# The exact serialization is unit-tested in `serializePathFilters ...`, so
+# here we only check that both reporters actually emit the line, using a
+# section filter for one and a generator filter for the other.
+add_test(NAME "Reporters:PathFilters:Section:compact"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Tracker"
+      --reporter compact
+      --section "section name"
+)
+set_tests_properties("Reporters:PathFilters:Section:compact"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "- Section: \"section name\""
+)
+
+add_test(NAME "Reporters:PathFilters:Generator:console"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Generators internals"
+      --reporter console
+      --generator-index 0
+)
+set_tests_properties("Reporters:PathFilters:Generator:console"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "- Generator: \"0\""
+)
+
 add_test(NAME "Bazel::RngSeedEnvVar::JustEnv"
   COMMAND
     $<TARGET_FILE:SelfTest> "Factorials are computed"
