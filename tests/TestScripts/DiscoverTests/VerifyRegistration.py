@@ -79,7 +79,12 @@ def get_test_names(build_path: str) -> List[TestInfo]:
                             check = True,
                             text = True)
 
-    test_listing = json.loads(result.stdout)
+    # The executable might print to stdout before Catch2's JSON output, e.g.
+    # from a third-party library's static initializer, so we skip everything
+    # before the first '{', just like CatchAddTests.cmake does.
+    json_start = result.stdout.find('{')
+    assert json_start != -1, f"Could not find JSON output in:\n{result.stdout}"
+    test_listing = json.loads(result.stdout[json_start:])
 
     assert test_listing['version'] == 1
 

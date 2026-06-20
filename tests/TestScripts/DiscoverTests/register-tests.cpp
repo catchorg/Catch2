@@ -8,6 +8,20 @@
 
 #include <catch2/catch_test_macros.hpp>
 
+#include <iostream>
+
+namespace {
+    // Emulate a third-party library that writes to stdout from a static
+    // initializer. This text precedes Catch2's JSON output during test
+    // discovery, and `catch_discover_tests` has to ignore it. See #3162.
+    struct PrintsDuringStaticInit {
+        PrintsDuringStaticInit() {
+            std::cout << "Some third-party library started up successfully\n";
+        }
+    };
+    const PrintsDuringStaticInit printsDuringStaticInit{};
+}
+
 TEST_CASE("@Script[C:\\EPM1A]=x;\"SCALA_ZERO:\"", "[script regressions]"){}
 TEST_CASE("Some test") {}
 TEST_CASE( "Let's have a test case with a long name. Longer. No, even longer. "

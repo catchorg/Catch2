@@ -134,6 +134,19 @@ function(catch_discover_tests_impl)
     endforeach()
   endif()
 
+  # The test executable might print to stdout before Catch2 emits its JSON,
+  # e.g. a third-party library logging from a static initializer. Such text
+  # would break the JSON parser, so we strip everything before the first '{',
+  # which is where Catch2's JSON output starts.
+  string(FIND "${listing_output}" "{" json_start)
+  if(json_start EQUAL -1)
+    message(FATAL_ERROR
+      "Could not find the start of JSON output when listing tests from executable '${_TEST_EXECUTABLE}':\n"
+      "  Output: ${listing_output}\n"
+    )
+  endif()
+  string(SUBSTRING "${listing_output}" ${json_start} -1 listing_output)
+
   # Parse JSON output for list of tests/class names/tags
   string(JSON version GET "${listing_output}" "version")
   if(NOT version STREQUAL "1")
