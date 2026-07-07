@@ -199,9 +199,13 @@ function(catch_discover_tests_impl)
   math(EXPR num_tests "${num_tests} - 1")
 
   foreach(idx RANGE ${num_tests})
-    string(JSON single_test GET ${test_listing} ${idx})
-    string(JSON test_tags GET "${single_test}" "tags")
-    string(JSON plain_name GET "${single_test}" "name")
+    if(add_tags)
+      string(JSON single_test GET "${test_listing}" ${idx})
+      string(JSON test_tags GET "${single_test}" "tags")
+      string(JSON plain_name GET "${single_test}" "name")
+    else()
+      string(JSON plain_name GET "${test_listing}" ${idx} "name")
+    endif()
 
     # Escape characters in test case names that would be parsed by Catch2
     # Note that the \ escaping must happen FIRST! Do not change the order.
