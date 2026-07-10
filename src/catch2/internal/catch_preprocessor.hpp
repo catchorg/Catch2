@@ -113,8 +113,9 @@ namespace Catch {
     template<typename... Ts>\
     constexpr auto get_wrapper(Catch::Detail::priority_tag<1>) noexcept -> TypeList<Ts...> { return {}; }\
     template<template<typename...> class...> struct TemplateTypeList{};\
-    template<template<typename...> class...Cs>\
-    constexpr auto get_wrapper(Catch::Detail::priority_tag<1>) noexcept -> TemplateTypeList<Cs...> { return {}; }\
+    /* Clang 20 and 21 cannot handle an explicitly specified all-pack template-template parameter here. */\
+    template<template<typename...> class C, template<typename...> class...Cs>\
+    constexpr auto get_template_wrapper(Catch::Detail::priority_tag<1>) noexcept -> TemplateTypeList<C, Cs...> { return {}; }\
     template<typename...>\
     struct append;\
     template<typename...>\
@@ -146,8 +147,8 @@ namespace Catch {
     template<INTERNAL_CATCH_REMOVE_PARENS(signature)>\
     constexpr auto get_wrapper(Catch::Detail::priority_tag<0>) noexcept -> Nttp<__VA_ARGS__> { return {}; } \
     template<template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class...> struct NttpTemplateTypeList{};\
-    template<template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class...Cs>\
-    constexpr auto get_wrapper(Catch::Detail::priority_tag<0>) noexcept -> NttpTemplateTypeList<Cs...> { return {}; } \
+    template<template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class C, template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class...Cs>\
+    constexpr auto get_template_wrapper(Catch::Detail::priority_tag<0>) noexcept -> NttpTemplateTypeList<C, Cs...> { return {}; } \
     \
     template< template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class Container, template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class List, INTERNAL_CATCH_REMOVE_PARENS(signature)>\
     struct rewrap<NttpTemplateTypeList<Container>, List<__VA_ARGS__>> { using type = TypeList<Container<__VA_ARGS__>>; };\

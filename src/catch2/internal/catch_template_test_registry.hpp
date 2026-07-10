@@ -139,7 +139,7 @@
                 }                                                     \
             };                                                        \
             static const int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){ \
-                using TestInit = typename create<TestName, decltype(get_wrapper<INTERNAL_CATCH_REMOVE_PARENS(TmplTypes)>(Catch::Detail::priority_tag<1>{})), TypeList<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(INTERNAL_CATCH_REMOVE_PARENS(TypesList))>>::type; \
+                using TestInit = typename create<TestName, decltype(get_template_wrapper<INTERNAL_CATCH_REMOVE_PARENS(TmplTypes)>(Catch::Detail::priority_tag<1>{})), TypeList<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(INTERNAL_CATCH_REMOVE_PARENS(TypesList))>>::type; \
                 TestInit t;                                           \
                 t.reg_tests();                                        \
                 return 0;                                             \
@@ -271,7 +271,7 @@
             }\
         };\
         static const int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){\
-            using TestInit = typename create<TestNameClass, decltype(get_wrapper<INTERNAL_CATCH_REMOVE_PARENS(TmplTypes)>(Catch::Detail::priority_tag<1>{})), TypeList<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(INTERNAL_CATCH_REMOVE_PARENS(TypesList))>>::type;\
+            using TestInit = typename create<TestNameClass, decltype(get_template_wrapper<INTERNAL_CATCH_REMOVE_PARENS(TmplTypes)>(Catch::Detail::priority_tag<1>{})), TypeList<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(INTERNAL_CATCH_REMOVE_PARENS(TypesList))>>::type;\
             TestInit t;\
             t.reg_tests();\
             return 0;\
