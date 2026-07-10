@@ -146,6 +146,12 @@ same as the Catch name; see also ``TEST_PREFIX`` and ``TEST_SUFFIX``.
     calling ``catch_discover_tests``. This provides a mechanism for globally selecting
     a preferred test discovery behavior without having to modify each call site.
 
+    On Apple Silicon with the Xcode generator you must use ``PRE_TEST``. With the
+    default ``POST_BUILD`` mode the build fails with ``Result: Subprocess killed``,
+    because macOS on Apple Silicon refuses to run unsigned binaries and Xcode
+    code-signs the test executable only after the post-build script that
+    ``POST_BUILD`` mode uses to run it for test discovery. See Catch2 issue #2411.
+
   ``SKIP_IS_FAILURE``
     Disables skipped test detection.
 

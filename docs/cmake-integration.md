@@ -212,6 +212,17 @@ execution (useful e.g. in cross-compilation environments).
 calling ``catch_discover_tests``. This provides a mechanism for globally
 selecting a preferred test discovery behavior.
 
+_Note that on Apple Silicon with the Xcode generator you must use `PRE_TEST`,
+e.g. `catch_discover_tests(tests DISCOVERY_MODE PRE_TEST)`. With the default
+`POST_BUILD` mode the build fails with `Result: Subprocess killed`, because
+macOS on Apple Silicon refuses to run unsigned binaries and Xcode code-signs
+the test executable only **after** the post-build script that `POST_BUILD`
+mode uses to run it for test discovery. `PRE_TEST` avoids this by delaying
+discovery until test time, when the executable is already signed. The same
+limitation affects CMake's `gtest_discover_tests`; see
+[Catch2 #2411](https://github.com/catchorg/Catch2/issues/2411) and
+[CMake #21845](https://gitlab.kitware.com/cmake/cmake/-/issues/21845)._
+
 * `SKIP_IS_FAILURE`
 
 Skipped tests will be marked as failed instead.
