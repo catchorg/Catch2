@@ -127,6 +127,7 @@ catch_discover_tests(target
                      [OUTPUT_PREFIX prefix]
                      [OUTPUT_SUFFIX suffix]
                      [DISCOVERY_MODE <POST_BUILD|PRE_TEST>]
+                     [USE_RELATIVE_PATHS]
                      [SKIP_IS_FAILURE]
                      [ADD_TAGS_AS_LABELS]
 )
@@ -222,6 +223,12 @@ discovery until test time, when the executable is already signed. The same
 limitation affects CMake's `gtest_discover_tests`; see
 [Catch2 #2411](https://github.com/catchorg/Catch2/issues/2411) and
 [CMake #21845](https://gitlab.kitware.com/cmake/cmake/-/issues/21845)._
+
+* `USE_RELATIVE_PATHS`
+
+With `DISCOVERY_MODE PRE_TEST`, stores generated discovery paths relative to
+the CTest include file. This allows the build tree and test executable to be
+relocated before test discovery runs. This option requires CMake 3.24 or newer.
 
 * `SKIP_IS_FAILURE`
 

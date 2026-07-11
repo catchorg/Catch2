@@ -13,13 +13,17 @@ if(CMAKE_VERSION GREATER_EQUAL 3.27)
     DL_PATHS "${CMAKE_CURRENT_LIST_DIR};${CMAKE_CURRENT_LIST_DIR}/.."
   )
 endif()
-catch_discover_tests(
-  tests
-  TEST_PREFIX " prefix "
-  TEST_SUFFIX " suffix "
-  ADD_TAGS_AS_LABELS
-  DISCOVERY_MODE PRE_TEST
-  ${extra_args}
-)
+if(CATCH2_TEST_USE_RELATIVE_PATHS)
+  add_subdirectory(relative-registration)
+else()
+  catch_discover_tests(
+    tests
+    TEST_PREFIX " prefix "
+    TEST_SUFFIX " suffix "
+    ADD_TAGS_AS_LABELS
+    DISCOVERY_MODE PRE_TEST
+    ${extra_args}
+  )
+endif()
 
 # DISCOVERY_MODE <POST_BUILD|PRE_TEST>

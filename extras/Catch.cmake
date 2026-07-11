@@ -38,6 +38,7 @@ same as the Catch name; see also ``TEST_PREFIX`` and ``TEST_SUFFIX``.
                          [OUTPUT_PREFIX prefix]
                          [OUTPUT_SUFFIX suffix]
                          [DISCOVERY_MODE <POST_BUILD|PRE_TEST>]
+                         [USE_RELATIVE_PATHS]
                          [SKIP_IS_FAILURE]
                          [ADD_TAGS_AS_LABELS]
     )
@@ -157,6 +158,12 @@ same as the Catch name; see also ``TEST_PREFIX`` and ``TEST_SUFFIX``.
     code-signs the test executable only after the post-build script that
     ``POST_BUILD`` mode uses to run it for test discovery. See Catch2 issue #2411.
 
+  ``USE_RELATIVE_PATHS``
+    Makes the files generated for ``PRE_TEST`` discovery use paths relative to
+    the generated CTest include file. This allows a build tree to be relocated
+    with its test executable before test discovery runs. This option requires
+    CMake 3.24 or newer.
+
   ``SKIP_IS_FAILURE``
     Disables skipped test detection.
 
@@ -170,7 +177,7 @@ function(catch_discover_tests TARGET)
 
   cmake_parse_arguments(
     ""
-    "SKIP_IS_FAILURE;ADD_TAGS_AS_LABELS"
+    "SKIP_IS_FAILURE;ADD_TAGS_AS_LABELS;USE_RELATIVE_PATHS"
     "TEST_PREFIX;TEST_SUFFIX;WORKING_DIRECTORY;TEST_LIST;REPORTER;OUTPUT_DIR;OUTPUT_PREFIX;OUTPUT_SUFFIX;DISCOVERY_MODE"
     "TEST_SPEC;EXTRA_ARGS;PROPERTIES;DL_PATHS;DL_FRAMEWORK_PATHS"
     ${ARGN}
@@ -201,6 +208,12 @@ function(catch_discover_tests TARGET)
   if(NOT _DISCOVERY_MODE MATCHES "^(POST_BUILD|PRE_TEST)$")
     message(FATAL_ERROR "Unknown DISCOVERY_MODE: ${_DISCOVERY_MODE}")
   endif()
+  if(_USE_RELATIVE_PATHS AND NOT _DISCOVERY_MODE STREQUAL "PRE_TEST")
+    message(FATAL_ERROR "USE_RELATIVE_PATHS requires DISCOVERY_MODE PRE_TEST")
+  endif()
+  if(_USE_RELATIVE_PATHS AND CMAKE_VERSION VERSION_LESS "3.24")
+    message(FATAL_ERROR "USE_RELATIVE_PATHS requires CMake 3.24 or newer")
+  endif()
 
   ## Generate a unique name based on the extra arguments
   string(SHA1 args_hash "${_TEST_SPEC} ${_EXTRA_ARGS} ${_REPORTER} ${_OUTPUT_DIR} ${_OUTPUT_PREFIX} ${_OUTPUT_SUFFIX}")
@@ -210,6 +223,7 @@ function(catch_discover_tests TARGET)
   set(ctest_file_base "${CMAKE_CURRENT_BINARY_DIR}/${TARGET}-${args_hash}")
   set(ctest_include_file "${ctest_file_base}_include.cmake")
   set(ctest_tests_file "${ctest_file_base}_tests.cmake")
+  set(ctest_include_file_for_property "${ctest_include_file}")
 
   get_property(crosscompiling_emulator
     TARGET ${TARGET}
@@ -264,16 +278,69 @@ function(catch_discover_tests TARGET)
       set(ctest_tests_file "${ctest_file_base}_tests-$<CONFIG>.cmake")
     endif()
 
+    set(test_executable_for_script "$<TARGET_FILE:${TARGET}>")
+    set(test_working_dir_for_script "${_WORKING_DIRECTORY}")
+    set(discover_tests_script_for_script "${_CATCH_DISCOVER_TESTS_SCRIPT}")
+    set(ctest_tests_file_for_script "${ctest_tests_file}")
+    set(test_executable_argument "[==[${test_executable_for_script}]==]")
+    set(test_working_dir_argument "[==[${test_working_dir_for_script}]==]")
+    set(ctest_file_argument "[==[${ctest_tests_file_for_script}]==]")
+    set(ctest_path_setup)
+    set(ctest_config_include_file
+      "${ctest_file_base}_include-\${CTEST_CONFIGURATION_TYPE}.cmake"
+    )
+
+    if(_USE_RELATIVE_PATHS)
+      get_filename_component(ctest_file_base_name "${ctest_file_base}" NAME)
+      get_filename_component(ctest_tests_file_name "${ctest_tests_file}" NAME)
+      get_filename_component(ctest_include_file_name "${ctest_include_file}" NAME)
+
+      set(test_executable_relative
+        "$<PATH:RELATIVE_PATH,$<TARGET_FILE:${TARGET}>,${CMAKE_CURRENT_BINARY_DIR}>"
+      )
+      set(test_working_dir_relative
+        "$<PATH:RELATIVE_PATH,$<PATH:ABSOLUTE_PATH,${_WORKING_DIRECTORY},${CMAKE_CURRENT_BINARY_DIR}>,${CMAKE_CURRENT_BINARY_DIR}>"
+      )
+      set(discover_tests_script_name
+        "${ctest_file_base_name}_CatchAddTests.cmake"
+      )
+      configure_file(
+        "${_CATCH_DISCOVER_TESTS_SCRIPT}"
+        "${CMAKE_CURRENT_BINARY_DIR}/${discover_tests_script_name}"
+        COPYONLY
+      )
+
+      set(ctest_config_include_file
+        "${ctest_file_base_name}_include-\${CTEST_CONFIGURATION_TYPE}.cmake"
+      )
+      string(CONCAT ctest_path_setup
+        "get_filename_component(_catch_discover_tests_script \"${discover_tests_script_name}\" REALPATH)" "\n"
+        "get_filename_component(_catch_discovery_dir \"\${_catch_discover_tests_script}\" DIRECTORY)" "\n"
+        "set(_catch_test_executable \"\${_catch_discovery_dir}/${test_executable_relative}\")" "\n"
+        "set(_catch_test_working_dir \"\${_catch_discovery_dir}/${test_working_dir_relative}\")" "\n"
+        "set(_catch_tests_file \"\${_catch_discovery_dir}/${ctest_tests_file_name}\")" "\n"
+      )
+      set(test_executable_for_script "\${_catch_test_executable}")
+      set(test_working_dir_for_script "\${_catch_test_working_dir}")
+      set(discover_tests_script_for_script "\${_catch_discover_tests_script}")
+      set(ctest_tests_file_for_script "\${_catch_tests_file}")
+      set(test_executable_argument "\"\${_catch_test_executable}\"")
+      set(test_working_dir_argument "\"\${_catch_test_working_dir}\"")
+      set(ctest_file_argument "\"\${_catch_tests_file}\"")
+      set(ctest_include_file_for_property "${ctest_include_file_name}")
+    endif()
+
     string(CONCAT ctest_include_content
-      "if(EXISTS \"$<TARGET_FILE:${TARGET}>\")"                                    "\n"
-      "  if(NOT EXISTS \"${ctest_tests_file}\" OR"                                 "\n"
-      "     NOT \"${ctest_tests_file}\" IS_NEWER_THAN \"$<TARGET_FILE:${TARGET}>\" OR\n"
-      "     NOT \"${ctest_tests_file}\" IS_NEWER_THAN \"\${CMAKE_CURRENT_LIST_FILE}\")\n"
-      "    include(\"${_CATCH_DISCOVER_TESTS_SCRIPT}\")"                           "\n"
+      "${ctest_path_setup}"
+      "if(EXISTS \"${test_executable_for_script}\")"                              "\n"
+      "  if(NOT EXISTS \"${ctest_tests_file_for_script}\" OR"                     "\n"
+      "     NOT \"${ctest_tests_file_for_script}\" IS_NEWER_THAN \"${test_executable_for_script}\" OR\n"
+      "     NOT \"${ctest_tests_file_for_script}\" IS_NEWER_THAN \"\${CMAKE_CURRENT_LIST_FILE}\")\n"
+      "    include(\"${discover_tests_script_for_script}\")"                      "\n"
       "    catch_discover_tests_impl("                                             "\n"
-      "      TEST_EXECUTABLE"        " [==[" "$<TARGET_FILE:${TARGET}>"   "]==]"   "\n"
+      "      TEST_EXECUTABLE"        " ${test_executable_argument}"              "\n"
       "      TEST_EXECUTOR"          " [==[" "${crosscompiling_emulator}" "]==]"   "\n"
-      "      TEST_WORKING_DIR"       " [==[" "${_WORKING_DIRECTORY}"      "]==]"   "\n"
+      "      TEST_WORKING_DIR"       " ${test_working_dir_argument}"             "\n"
       "      TEST_SPEC"              " [==[" "${_TEST_SPEC}"              "]==]"   "\n"
       "      TEST_EXTRA_ARGS"        " [==[" "${_EXTRA_ARGS}"             "]==]"   "\n"
       "      TEST_PROPERTIES"        " [==[" "${_PROPERTIES}"             "]==]"   "\n"
@@ -284,13 +351,13 @@ function(catch_discover_tests TARGET)
       "      TEST_OUTPUT_DIR"        " [==[" "${_OUTPUT_DIR}"             "]==]"   "\n"
       "      TEST_OUTPUT_PREFIX"     " [==[" "${_OUTPUT_PREFIX}"          "]==]"   "\n"
       "      TEST_OUTPUT_SUFFIX"     " [==[" "${_OUTPUT_SUFFIX}"          "]==]"   "\n"
-      "      CTEST_FILE"             " [==[" "${ctest_tests_file}"        "]==]"   "\n"
+      "      CTEST_FILE"             " ${ctest_file_argument}"                   "\n"
       "      TEST_DL_PATHS"          " [==[" "${_DL_PATHS}"               "]==]"   "\n"
       "      TEST_DL_FRAMEWORK_PATHS" " [==[" "${_DL_FRAMEWORK_PATHS}"     "]==]"   "\n"
       "      ADD_TAGS_AS_LABELS"     " [==[" "${_ADD_TAGS_AS_LABELS}"     "]==]"   "\n"
       "    )"                                                                      "\n"
       "  endif()"                                                                  "\n"
-      "  include(\"${ctest_tests_file}\")"                                         "\n"
+      "  include(\"${ctest_tests_file_for_script}\")"                            "\n"
       "else()"                                                                     "\n"
       "  add_test(${TARGET}_NOT_BUILT ${TARGET}_NOT_BUILT)"                        "\n"
       "endif()"                                                                    "\n"
@@ -304,7 +371,7 @@ function(catch_discover_tests TARGET)
         "if(NOT CTEST_CONFIGURATION_TYPE)"                                              "\n"
         "  message(\"No configuration for testing specified, use '-C <cfg>'.\")"        "\n"
         "else()"                                                                        "\n"
-        "  include(\"${ctest_file_base}_include-\${CTEST_CONFIGURATION_TYPE}.cmake\")"  "\n"
+        "  include(\"${ctest_config_include_file}\")"                               "\n"
         "endif()"                                                                       "\n"
       )
       file(GENERATE OUTPUT "${ctest_include_file}" CONTENT "${ctest_include_multi_content}")
@@ -316,7 +383,7 @@ function(catch_discover_tests TARGET)
 
   # Add discovered tests to directory TEST_INCLUDE_FILES
   set_property(DIRECTORY
-    APPEND PROPERTY TEST_INCLUDE_FILES "${ctest_include_file}"
+    APPEND PROPERTY TEST_INCLUDE_FILES "${ctest_include_file_for_property}"
   )
 
 endfunction()
