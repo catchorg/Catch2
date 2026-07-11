@@ -9,6 +9,8 @@
 #define CATCH_PATH_FILTER_HPP_INCLUDED
 
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_optional.hpp>
+#include <catch2/internal/catch_wildcard_pattern.hpp>
 
 #include <string>
 
@@ -20,10 +22,16 @@ namespace Catch {
             Generator,
         };
         PathFilter( For type_, std::string filter_ ):
-            type( type_ ), filter( CATCH_MOVE( filter_ ) ) {}
+            type( type_ ),
+            filter( CATCH_MOVE( filter_ ) ) {
+            if ( type == For::Section ) {
+                wildcardPattern = WildcardPattern( filter, CaseSensitive::Yes );
+            }
+        }
 
         For type;
         std::string filter;
+        Optional<WildcardPattern> wildcardPattern;
 
         friend bool operator==( PathFilter const& lhs, PathFilter const& rhs );
     };

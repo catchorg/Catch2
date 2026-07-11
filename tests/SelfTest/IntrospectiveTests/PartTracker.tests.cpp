@@ -255,3 +255,49 @@ TEST_CASE("#1938 - Section followed by flat generate", "[.][regression][generato
     auto m = GENERATE(2, 3);
     REQUIRE(m);
 }
+
+TEST_CASE( "Tracker section wildcard filtering", "[tracker][wildcard]" ) {
+    TrackerContext ctx;
+    ITracker& root = ctx.startRun();
+    
+    std::vector<PathFilter> filters;
+    filters.emplace_back( PathFilter::For::Section, "S*" );
+    root.setFilters( &filters, true );
+    
+    ctx.startCycle();
+    
+    ITracker& testCase = SectionTracker::acquire( ctx, makeNAL( "Testcase" ) );
+    REQUIRE( testCase.isOpen() );
+    
+    ITracker& s1 = SectionTracker::acquire( ctx, makeNAL( "S1" ) );
+    REQUIRE( s1.isOpen() );
+    s1.close();
+    
+    ITracker& a1 = SectionTracker::acquire( ctx, makeNAL( "A1" ) );
+    REQUIRE( a1.isOpen() == false );
+    
+    testCase.close();
+}
+
+TEST_CASE( "Tracker section wildcard filtering with escaping", "[tracker][wildcard]" ) {
+    TrackerContext ctx;
+    ITracker& root = ctx.startRun();
+    
+    std::vector<PathFilter> filters;
+    filters.emplace_back( PathFilter::For::Section, "S\\*" );
+    root.setFilters( &filters, true );
+    
+    ctx.startCycle();
+    
+    ITracker& testCase = SectionTracker::acquire( ctx, makeNAL( "Testcase" ) );
+    REQUIRE( testCase.isOpen() );
+    
+    ITracker& s_star = SectionTracker::acquire( ctx, makeNAL( "S*" ) );
+    REQUIRE( s_star.isOpen() );
+    s_star.close();
+    
+    ITracker& s1 = SectionTracker::acquire( ctx, makeNAL( "S1" ) );
+    REQUIRE( s1.isOpen() == false );
+    
+    testCase.close();
+}

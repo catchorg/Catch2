@@ -174,14 +174,15 @@ namespace TestCaseTracking {
             m_newStyleFilters ? m_allTrackerDepth : m_sectionOnlyDepth;
 
         if ( filterIndex < m_filterRef->size() ) {
+            auto const& pathFilter = ( *m_filterRef )[filterIndex];
             // 1) New style filter must explicitly target section
-            if ( m_newStyleFilters && ( *m_filterRef )[filterIndex].type !=
+            if ( m_newStyleFilters && pathFilter.type !=
                                           PathFilter::For::Section ) {
                 return true;
             }
-            // 2) Both style filters must match the trimmed name exactly
-            if ( m_trimmed_name !=
-                 StringRef( ( *m_filterRef )[filterIndex].filter ) ) {
+            // 2) Both style filters must match using wildcard pattern
+            assert( pathFilter.wildcardPattern.some() );
+            if ( !pathFilter.wildcardPattern->matches( static_cast<std::string>( m_trimmed_name ) ) ) {
                 return true;
             }
         }
@@ -204,15 +205,16 @@ namespace TestCaseTracking {
         const size_t filterIndex =
             m_newStyleFilters ? m_allTrackerDepth : m_sectionOnlyDepth;
         if ( filterIndex < m_filterRef->size() ) {
+            auto const& pathFilter = ( *m_filterRef )[filterIndex];
             // There is active filter, check it
             // 1) New style filter must explicitly target section
-            if ( m_newStyleFilters && ( *m_filterRef )[filterIndex].type !=
+            if ( m_newStyleFilters && pathFilter.type !=
                                           PathFilter::For::Section ) {
                 return true;
             }
-            // 2) Both style filters must match the trimmed name exactly
-            if ( m_trimmed_name !=
-                 StringRef( ( *m_filterRef )[filterIndex].filter ) ) {
+            // 2) Both style filters must match using wildcard pattern
+            assert( pathFilter.wildcardPattern.some() );
+            if ( !pathFilter.wildcardPattern->matches( static_cast<std::string>( m_trimmed_name ) ) ) {
                 return true;
             }
         }
