@@ -113,7 +113,9 @@ namespace Catch {
     template<typename... Ts>\
     constexpr auto get_wrapper(Catch::Detail::priority_tag<1>) noexcept -> TypeList<Ts...> { return {}; }\
     template<template<typename...> class...> struct TemplateTypeList{};\
-    /* Clang 20 and 21 cannot handle an explicitly specified all-pack template-template parameter here. */\
+    /* Clang 20 and 21 cannot handle an explicitly specified all-pack template-template parameter here\
+       ("conflicting deduction" regression, llvm/llvm-project#130778; fixed for Clang 22).\
+       Remove get_template_wrapper once Clang 21 is no longer supported. */\
     template<template<typename...> class C, template<typename...> class...Cs>\
     constexpr auto get_template_wrapper(Catch::Detail::priority_tag<1>) noexcept -> TemplateTypeList<C, Cs...> { return {}; }\
     template<typename...>\
