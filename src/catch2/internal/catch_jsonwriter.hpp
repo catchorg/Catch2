@@ -14,6 +14,8 @@
 
 #include <cstdint>
 #include <sstream>
+#include <string>
+#include <type_traits>
 
 namespace Catch {
     class JsonObjectWriter;
@@ -34,7 +36,14 @@ namespace Catch {
         JsonObjectWriter writeObject() &&;
         JsonArrayWriter writeArray() &&;
 
-        template <typename T>
+        template <typename T,
+                  typename = typename std::enable_if_t<std::is_integral_v<T>>>
+        void write( T value ) && {
+            writeImpl( std::to_string(value), false );
+        }
+
+        template <typename T,
+                  typename = typename std::enable_if_t<!std::is_integral_v<T>>>
         void write( T const& value ) && {
             writeImpl( value, !std::is_arithmetic<T>::value );
         }
