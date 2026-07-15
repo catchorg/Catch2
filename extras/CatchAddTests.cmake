@@ -31,7 +31,6 @@ function(make_temp_file_path OUT_VARIABLE FALLBACK_PATH)
   )
 
   foreach(var ${ENV_VARS})
-    message(NOTICE "Checking ${var} env var")
     if(DEFINED ENV{${var}} AND NOT "$ENV{${var}}" STREQUAL "")
         set(TEMP_DIR "$ENV{${var}}")
         break()
