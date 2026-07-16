@@ -4574,6 +4574,14 @@ ok {test-number} -
 not ok {test-number} - false with 1 message: '3'
 # sends information to INFO
 not ok {test-number} - false with 2 messages: 'hi' and 'i := 7'
+# serializePathFilters serializes the section/generator selection
+ok {test-number} - serializePathFilters( {} ).empty() for: true
+# serializePathFilters serializes the section/generator selection
+ok {test-number} - serializePathFilters( filters ) == "  - Section: \"a section\"" for: "  - Section: "a section"" == "  - Section: "a section""
+# serializePathFilters serializes the section/generator selection
+ok {test-number} - serializePathFilters( filters ) == "  - Generator: \"0\"" for: "  - Generator: "0"" == "  - Generator: "0""
+# serializePathFilters serializes the section/generator selection
+ok {test-number} - serializePathFilters( filters ) == "  - Section: \"A\"\n" "  - Generator: \"1\"\n" "  - Section: \"B\"" for: "  - Section: "A"   - Generator: "1"   - Section: "B"" == "  - Section: "A"   - Generator: "1"   - Section: "B""
 # shortened hide tags are split apart
 ok {test-number} - testcase.tags, VectorContains( Tag( "magic-tag" ) ) && VectorContains( Tag( "."_catch_sr ) ) for: { {?}, {?} } ( Contains: {?} and Contains: {?} )
 # skipped tests can optionally provide a reason
@@ -4840,5 +4848,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2428
+1..2432
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2428" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2432" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1816,6 +1816,11 @@ i := 7
 at Message.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="serializePathFilters serializes the section/generator selection" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="serializePathFilters serializes the section/generator selection/No filters serialize to an empty string" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="serializePathFilters serializes the section/generator selection/Section filters are labelled and quoted" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="serializePathFilters serializes the section/generator selection/Generator filters are labelled and quoted" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="serializePathFilters serializes the section/generator selection/Multiple filters keep their order, one per line" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="shortened hide tags are split apart" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="skipped tests can optionally provide a reason" time="{duration}" status="run">
       <skipped type="SKIP">

@@ -9,6 +9,7 @@
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_console_width.hpp>
+#include <catch2/internal/catch_path_filter.hpp>
 #include <catch2/internal/catch_errno_guard.hpp>
 #include <catch2/internal/catch_textflow.hpp>
 #include <catch2/internal/catch_reusable_string_stream.hpp>
@@ -99,6 +100,28 @@ namespace Catch {
         }
 
         return serialized;
+    }
+
+    std::string serializePathFilters( std::vector<PathFilter> const& filters ) {
+        ReusableStringStream rss;
+        bool first = true;
+        for ( auto const& filter : filters ) {
+            if ( !first ) {
+                rss << '\n';
+            }
+            first = false;
+            rss << "  - ";
+            switch ( filter.type ) {
+            case PathFilter::For::Section:
+                rss << "Section: ";
+                break;
+            case PathFilter::For::Generator:
+                rss << "Generator: ";
+                break;
+            }
+            rss << '"' << filter.filter << '"';
+        }
+        return rss.str();
     }
 
     std::ostream& operator<<( std::ostream& out, lineOfChars value ) {

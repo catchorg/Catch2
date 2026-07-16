@@ -992,6 +992,8 @@ loose text artifact
 ##teamcity[testStarted name='sends information to INFO']
 ##teamcity[testFailed name='sends information to INFO' message='Message.tests.cpp:<line number>|n...............................................................................|n|nMessage.tests.cpp:<line number>|nexpression failed with messages:|n  "hi"|n  "i := 7"|n  REQUIRE( false )|nwith expansion:|n  false|n']
 ##teamcity[testFinished name='sends information to INFO' duration="{duration}"]
+##teamcity[testStarted name='serializePathFilters serializes the section/generator selection']
+##teamcity[testFinished name='serializePathFilters serializes the section/generator selection' duration="{duration}"]
 ##teamcity[testStarted name='shortened hide tags are split apart']
 ##teamcity[testFinished name='shortened hide tags are split apart' duration="{duration}"]
 ##teamcity[testStarted name='skipped tests can optionally provide a reason']

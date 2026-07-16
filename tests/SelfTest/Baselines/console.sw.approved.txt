@@ -18943,6 +18943,64 @@ with messages:
   i := 7
 
 -------------------------------------------------------------------------------
+serializePathFilters serializes the section/generator selection
+  No filters serialize to an empty string
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( serializePathFilters( {} ).empty() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+serializePathFilters serializes the section/generator selection
+  Section filters are labelled and quoted
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( serializePathFilters( filters ) == "  - Section: \"a section\"" )
+with expansion:
+  "  - Section: "a section""
+  ==
+  "  - Section: "a section""
+
+-------------------------------------------------------------------------------
+serializePathFilters serializes the section/generator selection
+  Generator filters are labelled and quoted
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( serializePathFilters( filters ) == "  - Generator: \"0\"" )
+with expansion:
+  "  - Generator: "0""
+  ==
+  "  - Generator: "0""
+
+-------------------------------------------------------------------------------
+serializePathFilters serializes the section/generator selection
+  Multiple filters keep their order, one per line
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( serializePathFilters( filters ) == "  - Section: \"A\"\n" "  - Generator: \"1\"\n" "  - Section: \"B\"" )
+with expansion:
+  "  - Section: "A"
+    - Generator: "1"
+    - Section: "B""
+  ==
+  "  - Section: "A"
+    - Generator: "1"
+    - Section: "B""
+
+-------------------------------------------------------------------------------
 shortened hide tags are split apart
 -------------------------------------------------------------------------------
 Tag.tests.cpp:<line number>
@@ -20134,6 +20192,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  451 |  331 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2416 | 2215 passed | 158 failed | 43 failed as expected
+test cases:  452 |  332 passed |  96 failed | 6 skipped | 18 failed as expected
+assertions: 2420 | 2219 passed | 158 failed | 43 failed as expected
 
