@@ -1709,6 +1709,7 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Custom predicate" duration="{duration}"/>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Custom predicate/Two equal non-empty containers (close enough)" duration="{duration}"/>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Custom predicate/Two non-equal non-empty containers (close enough)" duration="{duration}"/>
+    <testCase name="Usage of UnorderedRangeEquals range matcher/Custom predicate/Different element types keep predicate argument order" duration="{duration}"/>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Ranges that need ADL begin/end" duration="{duration}"/>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Compare against std::initializer_list" duration="{duration}"/>
     <testCase name="Usage of the SizeIs range matcher" duration="{duration}"/>

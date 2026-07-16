@@ -18919,6 +18919,20 @@ There is no extra whitespace here
       </Section>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
+    <Section name="Custom predicate" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="Different element types keep predicate argument order" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            actual, UnorderedRangeEquals( expected, []( UnorderedRangeActual const&amp; lhs, UnorderedRangeExpected const&amp; rhs ) { return lhs.value == rhs.value; } )
+          </Original>
+          <Expanded>
+            { 1, 2, 3, 4 } unordered elements are { 4, 2, 3, 1 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
     <Section name="Ranges that need ADL begin/end" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Original>
@@ -23385,6 +23399,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2215" failures="158" expectedFailures="43" skips="12"/>
+  <OverallResults successes="2216" failures="158" expectedFailures="43" skips="12"/>
   <OverallResultsCases successes="331" failures="96" expectedFailures="18" skips="6"/>
 </Catch2TestRun>

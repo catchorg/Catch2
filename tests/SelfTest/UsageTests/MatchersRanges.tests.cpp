@@ -41,6 +41,30 @@ struct MoveOnlyTestElement {
     }
 };
 
+namespace {
+
+    struct UnorderedRangeActual {
+        int value;
+    };
+
+    struct UnorderedRangeExpected {
+        int value;
+    };
+
+    std::ostream& operator<<( std::ostream& out,
+                              UnorderedRangeActual const& value ) {
+        out << value.value;
+        return out;
+    }
+
+    std::ostream& operator<<( std::ostream& out,
+                              UnorderedRangeExpected const& value ) {
+        out << value.value;
+        return out;
+    }
+
+} // end unnamed namespace
+
 TEST_CASE("Basic use of the Contains range matcher", "[matchers][templated][contains]") {
     using Catch::Matchers::Contains;
 
@@ -818,6 +842,20 @@ TEST_CASE( "Usage of UnorderedRangeEquals range matcher",
             const std::vector<int> vector_b{ { 11, 21, 3 } };
             CHECK_THAT( vector_a,
                         !UnorderedRangeEquals( vector_b, close_enough ) );
+        }
+        SECTION( "Different element types keep predicate argument order" ) {
+            const std::vector<UnorderedRangeActual> actual{
+                { 1 }, { 2 }, { 3 }, { 4 } };
+            const std::vector<UnorderedRangeExpected> expected{
+                { 4 }, { 2 }, { 3 }, { 1 } };
+
+            CHECK_THAT( actual,
+                        UnorderedRangeEquals(
+                            expected,
+                            []( UnorderedRangeActual const& lhs,
+                                UnorderedRangeExpected const& rhs ) {
+                                return lhs.value == rhs.value;
+                            } ) );
         }
     }
 

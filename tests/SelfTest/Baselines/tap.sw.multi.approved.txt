@@ -3881,6 +3881,8 @@ ok {test-number} - vector_a, UnorderedRangeEquals( vector_a_plus_1, close_enough
 # Usage of UnorderedRangeEquals range matcher
 ok {test-number} - vector_a, !UnorderedRangeEquals( vector_b, close_enough ) for: { 1, 10, 21 } not unordered elements are { 11, 21, 3 }
 # Usage of UnorderedRangeEquals range matcher
+ok {test-number} - actual, UnorderedRangeEquals( expected, []( UnorderedRangeActual const& lhs, UnorderedRangeExpected const& rhs ) { return lhs.value == rhs.value; } ) for: { 1, 2, 3, 4 } unordered elements are { 4, 2, 3, 1 }
+# Usage of UnorderedRangeEquals range matcher
 ok {test-number} - needs_adl1, UnorderedRangeEquals( needs_adl2 ) for: { 1, 2, 3, 4, 5 } unordered elements are { 1, 2, 3, 4, 5 }
 # Usage of UnorderedRangeEquals range matcher
 ok {test-number} - array_a, UnorderedRangeEquals( { 10, 20, 1 } ) for: { 1, 10, 20 } unordered elements are { 10, 20, 1 }
@@ -4840,5 +4842,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2428
+1..2429
 

@@ -16187,6 +16187,19 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Usage of UnorderedRangeEquals range matcher
+  Custom predicate
+  Different element types keep predicate argument order
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( actual, UnorderedRangeEquals( expected, []( UnorderedRangeActual const& lhs, UnorderedRangeExpected const& rhs ) { return lhs.value == rhs.value; } ) )
+with expansion:
+  { 1, 2, 3, 4 } unordered elements are { 4, 2, 3, 1 }
+
+-------------------------------------------------------------------------------
+Usage of UnorderedRangeEquals range matcher
   Ranges that need ADL begin/end
 -------------------------------------------------------------------------------
 MatchersRanges.tests.cpp:<line number>
@@ -20135,5 +20148,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  451 |  331 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2416 | 2215 passed | 158 failed | 43 failed as expected
+assertions: 2417 | 2216 passed | 158 failed | 43 failed as expected
 
