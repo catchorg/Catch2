@@ -27,7 +27,7 @@ namespace Generators {
         void skipToNthElementImpl( std::size_t n ) override {
             if ( n >= m_target ) {
                 Detail::throw_generator_exception(
-                    "Coud not jump to Nth element: not enough elements" );
+                    "Could not jump to Nth element: not enough elements" );
             }
 
             m_generator.skipToNthElement( n );
