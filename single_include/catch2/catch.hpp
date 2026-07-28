@@ -677,12 +677,12 @@ namespace Catch {
     auto operator += ( std::string& lhs, StringRef const& sr ) -> std::string&;
     auto operator << ( std::ostream& os, StringRef const& sr ) -> std::ostream&;
 
-    constexpr auto operator "" _sr( char const* rawChars, std::size_t size ) noexcept -> StringRef {
+    constexpr auto operator ""_sr( char const* rawChars, std::size_t size ) noexcept -> StringRef {
         return StringRef( rawChars, size );
     }
 } // namespace Catch
 
-constexpr auto operator "" _catch_sr( char const* rawChars, std::size_t size ) noexcept -> Catch::StringRef {
+constexpr auto operator ""_catch_sr( char const* rawChars, std::size_t size ) noexcept -> Catch::StringRef {
     return Catch::StringRef( rawChars, size );
 }
 
@@ -3177,8 +3177,8 @@ namespace Detail {
 } // end namespace Detail
 
 namespace literals {
-    Detail::Approx operator "" _a(long double val);
-    Detail::Approx operator "" _a(unsigned long long val);
+    Detail::Approx operator ""_a(long double val);
+    Detail::Approx operator ""_a(unsigned long long val);
 } // end namespace literals
 
 template<>
@@ -7920,10 +7920,10 @@ namespace Detail {
 } // end namespace Detail
 
 namespace literals {
-    Detail::Approx operator "" _a(long double val) {
+    Detail::Approx operator ""_a(long double val) {
         return Detail::Approx(val);
     }
-    Detail::Approx operator "" _a(unsigned long long val) {
+    Detail::Approx operator ""_a(unsigned long long val) {
         return Detail::Approx(val);
     }
 } // end namespace literals
