@@ -209,6 +209,7 @@ namespace Catch {
     double Config::minDuration() const                 { return m_data.minDuration; }
     TestRunOrder Config::runOrder() const              { return m_data.runOrder; }
     uint32_t Config::rngSeed() const                   { return m_data.rngSeed; }
+    bool Config::rngSeedWasFixed() const               { return m_data.rngSeedWasFixed; }
     unsigned int Config::shardCount() const            { return m_data.shardCount; }
     unsigned int Config::shardIndex() const            { return m_data.shardIndex; }
     ColourMode Config::defaultColourMode() const       { return m_data.defaultColourMode; }
@@ -273,6 +274,7 @@ namespace Catch {
                     << bazelRandomSeed << "') as proper seed.\n";
             } else {
                 m_data.rngSeed = *parsedSeed;
+                m_data.rngSeedWasFixed = true;
             }
         }
     }

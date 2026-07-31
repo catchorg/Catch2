@@ -21,6 +21,37 @@ set_tests_properties(TestSharding::OverlyLargeShardIndex
     PASS_REGULAR_EXPRESSION "The shard count \\(5\\) must be greater than the shard index \\(5\\)"
 )
 
+set(CATCH_SHARDING_WARNING_REGEX "Warning: using sharding .* with random order")
+
+add_test(
+  NAME TestSharding::WarningOnRandomOrderWithoutFixedSeed
+  COMMAND $<TARGET_FILE:SelfTest> --shard-index 0 --shard-count 2 --list-tests
+)
+set_tests_properties(TestSharding::WarningOnRandomOrderWithoutFixedSeed
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "${CATCH_SHARDING_WARNING_REGEX}"
+)
+
+add_test(
+  NAME TestSharding::NoWarningOnRandomOrderWithFixedSeed
+  COMMAND $<TARGET_FILE:SelfTest> --shard-index 0 --shard-count 2 --rng-seed 12345 --list-tests
+)
+set_tests_properties(TestSharding::NoWarningOnRandomOrderWithFixedSeed
+  PROPERTIES
+    FAIL_REGULAR_EXPRESSION "${CATCH_SHARDING_WARNING_REGEX}"
+)
+
+foreach(shardOrder decl lex)
+  add_test(
+    NAME TestSharding::NoWarningOn${shardOrder}OrderWithoutFixedSeed
+    COMMAND $<TARGET_FILE:SelfTest> --shard-index 0 --shard-count 2 --order ${shardOrder} --list-tests
+  )
+  set_tests_properties(TestSharding::NoWarningOn${shardOrder}OrderWithoutFixedSeed
+    PROPERTIES
+      FAIL_REGULAR_EXPRESSION "${CATCH_SHARDING_WARNING_REGEX}"
+  )
+endforeach()
+
 # The MinDuration reporting tests do not need separate compilation, but
 # they have non-trivial execution time, so they are categorized as
 # extra tests, so that they are run less.

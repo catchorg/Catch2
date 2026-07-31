@@ -473,15 +473,34 @@ TEST_CASE( "Parse rng seed in different formats", "[approvals][cli][rng-seed]" )
         CAPTURE( seed_string );
 
         auto result = cli.parse( { "tests", "--rng-seed", seed_string } );
-
         REQUIRE( result );
-        REQUIRE( config.rngSeed == seed_value );
+
+        Catch::Config cfg{config};
+        REQUIRE( cfg.rngSeed() == seed_value );
+        REQUIRE( cfg.rngSeedWasFixed() );
+    }
+    SECTION( "time seed is not considered fixed" ) {
+        auto result = cli.parse( { "tests", "--rng-seed", "time" } );
+        REQUIRE( result );
+
+        Catch::Config cfg{config};
+        REQUIRE_FALSE( cfg.rngSeedWasFixed() );
+    }
+    SECTION( "random-device seed is not considered fixed" ) {
+        auto result = cli.parse( { "tests", "--rng-seed", "random-device" } );
+        REQUIRE( result );
+
+        Catch::Config cfg{config};
+        REQUIRE_FALSE( cfg.rngSeedWasFixed() );
     }
     SECTION( "Error cases" ) {
         auto seed_string =
             GENERATE( "0xSEED", "999999999999", "08888", "BEEF", "123 456" );
         CAPTURE( seed_string );
         REQUIRE_FALSE( cli.parse( { "tests", "--rng-seed", seed_string } ) );
+
+        Catch::Config cfg{config};
+        REQUIRE_FALSE( cfg.rngSeedWasFixed() );
     }
 }
 

@@ -348,6 +348,19 @@ namespace Catch {
         CATCH_TRY {
             config(); // Force config to be constructed
 
+            if ( m_config->shardCount() > 1 &&
+                 m_config->runOrder() == TestRunOrder::Randomized &&
+                 !m_config->rngSeedWasFixed() ) {
+                Catch::cerr()
+                    << "Warning: using sharding (--shard-count) with random "
+                       "order (--order rand, the default) and without a fixed "
+                       "numeric --rng-seed does not guarantee disjoint coverage "
+                       "between shard invocations. Pass the same numeric "
+                       "--rng-seed to every shard, or use --order decl or "
+                       "--order lex instead.\n"
+                    << std::flush;
+            }
+
             // We need to retrieve potential Bazel config with the full Config
             // constructor, so we have to create the guard file after it is created.
             setUpGuardFile( m_config->getExitGuardFilePath() );
