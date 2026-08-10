@@ -13,7 +13,13 @@
 #include <catch2/generators/catch_generators_range.hpp>
 
 #include <cstring>
+#include <iostream>
 
+
+TEST_CASE( "An assertion-free test with a generator", "[approvals]" ) {
+    const auto value = GENERATE( 1, 2 );
+    DYNAMIC_SECTION( "value " << value ) { std::cout << value; }
+}
 
 // Generators and sections can be nested freely
 TEST_CASE("Generators -- simple", "[generators]") {
