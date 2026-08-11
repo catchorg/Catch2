@@ -108,6 +108,7 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/internal/catch_optional.hpp
   ${SOURCES_DIR}/internal/catch_output_redirect.hpp
   ${SOURCES_DIR}/internal/catch_parse_numbers.hpp
+  ${SOURCES_DIR}/internal/catch_generator_filter_parser.hpp
   ${SOURCES_DIR}/internal/catch_path_filter.hpp
   ${SOURCES_DIR}/internal/catch_platform.hpp
   ${SOURCES_DIR}/internal/catch_polyfills.hpp
@@ -195,6 +196,7 @@ set(IMPL_SOURCES
   ${SOURCES_DIR}/internal/catch_message_info.cpp
   ${SOURCES_DIR}/internal/catch_output_redirect.cpp
   ${SOURCES_DIR}/internal/catch_parse_numbers.cpp
+  ${SOURCES_DIR}/internal/catch_generator_filter_parser.cpp
   ${SOURCES_DIR}/internal/catch_polyfills.cpp
   ${SOURCES_DIR}/internal/catch_random_number_generator.cpp
   ${SOURCES_DIR}/internal/catch_random_seed_generation.cpp
