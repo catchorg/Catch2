@@ -21,6 +21,7 @@
 #include <catch2/catch_timer.hpp>
 #include <catch2/internal/catch_output_redirect.hpp>
 #include <catch2/internal/catch_assertion_handler.hpp>
+#include <catch2/internal/catch_generator_filter_parser.hpp>
 #include <catch2/internal/catch_path_filter.hpp>
 #include <catch2/internal/catch_test_failure_exception.hpp>
 #include <catch2/internal/catch_thread_local.hpp>
@@ -41,6 +42,8 @@ namespace Catch {
                 // Filtered generator has moved to specific index due to
                 // a filter, it needs special handling of `countedNext()`
                 bool m_isFiltered = false;
+                std::vector<std::size_t> m_filterIndices;
+                std::size_t m_filterIndexPos = 0;
 
                 GeneratorTracker(
                     TestCaseTracking::NameAndLocation&& nameAndLocation,
@@ -74,12 +77,16 @@ namespace Catch {
                         // used for filtering sections below the generator, but
                         // not the generator itself.
                         if ( filter.filter != "*" ) {
+                            auto parsedSpec =
+                                parseGeneratorIndexSpec( filter.filter );
+                            assert( parsedSpec.type ==
+                                    GeneratorFilterParseResult::Type::Ok );
+                            m_filterIndices.assign( parsedSpec.indices.begin(),
+                                                    parsedSpec.indices.end() );
                             m_isFiltered = true;
-                            // TBD: We assume that the filter was validated as
-                            //      number during parsing. We should pass it
-                            //      as number from the CLI parser.
-                            size_t targetIndex = std::stoul( filter.filter );
-                            m_generator->skipToNthElement( targetIndex );
+                            m_filterIndexPos = 0;
+                            m_generator->skipToNthElement(
+                                m_filterIndices[m_filterIndexPos] );
                         }
                     }
                 }
@@ -183,10 +190,19 @@ namespace Catch {
                     // value, but we do not want to invoke the side-effect if
                     // this generator is still waiting for any child to start.
                     assert( m_generator && "Tracker without generator" );
+                    bool advancedFilteredGenerator = false;
+                    if ( m_runState == CompletedSuccessfully && m_isFiltered &&
+                         m_filterIndexPos + 1 < m_filterIndices.size() ) {
+                        ++m_filterIndexPos;
+                        m_generator->skipToNthElement(
+                            m_filterIndices[m_filterIndexPos] );
+                        advancedFilteredGenerator = true;
+                    }
                     if ( should_wait_for_child
                         ||  ( m_runState == CompletedSuccessfully
-                            && !m_isFiltered // filtered generators cannot meaningfully move forward, as they would get past the filter
-                            && m_generator->countedNext() ) ) {
+                            && ( ( !m_isFiltered &&
+                                   m_generator->countedNext() ) ||
+                                 advancedFilteredGenerator ) ) ) {
                         m_children.clear();
                         m_runState = Executing;
                     }
