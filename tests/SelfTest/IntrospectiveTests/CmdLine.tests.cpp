@@ -579,4 +579,42 @@ TEST_CASE( "Parsing path filter specs",
         REQUIRE( config.pathFilters[0] == PathFilter(PathFilter::For::Section, "untrimmed" ) );
         REQUIRE( config.pathFilters[1] == PathFilter(PathFilter::For::Generator, "42" ) );
     }
+    SECTION( "Generator specs accept comma-separated indices" ) {
+        auto result = cli.parse( { "tests", "-g", "1,3,4" } );
+        REQUIRE( result );
+        REQUIRE( config.pathFilters[0] ==
+                 PathFilter( PathFilter::For::Generator, "1,3,4" ) );
+    }
+    SECTION( "Generator specs accept closed ranges" ) {
+        auto result = cli.parse( { "tests", "-g", "1-3" } );
+        REQUIRE( result );
+        REQUIRE( config.pathFilters[0] ==
+                 PathFilter( PathFilter::For::Generator, "1-3" ) );
+    }
+    SECTION( "Generator specs accept combined lists and ranges" ) {
+        auto result = cli.parse( { "tests", "-g", "1,3,6-10" } );
+        REQUIRE( result );
+        REQUIRE( config.pathFilters[0] ==
+                 PathFilter( PathFilter::For::Generator, "1,3,6-10" ) );
+    }
+    SECTION( "Generator specs reject overlapping ranges" ) {
+        auto result = cli.parse( { "tests", "-g", "1-3,2-4" } );
+        REQUIRE_FALSE( result );
+    }
+    SECTION( "Generator specs reject unsorted indices" ) {
+        auto result = cli.parse( { "tests", "-g", "3,2,1" } );
+        REQUIRE_FALSE( result );
+    }
+    SECTION( "Generator specs reject decreasing ranges" ) {
+        auto result = cli.parse( { "tests", "-g", "3-1" } );
+        REQUIRE_FALSE( result );
+    }
+    SECTION( "Generator specs reject duplicate indices" ) {
+        auto result = cli.parse( { "tests", "-g", "1,2,2,3" } );
+        REQUIRE_FALSE( result );
+    }
+    SECTION( "Generator specs reject syntactically invalid ranges" ) {
+        REQUIRE_FALSE( cli.parse( { "tests", "-g", "1--2" } ) );
+        REQUIRE_FALSE( cli.parse( { "tests", "-g", "1-2-3" } ) );
+    }
 }
