@@ -61,6 +61,7 @@ hexParser = re.compile(r'\b(0[xX][0-9a-fA-F]+)\b')
 #       in other places too.
 junitDurationsParser = re.compile(r' time="[0-9]+\.[0-9]{3}"')
 durationParser = re.compile(r''' duration=['"][0-9]+['"]''')
+teamcityFlowIdParser = re.compile(r" flowId='[0-9]+'")
 timestampsParser = re.compile(r'\d{4}-\d{2}-\d{2}T\d{2}\:\d{2}\:\d{2}Z')
 versionParser = re.compile(r'[0-9]+\.[0-9]+\.[0-9]+(-\w*\.[0-9]+)?')
 nullParser = re.compile(r'\b(__null|nullptr)\b')
@@ -147,6 +148,7 @@ def filterLine(line, isCompact):
     # strip durations and timestamps
     line = junitDurationsParser.sub(' time="{duration}"', line)
     line = durationParser.sub(' duration="{duration}"', line)
+    line = teamcityFlowIdParser.sub(" flowId='{pid}'", line)
     line = timestampsParser.sub('{iso8601-timestamp}', line)
     line = specialCaseParser.sub(r'file:\g<1>', line)
     line = sinceEpochParser.sub('{since-epoch-report}', line)
