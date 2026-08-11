@@ -14,6 +14,7 @@
 #include <catch2/internal/catch_reporter_registry.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_parse_numbers.hpp>
+#include <catch2/internal/catch_generator_filter_parser.hpp>
 #include <catch2/internal/catch_reporter_spec_parser.hpp>
 
 #include <fstream>
@@ -225,12 +226,9 @@ namespace Catch {
         };
         auto const setGeneratorFilter = [&]( std::string const& generatorFilter ) {
             if (generatorFilter != "*") {
-                // TODO: avoid re-parsing the index?
-                auto parsedIndex = parseUInt( generatorFilter );
-                if ( !parsedIndex ) {
-                    return ParserResult::runtimeError( "Could not parse '" +
-                                                       generatorFilter +
-                                                       "' as generator index" );
+                auto parsedSpec = parseGeneratorIndexSpec( trim( generatorFilter ) );
+                if ( parsedSpec.type == GeneratorFilterParseResult::Type::Error ) {
+                    return ParserResult::runtimeError( parsedSpec.errorMessage );
                 }
             }
             config.useNewPathFilteringBehaviour = true;
