@@ -101,6 +101,29 @@ namespace Catch {
         return serialized;
     }
 
+    void printPathFilters( std::ostream& stream,
+                           ColourImpl* streamColour,
+                           std::vector<PathFilter> const& pathFilters ) {
+        if ( pathFilters.empty() ) {
+            return;
+        }
+
+        stream << streamColour->guardColour( Colour::BrightYellow )
+               << "Path filters:\n";
+        for ( auto const& pathFilter : pathFilters ) {
+            stream << " - ";
+            switch ( pathFilter.type ) {
+            case PathFilter::For::Section:
+                stream << "Section: ";
+                break;
+            case PathFilter::For::Generator:
+                stream << "Generator: ";
+                break;
+            }
+            stream << '"' << pathFilter.filter << "\"\n";
+        }
+    }
+
     std::ostream& operator<<( std::ostream& out, lineOfChars value ) {
         for ( size_t idx = 0; idx < CATCH_CONFIG_CONSOLE_WIDTH - 1; ++idx ) {
             out.put( value.c );
