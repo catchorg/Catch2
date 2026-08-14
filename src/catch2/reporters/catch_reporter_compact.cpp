@@ -215,6 +215,7 @@ private:
                          << m_config->testSpec()
                          << '\n';
             }
+            printPathFilters( m_stream, m_colour.get(), m_config->getPathFilters() );
             m_stream << "RNG seed: " << getSeed() << '\n'
                      << std::flush;
         }
