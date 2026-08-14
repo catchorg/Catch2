@@ -87,6 +87,8 @@
 * Fixed typo in the "Could not jump to the Nth element" exception message (#3181)
 
 ### Improvements
+* Console and compact reporters print active section/generator path filters
+  (`-c`/`-g`/`-p`) under a `Path filters:` heading. (#3099)
 * `catch_discover_tests` registers tests in deterministic (alphabetical) order.
 * `catch_discover_tests` has been rewritten to be massively faster.
   * Preparing the actual CTest script is significantly faster.
