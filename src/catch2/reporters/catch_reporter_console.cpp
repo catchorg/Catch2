@@ -530,6 +530,7 @@ void ConsoleReporter::testRunStarting(TestRunInfo const& _testRunInfo) {
         m_stream << m_colour->guardColour( Colour::BrightYellow ) << "Filters: "
                  << m_config->testSpec() << '\n';
     }
+    printPathFilters( m_stream, m_colour.get(), m_config->getPathFilters() );
     m_stream << "Randomness seeded to: " << getSeed() << '\n'
              << std::flush;
 }
