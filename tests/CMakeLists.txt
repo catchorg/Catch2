@@ -78,6 +78,7 @@ set(TEST_SOURCES
   ${SELF_TEST_DIR}/IntrospectiveTests/Details.tests.cpp
   ${SELF_TEST_DIR}/IntrospectiveTests/FloatingPoint.tests.cpp
   ${SELF_TEST_DIR}/IntrospectiveTests/GeneratorsImpl.tests.cpp
+  ${SELF_TEST_DIR}/IntrospectiveTests/GeneratorFilterParser.tests.cpp
   ${SELF_TEST_DIR}/IntrospectiveTests/Integer.tests.cpp
   ${SELF_TEST_DIR}/IntrospectiveTests/InternalBenchmark.tests.cpp
   ${SELF_TEST_DIR}/IntrospectiveTests/Json.tests.cpp
@@ -723,6 +724,22 @@ foreach(reporterName # "Automake" - the simple .trs format does not support any 
   set_tests_properties("Reporters:RngSeed:${reporterName}"
     PROPERTIES
       PASS_REGULAR_EXPRESSION "18181818"
+  )
+endforeach()
+
+foreach(reporterName "compact" "console")
+  add_test(NAME "Reporters:PathFilters:${reporterName}"
+    COMMAND
+      $<TARGET_FILE:SelfTest> "Generators -- simple"
+        -c one -g 0
+        --reporter ${reporterName}
+  )
+  set_tests_properties("Reporters:PathFilters:${reporterName}"
+    PROPERTIES
+      PASS_REGULAR_EXPRESSION
+        "Path filters:"
+        "Section: \"one\""
+        "Generator: \"0\""
   )
 endforeach()
 
