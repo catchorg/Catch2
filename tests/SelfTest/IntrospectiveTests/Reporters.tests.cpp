@@ -330,3 +330,32 @@ TEST_CASE("Registering multiple reporters with the same name fails",
             Catch::Detail::make_unique<TestReporterFactory>() ),
         "reporter using 'some-reporter-name' as name was already registered" );
 }
+
+TEST_CASE( "printPathFilters lists section and generator selections",
+           "[reporters][reporter-helpers]" ) {
+    using Catch::Matchers::ContainsSubstring;
+    using Catch::PathFilter;
+    using namespace std::string_literals;
+
+    StringIStream sstream;
+    auto colour = Catch::makeColourImpl( Catch::ColourMode::None, &sstream );
+
+    SECTION( "empty path filters print nothing" ) {
+        Catch::printPathFilters( sstream.stream(), colour.get(), {} );
+        REQUIRE( sstream.str().empty() );
+    }
+    SECTION( "mixed section and generator filters" ) {
+        std::vector<PathFilter> filters{
+            PathFilter( PathFilter::For::Section, "Given: a fresh dataset" ),
+            PathFilter( PathFilter::For::Generator, "0" ),
+        };
+        Catch::printPathFilters( sstream.stream(), colour.get(), filters );
+
+        auto listingString = sstream.str();
+        REQUIRE_THAT( listingString, ContainsSubstring( "Path filters:"s ) );
+        REQUIRE_THAT( listingString,
+                      ContainsSubstring( "Section: \"Given: a fresh dataset\""s ) );
+        REQUIRE_THAT( listingString,
+                      ContainsSubstring( "Generator: \"0\""s ) );
+    }
+}
