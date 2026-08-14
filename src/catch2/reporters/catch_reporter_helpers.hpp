@@ -13,6 +13,7 @@
 #include <vector>
 
 #include <catch2/internal/catch_list.hpp>
+#include <catch2/internal/catch_path_filter.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/catch_totals.hpp>
 
@@ -29,6 +30,16 @@ namespace Catch {
     bool shouldShowDuration( IConfig const& config, double duration );
 
     std::string serializeFilters( std::vector<std::string> const& filters );
+
+    /**
+     * Prints active section/generator path filters in a readable list.
+     *
+     * Used by the console and compact reporters so CLI path selection
+     * (-c/-g/-p) is visible even when the selection runs no assertions.
+     */
+    void printPathFilters( std::ostream& stream,
+                           ColourImpl* streamColour,
+                           std::vector<PathFilter> const& pathFilters );
 
     struct lineOfChars {
         char c;
