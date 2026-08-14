@@ -31,6 +31,18 @@ things:
     that if you specify path filters without a test case filter, Catch2
     will try to apply the path filters inside every registered test case.
 
+When path filters are active, the console and compact reporters print them
+under a `Path filters:` heading (right after the usual `Filters:` line),
+so it is clear which section/generator selection was requested even if the
+combination runs no assertions:
+
+```
+Filters: "Scenario: Create and train model on entire dataset"
+Path filters:
+ - Section: "Given: a fresh dataset"
+ - Generator: "0"
+```
+
 ## Old behaviour
 
 > The old behaviour was deprecated in Catch2 3.13.0
