@@ -156,6 +156,8 @@ namespace Catch {
 
 #endif // CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT
 
+#if !defined( CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT )
+
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS( macroName, resultDisposition, ... ) \
     do { \
@@ -176,6 +178,29 @@ namespace Catch {
             catchAssertionHandler.handleThrowingCallSkipped(); \
         catchAssertionHandler.complete(); \
     } while( false )
+
+#else  // ^^ !CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT | vv CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT
+
+///////////////////////////////////////////////////////////////////////////////
+#    define INTERNAL_CATCH_THROWS( macroName, resultDisposition, ... ) \
+        do { \
+            bool catchInternalThrew = false; \
+            try { \
+                CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
+                CATCH_INTERNAL_SUPPRESS_UNUSED_RESULT \
+                CATCH_INTERNAL_SUPPRESS_USELESS_CAST_WARNINGS \
+                static_cast<void>(__VA_ARGS__); \
+                CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
+            } catch ( ... ) { \
+                catchInternalThrew = true; \
+            } \
+            if ( !catchInternalThrew && \
+                 Catch::shouldTerminateOnFailure( resultDisposition ) ) { \
+                Catch::Detail::Unreachable(); \
+            } \
+        } while ( false )
+
+#endif // CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS_AS( macroName, exceptionType, resultDisposition, expr ) \
