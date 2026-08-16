@@ -94,6 +94,8 @@ namespace Catch {
 
 #endif // CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT
 
+#if !defined( CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT )
+
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( macroName, resultDisposition, ... ) \
     INTERNAL_CATCH_TEST( macroName, resultDisposition, __VA_ARGS__ ); \
@@ -103,6 +105,18 @@ namespace Catch {
 #define INTERNAL_CATCH_ELSE( macroName, resultDisposition, ... ) \
     INTERNAL_CATCH_TEST( macroName, resultDisposition, __VA_ARGS__ ); \
     if( !Catch::Detail::lastAssertionPassed() )
+
+#else  // ^^ !CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT | vv CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT
+
+///////////////////////////////////////////////////////////////////////////////
+#    define INTERNAL_CATCH_IF( macroName, resultDisposition, ... ) \
+        if ( __VA_ARGS__ )
+
+///////////////////////////////////////////////////////////////////////////////
+#    define INTERNAL_CATCH_ELSE( macroName, resultDisposition, ... ) \
+        if ( !( __VA_ARGS__ ) )
+
+#endif // CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( macroName, resultDisposition, ... ) \
