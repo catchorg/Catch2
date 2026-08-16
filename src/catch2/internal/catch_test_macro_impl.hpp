@@ -202,6 +202,8 @@ namespace Catch {
 
 #endif // CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT
 
+#if !defined( CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT )
+
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS_AS( macroName, exceptionType, resultDisposition, expr ) \
     do { \
@@ -225,6 +227,30 @@ namespace Catch {
             catchAssertionHandler.handleThrowingCallSkipped(); \
         catchAssertionHandler.complete(); \
     } while( false )
+
+#else  // ^^ !CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT | vv CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT
+
+///////////////////////////////////////////////////////////////////////////////
+#    define INTERNAL_CATCH_THROWS_AS( macroName, exceptionType, resultDisposition, expr ) \
+        do { \
+            bool catchInternalCaughtExpected = false; \
+            try { \
+                CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
+                CATCH_INTERNAL_SUPPRESS_UNUSED_RESULT \
+                CATCH_INTERNAL_SUPPRESS_USELESS_CAST_WARNINGS \
+                static_cast<void>(expr); \
+                CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
+            } catch ( exceptionType const& ) { \
+                catchInternalCaughtExpected = true; \
+            } catch ( ... ) { \
+            } \
+            if ( !catchInternalCaughtExpected && \
+                 Catch::shouldTerminateOnFailure( resultDisposition ) ) { \
+                Catch::Detail::Unreachable(); \
+            } \
+        } while ( false )
+
+#endif // CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT
 
 
 
