@@ -10,9 +10,12 @@
 
 #include <catch2/catch_user_config.hpp>
 #include <catch2/internal/catch_assertion_handler.hpp>
+#include <catch2/internal/catch_config_static_analysis_support.hpp>
 #include <catch2/internal/catch_preprocessor_internal_stringify.hpp>
+#include <catch2/internal/catch_result_type.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
+#include <catch2/internal/catch_unreachable.hpp>
 
 namespace Catch {
     namespace Detail {
@@ -57,6 +60,8 @@ namespace Catch {
         (void)0, (false) && static_cast<const bool&>( !!(__VA_ARGS__) )
 #endif
 
+#if !defined( CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT )
+
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( macroName, resultDisposition, ... ) \
     do { /* NOLINT(bugprone-infinite-loop) */ \
@@ -71,6 +76,23 @@ namespace Catch {
         } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
         catchAssertionHandler.complete(); \
     } while( INTERNAL_CATCH_TEST_LOOP_CONDITION( __VA_ARGS__ ) ) // the expression here is never evaluated at runtime, but is shown to some compilers
+
+#else  // ^^ !CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT | vv CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT
+
+///////////////////////////////////////////////////////////////////////////////
+#    define INTERNAL_CATCH_TEST( macroName, resultDisposition, ... ) \
+        do { \
+            const bool catchInternalAssertionResult = static_cast<bool>( __VA_ARGS__ ); \
+            if ( Catch::shouldTerminateOnFailure( resultDisposition ) ) { \
+                if ( Catch::isFalseTest( resultDisposition ) ) { \
+                    if ( catchInternalAssertionResult ) { Catch::Detail::Unreachable(); } \
+                } else { \
+                    if ( !catchInternalAssertionResult ) { Catch::Detail::Unreachable(); } \
+                } \
+            } \
+        } while ( false )
+
+#endif // CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( macroName, resultDisposition, ... ) \
