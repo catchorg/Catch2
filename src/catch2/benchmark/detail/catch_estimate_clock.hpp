@@ -49,6 +49,9 @@ namespace Catch {
             constexpr auto minimum_ticks = 1000;
             constexpr auto warmup_seed = 10000;
             constexpr auto clock_resolution_estimation_time = std::chrono::milliseconds(500);
+            // resolution() allocates O(n) TimePoints; without a sample cap a
+            // cheap high-resolution clock can exhaust memory within 500ms. (#3180)
+            constexpr auto clock_resolution_estimation_iteration_limit = 100000;
             constexpr auto clock_cost_estimation_time_limit = std::chrono::seconds(1);
             constexpr auto clock_cost_estimation_tick_limit = 100000;
             constexpr auto clock_cost_estimation_time = std::chrono::milliseconds(10);
@@ -56,13 +59,19 @@ namespace Catch {
 
             template <typename Clock>
             int warmup() {
-                return run_for_at_least<Clock>(warmup_time, warmup_seed, &resolution<Clock>)
+                return run_for_at_least<Clock>(warmup_time,
+                                               warmup_seed,
+                                               &resolution<Clock>,
+                                               clock_resolution_estimation_iteration_limit)
                     .iterations;
             }
             template <typename Clock>
             EnvironmentEstimate estimate_clock_resolution(int iterations) {
-                auto r = run_for_at_least<Clock>(clock_resolution_estimation_time, iterations, &resolution<Clock>)
-                    .result;
+                auto r = run_for_at_least<Clock>(clock_resolution_estimation_time,
+                                                 iterations,
+                                                 &resolution<Clock>,
+                                                 clock_resolution_estimation_iteration_limit)
+                             .result;
                 return {
                     FDuration(mean(r.data(), r.data() + r.size())),
                     classify_outliers(r.data(), r.data() + r.size()),

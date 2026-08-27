@@ -2640,6 +2640,12 @@ InternalBenchmark.tests.cpp:<line number>: passed: o.low_mild == lom for: 0 == 0
 InternalBenchmark.tests.cpp:<line number>: passed: o.high_mild == him for: 1 == 1
 InternalBenchmark.tests.cpp:<line number>: passed: o.high_severe == his for: 0 == 0
 InternalBenchmark.tests.cpp:<line number>: passed: o.total() == los + lom + him + his for: 2 == 2
+InternalBenchmark.tests.cpp:<line number>: passed: iterations <= Catch::Benchmark::Detail::clock_resolution_estimation_iteration_limit for: 100000 (0x<hex digits>) <= 100000 (0x<hex digits>)
+InternalBenchmark.tests.cpp:<line number>: passed: iterations > 0 for: 100000 (0x<hex digits>) > 0
+InternalBenchmark.tests.cpp:<line number>: passed: res.mean.count() == 1 for: 1.0 == 1
+InternalBenchmark.tests.cpp:<line number>: passed: res.outliers.total() == 0 for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: res.outliers.samples_seen <= Catch::Benchmark::Detail::clock_resolution_estimation_iteration_limit for: 100000 (0x<hex digits>) <= 100000 (0x<hex digits>)
+InternalBenchmark.tests.cpp:<line number>: passed: res.outliers.samples_seen > 0 for: 100000 (0x<hex digits>) > 0
 Condition.tests.cpp:<line number>: passed: unsigned_char_var == 1 for: 1 == 1
 Condition.tests.cpp:<line number>: passed: unsigned_short_var == 1 for: 1 == 1
 Condition.tests.cpp:<line number>: passed: unsigned_int_var == 1 for: 1 == 1
@@ -2673,6 +2679,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: erfc_inv(0.050000) == Approx(
 Approx( 1.38590382434967796 )
 InternalBenchmark.tests.cpp:<line number>: passed: res.mean.count() == rate for: 2000.0 == 2000 (0x<hex digits>)
 InternalBenchmark.tests.cpp:<line number>: passed: res.outliers.total() == 0 for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: res.outliers.samples_seen <= Catch::Benchmark::Detail::clock_resolution_estimation_iteration_limit for: 100000 (0x<hex digits>) <= 100000 (0x<hex digits>)
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
@@ -2808,6 +2815,8 @@ InternalBenchmark.tests.cpp:<line number>: passed: res[i] == rate for: 1000.0 ==
 InternalBenchmark.tests.cpp:<line number>: passed: res[i] == rate for: 1000.0 == 1000 (0x<hex digits>)
 InternalBenchmark.tests.cpp:<line number>: passed: res[i] == rate for: 1000.0 == 1000 (0x<hex digits>)
 InternalBenchmark.tests.cpp:<line number>: passed: res[i] == rate for: 1000.0 == 1000 (0x<hex digits>)
+InternalBenchmark.tests.cpp:<line number>: passed: Timing.iterations == 16 for: 16 == 16
+InternalBenchmark.tests.cpp:<line number>: passed: Timing.elapsed < time for: 1 ns < 1000000 ns
 InternalBenchmark.tests.cpp:<line number>: passed: meter.runs() >= old_runs for: 1 >= 1
 InternalBenchmark.tests.cpp:<line number>: passed: meter.runs() >= old_runs for: 2 >= 1
 InternalBenchmark.tests.cpp:<line number>: passed: meter.runs() >= old_runs for: 4 >= 2
@@ -2997,14 +3006,14 @@ Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
 Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
-InternalBenchmark.tests.cpp:<line number>: passed: (iterations * rate) > Catch::Benchmark::Detail::warmup_time.count() for: 160000000 (0x<hex digits>) > 100
-InternalBenchmark.tests.cpp:<line number>: passed: (end - start) > Catch::Benchmark::Detail::warmup_time for: 310016000 ns > 100 ms
+InternalBenchmark.tests.cpp:<line number>: passed: (iterations * rate) > Catch::Benchmark::Detail::warmup_time.count() for: 100000000 (0x<hex digits>) > 100
+InternalBenchmark.tests.cpp:<line number>: passed: (end - start) > Catch::Benchmark::Detail::warmup_time for: 250016000 ns > 100 ms
 InternalBenchmark.tests.cpp:<line number>: passed: q1 == 14.5 for: 14.5 == 14.5
 InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  454 |  334 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2423 | 2222 passed | 158 failed | 43 failed as expected
+test cases:  456 |  336 passed |  96 failed | 6 skipped | 18 failed as expected
+assertions: 2432 | 2231 passed | 158 failed | 43 failed as expected
 
 

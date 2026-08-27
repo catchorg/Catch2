@@ -114,6 +114,35 @@ TEST_CASE("estimate_clock_resolution", "[benchmark]") {
 
     REQUIRE(res.mean.count() == rate);
     REQUIRE(res.outliers.total() == 0);
+    REQUIRE(res.outliers.samples_seen <=
+            Catch::Benchmark::Detail::clock_resolution_estimation_iteration_limit);
+}
+
+TEST_CASE("clock resolution estimation is iteration-capped", "[benchmark]") {
+    // 1ns per now() would otherwise demand hundreds of millions of samples
+    // to fill the 500ms window, exhausting memory. (#3180)
+    counting_clock::set_rate(1);
+
+    SECTION("warmup") {
+        auto iterations = Catch::Benchmark::Detail::warmup<counting_clock>();
+        REQUIRE(iterations <=
+                Catch::Benchmark::Detail::clock_resolution_estimation_iteration_limit);
+        REQUIRE(iterations > 0);
+    }
+    SECTION("estimate_clock_resolution") {
+        int iters =
+            Catch::Benchmark::Detail::clock_resolution_estimation_iteration_limit *
+            4;
+        auto res =
+            Catch::Benchmark::Detail::estimate_clock_resolution<counting_clock>(
+                iters);
+
+        REQUIRE(res.mean.count() == 1);
+        REQUIRE(res.outliers.total() == 0);
+        REQUIRE(res.outliers.samples_seen <=
+                Catch::Benchmark::Detail::clock_resolution_estimation_iteration_limit);
+        REQUIRE(res.outliers.samples_seen > 0);
+    }
 }
 
 TEST_CASE("benchmark function call", "[benchmark]") {
@@ -372,6 +401,22 @@ TEST_CASE("run_for_at_least, int", "[benchmark]") {
     REQUIRE(Timing.iterations >= time.count());
 }
 
+TEST_CASE("run_for_at_least respects max_iterations", "[benchmark]") {
+    manual_clock::duration time(1'000'000);
+
+    auto Timing = Catch::Benchmark::Detail::run_for_at_least<manual_clock>(
+        time,
+        1,
+        [](int x) -> int {
+            manual_clock::advance(1);
+            return x;
+        },
+        16);
+
+    REQUIRE(Timing.iterations == 16);
+    REQUIRE(Timing.elapsed < time);
+}
+
 TEST_CASE("run_for_at_least, chronometer", "[benchmark]") {
     manual_clock::duration time(100);
 
@@ -425,7 +470,9 @@ TEST_CASE("run benchmark", "[benchmark][approvals]") {
     bench.run<counting_clock>();
     auto end = counting_clock::now();
 
-    CHECK((end - start).count() == 2867251000);
+    // Exact fake-clock ticks for this counting_clock setup (environment probe
+    // is sample-capped). Update if warmup/resolution iteration limits change.
+    CHECK((end - start).count() == 1787245000);
 }
 
 TEST_CASE("Failing benchmarks", "[!benchmark][.approvals]") {

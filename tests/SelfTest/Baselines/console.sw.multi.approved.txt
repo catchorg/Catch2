@@ -17574,6 +17574,50 @@ with expansion:
   2 == 2
 
 -------------------------------------------------------------------------------
+clock resolution estimation is iteration-capped
+  warmup
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( iterations <= Catch::Benchmark::Detail::clock_resolution_estimation_iteration_limit )
+with expansion:
+  100000 (0x<hex digits>) <= 100000 (0x<hex digits>)
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( iterations > 0 )
+with expansion:
+  100000 (0x<hex digits>) > 0
+
+-------------------------------------------------------------------------------
+clock resolution estimation is iteration-capped
+  estimate_clock_resolution
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( res.mean.count() == 1 )
+with expansion:
+  1.0 == 1
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( res.outliers.total() == 0 )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( res.outliers.samples_seen <= Catch::Benchmark::Detail::clock_resolution_estimation_iteration_limit )
+with expansion:
+  100000 (0x<hex digits>) <= 100000 (0x<hex digits>)
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( res.outliers.samples_seen > 0 )
+with expansion:
+  100000 (0x<hex digits>) > 0
+
+-------------------------------------------------------------------------------
 comparisons between const int variables
 -------------------------------------------------------------------------------
 Condition.tests.cpp:<line number>
@@ -17744,6 +17788,11 @@ InternalBenchmark.tests.cpp:<line number>: PASSED:
   REQUIRE( res.outliers.total() == 0 )
 with expansion:
   0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( res.outliers.samples_seen <= Catch::Benchmark::Detail::clock_resolution_estimation_iteration_limit )
+with expansion:
+  100000 (0x<hex digits>) <= 100000 (0x<hex digits>)
 
 -------------------------------------------------------------------------------
 even more nested SECTION tests
@@ -18841,6 +18890,22 @@ InternalBenchmark.tests.cpp:<line number>: PASSED:
   REQUIRE( res[i] == rate )
 with expansion:
   1000.0 == 1000 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+run_for_at_least respects max_iterations
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( Timing.iterations == 16 )
+with expansion:
+  16 == 16
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( Timing.elapsed < time )
+with expansion:
+  1 ns < 1000000 ns
 
 -------------------------------------------------------------------------------
 run_for_at_least, chronometer
@@ -20166,12 +20231,12 @@ InternalBenchmark.tests.cpp:<line number>
 InternalBenchmark.tests.cpp:<line number>: PASSED:
   REQUIRE( (iterations * rate) > Catch::Benchmark::Detail::warmup_time.count() )
 with expansion:
-  160000000 (0x<hex digits>) > 100
+  100000000 (0x<hex digits>) > 100
 
 InternalBenchmark.tests.cpp:<line number>: PASSED:
   REQUIRE( (end - start) > Catch::Benchmark::Detail::warmup_time )
 with expansion:
-  310016000 ns > 100 ms
+  250016000 ns > 100 ms
 
 -------------------------------------------------------------------------------
 weighted_average_quantile
@@ -20215,6 +20280,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  454 |  334 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2423 | 2222 passed | 158 failed | 43 failed as expected
+test cases:  456 |  336 passed |  96 failed | 6 skipped | 18 failed as expected
+assertions: 2432 | 2231 passed | 158 failed | 43 failed as expected
 

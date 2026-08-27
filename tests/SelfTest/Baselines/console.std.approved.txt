@@ -1743,6 +1743,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  454 |  352 passed |  76 failed | 7 skipped | 19 failed as expected
-assertions: 2401 | 2222 passed | 136 failed | 43 failed as expected
+test cases:  456 |  354 passed |  76 failed | 7 skipped | 19 failed as expected
+assertions: 2410 | 2231 passed | 136 failed | 43 failed as expected
 

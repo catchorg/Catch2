@@ -356,6 +356,7 @@ Message from section two
 :test-result: PASS checkedIf
 :test-result: FAIL checkedIf, failing
 :test-result: PASS classify_outliers
+:test-result: PASS clock resolution estimation is iteration-capped
 :test-result: PASS comparisons between const int variables
 :test-result: PASS comparisons between int variables
 :test-result: PASS convertToBits
@@ -406,6 +407,7 @@ b1!
 :test-result: PASS replaceInPlace
 :test-result: PASS request an unknown %-starting stream fails
 :test-result: PASS resolution
+:test-result: PASS run_for_at_least respects max_iterations
 :test-result: PASS run_for_at_least, chronometer
 :test-result: PASS run_for_at_least, int
 :test-result: FAIL second tag

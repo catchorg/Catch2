@@ -20600,6 +20600,63 @@ Approx( 1.23999999999999999 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="clock resolution estimation is iteration-capped" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+    <Section name="warmup" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          iterations &lt;= Catch::Benchmark::Detail::clock_resolution_estimation_iteration_limit
+        </Original>
+        <Expanded>
+          100000 (0x<hex digits>) &lt;= 100000 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          iterations > 0
+        </Original>
+        <Expanded>
+          100000 (0x<hex digits>) > 0
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="estimate_clock_resolution" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          res.mean.count() == 1
+        </Original>
+        <Expanded>
+          1.0 == 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          res.outliers.total() == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          res.outliers.samples_seen &lt;= Catch::Benchmark::Detail::clock_resolution_estimation_iteration_limit
+        </Original>
+        <Expanded>
+          100000 (0x<hex digits>) &lt;= 100000 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          res.outliers.samples_seen > 0
+        </Original>
+        <Expanded>
+          100000 (0x<hex digits>) > 0
+        </Expanded>
+      </Expression>
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="comparisons between const int variables" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
       <Original>
@@ -20793,6 +20850,14 @@ Approx( 1.38590382434967796 )
       </Original>
       <Expanded>
         0 == 0
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Original>
+        res.outliers.samples_seen &lt;= Catch::Benchmark::Detail::clock_resolution_estimation_iteration_limit
+      </Original>
+      <Expanded>
+        100000 (0x<hex digits>) &lt;= 100000 (0x<hex digits>)
       </Expanded>
     </Expression>
     <OverallResult success="true" skips="0"/>
@@ -21933,6 +21998,25 @@ Approx( -1.95996398454005449 )
       </Original>
       <Expanded>
         1000.0 == 1000 (0x<hex digits>)
+      </Expanded>
+    </Expression>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="run_for_at_least respects max_iterations" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Original>
+        Timing.iterations == 16
+      </Original>
+      <Expanded>
+        16 == 16
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Original>
+        Timing.elapsed &lt; time
+      </Original>
+      <Expanded>
+        1 ns &lt; 1000000 ns
       </Expanded>
     </Expression>
     <OverallResult success="true" skips="0"/>
@@ -23427,7 +23511,7 @@ Approx( -1.95996398454005449 )
         (iterations * rate) > Catch::Benchmark::Detail::warmup_time.count()
       </Original>
       <Expanded>
-        160000000 (0x<hex digits>) > 100
+        100000000 (0x<hex digits>) > 100
       </Expanded>
     </Expression>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
@@ -23435,7 +23519,7 @@ Approx( -1.95996398454005449 )
         (end - start) > Catch::Benchmark::Detail::warmup_time
       </Original>
       <Expanded>
-        310016000 ns > 100 ms
+        250016000 ns > 100 ms
       </Expanded>
     </Expression>
     <OverallResult success="true" skips="0"/>
@@ -23476,6 +23560,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2222" failures="158" expectedFailures="43" skips="12"/>
-  <OverallResultsCases successes="334" failures="96" expectedFailures="18" skips="6"/>
+  <OverallResults successes="2231" failures="158" expectedFailures="43" skips="12"/>
+  <OverallResultsCases successes="336" failures="96" expectedFailures="18" skips="6"/>
 </Catch2TestRun>

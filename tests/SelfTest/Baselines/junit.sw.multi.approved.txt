@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2435" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2444" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1599,6 +1599,9 @@ at Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="classify_outliers/high mild" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="classify_outliers/high severe" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="classify_outliers/mixed" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="clock resolution estimation is iteration-capped" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="clock resolution estimation is iteration-capped/warmup" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="clock resolution estimation is iteration-capped/estimate_clock_resolution" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="comparisons between const int variables" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="comparisons between int variables" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="convertToBits" time="{duration}" status="run"/>
@@ -1796,6 +1799,7 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="replaceInPlace/escape '" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="request an unknown %-starting stream fails" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="resolution" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="run_for_at_least respects max_iterations" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="run_for_at_least, chronometer" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="run_for_at_least, int" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="second tag" time="{duration}" status="run"/>

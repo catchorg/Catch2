@@ -4238,6 +4238,18 @@ ok {test-number} - o.high_mild == him for: 1 == 1
 ok {test-number} - o.high_severe == his for: 0 == 0
 # classify_outliers
 ok {test-number} - o.total() == los + lom + him + his for: 2 == 2
+# clock resolution estimation is iteration-capped
+ok {test-number} - iterations <= Catch::Benchmark::Detail::clock_resolution_estimation_iteration_limit for: 100000 (0x<hex digits>) <= 100000 (0x<hex digits>)
+# clock resolution estimation is iteration-capped
+ok {test-number} - iterations > 0 for: 100000 (0x<hex digits>) > 0
+# clock resolution estimation is iteration-capped
+ok {test-number} - res.mean.count() == 1 for: 1.0 == 1
+# clock resolution estimation is iteration-capped
+ok {test-number} - res.outliers.total() == 0 for: 0 == 0
+# clock resolution estimation is iteration-capped
+ok {test-number} - res.outliers.samples_seen <= Catch::Benchmark::Detail::clock_resolution_estimation_iteration_limit for: 100000 (0x<hex digits>) <= 100000 (0x<hex digits>)
+# clock resolution estimation is iteration-capped
+ok {test-number} - res.outliers.samples_seen > 0 for: 100000 (0x<hex digits>) > 0
 # comparisons between const int variables
 ok {test-number} - unsigned_char_var == 1 for: 1 == 1
 # comparisons between const int variables
@@ -4284,6 +4296,8 @@ ok {test-number} - erfc_inv(0.050000) == Approx(1.38590382434967796) for: 1.3859
 ok {test-number} - res.mean.count() == rate for: 2000.0 == 2000 (0x<hex digits>)
 # estimate_clock_resolution
 ok {test-number} - res.outliers.total() == 0 for: 0 == 0
+# estimate_clock_resolution
+ok {test-number} - res.outliers.samples_seen <= Catch::Benchmark::Detail::clock_resolution_estimation_iteration_limit for: 100000 (0x<hex digits>) <= 100000 (0x<hex digits>)
 # even more nested SECTION tests
 ok {test-number} -
 # even more nested SECTION tests
@@ -4534,6 +4548,10 @@ ok {test-number} - res[i] == rate for: 1000.0 == 1000 (0x<hex digits>)
 ok {test-number} - res[i] == rate for: 1000.0 == 1000 (0x<hex digits>)
 # resolution
 ok {test-number} - res[i] == rate for: 1000.0 == 1000 (0x<hex digits>)
+# run_for_at_least respects max_iterations
+ok {test-number} - Timing.iterations == 16 for: 16 == 16
+# run_for_at_least respects max_iterations
+ok {test-number} - Timing.elapsed < time for: 1 ns < 1000000 ns
 # run_for_at_least, chronometer
 ok {test-number} - meter.runs() >= old_runs for: 1 >= 1
 # run_for_at_least, chronometer
@@ -4841,9 +4859,9 @@ ok {test-number} - v.size() == 5 for: 5 == 5
 # vectors can be sized and resized
 ok {test-number} - v.capacity() >= 5 for: 5 >= 5
 # warmup
-ok {test-number} - (iterations * rate) > Catch::Benchmark::Detail::warmup_time.count() for: 160000000 (0x<hex digits>) > 100
+ok {test-number} - (iterations * rate) > Catch::Benchmark::Detail::warmup_time.count() for: 100000000 (0x<hex digits>) > 100
 # warmup
-ok {test-number} - (end - start) > Catch::Benchmark::Detail::warmup_time for: 310016000 ns > 100 ms
+ok {test-number} - (end - start) > Catch::Benchmark::Detail::warmup_time for: 250016000 ns > 100 ms
 # weighted_average_quantile
 ok {test-number} - q1 == 14.5 for: 14.5 == 14.5
 # weighted_average_quantile
@@ -4854,5 +4872,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2435
+1..2444
 

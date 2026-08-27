@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.16.1](#3161)<br>
 [3.16.0](#3160)<br>
 [3.15.3](#3153)<br>
 [3.15.2](#3152)<br>
@@ -78,6 +79,12 @@
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
 
+
+
+## 3.16.1
+
+### Fixes
+* Fixed benchmark clock-resolution estimation potentially exhausting memory on fast or memory-constrained platforms. (#3180)
 
 
 ## 3.16.0

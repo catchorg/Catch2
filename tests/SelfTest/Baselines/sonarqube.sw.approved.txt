@@ -229,12 +229,16 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="classify_outliers/high mild" duration="{duration}"/>
     <testCase name="classify_outliers/high severe" duration="{duration}"/>
     <testCase name="classify_outliers/mixed" duration="{duration}"/>
+    <testCase name="clock resolution estimation is iteration-capped" duration="{duration}"/>
+    <testCase name="clock resolution estimation is iteration-capped/warmup" duration="{duration}"/>
+    <testCase name="clock resolution estimation is iteration-capped/estimate_clock_resolution" duration="{duration}"/>
     <testCase name="erfc_inv" duration="{duration}"/>
     <testCase name="estimate_clock_resolution" duration="{duration}"/>
     <testCase name="mean" duration="{duration}"/>
     <testCase name="measure" duration="{duration}"/>
     <testCase name="normal_quantile" duration="{duration}"/>
     <testCase name="resolution" duration="{duration}"/>
+    <testCase name="run_for_at_least respects max_iterations" duration="{duration}"/>
     <testCase name="run_for_at_least, chronometer" duration="{duration}"/>
     <testCase name="run_for_at_least, int" duration="{duration}"/>
     <testCase name="uniform samples" duration="{duration}"/>
