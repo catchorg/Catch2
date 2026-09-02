@@ -60,7 +60,7 @@ namespace Catch {
 
     using StringMatcher = Matchers::MatcherBase<std::string>;
 
-    void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher );
+    void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher ) noexcept;
 
     template<typename ArgT, typename MatcherT>
     constexpr MatchExpr<ArgT, MatcherT>

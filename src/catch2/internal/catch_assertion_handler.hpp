@@ -55,17 +55,22 @@ namespace Catch {
 
         void handleMessage(ResultWas::OfType resultType, std::string&& message);
 
-        void handleExceptionThrownAsExpected();
-        void handleUnexpectedExceptionNotThrown();
-        void handleExceptionNotThrownAsExpected();
-        void handleThrowingCallSkipped();
         // TODO:
         //   * called from catch (...) blocks in assertions
         //   * doesn't propagate exception
-        //   * Allows the compiler to skip adding more exception edges in catch (...) when it cannot throw
+        //   * Allows the compiler to skip adding more exception edges in catch
+        //   (...) when it cannot throw
         //   * compilation is faster
-        //   * abort on throw inside is fine -> this is called when another exception is called, so it would abort anyway
+        //   * abort on throw inside is fine -> this is called when another
+        //   exception is called, so it would abort anyway
         void handleUnexpectedInflightException() noexcept;
+        // TODO:
+        //   * similar reasoning as above, unified comment for both
+        void handleExceptionThrownAsExpected() noexcept;
+
+        void handleUnexpectedExceptionNotThrown();
+        void handleExceptionNotThrownAsExpected();
+        void handleThrowingCallSkipped();
 
         void complete();
 
@@ -73,7 +78,12 @@ namespace Catch {
         auto allowThrows() const -> bool;
     };
 
-    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str );
+    // Like the two handlers above, this is only ever called from inside the
+    // `catch` block of an assertion macro, so an exception escaping it would
+    // already terminate. Saying so explicitly keeps the compiler from emitting
+    // a nested exception edge at every expansion of `REQUIRE_THROWS_WITH` and
+    // friends.
+    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str ) noexcept;
 
 } // namespace Catch
 

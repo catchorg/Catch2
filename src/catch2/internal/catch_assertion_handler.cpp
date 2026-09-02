@@ -65,7 +65,7 @@ namespace Catch {
         m_resultCapture.handleUnexpectedInflightException( m_assertionInfo, Catch::translateActiveException(), m_reaction );
     }
 
-    void AssertionHandler::handleExceptionThrownAsExpected() {
+    void AssertionHandler::handleExceptionThrownAsExpected() noexcept {
         m_resultCapture.handleNonExpr(m_assertionInfo, ResultWas::Ok, m_reaction);
     }
     void AssertionHandler::handleExceptionNotThrownAsExpected() {
@@ -82,7 +82,7 @@ namespace Catch {
 
     // This is the overload that takes a string and infers the Equals matcher from it
     // The more general overload, that takes any string matcher, is in catch_capture_matchers.cpp
-    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str ) {
+    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str ) noexcept {
         handleExceptionMatchExpr( handler, Matchers::Equals( str ) );
     }
 
