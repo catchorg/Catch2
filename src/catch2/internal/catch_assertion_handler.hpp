@@ -59,7 +59,12 @@ namespace Catch {
         void handleUnexpectedExceptionNotThrown();
         void handleExceptionNotThrownAsExpected();
         void handleThrowingCallSkipped();
-        void handleUnexpectedInflightException();
+        // TODO:
+        //   * called from catch (...) blocks in assertions
+        //   * doesn't propagate exception
+        //   * Allows the compiler to skip adding more exception edges in catch (...) when it cannot throw
+        //   * compilation is faster
+        void handleUnexpectedInflightException() noexcept;
 
         void complete();
 
