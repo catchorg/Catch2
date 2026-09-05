@@ -64,6 +64,7 @@ namespace Catch {
         //   * doesn't propagate exception
         //   * Allows the compiler to skip adding more exception edges in catch (...) when it cannot throw
         //   * compilation is faster
+        //   * abort on throw inside is fine -> this is called when another exception is called, so it would abort anyway
         void handleUnexpectedInflightException() noexcept;
 
         void complete();
