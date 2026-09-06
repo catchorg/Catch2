@@ -306,12 +306,19 @@ function(catch_discover_tests_impl)
     # The previous value is stashed in a per-variable CMake variable rather
     # than in parallel lists, because an environment variable may be unset or
     # hold an empty value, and CMake lists cannot represent those distinctly.
-    list(APPEND _saved_env_names "${_env_name}")
-    if(DEFINED ENV{${_env_name}})
-      set(_saved_env_was_set_${_env_name} TRUE)
-      set(_saved_env_value_${_env_name} "$ENV{${_env_name}}")
-    else()
-      set(_saved_env_was_set_${_env_name} FALSE)
+    #
+    # Only stash it the first time a name is seen. A repeated entry, such as
+    # `FOO=a;FOO=b`, would otherwise stash the value set by the previous
+    # iteration and restore to that instead of the original.
+    list(FIND _saved_env_names "${_env_name}" _already_saved)
+    if(_already_saved EQUAL -1)
+      list(APPEND _saved_env_names "${_env_name}")
+      if(DEFINED ENV{${_env_name}})
+        set(_saved_env_was_set_${_env_name} TRUE)
+        set(_saved_env_value_${_env_name} "$ENV{${_env_name}}")
+      else()
+        set(_saved_env_was_set_${_env_name} FALSE)
+      endif()
     endif()
 
     set(ENV{${_env_name}} "${_env_value}")

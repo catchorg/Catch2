@@ -22,6 +22,26 @@ include("${CATCH_ADD_TESTS_SCRIPT}")
 
 set(_failures 0)
 
+# The test asserts on the state of CATCH_TEST_DISCOVERY_SENTINEL, so stash and
+# clear whatever the caller happened to have in the environment. Otherwise a
+# caller who already has it set would see spurious failures, and running this
+# script standalone would clobber their value.
+if(DEFINED ENV{CATCH_TEST_DISCOVERY_SENTINEL})
+  set(_caller_sentinel_was_set TRUE)
+  set(_caller_sentinel "$ENV{CATCH_TEST_DISCOVERY_SENTINEL}")
+else()
+  set(_caller_sentinel_was_set FALSE)
+endif()
+unset(ENV{CATCH_TEST_DISCOVERY_SENTINEL})
+
+macro(restore_caller_sentinel)
+  if(_caller_sentinel_was_set)
+    set(ENV{CATCH_TEST_DISCOVERY_SENTINEL} "${_caller_sentinel}")
+  else()
+    unset(ENV{CATCH_TEST_DISCOVERY_SENTINEL})
+  endif()
+endmacro()
+
 function(expect_contains description haystack needle)
   string(FIND "${haystack}" "${needle}" _pos)
   if(_pos GREATER_EQUAL 0)
@@ -99,6 +119,27 @@ else()
   math(EXPR _failures "${_failures} + 1")
 endif()
 unset(ENV{CATCH_TEST_DISCOVERY_SENTINEL})
+
+# 5) A repeated entry uses the last value during discovery, and still restores
+#    the value from before discovery rather than the one set by an earlier
+#    iteration.
+set(ENV{CATCH_TEST_DISCOVERY_SENTINEL} "pre-existing")
+set(_ctest_file "${_work_dir}/duplicate-env.cmake")
+run_discovery("${_ctest_file}"
+  DISCOVERY_ENVIRONMENT
+    "CATCH_TEST_DISCOVERY_SENTINEL=first"
+    "CATCH_TEST_DISCOVERY_SENTINEL=second")
+file(READ "${_ctest_file}" _duplicate_env)
+expect_contains("a repeated entry uses the last value during discovery"
+  "${_duplicate_env}" "sentinel: second")
+if("$ENV{CATCH_TEST_DISCOVERY_SENTINEL}" STREQUAL "pre-existing")
+  message("  [PASS] a repeated entry still restores the pre-discovery value")
+else()
+  message("  [FAIL] a repeated entry restored '$ENV{CATCH_TEST_DISCOVERY_SENTINEL}' instead of 'pre-existing'")
+  math(EXPR _failures "${_failures} + 1")
+endif()
+
+restore_caller_sentinel()
 
 if(_failures GREATER 0)
   message(FATAL_ERROR "${_failures} DISCOVERY_ENVIRONMENT test(s) failed")
