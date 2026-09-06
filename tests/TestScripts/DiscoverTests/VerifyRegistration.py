@@ -40,13 +40,17 @@ def get_cmake_version():
             int(version_match.group(2)),
             int(version_match.group(3)))
 
-def build_project(sources_dir, output_base_path, catch2_path):
+def build_project(sources_dir, output_base_path, catch2_path,
+                  use_relative_paths=False):
     build_dir = os.path.join(output_base_path, 'ctest-registration-test')
     config_cmd = ['cmake',
                   '-B', build_dir,
                   '-S', sources_dir,
                   f'-DCATCH2_PATH={catch2_path}',
                   '-DCMAKE_BUILD_TYPE=Debug']
+    relative_paths_setting = 'ON' if use_relative_paths else 'OFF'
+    config_cmd.append(
+        f'-DCATCH2_TEST_USE_RELATIVE_PATHS={relative_paths_setting}')
 
     build_cmd = ['cmake',
                  '--build', build_dir,
@@ -105,23 +109,50 @@ def get_test_names(build_path: str) -> List[TestInfo]:
 
 def get_ctest_listing(build_path):
     old_path = os.getcwd()
-    os.chdir(build_path)
-
-    cmd = ['ctest', '-C', 'debug', '--show-only=json-v1']
     try:
-        result = subprocess.run(cmd,
-                                capture_output = True,
-                                check = True,
-                                text = True)
+        os.chdir(build_path)
+
+        cmd = ['ctest', '-C', 'debug', '--show-only=json-v1']
+        try:
+            result = subprocess.run(cmd,
+                                    capture_output = True,
+                                    check = True,
+                                    text = True)
+        except subprocess.CalledProcessError as err:
+            print('Error when getting output from CTest')
+            print(f'cmd: {err.cmd}')
+            print(f'stderr: {err.stderr}')
+            print(f'stdout: {err.stdout}')
+            exit(4)
+    finally:
+        os.chdir(old_path)
+
+    return result.stdout
+
+def run_ctest(build_path):
+    cmd = ['ctest', '-C', 'debug', '--output-on-failure']
+    try:
+        subprocess.run(cmd,
+                       capture_output = True,
+                       check = True,
+                       cwd = build_path,
+                       text = True)
     except subprocess.CalledProcessError as err:
-        print('Error when getting output from CTest')
+        print('Error when running discovered tests')
         print(f'cmd: {err.cmd}')
         print(f'stderr: {err.stderr}')
         print(f'stdout: {err.stdout}')
         exit(4)
 
-    os.chdir(old_path)
-    return result.stdout
+def remove_discovery_cache(build_path):
+    relative_registration_dir = os.path.join(
+        build_path, 'relative-registration')
+    for entry in os.scandir(relative_registration_dir):
+        if (entry.is_file() and
+                re.match(r'tests-[0-9a-f]+_(?:tests|test-list)'
+                         r'(?:-[^.]+)?\.cmake$',
+                         entry.name)):
+            os.remove(entry.path)
 
 def extract_tests_from_ctest(ctest_output) -> List[TestInfo]:
     ctest_response = json.loads(ctest_output)
@@ -254,16 +285,9 @@ def escape_catch2_test_names(infos: List[TestInfo]):
       escaped.append(TestInfo(name, info.tags))
     return escaped
 
-
-if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print(f'Usage: {sys.argv[0]} path-to-catch2-cml output-path')
-        exit(2)
-    catch2_path = sys.argv[1]
-    output_base_path = sys.argv[2]
-    sources_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-
-    build_path = build_project(sources_dir, output_base_path, catch2_path)
+def verify_registration(build_path, test_script_dir=None):
+    if test_script_dir is None:
+        test_script_dir = build_path
 
     raw_catch_test_names = get_test_names(build_path)
     catch_test_names = escape_catch2_test_names(raw_catch_test_names)
@@ -285,8 +309,11 @@ if __name__ == '__main__':
         exit(1)
     print(f"{len(catch_test_names)} tests matched in CTest listing")
 
-    test_list_names = sorted(extract_tests_list_from_ctest_script(build_path))
-    expected_names = sorted(CTEST_NAME_PREFIX + info.name + CTEST_NAME_SUFFIX for info in raw_catch_test_names)
+    test_list_names = sorted(
+        extract_tests_list_from_ctest_script(test_script_dir))
+    expected_names = sorted(
+        CTEST_NAME_PREFIX + info.name + CTEST_NAME_SUFFIX
+        for info in raw_catch_test_names)
     if test_list_names != expected_names:
         print("TEST_LIST variable (tests_TESTS) does not match Catch2 test listing!")
         for name in test_list_names:
@@ -301,3 +328,34 @@ if __name__ == '__main__':
     cmake_version = get_cmake_version()
     if cmake_version >= (3, 27):
         check_DL_PATHS(ctest_output)
+
+if __name__ == '__main__':
+    if len(sys.argv) != 3:
+        print(f'Usage: {sys.argv[0]} path-to-catch2-cml output-path')
+        exit(2)
+    catch2_path = sys.argv[1]
+    output_base_path = sys.argv[2]
+    sources_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+
+    build_path = build_project(sources_dir, output_base_path, catch2_path)
+    verify_registration(build_path)
+
+    if get_cmake_version() >= (3, 24):
+        build_project(sources_dir, output_base_path, catch2_path,
+                      use_relative_paths=True)
+        remove_discovery_cache(build_path)
+        with tempfile.TemporaryDirectory(
+                prefix='ctest-registration-relocated-',
+                dir=output_base_path) as relocation_dir:
+            relocated_build_path = os.path.join(relocation_dir,
+                                                'ctest-registration-test')
+            os.rename(build_path, relocated_build_path)
+            try:
+                verify_registration(
+                    relocated_build_path,
+                    os.path.join(relocated_build_path,
+                                 'relative-registration'))
+                run_ctest(relocated_build_path)
+            finally:
+                os.rename(relocated_build_path, build_path)
+                remove_discovery_cache(build_path)
