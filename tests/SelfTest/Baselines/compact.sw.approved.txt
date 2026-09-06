@@ -2918,6 +2918,21 @@ Tag.tests.cpp:<line number>: passed: testcase.tags.size() == 1 for: 1 == 1
 Tag.tests.cpp:<line number>: passed: testcase.tags[0].original == "magic.tag"_catch_sr for: magic.tag == magic.tag
 Skip.tests.cpp:<line number>: skipped:
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'Why would you throw a std::string?'
+StringManip.tests.cpp:<line number>: passed: toLower( 'A' ) == 'a' for: 'a' == 'a'
+StringManip.tests.cpp:<line number>: passed: toLower( 'Z' ) == 'z' for: 'z' == 'z'
+StringManip.tests.cpp:<line number>: passed: toLower( 'a' ) == 'a' for: 'a' == 'a'
+StringManip.tests.cpp:<line number>: passed: toLower( 'z' ) == 'z' for: 'z' == 'z'
+StringManip.tests.cpp:<line number>: passed: toLower( '@' ) == '@' for: '@' == '@'
+StringManip.tests.cpp:<line number>: passed: toLower( '[' ) == '[' for: '[' == '['
+StringManip.tests.cpp:<line number>: passed: toLower( '`' ) == '`' for: '`' == '`'
+StringManip.tests.cpp:<line number>: passed: toLower( '{' ) == '{' for: '{' == '{'
+StringManip.tests.cpp:<line number>: passed: toLower( '0' ) == '0' for: '0' == '0'
+StringManip.tests.cpp:<line number>: passed: toLower( ' ' ) == ' ' for: ' ' == ' '
+StringManip.tests.cpp:<line number>: passed: toLower( '\0' ) == '\0' for: 0 == 0
+StringManip.tests.cpp:<line number>: passed: toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'Ä' == 'Ä'
+StringManip.tests.cpp:<line number>: passed: toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'ÿ' == 'ÿ'
+StringManip.tests.cpp:<line number>: passed: with 1 message: 'toLower( 'A' ) == 'a''
+StringManip.tests.cpp:<line number>: passed: with 1 message: 'toLower( '0' ) == '0''
 Misc.tests.cpp:<line number>: passed: result == "\"wide load\"" for: ""wide load"" == ""wide load""
 Misc.tests.cpp:<line number>: passed: result == "\"wide load\"" for: ""wide load"" == ""wide load""
 Misc.tests.cpp:<line number>: passed: result == "\"wide load\"" for: ""wide load"" == ""wide load""
@@ -3015,7 +3030,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  454 |  334 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2423 | 2222 passed | 158 failed | 43 failed as expected
+test cases:  455 |  335 passed |  96 failed | 6 skipped | 18 failed as expected
+assertions: 2438 | 2237 passed | 158 failed | 43 failed as expected
 
 

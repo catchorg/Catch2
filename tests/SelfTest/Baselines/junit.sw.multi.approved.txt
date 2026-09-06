@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2435" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2450" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1884,6 +1884,11 @@ Why would you throw a std::string?
 at Exception.tests.cpp:<line number>
       </error>
     </testcase>
+    <testcase classname="<exe-name>.global" name="toLower( char )" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="toLower( char )/ASCII letters are lowercased" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="toLower( char )/Chars outside 'A'-'Z' are left alone" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="toLower( char )/Non-ASCII chars are left alone" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="toLower( char )/Is usable in constant expressions" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="toString on const wchar_t const pointer returns the string contents" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="toString on const wchar_t pointer returns the string contents" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="toString on wchar_t const pointer returns the string contents" time="{duration}" status="run"/>

@@ -4680,6 +4680,36 @@ ok {test-number} - testcase.tags[0].original == "magic.tag"_catch_sr for: magic.
 ok {test-number} -  # SKIP
 # thrown std::strings are translated
 not ok {test-number} - unexpected exception with message: 'Why would you throw a std::string?'
+# toLower( char )
+ok {test-number} - toLower( 'A' ) == 'a' for: 'a' == 'a'
+# toLower( char )
+ok {test-number} - toLower( 'Z' ) == 'z' for: 'z' == 'z'
+# toLower( char )
+ok {test-number} - toLower( 'a' ) == 'a' for: 'a' == 'a'
+# toLower( char )
+ok {test-number} - toLower( 'z' ) == 'z' for: 'z' == 'z'
+# toLower( char )
+ok {test-number} - toLower( '@' ) == '@' for: '@' == '@'
+# toLower( char )
+ok {test-number} - toLower( '[' ) == '[' for: '[' == '['
+# toLower( char )
+ok {test-number} - toLower( '`' ) == '`' for: '`' == '`'
+# toLower( char )
+ok {test-number} - toLower( '{' ) == '{' for: '{' == '{'
+# toLower( char )
+ok {test-number} - toLower( '0' ) == '0' for: '0' == '0'
+# toLower( char )
+ok {test-number} - toLower( ' ' ) == ' ' for: ' ' == ' '
+# toLower( char )
+ok {test-number} - toLower( '\0' ) == '\0' for: 0 == 0
+# toLower( char )
+ok {test-number} - toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'Ä' == 'Ä'
+# toLower( char )
+ok {test-number} - toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'ÿ' == 'ÿ'
+# toLower( char )
+ok {test-number} - with 1 message: 'toLower( 'A' ) == 'a''
+# toLower( char )
+ok {test-number} - with 1 message: 'toLower( '0' ) == '0''
 # toString on const wchar_t const pointer returns the string contents
 ok {test-number} - result == "\"wide load\"" for: ""wide load"" == ""wide load""
 # toString on const wchar_t pointer returns the string contents
@@ -4854,5 +4884,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2435
+1..2450
 

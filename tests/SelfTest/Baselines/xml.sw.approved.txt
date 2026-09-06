@@ -22663,6 +22663,125 @@ Approx( -1.95996398454005449 )
     </Exception>
     <OverallResult success="false" skips="0"/>
   </TestCase>
+  <TestCase name="toLower( char )" tags="[string-manip]" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+    <Section name="ASCII letters are lowercased" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( 'A' ) == 'a'
+        </Original>
+        <Expanded>
+          'a' == 'a'
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( 'Z' ) == 'z'
+        </Original>
+        <Expanded>
+          'z' == 'z'
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( 'a' ) == 'a'
+        </Original>
+        <Expanded>
+          'a' == 'a'
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( 'z' ) == 'z'
+        </Original>
+        <Expanded>
+          'z' == 'z'
+        </Expanded>
+      </Expression>
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Chars outside 'A'-'Z' are left alone" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( '@' ) == '@'
+        </Original>
+        <Expanded>
+          '@' == '@'
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( '[' ) == '['
+        </Original>
+        <Expanded>
+          '[' == '['
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( '`' ) == '`'
+        </Original>
+        <Expanded>
+          '`' == '`'
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( '{' ) == '{'
+        </Original>
+        <Expanded>
+          '{' == '{'
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( '0' ) == '0'
+        </Original>
+        <Expanded>
+          '0' == '0'
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( ' ' ) == ' '
+        </Original>
+        <Expanded>
+          ' ' == ' '
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( '\0' ) == '\0'
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResults successes="7" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Non-ASCII chars are left alone" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( static_cast&lt;char>( 0x<hex digits> ) ) == static_cast&lt;char>( 0x<hex digits> )
+        </Original>
+        <Expanded>
+          '\xC4' == '\xC4'
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( static_cast&lt;char>( 0x<hex digits> ) ) == static_cast&lt;char>( 0x<hex digits> )
+        </Original>
+        <Expanded>
+          '\xFF' == '\xFF'
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Is usable in constant expressions" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="toString on const wchar_t const pointer returns the string contents" tags="[toString]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
@@ -23476,6 +23595,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2222" failures="158" expectedFailures="43" skips="12"/>
-  <OverallResultsCases successes="334" failures="96" expectedFailures="18" skips="6"/>
+  <OverallResults successes="2237" failures="158" expectedFailures="43" skips="12"/>
+  <OverallResultsCases successes="335" failures="96" expectedFailures="18" skips="6"/>
 </Catch2TestRun>

@@ -19514,6 +19514,107 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 -------------------------------------------------------------------------------
+toLower( char )
+  ASCII letters are lowercased
+-------------------------------------------------------------------------------
+StringManip.tests.cpp:<line number>
+...............................................................................
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( 'A' ) == 'a' )
+with expansion:
+  'a' == 'a'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( 'Z' ) == 'z' )
+with expansion:
+  'z' == 'z'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( 'a' ) == 'a' )
+with expansion:
+  'a' == 'a'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( 'z' ) == 'z' )
+with expansion:
+  'z' == 'z'
+
+-------------------------------------------------------------------------------
+toLower( char )
+  Chars outside 'A'-'Z' are left alone
+-------------------------------------------------------------------------------
+StringManip.tests.cpp:<line number>
+...............................................................................
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '@' ) == '@' )
+with expansion:
+  '@' == '@'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '[' ) == '[' )
+with expansion:
+  '[' == '['
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '`' ) == '`' )
+with expansion:
+  '`' == '`'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '{' ) == '{' )
+with expansion:
+  '{' == '{'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '0' ) == '0' )
+with expansion:
+  '0' == '0'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( ' ' ) == ' ' )
+with expansion:
+  ' ' == ' '
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '\0' ) == '\0' )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+toLower( char )
+  Non-ASCII chars are left alone
+-------------------------------------------------------------------------------
+StringManip.tests.cpp:<line number>
+...............................................................................
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) )
+with expansion:
+  'Ä' == 'Ä'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) )
+with expansion:
+  'm' == 'm'
+
+-------------------------------------------------------------------------------
+toLower( char )
+  Is usable in constant expressions
+-------------------------------------------------------------------------------
+StringManip.tests.cpp:<line number>
+...............................................................................
+
+StringManip.tests.cpp:<line number>: PASSED:
+with message:
+  toLower( 'A' ) == 'a'
+
+StringManip.tests.cpp:<line number>: PASSED:
+with message:
+  toLower( '0' ) == '0'
+
+-------------------------------------------------------------------------------
 toString on const wchar_t const pointer returns the string contents
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -20226,6 +20327,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  454 |  334 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2423 | 2222 passed | 158 failed | 43 failed as expected
+test cases:  455 |  335 passed |  96 failed | 6 skipped | 18 failed as expected
+assertions: 2438 | 2237 passed | 158 failed | 43 failed as expected
 

@@ -438,6 +438,7 @@ b1!
 :test-result: PASS tags with dots in later positions are not parsed as hidden
 :test-result: SKIP tests can be skipped dynamically at runtime
 :test-result: FAIL thrown std::strings are translated
+:test-result: PASS toLower( char )
 :test-result: PASS toString on const wchar_t const pointer returns the string contents
 :test-result: PASS toString on const wchar_t pointer returns the string contents
 :test-result: PASS toString on wchar_t const pointer returns the string contents
