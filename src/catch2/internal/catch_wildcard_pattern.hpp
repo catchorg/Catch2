@@ -15,13 +15,6 @@
 namespace Catch
 {
     class WildcardPattern {
-        enum WildcardPosition {
-            NoWildcard = 0,
-            WildcardAtStart = 1,
-            WildcardAtEnd = 2,
-            WildcardAtBothEnds = WildcardAtStart | WildcardAtEnd
-        };
-
     public:
 
         WildcardPattern( std::string const& pattern, CaseSensitive caseSensitivity );
@@ -30,7 +23,6 @@ namespace Catch
     private:
         std::string normaliseString( std::string const& str ) const;
         CaseSensitive m_caseSensitivity;
-        WildcardPosition m_wildcard = NoWildcard;
         std::string m_pattern;
     };
 }

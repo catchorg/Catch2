@@ -11,34 +11,53 @@
 
 namespace Catch {
 
+    namespace {
+        bool glob_match(const char* pattern, const char* str) {
+            while (*pattern) {
+                if (*pattern == '\\') {
+                    pattern++;
+                    if (!*pattern) {
+                        return *str == '\\' && glob_match(pattern, str + 1);
+                    }
+                    if (*pattern != *str) {
+                        return false;
+                    }
+                    pattern++;
+                    str++;
+                } else if (*pattern == '*') {
+                    while (*pattern == '*') {
+                        pattern++;
+                    }
+                    if (!*pattern) {
+                        return true;
+                    }
+                    while (*str) {
+                        if (glob_match(pattern, str)) {
+                            return true;
+                        }
+                        str++;
+                    }
+                    return false;
+                } else {
+                    if (*pattern != *str) {
+                        return false;
+                    }
+                    pattern++;
+                    str++;
+                }
+            }
+            return *str == '\0';
+        }
+    }
+
     WildcardPattern::WildcardPattern( std::string const& pattern,
                                       CaseSensitive caseSensitivity )
     :   m_caseSensitivity( caseSensitivity ),
         m_pattern( normaliseString( pattern ) )
-    {
-        if( startsWith( m_pattern, '*' ) ) {
-            m_pattern = m_pattern.substr( 1 );
-            m_wildcard = WildcardAtStart;
-        }
-        if( endsWith( m_pattern, '*' ) ) {
-            m_pattern = m_pattern.substr( 0, m_pattern.size()-1 );
-            m_wildcard = static_cast<WildcardPosition>( m_wildcard | WildcardAtEnd );
-        }
-    }
+    {}
 
     bool WildcardPattern::matches( std::string const& str ) const {
-        switch( m_wildcard ) {
-            case NoWildcard:
-                return m_pattern == normaliseString( str );
-            case WildcardAtStart:
-                return endsWith( normaliseString( str ), m_pattern );
-            case WildcardAtEnd:
-                return startsWith( normaliseString( str ), m_pattern );
-            case WildcardAtBothEnds:
-                return contains( normaliseString( str ), m_pattern );
-            default:
-                CATCH_INTERNAL_ERROR( "Unknown enum" );
-        }
+        return glob_match( m_pattern.c_str(), normaliseString( str ).c_str() );
     }
 
     std::string WildcardPattern::normaliseString( std::string const& str ) const {
