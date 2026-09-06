@@ -135,7 +135,7 @@ namespace Catch {
                 filtered.push_back(testCase);
             }
         }
-        return createShard(filtered, config.shardCount(), config.shardIndex());
+        return createShard(CATCH_MOVE(filtered), config.shardCount(), config.shardIndex());
     }
     std::vector<TestCaseHandle> const& getAllTestCasesSorted( IConfig const& config ) {
         return getRegistryHub().getTestCaseRegistry().getAllTestsSorted( config );

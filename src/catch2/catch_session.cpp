@@ -103,7 +103,7 @@ namespace Catch {
                     }
                 }
 
-                m_tests = createShard(m_tests, m_config->shardCount(), m_config->shardIndex());
+                m_tests = createShard(CATCH_MOVE(m_tests), m_config->shardCount(), m_config->shardIndex());
             }
 
             Totals execute() {
