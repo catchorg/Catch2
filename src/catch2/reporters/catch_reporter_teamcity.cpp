@@ -5,16 +5,23 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
-#include <catch2/reporters/catch_reporter_teamcity.hpp>
-
-#include <catch2/reporters/catch_reporter_helpers.hpp>
-#include <catch2/internal/catch_string_manip.hpp>
-#include <catch2/internal/catch_enforce.hpp>
-#include <catch2/internal/catch_textflow.hpp>
 #include <catch2/catch_test_case_info.hpp>
+#include <catch2/internal/catch_enforce.hpp>
+#include <catch2/internal/catch_platform.hpp>
+#include <catch2/internal/catch_string_manip.hpp>
+#include <catch2/internal/catch_textflow.hpp>
+#include <catch2/reporters/catch_reporter_helpers.hpp>
+#include <catch2/reporters/catch_reporter_teamcity.hpp>
 
 #include <cassert>
 #include <ostream>
+#include <string>
+
+#if defined( CATCH_PLATFORM_WINDOWS )
+#    include <process.h>
+#else
+#    include <unistd.h>
+#endif
 
 namespace Catch {
 
@@ -42,19 +49,37 @@ namespace Catch {
             replaceInPlace(escaped, "]", "|]");
             return escaped;
         }
+
+        // TeamCity's flowId attribute lets it tell service messages coming
+        // from different, concurrently running processes apart. Without it,
+        // messages from several processes sharing one output stream (e.g.
+        // CTest running one process per test case via `ctest -j`) can be
+        // attributed to the wrong test suite. The process id is unique for
+        // exactly as long as it needs to be here: among the processes whose
+        // output could plausibly interleave in the same build step.
+        std::string const& flowId() {
+            static std::string const flowIdString = std::to_string(
+#if defined( CATCH_PLATFORM_WINDOWS )
+                _getpid()
+#else
+                getpid()
+#endif
+            );
+            return flowIdString;
+        }
     } // end anonymous namespace
 
 
     TeamCityReporter::~TeamCityReporter() = default;
 
     void TeamCityReporter::testRunStarting( TestRunInfo const& runInfo ) {
-        m_stream << "##teamcity[testSuiteStarted name='" << escape( runInfo.name )
-               << "']\n";
+        m_stream << "##teamcity[testSuiteStarted flowId='" << flowId()
+                 << "' name='" << escape( runInfo.name ) << "']\n";
     }
 
     void TeamCityReporter::testRunEnded( TestRunStats const& runStats ) {
-        m_stream << "##teamcity[testSuiteFinished name='"
-               << escape( runStats.runInfo.name ) << "']\n";
+        m_stream << "##teamcity[testSuiteFinished flowId='" << flowId()
+                 << "' name='" << escape( runStats.runInfo.name ) << "']\n";
     }
 
     void TeamCityReporter::assertionEnded(AssertionStats const& assertionStats) {
@@ -123,7 +148,8 @@ namespace Catch {
             } else {
                 m_stream << "##teamcity[testFailed";
             }
-            m_stream << " name='" << escape( currentTestCaseInfo->name ) << '\''
+            m_stream << " flowId='" << flowId() << '\'' << " name='"
+                     << escape( currentTestCaseInfo->name ) << '\''
                      << " message='" << escape( msg.str() ) << '\'' << "]\n";
         }
         m_stream.flush();
@@ -132,8 +158,8 @@ namespace Catch {
     void TeamCityReporter::testCaseStarting(TestCaseInfo const& testInfo) {
         m_testTimer.start();
         StreamingReporterBase::testCaseStarting(testInfo);
-        m_stream << "##teamcity[testStarted name='"
-            << escape(testInfo.name) << "']\n";
+        m_stream << "##teamcity[testStarted flowId='" << flowId() << "' name='"
+                 << escape( testInfo.name ) << "']\n";
         m_stream.flush();
     }
 
@@ -141,16 +167,16 @@ namespace Catch {
         StreamingReporterBase::testCaseEnded(testCaseStats);
         auto const& testCaseInfo = *testCaseStats.testInfo;
         if (!testCaseStats.stdOut.empty())
-            m_stream << "##teamcity[testStdOut name='"
-            << escape(testCaseInfo.name)
-            << "' out='" << escape(testCaseStats.stdOut) << "']\n";
+            m_stream << "##teamcity[testStdOut flowId='" << flowId()
+                     << "' name='" << escape( testCaseInfo.name ) << "' out='"
+                     << escape( testCaseStats.stdOut ) << "']\n";
         if (!testCaseStats.stdErr.empty())
-            m_stream << "##teamcity[testStdErr name='"
-            << escape(testCaseInfo.name)
-            << "' out='" << escape(testCaseStats.stdErr) << "']\n";
-        m_stream << "##teamcity[testFinished name='"
-            << escape(testCaseInfo.name) << "' duration='"
-            << m_testTimer.getElapsedMilliseconds() << "']\n";
+            m_stream << "##teamcity[testStdErr flowId='" << flowId()
+                     << "' name='" << escape( testCaseInfo.name ) << "' out='"
+                     << escape( testCaseStats.stdErr ) << "']\n";
+        m_stream << "##teamcity[testFinished flowId='" << flowId() << "' name='"
+                 << escape( testCaseInfo.name ) << "' duration='"
+                 << m_testTimer.getElapsedMilliseconds() << "']\n";
         m_stream.flush();
     }
 
