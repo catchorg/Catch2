@@ -17,7 +17,6 @@
 #include <catch2/internal/catch_test_case_info_hasher.hpp>
 
 #include <algorithm>
-#include <set>
 
 namespace Catch {
 
@@ -27,23 +26,39 @@ namespace Catch {
 
         static void enforceNoDuplicateTestCases(
             std::vector<TestCaseHandle> const& tests ) {
-            auto testInfoCmp = []( TestCaseInfo const* lhs,
-                                   TestCaseInfo const* rhs ) {
-                return *lhs < *rhs;
-            };
-            std::set<TestCaseInfo const*, decltype( testInfoCmp )&> seenTests(
-                testInfoCmp );
+            // Flat set instead of std::set for performance.
+            std::vector<TestCaseInfo const*> seenTests;
+            seenTests.reserve( tests.size() );
             for ( auto const& test : tests ) {
-                const auto infoPtr = &test.getTestCaseInfo();
-                const auto prev = seenTests.insert( infoPtr );
-                CATCH_ENFORCE( prev.second,
-                               "error: test case \""
-                                   << infoPtr->name << "\", with tags \""
-                                   << infoPtr->tagsAsString()
-                                   << "\" already defined.\n"
-                                   << "\tFirst seen at "
-                                   << ( *prev.first )->lineInfo << "\n"
-                                   << "\tRedefined at " << infoPtr->lineInfo );
+                seenTests.push_back( &test.getTestCaseInfo() );
+            }
+            // We want to keep order of ~equal~ tests
+            // stable_sort so that duplicates are reported with the
+            // registration order preserved ("first seen" really is first)
+            std::stable_sort(
+                seenTests.begin(),
+                seenTests.end(),
+                []( TestCaseInfo const* lhs, TestCaseInfo const* rhs ) {
+                    return *lhs < *rhs;
+                }
+            );
+            const auto duplicate = std::adjacent_find(
+                seenTests.begin(),
+                seenTests.end(),
+                []( TestCaseInfo const* lhs, TestCaseInfo const* rhs ) {
+                    return *lhs == *rhs;
+                }
+            );
+
+            if ( duplicate != seenTests.end() ) {
+                const auto infoPtr = *std::next( duplicate );
+                CATCH_ERROR( "error: test case \""
+                             << infoPtr->name << "\", with tags \""
+                             << infoPtr->tagsAsString()
+                             << "\" already defined.\n"
+                             << "\tFirst seen at "
+                             << ( *duplicate )->lineInfo << "\n"
+                             << "\tRedefined at " << infoPtr->lineInfo );
             }
         }
 

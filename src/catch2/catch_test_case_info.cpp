@@ -259,4 +259,10 @@ namespace Catch {
         return lhs.tags < rhs.tags;
     }
 
+    bool operator==( TestCaseInfo const& lhs, TestCaseInfo const& rhs ) {
+        return lhs.name == rhs.name
+            && lhs.className == rhs.className
+            && lhs.tags == rhs.tags;
+    }
+
 } // end namespace Catch
