@@ -645,6 +645,11 @@ if(CATCH_ENABLE_CONFIGURE_TESTS)
         COST 240
         LABELS "uses-python"
     )
+    if(CMAKE_TOOLCHAIN_FILE)
+      set_tests_properties("CMakeConfig::${testName}"
+        PROPERTIES ENVIRONMENT "CMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
+      )
+    endif()
   endforeach()
 endif()
 
