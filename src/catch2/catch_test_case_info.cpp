@@ -134,6 +134,18 @@ namespace Catch {
         auto requiredSize = originalTags.size() + sizeOfExtraTags(_lineInfo.file);
         backingTags.reserve(requiredSize);
 
+        // Since there is usually only small number of tags on a test case,
+        // the geometric growth on vector does not get time to properly
+        // amortize the reallocations. But we can save a lot of time by
+        // pre-allocating space for all tags.
+        if ( !originalTags.empty() ) {
+            size_t tagCount = 1; // 1 for filename tag
+            for ( size_t i = 0; i < originalTags.size(); ++i ) {
+                if ( originalTags[i] == '[' ) { ++tagCount; }
+            }
+            tags.reserve( tagCount );
+        }
+
         // We cannot copy the tags directly, as we need to normalize
         // some tags, so that [.foo] is copied as [.][foo].
         size_t tagStart = 0;
