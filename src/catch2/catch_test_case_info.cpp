@@ -14,6 +14,7 @@
 #include <cassert>
 #include <cctype>
 #include <algorithm>
+#include <utility>
 
 namespace Catch {
 
@@ -205,10 +206,21 @@ namespace Catch {
             internalAppendTag("."_sr);
         }
 
-        // Sort and prepare tags
-        std::sort(begin(tags), end(tags));
-        tags.erase(std::unique(begin(tags), end(tags)),
-                   end(tags));
+        // Tests usually have small number of tags, so we explicitly handle
+        // the 1 and 2 tags cases for better performance in low-opt builds.
+        switch ( tags.size() ) {
+        case 1:
+            break;
+        case 2:
+            if ( tags[0] == tags[1] ) { tags.pop_back(); }
+            else if ( tags[1] < tags[0] ) { std::swap( tags[0], tags[1] ); }
+            break;
+        default:
+            std::sort( begin( tags ), end( tags ) );
+            tags.erase( std::unique( begin( tags ), end( tags ) ),
+                        end( tags ) );
+        }
+
     }
 
     bool TestCaseInfo::isHidden() const {
