@@ -32,7 +32,7 @@ namespace Catch {
 
     TestSpec::NamePattern::NamePattern( std::string const& name, std::string const& filterString )
     : Pattern( filterString )
-    , m_wildcardPattern( toLower( name ), CaseSensitive::No )
+    , m_wildcardPattern( name, CaseSensitive::No )
     {}
 
     bool TestSpec::NamePattern::matches( TestCaseInfo const& testCase ) const {
