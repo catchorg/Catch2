@@ -461,6 +461,27 @@ set_tests_properties(Reporters::CrashInJunitReporter
 )
 
 
+add_executable(ReportingInvalidTestCaseTags ${TESTS_DIR}/X37-ReportingInvalidTestCaseTags.cpp)
+target_link_libraries(ReportingInvalidTestCaseTags PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME Validation::TestCaseTags
+  COMMAND $<TARGET_FILE:ReportingInvalidTestCaseTags>
+)
+# Passing multiple PASS_REGULAR_EXPRESSION does not work, so we join multiple ones with '.*'
+set(regexp
+  "Found an empty tag while registering test case 'Empty tag is not allowed'"
+  "Tag name: \\[!abc\\] is not allowed."
+  "Tag names starting with non-alphanumeric characters are reserved."
+  "Tag name: \\[@def\\] is not allowed."
+  "Tag names starting with non-alphanumeric characters are reserved."
+)
+list(JOIN regexp ".*" regexp)
+set_tests_properties(Validation::TestCaseTags
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION ${regexp}
+)
+
+
 add_executable(QuickExitInTest ${TESTS_DIR}/X40-QuickExit.cpp)
 target_link_libraries(QuickExitInTest PRIVATE Catch2::Catch2WithMain)
 add_test(
