@@ -92,7 +92,7 @@ def get_test_names(build_path: str) -> List[TestInfo]:
         with open(fname, mode='r', encoding='utf-8') as file:
             test_listing = json.load(file)
 
-    assert test_listing['version'] == 2
+    assert test_listing['version'] == 2, test_listing['version']
 
     tests = []
     for test in test_listing['listings']['tests']:
@@ -129,10 +129,11 @@ def extract_tests_from_ctest(ctest_output) -> List[TestInfo]:
     test_infos = []
     for test in tests:
         test_command = test['command']
-        # First part of the command is the binary, second is the filter.
+        # First part of the command is the binary, second is the filter,
+        # third is the `--order decl` arg for faster startup.
         # If there are less, registration has failed. If there are more,
         # registration has changed and the script needs updating.
-        assert len(test_command) == 2
+        assert len(test_command) == 3, test_command
         test_name = test_command[1]
         labels = []
         for prop in test['properties']:
