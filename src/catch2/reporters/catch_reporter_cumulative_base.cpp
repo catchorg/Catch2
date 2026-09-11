@@ -74,7 +74,7 @@ namespace Catch {
         if ( m_sectionStack.empty() ) {
             if ( !m_rootSection ) {
                 m_rootSection =
-                    Detail::make_unique<SectionNode>( incompleteStats );
+                    Detail::make_unique<SectionNode>( CATCH_MOVE( incompleteStats ) );
             }
             node = m_rootSection.get();
         } else {
@@ -84,7 +84,7 @@ namespace Catch {
                                     BySectionInfo( sectionInfo ) );
             if ( it == parentNode.childSections.end() ) {
                 auto newNode =
-                    Detail::make_unique<SectionNode>( incompleteStats );
+                    Detail::make_unique<SectionNode>( CATCH_MOVE( incompleteStats ) );
                 node = newNode.get();
                 parentNode.childSections.push_back( CATCH_MOVE( newNode ) );
             } else {

@@ -14,6 +14,7 @@
 #include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/catch_tostring.hpp>
 #include <catch2/catch_test_case_info.hpp>
 
@@ -288,7 +289,7 @@ namespace Catch {
                     row.insert( 0, m_width - row.size(), ' ' );
                 }
                 m_width = new_width;
-                m_rows.push_back( row );
+                m_rows.push_back( CATCH_MOVE( row ) );
                 return std::move( *this );
             }
 
