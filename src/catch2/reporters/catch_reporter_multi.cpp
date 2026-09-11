@@ -25,7 +25,9 @@ namespace Catch {
 
     void MultiReporter::addListener( IEventListenerPtr&& listener ) {
         updatePreferences(*listener);
-        m_reporterLikes.insert(m_reporterLikes.begin() + m_insertedListeners, CATCH_MOVE(listener) );
+        m_reporterLikes.insert( m_reporterLikes.begin() +
+                                    static_cast<long>( m_insertedListeners ),
+                                CATCH_MOVE( listener ) );
         ++m_insertedListeners;
     }
 

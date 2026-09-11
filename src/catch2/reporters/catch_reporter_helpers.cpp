@@ -221,7 +221,8 @@ namespace Catch {
 
         for ( auto const& tagCount : tags ) {
             ReusableStringStream rss;
-            rss << "  " << std::setw( maxTagCountLen ) << tagCount.count << "  ";
+            rss << "  " << std::setw( static_cast<int>( maxTagCountLen ) )
+                << tagCount.count << "  ";
             auto str = rss.str();
             auto wrapper = TextFlow::Column( tagCount.all() )
                                .initialIndent( 0 )
