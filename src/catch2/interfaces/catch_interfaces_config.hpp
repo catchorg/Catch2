@@ -92,6 +92,8 @@ namespace Catch {
         virtual bool useNewFilterBehaviour() const = 0;
 
         virtual Verbosity verbosity() const = 0;
+        virtual bool outputTestCaseNameFirst() const = 0;
+        virtual bool outputTestCaseStats() const = 0;
 
         virtual bool skipBenchmarks() const = 0;
         virtual bool benchmarkNoAnalysis() const = 0;
