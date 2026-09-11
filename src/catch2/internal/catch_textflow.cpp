@@ -48,6 +48,9 @@ namespace Catch {
                         break;
                     }
                     // 'm' -> 0xff
+                    m_sentinelPositions.push_back(
+                        static_cast<std::string::size_type>(
+                            cursor - m_string.begin() ) );
                     *cursor = AnsiSkippingString::sentinel;
                     // if we've read an ansi sequence, set the iterator and
                     // return to the top of the loop
@@ -76,11 +79,12 @@ namespace Catch {
         }
 
         AnsiSkippingString::const_iterator AnsiSkippingString::begin() const {
-            return const_iterator( m_string );
+            return const_iterator( m_string, m_sentinelPositions );
         }
 
         AnsiSkippingString::const_iterator AnsiSkippingString::end() const {
-            return const_iterator( m_string, const_iterator::EndTag{} );
+            return const_iterator(
+                m_string, m_sentinelPositions, const_iterator::EndTag{} );
         }
 
         std::string AnsiSkippingString::substring( const_iterator begin,
@@ -89,15 +93,35 @@ namespace Catch {
             // making a begin iterator we might have skipped ansi sequences at
             // the start. If `begin` here is a begin iterator, skipped over
             // initial ansi sequences, we'll use the true beginning of the
-            // string. Lastly: We need to transform any chars we replaced with
-            // 0xff back to 'm'
-            auto str = std::string( begin == this->begin() ? m_string.begin()
-                                                           : begin.m_it,
-                                    end.m_it );
-            std::transform( str.begin(), str.end(), str.begin(), []( char c ) {
-                return c == AnsiSkippingString::sentinel ? 'm' : c;
-            } );
+            // string. Lastly: we need to transform the bytes we know we
+            // replaced with 0xff (recorded in m_sentinelPositions) back to
+            // 'm', but a literal 0xff byte that was already part of the
+            // original content has to be left alone, since it isn't one of
+            // ours.
+            auto startIt = begin == this->begin() ? m_string.begin()
+                                                   : begin.m_it;
+            auto str = std::string( startIt, end.m_it );
+            auto rangeStart = static_cast<std::string::size_type>(
+                startIt - m_string.begin() );
+            auto rangeEnd = rangeStart + str.size();
+            for ( auto pos : m_sentinelPositions ) {
+                if ( pos >= rangeEnd ) {
+                    break;
+                }
+                if ( pos >= rangeStart ) {
+                    str[pos - rangeStart] = 'm';
+                }
+            }
             return str;
+        }
+
+        bool AnsiSkippingString::const_iterator::isSentinelAt(
+            std::string::const_iterator it ) const {
+            auto pos =
+                static_cast<std::string::size_type>( it - m_string->begin() );
+            return std::binary_search( m_sentinelPositions->begin(),
+                                       m_sentinelPositions->end(),
+                                       pos );
         }
 
         void AnsiSkippingString::const_iterator::tryParseAnsiEscapes() {
@@ -110,8 +134,7 @@ namespace Catch {
                         ( isdigit( *cursor ) || *cursor == ';' ) ) {
                     ++cursor;
                 }
-                if ( cursor == m_string->end() ||
-                     *cursor != AnsiSkippingString::sentinel ) {
+                if ( cursor == m_string->end() || !isSentinelAt( cursor ) ) {
                     break;
                 }
                 // if we've read an ansi sequence, set the iterator and
@@ -134,9 +157,10 @@ namespace Catch {
         void AnsiSkippingString::const_iterator::unadvance() {
             assert( m_it != m_string->begin() );
             m_it--;
-            // if *m_it is 0xff, scan back to the \033 and then m_it-- once more
-            // (and repeat check)
-            while ( *m_it == AnsiSkippingString::sentinel ) {
+            // if *m_it is one of our own sentinel markers, scan back to the
+            // \033 and then m_it-- once more (and repeat check). A literal
+            // 0xff byte that isn't one of our markers is left alone here.
+            while ( isSentinelAt( m_it ) ) {
                 while ( *m_it != '\033' ) {
                     assert( m_it != m_string->begin() );
                     m_it--;

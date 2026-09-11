@@ -35,6 +35,12 @@ namespace Catch {
         class AnsiSkippingString {
             std::string m_string;
             std::size_t m_size = 0;
+            // Byte offsets into m_string where a recognized ansi escape
+            // sequence's terminating 'm' was replaced with `sentinel`.
+            // Needed to tell those synthetic markers apart from a literal
+            // 0xff byte that may already be present in arbitrary (non-ansi)
+            // string content, e.g. from stringifying raw bytes.
+            std::vector<std::string::size_type> m_sentinelPositions;
 
             // perform 0xff replacement and calculate m_size
             void preprocessString();
@@ -63,10 +69,21 @@ namespace Catch {
             struct EndTag {};
 
             const std::string* m_string;
+            const std::vector<std::string::size_type>* m_sentinelPositions;
             std::string::const_iterator m_it;
 
-            explicit const_iterator( const std::string& string, EndTag ):
-                m_string( &string ), m_it( string.end() ) {}
+            explicit const_iterator(
+                const std::string& string,
+                const std::vector<std::string::size_type>& sentinelPositions,
+                EndTag ):
+                m_string( &string ),
+                m_sentinelPositions( &sentinelPositions ),
+                m_it( string.end() ) {}
+
+            // whether the byte currently under `it` is one of the sentinel
+            // markers we inserted ourselves, as opposed to a literal 0xff
+            // byte that was already part of the original string content
+            bool isSentinelAt( std::string::const_iterator it ) const;
 
             void tryParseAnsiEscapes();
             void advance();
@@ -79,8 +96,12 @@ namespace Catch {
             using reference = value_type&;
             using iterator_category = std::bidirectional_iterator_tag;
 
-            explicit const_iterator( const std::string& string ):
-                m_string( &string ), m_it( string.begin() ) {
+            explicit const_iterator(
+                const std::string& string,
+                const std::vector<std::string::size_type>& sentinelPositions ):
+                m_string( &string ),
+                m_sentinelPositions( &sentinelPositions ),
+                m_it( string.begin() ) {
                 tryParseAnsiEscapes();
             }
 

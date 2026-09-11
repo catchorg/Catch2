@@ -492,3 +492,34 @@ TEST_CASE( "TextFlow::Column skips ansi escape sequences",
         REQUIRE( as_written( col ) == text );
     }
 }
+
+TEST_CASE( "TextFlow::Column handles literal 0xff bytes that are not ansi escapes",
+           "[TextFlow][column][approvals]" ) {
+    // 0xff is used internally as a sentinel to mark the end of a recognized
+    // ansi escape sequence, but arbitrary stringified content (e.g. raw
+    // bytes) can legitimately contain literal 0xff bytes that have nothing
+    // to do with ansi escapes. Those must be left completely untouched, both
+    // when read back out of the column and while wrapping/iterating over
+    // them.
+    std::string text( 40, '\xff' );
+    Column col( text );
+    col.width( 20 );
+
+    std::string written = as_written( col );
+    // every byte in the output must be either the original 0xff or the
+    // hyphen the wrapper inserts when it can't find a natural break point;
+    // none of them should have turned into a stray 'm'.
+    for ( unsigned char c : written ) {
+        REQUIRE( ( c == 0xffu || c == '-' || c == '\n' ) );
+    }
+
+    // Also directly cover the iterator's backwards traversal, which used to
+    // assert/crash when it walked off the start of the string looking for an
+    // ansi escape it was never part of.
+    AnsiSkippingString skipping( text );
+    auto it = skipping.end();
+    for ( std::size_t i = 0; i < skipping.size(); ++i ) {
+        --it;
+    }
+    REQUIRE( it == skipping.begin() );
+}
