@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Catch2-dev"
+version = "0.0.0"
+description = "Development environment for Catch2"
+
+
+[project.optional-dependencies]
+docs = [
+    "sphinx >= 6.0",
+    "furo",
+    "sphinx-design",
+    "sphinx-togglebutton",
+    "myst-parser",
+    "breathe",
+]
+dev = [
+    "pre-commit",
+]
+
+[tool.setuptools]
+packages = []
