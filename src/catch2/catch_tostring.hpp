@@ -386,7 +386,7 @@ namespace Catch {
 
 #if defined( CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER ) && \
     defined( CATCH_CONFIG_CPP17_OPTIONAL ) &&              \
-    /* P3168 turned optional into a range, making this ambigous with the range support */ \
+    /* P3168 turned optional into a range, making this ambiguous with the range support */ \
     !defined( __cpp_lib_optional_range_support )
 #include <optional>
 namespace Catch {
