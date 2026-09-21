@@ -152,6 +152,16 @@ TEST_CASE("Precision of floating point stringification can be set", "[toString][
     }
 }
 
+TEST_CASE( "#3197 - nearby floating point values are distinguishable",
+           "[toString][floatingPoint][approvals]" ) {
+    const auto lhs =
+        Catch::StringMaker<double>::convert( 5.000000000000001e-05 );
+    const auto rhs = Catch::StringMaker<double>::convert( 5e-05 );
+    CHECK( lhs == "5.000000000000001e-05" );
+    CHECK( rhs == "5e-05" );
+    CHECK( lhs != rhs );
+}
+
 namespace {
 
 struct WhatException : std::exception {
