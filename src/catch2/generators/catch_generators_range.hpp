@@ -10,6 +10,7 @@
 
 #include <catch2/generators/catch_generators.hpp>
 
+#include <cassert>
 #include <iterator>
 #include <type_traits>
 
