@@ -513,11 +513,31 @@ void ConsoleReporter::benchmarkFailed( StringRef error ) {
         << ColumnBreak() << RowBreak();
 }
 
+void ConsoleReporter::testCaseStarting( TestCaseInfo const& testInfo ) {
+    StreamingReporterBase::testCaseStarting( testInfo );
+
+    if ( m_config->outputTestCaseNameFirst() ) {
+        m_stream << testInfo.name << ":\n";
+    }
+}
+
 void ConsoleReporter::testCaseEnded(TestCaseStats const& _testCaseStats) {
     m_tablePrinter->close();
     StreamingReporterBase::testCaseEnded(_testCaseStats);
     m_headerPrinted = false;
+
+    if ( !_testCaseStats.aborting && m_config->outputTestCaseStats() ) {
+        if (!m_config->outputTestCaseNameFirst())
+        {
+            m_stream << _testCaseStats.testInfo->name << ": ";
+        }
+
+        m_stream << _testCaseStats.totals.assertions.passed << " passed "
+            << _testCaseStats.totals.assertions.failed << " failed "
+            << _testCaseStats.totals.assertions.skipped << " skipped\n";
+    }
 }
+
 void ConsoleReporter::testRunEnded(TestRunStats const& _testRunStats) {
     printTotalsDivider(_testRunStats.totals);
     printTestRunTotals( m_stream, *m_colour, _testRunStats.totals );
