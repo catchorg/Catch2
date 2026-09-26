@@ -18,6 +18,10 @@ namespace Catch {
     namespace Detail {
         // Defined in catch_run_context.cpp, where the thread-local data lives.
         bool lastAssertionPassed();
+
+        // A technically non-constant false. Prevents the compiler from warning
+        // about or eliminating constant branch conditions.
+        extern volatile bool volatileFalse;
     }
 }
 
@@ -48,7 +52,8 @@ namespace Catch {
 #define INTERNAL_CATCH_TEST( macroName, resultDisposition, ... ) \
     do { /* NOLINT(bugprone-infinite-loop) */ \
         /* The expression should not be evaluated, but warnings should hopefully be checked */ \
-        CATCH_INTERNAL_IGNORE_BUT_WARN(__VA_ARGS__); \
+        if(::Catch::Detail::volatileFalse) \
+            (void)(__VA_ARGS__); \
         Catch::AssertionHandler catchAssertionHandler( macroName##_catch_sr, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(__VA_ARGS__), resultDisposition ); \
         INTERNAL_CATCH_TRY { \
             CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
@@ -57,8 +62,7 @@ namespace Catch {
             CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
         catchAssertionHandler.complete(); \
-    } while( (void)0, (false) && static_cast<const bool&>( !!(__VA_ARGS__) ) ) // the expression here is never evaluated at runtime but it forces the compiler to give it a look
-    // The double negation silences MSVC's C4800 warning, the static_cast forces short-circuit evaluation if the type has overloaded &&.
+    } while(false)
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( macroName, resultDisposition, ... ) \
