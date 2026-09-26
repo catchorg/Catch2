@@ -12,6 +12,8 @@
 
 ## Getting Catch2
 
+Before using Catch2 you need to install it via a package manager, using [git](cmake-integration.md#installing-catch2-from-git-repository) or via [vcpkg](cmake-integration.md#installing-catch2-from-vcpkg) 
+
 Ideally you should be using Catch2 through its [CMake integration](cmake-integration.md#top).
 Catch2 also provides pkg-config files and two file (header + cpp)
 distribution, but this documentation will assume you are using CMake. If
