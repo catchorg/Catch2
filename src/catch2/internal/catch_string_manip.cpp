@@ -11,7 +11,6 @@
 
 #include <ostream>
 #include <cstring>
-#include <cctype>
 #include <vector>
 
 namespace Catch {
@@ -40,9 +39,6 @@ namespace Catch {
         std::string lc = s;
         toLowerInPlace( lc );
         return lc;
-    }
-    char toLower(char c) {
-        return static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
     }
 
     std::string trim( std::string const& str ) {

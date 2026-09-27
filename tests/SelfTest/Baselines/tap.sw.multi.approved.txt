@@ -1129,7 +1129,7 @@ ok {test-number} - x == Approx( 1.3 ) for: 1.30000000000000027 == Approx( 1.3000
 # Equals
 ok {test-number} - testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
 # Equals
-ok {test-number} - testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring" (case insensitive)
+ok {test-number} - testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring" (case insensitive)
 # Equals string matcher
 not ok {test-number} - testStringForMatching(), Equals( "this string contains 'ABC' as a substring" ) for: "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring"
 # Equals string matcher
@@ -1167,7 +1167,7 @@ ok {test-number} - throwsSpecialException( 2 ), SpecialException, MessageMatches
 # Exception messages can be tested for
 ok {test-number} - thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
 # Exception messages can be tested for
-ok {test-number} - thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) for: "expected exception" equals: "expected exception" (case insensitive)
+ok {test-number} - thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) for: "expected exception" equals: "expecteD Exception" (case insensitive)
 # Exception messages can be tested for
 ok {test-number} - thisThrows(), StartsWith( "expected" ) for: "expected exception" starts with: "expected"
 # Exception messages can be tested for
@@ -1175,7 +1175,7 @@ ok {test-number} - thisThrows(), EndsWith( "exception" ) for: "expected exceptio
 # Exception messages can be tested for
 ok {test-number} - thisThrows(), ContainsSubstring( "except" ) for: "expected exception" contains: "except"
 # Exception messages can be tested for
-ok {test-number} - thisThrows(), ContainsSubstring( "exCept", Catch::CaseSensitive::No ) for: "expected exception" contains: "except" (case insensitive)
+ok {test-number} - thisThrows(), ContainsSubstring( "exCept", Catch::CaseSensitive::No ) for: "expected exception" contains: "exCept" (case insensitive)
 # Exception thrown inside stringify does not fail the test
 ok {test-number} - tos == tos for: { stringification failed with an exception: "Invalid" } == { stringification failed with an exception: "Invalid" }
 # Exceptions matchers
@@ -2909,15 +2909,15 @@ ok {test-number} - testStringForMatching(), ContainsSubstring( "string", Catch::
 # String matchers
 ok {test-number} - testStringForMatching(), ContainsSubstring( "abc" ) for: "this string contains 'abc' as a substring" contains: "abc"
 # String matchers
-ok {test-number} - testStringForMatching(), ContainsSubstring( "aBC", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
+ok {test-number} - testStringForMatching(), ContainsSubstring( "aBC", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "aBC" (case insensitive)
 # String matchers
 ok {test-number} - testStringForMatching(), StartsWith( "this" ) for: "this string contains 'abc' as a substring" starts with: "this"
 # String matchers
-ok {test-number} - testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" starts with: "this" (case insensitive)
+ok {test-number} - testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" starts with: "THIS" (case insensitive)
 # String matchers
 ok {test-number} - testStringForMatching(), EndsWith( "substring" ) for: "this string contains 'abc' as a substring" ends with: "substring"
 # String matchers
-ok {test-number} - testStringForMatching(), EndsWith( " SuBsTrInG", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" ends with: " substring" (case insensitive)
+ok {test-number} - testStringForMatching(), EndsWith( " SuBsTrInG", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" ends with: " SuBsTrInG" (case insensitive)
 # StringRef
 ok {test-number} - empty.empty() for: true
 # StringRef
@@ -4680,6 +4680,36 @@ ok {test-number} - testcase.tags[0].original == "magic.tag"_catch_sr for: magic.
 ok {test-number} -  # SKIP
 # thrown std::strings are translated
 not ok {test-number} - unexpected exception with message: 'Why would you throw a std::string?'
+# toLower( char )
+ok {test-number} - toLower( 'A' ) == 'a' for: 'a' == 'a'
+# toLower( char )
+ok {test-number} - toLower( 'Z' ) == 'z' for: 'z' == 'z'
+# toLower( char )
+ok {test-number} - toLower( 'a' ) == 'a' for: 'a' == 'a'
+# toLower( char )
+ok {test-number} - toLower( 'z' ) == 'z' for: 'z' == 'z'
+# toLower( char )
+ok {test-number} - toLower( '@' ) == '@' for: '@' == '@'
+# toLower( char )
+ok {test-number} - toLower( '[' ) == '[' for: '[' == '['
+# toLower( char )
+ok {test-number} - toLower( '`' ) == '`' for: '`' == '`'
+# toLower( char )
+ok {test-number} - toLower( '{' ) == '{' for: '{' == '{'
+# toLower( char )
+ok {test-number} - toLower( '0' ) == '0' for: '0' == '0'
+# toLower( char )
+ok {test-number} - toLower( ' ' ) == ' ' for: ' ' == ' '
+# toLower( char )
+ok {test-number} - toLower( '\0' ) == '\0' for: 0 == 0
+# toLower( char )
+ok {test-number} - toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'Ä' == 'Ä'
+# toLower( char )
+ok {test-number} - toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'ÿ' == 'ÿ'
+# toLower( char )
+ok {test-number} - with 1 message: 'toLower( 'A' ) == 'a''
+# toLower( char )
+ok {test-number} - with 1 message: 'toLower( '0' ) == '0''
 # toString on const wchar_t const pointer returns the string contents
 ok {test-number} - result == "\"wide load\"" for: ""wide load"" == ""wide load""
 # toString on const wchar_t pointer returns the string contents
@@ -4854,5 +4884,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2435
+1..2450
 

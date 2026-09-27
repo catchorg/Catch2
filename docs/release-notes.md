@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.16.0](#3160)<br>
 [3.15.3](#3153)<br>
 [3.15.2](#3152)<br>
 [3.15.1](#3151)<br>
@@ -77,6 +78,35 @@
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
 
+
+
+## 3.16.0
+
+### Fixes
+* Multiple fixes in `catch_discover_tests`:
+  * Fixed `<target>_TESTS` variable accumulating JSON fragments alongside test names.
+    * This was introduced during the refactoring in last release.
+  * Fixed `<target>_TESTS` variable from `catch_discover_tests` not escaping test names to be properly parsed by CMake.
+    * This means that e.g. test names with semicolons will not be split into multiple partial test names.
+    * This bug has existed since the first version of the script.
+  * Fixed `TEST_PREFIX`/`TEST_SUFFIX` args having leading/trailing whitespace stripped.
+* Added workaround for Clang 20-21 compile error with `TEMPLATE_PRODUCT_TEST_CASE` (#3115, #3173)
+
+### Improvements
+* Verbosity option is now handled per reporter.
+  * The standalone `--verbosity` flag is propagated to all reporters as default, just like `--colour-mode`.
+* The JSON reporter considers verbosity when listing tests.
+* Another set of performance improvements for `catch_discover_tests` performance
+  * The newest version can register about 3k tests in 1 second, up from 1k previously.
+* The initial `TEST_CASE` registration is slightly faster.
+* Reduced overhead from first instantiating `BENCHMARK` machinery in a TU.
+* Improved compilation speed when multiple templated test case macros use the same types.
+* Rewrote implementation of the string matchers
+  * Case-sensitive matching (the default) is significantly faster.
+  * Case-insensitive matching is faster in most cases.
+* Added optimizer barrier to calls into benchmarks without return values
+  * This limits the optimizations compiler can perform **between calls** into the benchmarked function, improving the accuracy.
+* Added warning that checks for using sharding without deterministic test order (#3186)
 
 
 ## 3.15.3

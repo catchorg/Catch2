@@ -1055,6 +1055,8 @@ loose text artifact
 ##teamcity[testStarted name='thrown std::strings are translated']
 ##teamcity[testFailed name='thrown std::strings are translated' message='Exception.tests.cpp:<line number>|n...............................................................................|n|nException.tests.cpp:<line number>|nunexpected exception with message:|n  "Why would you throw a std::string?"']
 ##teamcity[testFinished name='thrown std::strings are translated' duration="{duration}"]
+##teamcity[testStarted name='toLower( char )']
+##teamcity[testFinished name='toLower( char )' duration="{duration}"]
 ##teamcity[testStarted name='toString on const wchar_t const pointer returns the string contents']
 ##teamcity[testFinished name='toString on const wchar_t const pointer returns the string contents' duration="{duration}"]
 ##teamcity[testStarted name='toString on const wchar_t pointer returns the string contents']

@@ -218,6 +218,8 @@ approve("junit.std", ["An empty test with no assertions"] + base_args + ["-r", "
 # JUnit reporter with assertion-free sections and generators
 approve("junit.section", ["An assertion-free test with a section"] + base_args + ["-r", "junit"])
 approve("junit.generator", ["An assertion-free test with a generator"] + base_args + ["-r", "junit"])
+approve("junit.nested", ["An assertion-free test with nested empty sections"] + base_args + ["-r", "junit"])
+approve("junit.shouldfail", ["An empty shouldfail case for JUnit"] + base_args + ["-r", "junit"])
 
 # JUnit reporter with a runtime-skipped test case
 approve("junit.skip", ["tests can be skipped dynamically at runtime"] + base_args + ["-r", "junit"])

@@ -33,9 +33,94 @@
 #include <exception>
 #include <string>
 #include <cmath>
+#include <type_traits>
 
 namespace Catch {
     namespace Benchmark {
+        namespace Detail {
+            template <typename Clock>
+            ExecutionPlan prepare( const IConfig& cfg,
+                                   Environment env,
+                                   BenchmarkFunction&& fun ) {
+                auto min_time =
+                    env.clock_resolution.mean * Detail::minimum_ticks;
+                auto run_time =
+                    std::max( min_time,
+                              std::chrono::duration_cast<decltype( min_time )>(
+                                  cfg.benchmarkWarmupTime() ) );
+                auto&& test = Detail::run_for_at_least<Clock>(
+                    std::chrono::duration_cast<IDuration>( run_time ), 1, fun );
+                int new_iters = static_cast<int>(
+                    std::ceil( min_time * test.iterations / test.elapsed ) );
+                return { new_iters,
+                         test.elapsed / test.iterations * new_iters *
+                             cfg.benchmarkSamples(),
+                         CATCH_MOVE( fun ),
+                         std::chrono::duration_cast<FDuration>(
+                             cfg.benchmarkWarmupTime() ),
+                         Detail::warmup_iterations };
+            }
+
+            // These are wrappers for their respective function templated
+            // over `default_clock`. This allows outlining the usual use
+            // of the template into single TU and save on compilation costs.
+
+            Environment measure_environment_default();
+            ExecutionPlan prepare_default( const IConfig& cfg,
+                                           Environment env,
+                                           BenchmarkFunction&& fun );
+            std::vector<FDuration> run_plan_default( ExecutionPlan const& plan,
+                                                     const IConfig& cfg,
+                                                     Environment env );
+
+            template <typename Clock>
+            std::enable_if_t<std::is_same<Clock, default_clock>::value,
+                             Environment>
+            measureEnvironmentDispatch() {
+                return measure_environment_default();
+            }
+            template <typename Clock>
+            std::enable_if_t<!std::is_same<Clock, default_clock>::value,
+                             Environment>
+            measureEnvironmentDispatch() {
+                return measure_environment<Clock>();
+            }
+
+            template <typename Clock>
+            std::enable_if_t<std::is_same<Clock, default_clock>::value,
+                             std::vector<FDuration>>
+            runPlanDispatch( ExecutionPlan const& plan,
+                             const IConfig& cfg,
+                             Environment env ) {
+                return run_plan_default( plan, cfg, env );
+            }
+            template <typename Clock>
+            std::enable_if_t<!std::is_same<Clock, default_clock>::value,
+                             std::vector<FDuration>>
+            runPlanDispatch( ExecutionPlan const& plan,
+                             const IConfig& cfg,
+                             Environment env ) {
+                return plan.template run<Clock>( cfg, env );
+            }
+
+            template <typename Clock>
+            std::enable_if_t<std::is_same<Clock, default_clock>::value,
+                             ExecutionPlan>
+            prepareDispatch( const IConfig& cfg,
+                             Environment env,
+                             BenchmarkFunction&& fun ) {
+                return prepare_default( cfg, env, CATCH_MOVE( fun ) );
+            }
+            template <typename Clock>
+            std::enable_if_t<!std::is_same<Clock, default_clock>::value,
+                             ExecutionPlan>
+            prepareDispatch( const IConfig& cfg,
+                             Environment env,
+                             BenchmarkFunction&& fun ) {
+                return prepare<Clock>( cfg, env, CATCH_MOVE( fun ) );
+            }
+        } // namespace Detail
+
         struct Benchmark {
             Benchmark(std::string&& benchmarkName)
                 : name(CATCH_MOVE(benchmarkName)) {}
@@ -44,27 +129,18 @@ namespace Catch {
             Benchmark(std::string&& benchmarkName , FUN &&func)
                 : fun(CATCH_MOVE(func)), name(CATCH_MOVE(benchmarkName)) {}
 
-            template <typename Clock>
-            ExecutionPlan prepare(const IConfig &cfg, Environment env) {
-                auto min_time = env.clock_resolution.mean * Detail::minimum_ticks;
-                auto run_time = std::max(min_time, std::chrono::duration_cast<decltype(min_time)>(cfg.benchmarkWarmupTime()));
-                auto&& test = Detail::run_for_at_least<Clock>(std::chrono::duration_cast<IDuration>(run_time), 1, fun);
-                int new_iters = static_cast<int>(std::ceil(min_time * test.iterations / test.elapsed));
-                return { new_iters, test.elapsed / test.iterations * new_iters * cfg.benchmarkSamples(), CATCH_MOVE(fun), std::chrono::duration_cast<FDuration>(cfg.benchmarkWarmupTime()), Detail::warmup_iterations };
-            }
-
             template <typename Clock = default_clock>
             void run() {
                 static_assert( Clock::is_steady,
                                "Benchmarking clock should be steady" );
                 auto const* cfg = getCurrentContext().getConfig();
 
-                auto env = Detail::measure_environment<Clock>();
+                auto env = Detail::measureEnvironmentDispatch<Clock>();
 
                 getResultCapture().benchmarkPreparing(name);
                 CATCH_TRY{
                     auto plan = user_code([&] {
-                        return prepare<Clock>(*cfg, env);
+                        return Detail::prepareDispatch<Clock>( *cfg, env, CATCH_MOVE(fun) );
                     });
 
                     BenchmarkInfo info {
@@ -80,7 +156,7 @@ namespace Catch {
                     getResultCapture().benchmarkStarting(info);
 
                     auto samples = user_code([&] {
-                        return plan.template run<Clock>(*cfg, env);
+                        return Detail::runPlanDispatch<Clock>( plan, *cfg, env );
                     });
 
                     auto analysis = Detail::analyse(*cfg, samples.data(), samples.data() + samples.size());

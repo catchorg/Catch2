@@ -35,11 +35,10 @@ namespace Catch {
 
         void writeTestCase(TestCaseNode const& testCaseNode);
 
-        void writeSection( std::string const& className,
+        bool writeSection( std::string const& className,
                            std::string const& rootName,
                            SectionNode const& sectionNode,
-                           bool testOkToFail,
-                           bool writeEmptyTestCase );
+                           bool testOkToFail );
 
         void writeAssertions(SectionNode const& sectionNode);
         bool writeAssertion(AssertionStats const& stats);

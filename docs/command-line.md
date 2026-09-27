@@ -208,7 +208,7 @@ hardcoded into Catch2. Currently there are 3 supported options:
 * ["colour-mode"](#colour-mode)
 * ["verbosity"](#output-verbosity)
 
-> Support for per-reporter verbosity option was added in Catch2 vX.Y.Z
+> Support for per-reporter verbosity option was added in Catch2 3.16.0
 
 _Note that the reporter might still check the X-prefixed options for
 validity, and throw an error if they are wrong._

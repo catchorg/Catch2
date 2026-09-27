@@ -81,33 +81,6 @@ namespace Catch {
             }
         }
 
-        bool shouldWriteSection(
-            CumulativeReporterBase::SectionNode const& sectionNode ) {
-            return sectionNode.stats.assertions.total() > 0 ||
-                   !sectionNode.stdOut.empty() || !sectionNode.stdErr.empty();
-        }
-
-        std::size_t countTestCases(
-            CumulativeReporterBase::SectionNode const& sectionNode ) {
-            std::size_t count = shouldWriteSection( sectionNode ) ? 1 : 0;
-            for ( auto const& child : sectionNode.childSections ) {
-                count += countTestCases( *child );
-            }
-            return count;
-        }
-
-        std::size_t countTestCases(
-            CumulativeReporterBase::TestRunNode const& testRunNode ) {
-            std::size_t count = 0;
-            for ( auto const& testCase : testRunNode.children ) {
-                assert( testCase->children.size() == 1 );
-                const auto sectionCount =
-                    countTestCases( *testCase->children.front() );
-                count += sectionCount > 0 ? sectionCount : 1;
-            }
-            return count;
-        }
-
     } // anonymous namespace
 
     JunitReporter::JunitReporter( ReporterConfig&& _config )
@@ -163,7 +136,7 @@ namespace Catch {
         xml.writeAttribute( "errors"_sr, unexpectedExceptions );
         xml.writeAttribute( "failures"_sr, stats.totals.assertions.failed-unexpectedExceptions );
         xml.writeAttribute( "skipped"_sr, stats.totals.assertions.skipped );
-        xml.writeAttribute( "tests"_sr, countTestCases( testRunNode ) );
+        xml.writeAttribute( "tests"_sr, stats.totals.assertions.total() );
         xml.writeAttribute( "hostname"_sr, "tbd"_sr ); // !TBD
         if( m_config->showDurations() == ShowDurations::Never )
             xml.writeAttribute( "time"_sr, ""_sr );
@@ -215,23 +188,44 @@ namespace Catch {
 
         normalizeNamespaceMarkers(className);
 
-        writeSection( className,
-                      "",
-                      rootSection,
-                      stats.testInfo->okToFail(),
-                      countTestCases( rootSection ) == 0 );
+        if ( !writeSection( className, "", rootSection,
+                            stats.testInfo->okToFail() ) ) {
+            XmlWriter::ScopedElement e = xml.scopedElement( "testcase" );
+            std::string name = trim( rootSection.stats.sectionInfo.name );
+            if ( className.empty() ) {
+                xml.writeAttribute( "classname"_sr, name );
+                xml.writeAttribute( "name"_sr, "root"_sr );
+            } else {
+                xml.writeAttribute( "classname"_sr, className );
+                xml.writeAttribute( "name"_sr, name );
+            }
+            xml.writeAttribute( "time"_sr,
+                                formatDuration( rootSection.stats.durationInSeconds ) );
+            xml.writeAttribute( "status"_sr, "run"_sr );
+
+            if ( stats.totals.testCases.failed > 0 ) {
+                auto failure = xml.scopedElement( "failure" );
+                failure.writeAttribute(
+                    "message"_sr,
+                    stats.testInfo->expectedToFail()
+                        ? "Test case was expected to fail, but no failure occurred"
+                        : "Test case failed without assertion details" );
+            }
+        }
     }
 
-    void JunitReporter::writeSection( std::string const& className,
+    bool JunitReporter::writeSection( std::string const& className,
                                       std::string const& rootName,
                                       SectionNode const& sectionNode,
-                                      bool testOkToFail,
-                                      bool writeEmptyTestCase ) {
+                                      bool testOkToFail ) {
         std::string name = trim( sectionNode.stats.sectionInfo.name );
         if( !rootName.empty() )
             name = rootName + '/' + name;
 
-        if ( writeEmptyTestCase || shouldWriteSection( sectionNode ) ) {
+        bool wroteCase = false;
+        if ( sectionNode.stats.assertions.total() > 0
+           || !sectionNode.stdOut.empty()
+           || !sectionNode.stdErr.empty() ) {
             XmlWriter::ScopedElement e = xml.scopedElement( "testcase" );
             if( className.empty() ) {
                 xml.writeAttribute( "classname"_sr, name );
@@ -260,16 +254,18 @@ namespace Catch {
                 xml.scopedElement( "system-out" ).writeText( trim( sectionNode.stdOut ), XmlFormatting::Newline );
             if( !sectionNode.stdErr.empty() )
                 xml.scopedElement( "system-err" ).writeText( trim( sectionNode.stdErr ), XmlFormatting::Newline );
+            wroteCase = true;
         }
-        for( auto const& childNode : sectionNode.childSections )
+        for( auto const& childNode : sectionNode.childSections ) {
+            bool childWrote;
             if( className.empty() )
-                writeSection( name, "", *childNode, testOkToFail, false );
+                childWrote = writeSection( name, "", *childNode, testOkToFail );
             else
-                writeSection( className,
-                              name,
-                              *childNode,
-                              testOkToFail,
-                              false );
+                childWrote = writeSection( className, name,
+                                           *childNode, testOkToFail );
+            wroteCase = childWrote || wroteCase;
+        }
+        return wroteCase;
     }
 
     void JunitReporter::writeAssertions( SectionNode const& sectionNode ) {

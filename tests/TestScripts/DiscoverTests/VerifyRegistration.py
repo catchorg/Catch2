@@ -21,6 +21,11 @@ TestInfo = namedtuple('TestInfo', ['name', 'tags'])
 
 cmake_version_regex = re.compile(r'cmake version (\d+)\.(\d+)\.(\d+)')
 
+# Note that these both intentionally include preceding/trailing space,
+# which should not get stripped.
+CTEST_NAME_PREFIX = ' prefix '
+CTEST_NAME_SUFFIX = ' suffix '
+
 def get_cmake_version():
     result = subprocess.run(['cmake', '--version'],
                             capture_output = True,
@@ -87,7 +92,7 @@ def get_test_names(build_path: str) -> List[TestInfo]:
         with open(fname, mode='r', encoding='utf-8') as file:
             test_listing = json.load(file)
 
-    assert test_listing['version'] == 2
+    assert test_listing['version'] == 2, test_listing['version']
 
     tests = []
     for test in test_listing['listings']['tests']:
@@ -124,10 +129,11 @@ def extract_tests_from_ctest(ctest_output) -> List[TestInfo]:
     test_infos = []
     for test in tests:
         test_command = test['command']
-        # First part of the command is the binary, second is the filter.
+        # First part of the command is the binary, second is the filter,
+        # third is the `--order decl` arg for faster startup.
         # If there are less, registration has failed. If there are more,
         # registration has changed and the script needs updating.
-        assert len(test_command) == 2
+        assert len(test_command) == 3, test_command
         test_name = test_command[1]
         labels = []
         for prop in test['properties']:
@@ -221,7 +227,7 @@ def extract_tests_list_from_ctest_script(build_path: str) -> List[str]:
         print(f'stdout: {err.stdout}')
         exit(4)
 
-    lines = result.stdout.strip().split('\n')
+    lines = [x for x in result.stdout.split('\n') if x.strip()]
     test_num_line = lines[0]
     test_lines = lines[1:]
 
@@ -281,7 +287,7 @@ if __name__ == '__main__':
     print(f"{len(catch_test_names)} tests matched in CTest listing")
 
     test_list_names = sorted(extract_tests_list_from_ctest_script(build_path))
-    expected_names = sorted(info.name for info in raw_catch_test_names)
+    expected_names = sorted(CTEST_NAME_PREFIX + info.name + CTEST_NAME_SUFFIX for info in raw_catch_test_names)
     if test_list_names != expected_names:
         print("TEST_LIST variable (tests_TESTS) does not match Catch2 test listing!")
         for name in test_list_names:

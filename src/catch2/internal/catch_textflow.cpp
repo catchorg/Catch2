@@ -35,6 +35,15 @@ namespace {
 namespace Catch {
     namespace TextFlow {
         void AnsiSkippingString::preprocessString() {
+            // If there are no potential escapes, we can use fast path
+            if ( m_string.find( '\033' ) == std::string::npos ) {
+                size_t size = 0;
+                for ( const char c : m_string ) {
+                    size += !isUtf8ContinuationByte( c );
+                }
+                m_size = size;
+                return;
+            }
             for ( auto it = m_string.begin(); it != m_string.end(); ) {
                 // try to read through an ansi sequence
                 while ( it != m_string.end() && *it == '\033' &&
@@ -47,8 +56,10 @@ namespace Catch {
                     if ( cursor == m_string.end() || *cursor != 'm' ) {
                         break;
                     }
-                    // 'm' -> 0xff
-                    *cursor = AnsiSkippingString::sentinel;
+                    // record the escape sequence's byte range
+                    m_escapes.push_back(
+                        { std::distance( m_string.begin(), it ),
+                          std::distance( m_string.begin(), cursor + 1 ) } );
                     // if we've read an ansi sequence, set the iterator and
                     // return to the top of the loop
                     it = cursor + 1;
@@ -76,79 +87,102 @@ namespace Catch {
         }
 
         AnsiSkippingString::const_iterator AnsiSkippingString::begin() const {
-            return const_iterator( m_string );
+            return const_iterator( *this );
         }
 
         AnsiSkippingString::const_iterator AnsiSkippingString::end() const {
-            return const_iterator( m_string, const_iterator::EndTag{} );
+            return const_iterator( *this, const_iterator::EndTag{} );
         }
 
-        std::string AnsiSkippingString::substring( const_iterator begin,
-                                                   const_iterator end ) const {
+        std::string AnsiSkippingString::substring( const_iterator first,
+                                                   const_iterator last ) const {
+            std::string ret;
+            appendSubstringTo( ret, first, last );
+            return ret;
+        }
+
+        void
+        AnsiSkippingString::appendSubstringTo( std::string& out,
+                                               const_iterator first,
+                                               const_iterator last ) const {
             // There's one caveat here to an otherwise simple substring: when
             // making a begin iterator we might have skipped ansi sequences at
-            // the start. If `begin` here is a begin iterator, skipped over
+            // the start. If `first` here is a begin iterator, skipped over
             // initial ansi sequences, we'll use the true beginning of the
-            // string. Lastly: We need to transform any chars we replaced with
-            // 0xff back to 'm'
-            auto str = std::string( begin == this->begin() ? m_string.begin()
-                                                           : begin.m_it,
-                                    end.m_it );
-            std::transform( str.begin(), str.end(), str.begin(), []( char c ) {
-                return c == AnsiSkippingString::sentinel ? 'm' : c;
-            } );
-            return str;
-        }
-
-        void AnsiSkippingString::const_iterator::tryParseAnsiEscapes() {
-            // check if we've landed on an ansi sequence, and if so read through
-            // it
-            while ( m_it != m_string->end() && *m_it == '\033' &&
-                    m_it + 1 != m_string->end() &&  *( m_it + 1 ) == '[' ) {
-                auto cursor = m_it + 2;
-                while ( cursor != m_string->end() &&
-                        ( isdigit( *cursor ) || *cursor == ';' ) ) {
-                    ++cursor;
-                }
-                if ( cursor == m_string->end() ||
-                     *cursor != AnsiSkippingString::sentinel ) {
-                    break;
-                }
-                // if we've read an ansi sequence, set the iterator and
-                // return to the top of the loop
-                m_it = cursor + 1;
+            // string.
+            if ( hasEscapes() && first == begin() ) {
+                out.append( m_string.begin(), last.m_it );
+            } else {
+                out.append( first.m_it, last.m_it );
             }
         }
 
+        void AnsiSkippingString::const_iterator::jumpForwardOverEscapes() {
+            // Escapes can only start with '\033'
+            if ( m_it == m_string->m_string.end() || *m_it != '\033' ) {
+                return;
+            }
+            // If we are at '\033', check if we are at an actual escape
+            auto current_pos = std::distance( m_string->m_string.begin(), m_it );
+
+            auto const& escapes = m_string->m_escapes;
+            auto candidate =
+                std::lower_bound( escapes.begin(),
+                                  escapes.end(),
+                                  current_pos,
+                                  []( AnsiSkippingString::EscapeRange const& r,
+                                      std::ptrdiff_t o ) { return r.start < o; } );
+            // Escapes can be consecutive, we need to jump over all of them
+            while ( candidate != escapes.end() && candidate->start == current_pos ) {
+                current_pos = candidate->end;
+                ++candidate;
+            }
+            m_it = m_string->m_string.begin() + current_pos;
+        }
+
+        void AnsiSkippingString::const_iterator::jumpBackOverEscapes() {
+            auto strBegin = m_string->m_string.begin();
+            // Escapes only end with 'm'
+            while ( *m_it == 'm' ) {
+                // If we are at 'm', check if we are at an actual escape
+                const auto current_pos = std::distance( strBegin, m_it );
+
+                auto const& escapes = m_string->m_escapes;
+                auto range = std::lower_bound(
+                    escapes.begin(),
+                    escapes.end(),
+                    current_pos + 1, // to half-open range
+                    []( AnsiSkippingString::EscapeRange const& r,
+                        std::ptrdiff_t o ) { return r.end < o; } );
+                if ( range == escapes.end() || range->end != current_pos + 1 ) {
+                    break;
+                }
+                assert( range->start != 0 &&
+                        "Trying to go back with begin iterator" );
+                m_it = strBegin + range->start - 1;
+            }
+        }
+
+
         void AnsiSkippingString::const_iterator::advance() {
-            assert( m_it != m_string->end() );
+            auto strEnd = m_string->m_string.end();
+            assert( m_it != strEnd );
             m_it++;
             // Skip UTF-8 continuation bytes
-            while ( m_it != m_string->end() &&
+            while ( m_it != strEnd &&
                     isUtf8ContinuationByte( *m_it ) ) {
                 m_it++;
             }
-            tryParseAnsiEscapes();
+            if ( m_string->hasEscapes() ) { jumpForwardOverEscapes(); }
         }
 
         void AnsiSkippingString::const_iterator::unadvance() {
-            assert( m_it != m_string->begin() );
+            auto strBegin = m_string->m_string.begin();
+            assert( m_it != strBegin );
             m_it--;
-            // if *m_it is 0xff, scan back to the \033 and then m_it-- once more
-            // (and repeat check)
-            while ( *m_it == AnsiSkippingString::sentinel ) {
-                while ( *m_it != '\033' ) {
-                    assert( m_it != m_string->begin() );
-                    m_it--;
-                }
-                // if this happens, we must have been a begin iterator that had
-                // skipped over ansi sequences at the start of a string
-                assert( m_it != m_string->begin() );
-                assert( *m_it == '\033' );
-                m_it--;
-            }
+            if ( m_string->hasEscapes() ) { jumpBackOverEscapes(); }
             // Skip back over UTF-8 continuation bytes to the leading byte
-            while ( m_it != m_string->begin() &&
+            while ( m_it != strBegin &&
                     isUtf8ContinuationByte( *m_it ) ) {
                 m_it--;
             }
@@ -226,10 +260,8 @@ namespace Catch {
             AnsiSkippingString::const_iterator end ) const {
             std::string ret;
             const auto desired_indent = indentSize();
-            // ret.reserve( desired_indent + (end - start) + m_addHyphen );
             ret.append( desired_indent, ' ' );
-            // ret.append( start, end );
-            ret += m_column.m_string.substring( start, end );
+            m_column.m_string.appendSubstringTo( ret, start, end );
             if ( m_addHyphen ) { ret.push_back( '-' ); }
 
             return ret;

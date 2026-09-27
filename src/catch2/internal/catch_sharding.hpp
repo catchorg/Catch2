@@ -14,9 +14,10 @@
 namespace Catch {
 
     template<typename Container>
-    Container createShard(Container const& container, std::size_t const shardCount, std::size_t const shardIndex) {
+    Container createShard(Container container, std::size_t const shardCount, std::size_t const shardIndex) {
         assert(shardCount > shardIndex);
 
+        // Single shard means there is nothing to do
         if (shardCount == 1) {
             return container;
         }
@@ -32,7 +33,10 @@ namespace Catch {
         auto startIterator = std::next(container.begin(), static_cast<std::ptrdiff_t>(startIndex));
         auto endIterator = std::next(container.begin(), static_cast<std::ptrdiff_t>(endIndex));
 
-        return Container(startIterator, endIterator);
+        container.erase(endIterator, container.end());
+        container.erase(container.begin(), startIterator);
+
+        return container;
     }
 
 }

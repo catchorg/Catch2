@@ -486,19 +486,6 @@ set_tests_properties("Benchmarking::SkipBenchmarkMacros"
     FAIL_REGULAR_EXPRESSION "benchmark name"
 )
 
-add_test(NAME "Benchmarking::FailureReporting::OptimizedOut"
-  COMMAND
-    $<TARGET_FILE:SelfTest> "Failing benchmarks" -c "empty" -r xml
-  # This test only makes sense with the optimizer being enabled when
-  # the tests are being compiled.
-  CONFIGURATIONS Release
-)
-set_tests_properties("Benchmarking::FailureReporting::OptimizedOut"
-  PROPERTIES
-    PASS_REGULAR_EXPRESSION "could not measure benchmark\, maybe it was optimized away"
-    FAIL_REGULAR_EXPRESSION "successes=\"1\""
-)
-
 add_test(NAME "Benchmarking::FailureReporting::ThrowingBenchmark"
   COMMAND
     $<TARGET_FILE:SelfTest> "Failing benchmarks" -c "throw" -r xml
@@ -658,6 +645,11 @@ if(CATCH_ENABLE_CONFIGURE_TESTS)
         COST 240
         LABELS "uses-python"
     )
+    if(CMAKE_TOOLCHAIN_FILE)
+      set_tests_properties("CMakeConfig::${testName}"
+        PROPERTIES ENVIRONMENT "CMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
+      )
+    endif()
   endforeach()
 endif()
 

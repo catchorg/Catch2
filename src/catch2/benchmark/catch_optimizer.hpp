@@ -34,7 +34,7 @@ namespace Catch {
         } // namespace Detail
 #elif defined(_MSC_VER) || defined(__IAR_SYSTEMS_ICC__)
 
-#if defined(_MSVC_VER)
+#if defined(_MSC_VER)
 #pragma optimize("", off)
 #elif defined(__IAR_SYSTEMS_ICC__)
 // For IAR the pragma only affects the following function
@@ -71,6 +71,13 @@ namespace Catch {
         template <typename Fn, typename... Args>
         inline auto invoke_deoptimized(Fn&& fn, Args&&... args) -> std::enable_if_t<std::is_same<void, decltype(fn(args...))>::value> {
             CATCH_FORWARD((fn)) (CATCH_FORWARD(args)...);
+            // In the non-void case, we pass the result through `deoptimize_value`
+            // to force the compiler to keep it. We have no return value here,
+            // but add an optimizer barrier (ideally a memory clobber) to force
+            // the _side effects_ of the loop be visible (e.g. writes to globals).
+            // Note that writes to benchmark-locals can be optimized away, as
+            // we would expect in normal code.
+            Detail::optimizer_barrier();
         }
     } // namespace Benchmark
 } // namespace Catch

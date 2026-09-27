@@ -429,9 +429,6 @@ TEST_CASE("run benchmark", "[benchmark][approvals]") {
 }
 
 TEST_CASE("Failing benchmarks", "[!benchmark][.approvals]") {
-    SECTION("empty", "Benchmark that has been optimized away (because it is empty)") {
-        BENCHMARK("Empty benchmark") {};
-    }
     SECTION("throw", "Benchmark that throws an exception") {
         BENCHMARK("Throwing benchmark") {
             throw "just a plain literal, bleh";

@@ -4519,7 +4519,7 @@ Matchers.tests.cpp:<line number>: PASSED:
   CHECK_THAT( testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "this string contains
-  'abc' as a substring" (case insensitive)
+  'ABC' as a substring" (case insensitive)
 
 -------------------------------------------------------------------------------
 Equals string matcher
@@ -4677,7 +4677,7 @@ Exception.tests.cpp:<line number>
 Exception.tests.cpp:<line number>: PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) )
 with expansion:
-  "expected exception" equals: "expected exception" (case insensitive)
+  "expected exception" equals: "expecteD Exception" (case insensitive)
 
 -------------------------------------------------------------------------------
 Exception messages can be tested for
@@ -4704,7 +4704,7 @@ with expansion:
 Exception.tests.cpp:<line number>: PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), ContainsSubstring( "exCept", Catch::CaseSensitive::No ) )
 with expansion:
-  "expected exception" contains: "except" (case insensitive)
+  "expected exception" contains: "exCept" (case insensitive)
 
 -------------------------------------------------------------------------------
 Exception thrown inside stringify does not fail the test
@@ -12188,7 +12188,7 @@ with expansion:
 Matchers.tests.cpp:<line number>: PASSED:
   CHECK_THAT( testStringForMatching(), ContainsSubstring( "aBC", Catch::CaseSensitive::No ) )
 with expansion:
-  "this string contains 'abc' as a substring" contains: "abc" (case
+  "this string contains 'abc' as a substring" contains: "aBC" (case
   insensitive)
 
 Matchers.tests.cpp:<line number>: PASSED:
@@ -12199,7 +12199,7 @@ with expansion:
 Matchers.tests.cpp:<line number>: PASSED:
   CHECK_THAT( testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No ) )
 with expansion:
-  "this string contains 'abc' as a substring" starts with: "this" (case
+  "this string contains 'abc' as a substring" starts with: "THIS" (case
   insensitive)
 
 Matchers.tests.cpp:<line number>: PASSED:
@@ -12210,7 +12210,7 @@ with expansion:
 Matchers.tests.cpp:<line number>: PASSED:
   CHECK_THAT( testStringForMatching(), EndsWith( " SuBsTrInG", Catch::CaseSensitive::No ) )
 with expansion:
-  "this string contains 'abc' as a substring" ends with: " substring" (case
+  "this string contains 'abc' as a substring" ends with: " SuBsTrInG" (case
   insensitive)
 
 -------------------------------------------------------------------------------
@@ -19503,6 +19503,107 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 -------------------------------------------------------------------------------
+toLower( char )
+  ASCII letters are lowercased
+-------------------------------------------------------------------------------
+StringManip.tests.cpp:<line number>
+...............................................................................
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( 'A' ) == 'a' )
+with expansion:
+  'a' == 'a'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( 'Z' ) == 'z' )
+with expansion:
+  'z' == 'z'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( 'a' ) == 'a' )
+with expansion:
+  'a' == 'a'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( 'z' ) == 'z' )
+with expansion:
+  'z' == 'z'
+
+-------------------------------------------------------------------------------
+toLower( char )
+  Chars outside 'A'-'Z' are left alone
+-------------------------------------------------------------------------------
+StringManip.tests.cpp:<line number>
+...............................................................................
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '@' ) == '@' )
+with expansion:
+  '@' == '@'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '[' ) == '[' )
+with expansion:
+  '[' == '['
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '`' ) == '`' )
+with expansion:
+  '`' == '`'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '{' ) == '{' )
+with expansion:
+  '{' == '{'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '0' ) == '0' )
+with expansion:
+  '0' == '0'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( ' ' ) == ' ' )
+with expansion:
+  ' ' == ' '
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '\0' ) == '\0' )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+toLower( char )
+  Non-ASCII chars are left alone
+-------------------------------------------------------------------------------
+StringManip.tests.cpp:<line number>
+...............................................................................
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) )
+with expansion:
+  'Ä' == 'Ä'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) )
+with expansion:
+  'ÿ' == 'ÿ'
+
+-------------------------------------------------------------------------------
+toLower( char )
+  Is usable in constant expressions
+-------------------------------------------------------------------------------
+StringManip.tests.cpp:<line number>
+...............................................................................
+
+StringManip.tests.cpp:<line number>: PASSED:
+with message:
+  toLower( 'A' ) == 'a'
+
+StringManip.tests.cpp:<line number>: PASSED:
+with message:
+  toLower( '0' ) == '0'
+
+-------------------------------------------------------------------------------
 toString on const wchar_t const pointer returns the string contents
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -20215,6 +20316,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  454 |  334 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2423 | 2222 passed | 158 failed | 43 failed as expected
+test cases:  455 |  335 passed |  96 failed | 6 skipped | 18 failed as expected
+assertions: 2438 | 2237 passed | 158 failed | 43 failed as expected
 

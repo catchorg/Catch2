@@ -35,7 +35,7 @@ if(CMAKE_BINARY_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 endif()
 
 project(Catch2
-  VERSION 3.15.3 # CML version placeholder, don't delete
+  VERSION 3.16.0 # CML version placeholder, don't delete
   LANGUAGES CXX
   HOMEPAGE_URL "https://github.com/catchorg/Catch2"
   DESCRIPTION "A modern, C++-native, unit test framework."

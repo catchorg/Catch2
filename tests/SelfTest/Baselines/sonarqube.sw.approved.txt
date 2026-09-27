@@ -400,6 +400,11 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="replaceInPlace/escape '" duration="{duration}"/>
     <testCase name="splitString" duration="{duration}"/>
     <testCase name="startsWith" duration="{duration}"/>
+    <testCase name="toLower( char )" duration="{duration}"/>
+    <testCase name="toLower( char )/ASCII letters are lowercased" duration="{duration}"/>
+    <testCase name="toLower( char )/Chars outside 'A'-'Z' are left alone" duration="{duration}"/>
+    <testCase name="toLower( char )/Non-ASCII chars are left alone" duration="{duration}"/>
+    <testCase name="toLower( char )/Is usable in constant expressions" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp">
     <testCase name="Tag alias can be registered against tag patterns" duration="{duration}"/>

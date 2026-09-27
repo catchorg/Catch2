@@ -235,8 +235,10 @@ function(catch_discover_tests_impl)
   set(_WriteToFileThreshold 50000)
 
   set(add_tags "${_ADD_TAGS_AS_LABELS}")
-  set(prefix "${_TEST_PREFIX}")
-  set(suffix "${_TEST_SUFFIX}")
+  # TEST_{PREFIX,SUFFIX} is enclosed in single quotes to keep ensure
+  # leading/trailing whitespace isn't trimmed by CMake's argument passing.
+  string(REGEX REPLACE "^'(.*)'$" "\\1" prefix "${_TEST_PREFIX}")
+  string(REGEX REPLACE "^'(.*)'$" "\\1" suffix "${_TEST_SUFFIX}")
   set(spec ${_TEST_SPEC})
   set(extra_args ${_TEST_EXTRA_ARGS})
   set(properties ${_TEST_PROPERTIES})
@@ -402,8 +404,9 @@ function(catch_discover_tests_impl)
     "${_TEST_EXECUTABLE}"
   )
   prepare_command_fragment(_args_reporter_fragment
-    ${extra_args}
+    "${extra_args}"
     "${reporter_arg}"
+    "--order decl"
   )
 
   # `set_tests_properties` calls are

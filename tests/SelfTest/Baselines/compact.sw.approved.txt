@@ -631,7 +631,7 @@ Condition.tests.cpp:<line number>: passed: x == Approx( 1.3 ) for: 1.30000000000
 ==
 Approx( 1.30000000000000004 )
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring" (case insensitive)
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring" (case insensitive)
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Equals( "this string contains 'ABC' as a substring" ) for: "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring"
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Equals( "something else", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" equals: "something else" (case insensitive)
 ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(WhatException{}) == "This exception has overridden what() method" for: "This exception has overridden what() method"
@@ -654,11 +654,11 @@ Matchers.tests.cpp:<line number>: passed: throwsDerivedException(), DerivedExcep
 Matchers.tests.cpp:<line number>: passed: throwsDerivedException(), DerivedException, MessageMatches( !StartsWith( "::what" ) ) for: DerivedException::what  matches "not starts with: "::what""
 Matchers.tests.cpp:<line number>: passed: throwsSpecialException( 2 ), SpecialException, MessageMatches( StartsWith( "Special" ) ) for: SpecialException::what  matches "starts with: "Special""
 Exception.tests.cpp:<line number>: passed: thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
-Exception.tests.cpp:<line number>: passed: thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) for: "expected exception" equals: "expected exception" (case insensitive)
+Exception.tests.cpp:<line number>: passed: thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) for: "expected exception" equals: "expecteD Exception" (case insensitive)
 Exception.tests.cpp:<line number>: passed: thisThrows(), StartsWith( "expected" ) for: "expected exception" starts with: "expected"
 Exception.tests.cpp:<line number>: passed: thisThrows(), EndsWith( "exception" ) for: "expected exception" ends with: "exception"
 Exception.tests.cpp:<line number>: passed: thisThrows(), ContainsSubstring( "except" ) for: "expected exception" contains: "except"
-Exception.tests.cpp:<line number>: passed: thisThrows(), ContainsSubstring( "exCept", Catch::CaseSensitive::No ) for: "expected exception" contains: "except" (case insensitive)
+Exception.tests.cpp:<line number>: passed: thisThrows(), ContainsSubstring( "exCept", Catch::CaseSensitive::No ) for: "expected exception" contains: "exCept" (case insensitive)
 ToString.tests.cpp:<line number>: passed: tos == tos for: { stringification failed with an exception: "Invalid" }
 ==
 { stringification failed with an exception: "Invalid" }
@@ -1912,11 +1912,11 @@ ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify(arr) =
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), ContainsSubstring( "string" ) for: "this string contains 'abc' as a substring" contains: "string"
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), ContainsSubstring( "string", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "string" (case insensitive)
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), ContainsSubstring( "abc" ) for: "this string contains 'abc' as a substring" contains: "abc"
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), ContainsSubstring( "aBC", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), ContainsSubstring( "aBC", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "aBC" (case insensitive)
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), StartsWith( "this" ) for: "this string contains 'abc' as a substring" starts with: "this"
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" starts with: "this" (case insensitive)
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" starts with: "THIS" (case insensitive)
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), EndsWith( "substring" ) for: "this string contains 'abc' as a substring" ends with: "substring"
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), EndsWith( " SuBsTrInG", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" ends with: " substring" (case insensitive)
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), EndsWith( " SuBsTrInG", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" ends with: " SuBsTrInG" (case insensitive)
 String.tests.cpp:<line number>: passed: empty.empty() for: true
 String.tests.cpp:<line number>: passed: empty.size() == 0 for: 0 == 0
 String.tests.cpp:<line number>: passed: std::strcmp( empty.data(), "" ) == 0 for: 0 == 0
@@ -2918,6 +2918,21 @@ Tag.tests.cpp:<line number>: passed: testcase.tags.size() == 1 for: 1 == 1
 Tag.tests.cpp:<line number>: passed: testcase.tags[0].original == "magic.tag"_catch_sr for: magic.tag == magic.tag
 Skip.tests.cpp:<line number>: skipped:
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'Why would you throw a std::string?'
+StringManip.tests.cpp:<line number>: passed: toLower( 'A' ) == 'a' for: 'a' == 'a'
+StringManip.tests.cpp:<line number>: passed: toLower( 'Z' ) == 'z' for: 'z' == 'z'
+StringManip.tests.cpp:<line number>: passed: toLower( 'a' ) == 'a' for: 'a' == 'a'
+StringManip.tests.cpp:<line number>: passed: toLower( 'z' ) == 'z' for: 'z' == 'z'
+StringManip.tests.cpp:<line number>: passed: toLower( '@' ) == '@' for: '@' == '@'
+StringManip.tests.cpp:<line number>: passed: toLower( '[' ) == '[' for: '[' == '['
+StringManip.tests.cpp:<line number>: passed: toLower( '`' ) == '`' for: '`' == '`'
+StringManip.tests.cpp:<line number>: passed: toLower( '{' ) == '{' for: '{' == '{'
+StringManip.tests.cpp:<line number>: passed: toLower( '0' ) == '0' for: '0' == '0'
+StringManip.tests.cpp:<line number>: passed: toLower( ' ' ) == ' ' for: ' ' == ' '
+StringManip.tests.cpp:<line number>: passed: toLower( '\0' ) == '\0' for: 0 == 0
+StringManip.tests.cpp:<line number>: passed: toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'Ä' == 'Ä'
+StringManip.tests.cpp:<line number>: passed: toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'ÿ' == 'ÿ'
+StringManip.tests.cpp:<line number>: passed: with 1 message: 'toLower( 'A' ) == 'a''
+StringManip.tests.cpp:<line number>: passed: with 1 message: 'toLower( '0' ) == '0''
 Misc.tests.cpp:<line number>: passed: result == "\"wide load\"" for: ""wide load"" == ""wide load""
 Misc.tests.cpp:<line number>: passed: result == "\"wide load\"" for: ""wide load"" == ""wide load""
 Misc.tests.cpp:<line number>: passed: result == "\"wide load\"" for: ""wide load"" == ""wide load""
@@ -3015,7 +3030,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  454 |  334 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2423 | 2222 passed | 158 failed | 43 failed as expected
+test cases:  455 |  335 passed |  96 failed | 6 skipped | 18 failed as expected
+assertions: 2438 | 2237 passed | 158 failed | 43 failed as expected
 
 

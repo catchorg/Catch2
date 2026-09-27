@@ -6,8 +6,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.15.3
-//  Generated: 2026-07-26 22:17:52.004020
+//  Catch v3.16.0
+//  Generated: 2026-08-25 09:29:22.652020
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -1317,6 +1317,8 @@ namespace Catch {
         virtual void registerTranslator( Detail::unique_ptr<IExceptionTranslator>&& translator ) = 0;
         virtual void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) = 0;
         virtual void registerStartupException() noexcept = 0;
+
+        virtual ITestCaseRegistry& getMutableTestCaseRegistry() = 0;
     };
 
     IRegistryHub const& getRegistryHub();
@@ -1506,7 +1508,7 @@ namespace Catch {
         } // namespace Detail
 #elif defined(_MSC_VER) || defined(__IAR_SYSTEMS_ICC__)
 
-#if defined(_MSVC_VER)
+#if defined(_MSC_VER)
 #pragma optimize("", off)
 #elif defined(__IAR_SYSTEMS_ICC__)
 // For IAR the pragma only affects the following function
@@ -1543,6 +1545,13 @@ namespace Catch {
         template <typename Fn, typename... Args>
         inline auto invoke_deoptimized(Fn&& fn, Args&&... args) -> std::enable_if_t<std::is_same<void, decltype(fn(args...))>::value> {
             CATCH_FORWARD((fn)) (CATCH_FORWARD(args)...);
+            // In the non-void case, we pass the result through `deoptimize_value`
+            // to force the compiler to keep it. We have no return value here,
+            // but add an optimizer barrier (ideally a memory clobber) to force
+            // the _side effects_ of the loop be visible (e.g. writes to globals).
+            // Note that writes to benchmark-locals can be optimized away, as
+            // we would expect in normal code.
+            Detail::optimizer_barrier();
         }
     } // namespace Benchmark
 } // namespace Catch
@@ -2159,9 +2168,94 @@ namespace Catch {
 #include <exception>
 #include <string>
 #include <cmath>
+#include <type_traits>
 
 namespace Catch {
     namespace Benchmark {
+        namespace Detail {
+            template <typename Clock>
+            ExecutionPlan prepare( const IConfig& cfg,
+                                   Environment env,
+                                   BenchmarkFunction&& fun ) {
+                auto min_time =
+                    env.clock_resolution.mean * Detail::minimum_ticks;
+                auto run_time =
+                    std::max( min_time,
+                              std::chrono::duration_cast<decltype( min_time )>(
+                                  cfg.benchmarkWarmupTime() ) );
+                auto&& test = Detail::run_for_at_least<Clock>(
+                    std::chrono::duration_cast<IDuration>( run_time ), 1, fun );
+                int new_iters = static_cast<int>(
+                    std::ceil( min_time * test.iterations / test.elapsed ) );
+                return { new_iters,
+                         test.elapsed / test.iterations * new_iters *
+                             cfg.benchmarkSamples(),
+                         CATCH_MOVE( fun ),
+                         std::chrono::duration_cast<FDuration>(
+                             cfg.benchmarkWarmupTime() ),
+                         Detail::warmup_iterations };
+            }
+
+            // These are wrappers for their respective function templated
+            // over `default_clock`. This allows outlining the usual use
+            // of the template into single TU and save on compilation costs.
+
+            Environment measure_environment_default();
+            ExecutionPlan prepare_default( const IConfig& cfg,
+                                           Environment env,
+                                           BenchmarkFunction&& fun );
+            std::vector<FDuration> run_plan_default( ExecutionPlan const& plan,
+                                                     const IConfig& cfg,
+                                                     Environment env );
+
+            template <typename Clock>
+            std::enable_if_t<std::is_same<Clock, default_clock>::value,
+                             Environment>
+            measureEnvironmentDispatch() {
+                return measure_environment_default();
+            }
+            template <typename Clock>
+            std::enable_if_t<!std::is_same<Clock, default_clock>::value,
+                             Environment>
+            measureEnvironmentDispatch() {
+                return measure_environment<Clock>();
+            }
+
+            template <typename Clock>
+            std::enable_if_t<std::is_same<Clock, default_clock>::value,
+                             std::vector<FDuration>>
+            runPlanDispatch( ExecutionPlan const& plan,
+                             const IConfig& cfg,
+                             Environment env ) {
+                return run_plan_default( plan, cfg, env );
+            }
+            template <typename Clock>
+            std::enable_if_t<!std::is_same<Clock, default_clock>::value,
+                             std::vector<FDuration>>
+            runPlanDispatch( ExecutionPlan const& plan,
+                             const IConfig& cfg,
+                             Environment env ) {
+                return plan.template run<Clock>( cfg, env );
+            }
+
+            template <typename Clock>
+            std::enable_if_t<std::is_same<Clock, default_clock>::value,
+                             ExecutionPlan>
+            prepareDispatch( const IConfig& cfg,
+                             Environment env,
+                             BenchmarkFunction&& fun ) {
+                return prepare_default( cfg, env, CATCH_MOVE( fun ) );
+            }
+            template <typename Clock>
+            std::enable_if_t<!std::is_same<Clock, default_clock>::value,
+                             ExecutionPlan>
+            prepareDispatch( const IConfig& cfg,
+                             Environment env,
+                             BenchmarkFunction&& fun ) {
+                return prepare<Clock>( cfg, env, CATCH_MOVE( fun ) );
+            }
+        } // namespace Detail
+
         struct Benchmark {
             Benchmark(std::string&& benchmarkName)
                 : name(CATCH_MOVE(benchmarkName)) {}
@@ -2170,27 +2264,18 @@ namespace Catch {
             Benchmark(std::string&& benchmarkName , FUN &&func)
                 : fun(CATCH_MOVE(func)), name(CATCH_MOVE(benchmarkName)) {}
 
-            template <typename Clock>
-            ExecutionPlan prepare(const IConfig &cfg, Environment env) {
-                auto min_time = env.clock_resolution.mean * Detail::minimum_ticks;
-                auto run_time = std::max(min_time, std::chrono::duration_cast<decltype(min_time)>(cfg.benchmarkWarmupTime()));
-                auto&& test = Detail::run_for_at_least<Clock>(std::chrono::duration_cast<IDuration>(run_time), 1, fun);
-                int new_iters = static_cast<int>(std::ceil(min_time * test.iterations / test.elapsed));
-                return { new_iters, test.elapsed / test.iterations * new_iters * cfg.benchmarkSamples(), CATCH_MOVE(fun), std::chrono::duration_cast<FDuration>(cfg.benchmarkWarmupTime()), Detail::warmup_iterations };
-            }
-
             template <typename Clock = default_clock>
             void run() {
                 static_assert( Clock::is_steady,
                                "Benchmarking clock should be steady" );
                 auto const* cfg = getCurrentContext().getConfig();
 
-                auto env = Detail::measure_environment<Clock>();
+                auto env = Detail::measureEnvironmentDispatch<Clock>();
 
                 getResultCapture().benchmarkPreparing(name);
                 CATCH_TRY{
                     auto plan = user_code([&] {
-                        return prepare<Clock>(*cfg, env);
+                        return Detail::prepareDispatch<Clock>( *cfg, env, CATCH_MOVE(fun) );
                     });
 
                     BenchmarkInfo info {
@@ -2206,7 +2291,7 @@ namespace Catch {
                     getResultCapture().benchmarkStarting(info);
 
                     auto samples = user_code([&] {
-                        return plan.template run<Clock>(*cfg, env);
+                        return Detail::runPlanDispatch<Clock>( plan, *cfg, env );
                     });
 
                     auto analysis = Detail::analyse(*cfg, samples.data(), samples.data() + samples.size());
@@ -3736,6 +3821,7 @@ namespace Catch {
         std::vector<std::string> splitReporterSpec( StringRef reporterSpec );
 
         Optional<ColourMode> stringToColourMode( StringRef colourMode );
+        Optional<Verbosity> stringToVerbosity( StringRef verbosity );
     }
 
     /**
@@ -3750,6 +3836,7 @@ namespace Catch {
         std::string m_name;
         Optional<std::string> m_outputFileName;
         Optional<ColourMode> m_colourMode;
+        Optional<Verbosity> m_verbosity;
         std::map<std::string, std::string> m_customOptions;
 
         friend bool operator==( ReporterSpec const& lhs,
@@ -3764,6 +3851,7 @@ namespace Catch {
             std::string name,
             Optional<std::string> outputFileName,
             Optional<ColourMode> colourMode,
+            Optional<Verbosity> verbosity,
             std::map<std::string, std::string> customOptions );
 
         std::string const& name() const { return m_name; }
@@ -3774,13 +3862,15 @@ namespace Catch {
 
         Optional<ColourMode> const& colourMode() const { return m_colourMode; }
 
+        Optional<Verbosity> const& verbosity() const { return m_verbosity; }
+
         std::map<std::string, std::string> const& customOptions() const {
             return m_customOptions;
         }
     };
 
     /**
-     * Parses provided reporter spec string into
+     * Parses provided reporter spec string into actual `ReporterSpec`
      *
      * Returns empty optional on errors, e.g.
      *  * field that is not first and not a key+value pair
@@ -3813,6 +3903,7 @@ namespace Catch {
         std::string name;
         std::string outputFilename;
         ColourMode colourMode;
+        Verbosity verbosity;
         std::map<std::string, std::string> customOptions;
         friend bool operator==( ProcessedReporterSpec const& lhs,
                                 ProcessedReporterSpec const& rhs );
@@ -3840,6 +3931,7 @@ namespace Catch {
 
         int abortAfter = -1;
         uint32_t rngSeed = generateRandomSeed(GenerateFrom::Default);
+        bool rngSeedWasFixed = false;
 
         unsigned int shardCount = 1;
         unsigned int shardIndex = 0;
@@ -3911,6 +4003,7 @@ namespace Catch {
         double minDuration() const override;
         TestRunOrder runOrder() const override;
         uint32_t rngSeed() const override;
+        bool rngSeedWasFixed() const;
         unsigned int shardCount() const override;
         unsigned int shardIndex() const override;
         ColourMode defaultColourMode() const override;
@@ -6624,6 +6717,51 @@ namespace Catch {
         struct priority_tag : priority_tag<N - 1> {};
         template <>
         struct priority_tag<0> {};
+
+        // This is a bunch of helpers for the templated test case handling.
+        // They should live elsewhere in the long run, but as an in-between
+        // step we toss them all here.
+        template <typename...> struct TypeList {};
+        template <typename... Ts>
+        constexpr auto get_wrapper( priority_tag<1> ) noexcept -> TypeList<Ts...> { return {}; }
+        template <template <typename...> class...> struct TemplateTypeList {};
+        // Clang 20 and 21 cannot handle an explicitly specified all-pack
+        // template-template parameter here ("conflicting deduction" regression,
+        // llvm/llvm-project#130778; fixed for Clang 22).
+        // Remove get_template_wrapper once Clang 21 is no longer supported.
+        template <template <typename...> class C, template <typename...> class... Cs>
+        constexpr auto get_template_wrapper( priority_tag<1> ) noexcept -> TemplateTypeList<C, Cs...> { return {}; }
+
+        template <typename...>
+        struct append;
+        template <typename T>
+        struct append<T> { using type = T; };
+        template <template <typename...> class L1, typename... E1, template <typename...> class L2, typename... E2, typename... Rest>
+        struct append<L1<E1...>, L2<E2...>, Rest...> { using type = typename append<L1<E1..., E2...>, Rest...>::type; };
+        template <template <typename...> class L1, typename... E1, typename... Rest>
+        struct append<L1<E1...>, TypeList<mpl_::na>, Rest...> { using type = L1<E1...>; };
+
+        template <template <typename...> class, typename>
+        struct convert;
+        template <template <typename...> class Final, template <typename...> class List, typename... Ts>
+        struct convert<Final, List<Ts...>> { using type = typename append<Final<>, TypeList<Ts>...>::type; };
+
+        // These are helpers for the PRODUCT templated test cases.
+        // Note that the _SIG macros (for NTTPs) also use specializations
+        // of these, but they have to use their own instances due to needing
+        // per-sig specializations and we have to keep these in their own
+        // unnamed namespace.
+        template <typename...>
+        struct rewrap;
+        template <template <typename...> class Container, template <typename...> class List, typename... elems>
+        struct rewrap<TemplateTypeList<Container>, List<elems...>> { using type = TypeList<Container<elems...>>; };
+        template <template <typename...> class Container, template <typename...> class List, class... Elems, typename... Elements>
+        struct rewrap<TemplateTypeList<Container>, List<Elems...>, Elements...> { using type = typename append<TypeList<Container<Elems...>>, typename rewrap<TemplateTypeList<Container>, Elements...>::type>::type; };
+
+        template <template <typename...> class, typename...>
+        struct create;
+        template <template <typename...> class Final, template <typename...> class... Containers, typename... Types>
+        struct create<Final, TemplateTypeList<Containers...>, TypeList<Types...>> { using type = typename append<Final<>, typename rewrap<TemplateTypeList<Containers>, Types...>::type...>::type; };
     }
 }
 
@@ -6710,46 +6848,42 @@ namespace Catch {
 
 #define INTERNAL_CATCH_VA_NARGS_IMPL(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...) N
 
-#define INTERNAL_CATCH_TYPE_GEN\
-    template<typename...> struct TypeList {};\
-    template<typename... Ts>\
-    constexpr auto get_wrapper(Catch::Detail::priority_tag<1>) noexcept -> TypeList<Ts...> { return {}; }\
-    template<template<typename...> class...> struct TemplateTypeList{};\
-    template<template<typename...> class...Cs>\
-    constexpr auto get_wrapper(Catch::Detail::priority_tag<1>) noexcept -> TemplateTypeList<Cs...> { return {}; }\
-    template<typename...>\
-    struct append;\
-    template<typename...>\
-    struct rewrap;\
-    template<template<typename...> class, typename...>\
-    struct create;\
-    template<template<typename...> class, typename>\
-    struct convert;\
-    \
-    template<typename T> \
-    struct append<T> { using type = T; };\
-    template< template<typename...> class L1, typename...E1, template<typename...> class L2, typename...E2, typename...Rest>\
-    struct append<L1<E1...>, L2<E2...>, Rest...> { using type = typename append<L1<E1...,E2...>, Rest...>::type; };\
-    template< template<typename...> class L1, typename...E1, typename...Rest>\
-    struct append<L1<E1...>, TypeList<mpl_::na>, Rest...> { using type = L1<E1...>; };\
+#define INTERNAL_CATCH_TYPE_GEN \
+    /* We moved these into a central location and no longer create them
+       in each templated test's unnamed namespace, but we pull them in
+       with using to avoid qualifying all the references. */ \
+    using Catch::Detail::TypeList;                     \
+    using Catch::Detail::get_wrapper;                  \
+    using Catch::Detail::TemplateTypeList;             \
+    using Catch::Detail::get_template_wrapper;         \
+    using Catch::Detail::append;                       \
+    using Catch::Detail::convert;
+
+// This stamps out the per test case specializations of wrapper handlers
+// for _SIG (NTTP) macros inside their own namespace, so they can add
+// their required specializations
+#define INTERNAL_CATCH_NTTP_1( signature, ... ) \
+    template<INTERNAL_CATCH_REMOVE_PARENS(signature)> struct Nttp{};\
+    template<INTERNAL_CATCH_REMOVE_PARENS(signature)>\
+    constexpr auto get_wrapper(Catch::Detail::priority_tag<0>) noexcept -> Nttp<__VA_ARGS__> { return {}; } \
+    template<template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class...> struct NttpTemplateTypeList{};\
+    template<template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class C, template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class...Cs>\
+    constexpr auto get_template_wrapper(Catch::Detail::priority_tag<0>) noexcept -> NttpTemplateTypeList<C, Cs...> { return {}; }
+
+// This stamps out the per test case specializations of type-product
+// machinery for the NTTP product macros.
+#define INTERNAL_CATCH_NTTP_REWRAP_1( signature, ... ) \
+    template<typename...>                              \
+    struct rewrap;                                     \
+    template<template<typename...> class, typename...> \
+    struct create;                                     \
     \
     template< template<typename...> class Container, template<typename...> class List, typename...elems>\
     struct rewrap<TemplateTypeList<Container>, List<elems...>> { using type = TypeList<Container<elems...>>; };\
     template< template<typename...> class Container, template<typename...> class List, class...Elems, typename...Elements>\
     struct rewrap<TemplateTypeList<Container>, List<Elems...>, Elements...> { using type = typename append<TypeList<Container<Elems...>>, typename rewrap<TemplateTypeList<Container>, Elements...>::type>::type; };\
-    \
     template<template <typename...> class Final, template< typename...> class...Containers, typename...Types>\
     struct create<Final, TemplateTypeList<Containers...>, TypeList<Types...>> { using type = typename append<Final<>, typename rewrap<TemplateTypeList<Containers>, Types...>::type...>::type; };\
-    template<template <typename...> class Final, template <typename...> class List, typename...Ts>\
-    struct convert<Final, List<Ts...>> { using type = typename append<Final<>,TypeList<Ts>...>::type; };
-
-#define INTERNAL_CATCH_NTTP_1(signature, ...)\
-    template<INTERNAL_CATCH_REMOVE_PARENS(signature)> struct Nttp{};\
-    template<INTERNAL_CATCH_REMOVE_PARENS(signature)>\
-    constexpr auto get_wrapper(Catch::Detail::priority_tag<0>) noexcept -> Nttp<__VA_ARGS__> { return {}; } \
-    template<template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class...> struct NttpTemplateTypeList{};\
-    template<template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class...Cs>\
-    constexpr auto get_wrapper(Catch::Detail::priority_tag<0>) noexcept -> NttpTemplateTypeList<Cs...> { return {}; } \
     \
     template< template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class Container, template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class List, INTERNAL_CATCH_REMOVE_PARENS(signature)>\
     struct rewrap<NttpTemplateTypeList<Container>, List<__VA_ARGS__>> { using type = TypeList<Container<__VA_ARGS__>>; };\
@@ -6826,7 +6960,9 @@ namespace Catch {
 
 #ifndef CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
 #define INTERNAL_CATCH_NTTP_0
+#define INTERNAL_CATCH_NTTP_0_REWRAP using Catch::Detail::rewrap; using Catch::Detail::create;
 #define INTERNAL_CATCH_NTTP_GEN(...) INTERNAL_CATCH_VA_NARGS_IMPL(__VA_ARGS__, INTERNAL_CATCH_NTTP_1(__VA_ARGS__), INTERNAL_CATCH_NTTP_1(__VA_ARGS__), INTERNAL_CATCH_NTTP_1(__VA_ARGS__), INTERNAL_CATCH_NTTP_1(__VA_ARGS__), INTERNAL_CATCH_NTTP_1(__VA_ARGS__), INTERNAL_CATCH_NTTP_1( __VA_ARGS__), INTERNAL_CATCH_NTTP_1( __VA_ARGS__), INTERNAL_CATCH_NTTP_1( __VA_ARGS__), INTERNAL_CATCH_NTTP_1( __VA_ARGS__),INTERNAL_CATCH_NTTP_1( __VA_ARGS__), INTERNAL_CATCH_NTTP_0)
+#define INTERNAL_CATCH_NTTP_REWRAP_GEN(...) INTERNAL_CATCH_VA_NARGS_IMPL(__VA_ARGS__, INTERNAL_CATCH_NTTP_REWRAP_1(__VA_ARGS__), INTERNAL_CATCH_NTTP_REWRAP_1(__VA_ARGS__), INTERNAL_CATCH_NTTP_REWRAP_1(__VA_ARGS__), INTERNAL_CATCH_NTTP_REWRAP_1(__VA_ARGS__), INTERNAL_CATCH_NTTP_REWRAP_1(__VA_ARGS__), INTERNAL_CATCH_NTTP_REWRAP_1( __VA_ARGS__), INTERNAL_CATCH_NTTP_REWRAP_1( __VA_ARGS__), INTERNAL_CATCH_NTTP_REWRAP_1( __VA_ARGS__), INTERNAL_CATCH_NTTP_REWRAP_1( __VA_ARGS__),INTERNAL_CATCH_NTTP_REWRAP_1( __VA_ARGS__), INTERNAL_CATCH_NTTP_0_REWRAP)
 #define INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD(TestName, ...) INTERNAL_CATCH_VA_NARGS_IMPL( "dummy", __VA_ARGS__, INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X,INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X,INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X,INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD1, INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD0)(TestName, __VA_ARGS__)
 #define INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD(TestName, ClassName, ...) INTERNAL_CATCH_VA_NARGS_IMPL( "dummy", __VA_ARGS__, INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X,INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X,INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X,INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD1, INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD0)(TestName, ClassName, __VA_ARGS__)
 #define INTERNAL_CATCH_NTTP_REG_METHOD_GEN(TestName, ...) INTERNAL_CATCH_VA_NARGS_IMPL( "dummy", __VA_ARGS__, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD0, INTERNAL_CATCH_NTTP_REGISTER_METHOD0)(TestName, __VA_ARGS__)
@@ -6836,7 +6972,9 @@ namespace Catch {
 #define INTERNAL_CATCH_REMOVE_PARENS_GEN(...) INTERNAL_CATCH_VA_NARGS_IMPL(__VA_ARGS__, INTERNAL_CATCH_REMOVE_PARENS_11_ARG,INTERNAL_CATCH_REMOVE_PARENS_10_ARG,INTERNAL_CATCH_REMOVE_PARENS_9_ARG,INTERNAL_CATCH_REMOVE_PARENS_8_ARG,INTERNAL_CATCH_REMOVE_PARENS_7_ARG,INTERNAL_CATCH_REMOVE_PARENS_6_ARG,INTERNAL_CATCH_REMOVE_PARENS_5_ARG,INTERNAL_CATCH_REMOVE_PARENS_4_ARG,INTERNAL_CATCH_REMOVE_PARENS_3_ARG,INTERNAL_CATCH_REMOVE_PARENS_2_ARG,INTERNAL_CATCH_REMOVE_PARENS_1_ARG)(__VA_ARGS__)
 #else
 #define INTERNAL_CATCH_NTTP_0(signature)
+#define INTERNAL_CATCH_NTTP_0_REWRAP(signature) using Catch::Detail::rewrap; using Catch::Detail::create;
 #define INTERNAL_CATCH_NTTP_GEN(...) INTERNAL_CATCH_EXPAND_VARGS(INTERNAL_CATCH_VA_NARGS_IMPL(__VA_ARGS__, INTERNAL_CATCH_NTTP_1, INTERNAL_CATCH_NTTP_1, INTERNAL_CATCH_NTTP_1, INTERNAL_CATCH_NTTP_1, INTERNAL_CATCH_NTTP_1, INTERNAL_CATCH_NTTP_1, INTERNAL_CATCH_NTTP_1, INTERNAL_CATCH_NTTP_1, INTERNAL_CATCH_NTTP_1,INTERNAL_CATCH_NTTP_1, INTERNAL_CATCH_NTTP_0)( __VA_ARGS__))
+#define INTERNAL_CATCH_NTTP_REWRAP_GEN(...) INTERNAL_CATCH_EXPAND_VARGS(INTERNAL_CATCH_VA_NARGS_IMPL(__VA_ARGS__, INTERNAL_CATCH_NTTP_REWRAP_1, INTERNAL_CATCH_NTTP_REWRAP_1, INTERNAL_CATCH_NTTP_REWRAP_1, INTERNAL_CATCH_NTTP_REWRAP_1, INTERNAL_CATCH_NTTP_REWRAP_1, INTERNAL_CATCH_NTTP_REWRAP_1, INTERNAL_CATCH_NTTP_REWRAP_1, INTERNAL_CATCH_NTTP_REWRAP_1, INTERNAL_CATCH_NTTP_REWRAP_1,INTERNAL_CATCH_NTTP_REWRAP_1, INTERNAL_CATCH_NTTP_0_REWRAP)( __VA_ARGS__))
 #define INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD(TestName, ...) INTERNAL_CATCH_EXPAND_VARGS(INTERNAL_CATCH_VA_NARGS_IMPL( "dummy", __VA_ARGS__, INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X,INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X,INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X,INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD1, INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD0)(TestName, __VA_ARGS__))
 #define INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD(TestName, ClassName, ...) INTERNAL_CATCH_EXPAND_VARGS(INTERNAL_CATCH_VA_NARGS_IMPL( "dummy", __VA_ARGS__, INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X,INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X,INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X,INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X, INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD1, INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD0)(TestName, ClassName, __VA_ARGS__))
 #define INTERNAL_CATCH_NTTP_REG_METHOD_GEN(TestName, ...) INTERNAL_CATCH_EXPAND_VARGS(INTERNAL_CATCH_VA_NARGS_IMPL( "dummy", __VA_ARGS__, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD, INTERNAL_CATCH_NTTP_REGISTER_METHOD0, INTERNAL_CATCH_NTTP_REGISTER_METHOD0)(TestName, __VA_ARGS__))
@@ -6961,6 +7099,7 @@ namespace Catch {
         namespace INTERNAL_CATCH_MAKE_NAMESPACE(TestName) {                                     \
             INTERNAL_CATCH_TYPE_GEN                                                  \
             INTERNAL_CATCH_NTTP_GEN(INTERNAL_CATCH_REMOVE_PARENS(Signature))         \
+            INTERNAL_CATCH_NTTP_REWRAP_GEN(INTERNAL_CATCH_REMOVE_PARENS(Signature))  \
             template<typename... Types>                               \
             struct TestName {                                         \
                 void reg_tests() {                                          \
@@ -6973,7 +7112,7 @@ namespace Catch {
                 }                                                     \
             };                                                        \
             static const int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){ \
-                using TestInit = typename create<TestName, decltype(get_wrapper<INTERNAL_CATCH_REMOVE_PARENS(TmplTypes)>(Catch::Detail::priority_tag<1>{})), TypeList<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(INTERNAL_CATCH_REMOVE_PARENS(TypesList))>>::type; \
+                using TestInit = typename create<TestName, decltype(get_template_wrapper<INTERNAL_CATCH_REMOVE_PARENS(TmplTypes)>(Catch::Detail::priority_tag<1>{})), TypeList<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(INTERNAL_CATCH_REMOVE_PARENS(TypesList))>>::type; \
                 TestInit t;                                           \
                 t.reg_tests();                                        \
                 return 0;                                             \
@@ -7057,7 +7196,7 @@ namespace Catch {
             static const int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){\
                 TestNameClass<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(__VA_ARGS__)>();\
                 return 0;\
-        }();\
+            }();\
         }\
         }\
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
@@ -7093,6 +7232,7 @@ namespace Catch {
     namespace INTERNAL_CATCH_MAKE_NAMESPACE(TestNameClass) {\
         INTERNAL_CATCH_TYPE_GEN                  \
         INTERNAL_CATCH_NTTP_GEN(INTERNAL_CATCH_REMOVE_PARENS(Signature))\
+        INTERNAL_CATCH_NTTP_REWRAP_GEN(INTERNAL_CATCH_REMOVE_PARENS(Signature))\
         template<typename...Types>\
         struct TestNameClass{\
             void reg_tests(){\
@@ -7105,7 +7245,7 @@ namespace Catch {
             }\
         };\
         static const int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){\
-            using TestInit = typename create<TestNameClass, decltype(get_wrapper<INTERNAL_CATCH_REMOVE_PARENS(TmplTypes)>(Catch::Detail::priority_tag<1>{})), TypeList<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(INTERNAL_CATCH_REMOVE_PARENS(TypesList))>>::type;\
+            using TestInit = typename create<TestNameClass, decltype(get_template_wrapper<INTERNAL_CATCH_REMOVE_PARENS(TmplTypes)>(Catch::Detail::priority_tag<1>{})), TypeList<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(INTERNAL_CATCH_REMOVE_PARENS(TypesList))>>::type;\
             TestInit t;\
             t.reg_tests();\
             return 0;\
@@ -7571,8 +7711,8 @@ namespace Catch {
 #define CATCH_VERSION_MACROS_HPP_INCLUDED
 
 #define CATCH_VERSION_MAJOR 3
-#define CATCH_VERSION_MINOR 15
-#define CATCH_VERSION_PATCH 3
+#define CATCH_VERSION_MINOR 16
+#define CATCH_VERSION_PATCH 0
 
 #endif // CATCH_VERSION_MACROS_HPP_INCLUDED
 
@@ -9159,6 +9299,7 @@ namespace Catch {
         ReporterConfig( IConfig const* _fullConfig,
                         Detail::unique_ptr<IStream> _stream,
                         ColourMode colourMode,
+                        Verbosity verbosity,
                         std::map<std::string, std::string> customOptions );
 
         ReporterConfig( ReporterConfig&& ) = default;
@@ -9168,12 +9309,14 @@ namespace Catch {
         Detail::unique_ptr<IStream> takeStream() &&;
         IConfig const* fullConfig() const;
         ColourMode colourMode() const;
+        Verbosity verbosity() const;
         std::map<std::string, std::string> const& customOptions() const;
 
     private:
         Detail::unique_ptr<IStream> m_stream;
         IConfig const* m_fullConfig;
         ColourMode m_colourMode;
+        Verbosity m_verbosity;
         std::map<std::string, std::string> m_customOptions;
     };
 
@@ -9426,8 +9569,7 @@ namespace Catch {
     class ITestCaseRegistry {
     public:
         virtual ~ITestCaseRegistry(); // = default
-        // TODO: this exists only for adding filenames to test cases -- let's expose this in a saner way later
-        virtual std::vector<TestCaseInfo* > const& getAllInfos() const = 0;
+        virtual void enableFilenameTags() = 0;
         virtual std::vector<TestCaseHandle> const& getAllTests() const = 0;
         virtual std::vector<TestCaseHandle> const& getAllTestsSorted( IConfig const& config ) const = 0;
     };
@@ -11290,20 +11432,20 @@ namespace Catch {
     class TestRegistry final : public ITestCaseRegistry {
     public:
         void registerTest( Detail::unique_ptr<TestCaseInfo> testInfo, Detail::unique_ptr<ITestInvoker> testInvoker );
+        void enableFilenameTags() override;
 
-        std::vector<TestCaseInfo*> const& getAllInfos() const override;
         std::vector<TestCaseHandle> const& getAllTests() const override;
         std::vector<TestCaseHandle> const& getAllTestsSorted( IConfig const& config ) const override;
 
+        TestRegistry();
         ~TestRegistry() override; // = default
 
     private:
-        std::vector<Detail::unique_ptr<TestCaseInfo>> m_owned_test_infos;
-        // Keeps a materialized vector for `getAllInfos`.
-        // We should get rid of that eventually (see interface note)
-        std::vector<TestCaseInfo*> m_viewed_test_infos;
-
+        // Owns the test infos for handles
+        std::vector<Detail::unique_ptr<TestCaseInfo>> m_test_infos;
+        // Owns the test invokers for handles
         std::vector<Detail::unique_ptr<ITestInvoker>> m_invokers;
+
         std::vector<TestCaseHandle> m_handles;
         mutable TestRunOrder m_currentSortOrder = TestRunOrder::Declared;
         mutable std::vector<TestCaseHandle> m_sortedFunctions;
@@ -13301,44 +13443,40 @@ namespace Catch {
 namespace Catch {
 namespace Matchers {
 
-    struct CasedString {
-        CasedString( std::string const& str, CaseSensitive caseSensitivity );
-        std::string adjustString( std::string const& str ) const;
-        StringRef caseSensitivitySuffix() const;
-
-        CaseSensitive m_caseSensitivity;
-        std::string m_str;
-    };
-
     class StringMatcherBase : public MatcherBase<std::string> {
     protected:
-        CasedString m_comparator;
+        std::string m_target;
         StringRef m_operation;
+        CaseSensitive m_caseSensitivity;
 
+        StringMatcherBase( std::string target,
+                           StringRef operation,
+                           CaseSensitive caseSensitivity );
     public:
-        StringMatcherBase( StringRef operation,
-                           CasedString const& comparator );
         std::string describe() const override;
     };
 
     class StringEqualsMatcher final : public StringMatcherBase {
     public:
-        StringEqualsMatcher( CasedString const& comparator );
+        StringEqualsMatcher( std::string comparator, CaseSensitive caseSensitivity );
         bool match( std::string const& source ) const override;
     };
     class StringContainsMatcher final : public StringMatcherBase {
     public:
-        StringContainsMatcher( CasedString const& comparator );
+        StringContainsMatcher( std::string comparator,
+                               CaseSensitive caseSensitivity );
         bool match( std::string const& source ) const override;
     };
     class StartsWithMatcher final : public StringMatcherBase {
     public:
-        StartsWithMatcher( CasedString const& comparator );
+        StartsWithMatcher( std::string comparator,
+                           CaseSensitive caseSensitivity );
         bool match( std::string const& source ) const override;
     };
     class EndsWithMatcher final : public StringMatcherBase {
     public:
-        EndsWithMatcher( CasedString const& comparator );
+        EndsWithMatcher( std::string comparator,
+                         CaseSensitive caseSensitivity );
         bool match( std::string const& source ) const override;
     };
 
@@ -13353,15 +13491,15 @@ namespace Matchers {
     };
 
     //! Creates matcher that accepts strings that are exactly equal to `str`
-    StringEqualsMatcher Equals( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
+    StringEqualsMatcher Equals( std::string str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings that contain `str`
-    StringContainsMatcher ContainsSubstring( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
+    StringContainsMatcher ContainsSubstring( std::string str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings that _end_ with `str`
-    EndsWithMatcher EndsWith( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
+    EndsWithMatcher EndsWith( std::string str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings that _start_ with `str`
-    StartsWithMatcher StartsWith( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
+    StartsWithMatcher StartsWith( std::string str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings matching `regex`
-    RegexMatcher Matches( std::string const& regex, CaseSensitive caseSensitivity = CaseSensitive::Yes );
+    RegexMatcher Matches( std::string regex, CaseSensitive caseSensitivity = CaseSensitive::Yes );
 
 } // namespace Matchers
 } // namespace Catch
@@ -13615,6 +13753,8 @@ namespace Catch {
         std::ostream& m_stream;
         //! Colour implementation this reporter was configured for
         Detail::unique_ptr<ColourImpl> m_colour;
+        //! Verbosity configured for this reporter
+        Verbosity m_verbosity;
         //! The custom reporter options user passed down to the reporter
         std::map<std::string, std::string> m_customOptions;
 
@@ -14206,9 +14346,6 @@ namespace Catch {
         std::stack<Writer> m_writers{};
 
         bool m_startedListing = false;
-
-        // std::size_t m_sectionDepth = 0;
-        // std::size_t m_sectionStarted = 0;
     };
 } // namespace Catch
 

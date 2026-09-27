@@ -31,20 +31,20 @@ namespace Catch {
     class TestRegistry final : public ITestCaseRegistry {
     public:
         void registerTest( Detail::unique_ptr<TestCaseInfo> testInfo, Detail::unique_ptr<ITestInvoker> testInvoker );
+        void enableFilenameTags() override;
 
-        std::vector<TestCaseInfo*> const& getAllInfos() const override;
         std::vector<TestCaseHandle> const& getAllTests() const override;
         std::vector<TestCaseHandle> const& getAllTestsSorted( IConfig const& config ) const override;
 
+        TestRegistry();
         ~TestRegistry() override; // = default
 
     private:
-        std::vector<Detail::unique_ptr<TestCaseInfo>> m_owned_test_infos;
-        // Keeps a materialized vector for `getAllInfos`.
-        // We should get rid of that eventually (see interface note)
-        std::vector<TestCaseInfo*> m_viewed_test_infos;
-
+        // Owns the test infos for handles
+        std::vector<Detail::unique_ptr<TestCaseInfo>> m_test_infos;
+        // Owns the test invokers for handles
         std::vector<Detail::unique_ptr<ITestInvoker>> m_invokers;
+
         std::vector<TestCaseHandle> m_handles;
         mutable TestRunOrder m_currentSortOrder = TestRunOrder::Declared;
         mutable std::vector<TestCaseHandle> m_sortedFunctions;

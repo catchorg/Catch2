@@ -169,7 +169,7 @@ namespace TestCaseTracking {
 
     bool SectionTracker::isFilteredImpl() const {
         // TBD: This is currently _very_ similar to the block in `isComplete`.
-        //      Is this neccessarily that way, or just accident of current semantics?
+        //      Is this necessarily that way, or just accident of current semantics?
         const size_t filterIndex =
             m_newStyleFilters ? m_allTrackerDepth : m_sectionOnlyDepth;
 

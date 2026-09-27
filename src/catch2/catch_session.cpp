@@ -31,7 +31,6 @@
 #include <cstdlib>
 #include <exception>
 #include <iomanip>
-#include <set>
 
 namespace Catch {
 
@@ -86,24 +85,32 @@ namespace Catch {
                 assert( m_config->testSpec().getInvalidSpecs().empty() &&
                         "Invalid test specs should be handled before running tests" );
 
+                // Note that we are working with pointers into this vector
+                // of sorted test cases, so sorting/unique-ing the pointers
+                // keeps the user-specified order.
                 auto const& allTestCases = getAllTestCasesSorted(*m_config);
                 auto const& testSpec = m_config->testSpec();
+                m_tests.reserve( allTestCases.size() );
                 if ( !testSpec.hasFilters() ) {
                     for ( auto const& test : allTestCases ) {
                         if ( !test.getTestCaseInfo().isHidden() ) {
-                            m_tests.emplace( &test );
+                            m_tests.push_back( &test );
                         }
                     }
                 } else {
-                    m_matches =
-                        testSpec.matchesByFilter( allTestCases, *m_config );
+                    m_matches = testSpec.matchesByFilter( allTestCases, *m_config );
                     for ( auto const& match : m_matches ) {
-                        m_tests.insert( match.tests.begin(),
+                        m_tests.insert( m_tests.end(),
+                                        match.tests.begin(),
                                         match.tests.end() );
                     }
+                    std::sort( m_tests.begin(), m_tests.end() );
+                    m_tests.erase(
+                        std::unique( m_tests.begin(), m_tests.end() ),
+                        m_tests.end() );
                 }
 
-                m_tests = createShard(m_tests, m_config->shardCount(), m_config->shardIndex());
+                m_tests = createShard(CATCH_MOVE(m_tests), m_config->shardCount(), m_config->shardIndex());
             }
 
             Totals execute() {
@@ -134,15 +141,13 @@ namespace Catch {
             IEventListener* m_reporter;
             Config const* m_config;
             RunContext m_context;
-            std::set<TestCaseHandle const*> m_tests;
+            std::vector<TestCaseHandle const*> m_tests;
             TestSpec::Matches m_matches;
             bool m_unmatchedTestSpecs = false;
         };
 
         void applyFilenamesAsTags() {
-            for (auto const& testInfo : getRegistryHub().getTestCaseRegistry().getAllInfos()) {
-                testInfo->addFilenameTag();
-            }
+            getMutableRegistryHub().getMutableTestCaseRegistry().enableFilenameTags();
         }
 
         // Creates empty file at path. The path must be writable, we do not
@@ -347,6 +352,19 @@ namespace Catch {
 
         CATCH_TRY {
             config(); // Force config to be constructed
+
+            if ( m_config->shardCount() > 1 &&
+                 m_config->runOrder() == TestRunOrder::Randomized &&
+                 !m_config->rngSeedWasFixed() ) {
+                Catch::cerr()
+                    << "Warning: using sharding (--shard-count) with random "
+                       "order (--order rand, the default) and without a fixed "
+                       "numeric --rng-seed does not guarantee disjoint coverage "
+                       "between shard invocations. Pass the same numeric "
+                       "--rng-seed to every shard, or use --order decl or "
+                       "--order lex instead.\n"
+                    << std::flush;
+            }
 
             // We need to retrieve potential Bazel config with the full Config
             // constructor, so we have to create the guard file after it is created.

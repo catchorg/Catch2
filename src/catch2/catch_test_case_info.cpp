@@ -14,6 +14,7 @@
 #include <cassert>
 #include <cctype>
 #include <algorithm>
+#include <utility>
 
 namespace Catch {
 
@@ -47,32 +48,27 @@ namespace Catch {
             return tcp != TestCaseProperties::None;
         }
 
-        TestCaseProperties parseSpecialTag( StringRef tag ) {
-            if( !tag.empty() && tag[0] == '.' )
-                return TestCaseProperties::IsHidden;
-            else if( tag == "!throws"_sr )
-                return TestCaseProperties::Throws;
-            else if( tag == "!shouldfail"_sr )
-                return TestCaseProperties::ShouldFail;
-            else if( tag == "!mayfail"_sr )
-                return TestCaseProperties::MayFail;
-            else if( tag == "!nonportable"_sr )
-                return TestCaseProperties::NonPortable;
-            else if( tag == "!benchmark"_sr )
-                return TestCaseProperties::Benchmark | TestCaseProperties::IsHidden;
-            else
-                return TestCaseProperties::None;
-        }
-        bool isReservedTag( StringRef tag ) {
-            return parseSpecialTag( tag ) == TestCaseProperties::None
-                && tag.size() > 0
-                && !std::isalnum( static_cast<unsigned char>(tag[0]) );
-        }
-        void enforceNotReservedTag( StringRef tag, SourceLineInfo const& _lineInfo ) {
-            CATCH_ENFORCE( !isReservedTag(tag),
-                          "Tag name: [" << tag << "] is not allowed.\n"
-                          << "Tag names starting with non alphanumeric characters are reserved\n"
-                          << _lineInfo );
+        TestCaseProperties propertiesFromTag( StringRef tag, SourceLineInfo const& _lineInfo ) {
+            if ( tag.empty() ) { return TestCaseProperties::None; }
+            // All tags starting with alphanumeric characters are normal.
+            if ( std::isalnum( tag[0] ) ) { return TestCaseProperties::None; }
+
+            // Explicitly check known special tags, and error out if it is not one of them
+            if ( tag[0] == '.' ) { return TestCaseProperties::IsHidden; }
+            else if ( tag == "!throws"_sr ) { return TestCaseProperties::Throws; }
+            else if ( tag == "!shouldfail"_sr ) { return TestCaseProperties::ShouldFail; }
+            else if ( tag == "!mayfail"_sr ) { return TestCaseProperties::MayFail; }
+            else if ( tag == "!nonportable"_sr ) { return TestCaseProperties::NonPortable; }
+            else if ( tag == "!benchmark"_sr ) {
+                return TestCaseProperties::Benchmark |
+                       TestCaseProperties::IsHidden;
+            } else {
+                CATCH_RUNTIME_ERROR(
+                    "Tag name: [" << tag << "] is not allowed.\n"
+                                  << "Tag names starting with non-alphanumeric "
+                                     "characters are reserved.\n"
+                                  << _lineInfo );
+            }
         }
 
         std::string makeDefaultName() {
@@ -134,6 +130,18 @@ namespace Catch {
         auto requiredSize = originalTags.size() + sizeOfExtraTags(_lineInfo.file);
         backingTags.reserve(requiredSize);
 
+        // Since there is usually only small number of tags on a test case,
+        // the geometric growth on vector does not get time to properly
+        // amortize the reallocations. But we can save a lot of time by
+        // pre-allocating space for all tags.
+        if ( !originalTags.empty() ) {
+            size_t tagCount = 1; // 1 for filename tag
+            for ( size_t i = 0; i < originalTags.size(); ++i ) {
+                if ( originalTags[i] == '[' ) { ++tagCount; }
+            }
+            tags.reserve( tagCount );
+        }
+
         // We cannot copy the tags directly, as we need to normalize
         // some tags, so that [.foo] is copied as [.][foo].
         size_t tagStart = 0;
@@ -169,8 +177,7 @@ namespace Catch {
                                    << _nameAndTags.name << "' at "
                                    << _lineInfo );
 
-                enforceNotReservedTag(tagStr, lineInfo);
-                properties |= parseSpecialTag(tagStr);
+                properties |= propertiesFromTag(tagStr, _lineInfo);
                 // When copying a tag to the backing storage, we need to
                 // check if it is a merged hide tag, such as [.foo], and
                 // if it is, we need to handle it as if it was [foo].
@@ -193,10 +200,21 @@ namespace Catch {
             internalAppendTag("."_sr);
         }
 
-        // Sort and prepare tags
-        std::sort(begin(tags), end(tags));
-        tags.erase(std::unique(begin(tags), end(tags)),
-                   end(tags));
+        // Tests usually have small number of tags, so we explicitly handle
+        // the 1 and 2 tags cases for better performance in low-opt builds.
+        switch ( tags.size() ) {
+        case 1:
+            break;
+        case 2:
+            if ( tags[0] == tags[1] ) { tags.pop_back(); }
+            else if ( tags[1] < tags[0] ) { std::swap( tags[0], tags[1] ); }
+            break;
+        default:
+            std::sort( begin( tags ), end( tags ) );
+            tags.erase( std::unique( begin( tags ), end( tags ) ),
+                        end( tags ) );
+        }
+
     }
 
     bool TestCaseInfo::isHidden() const {
@@ -257,6 +275,12 @@ namespace Catch {
             return cmpClassName < 0;
         }
         return lhs.tags < rhs.tags;
+    }
+
+    bool operator==( TestCaseInfo const& lhs, TestCaseInfo const& rhs ) {
+        return lhs.name == rhs.name
+            && lhs.className == rhs.className
+            && lhs.tags == rhs.tags;
     }
 
 } // end namespace Catch
