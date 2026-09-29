@@ -482,6 +482,20 @@ set_tests_properties(Validation::TestCaseTags
 )
 
 
+add_executable(ThrowingReporter ${TESTS_DIR}/X38-ThrowingReporter.cpp)
+target_link_libraries(ThrowingReporter PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME Reporters::ThrowInConstructor
+  COMMAND
+    $<TARGET_FILE:ThrowingReporter>
+      --reporter ThrowingReporter
+)
+set_tests_properties(Reporters::ThrowInConstructor
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "Error when creating reporter: Exception in constructor"
+)
+
+
 add_executable(QuickExitInTest ${TESTS_DIR}/X40-QuickExit.cpp)
 target_link_libraries(QuickExitInTest PRIVATE Catch2::Catch2WithMain)
 add_test(
