@@ -210,6 +210,8 @@ namespace Catch {
                     stats.testInfo->expectedToFail()
                         ? "Test case was expected to fail, but no failure occurred"
                         : "Test case failed without assertion details" );
+            } else if ( stats.totals.testCases.skipped > 0 ) {
+                xml.scopedElement( "skipped" );
             }
         }
     }
