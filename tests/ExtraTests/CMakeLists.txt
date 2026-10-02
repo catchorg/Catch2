@@ -488,7 +488,7 @@ add_test(
   NAME Reporters::ThrowInConstructor
   COMMAND
     $<TARGET_FILE:ThrowingReporter>
-      --reporter ThrowingReporter
+      --reporter ThrowingReporter::Xthrow-in-constructor=true
 )
 set_tests_properties(Reporters::ThrowInConstructor
   PROPERTIES
