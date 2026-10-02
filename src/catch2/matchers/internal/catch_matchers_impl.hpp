@@ -13,6 +13,7 @@
 #include <catch2/internal/catch_decomposer.hpp>
 #include <catch2/internal/catch_preprocessor_internal_stringify.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_test_macro_impl.hpp>
 
 #include <string>
 
