@@ -333,7 +333,7 @@ TEST_CASE("Registering multiple reporters with the same name fails",
 
 TEST_CASE( "rejectSuperfluousConfigKeys helper",
            "[reporters][reporter-helpers][approvals]" ) {
-    using Catch::rejectSuperfluousConfigKeys, Catch::Matchers::ContainsSubstring;
+    using Catch::rejectSuperfluousConfigKeys; using Catch::Matchers::ContainsSubstring;
 
     std::map<std::string, std::string> options { { "Xfoo", "1" }, { "Xbar", "2" } };
     REQUIRE_THROWS_WITH( rejectSuperfluousConfigKeys( options, {} ),
