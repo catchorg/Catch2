@@ -45,6 +45,14 @@ namespace Catch {
     } // end anonymous namespace
 
 
+    TeamCityReporter::TeamCityReporter( ReporterConfig&& _config ):
+        StreamingReporterBase( CATCH_MOVE( _config ) ) {
+        rejectSuperfluousConfigKeys( m_customOptions, {} );
+
+        m_preferences.shouldRedirectStdOut = true;
+        m_preferences.shouldReportAllAssertionStarts = false;
+    }
+
     TeamCityReporter::~TeamCityReporter() = default;
 
     void TeamCityReporter::testRunStarting( TestRunInfo const& runInfo ) {

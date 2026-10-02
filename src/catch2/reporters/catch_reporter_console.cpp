@@ -402,6 +402,7 @@ ConsoleReporter::ConsoleReporter(ReporterConfig&& config):
             };
         }
     }())) {
+    rejectSuperfluousConfigKeys( m_customOptions, {} );
     m_preferences.shouldReportAllAssertionStarts = false;
 }
 

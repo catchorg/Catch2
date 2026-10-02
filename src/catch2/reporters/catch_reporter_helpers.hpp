@@ -8,13 +8,15 @@
 #ifndef CATCH_REPORTER_HELPERS_HPP_INCLUDED
 #define CATCH_REPORTER_HELPERS_HPP_INCLUDED
 
-#include <iosfwd>
-#include <string>
-#include <vector>
 
 #include <catch2/internal/catch_list.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/catch_totals.hpp>
+
+#include <iosfwd>
+#include <map>
+#include <string>
+#include <vector>
 
 namespace Catch {
 
@@ -93,6 +95,11 @@ namespace Catch {
     void printTestRunTotals( std::ostream& stream,
                       ColourImpl& streamColour,
                       Totals const& totals );
+
+    //! Throws an exception if options contain unknown keys
+    void rejectSuperfluousConfigKeys(
+        std::map<std::string, std::string> const& options,
+        std::initializer_list<StringRef> knownKeys );
 
 } // end namespace Catch
 
