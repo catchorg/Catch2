@@ -21,6 +21,16 @@ TEST_CASE( "An assertion-free test with a generator", "[approvals]" ) {
     DYNAMIC_SECTION( "value " << value ) { std::cout << value; }
 }
 
+TEST_CASE( "A nested failure before an empty generator iteration",
+           "[.][failing][approvals]" ) {
+    const int value = GENERATE( 1, 2 );
+    SECTION( "outer" ) {
+        SECTION( "inner" ) {
+            if ( value == 1 ) { CHECK( false ); }
+        }
+    }
+}
+
 // Generators and sections can be nested freely
 TEST_CASE("Generators -- simple", "[generators]") {
     auto i = GENERATE(1, 2, 3);

@@ -48,6 +48,25 @@ namespace Catch {
             return std::string(timeStamp, timeStampSize - 1);
         }
 
+        AssertionStats const* findFailedAssertion(
+            CumulativeReporterBase::SectionNode const& sectionNode ) {
+            for ( auto const& assertionOrBenchmark :
+                  sectionNode.assertionsAndBenchmarks ) {
+                if ( assertionOrBenchmark.isAssertion() ) {
+                    auto const& assertion = assertionOrBenchmark.asAssertion();
+                    if ( !assertion.assertionResult.isOk() ) {
+                        return &assertion;
+                    }
+                }
+            }
+            for ( auto const& child : sectionNode.childSections ) {
+                if ( auto const* assertion = findFailedAssertion( *child ) ) {
+                    return assertion;
+                }
+            }
+            return nullptr;
+        }
+
         std::string fileNameTag(std::vector<Tag> const& tags) {
             auto it = std::find_if(begin(tags),
                                    end(tags),
@@ -204,12 +223,20 @@ namespace Catch {
             xml.writeAttribute( "status"_sr, "run"_sr );
 
             if ( stats.totals.testCases.failed > 0 ) {
-                auto failure = xml.scopedElement( "failure" );
-                failure.writeAttribute(
-                    "message"_sr,
-                    stats.testInfo->expectedToFail()
-                        ? "Test case was expected to fail, but no failure occurred"
-                        : "Test case failed without assertion details" );
+                // Earlier generator iterations can fail before an empty one.
+                if ( auto const* assertion = findFailedAssertion( rootSection ) ) {
+                    writeAssertion( *assertion );
+                } else {
+                    auto failure = xml.scopedElement( "failure" );
+                    failure.writeAttribute(
+                        "message"_sr,
+                        stats.testInfo->expectedToFail()
+                            ? "Test case was expected to fail, but no failure occurred"
+                            : "Test case failed without assertion details" );
+                }
+            } else if ( stats.totals.testCases.failedButOk > 0 ) {
+                xml.scopedElement( "skipped" )
+                    .writeAttribute( "message", "TEST_CASE tagged with !mayfail" );
             } else if ( stats.totals.testCases.skipped > 0 ) {
                 xml.scopedElement( "skipped" );
             }
