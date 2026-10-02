@@ -330,3 +330,17 @@ TEST_CASE("Registering multiple reporters with the same name fails",
             Catch::Detail::make_unique<TestReporterFactory>() ),
         "reporter using 'some-reporter-name' as name was already registered" );
 }
+
+TEST_CASE( "rejectSuperfluousConfigKeys helper",
+           "[reporters][reporter-helpers][approvals]" ) {
+    using Catch::rejectSuperfluousConfigKeys, Catch::Matchers::ContainsSubstring;
+
+    std::map<std::string, std::string> options { { "Xfoo", "1" }, { "Xbar", "2" } };
+    REQUIRE_THROWS_WITH( rejectSuperfluousConfigKeys( options, {} ),
+                         ContainsSubstring( "Unknown reporter argument:" ) );
+    REQUIRE_THROWS_WITH(
+        rejectSuperfluousConfigKeys( options, { "Xfoo", "Xbaz" } ),
+        ContainsSubstring( "Unknown reporter argument: Xbar" ) );
+    REQUIRE_NOTHROW(
+        Catch::rejectSuperfluousConfigKeys( options, { "Xfoo", "Xbaz", "Xbar" } ) );
+}

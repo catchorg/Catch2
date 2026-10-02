@@ -9,6 +9,7 @@
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_console_width.hpp>
+#include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_errno_guard.hpp>
 #include <catch2/internal/catch_textflow.hpp>
 #include <catch2/internal/catch_reusable_string_stream.hpp>
@@ -375,6 +376,18 @@ namespace Catch {
                 .addRow( totals.assertions.failedButOk ) );
         printSummaryRow( stream, streamColour, "test cases"_sr, columns, 0 );
         printSummaryRow( stream, streamColour, "assertions"_sr, columns, 1 );
+    }
+
+    void rejectSuperfluousConfigKeys(
+        std::map<std::string, std::string> const& options,
+        std::initializer_list<StringRef> knownKeys ) {
+        for ( auto const& option : options ) {
+            StringRef key( option.first );
+            CATCH_ENFORCE( std::find( knownKeys.begin(),
+                                      knownKeys.end(),
+                                      key ) != knownKeys.end(),
+                           "Unknown reporter argument: " << key );
+        }
     }
 
 } // namespace Catch

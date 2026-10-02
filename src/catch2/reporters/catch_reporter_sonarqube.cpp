@@ -31,6 +31,16 @@ namespace Catch {
         }
     }
 
+    SonarQubeReporter::SonarQubeReporter( ReporterConfig&& config ):
+        CumulativeReporterBase( CATCH_MOVE( config ) ), xml( m_stream ) {
+        rejectSuperfluousConfigKeys( m_customOptions, {} );
+
+        m_preferences.shouldRedirectStdOut = true;
+        m_preferences.shouldReportAllAssertions = false;
+        m_preferences.shouldReportAllAssertionStarts = false;
+        m_shouldStoreSuccesfulAssertions = false;
+    }
+
     void SonarQubeReporter::testRunStarting(TestRunInfo const& testRunInfo) {
         CumulativeReporterBase::testRunStarting(testRunInfo);
 

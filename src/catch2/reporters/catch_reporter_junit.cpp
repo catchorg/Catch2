@@ -87,11 +87,13 @@ namespace Catch {
         :   CumulativeReporterBase( CATCH_MOVE(_config) ),
             xml( m_stream )
         {
+            rejectSuperfluousConfigKeys( m_customOptions, {} );
+
             m_preferences.shouldRedirectStdOut = true;
             m_preferences.shouldReportAllAssertions = false;
             m_preferences.shouldReportAllAssertionStarts = false;
             m_shouldStoreSuccesfulAssertions = false;
-        }
+    }
 
     std::string JunitReporter::getDescription() {
         return "Reports test results in an XML format that looks like Ant's junitreport target";
