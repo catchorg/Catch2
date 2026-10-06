@@ -46,7 +46,7 @@ namespace Catch {
             *reinterpret_cast<char volatile*>(p) = *reinterpret_cast<char const volatile*>(p);
         }
         // TODO equivalent keep_memory()
-#if defined(_MSVC_VER)
+#if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
 
