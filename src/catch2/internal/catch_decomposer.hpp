@@ -164,28 +164,27 @@ namespace Catch {
     struct always_false : std::false_type {};
 
     class ITransientExpression {
+        //! Type-erased streaming function for the derived expression
+        using StreamFn = void ( * )( void const*, std::ostream& );
+
+        StreamFn m_streamFn;
         bool m_isBinaryExpression;
         bool m_result;
-
-    protected:
-        ~ITransientExpression() = default;
 
     public:
         constexpr auto isBinaryExpression() const -> bool { return m_isBinaryExpression; }
         constexpr auto getResult() const -> bool { return m_result; }
-        //! This function **has** to be overridden by the derived class.
-        virtual void streamReconstructedExpression( std::ostream& os ) const;
 
-        constexpr ITransientExpression( bool isBinaryExpression, bool result )
-        :   m_isBinaryExpression( isBinaryExpression ),
-            m_result( result )
-        {}
+        constexpr ITransientExpression( StreamFn streamFn,
+                                        bool isBinaryExpression,
+                                        bool result ):
+            m_streamFn( streamFn ),
+            m_isBinaryExpression( isBinaryExpression ),
+            m_result( result ) {}
 
-        constexpr ITransientExpression( ITransientExpression const& ) = default;
-        constexpr ITransientExpression& operator=( ITransientExpression const& ) = default;
-
-        friend std::ostream& operator<<(std::ostream& out, ITransientExpression const& expr) {
-            expr.streamReconstructedExpression(out);
+        friend std::ostream& operator<<( std::ostream& out,
+                                         ITransientExpression const& expr ) {
+            expr.m_streamFn( &expr, out );
             return out;
         }
     };
@@ -198,19 +197,23 @@ namespace Catch {
         StringRef m_op;
         RhsT m_rhs;
 
-        void streamReconstructedExpression( std::ostream &os ) const override {
-            formatReconstructedExpression
-                    ( os, Catch::Detail::stringify( m_lhs ), m_op, Catch::Detail::stringify( m_rhs ) );
+        static void streamFn( void const* self, std::ostream& out ) {
+            auto const& expr = *static_cast<BinaryExpr const*>(
+                static_cast<ITransientExpression const*>( self ) );
+            formatReconstructedExpression(
+                out,
+                Catch::Detail::stringify( expr.m_lhs ),
+                expr.m_op,
+                Catch::Detail::stringify( expr.m_rhs ) );
         }
 
     public:
         constexpr BinaryExpr( bool comparisonResult, LhsT lhs, StringRef op, RhsT rhs )
-        :   ITransientExpression{ true, comparisonResult },
+        :   ITransientExpression{ &streamFn, true, comparisonResult },
             m_lhs( lhs ),
             m_op( op ),
             m_rhs( rhs )
         {}
-
     };
 
 #define CATCH_INTERNAL_DEFINE_BINARY_EXPR_OPERATOR( op )               \
@@ -246,13 +249,15 @@ namespace Catch {
     class UnaryExpr final : public ITransientExpression {
         LhsT m_lhs;
 
-        void streamReconstructedExpression( std::ostream &os ) const override {
-            os << Catch::Detail::stringify( m_lhs );
+        static void streamFn( void const* self, std::ostream& os ) {
+            auto const& expr = *static_cast<UnaryExpr const*>(
+                static_cast<ITransientExpression const*>( self ) );
+            os << Catch::Detail::stringify( expr.m_lhs );
         }
 
     public:
         explicit constexpr UnaryExpr( LhsT lhs )
-        :   ITransientExpression{ false, static_cast<bool>(lhs) },
+        :   ITransientExpression{ &streamFn, false, static_cast<bool>(lhs) },
             m_lhs( lhs )
         {}
     };
