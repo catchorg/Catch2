@@ -1527,7 +1527,7 @@ than `single_include/catch.hpp`.**
 
 ### Improvements
 * pkg-config and CMake integration has been rewritten
-  * If you use them, the new include path is `#include <catch2/catch.hpp>`
+  * If you use them, the new include path is `#include <catch2/catch_all.hpp>`
   * CMake installation now also installs scripts from `contrib/`
   * For details see the [new documentation](cmake-integration.md#top)
 * Reporters now have a new customization point, `ReporterPreferences::shouldReportAllAssertions`
@@ -1596,8 +1596,8 @@ than `single_include/catch.hpp`.**
   * See [documentation for details](https://github.com/catchorg/Catch2/blob/devel/docs/matchers.md)
 
 ### Others
-* Modified CMake-installed pkg-config to allow `#include <catch.hpp>`(#1239)
-  * The plans to standardize on `#include <catch2/catch.hpp>` are still in effect
+* Modified CMake-installed pkg-config to allow `#include <catch2/catch_all.hpp>`(#1239)
+* The plans to standardize on `#include <catch2/catch_all.hpp>` are still in effect
 
 
 ## 2.2.1

@@ -53,8 +53,8 @@ compilation times in the v3 version. The basic steps to do so are:
 you use Catch2's default main. (If you do not, keep linking against
 the `Catch2` target.). If you use pkg-config, change `pkg-config catch2` to
 `pkg-config catch2-with-main`.
-2. Delete TU with `CATCH_CONFIG_RUNNER` or `CATCH_CONFIG_MAIN` defined,
-as it is no longer needed.
+2. Remove `CATCH_CONFIG_RUNNER` or `CATCH_CONFIG_MAIN` definitions from your code,
+as they are no longer needed in v3.
 3. Change `#include <catch2/catch.hpp>` to `#include <catch2/catch_all.hpp>`
 4. Check that everything compiles. You might have to modify namespaces,
 or perform some other changes (see the
