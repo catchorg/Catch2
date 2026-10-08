@@ -61,7 +61,7 @@ means that generators are taken into account.
 
 ### Reporter event handling functions without noexcept
 
-> Deprecated in Catch2 vX.Y.Z
+> Deprecated in Catch2 3.16.1
 
 Catch2 does not try to support reporters throwing from arbitrary
 `fooStarting` or `fooEnded` test running event. For legacy reasons, the

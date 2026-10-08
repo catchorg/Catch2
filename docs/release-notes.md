@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.16.1](#3161)<br>
 [3.16.0](#3160)<br>
 [3.15.3](#3153)<br>
 [3.15.2](#3152)<br>
@@ -78,6 +79,40 @@
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
 
+
+## 3.16.1
+
+### Fixes
+* Fixed optimizations being disabled after including benchmarking headers under MSVC. (#3212)
+  * This was introduced in 3.16.0's fix for the deopt implementation for MSVC never being used.
+* Fixed Console reporter replacing `\0xFF`s in user-provided strings.
+* Added missing `<cassert>` include to `catch_generators_range.hpp`. (#3205)
+
+### Improvements
+* Workaround for GCC's quadratic scaling for release builds with number of test cases.
+  * In practice the improvement is only noticeable with unity builds and/or template product tests.
+* Changed how decomposer operators are defined for better compilation times.
+  * For Catch2's `SelfTest` binary, this provides ~2% build time improvement.
+* Changed how decomposer handles stringification for smaller binary sizes.
+  * For the `SelfTest` binary this is about ~8%.
+* Improved compilation costs of multiple assertions in one test cases for release builds.
+* Optimized initial test registration at process start:
+  * Fewer allocations for test cases with many tags.
+  * Faster processing for test cases with <=2 tags.
+  * Faster tag validation.
+  * Faster checking for duplicated test cases.
+* Optimized test selection and filtering:
+* Optimized filtering tests by test name.
+  * Running `SelfTest` with `abc*` as the filter pattern is ~10% faster.
+
+### Miscellaneous
+* `catch_discover_tests` registers individual tests with `--order decl` for faster startup.
+  * For `SelfTest`, this provides 20% improvement in Debug and 5% in Release builds.
+* `CMakeConfig::` family of tests use the main build's toolchain file. (#3202)
+* Deprecated throwing exceptions from the reporter interface functions.
+  * Previously, throwing from e.g. `assertionEnded` might, or might not, have worked depending on which assertion has ended. As it is not practical for Catch2 to guard against the reporters failing randomly, and marking so with `noexcept` can provide compilation throughput improvements, I decided to fully forbid it.
+  * Reporter constructors are allowed to throw and the test binary will report the error nicely before exiting.
+  * Due to C++ limitations, this deprecation cannot be marked inside the code, only in docs.
 
 
 ## 3.16.0
