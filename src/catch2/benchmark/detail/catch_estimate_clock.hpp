@@ -86,7 +86,9 @@ namespace Catch {
                 int iters = clock_cost_estimation_iterations;
                 auto&& r = run_for_at_least<Clock>(clock_cost_estimation_time, iters, time_clock);
                 std::vector<double> times;
-                int nsamples = static_cast<int>(std::ceil(time_limit / (std::max)(r.elapsed, FDuration(1.0))));
+                int nsamples = static_cast<int>( std::ceil(
+                    time_limit / ( std::max )( FDuration( r.elapsed ),
+                                               FDuration( 1.0 ) ) ) );
                 nsamples = (std::max)(1, (std::min)(nsamples, 100000));
                 times.reserve(static_cast<size_t>(nsamples));
                 for ( int s = 0; s < nsamples; ++s ) {
