@@ -13,13 +13,9 @@
 
 ## What is Catch2?
 
-Catch2 is mainly a unit testing framework for C++, but it also
-provides basic micro-benchmarking features, and simple BDD macros.
+Catch2 is a light-weight yet powerful unit testing framework for C++14. Catch2 also contains basic micro-benchmarking features, simple BDD macros, and more.
 
-Catch2's main advantage is that using it is both simple and natural.
-Test names do not have to be valid identifiers, assertions look like
-normal C++ boolean expressions, and sections provide a nice and local way
-to share set-up and tear-down code in tests.
+Catch2's main advantage compared to other unit testing frameworks is its ease of use. It allows for unit tests to be created in a both a simple and natural manner. For example: Test names do not have to be valid identifiers, assertions are written similar to normal C++ boolean expressions, and sections provide a nice and local way to share set-up and tear-down code in tests. Furthermore, users can run specific tests or sets of tests conveniently through the command line
 
 **Example unit test**
 ```cpp
@@ -32,10 +28,12 @@ uint32_t factorial( uint32_t number ) {
 }
 
 TEST_CASE( "Factorials are computed", "[factorial]" ) {
-    REQUIRE( factorial( 1) == 1 );
-    REQUIRE( factorial( 2) == 2 );
-    REQUIRE( factorial( 3) == 6 );
-    REQUIRE( factorial(10) == 3'628'800 );
+    SECTION( "odd factorials are tested" )
+        REQUIRE( factorial( 1) == 1 );
+        REQUIRE( factorial( 3) == 6 );
+    SECTION( "even factorials are tested" )
+        REQUIRE( factorial( 2) == 2 );
+        REQUIRE( factorial(10) == 3'628'800 );
 }
 ```
 
