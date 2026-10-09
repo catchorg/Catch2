@@ -1,11 +1,12 @@
+
 //              Copyright Catch2 Authors
 // Distributed under the Boost Software License, Version 1.0.
 //   (See accompanying file LICENSE.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
-#ifndef CATCH_GENERATORS_TUPLE_HPINCLUDED
-#define CATCH_GENERATORS_TUPLE_HPINCLUDED
+#ifndef CATCH_GENERATORS_TUPLE_HPP_INCLUDED
+#define CATCH_GENERATORS_TUPLE_HPP_INCLUDED
 
 #include <catch2/generators/catch_generators.hpp>
 
@@ -173,4 +174,4 @@ namespace Catch {
     } // namespace Generators
 } // namespace Catch
 
-#endif // CATCH_GENERATORS_TUPLE_HPINCLUDED
+#endif // CATCH_GENERATORS_TUPLE_HPP_INCLUDED
