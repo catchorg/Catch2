@@ -1,0 +1,36 @@
+name: Windows Builds (Basic - Clang)
+
+on: [push, pull_request]
+
+env:
+  CTEST_OUTPUT_ON_FAILURE: 1
+  CTEST_NO_TESTS_ACTION: error
+
+jobs:
+  build:
+    name: ${{matrix.os}}, ${{matrix.std}}, ${{matrix.build_type}}, ${{matrix.platform}} (Clang)
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025]
+        platform: [x64]
+        build_type: [Debug, Release]
+        std: [14, 17]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure build
+        run: |
+          cmake --preset all-tests `
+                -DCMAKE_CXX_STANDARD=${{matrix.std}} `
+                -G Ninja `
+                -DCMAKE_CXX_COMPILER=clang++ `
+
+      - name: Build tests
+        run: cmake --build build --config ${{matrix.build_type}} --parallel %NUMBER_OF_PROCESSORS%
+        shell: cmd
+
+      - name: Run tests
+        run: ctest --test-dir build -C ${{matrix.build_type}} -j %NUMBER_OF_PROCESSORS%
+        shell: cmd
