@@ -171,6 +171,41 @@ TEST_CASE("uniform samples", "[benchmark]") {
     CHECK(e.confidence_interval == 0.95);
 }
 
+TEST_CASE("bootstrap keeps the interval inside the resample", "[benchmark]") {
+    auto mean = []( double const* a, double const* b ) {
+        return std::accumulate( a, b, 0. ) / ( b - a );
+    };
+
+    SECTION( "no spread in the jackknife estimates" ) {
+        // All jackknife estimates are equal, which used to make the
+        // acceleration 0 / 0 and the upper index garbage
+        std::vector<double> samples( 100, 23 );
+        std::vector<double> resample{ 22, 23, 23, 24 };
+        auto e = Catch::Benchmark::Detail::bootstrap(
+            0.95,
+            samples.data(),
+            samples.data() + samples.size(),
+            resample,
+            mean );
+        CHECK( e.point == 23 );
+        CHECK( e.lower_bound == 22 );
+        CHECK( e.upper_bound == 24 );
+    }
+    SECTION( "every resampled estimate below the point estimate" ) {
+        std::vector<double> samples{ 1, 2, 3, 10 };
+        std::vector<double> resample{ 0.5, 1, 1.5, 2 };
+        auto e = Catch::Benchmark::Detail::bootstrap(
+            0.95,
+            samples.data(),
+            samples.data() + samples.size(),
+            resample,
+            mean );
+        CHECK( e.point == 4 );
+        CHECK( e.lower_bound == 0.5 );
+        CHECK( e.upper_bound == 2 );
+    }
+}
+
 
 TEST_CASE("normal_cdf", "[benchmark][approvals]") {
     using Catch::Benchmark::Detail::normal_cdf;

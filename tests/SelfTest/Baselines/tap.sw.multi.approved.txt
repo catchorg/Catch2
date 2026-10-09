@@ -4134,6 +4134,18 @@ ok {test-number} - model.finished == 0 for: 0 == 0
 ok {test-number} - called == 1 for: 1 == 1
 # boolean member
 ok {test-number} - obj.prop != 0 for: 0x<hex digits> != 0
+# bootstrap keeps the interval inside the resample
+ok {test-number} - e.point == 23 for: 23.0 == 23
+# bootstrap keeps the interval inside the resample
+ok {test-number} - e.lower_bound == 22 for: 22.0 == 22
+# bootstrap keeps the interval inside the resample
+ok {test-number} - e.upper_bound == 24 for: 24.0 == 24
+# bootstrap keeps the interval inside the resample
+ok {test-number} - e.point == 4 for: 4.0 == 4
+# bootstrap keeps the interval inside the resample
+ok {test-number} - e.lower_bound == 0.5 for: 0.5 == 0.5
+# bootstrap keeps the interval inside the resample
+ok {test-number} - e.upper_bound == 2 for: 2.0 == 2
 # cat generator
 ok {test-number} - input < 3 for: 0 < 3
 # cat generator
@@ -4884,5 +4896,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2450
+1..2456
 
