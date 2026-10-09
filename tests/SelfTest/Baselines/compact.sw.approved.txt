@@ -2595,6 +2595,12 @@ InternalBenchmark.tests.cpp:<line number>: passed: model.started == 0 for: 0 == 
 InternalBenchmark.tests.cpp:<line number>: passed: model.finished == 0 for: 0 == 0
 InternalBenchmark.tests.cpp:<line number>: passed: called == 1 for: 1 == 1
 Tricky.tests.cpp:<line number>: passed: obj.prop != 0 for: 0x<hex digits> != 0
+InternalBenchmark.tests.cpp:<line number>: passed: e.point == 23 for: 23.0 == 23
+InternalBenchmark.tests.cpp:<line number>: passed: e.lower_bound == 22 for: 22.0 == 22
+InternalBenchmark.tests.cpp:<line number>: passed: e.upper_bound == 24 for: 24.0 == 24
+InternalBenchmark.tests.cpp:<line number>: passed: e.point == 4 for: 4.0 == 4
+InternalBenchmark.tests.cpp:<line number>: passed: e.lower_bound == 0.5 for: 0.5 == 0.5
+InternalBenchmark.tests.cpp:<line number>: passed: e.upper_bound == 2 for: 2.0 == 2
 Generators.tests.cpp:<line number>: passed: input < 3 for: 0 < 3
 Generators.tests.cpp:<line number>: passed: input < 3 for: 1 < 3
 Generators.tests.cpp:<line number>: passed: input < 3 for: 2 < 3
@@ -3030,7 +3036,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  455 |  335 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2438 | 2237 passed | 158 failed | 43 failed as expected
+test cases:  456 |  336 passed |  96 failed | 6 skipped | 18 failed as expected
+assertions: 2444 | 2243 passed | 158 failed | 43 failed as expected
 
 
