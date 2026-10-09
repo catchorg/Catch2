@@ -850,6 +850,8 @@
 ##teamcity[testFinished name='benchmark function call' duration="{duration}"]
 ##teamcity[testStarted name='boolean member']
 ##teamcity[testFinished name='boolean member' duration="{duration}"]
+##teamcity[testStarted name='bootstrap keeps the interval inside the resample']
+##teamcity[testFinished name='bootstrap keeps the interval inside the resample' duration="{duration}"]
 ##teamcity[testStarted name='cat generator']
 ##teamcity[testFinished name='cat generator' duration="{duration}"]
 ##teamcity[testStarted name='checkedElse']

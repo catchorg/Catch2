@@ -221,6 +221,9 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="benchmark function call" duration="{duration}"/>
     <testCase name="benchmark function call/without chronometer" duration="{duration}"/>
     <testCase name="benchmark function call/with chronometer" duration="{duration}"/>
+    <testCase name="bootstrap keeps the interval inside the resample" duration="{duration}"/>
+    <testCase name="bootstrap keeps the interval inside the resample/no spread in the jackknife estimates" duration="{duration}"/>
+    <testCase name="bootstrap keeps the interval inside the resample/every resampled estimate below the point estimate" duration="{duration}"/>
     <testCase name="classify_outliers" duration="{duration}"/>
     <testCase name="classify_outliers/none" duration="{duration}"/>
     <testCase name="classify_outliers/low severe" duration="{duration}"/>

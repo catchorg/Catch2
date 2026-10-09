@@ -20124,6 +20124,63 @@ Approx( 1.23999999999999999 )
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="bootstrap keeps the interval inside the resample" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+    <Section name="no spread in the jackknife estimates" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          e.point == 23
+        </Original>
+        <Expanded>
+          23.0 == 23
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          e.lower_bound == 22
+        </Original>
+        <Expanded>
+          22.0 == 22
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          e.upper_bound == 24
+        </Original>
+        <Expanded>
+          24.0 == 24
+        </Expanded>
+      </Expression>
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="every resampled estimate below the point estimate" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          e.point == 4
+        </Original>
+        <Expanded>
+          4.0 == 4
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          e.lower_bound == 0.5
+        </Original>
+        <Expanded>
+          0.5 == 0.5
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          e.upper_bound == 2
+        </Original>
+        <Expanded>
+          2.0 == 2
+        </Expanded>
+      </Expression>
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="cat generator" tags="[concat][generators]" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
     <Section name="Simple usage" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
@@ -23595,6 +23652,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2237" failures="158" expectedFailures="43" skips="12"/>
-  <OverallResultsCases successes="335" failures="96" expectedFailures="18" skips="6"/>
+  <OverallResults successes="2243" failures="158" expectedFailures="43" skips="12"/>
+  <OverallResultsCases successes="336" failures="96" expectedFailures="18" skips="6"/>
 </Catch2TestRun>

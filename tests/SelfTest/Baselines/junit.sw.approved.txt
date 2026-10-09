@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2450" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2456" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1570,6 +1570,9 @@ at Skip.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="benchmark function call/without chronometer" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="benchmark function call/with chronometer" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="boolean member" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="bootstrap keeps the interval inside the resample" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="bootstrap keeps the interval inside the resample/no spread in the jackknife estimates" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="bootstrap keeps the interval inside the resample/every resampled estimate below the point estimate" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="cat generator" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="cat generator/Simple usage" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="cat generator/Used in map" time="{duration}" status="run"/>

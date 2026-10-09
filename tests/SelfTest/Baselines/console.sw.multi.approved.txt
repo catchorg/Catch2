@@ -17192,6 +17192,50 @@ with expansion:
   0x<hex digits> != 0
 
 -------------------------------------------------------------------------------
+bootstrap keeps the interval inside the resample
+  no spread in the jackknife estimates
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( e.point == 23 )
+with expansion:
+  23.0 == 23
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( e.lower_bound == 22 )
+with expansion:
+  22.0 == 22
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( e.upper_bound == 24 )
+with expansion:
+  24.0 == 24
+
+-------------------------------------------------------------------------------
+bootstrap keeps the interval inside the resample
+  every resampled estimate below the point estimate
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( e.point == 4 )
+with expansion:
+  4.0 == 4
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( e.lower_bound == 0.5 )
+with expansion:
+  0.5 == 0.5
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( e.upper_bound == 2 )
+with expansion:
+  2.0 == 2
+
+-------------------------------------------------------------------------------
 cat generator
   Simple usage
 -------------------------------------------------------------------------------
@@ -20316,6 +20360,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  455 |  335 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2438 | 2237 passed | 158 failed | 43 failed as expected
+test cases:  456 |  336 passed |  96 failed | 6 skipped | 18 failed as expected
+assertions: 2444 | 2243 passed | 158 failed | 43 failed as expected
 

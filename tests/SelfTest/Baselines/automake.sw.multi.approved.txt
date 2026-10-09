@@ -343,6 +343,7 @@
 :test-result: PASS array<int, N> -> toString
 :test-result: PASS benchmark function call
 :test-result: PASS boolean member
+:test-result: PASS bootstrap keeps the interval inside the resample
 :test-result: PASS cat generator
 :test-result: PASS checkedElse
 :test-result: FAIL checkedElse, failing
