@@ -754,6 +754,8 @@
 ##teamcity[testFinished name='Tracker' duration="{duration}"]
 ##teamcity[testStarted name='Trim strings']
 ##teamcity[testFinished name='Trim strings' duration="{duration}"]
+##teamcity[testStarted name='Tuple']
+##teamcity[testFinished name='Tuple' duration="{duration}"]
 ##teamcity[testStarted name='Type conversions of RangeEquals and similar']
 ##teamcity[testFinished name='Type conversions of RangeEquals and similar' duration="{duration}"]
 ##teamcity[testStarted name='Unexpected exceptions can be translated']

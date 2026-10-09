@@ -1289,6 +1289,17 @@ at Generators.tests.cpp:<line number>
     <testCase name="Generators -- simple/one" duration="{duration}"/>
     <testCase name="Generators -- simple/two" duration="{duration}"/>
     <testCase name="Nested generators and captured variables" duration="{duration}"/>
+    <testCase name="Tuple" duration="{duration}"/>
+    <testCase name="Tuple/Basic Use Case" duration="{duration}"/>
+    <testCase name="Tuple/Basic Use Case/Tuple Implicit" duration="{duration}"/>
+    <testCase name="Tuple/Basic Use Case/Tuple Explicit" duration="{duration}"/>
+    <testCase name="Tuple/Basic Use Case/Pair" duration="{duration}"/>
+    <testCase name="Tuple/Basic Use Case/Array" duration="{duration}"/>
+    <testCase name="Tuple/Single Parameter" duration="{duration}"/>
+    <testCase name="Tuple/Single Parameter/Tuple" duration="{duration}"/>
+    <testCase name="Tuple/Single Parameter/Pair" duration="{duration}"/>
+    <testCase name="Tuple/Single Parameter/Array" duration="{duration}"/>
+    <testCase name="Tuple/Single Parameter/Any" duration="{duration}"/>
     <testCase name="cat generator" duration="{duration}"/>
     <testCase name="cat generator/Simple usage" duration="{duration}"/>
     <testCase name="cat generator/Used in map" duration="{duration}"/>
