@@ -340,9 +340,14 @@ namespace Catch {
                 double b2 = bias - z1;
                 double a1 = a( b1 );
                 double a2 = a( b2 );
-                auto lo = static_cast<size_t>( (std::max)( cumn( a1 ), 0l ) );
-                auto hi =
-                    static_cast<size_t>( (std::min)( cumn( a2 ), n - 1 ) );
+                auto clamp_index = [n]( long index ) {
+                    return static_cast<size_t>(
+                        ( std::min )( ( std::max )( index, 0l ), n - 1 ) );
+                };
+                auto lo =
+                    std::isnan( a1 ) ? size_t{ 0 } : clamp_index( cumn( a1 ) );
+                auto hi = std::isnan( a2 ) ? static_cast<size_t>( n - 1 )
+                                           : clamp_index( cumn( a2 ) );
 
                 return { point, resample[lo], resample[hi], confidence_level };
             }
