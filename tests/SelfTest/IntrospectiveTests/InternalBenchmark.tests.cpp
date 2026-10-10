@@ -22,6 +22,7 @@
 #include <catch2/benchmark/detail/catch_benchmark_function.hpp>
 #include <catch2/benchmark/detail/catch_estimate_clock.hpp>
 
+#include <cmath>
 #include <numeric>
 
 namespace {
@@ -171,6 +172,36 @@ TEST_CASE("uniform samples", "[benchmark]") {
     CHECK(e.confidence_interval == 0.95);
 }
 
+TEST_CASE( "bootstrap with zero jackknife variance",
+           "[benchmark][approvals]" ) {
+    std::vector<double> samples{ 1., 3. };
+    std::vector<double> resamples{ 0., 0., 1., 1. };
+    auto standard_deviation = []( double const* first, double const* last ) {
+        auto count = last - first;
+        auto average = std::accumulate( first, last, 0. ) / count;
+        auto variance =
+            std::accumulate( first,
+                             last,
+                             0.,
+                             [average]( double sum, double value ) {
+                                 auto difference = value - average;
+                                 return sum + difference * difference;
+                             } ) /
+            count;
+        return std::sqrt( variance );
+    };
+
+    auto estimate =
+        Catch::Benchmark::Detail::bootstrap( 0.95,
+                                             samples.data(),
+                                             samples.data() + samples.size(),
+                                             resamples,
+                                             standard_deviation );
+
+    CHECK( estimate.point == 1. );
+    CHECK( estimate.lower_bound == 0. );
+    CHECK( estimate.upper_bound == 1. );
+}
 
 TEST_CASE("normal_cdf", "[benchmark][approvals]") {
     using Catch::Benchmark::Detail::normal_cdf;
