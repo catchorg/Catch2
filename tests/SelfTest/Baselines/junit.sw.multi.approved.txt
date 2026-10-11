@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2450" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2456" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -983,6 +983,8 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/samples must be greater than zero" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/samples must be parseable" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/resamples" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/resamples must be greater than zero" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/resamples must be parseable" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/confidence-interval" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/no-analysis" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/warmup-time" time="{duration}" status="run"/>

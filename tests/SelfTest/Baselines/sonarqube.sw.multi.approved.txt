@@ -132,6 +132,8 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="Process can be configured on command line/Benchmark options/samples must be greater than zero" duration="{duration}"/>
     <testCase name="Process can be configured on command line/Benchmark options/samples must be parseable" duration="{duration}"/>
     <testCase name="Process can be configured on command line/Benchmark options/resamples" duration="{duration}"/>
+    <testCase name="Process can be configured on command line/Benchmark options/resamples must be greater than zero" duration="{duration}"/>
+    <testCase name="Process can be configured on command line/Benchmark options/resamples must be parseable" duration="{duration}"/>
     <testCase name="Process can be configured on command line/Benchmark options/confidence-interval" duration="{duration}"/>
     <testCase name="Process can be configured on command line/Benchmark options/no-analysis" duration="{duration}"/>
     <testCase name="Process can be configured on command line/Benchmark options/warmup-time" duration="{duration}"/>

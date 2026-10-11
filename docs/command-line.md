@@ -498,10 +498,10 @@ Per sample a clock resolution dependent number of iterations of the user code is
 
 After the measurements are performed, statistical [bootstrapping] is performed
 on the samples. The number of resamples for that bootstrapping is configurable
-but defaults to 100000. Due to the bootstrapping it is possible to give
-estimates for the mean and standard deviation. The estimates come with a lower
-bound and an upper bound, and the confidence interval (which is configurable but
-defaults to 95%).
+but defaults to 100000 and must be greater than zero. Due to the bootstrapping
+it is possible to give estimates for the mean and standard deviation. The
+estimates come with a lower bound and an upper bound, and the confidence
+interval (which is configurable but defaults to 95%).
 
  [bootstrapping]: http://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29
 
