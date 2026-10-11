@@ -2681,6 +2681,18 @@ ok {test-number} - cli.parse({ "test", "--benchmark-resamples=20000" }) for: {?}
 # Process can be configured on command line
 ok {test-number} - config.benchmarkResamples == 20000 for: 20000 (0x<hex digits>) == 20000 (0x<hex digits>)
 # Process can be configured on command line
+ok {test-number} - !(result) for: !{?}
+# Process can be configured on command line
+ok {test-number} - result.errorMessage(), ContainsSubstring("Benchmark resamples must be greater than 0") for: "Benchmark resamples must be greater than 0" contains: "Benchmark resamples must be greater than 0"
+# Process can be configured on command line
+ok {test-number} - config.benchmarkResamples == 100000 for: 100000 (0x<hex digits>) == 100000 (0x<hex digits>)
+# Process can be configured on command line
+ok {test-number} - !(result) for: !{?}
+# Process can be configured on command line
+ok {test-number} - result.errorMessage(), ContainsSubstring("Could not parse 'abc' as benchmark resamples") for: "Could not parse 'abc' as benchmark resamples" contains: "Could not parse 'abc' as benchmark resamples"
+# Process can be configured on command line
+ok {test-number} - config.benchmarkResamples == 100000 for: 100000 (0x<hex digits>) == 100000 (0x<hex digits>)
+# Process can be configured on command line
 ok {test-number} - cli.parse({ "test", "--benchmark-confidence-interval=0.99" }) for: {?}
 # Process can be configured on command line
 ok {test-number} - config.benchmarkConfidenceInterval == Catch::Approx(0.99) for: 0.98999999999999999 == Approx( 0.98999999999999999 )
@@ -4895,5 +4907,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2450
+1..2456
 
