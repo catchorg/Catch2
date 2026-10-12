@@ -9,7 +9,9 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include <cstdio>
+#include <cstdlib>
 #include <iostream>
+#include <string>
 
 namespace {
 
@@ -66,3 +68,17 @@ TEST_CASE( "Cache check $CACHE{FOO}" ) {}
 TEST_CASE( "Also some generator exprs $<CONFIG> in $<1:yes> name" ) {}
 TEST_CASE( "Mess of bare $ $$ $$$ and unterminated $} ${ exprs" ) {}
 TEST_CASE( "$ENV{X};[weird]{},{ mix $<0:no> ${VAR} };,{ }},{{" ) {}
+
+TEST_CASE( "Environment properties reach the test process" ) {
+    const auto check_environment = []( char const* name,
+                                       char const* expected ) {
+        auto const* value = std::getenv( name );
+        REQUIRE( value != nullptr );
+        CHECK( std::string( value ) == expected );
+    };
+    check_environment( "CATCH2_ENV_EMULATOR", "yes" );
+    check_environment( "CATCH2_ENV_FIRST", "one" );
+    check_environment( "CATCH2_ENV_SECOND", "two" );
+    check_environment( "CATCH2_ENV_SEMICOLON", "left;right" );
+    check_environment( "CATCH2_ENV_EMPTY", "" );
+}
