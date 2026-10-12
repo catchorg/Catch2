@@ -42,6 +42,7 @@ namespace {
             &config,
             Catch::Detail::make_unique<StringIStream>(),
             Catch::ColourMode::None,
+            Catch::Verbosity::Normal,
             {} };
     }
 }
@@ -114,7 +115,7 @@ TEST_CASE( "Reporter's write listings to provided stream", "[reporters]" ) {
         cfg_data.rngSeed = 1234;
         Catch::Config config( cfg_data );
         auto reporter = factory.second->create( Catch::ReporterConfig{
-            &config, CATCH_MOVE( sstream ), Catch::ColourMode::None, {} } );
+            &config, CATCH_MOVE( sstream ), Catch::ColourMode::None, Catch::Verbosity::Normal, {} } );
 
         DYNAMIC_SECTION( factory.first << " reporter lists tags" ) {
             std::vector<Catch::TagInfo> tags(1);
@@ -328,4 +329,18 @@ TEST_CASE("Registering multiple reporters with the same name fails",
             "some-reporter-name",
             Catch::Detail::make_unique<TestReporterFactory>() ),
         "reporter using 'some-reporter-name' as name was already registered" );
+}
+
+TEST_CASE( "rejectSuperfluousConfigKeys helper",
+           "[reporters][reporter-helpers][approvals]" ) {
+    using Catch::rejectSuperfluousConfigKeys; using Catch::Matchers::ContainsSubstring;
+
+    std::map<std::string, std::string> options { { "Xfoo", "1" }, { "Xbar", "2" } };
+    REQUIRE_THROWS_WITH( rejectSuperfluousConfigKeys( options, {} ),
+                         ContainsSubstring( "Unknown reporter argument:" ) );
+    REQUIRE_THROWS_WITH(
+        rejectSuperfluousConfigKeys( options, { "Xfoo", "Xbaz" } ),
+        ContainsSubstring( "Unknown reporter argument: Xbar" ) );
+    REQUIRE_NOTHROW(
+        Catch::rejectSuperfluousConfigKeys( options, { "Xfoo", "Xbaz", "Xbar" } ) );
 }

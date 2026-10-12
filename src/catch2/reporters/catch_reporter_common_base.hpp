@@ -35,6 +35,8 @@ namespace Catch {
         std::ostream& m_stream;
         //! Colour implementation this reporter was configured for
         Detail::unique_ptr<ColourImpl> m_colour;
+        //! Verbosity configured for this reporter
+        Verbosity m_verbosity;
         //! The custom reporter options user passed down to the reporter
         std::map<std::string, std::string> m_customOptions;
 

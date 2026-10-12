@@ -93,6 +93,18 @@ namespace Catch {
                 return {};
             }
         }
+
+        Optional<Verbosity> stringToVerbosity( StringRef verbosity ) {
+            if (verbosity == "quiet") { return Verbosity::Quiet;
+            } else if ( verbosity == "normal" ) {
+                return Verbosity::Normal;
+            } else if ( verbosity == "high" ) {
+                return Verbosity::High;
+            } else {
+                return {};
+            }
+        }
+
     } // namespace Detail
 
 
@@ -100,6 +112,7 @@ namespace Catch {
         return lhs.m_name == rhs.m_name &&
                lhs.m_outputFileName == rhs.m_outputFileName &&
                lhs.m_colourMode == rhs.m_colourMode &&
+               lhs.m_verbosity == rhs.m_verbosity &&
                lhs.m_customOptions == rhs.m_customOptions;
     }
 
@@ -111,6 +124,7 @@ namespace Catch {
         std::map<std::string, std::string> kvPairs;
         Optional<std::string> outputFileName;
         Optional<ColourMode> colourMode;
+        Optional<Verbosity> verbosity;
 
         // First part is always reporter name, so we skip it
         for ( size_t i = 1; i < parts.size(); ++i ) {
@@ -148,6 +162,12 @@ namespace Catch {
                 if ( !colourMode ) {
                     return {};
                 }
+            } else if ( key == "verbosity" ) {
+                // Duplicated key
+                if ( verbosity ) { return {}; }
+                verbosity = Detail::stringToVerbosity( value );
+                // Parsing failed
+                if ( !verbosity ) { return {}; }
             } else {
                 // Unrecognized option
                 return {};
@@ -157,6 +177,7 @@ namespace Catch {
         return ReporterSpec{ CATCH_MOVE( parts[0] ),
                              CATCH_MOVE( outputFileName ),
                              CATCH_MOVE( colourMode ),
+                             CATCH_MOVE( verbosity),
                              CATCH_MOVE( kvPairs ) };
     }
 
@@ -164,10 +185,12 @@ ReporterSpec::ReporterSpec(
         std::string name,
         Optional<std::string> outputFileName,
         Optional<ColourMode> colourMode,
+        Optional<Verbosity> verbosity,
         std::map<std::string, std::string> customOptions ):
         m_name( CATCH_MOVE( name ) ),
         m_outputFileName( CATCH_MOVE( outputFileName ) ),
         m_colourMode( CATCH_MOVE( colourMode ) ),
+        m_verbosity( CATCH_MOVE( verbosity ) ),
         m_customOptions( CATCH_MOVE( customOptions ) ) {}
 
 } // namespace Catch

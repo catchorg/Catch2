@@ -7,17 +7,24 @@
 
 # SPDX-License-Identifier: BSL-1.0
 
+import glob
 import os
 import subprocess
 import sys
 import re
 import json
+import tempfile
 from collections import namedtuple
 from typing import List
 
 TestInfo = namedtuple('TestInfo', ['name', 'tags'])
 
 cmake_version_regex = re.compile(r'cmake version (\d+)\.(\d+)\.(\d+)')
+
+# Note that these both intentionally include preceding/trailing space,
+# which should not get stripped.
+CTEST_NAME_PREFIX = ' prefix '
+CTEST_NAME_SUFFIX = ' suffix '
 
 def get_cmake_version():
     result = subprocess.run(['cmake', '--version'],
@@ -64,7 +71,6 @@ def build_project(sources_dir, output_base_path, catch2_path):
     return build_dir
 
 
-
 def get_test_names(build_path: str) -> List[TestInfo]:
     # For now we assume that Windows builds are done using MSBuild under
     # Debug configuration. This means that we need to add "Debug" folder
@@ -72,16 +78,21 @@ def get_test_names(build_path: str) -> List[TestInfo]:
     config_path = "Debug" if os.name == 'nt' else ""
     full_path = os.path.join(build_path, config_path, 'tests')
 
+    with tempfile.TemporaryDirectory() as tmpdir:
+        fname = f'{tmpdir}/listing-output.json'
+        cmd = [full_path,
+          '--list-tests',
+          '--reporter', 'json',
+          '--out', fname
+        ]
+        result = subprocess.run(cmd,
+                                capture_output = False,
+                                check = True,
+                                text = True)
+        with open(fname, mode='r', encoding='utf-8') as file:
+            test_listing = json.load(file)
 
-    cmd = [full_path, '--reporter', 'json', '--list-tests']
-    result = subprocess.run(cmd,
-                            capture_output = True,
-                            check = True,
-                            text = True)
-
-    test_listing = json.loads(result.stdout)
-
-    assert test_listing['version'] == 1
+    assert test_listing['version'] == 2, test_listing['version']
 
     tests = []
     for test in test_listing['listings']['tests']:
@@ -91,15 +102,24 @@ def get_test_names(build_path: str) -> List[TestInfo]:
 
     return tests
 
+
 def get_ctest_listing(build_path):
     old_path = os.getcwd()
     os.chdir(build_path)
 
     cmd = ['ctest', '-C', 'debug', '--show-only=json-v1']
-    result = subprocess.run(cmd,
-                            capture_output = True,
-                            check = True,
-                            text = True)
+    try:
+        result = subprocess.run(cmd,
+                                capture_output = True,
+                                check = True,
+                                text = True)
+    except subprocess.CalledProcessError as err:
+        print('Error when getting output from CTest')
+        print(f'cmd: {err.cmd}')
+        print(f'stderr: {err.stderr}')
+        print(f'stdout: {err.stdout}')
+        exit(4)
+
     os.chdir(old_path)
     return result.stdout
 
@@ -109,10 +129,11 @@ def extract_tests_from_ctest(ctest_output) -> List[TestInfo]:
     test_infos = []
     for test in tests:
         test_command = test['command']
-        # First part of the command is the binary, second is the filter.
+        # First part of the command is the binary, second is the filter,
+        # third is the `--order decl` arg for faster startup.
         # If there are less, registration has failed. If there are more,
         # registration has changed and the script needs updating.
-        assert len(test_command) == 2
+        assert len(test_command) == 3, test_command
         test_name = test_command[1]
         labels = []
         for prop in test['properties']:
@@ -123,6 +144,7 @@ def extract_tests_from_ctest(ctest_output) -> List[TestInfo]:
 
     return test_infos
 
+
 def check_DL_PATHS(ctest_output):
     ctest_response = json.loads(ctest_output)
     tests = ctest_response['tests']
@@ -132,6 +154,98 @@ def check_DL_PATHS(ctest_output):
             if property['name'] == 'ENVIRONMENT_MODIFICATION':
                 assert len(property['value']) == 2, f"The test provides 2 arguments to DL_PATHS, but instead found {len(property['value'])}"
 
+
+def add_test_list_extractor(build_path: str) -> str:
+    # The actual CTest script file has one of two names:
+    #   * `<target>-<short-hash>_tests.cmake` on single-config generators
+    #   * `<target>-<short-hash>_tests-<Config>.cmake` on multi-config generators
+    #
+    # We know the target name (`tests`), so we glob for the hash part
+    patterns = [
+        os.path.join(build_path, 'tests-*_tests.cmake'),
+        os.path.join(build_path, 'tests-*_tests-Debug.cmake'),
+    ]
+    matches = []
+    for pattern in patterns:
+        matches.extend(glob.glob(pattern))
+    if len(matches) != 1:
+        print(f"Found {len(matches)} CTest files in '{build_path}'. Expected only 1.")
+        exit(5)
+    test_script_file = matches[0]
+    basename = os.path.basename(test_script_file)
+    extractor_fname = os.path.join(build_path, 'extractor.cmake')
+    with open(extractor_fname, 'w') as f:
+        f.write(fr"""
+cmake_minimum_required(VERSION 3.19)
+
+cmake_policy(VERSION 3.19...4.4)
+
+# This dummies out the `add_test` and `set_tests_properties` commands
+# inside the CTest script, so we can include it during CMake script call.
+macro(add_test)
+endmacro()
+macro(set_tests_properties)
+endmacro()
+
+include(${{CMAKE_CURRENT_LIST_DIR}}/{basename})
+
+list(LENGTH tests_TESTS num_tests)
+message(STATUS "NUM TESTS: ${{num_tests}}")
+
+# '[' and ']' were escaped into ASCII 2 and 3 respectively, we have to
+# unescape them back here. Note that this has to be done per-element,
+# or CMake's list parsing breaks (which is why they were escaped).
+string(ASCII 2 _LeftBracketListingEscape)
+string(ASCII 3 _RightBracketListingEscape)
+
+foreach(test IN LISTS tests_TESTS)
+  string(REPLACE "${{_LeftBracketListingEscape}}" "[" test "${{test}}")
+  string(REPLACE "${{_RightBracketListingEscape}}" "]" test "${{test}}")
+  string(REPLACE "\\" "\\\\" test "${{test}}")
+  string(REPLACE "\r" "\\r" test "${{test}}")
+  string(REPLACE "\n" "\\n" test "${{test}}")
+  message(STATUS "TEST_NAME: ${{test}}")
+endforeach()
+""")
+    return extractor_fname
+
+
+def extract_tests_list_from_ctest_script(build_path: str) -> List[str]:
+    extractor = add_test_list_extractor(build_path)
+
+    cmd = ['cmake', '-P', extractor]
+
+    try:
+        result = subprocess.run(cmd,
+                                capture_output = True,
+                                check = True,
+                                text = True)
+    except subprocess.CalledProcessError as err:
+        print('Error when calling CTest test extractor')
+        print(f'cmd: {err.cmd}')
+        print(f'stderr: {err.stderr}')
+        print(f'stdout: {err.stdout}')
+        exit(4)
+
+    lines = [x for x in result.stdout.split('\n') if x.strip()]
+    test_num_line = lines[0]
+    test_lines = lines[1:]
+
+    test_num_prefix = '-- NUM TESTS: '
+    assert test_num_prefix in test_num_line, test_num_line
+    test_num_line = test_num_line[len(test_num_prefix):]
+    num_tests = int(test_num_line)
+
+    assert num_tests == len(test_lines), len(test_lines)
+    test_name_prefix = '-- TEST_NAME: '
+    assert all(test_name_prefix in x for x in test_lines)
+    test_names = [x[len(test_name_prefix):] for x in test_lines]
+
+    # Unescape the names, so that names with literal newlines have newlines in them again
+    test_names = [x.encode('utf-8').decode('unicode-escape') for x in test_names]
+    return test_names
+
+
 def escape_catch2_test_names(infos: List[TestInfo]):
     escaped = []
     for info in infos:
@@ -140,6 +254,7 @@ def escape_catch2_test_names(infos: List[TestInfo]):
           name = name.replace(char, f"\\{char}")
       escaped.append(TestInfo(name, info.tags))
     return escaped
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
@@ -151,7 +266,8 @@ if __name__ == '__main__':
 
     build_path = build_project(sources_dir, output_base_path, catch2_path)
 
-    catch_test_names = escape_catch2_test_names(get_test_names(build_path))
+    raw_catch_test_names = get_test_names(build_path)
+    catch_test_names = escape_catch2_test_names(raw_catch_test_names)
     ctest_output = get_ctest_listing(build_path)
     ctest_test_names = extract_tests_from_ctest(ctest_output)
 
@@ -168,7 +284,20 @@ if __name__ == '__main__':
     if mismatched:
         print(f"Found {mismatched} mismatched tests catch test names and ctest test commands!")
         exit(1)
-    print(f"{len(catch_test_names)} tests matched")
+    print(f"{len(catch_test_names)} tests matched in CTest listing")
+
+    test_list_names = sorted(extract_tests_list_from_ctest_script(build_path))
+    expected_names = sorted(CTEST_NAME_PREFIX + info.name + CTEST_NAME_SUFFIX for info in raw_catch_test_names)
+    if test_list_names != expected_names:
+        print("TEST_LIST variable (tests_TESTS) does not match Catch2 test listing!")
+        for name in test_list_names:
+            if name not in expected_names:
+                print(f"  TEST_LIST name '{name}' not in Catch2 listing")
+        for name in expected_names:
+            if name not in test_list_names:
+                print(f"  Catch2 name '{name}' not in TEST_LIST")
+        exit(1)
+    print(f"{len(test_list_names)} tests matched in TEST_LIST variable")
 
     cmake_version = get_cmake_version()
     if cmake_version >= (3, 27):

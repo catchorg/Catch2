@@ -21,6 +21,37 @@ set_tests_properties(TestSharding::OverlyLargeShardIndex
     PASS_REGULAR_EXPRESSION "The shard count \\(5\\) must be greater than the shard index \\(5\\)"
 )
 
+set(CATCH_SHARDING_WARNING_REGEX "Warning: using sharding .* with random order")
+
+add_test(
+  NAME TestSharding::WarningOnRandomOrderWithoutFixedSeed
+  COMMAND $<TARGET_FILE:SelfTest> --shard-index 0 --shard-count 2 --list-tests
+)
+set_tests_properties(TestSharding::WarningOnRandomOrderWithoutFixedSeed
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "${CATCH_SHARDING_WARNING_REGEX}"
+)
+
+add_test(
+  NAME TestSharding::NoWarningOnRandomOrderWithFixedSeed
+  COMMAND $<TARGET_FILE:SelfTest> --shard-index 0 --shard-count 2 --rng-seed 12345 --list-tests
+)
+set_tests_properties(TestSharding::NoWarningOnRandomOrderWithFixedSeed
+  PROPERTIES
+    FAIL_REGULAR_EXPRESSION "${CATCH_SHARDING_WARNING_REGEX}"
+)
+
+foreach(shardOrder decl lex)
+  add_test(
+    NAME TestSharding::NoWarningOn${shardOrder}OrderWithoutFixedSeed
+    COMMAND $<TARGET_FILE:SelfTest> --shard-index 0 --shard-count 2 --order ${shardOrder} --list-tests
+  )
+  set_tests_properties(TestSharding::NoWarningOn${shardOrder}OrderWithoutFixedSeed
+    PROPERTIES
+      FAIL_REGULAR_EXPRESSION "${CATCH_SHARDING_WARNING_REGEX}"
+  )
+endforeach()
+
 # The MinDuration reporting tests do not need separate compilation, but
 # they have non-trivial execution time, so they are categorized as
 # extra tests, so that they are run less.
@@ -430,6 +461,62 @@ set_tests_properties(Reporters::CrashInJunitReporter
 )
 
 
+add_executable(ReportingInvalidTestCaseTags ${TESTS_DIR}/X37-ReportingInvalidTestCaseTags.cpp)
+target_link_libraries(ReportingInvalidTestCaseTags PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME Validation::TestCaseTags
+  COMMAND $<TARGET_FILE:ReportingInvalidTestCaseTags>
+)
+# Passing multiple PASS_REGULAR_EXPRESSION does not work, so we join multiple ones with '.*'
+set(regexp
+  "Found an empty tag while registering test case 'Empty tag is not allowed'"
+  "Tag name: \\[!abc\\] is not allowed."
+  "Tag names starting with non-alphanumeric characters are reserved."
+  "Tag name: \\[@def\\] is not allowed."
+  "Tag names starting with non-alphanumeric characters are reserved."
+)
+list(JOIN regexp ".*" regexp)
+set_tests_properties(Validation::TestCaseTags
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION ${regexp}
+)
+
+
+add_executable(ThrowingReporter ${TESTS_DIR}/X38-ThrowingReporter.cpp)
+target_link_libraries(ThrowingReporter PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME Reporters::ThrowInConstructor
+  COMMAND
+    $<TARGET_FILE:ThrowingReporter>
+      --reporter ThrowingReporter::Xthrow-in-constructor=true
+)
+set_tests_properties(Reporters::ThrowInConstructor
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "Error when creating reporter: Exception in constructor"
+)
+
+foreach(reporterName   "Automake"
+                       "compact"
+                       "console"
+                       "JUnit"
+                       "SonarQube"
+                       "TAP"
+                       "TeamCity"
+                       "XML"
+                       "JSON")
+  add_test(NAME "Reporters::RejectUnknownArgs::${reporterName}"
+    COMMAND
+      $<TARGET_FILE:SelfTest>
+        --reporter ${reporterName}::Xfoo=bar
+        "[comparisons]" # Limit selection to avoid running full test binary if the error check doesn't trigger
+  )
+  set_tests_properties("Reporters::RejectUnknownArgs::${reporterName}"
+    PROPERTIES
+      PASS_REGULAR_EXPRESSION "Error when creating reporter: Unknown reporter argument: Xfoo"
+  )
+endforeach()
+
+
 add_executable(QuickExitInTest ${TESTS_DIR}/X40-QuickExit.cpp)
 target_link_libraries(QuickExitInTest PRIVATE Catch2::Catch2WithMain)
 add_test(
@@ -526,29 +613,18 @@ set_tests_properties(TestSpecs::SkippingAllTestsFails
     WILL_FAIL ON
 )
 
-set(EXTRA_TEST_BINARIES
-  AllSkipped
-  PrefixedMacros
-  DisabledMacros
-  DisabledExceptions-DefaultHandler
-  DisabledExceptions-CustomHandler
-  FallbackStringifier
-  DisableStringification
-  PartialTestCaseEvents
-  DuplicatedTestCases-SameNameAndTags
-  DuplicatedTestCases-SameNameDifferentTags
-  DuplicatedTestCases-DuplicatedTestCaseMethods
-  NoTests
-  ListenersGetEventsBeforeReporters
-  MixingClearedAndUnclearedMessages
-#  DebugBreakMacros
-)
+add_executable(FastCompileMacros ${TESTS_DIR}/X07-FastCompileMacros.cpp)
+target_link_libraries(FastCompileMacros PRIVATE Catch2_buildall_interface)
+target_compile_definitions(FastCompileMacros PRIVATE CATCH_CONFIG_FAST_COMPILE)
 
-# Notice that we are modifying EXTRA_TEST_BINARIES destructively, do not
-# use it after this point!
-list(FILTER EXTRA_TEST_BINARIES EXCLUDE REGEX "DisabledExceptions.*")
-list(APPEND CATCH_TEST_TARGETS ${EXTRA_TEST_BINARIES})
-set(CATCH_TEST_TARGETS ${CATCH_TEST_TARGETS} PARENT_SCOPE)
+add_test(
+  NAME CompileConfiguration::FastCompile
+  COMMAND $<TARGET_FILE:FastCompileMacros>
+)
+set_tests_properties(CompileConfiguration::FastCompile
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "test cases:  6 \\| 1 passed \\| 1 failed \\| 4 failed as expected\nassertions: 13 \\| 6 passed \\| 2 failed \\| 5 failed as expected"
+)
 
 # This sets up a one-off executable that compiles against the amalgamated
 # files, and then runs it for a super simple check that the amalgamated
@@ -594,12 +670,79 @@ add_executable(InfiniteGenerators ${TESTS_DIR}/X95-InfiniteGenerators.cpp)
 target_link_libraries(InfiniteGenerators PRIVATE Catch2::Catch2WithMain)
 
 add_test(
-  NAME Warnings::InfiniteGenerators
+  NAME Warnings::InfiniteGenerators::NoFilterWarns
   COMMAND $<TARGET_FILE:InfiniteGenerators> --warn InfiniteGenerators
 )
-set_tests_properties(Warnings::InfiniteGenerators
+set_tests_properties(Warnings::InfiniteGenerators::NoFilterWarns
   PROPERTIES
     # One test case fails with infinite generator, but the other one runs
     PASS_REGULAR_EXPRESSION "test cases: 2 \\| 1 passed \\| 1 failed"
     TIMEOUT 5
 )
+
+add_test(
+  NAME Warnings::InfiniteGenerators::MatchAllFilterWarns
+  COMMAND $<TARGET_FILE:InfiniteGenerators>
+    --warn InfiniteGenerators
+    --path-filter g:*
+)
+set_tests_properties(Warnings::InfiniteGenerators::MatchAllFilterWarns
+  PROPERTIES
+    # One test case fails with infinite generator, but the other one runs
+    PASS_REGULAR_EXPRESSION "test cases: 2 \\| 1 passed \\| 1 failed"
+    TIMEOUT 5
+)
+
+add_test(
+  NAME Warnings::InfiniteGenerators::MatchOneFilterDoesntWarn
+  COMMAND $<TARGET_FILE:InfiniteGenerators>
+    --warn InfiniteGenerators
+    --path-filter g:1
+)
+set_tests_properties(Warnings::InfiniteGenerators::MatchOneFilterDoesntWarn
+  PROPERTIES
+    # One test case fails with infinite generator, but the other one runs
+    PASS_REGULAR_EXPRESSION "All tests passed \\(1 assertion in 2 test cases\\)"
+    TIMEOUT 5
+)
+
+add_test(
+  NAME Warnings::InfiniteGenerators::SectionFilterWarns
+  COMMAND $<TARGET_FILE:InfiniteGenerators>
+    --warn InfiniteGenerators
+    --section FooBarBaz
+)
+set_tests_properties(Warnings::InfiniteGenerators::SectionFilterWarns
+  PROPERTIES
+    # One test case fails with infinite generator, but the other one runs
+    PASS_REGULAR_EXPRESSION "test cases: 2 \\| 1 passed \\| 1 failed"
+    TIMEOUT 5
+)
+
+
+set(EXTRA_TEST_BINARIES
+  AllSkipped
+  PrefixedMacros
+  DisabledMacros
+  DisabledExceptions-DefaultHandler
+  DisabledExceptions-CustomHandler
+  FallbackStringifier
+  DisableStringification
+  PartialTestCaseEvents
+  DuplicatedTestCases-SameNameAndTags
+  DuplicatedTestCases-SameNameDifferentTags
+  DuplicatedTestCases-DuplicatedTestCaseMethods
+  NoTests
+  ListenersGetEventsBeforeReporters
+  MixingClearedAndUnclearedMessages
+  FastCompileMacros
+  InfiniteGenerators
+  ThreadSafetyTests
+#  DebugBreakMacros
+)
+
+# Notice that we are modifying EXTRA_TEST_BINARIES destructively, do not
+# use it after this point!
+list(FILTER EXTRA_TEST_BINARIES EXCLUDE REGEX "DisabledExceptions.*")
+list(APPEND CATCH_TEST_TARGETS ${EXTRA_TEST_BINARIES})
+set(CATCH_TEST_TARGETS ${CATCH_TEST_TARGETS} PARENT_SCOPE)

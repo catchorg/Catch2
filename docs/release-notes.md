@@ -2,6 +2,11 @@
 
 # Release notes
 **Contents**<br>
+[3.16.1](#3161)<br>
+[3.16.0](#3160)<br>
+[3.15.3](#3153)<br>
+[3.15.2](#3152)<br>
+[3.15.1](#3151)<br>
 [3.15.0](#3150)<br>
 [3.14.0](#3140)<br>
 [3.13.0](#3130)<br>
@@ -73,6 +78,108 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 3.16.1
+
+### Fixes
+* Fixed optimizations being disabled after including benchmarking headers under MSVC. (#3212)
+  * This was introduced in 3.16.0's fix for the deopt implementation for MSVC never being used.
+* Fixed Console reporter replacing `\0xFF`s in user-provided strings.
+* Added missing `<cassert>` include to `catch_generators_range.hpp`. (#3205)
+
+### Improvements
+* Workaround for GCC's quadratic scaling for release builds with number of test cases.
+  * In practice the improvement is only noticeable with unity builds and/or template product tests.
+* Changed how decomposer operators are defined for better compilation times.
+  * For Catch2's `SelfTest` binary, this provides ~2% build time improvement.
+* Changed how decomposer handles stringification for smaller binary sizes.
+  * For the `SelfTest` binary this is about ~8%.
+* Improved compilation costs of multiple assertions in one test cases for release builds.
+* Optimized initial test registration at process start:
+  * Fewer allocations for test cases with many tags.
+  * Faster processing for test cases with <=2 tags.
+  * Faster tag validation.
+  * Faster checking for duplicated test cases.
+* Optimized test selection and filtering:
+* Optimized filtering tests by test name.
+  * Running `SelfTest` with `abc*` as the filter pattern is ~10% faster.
+
+### Miscellaneous
+* `catch_discover_tests` registers individual tests with `--order decl` for faster startup.
+  * For `SelfTest`, this provides 20% improvement in Debug and 5% in Release builds.
+* `CMakeConfig::` family of tests use the main build's toolchain file. (#3202)
+* Deprecated throwing exceptions from the reporter interface functions.
+  * Previously, throwing from e.g. `assertionEnded` might, or might not, have worked depending on which assertion has ended. As it is not practical for Catch2 to guard against the reporters failing randomly, and marking so with `noexcept` can provide compilation throughput improvements, I decided to fully forbid it.
+  * Reporter constructors are allowed to throw and the test binary will report the error nicely before exiting.
+  * Due to C++ limitations, this deprecation cannot be marked inside the code, only in docs.
+
+
+## 3.16.0
+
+### Fixes
+* Multiple fixes in `catch_discover_tests`:
+  * Fixed `<target>_TESTS` variable accumulating JSON fragments alongside test names.
+    * This was introduced during the refactoring in last release.
+  * Fixed `<target>_TESTS` variable from `catch_discover_tests` not escaping test names to be properly parsed by CMake.
+    * This means that e.g. test names with semicolons will not be split into multiple partial test names.
+    * This bug has existed since the first version of the script.
+  * Fixed `TEST_PREFIX`/`TEST_SUFFIX` args having leading/trailing whitespace stripped.
+* Added workaround for Clang 20-21 compile error with `TEMPLATE_PRODUCT_TEST_CASE` (#3115, #3173)
+
+### Improvements
+* Verbosity option is now handled per reporter.
+  * The standalone `--verbosity` flag is propagated to all reporters as default, just like `--colour-mode`.
+* The JSON reporter considers verbosity when listing tests.
+* Another set of performance improvements for `catch_discover_tests` performance
+  * The newest version can register about 3k tests in 1 second, up from 1k previously.
+* The initial `TEST_CASE` registration is slightly faster.
+* Reduced overhead from first instantiating `BENCHMARK` machinery in a TU.
+* Improved compilation speed when multiple templated test case macros use the same types.
+* Rewrote implementation of the string matchers
+  * Case-sensitive matching (the default) is significantly faster.
+  * Case-insensitive matching is faster in most cases.
+* Added optimizer barrier to calls into benchmarks without return values
+  * This limits the optimizations compiler can perform **between calls** into the benchmarked function, improving the accuracy.
+* Added warning that checks for using sharding without deterministic test order (#3186)
+
+
+## 3.15.3
+
+### Fixes
+* The JSON reporter's number handling is locale-independent. (#3176)
+* Removed leftover debug message from `catch_discover_tests` (#3177)
+* Fixed typo in the "Could not jump to the Nth element" exception message (#3181)
+
+### Improvements
+* `catch_discover_tests` registers tests in deterministic (alphabetical) order.
+* `catch_discover_tests` has been rewritten to be massively faster.
+  * Preparing the actual CTest script is significantly faster.
+  * Parsing the JSON test array is significantly faster.
+  * Running without `ADD_TAGS_AS_LABELS` set is 10-15% faster (as opposed to being the same speed) (#3169)
+  * The new implementation is about 4x-5x faster, so registering 500 tests now takes ~350ms (down from 1.1s).
+* JSON writing is faster
+  * Small improvement in writing non-string values
+  * ~6-40% improvement in writing string values that do not need escaping
+  * ~1-6% improvement in writing string values that do need escaping
+* Better support for infs and NaNs in JSON output
+
+
+## 3.15.2
+
+### Fixes
+* Fixed `--warn InfiniteGenerators` triggering even if the generator was limited to specific element via path filtering.
+* Fixed `-Wunused-parameter` triggering in `-fnoexceptions` builds.
+
+### Improvements
+* `catch_discover_tests` can handle cases where the binary prints out non-Catch2 output due to global constructors (#3162)
+
+
+## 3.15.1
+
+### Fixes
+* Fixed potential OOB access when looking for start of broken UTF-8 sequence during linebreaking (#3096)
+* Fixed `TEMPLATE_LIST_TEST_CASE_METHOD` and `CATCH_TEMPLATE_PRODUCT_TEST_CASE` potentially causing ODR violations (#3161)
 
 
 ## 3.15.0

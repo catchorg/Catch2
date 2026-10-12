@@ -39,10 +39,18 @@ namespace Catch {
             writeImpl( value, !std::is_arithmetic<T>::value );
         }
         void write( StringRef value ) &&;
+        void write( float value ) &&;
+        void write( double value ) &&;
         void write( bool value ) &&;
 
     private:
         void writeImpl( StringRef value, bool quote );
+
+        // Helper to deal with non-finite floating point values, which
+        // are not standard JSON, but we use JS/Python/etc. approach of
+        // emitting `NaN`, `Infinity`, `-Infinity` as number(like).
+        template <typename T>
+        void writeFloatingPoint( T value );
 
         // Without this SFINAE, this overload is a better match
         // for `std::string`, `char const*`, `char const[N]` args.

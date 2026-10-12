@@ -1131,7 +1131,7 @@ ok {test-number} - x == Approx( 1.3 ) for: 1.30000000000000027 == Approx( 1.3000
 # Equals
 ok {test-number} - testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
 # Equals
-ok {test-number} - testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring" (case insensitive)
+ok {test-number} - testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring" (case insensitive)
 # Equals string matcher
 not ok {test-number} - testStringForMatching(), Equals( "this string contains 'ABC' as a substring" ) for: "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring"
 # Equals string matcher
@@ -1169,7 +1169,7 @@ ok {test-number} - throwsSpecialException( 2 ), SpecialException, MessageMatches
 # Exception messages can be tested for
 ok {test-number} - thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
 # Exception messages can be tested for
-ok {test-number} - thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) for: "expected exception" equals: "expected exception" (case insensitive)
+ok {test-number} - thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) for: "expected exception" equals: "expecteD Exception" (case insensitive)
 # Exception messages can be tested for
 ok {test-number} - thisThrows(), StartsWith( "expected" ) for: "expected exception" starts with: "expected"
 # Exception messages can be tested for
@@ -1177,7 +1177,7 @@ ok {test-number} - thisThrows(), EndsWith( "exception" ) for: "expected exceptio
 # Exception messages can be tested for
 ok {test-number} - thisThrows(), ContainsSubstring( "except" ) for: "expected exception" contains: "except"
 # Exception messages can be tested for
-ok {test-number} - thisThrows(), ContainsSubstring( "exCept", Catch::CaseSensitive::No ) for: "expected exception" contains: "except" (case insensitive)
+ok {test-number} - thisThrows(), ContainsSubstring( "exCept", Catch::CaseSensitive::No ) for: "expected exception" contains: "exCept" (case insensitive)
 # Exception thrown inside stringify does not fail the test
 ok {test-number} - tos == tos for: { stringification failed with an exception: "Invalid" } == { stringification failed with an exception: "Invalid" }
 # Exceptions matchers
@@ -2054,6 +2054,20 @@ ok {test-number} - sstream.str() == "\"\\r\"" for: ""\r"" == ""\r""
 ok {test-number} - sstream.str() == "\"\\t\"" for: ""\t"" == ""\t""
 # JsonWriter escapes characters in strings properly
 ok {test-number} - sstream.str() == "\"\\\\/\\t\\r\\n\"" for: ""\\/\t\r\n"" == ""\\/\t\r\n""
+# JsonWriter serializes non-finite FP using Python spelling - double
+ok {test-number} - sstream.str() == "NaN" for: "NaN" == "NaN"
+# JsonWriter serializes non-finite FP using Python spelling - double
+ok {test-number} - sstream.str() == "Infinity" for: "Infinity" == "Infinity"
+# JsonWriter serializes non-finite FP using Python spelling - double
+ok {test-number} - sstream.str() == "-Infinity" for: "-Infinity" == "-Infinity"
+# JsonWriter serializes non-finite FP using Python spelling - float
+ok {test-number} - sstream.str() == "NaN" for: "NaN" == "NaN"
+# JsonWriter serializes non-finite FP using Python spelling - float
+ok {test-number} - sstream.str() == "Infinity" for: "Infinity" == "Infinity"
+# JsonWriter serializes non-finite FP using Python spelling - float
+ok {test-number} - sstream.str() == "-Infinity" for: "-Infinity" == "-Infinity"
+# JsonWriter serializes numbers independently of the global locale
+ok {test-number} - sstream.str(), ContainsSubstring( "\"double\": 1.5," ) && ContainsSubstring( "\"int\": 1234567," ) && ContainsSubstring( "\"bool-1\": true," ) && ContainsSubstring( "\"bool-2\": false," ) && ContainsSubstring( "\"array\": [\n    2.5,\n    1234567\n  ]\n}" ) for: "{   "double": 1.5,   "int": 1234567,   "bool-1": true,   "bool-2": false,   "array": [     2.5,     1234567   ] }" ( contains: ""double": 1.5," and contains: ""int": 1234567," and contains: ""bool-1": true," and contains: ""bool-2": false," and contains: ""array": [     2.5,     1234567   ] }" )
 # Lambdas in assertions
 ok {test-number} - []() { return true; }() for: true
 # Less-than inequalities with different epsilons
@@ -2501,11 +2515,11 @@ ok {test-number} - !(cfg.hasTestFilters()) for: !false
 # Process can be configured on command line
 ok {test-number} - cfg.getReporterSpecs().size() == 1 for: 1 == 1
 # Process can be configured on command line
-ok {test-number} - cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {} } for: {?} == {?}
+ok {test-number} - cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {}, {} } for: {?} == {?}
 # Process can be configured on command line
 ok {test-number} - cfg.getProcessedReporterSpecs().size() == 1 for: 1 == 1
 # Process can be configured on command line
-ok {test-number} - cfg.getProcessedReporterSpecs()[0] == Catch::ProcessedReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, {} } for: {?} == {?}
+ok {test-number} - cfg.getProcessedReporterSpecs()[0] == Catch::ProcessedReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, Catch::Verbosity::Normal, {} } for: {?} == {?}
 # Process can be configured on command line
 ok {test-number} - result for: {?}
 # Process can be configured on command line
@@ -2533,15 +2547,15 @@ ok {test-number} - cfg.testSpec().matches(*fakeTestCase("alwaysIncluded")) for: 
 # Process can be configured on command line
 ok {test-number} - result for: {?} with 1 message: 'result.errorMessage() := ""'
 # Process can be configured on command line
-ok {test-number} - config.reporterSpecifications == vec_Specs{ { "console", {}, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
+ok {test-number} - config.reporterSpecifications == vec_Specs{ { "console", {}, {}, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
 # Process can be configured on command line
 ok {test-number} - result for: {?} with 1 message: 'result.errorMessage() := ""'
 # Process can be configured on command line
-ok {test-number} - config.reporterSpecifications == vec_Specs{ { "xml", {}, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
+ok {test-number} - config.reporterSpecifications == vec_Specs{ { "xml", {}, {}, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
 # Process can be configured on command line
 ok {test-number} - result for: {?} with 1 message: 'result.errorMessage() := ""'
 # Process can be configured on command line
-ok {test-number} - config.reporterSpecifications == vec_Specs{ { "junit", {}, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
+ok {test-number} - config.reporterSpecifications == vec_Specs{ { "junit", {}, {}, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
 # Process can be configured on command line
 ok {test-number} - !result for: true
 # Process can be configured on command line
@@ -2549,19 +2563,19 @@ ok {test-number} - result.errorMessage(), ContainsSubstring("Unrecognized report
 # Process can be configured on command line
 ok {test-number} - result for: {?} with 1 message: 'result.errorMessage() := ""'
 # Process can be configured on command line
-ok {test-number} - config.reporterSpecifications == vec_Specs{ { "console", "out.txt"s, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
+ok {test-number} - config.reporterSpecifications == vec_Specs{ { "console", "out.txt"s, {}, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
 # Process can be configured on command line
 ok {test-number} - result for: {?} with 1 message: 'result.errorMessage() := ""'
 # Process can be configured on command line
-ok {test-number} - config.reporterSpecifications == vec_Specs{ { "console", "C:\\Temp\\out.txt"s, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
+ok {test-number} - config.reporterSpecifications == vec_Specs{ { "console", "C:\\Temp\\out.txt"s, {}, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
 # Process can be configured on command line
 ok {test-number} - cli.parse({ "test", "-r", "xml::out=output.xml", "-r", "junit::out=output-junit.xml" }) for: {?}
 # Process can be configured on command line
-ok {test-number} - config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "junit", "output-junit.xml"s, {}, {} } } for: { {?}, {?} } == { {?}, {?} }
+ok {test-number} - config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {}, {} }, { "junit", "output-junit.xml"s, {}, {}, {} } } for: { {?}, {?} } == { {?}, {?} }
 # Process can be configured on command line
 ok {test-number} - cli.parse({ "test", "-r", "xml::out=output.xml", "-r", "console" }) for: {?}
 # Process can be configured on command line
-ok {test-number} - config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "console", {}, {}, {} } } for: { {?}, {?} } == { {?}, {?} }
+ok {test-number} - config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {}, {} }, { "console", {}, {}, {}, {} } } for: { {?}, {?} } == { {?}, {?} }
 # Process can be configured on command line
 ok {test-number} - !result for: true
 # Process can be configured on command line
@@ -2753,15 +2767,15 @@ ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && Cont
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, ContainsSubstring("fakeTag"s) for: "{   "version": 1,   "metadata": {     "name": "",     "rng-seed": 1234,     "catch2-version": "<version>"   },   "listings": {     "tags": [       {         "aliases": [           "fakeTag"         ],         "count": 1       }     ]" contains: "fakeTag" with 1 message: 'Tested reporter: JSON'
+ok {test-number} - listingString, ContainsSubstring("fakeTag"s) for: "{   "version": 2,   "metadata": {     "name": "",     "rng-seed": 1234,     "catch2-version": "<version>"   },   "listings": {     "tags": [       {         "aliases": [           "fakeTag"         ],         "count": 1       }     ]" contains: "fakeTag" with 1 message: 'Tested reporter: JSON'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, ContainsSubstring("fake reporter"s) for: "{   "version": 1,   "metadata": {     "name": "",     "rng-seed": 1234,     "catch2-version": "<version>"   },   "listings": {     "reporters": [       {         "name": "fake reporter",         "description": "fake description"       }     ]" contains: "fake reporter" with 1 message: 'Tested reporter: JSON'
+ok {test-number} - listingString, ContainsSubstring("fake reporter"s) for: "{   "version": 2,   "metadata": {     "name": "",     "rng-seed": 1234,     "catch2-version": "<version>"   },   "listings": {     "reporters": [       {         "name": "fake reporter",         "description": "fake description"       }     ]" contains: "fake reporter" with 1 message: 'Tested reporter: JSON'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "{   "version": 1,   "metadata": {     "name": "",     "rng-seed": 1234,     "catch2-version": "<version>"   },   "listings": {     "tests": [       {         "name": "fake test name",         "class-name": "",         "tags": [           "fakeTestTag"         ],         "source-location": {           "filename": "fake-file.cpp",           "line": 123456789         }       }     ]" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: JSON'
+ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "{   "version": 2,   "metadata": {     "name": "",     "rng-seed": 1234,     "catch2-version": "<version>"   },   "listings": {     "tests": [       {         "name": "fake test name",         "tags": [           "fakeTestTag"         ]       }     ]" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: JSON'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
@@ -2902,15 +2916,15 @@ ok {test-number} - testStringForMatching(), ContainsSubstring( "string", Catch::
 # String matchers
 ok {test-number} - testStringForMatching(), ContainsSubstring( "abc" ) for: "this string contains 'abc' as a substring" contains: "abc"
 # String matchers
-ok {test-number} - testStringForMatching(), ContainsSubstring( "aBC", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
+ok {test-number} - testStringForMatching(), ContainsSubstring( "aBC", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "aBC" (case insensitive)
 # String matchers
 ok {test-number} - testStringForMatching(), StartsWith( "this" ) for: "this string contains 'abc' as a substring" starts with: "this"
 # String matchers
-ok {test-number} - testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" starts with: "this" (case insensitive)
+ok {test-number} - testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" starts with: "THIS" (case insensitive)
 # String matchers
 ok {test-number} - testStringForMatching(), EndsWith( "substring" ) for: "this string contains 'abc' as a substring" ends with: "substring"
 # String matchers
-ok {test-number} - testStringForMatching(), EndsWith( " SuBsTrInG", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" ends with: " substring" (case insensitive)
+ok {test-number} - testStringForMatching(), EndsWith( " SuBsTrInG", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" ends with: " SuBsTrInG" (case insensitive)
 # StringRef
 ok {test-number} - empty.empty() for: true
 # StringRef
@@ -4677,6 +4691,36 @@ ok {test-number} - testcase.tags[0].original == "magic.tag"_catch_sr for: magic.
 ok {test-number} -  # SKIP
 # thrown std::strings are translated
 not ok {test-number} - unexpected exception with message: 'Why would you throw a std::string?'
+# toLower( char )
+ok {test-number} - toLower( 'A' ) == 'a' for: 'a' == 'a'
+# toLower( char )
+ok {test-number} - toLower( 'Z' ) == 'z' for: 'z' == 'z'
+# toLower( char )
+ok {test-number} - toLower( 'a' ) == 'a' for: 'a' == 'a'
+# toLower( char )
+ok {test-number} - toLower( 'z' ) == 'z' for: 'z' == 'z'
+# toLower( char )
+ok {test-number} - toLower( '@' ) == '@' for: '@' == '@'
+# toLower( char )
+ok {test-number} - toLower( '[' ) == '[' for: '[' == '['
+# toLower( char )
+ok {test-number} - toLower( '`' ) == '`' for: '`' == '`'
+# toLower( char )
+ok {test-number} - toLower( '{' ) == '{' for: '{' == '{'
+# toLower( char )
+ok {test-number} - toLower( '0' ) == '0' for: '0' == '0'
+# toLower( char )
+ok {test-number} - toLower( ' ' ) == ' ' for: ' ' == ' '
+# toLower( char )
+ok {test-number} - toLower( '\0' ) == '\0' for: 0 == 0
+# toLower( char )
+ok {test-number} - toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'Ä' == 'Ä'
+# toLower( char )
+ok {test-number} - toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'ÿ' == 'ÿ'
+# toLower( char )
+ok {test-number} - with 1 message: 'toLower( 'A' ) == 'a''
+# toLower( char )
+ok {test-number} - with 1 message: 'toLower( '0' ) == '0''
 # toString on const wchar_t const pointer returns the string contents
 ok {test-number} - result == "\"wide load\"" for: ""wide load"" == ""wide load""
 # toString on const wchar_t pointer returns the string contents
@@ -4851,5 +4895,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2428
+1..2450
 

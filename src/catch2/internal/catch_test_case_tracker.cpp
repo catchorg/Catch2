@@ -167,6 +167,28 @@ namespace TestCaseTracking {
         m_ctx.setCurrentTracker( this );
     }
 
+    bool SectionTracker::isFilteredImpl() const {
+        // TBD: This is currently _very_ similar to the block in `isComplete`.
+        //      Is this necessarily that way, or just accident of current semantics?
+        const size_t filterIndex =
+            m_newStyleFilters ? m_allTrackerDepth : m_sectionOnlyDepth;
+
+        if ( filterIndex < m_filterRef->size() ) {
+            // 1) New style filter must explicitly target section
+            if ( m_newStyleFilters && ( *m_filterRef )[filterIndex].type !=
+                                          PathFilter::For::Section ) {
+                return true;
+            }
+            // 2) Both style filters must match the trimmed name exactly
+            if ( m_trimmed_name !=
+                 StringRef( ( *m_filterRef )[filterIndex].filter ) ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     SectionTracker::SectionTracker( NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent )
     :   TrackerBase( CATCH_MOVE(nameAndLocation), ctx, parent ),
         m_trimmed_name(trim(StringRef(ITracker::nameAndLocation().name)))

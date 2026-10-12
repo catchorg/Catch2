@@ -66,6 +66,15 @@ namespace Catch {
         return Detail::make_unique<TestInvokerAsFunction>( testAsFunction );
     }
 
+    AutoReg::AutoReg( void ( *testAsFunction )(),
+                      SourceLineInfo const& lineInfo,
+                      StringRef classOrMethod,
+                      NameAndTags const& nameAndTags ) noexcept:
+        AutoReg( makeTestInvoker( testAsFunction ),
+                 lineInfo,
+                 classOrMethod,
+                 nameAndTags ) {}
+
     AutoReg::AutoReg( Detail::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, StringRef classOrMethod, NameAndTags const& nameAndTags ) noexcept {
         CATCH_TRY {
             getMutableRegistryHub()

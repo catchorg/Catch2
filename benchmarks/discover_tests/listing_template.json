@@ -1,0 +1,85 @@
+{
+  "version": 2,
+  "metadata": {
+    "name": "benchmark-template",
+    "catch2-version": "3.15.2"
+  },
+  "listings": {
+    "tests": [
+      {
+        "name": "Comparing function pointers",
+        "tags": [
+          "function pointer",
+          "Tricky"
+        ]
+      },
+      {
+        "name": "Testing checked-if 4",
+        "tags": [
+          "!shouldfail",
+          "checked-if"
+        ]
+      },
+      {
+        "name": "count_equidistant_floats - double",
+        "tags": [
+          "approvals",
+          "distance",
+          "floating-point"
+        ]
+      },
+      {
+        "name": "Usage of AllTrue range matcher",
+        "tags": [
+          "matchers",
+          "quantifiers",
+          "templated"
+        ]
+      },
+      {
+        "name": "Exception matchers that succeed",
+        "tags": [
+          "!throws",
+          "exceptions",
+          "matchers"
+        ]
+      },
+      {
+        "name": "A TEMPLATE_TEST_CASE_METHOD based test run that succeeds - float",
+        "class-name": "Template_Fixture",
+        "tags": [
+          "class",
+          "template"
+        ]
+      },
+      {
+        "name": "Approximate PI",
+        "tags": [
+          "Approx",
+          "PI"
+        ]
+      },
+      {
+        "name": "TextFlow::Column respects width setting",
+        "tags": [
+          "approvals",
+          "column",
+          "TextFlow"
+        ]
+      },
+      {
+        "name": "Generators internals",
+        "tags": [
+          "generators",
+          "internals"
+        ]
+      },
+      {
+        "name": "Mayfail test case with nested sections",
+        "tags": [
+          "!mayfail"
+        ]
+      }
+    ]
+  }
+}

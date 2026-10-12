@@ -5102,7 +5102,7 @@ Approx( 1.30000000000000004 )
         testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No )
       </Original>
       <Expanded>
-        "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring" (case insensitive)
+        "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring" (case insensitive)
       </Expanded>
     </Expression>
     <OverallResult success="true" skips="0"/>
@@ -5295,7 +5295,7 @@ Approx( 1.30000000000000004 )
           thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No )
         </Original>
         <Expanded>
-          "expected exception" equals: "expected exception" (case insensitive)
+          "expected exception" equals: "expecteD Exception" (case insensitive)
         </Expanded>
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
@@ -5330,7 +5330,7 @@ Approx( 1.30000000000000004 )
           thisThrows(), ContainsSubstring( "exCept", Catch::CaseSensitive::No )
         </Original>
         <Expanded>
-          "expected exception" contains: "except" (case insensitive)
+          "expected exception" contains: "exCept" (case insensitive)
         </Expanded>
       </Expression>
       <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
@@ -9894,6 +9894,102 @@ Approx( 3.14150000000000018 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="JsonWriter serializes non-finite FP using Python spelling - double" tags="[floating-point][JsonWriter]" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+    <Section name="NaN" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          sstream.str() == "NaN"
+        </Original>
+        <Expanded>
+          "NaN" == "NaN"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Pos nf" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          sstream.str() == "Infinity"
+        </Original>
+        <Expanded>
+          "Infinity" == "Infinity"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Neg inf" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          sstream.str() == "-Infinity"
+        </Original>
+        <Expanded>
+          "-Infinity" == "-Infinity"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="JsonWriter serializes non-finite FP using Python spelling - float" tags="[floating-point][JsonWriter]" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+    <Section name="NaN" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          sstream.str() == "NaN"
+        </Original>
+        <Expanded>
+          "NaN" == "NaN"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Pos nf" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          sstream.str() == "Infinity"
+        </Original>
+        <Expanded>
+          "Infinity" == "Infinity"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Neg inf" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+        <Original>
+          sstream.str() == "-Infinity"
+        </Original>
+        <Expanded>
+          "-Infinity" == "-Infinity"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="JsonWriter serializes numbers independently of the global locale" tags="[JsonWriter]" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+    <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+      <Original>
+        sstream.str(), ContainsSubstring( "\"double\": 1.5," ) &amp;&amp; ContainsSubstring( "\"int\": 1234567," ) &amp;&amp; ContainsSubstring( "\"bool-1\": true," ) &amp;&amp; ContainsSubstring( "\"bool-2\": false," ) &amp;&amp; ContainsSubstring( "\"array\": [\n    2.5,\n    1234567\n  ]\n}" )
+      </Original>
+      <Expanded>
+        "{
+  "double": 1.5,
+  "int": 1234567,
+  "bool-1": true,
+  "bool-2": false,
+  "array": [
+    2.5,
+    1234567
+  ]
+}" ( contains: ""double": 1.5," and contains: ""int": 1234567," and contains: ""bool-1": true," and contains: ""bool-2": false," and contains: ""array": [
+    2.5,
+    1234567
+  ]
+}" )
+      </Expanded>
+    </Expression>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="Lambdas in assertions" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
       <Original>
@@ -11880,7 +11976,7 @@ Approx( 1.21999999999999997 )
       </Expression>
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {} }
+          cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {}, {} }
         </Original>
         <Expanded>
           {?} == {?}
@@ -11896,7 +11992,7 @@ Approx( 1.21999999999999997 )
       </Expression>
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          cfg.getProcessedReporterSpecs()[0] == Catch::ProcessedReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, {} }
+          cfg.getProcessedReporterSpecs()[0] == Catch::ProcessedReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, Catch::Verbosity::Normal, {} }
         </Original>
         <Expanded>
           {?} == {?}
@@ -12036,7 +12132,7 @@ Approx( 1.21999999999999997 )
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.reporterSpecifications == vec_Specs{ { "console", {}, {}, {} } }
+            config.reporterSpecifications == vec_Specs{ { "console", {}, {}, {}, {} } }
           </Original>
           <Expanded>
             { {?} } == { {?} }
@@ -12064,7 +12160,7 @@ Approx( 1.21999999999999997 )
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.reporterSpecifications == vec_Specs{ { "xml", {}, {}, {} } }
+            config.reporterSpecifications == vec_Specs{ { "xml", {}, {}, {}, {} } }
           </Original>
           <Expanded>
             { {?} } == { {?} }
@@ -12092,7 +12188,7 @@ Approx( 1.21999999999999997 )
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.reporterSpecifications == vec_Specs{ { "junit", {}, {}, {} } }
+            config.reporterSpecifications == vec_Specs{ { "junit", {}, {}, {}, {} } }
           </Original>
           <Expanded>
             { {?} } == { {?} }
@@ -12142,7 +12238,7 @@ Approx( 1.21999999999999997 )
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.reporterSpecifications == vec_Specs{ { "console", "out.txt"s, {}, {} } }
+            config.reporterSpecifications == vec_Specs{ { "console", "out.txt"s, {}, {}, {} } }
           </Original>
           <Expanded>
             { {?} } == { {?} }
@@ -12170,7 +12266,7 @@ Approx( 1.21999999999999997 )
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.reporterSpecifications == vec_Specs{ { "console", "C:\\Temp\\out.txt"s, {}, {} } }
+            config.reporterSpecifications == vec_Specs{ { "console", "C:\\Temp\\out.txt"s, {}, {}, {} } }
           </Original>
           <Expanded>
             { {?} } == { {?} }
@@ -12193,7 +12289,7 @@ Approx( 1.21999999999999997 )
           </Expression>
           <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "junit", "output-junit.xml"s, {}, {} } }
+              config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {}, {} }, { "junit", "output-junit.xml"s, {}, {}, {} } }
             </Original>
             <Expanded>
               { {?}, {?} } == { {?}, {?} }
@@ -12218,7 +12314,7 @@ Approx( 1.21999999999999997 )
           </Expression>
           <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "console", {}, {}, {} } }
+              config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {}, {} }, { "console", {}, {}, {}, {} } }
             </Original>
             <Expanded>
               { {?}, {?} } == { {?}, {?} }
@@ -13323,7 +13419,7 @@ Approx( 0.98999999999999999 )
         </Original>
         <Expanded>
           "{
-  "version": 1,
+  "version": 2,
   "metadata": {
     "name": "",
     "rng-seed": 1234,
@@ -13360,7 +13456,7 @@ Approx( 0.98999999999999999 )
         </Original>
         <Expanded>
           "{
-  "version": 1,
+  "version": 2,
   "metadata": {
     "name": "",
     "rng-seed": 1234,
@@ -13395,7 +13491,7 @@ Approx( 0.98999999999999999 )
         </Original>
         <Expanded>
           "{
-  "version": 1,
+  "version": 2,
   "metadata": {
     "name": "",
     "rng-seed": 1234,
@@ -13405,14 +13501,9 @@ Approx( 0.98999999999999999 )
     "tests": [
       {
         "name": "fake test name",
-        "class-name": "",
         "tags": [
           "fakeTestTag"
-        ],
-        "source-location": {
-          "filename": "fake-file.cpp",
-          "line": 123456789
-        }
+        ]
       }
     ]" ( contains: "fake test name" and contains: "fakeTestTag" )
         </Expanded>
@@ -14266,7 +14357,7 @@ Message from section two
         testStringForMatching(), ContainsSubstring( "aBC", Catch::CaseSensitive::No )
       </Original>
       <Expanded>
-        "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
+        "this string contains 'abc' as a substring" contains: "aBC" (case insensitive)
       </Expanded>
     </Expression>
     <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -14282,7 +14373,7 @@ Message from section two
         testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No )
       </Original>
       <Expanded>
-        "this string contains 'abc' as a substring" starts with: "this" (case insensitive)
+        "this string contains 'abc' as a substring" starts with: "THIS" (case insensitive)
       </Expanded>
     </Expression>
     <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -14298,7 +14389,7 @@ Message from section two
         testStringForMatching(), EndsWith( " SuBsTrInG", Catch::CaseSensitive::No )
       </Original>
       <Expanded>
-        "this string contains 'abc' as a substring" ends with: " substring" (case insensitive)
+        "this string contains 'abc' as a substring" ends with: " SuBsTrInG" (case insensitive)
       </Expanded>
     </Expression>
     <OverallResult success="true" skips="0"/>
@@ -22571,6 +22662,125 @@ Approx( -1.95996398454005449 )
     </Exception>
     <OverallResult success="false" skips="0"/>
   </TestCase>
+  <TestCase name="toLower( char )" tags="[string-manip]" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+    <Section name="ASCII letters are lowercased" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( 'A' ) == 'a'
+        </Original>
+        <Expanded>
+          'a' == 'a'
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( 'Z' ) == 'z'
+        </Original>
+        <Expanded>
+          'z' == 'z'
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( 'a' ) == 'a'
+        </Original>
+        <Expanded>
+          'a' == 'a'
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( 'z' ) == 'z'
+        </Original>
+        <Expanded>
+          'z' == 'z'
+        </Expanded>
+      </Expression>
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Chars outside 'A'-'Z' are left alone" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( '@' ) == '@'
+        </Original>
+        <Expanded>
+          '@' == '@'
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( '[' ) == '['
+        </Original>
+        <Expanded>
+          '[' == '['
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( '`' ) == '`'
+        </Original>
+        <Expanded>
+          '`' == '`'
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( '{' ) == '{'
+        </Original>
+        <Expanded>
+          '{' == '{'
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( '0' ) == '0'
+        </Original>
+        <Expanded>
+          '0' == '0'
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( ' ' ) == ' '
+        </Original>
+        <Expanded>
+          ' ' == ' '
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( '\0' ) == '\0'
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResults successes="7" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Non-ASCII chars are left alone" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( static_cast&lt;char>( 0x<hex digits> ) ) == static_cast&lt;char>( 0x<hex digits> )
+        </Original>
+        <Expanded>
+          '\xC4' == '\xC4'
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          toLower( static_cast&lt;char>( 0x<hex digits> ) ) == static_cast&lt;char>( 0x<hex digits> )
+        </Original>
+        <Expanded>
+          '\xFF' == '\xFF'
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Is usable in constant expressions" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="toString on const wchar_t const pointer returns the string contents" tags="[toString]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
@@ -23384,6 +23594,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2215" failures="158" expectedFailures="43" skips="12"/>
-  <OverallResultsCases successes="331" failures="96" expectedFailures="18" skips="6"/>
+  <OverallResults successes="2237" failures="158" expectedFailures="43" skips="12"/>
+  <OverallResultsCases successes="335" failures="96" expectedFailures="18" skips="6"/>
 </Catch2TestRun>

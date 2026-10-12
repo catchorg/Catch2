@@ -33,6 +33,7 @@ namespace {
 
 TEST_CASE() {
     auto _ = GENERATE( make_infinite_generator() );
+    (void)_;
 }
 
 TEST_CASE() {

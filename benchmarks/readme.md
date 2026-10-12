@@ -56,8 +56,8 @@ _Note that we redirect the output to `/dev/null` to reduce the overhead of the a
 
 TODO:
   * Start empty binary (set up cost base)
-  * Start binary with X (100/1k/10k) tests (test registration cost)
   * Section tracking
+
 
 ## Compilation benchmarks
 
@@ -79,3 +79,39 @@ hyperfine --warmup 2 --parameter-list version old,vas --prepare 'find ~/benches/
 
 TODO:
   * Link-only recipe
+
+
+## Misc. benchmarks
+
+### `catch_discover_tests`
+
+The first JSON-based implementation of `catch_discover_tests` turned out
+to have quadratic complexity in number of tests, which meant that registering
+say 1k test cases took ~4s , and it became unusably slow with larger
+test suites.
+
+To prevent backsliding, and enable future optimizations, there is now
+a benchmarking script for `catch_discover_tests` in the `discover_tests`
+directory.
+
+`discover_tests/benchmark_discovery.py` runs the real `catch_discover_tests`
+implementation (through CMake script-mode) on a synthesized JSON listing
+(generated from `discover_tests/listing_template.json`) through an executor
+shim (`discover_tests/copy_shim.cmake`). This means it can run even without
+real test binary.
+
+If the JSON output from Catch2 changes, the synthesized JSON listing
+can be updated by taking a real listing from `SelfTest` binary, and pruning
+it down to keep only ~10 entries.
+
+
+#### Examples
+
+**Benchmark the current `catch_discover_tests`, with and without tags-as-labels**
+```text
+./benchmarks/discover_tests/benchmark_discovery.py --script ./extras/CatchAddTests.cmake
+```
+
+Note that 8k test cases is unrealistically high, but still useful to see scaling.
+Benchmark for single test case is useful to provide estimate of the flat
+overhead from using `catch_discover_tests` at all.

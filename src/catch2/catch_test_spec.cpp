@@ -32,7 +32,7 @@ namespace Catch {
 
     TestSpec::NamePattern::NamePattern( std::string const& name, std::string const& filterString )
     : Pattern( filterString )
-    , m_wildcardPattern( toLower( name ), CaseSensitive::No )
+    , m_wildcardPattern( name, CaseSensitive::No )
     {}
 
     bool TestSpec::NamePattern::matches( TestCaseInfo const& testCase ) const {
@@ -113,12 +113,14 @@ namespace Catch {
         matches.reserve( m_filters.size() );
         for ( auto const& filter : m_filters ) {
             std::vector<TestCaseHandle const*> currentMatches;
-            for ( auto const& test : testCases )
+            for ( auto const& test : testCases ) {
                 if ( isThrowSafe( test, config ) &&
-                     filter.matches( test.getTestCaseInfo() ) )
+                     filter.matches( test.getTestCaseInfo() ) ) {
                     currentMatches.emplace_back( &test );
-            matches.push_back(
-                FilterMatch{ extractFilterName( filter ), currentMatches } );
+                }
+            }
+            matches.push_back( FilterMatch{ extractFilterName( filter ),
+                                            CATCH_MOVE( currentMatches ) } );
         }
         return matches;
     }

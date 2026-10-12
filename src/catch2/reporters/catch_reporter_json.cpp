@@ -12,10 +12,13 @@
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_list.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
+#include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/reporters/catch_reporter_json.hpp>
 
 namespace Catch {
     namespace {
+        static size_t kJsonOutputVersion = 2;
+
         void writeSourceInfo( JsonObjectWriter& writer,
                               SourceLineInfo const& sourceInfo ) {
             auto source_location_writer =
@@ -45,6 +48,7 @@ namespace Catch {
 
     JsonReporter::JsonReporter( ReporterConfig&& config ):
         StreamingReporterBase{ CATCH_MOVE( config ) } {
+        rejectSuperfluousConfigKeys( m_customOptions, {} );
 
         m_preferences.shouldRedirectStdOut = true;
         // TBD: Do we want to report all assertions? XML reporter does
@@ -58,7 +62,7 @@ namespace Catch {
         m_writers.emplace( Writer::Object );
         auto& writer = m_objectWriters.top();
 
-        writer.write( "version"_sr ).write( 1 );
+        writer.write( "version"_sr ).write( kJsonOutputVersion );
 
         {
             auto metadata_writer = writer.write( "metadata"_sr ).writeObject();
@@ -344,14 +348,18 @@ namespace Catch {
             auto const& info = test.getTestCaseInfo();
 
             desc_writer.write( "name"_sr ).write( info.name );
-            desc_writer.write( "class-name"_sr ).write( info.className );
-            {
+            if (!info.className.empty()) {
+                desc_writer.write( "class-name"_sr ).write( info.className );
+            }
+            if ( m_verbosity >= Verbosity::Normal ) {
                 auto tag_writer = desc_writer.write( "tags"_sr ).writeArray();
                 for ( auto const& tag : info.tags ) {
                     tag_writer.write( tag.original );
                 }
             }
-            writeSourceInfo( desc_writer, info.lineInfo );
+            if ( m_verbosity >= Verbosity::High) {
+                writeSourceInfo( desc_writer, info.lineInfo );
+            }
         }
     }
     void JsonReporter::listTags( std::vector<TagInfo> const& tags ) {

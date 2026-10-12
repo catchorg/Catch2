@@ -61,7 +61,7 @@ namespace Catch {
         }
     }
 
-    void AssertionHandler::handleUnexpectedInflightException() {
+    void AssertionHandler::handleUnexpectedInflightException() noexcept {
         m_resultCapture.handleUnexpectedInflightException( m_assertionInfo, Catch::translateActiveException(), m_reaction );
     }
 

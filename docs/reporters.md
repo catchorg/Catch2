@@ -43,13 +43,13 @@ them write into different destinations. The two main uses of this are
 
 Specifying multiple reporter looks like this:
 ```
---reporter JUnit::out=result-junit.xml --reporter console::out=-::colour-mode=ansi
+--reporter JUnit::out=result-junit.xml --reporter console::out=-::colour-mode=ansi::verbosity=quiet
 ```
 
 This tells Catch2 to use two reporters, `JUnit` reporter that writes
 its machine-readable XML output to file `result-junit.xml`, and the
-`console` reporter that writes its user-friendly output to stdout and
-uses ANSI colour codes for colouring the output.
+`console` reporter that writes its user-friendly output to stdout, uses
+ANSI colour codes for colouring the output and is set to "quiet" verbosity.
 
 Using multiple reporters (or one reporter and one-or-more [event
 listeners](event-listeners.md#top)) can have surprisingly complex semantics
@@ -110,7 +110,7 @@ passing and failing assertions.
 
 _Generally we recommend that if you override a member function from either
 of the bases, you call into the base's implementation first. This is not
-necessarily in all cases, but it is safer and easier._
+necessary in all cases, but it is safer and easier._
 
 
 Writing your own reporter then looks like this:

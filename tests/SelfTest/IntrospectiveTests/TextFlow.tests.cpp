@@ -492,3 +492,95 @@ TEST_CASE( "TextFlow::Column skips ansi escape sequences",
         REQUIRE( as_written( col ) == text );
     }
 }
+
+TEST_CASE( "TextFlow::AnsiSkippingString handles 0xFF bytes in input",
+           "[TextFlow][ansiskippingstring][approvals]" ) {
+    SECTION( "0xff between escape sequences" ) {
+        // ['a', '\033[31m', '0xFF', '\033[0m', 'b']
+        std::string text = "a\033[31m\xff\033[0mb";
+        AnsiSkippingString str( text );
+        CHECK( str.size() == 3 );
+
+        auto it = str.begin();
+        CHECK( *it == 'a' );
+        ++it;
+        CHECK( *it == '\xff' );
+        ++it;
+        CHECK( *it == 'b' );
+        ++it;
+        CHECK( it == str.end() );
+        --it;
+        CHECK( *it == 'b' );
+        --it;
+        CHECK( *it == '\xff' );
+        --it;
+        CHECK( *it == 'a' );
+        CHECK( it == str.begin() );
+
+        CHECK( str.substring( str.begin(), str.end() ) == text );
+    }
+    SECTION( "0xff after string that looks like a mangled escape" ) {
+        // "\033[38\xff" must not be treated as an escape sequence, so we
+        // get ['\033', '[', '3', '8', '\xff', 'a', 'b'] as individual chars.
+        std::string text = "\033[38\xff"
+                           "ab\033[0m";
+        AnsiSkippingString str( text );
+        CHECK( str.size() == 7 );
+        CHECK( str.substring( str.begin(), str.end() ) == text );
+
+        auto it = str.end();
+        for ( std::size_t i = 0; i < str.size(); ++i ) {
+            --it;
+        }
+        CHECK( it == str.begin() );
+    }
+    SECTION( "natural 'm' bytes are not mistaken for escape ends" ) {
+        // ['m', '\033[31m', 'm', 'm', '\033[0m', 'm']
+        std::string text = "m\033[31mmm\033[0mm";
+        AnsiSkippingString str( text );
+        CHECK( str.size() == 4 ); // Only the 'm's count
+        CHECK( str.substring( str.begin(), str.end() ) == text );
+
+        auto it = str.end();
+        --it;
+        CHECK( *it == 'm' );
+        --it;
+        CHECK( *it == 'm' );
+        --it;
+        CHECK( *it == 'm' );
+        --it;
+        CHECK( *it == 'm' );
+        CHECK( it == str.begin() );
+    }
+}
+
+
+TEST_CASE( "Reproducer from #3199", "[TextFlow][column][approvals]" ) {
+    // 0xff is used internally as a sentinel to mark the end of a recognized
+    // ansi escape sequence, but arbitrary stringified content (e.g. raw
+    // bytes) can legitimately contain literal 0xff bytes that have nothing
+    // to do with ansi escapes. Those must be left completely untouched, both
+    // when read back out of the column and while wrapping/iterating over
+    // them.
+    std::string text( 40, '\xff' );
+    Column col( text );
+    col.width( 20 );
+
+    std::string written = as_written( col );
+    // every byte in the output must be either the original 0xff or the
+    // hyphen the wrapper inserts when it can't find a natural break point;
+    // none of them should have turned into a stray 'm'.
+    for ( unsigned char c : written ) {
+        REQUIRE( ( c == 0xffu || c == '-' || c == '\n' ) );
+    }
+
+    // Also directly cover the iterator's backwards traversal, which used to
+    // assert/crash when it walked off the start of the string looking for an
+    // ansi escape it was never part of.
+    AnsiSkippingString skipping( text );
+    auto it = skipping.end();
+    for ( std::size_t i = 0; i < skipping.size(); ++i ) {
+        --it;
+    }
+    REQUIRE( it == skipping.begin() );
+}

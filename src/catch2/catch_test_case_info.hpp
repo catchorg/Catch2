@@ -82,7 +82,9 @@ namespace Catch {
         //! Orders by name, classname and tags
         friend bool operator<( TestCaseInfo const& lhs,
                                TestCaseInfo const& rhs );
-
+        //! Compares name, classname and tags
+        friend bool operator==( TestCaseInfo const& lhs,
+                                TestCaseInfo const& rhs );
 
         std::string tagsAsString() const;
 

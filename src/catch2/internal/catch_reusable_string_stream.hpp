@@ -39,6 +39,9 @@ namespace Catch {
 // be null...
 #pragma GCC diagnostic ignored "-Waddress"
 #pragma GCC diagnostic ignored "-Wnonnull-compare"
+#elif defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpointer-bool-conversion"
 #endif
 
         template<typename T>
@@ -49,6 +52,8 @@ namespace Catch {
 
 #if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic pop
+#elif defined(__clang__)
+#pragma clang diagnostic pop
 #endif
         auto get() -> std::ostream& { return *m_oss; }
     };

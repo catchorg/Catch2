@@ -17,30 +17,48 @@
 #include <catch2/internal/catch_test_case_info_hasher.hpp>
 
 #include <algorithm>
-#include <set>
 
 namespace Catch {
 
     namespace {
+        // Picked small-ish number at random
+        static size_t kInitialTestCount = 120;
+
         static void enforceNoDuplicateTestCases(
             std::vector<TestCaseHandle> const& tests ) {
-            auto testInfoCmp = []( TestCaseInfo const* lhs,
-                                   TestCaseInfo const* rhs ) {
-                return *lhs < *rhs;
-            };
-            std::set<TestCaseInfo const*, decltype( testInfoCmp )&> seenTests(
-                testInfoCmp );
+            // Flat set instead of std::set for performance.
+            std::vector<TestCaseInfo const*> seenTests;
+            seenTests.reserve( tests.size() );
             for ( auto const& test : tests ) {
-                const auto infoPtr = &test.getTestCaseInfo();
-                const auto prev = seenTests.insert( infoPtr );
-                CATCH_ENFORCE( prev.second,
-                               "error: test case \""
-                                   << infoPtr->name << "\", with tags \""
-                                   << infoPtr->tagsAsString()
-                                   << "\" already defined.\n"
-                                   << "\tFirst seen at "
-                                   << ( *prev.first )->lineInfo << "\n"
-                                   << "\tRedefined at " << infoPtr->lineInfo );
+                seenTests.push_back( &test.getTestCaseInfo() );
+            }
+            // We want to keep order of ~equal~ tests
+            // stable_sort so that duplicates are reported with the
+            // registration order preserved ("first seen" really is first)
+            std::stable_sort(
+                seenTests.begin(),
+                seenTests.end(),
+                []( TestCaseInfo const* lhs, TestCaseInfo const* rhs ) {
+                    return *lhs < *rhs;
+                }
+            );
+            const auto duplicate = std::adjacent_find(
+                seenTests.begin(),
+                seenTests.end(),
+                []( TestCaseInfo const* lhs, TestCaseInfo const* rhs ) {
+                    return *lhs == *rhs;
+                }
+            );
+
+            if ( duplicate != seenTests.end() ) {
+                const auto infoPtr = *std::next( duplicate );
+                CATCH_ERROR( "error: test case \""
+                             << infoPtr->name << "\", with tags \""
+                             << infoPtr->tagsAsString()
+                             << "\" already defined.\n"
+                             << "\tFirst seen at "
+                             << ( *duplicate )->lineInfo << "\n"
+                             << "\tRedefined at " << infoPtr->lineInfo );
             }
         }
 
@@ -117,23 +135,32 @@ namespace Catch {
                 filtered.push_back(testCase);
             }
         }
-        return createShard(filtered, config.shardCount(), config.shardIndex());
+        return createShard(CATCH_MOVE(filtered), config.shardCount(), config.shardIndex());
     }
     std::vector<TestCaseHandle> const& getAllTestCasesSorted( IConfig const& config ) {
         return getRegistryHub().getTestCaseRegistry().getAllTestsSorted( config );
     }
 
+
+    TestRegistry::TestRegistry() {
+        // We pre-reserve some reasonable number of tests to avoid the
+        // initial geometric growth churning during test registration.
+        m_handles.reserve( kInitialTestCount );
+        m_test_infos.reserve( kInitialTestCount );
+        m_invokers.reserve( kInitialTestCount );
+    }
     TestRegistry::~TestRegistry() = default;
 
     void TestRegistry::registerTest(Detail::unique_ptr<TestCaseInfo> testInfo, Detail::unique_ptr<ITestInvoker> testInvoker) {
         m_handles.emplace_back(testInfo.get(), testInvoker.get());
-        m_viewed_test_infos.push_back(testInfo.get());
-        m_owned_test_infos.push_back(CATCH_MOVE(testInfo));
+        m_test_infos.push_back(CATCH_MOVE(testInfo));
         m_invokers.push_back(CATCH_MOVE(testInvoker));
     }
 
-    std::vector<TestCaseInfo*> const& TestRegistry::getAllInfos() const {
-        return m_viewed_test_infos;
+    void TestRegistry::enableFilenameTags() {
+        for (auto& info : m_test_infos) {
+            info->addFilenameTag();
+        }
     }
 
     std::vector<TestCaseHandle> const& TestRegistry::getAllTests() const {

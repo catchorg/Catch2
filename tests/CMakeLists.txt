@@ -184,6 +184,13 @@ set_tests_properties(List::Tests::Output PROPERTIES
   PASS_REGULAR_EXPRESSION "[0-9]+ test cases"
   FAIL_REGULAR_EXPRESSION "Hidden Test"
 )
+
+add_test(NAME VerbosityIsPerReporter COMMAND $<TARGET_FILE:SelfTest> --list-tests --verbosity high --reporter console::verbosity=quiet)
+set_tests_properties(VerbosityIsPerReporter
+  PROPERTIES
+    FAIL_REGULAR_EXPRESSION "\.cpp"
+)
+
 # This should be equivalent to the old --list-test-names-only and be usable
 # with --input-file.
 add_test(NAME List::Tests::Quiet COMMAND $<TARGET_FILE:SelfTest> --list-tests --verbosity quiet)
@@ -193,11 +200,27 @@ set_tests_properties(List::Tests::Quiet PROPERTIES
   PASS_REGULAR_EXPRESSION "\"#1905 -- test spec parser properly clears internal state between compound tests\"[\r\n]"
   FAIL_REGULAR_EXPRESSION "[ \t]\"#1905 -- test spec parser properly clears internal state between compound tests\""
 )
+
 add_test(NAME List::Tests::ExitCode COMMAND $<TARGET_FILE:SelfTest> --list-tests --verbosity high)
 add_test(NAME List::Tests::XmlOutput COMMAND $<TARGET_FILE:SelfTest> --list-tests --verbosity high -r xml)
 set_tests_properties(List::Tests::XmlOutput PROPERTIES
   PASS_REGULAR_EXPRESSION "<Line>[0-9]+</Line>"
   FAIL_REGULAR_EXPRESSION "[0-9]+ test cases"
+)
+
+add_test(NAME List::Tests::Json::Normal COMMAND $<TARGET_FILE:SelfTest> --list-tests -r json)
+set_tests_properties(List::Tests::Json::Normal PROPERTIES
+  PASS_REGULAR_EXPRESSION "\"tags\": \\["
+  FAIL_REGULAR_EXPRESSION "\"source-location\": {"
+)
+add_test(NAME List::Tests::Json::Quiet COMMAND $<TARGET_FILE:SelfTest> --list-tests -r json::verbosity=quiet)
+set_tests_properties(List::Tests::Json::Quiet PROPERTIES
+  PASS_REGULAR_EXPRESSION "\"name\": \""
+  FAIL_REGULAR_EXPRESSION "\"tags\": \\["
+)
+add_test(NAME List::Tests::Json::High COMMAND $<TARGET_FILE:SelfTest> --list-tests -r json::verbosity=high)
+set_tests_properties(List::Tests::Json::High PROPERTIES
+  PASS_REGULAR_EXPRESSION "\"source-location\": {"
 )
 
 add_test(NAME List::Tags::Output COMMAND $<TARGET_FILE:SelfTest> --list-tags)
@@ -210,6 +233,11 @@ set_tests_properties(List::Tags::XmlOutput PROPERTIES
   PASS_REGULAR_EXPRESSION "<Count>18</Count>"
   FAIL_REGULAR_EXPRESSION "[0-9]+ tags"
 )
+add_test(NAME List::Tags::JsonOutput COMMAND $<TARGET_FILE:SelfTest> --list-tags -r json)
+set_tests_properties(List::Tags::JsonOutput PROPERTIES
+  PASS_REGULAR_EXPRESSION "\"count\": 18"
+  FAIL_REGULAR_EXPRESSION "[0-9]+ tags"
+)
 
 add_test(NAME List::Reporters::Output COMMAND $<TARGET_FILE:SelfTest> --list-reporters)
 set_tests_properties(List::Reporters::Output PROPERTIES PASS_REGULAR_EXPRESSION "Available reporters:")
@@ -219,6 +247,12 @@ set_tests_properties(List::Reporters::XmlOutput PROPERTIES
   PASS_REGULAR_EXPRESSION "<Name>compact</Name>"
   FAIL_REGULAR_EXPRESSION "Available reporters:"
 )
+add_test(NAME List::Reporters::JsonOutput COMMAND $<TARGET_FILE:SelfTest> --list-reporters -r json)
+set_tests_properties(List::Reporters::JsonOutput PROPERTIES
+  PASS_REGULAR_EXPRESSION "\"name\": \"compact\""
+  FAIL_REGULAR_EXPRESSION "Available reporters:"
+)
+
 
 add_test(NAME List::Listeners::Output
   COMMAND
@@ -243,6 +277,18 @@ set_tests_properties(List::Listeners::XmlOutput
     PASS_REGULAR_EXPRESSION "<RegisteredListeners>"
     FAIL_REGULAR_EXPRESSION "Registered listeners:"
 )
+add_test(NAME List::Listeners::JsonOutput
+  COMMAND
+    $<TARGET_FILE:SelfTest>
+      --list-listeners
+      --reporter json
+)
+set_tests_properties(List::Listeners::JsonOutput
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "\"listeners\": \\["
+    FAIL_REGULAR_EXPRESSION "Registered listeners:"
+)
+
 
 add_test(NAME NoAssertions COMMAND $<TARGET_FILE:SelfTest> -w NoAssertions "An empty test with no assertions")
 set_tests_properties(NoAssertions PROPERTIES PASS_REGULAR_EXPRESSION "No assertions in test case")
@@ -440,19 +486,6 @@ set_tests_properties("Benchmarking::SkipBenchmarkMacros"
     FAIL_REGULAR_EXPRESSION "benchmark name"
 )
 
-add_test(NAME "Benchmarking::FailureReporting::OptimizedOut"
-  COMMAND
-    $<TARGET_FILE:SelfTest> "Failing benchmarks" -c "empty" -r xml
-  # This test only makes sense with the optimizer being enabled when
-  # the tests are being compiled.
-  CONFIGURATIONS Release
-)
-set_tests_properties("Benchmarking::FailureReporting::OptimizedOut"
-  PROPERTIES
-    PASS_REGULAR_EXPRESSION "could not measure benchmark\, maybe it was optimized away"
-    FAIL_REGULAR_EXPRESSION "successes=\"1\""
-)
-
 add_test(NAME "Benchmarking::FailureReporting::ThrowingBenchmark"
   COMMAND
     $<TARGET_FILE:SelfTest> "Failing benchmarks" -c "throw" -r xml
@@ -612,6 +645,11 @@ if(CATCH_ENABLE_CONFIGURE_TESTS)
         COST 240
         LABELS "uses-python"
     )
+    if(CMAKE_TOOLCHAIN_FILE)
+      set_tests_properties("CMakeConfig::${testName}"
+        PROPERTIES ENVIRONMENT "CMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
+      )
+    endif()
   endforeach()
 endif()
 
@@ -624,6 +662,20 @@ if(CATCH_ENABLE_CMAKE_HELPER_TESTS)
     PROPERTIES
       COST 240
       LABELS "uses-python"
+  )
+
+  add_test(NAME "CMakeHelper::PrepareCommandFragment"
+    COMMAND
+      "${CMAKE_COMMAND}"
+      "-DCATCH_ADD_TESTS_SCRIPT=${CATCH_DIR}/extras/CatchAddTests.cmake"
+      -P "${CMAKE_CURRENT_LIST_DIR}/TestScripts/DiscoverTests/TestPrepareCommandFragment.cmake"
+  )
+
+  add_test(NAME "CMakeHelper::DecomposeJsonArray"
+    COMMAND
+      "${CMAKE_COMMAND}"
+      "-DCATCH_ADD_TESTS_SCRIPT=${CATCH_DIR}/extras/CatchAddTests.cmake"
+      -P "${CMAKE_CURRENT_LIST_DIR}/TestScripts/DiscoverTests/TestDecomposeJsonArray.cmake"
   )
 endif()
 

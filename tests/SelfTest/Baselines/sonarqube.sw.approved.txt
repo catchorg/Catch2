@@ -262,6 +262,15 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="JsonWriter escapes characters in strings properly/carriage return in a string is escaped" duration="{duration}"/>
     <testCase name="JsonWriter escapes characters in strings properly/tab in a string is escaped" duration="{duration}"/>
     <testCase name="JsonWriter escapes characters in strings properly/combination of characters is escaped" duration="{duration}"/>
+    <testCase name="JsonWriter serializes non-finite FP using Python spelling - double" duration="{duration}"/>
+    <testCase name="JsonWriter serializes non-finite FP using Python spelling - double/NaN" duration="{duration}"/>
+    <testCase name="JsonWriter serializes non-finite FP using Python spelling - double/Pos nf" duration="{duration}"/>
+    <testCase name="JsonWriter serializes non-finite FP using Python spelling - double/Neg inf" duration="{duration}"/>
+    <testCase name="JsonWriter serializes non-finite FP using Python spelling - float" duration="{duration}"/>
+    <testCase name="JsonWriter serializes non-finite FP using Python spelling - float/NaN" duration="{duration}"/>
+    <testCase name="JsonWriter serializes non-finite FP using Python spelling - float/Pos nf" duration="{duration}"/>
+    <testCase name="JsonWriter serializes non-finite FP using Python spelling - float/Neg inf" duration="{duration}"/>
+    <testCase name="JsonWriter serializes numbers independently of the global locale" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp">
     <testCase name="Parse uints" duration="{duration}"/>
@@ -391,6 +400,11 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="replaceInPlace/escape '" duration="{duration}"/>
     <testCase name="splitString" duration="{duration}"/>
     <testCase name="startsWith" duration="{duration}"/>
+    <testCase name="toLower( char )" duration="{duration}"/>
+    <testCase name="toLower( char )/ASCII letters are lowercased" duration="{duration}"/>
+    <testCase name="toLower( char )/Chars outside 'A'-'Z' are left alone" duration="{duration}"/>
+    <testCase name="toLower( char )/Non-ASCII chars are left alone" duration="{duration}"/>
+    <testCase name="toLower( char )/Is usable in constant expressions" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp">
     <testCase name="Tag alias can be registered against tag patterns" duration="{duration}"/>

@@ -35,6 +35,7 @@ namespace Catch {
         std::string name;
         std::string outputFilename;
         ColourMode colourMode;
+        Verbosity verbosity;
         std::map<std::string, std::string> customOptions;
         friend bool operator==( ProcessedReporterSpec const& lhs,
                                 ProcessedReporterSpec const& rhs );
@@ -62,6 +63,7 @@ namespace Catch {
 
         int abortAfter = -1;
         uint32_t rngSeed = generateRandomSeed(GenerateFrom::Default);
+        bool rngSeedWasFixed = false;
 
         unsigned int shardCount = 1;
         unsigned int shardIndex = 0;
@@ -133,6 +135,7 @@ namespace Catch {
         double minDuration() const override;
         TestRunOrder runOrder() const override;
         uint32_t rngSeed() const override;
+        bool rngSeedWasFixed() const;
         unsigned int shardCount() const override;
         unsigned int shardIndex() const override;
         ColourMode defaultColourMode() const override;

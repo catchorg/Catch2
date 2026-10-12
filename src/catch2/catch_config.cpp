@@ -89,6 +89,7 @@ namespace Catch {
         return lhs.name == rhs.name &&
                lhs.outputFilename == rhs.outputFilename &&
                lhs.colourMode == rhs.colourMode &&
+               lhs.verbosity == rhs.verbosity &&
                lhs.customOptions == rhs.customOptions;
     }
 
@@ -157,6 +158,7 @@ namespace Catch {
                 reporterSpec.outputFile() ? *reporterSpec.outputFile()
                                           : data.defaultOutputFilename,
                 reporterSpec.colourMode().valueOr( data.defaultColourMode ),
+                reporterSpec.verbosity().valueOr( data.verbosity ),
                 reporterSpec.customOptions() } );
         }
     }
@@ -207,6 +209,7 @@ namespace Catch {
     double Config::minDuration() const                 { return m_data.minDuration; }
     TestRunOrder Config::runOrder() const              { return m_data.runOrder; }
     uint32_t Config::rngSeed() const                   { return m_data.rngSeed; }
+    bool Config::rngSeedWasFixed() const               { return m_data.rngSeedWasFixed; }
     unsigned int Config::shardCount() const            { return m_data.shardCount; }
     unsigned int Config::shardIndex() const            { return m_data.shardIndex; }
     ColourMode Config::defaultColourMode() const       { return m_data.defaultColourMode; }
@@ -232,7 +235,7 @@ namespace Catch {
 
         if ( bazelOutputFile ) {
             m_data.reporterSpecifications.push_back(
-                { "junit", std::string( bazelOutputFile ), {}, {} } );
+                { "junit", std::string( bazelOutputFile ), {}, {}, {} } );
         }
 
         const auto bazelTestSpec = Detail::getEnv( "TESTBRIDGE_TEST_ONLY" );
@@ -271,6 +274,7 @@ namespace Catch {
                     << bazelRandomSeed << "') as proper seed.\n";
             } else {
                 m_data.rngSeed = *parsedSeed;
+                m_data.rngSeedWasFixed = true;
             }
         }
     }

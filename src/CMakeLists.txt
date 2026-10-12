@@ -32,6 +32,7 @@ set(BENCHMARK_HEADERS
   ${SOURCES_DIR}/benchmark/detail/catch_timing.hpp
 )
 set(BENCHMARK_SOURCES
+  ${SOURCES_DIR}/benchmark/catch_benchmark.cpp
   ${SOURCES_DIR}/benchmark/catch_chronometer.cpp
   ${SOURCES_DIR}/benchmark/detail/catch_analyse.cpp
   ${SOURCES_DIR}/benchmark/detail/catch_benchmark_function.cpp

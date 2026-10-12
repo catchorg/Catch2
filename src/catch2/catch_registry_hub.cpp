@@ -72,6 +72,10 @@ namespace Catch {
 #endif
             }
 
+            ITestCaseRegistry& getMutableTestCaseRegistry() override {
+                return m_testCaseRegistry;
+            }
+
         private:
             TestRegistry m_testCaseRegistry;
             ReporterRegistry m_reporterRegistry;

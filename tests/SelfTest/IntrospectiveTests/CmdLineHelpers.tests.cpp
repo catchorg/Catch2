@@ -63,6 +63,20 @@ TEST_CASE( "Parsing colour mode", "[cli][colour][approvals]" ) {
     }
 }
 
+TEST_CASE( "Parsing verbosity", "[cli][colour][approvals]" ) {
+    using Catch::Detail::stringToVerbosity;
+    using Catch::Verbosity;
+    SECTION( "Valid strings" ) {
+        REQUIRE( stringToVerbosity( "quiet" ) == Verbosity::Quiet );
+        REQUIRE( stringToVerbosity( "normal" ) == Verbosity::Normal );
+        REQUIRE( stringToVerbosity( "high" ) == Verbosity::High );
+    }
+    SECTION( "Wrong strings" ) {
+        REQUIRE_FALSE( stringToVerbosity( "QUIET" ) );
+        REQUIRE_FALSE( stringToVerbosity( "medium" ) );
+        REQUIRE_FALSE( stringToVerbosity( "vvv" ) );
+    }
+}
 
 TEST_CASE("Parsing reporter specs", "[cli][reporter-spec][approvals]") {
     using Catch::parseReporterSpec;
@@ -71,12 +85,13 @@ TEST_CASE("Parsing reporter specs", "[cli][reporter-spec][approvals]") {
 
     SECTION( "Correct specs" ) {
         REQUIRE( parseReporterSpec( "someReporter" ) ==
-                 ReporterSpec( "someReporter"s, {}, {}, {} ) );
+                 ReporterSpec( "someReporter"s, {}, {}, {}, {} ) );
         REQUIRE( parseReporterSpec( "otherReporter::Xk=v::out=c:\\blah" ) ==
                  ReporterSpec(
-                     "otherReporter"s, "c:\\blah"s, {}, { { "Xk"s, "v"s } } ) );
+                     "otherReporter"s, "c:\\blah"s, {}, {}, { { "Xk"s, "v"s } } ) );
         REQUIRE( parseReporterSpec( "diffReporter::Xk1=v1::Xk2==v2" ) ==
                  ReporterSpec( "diffReporter",
+                               {},
                                {},
                                {},
                                { { "Xk1"s, "v1"s }, { "Xk2"s, "=v2"s } } ) );
@@ -85,7 +100,15 @@ TEST_CASE("Parsing reporter specs", "[cli][reporter-spec][approvals]") {
                  ReporterSpec( "Foo:bar:reporter",
                                {},
                                Catch::ColourMode::ANSI,
+                               {},
                                { { "Xk 1"s, "v 1"s }, { "Xk2"s, "v:3"s } } ) );
+        REQUIRE(
+            parseReporterSpec( "my:reporter::X1=V1::verbosity=high::X2=V2" ) ==
+            ReporterSpec( "my:reporter",
+                          {},
+                          {},
+                          Catch::Verbosity::High,
+                          { { "X1"s, "V1"s }, { "X2"s, "V2"s } } ) );
     }
 
     SECTION( "Bad specs" ) {
@@ -107,5 +130,9 @@ TEST_CASE("Parsing reporter specs", "[cli][reporter-spec][approvals]") {
         REQUIRE_FALSE( parseReporterSpec( "reporter::Xa=" ) );
         // non-key value later field
         REQUIRE_FALSE( parseReporterSpec( "reporter::Xab" ) );
+        // Invalid verbosity value
+        REQUIRE_FALSE( parseReporterSpec( "reporter::verbosity=medium" ) );
+        // Duplicated verbosity
+        REQUIRE_FALSE( parseReporterSpec( "reporter::verbosity=high::X1=X2::verbosity=high" ) );
     }
 }

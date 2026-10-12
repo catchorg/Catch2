@@ -15,6 +15,8 @@ if(CMAKE_VERSION GREATER_EQUAL 3.27)
 endif()
 catch_discover_tests(
   tests
+  TEST_PREFIX " prefix "
+  TEST_SUFFIX " suffix "
   ADD_TAGS_AS_LABELS
   DISCOVERY_MODE PRE_TEST
   ${extra_args}

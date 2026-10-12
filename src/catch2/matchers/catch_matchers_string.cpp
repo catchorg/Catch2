@@ -9,70 +9,106 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_tostring.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_case_insensitive_comparisons.hpp>
 
 #include <regex>
 
 namespace Catch {
+
+    namespace {
+        constexpr StringRef caseSensitivitySuffix( CaseSensitive caseSensitivity ) {
+            return caseSensitivity == CaseSensitive::Yes
+                       ? StringRef{}
+                       : " (case insensitive)"_sr;
+        }
+    } // namespace
+
 namespace Matchers {
 
-    CasedString::CasedString( std::string const& str, CaseSensitive caseSensitivity )
-    :   m_caseSensitivity( caseSensitivity ),
-        m_str( adjustString( str ) )
-    {}
-    std::string CasedString::adjustString( std::string const& str ) const {
-        return m_caseSensitivity == CaseSensitive::No
-               ? toLower( str )
-               : str;
-    }
-    StringRef CasedString::caseSensitivitySuffix() const {
-        return m_caseSensitivity == CaseSensitive::Yes
-                   ? StringRef()
-                   : " (case insensitive)"_sr;
-    }
+    StringMatcherBase::StringMatcherBase( std::string target,
+                                          StringRef operation,
+                                          CaseSensitive caseSensitivity ):
+        m_target( CATCH_MOVE( target ) ),
+        m_operation( operation ),
+        m_caseSensitivity( caseSensitivity ) {}
 
-
-    StringMatcherBase::StringMatcherBase( StringRef operation, CasedString const& comparator )
-    : m_comparator( comparator ),
-      m_operation( operation ) {
-    }
 
     std::string StringMatcherBase::describe() const {
         std::string description;
-        description.reserve(5 + m_operation.size() + m_comparator.m_str.size() +
-                                    m_comparator.caseSensitivitySuffix().size());
+        description.reserve(5 + m_operation.size() + m_target.size() +
+                                    caseSensitivitySuffix(m_caseSensitivity).size());
         description += m_operation;
         description += ": \"";
-        description += m_comparator.m_str;
+        description += m_target;
         description += '"';
-        description += m_comparator.caseSensitivitySuffix();
+        description += caseSensitivitySuffix(m_caseSensitivity);
         return description;
     }
 
-    StringEqualsMatcher::StringEqualsMatcher( CasedString const& comparator ) : StringMatcherBase( "equals"_sr, comparator ) {}
+
+    StringEqualsMatcher::StringEqualsMatcher( std::string comparator, CaseSensitive caseSensitivity ):
+        StringMatcherBase( CATCH_MOVE( comparator ), "equals"_sr, caseSensitivity ) {}
 
     bool StringEqualsMatcher::match( std::string const& source ) const {
-        return m_comparator.adjustString( source ) == m_comparator.m_str;
+        if (m_caseSensitivity == CaseSensitive::Yes) {
+            return m_target == source;
+        }
+        if (m_target.size() != source.size()) { return false; }
+        Catch::Detail::CaseInsensitiveEqualTo eq;
+        return eq( m_target, source );
     }
 
 
-    StringContainsMatcher::StringContainsMatcher( CasedString const& comparator ) : StringMatcherBase( "contains"_sr, comparator ) {}
+    StringContainsMatcher::StringContainsMatcher(
+        std::string comparator, CaseSensitive caseSensitivity ):
+        StringMatcherBase( CATCH_MOVE( comparator ), "contains"_sr, caseSensitivity ) {}
 
     bool StringContainsMatcher::match( std::string const& source ) const {
-        return contains( m_comparator.adjustString( source ), m_comparator.m_str );
+        if ( m_caseSensitivity == CaseSensitive::Yes ) {
+            return contains( source, m_target );
+        }
+        if ( source.size() < m_target.size() ) { return false; }
+        StringRef as_ref( source );
+        // The worst case of this is O(m*n), which is terrible, BUT:
+        //  * The average case is much better, the worst case only happens rarely
+        //  * We can implement BMH/other better searchers later if it matters
+        Catch::Detail::CaseInsensitiveEqualTo eq;
+        for (size_t i = 0; i < source.size(); ++i) {
+            const auto substr = as_ref.substr( i, m_target.size() );
+            bool found = eq( substr, m_target );
+            if ( found ) { return true; }
+        }
+        return false;
     }
 
 
-    StartsWithMatcher::StartsWithMatcher( CasedString const& comparator ) : StringMatcherBase( "starts with"_sr, comparator ) {}
+    StartsWithMatcher::StartsWithMatcher( std::string comparator,
+                                          CaseSensitive caseSensitivity ):
+        StringMatcherBase( CATCH_MOVE( comparator ), "starts with"_sr, caseSensitivity ) {}
 
     bool StartsWithMatcher::match( std::string const& source ) const {
-        return startsWith( m_comparator.adjustString( source ), m_comparator.m_str );
+        if ( m_caseSensitivity == CaseSensitive::Yes ) {
+            return startsWith( source, m_target );
+        }
+        if (source.size() < m_target.size()) { return false; }
+        Catch::Detail::CaseInsensitiveEqualTo eq;
+        return eq(
+            StringRef( source ).substr( 0, m_target.size() ), m_target );
     }
 
 
-    EndsWithMatcher::EndsWithMatcher( CasedString const& comparator ) : StringMatcherBase( "ends with"_sr, comparator ) {}
+    EndsWithMatcher::EndsWithMatcher( std::string comparator,
+                                      CaseSensitive caseSensitivity ):
+        StringMatcherBase( CATCH_MOVE( comparator ), "ends with"_sr, caseSensitivity ) {}
 
     bool EndsWithMatcher::match( std::string const& source ) const {
-        return endsWith( m_comparator.adjustString( source ), m_comparator.m_str );
+        if ( m_caseSensitivity == CaseSensitive::Yes ) {
+            return endsWith( source, m_target );
+        }
+        if ( source.size() < m_target.size() ) { return false; }
+        Catch::Detail::CaseInsensitiveEqualTo eq;
+        const size_t start_point = source.size() - m_target.size();
+        return eq( StringRef( source ).substr( start_point, m_target.size() ), m_target );
     }
 
 
@@ -93,21 +129,21 @@ namespace Matchers {
     }
 
 
-    StringEqualsMatcher Equals( std::string const& str, CaseSensitive caseSensitivity ) {
-        return StringEqualsMatcher( CasedString( str, caseSensitivity) );
+    StringEqualsMatcher Equals( std::string str, CaseSensitive caseSensitivity ) {
+        return StringEqualsMatcher( CATCH_MOVE( str ), caseSensitivity );
     }
-    StringContainsMatcher ContainsSubstring( std::string const& str, CaseSensitive caseSensitivity ) {
-        return StringContainsMatcher( CasedString( str, caseSensitivity) );
+    StringContainsMatcher ContainsSubstring( std::string str, CaseSensitive caseSensitivity ) {
+        return StringContainsMatcher( CATCH_MOVE( str ), caseSensitivity );
     }
-    EndsWithMatcher EndsWith( std::string const& str, CaseSensitive caseSensitivity ) {
-        return EndsWithMatcher( CasedString( str, caseSensitivity) );
+    EndsWithMatcher EndsWith( std::string str, CaseSensitive caseSensitivity ) {
+        return EndsWithMatcher( CATCH_MOVE( str ), caseSensitivity );
     }
-    StartsWithMatcher StartsWith( std::string const& str, CaseSensitive caseSensitivity ) {
-        return StartsWithMatcher( CasedString( str, caseSensitivity) );
+    StartsWithMatcher StartsWith( std::string str, CaseSensitive caseSensitivity ) {
+        return StartsWithMatcher( CATCH_MOVE( str ), caseSensitivity );
     }
 
-    RegexMatcher Matches(std::string const& regex, CaseSensitive caseSensitivity) {
-        return RegexMatcher(regex, caseSensitivity);
+    RegexMatcher Matches(std::string regex, CaseSensitive caseSensitivity) {
+        return RegexMatcher( CATCH_MOVE( regex ), caseSensitivity );
     }
 
 } // namespace Matchers

@@ -12,6 +12,7 @@
 #include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_stringref.hpp>
+#include <catch2/internal/catch_path_filter.hpp>
 
 #include <string>
 #include <vector>
@@ -80,6 +81,8 @@ namespace TestCaseTracking {
         NameAndLocation m_nameAndLocation;
 
         using Children = std::vector<ITrackerPtr>;
+
+        virtual bool isFilteredImpl() const = 0;
 
     protected:
         enum CycleState {
@@ -178,6 +181,20 @@ namespace TestCaseTracking {
          * for internal debug checks.
          */
         virtual bool isGeneratorTracker() const;
+
+        /**
+         * Returns true if the concrete tracker instance has a filter that applies to it.
+         */
+        bool isFiltered() const {
+            // Fast path: are there even filters for tracker in this position?
+            const size_t filter_depth =
+                m_newStyleFilters ? m_allTrackerDepth : m_sectionOnlyDepth;
+            if ( m_filterRef->size() <= filter_depth ) { return false; }
+
+            // Slow path: If there are filters, ask the concrete tracker.
+            //            This handles things like match-all filters for that tracker.
+            return isFilteredImpl();
+        }
     };
 
     class TrackerContext {
@@ -233,6 +250,8 @@ namespace TestCaseTracking {
         // to not own the name, the name still has to outlive the `ITracker` parent, so
         // this should still be safe.
         StringRef m_trimmed_name;
+
+        bool isFilteredImpl() const override;
     public:
         SectionTracker( NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent );
 

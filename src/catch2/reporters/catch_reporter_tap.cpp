@@ -192,6 +192,14 @@ namespace Catch {
 
     } // End anonymous namespace
 
+    TAPReporter::TAPReporter( ReporterConfig&& config ):
+        StreamingReporterBase( CATCH_MOVE( config ) ) {
+        rejectSuperfluousConfigKeys( m_customOptions, {} );
+
+        m_preferences.shouldReportAllAssertions = true;
+        m_preferences.shouldReportAllAssertionStarts = false;
+    }
+
     void TAPReporter::testRunStarting( TestRunInfo const& ) {
         if ( m_config->testSpec().hasFilters() ) {
             m_stream << "# filters: " << m_config->testSpec() << '\n';

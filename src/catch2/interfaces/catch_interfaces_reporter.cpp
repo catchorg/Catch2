@@ -19,10 +19,12 @@ namespace Catch {
         IConfig const* _fullConfig,
         Detail::unique_ptr<IStream> _stream,
         ColourMode colourMode,
+        Verbosity verbosity,
         std::map<std::string, std::string> customOptions ):
         m_stream( CATCH_MOVE(_stream) ),
         m_fullConfig( _fullConfig ),
         m_colourMode( colourMode ),
+        m_verbosity( verbosity ),
         m_customOptions( CATCH_MOVE( customOptions ) ) {}
 
     Detail::unique_ptr<IStream> ReporterConfig::takeStream() && {
@@ -31,6 +33,7 @@ namespace Catch {
     }
     IConfig const * ReporterConfig::fullConfig() const { return m_fullConfig; }
     ColourMode ReporterConfig::colourMode() const { return m_colourMode; }
+    Verbosity ReporterConfig::verbosity() const { return m_verbosity; }
 
     std::map<std::string, std::string> const&
     ReporterConfig::customOptions() const {

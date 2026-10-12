@@ -28,7 +28,7 @@ namespace Catch {
                 bool isValid = next();
                 if ( !isValid ) {
                     Detail::throw_generator_exception(
-                        "Coud not jump to Nth element: not enough elements" );
+                        "Could not jump to Nth element: not enough elements" );
                 }
             }
         }

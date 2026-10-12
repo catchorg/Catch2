@@ -25,6 +25,7 @@ namespace Catch {
         std::vector<std::string> splitReporterSpec( StringRef reporterSpec );
 
         Optional<ColourMode> stringToColourMode( StringRef colourMode );
+        Optional<Verbosity> stringToVerbosity( StringRef verbosity );
     }
 
     /**
@@ -39,6 +40,7 @@ namespace Catch {
         std::string m_name;
         Optional<std::string> m_outputFileName;
         Optional<ColourMode> m_colourMode;
+        Optional<Verbosity> m_verbosity;
         std::map<std::string, std::string> m_customOptions;
 
         friend bool operator==( ReporterSpec const& lhs,
@@ -53,6 +55,7 @@ namespace Catch {
             std::string name,
             Optional<std::string> outputFileName,
             Optional<ColourMode> colourMode,
+            Optional<Verbosity> verbosity,
             std::map<std::string, std::string> customOptions );
 
         std::string const& name() const { return m_name; }
@@ -63,13 +66,15 @@ namespace Catch {
 
         Optional<ColourMode> const& colourMode() const { return m_colourMode; }
 
+        Optional<Verbosity> const& verbosity() const { return m_verbosity; }
+
         std::map<std::string, std::string> const& customOptions() const {
             return m_customOptions;
         }
     };
 
     /**
-     * Parses provided reporter spec string into
+     * Parses provided reporter spec string into actual `ReporterSpec`
      *
      * Returns empty optional on errors, e.g.
      *  * field that is not first and not a key+value pair

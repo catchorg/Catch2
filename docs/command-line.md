@@ -26,7 +26,7 @@
 [Disable statistical analysis of collected benchmark samples](#disable-statistical-analysis-of-collected-benchmark-samples)<br>
 [Specify the amount of time in milliseconds spent on warming up each test](#specify-the-amount-of-time-in-milliseconds-spent-on-warming-up-each-test)<br>
 [Usage](#usage)<br>
-[Specify the section to run](#specify-the-section-to-run)<br>
+[Specify the section/generator element to run](#specify-the-sectiongenerator-element-to-run)<br>
 [Filenames as tags](#filenames-as-tags)<br>
 [Override output colouring](#override-output-colouring)<br>
 [Test Sharding](#test-sharding)<br>
@@ -202,8 +202,13 @@ as many times as you want, e.g. `--reporter xml::out=someFile.xml` or
 
 The keys must either be prefixed by "X", in which case they are not parsed
 by Catch2 and are only passed down to the reporter, or one of options
-hardcoded into Catch2. Currently there are only 2,
-["out"](#sending-output-to-a-file), and ["colour-mode"](#colour-mode).
+hardcoded into Catch2. Currently there are 3 supported options:
+
+* ["out"](#sending-output-to-a-file)
+* ["colour-mode"](#colour-mode)
+* ["verbosity"](#output-verbosity)
+
+> Support for per-reporter verbosity option was added in Catch2 3.16.0
 
 _Note that the reporter might still check the X-prefixed options for
 validity, and throw an error if they are wrong._

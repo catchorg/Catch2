@@ -196,6 +196,8 @@ namespace Catch {
                 auto getGenerator() const -> GeneratorBasePtr const& override {
                     return m_generator;
                 }
+
+                bool isFilteredImpl() const override { return m_isFiltered; }
             };
         } // namespace
     }
@@ -540,17 +542,6 @@ namespace Catch {
         SourceLineInfo lineInfo,
         Generators::GeneratorBasePtr&& generator ) {
 
-        // TBD: Do we want to avoid the warning if the generator is filtered?
-        if ( m_config->warnAboutInfiniteGenerators() &&
-             !generator->isFinite() ) {
-            // We want the semantics of `FAIL()`, but we inline it
-            // to avoid issues with conditionally prefixed macros
-            INTERNAL_CATCH_MSG( "FAIL",
-                                Catch::ResultWas::ExplicitFailure,
-                                Catch::ResultDisposition::Normal,
-                                "GENERATE() would run infinitely" );
-        }
-
         auto nameAndLoc = TestCaseTracking::NameAndLocation( static_cast<std::string>( generatorName ), lineInfo );
         auto& currentTracker = m_trackerContext.currentTracker();
         assert(
@@ -563,11 +554,24 @@ namespace Catch {
                 m_trackerContext,
                 &currentTracker,
                 CATCH_MOVE( generator ) );
-        auto ret = newTracker.get();
+
+        // The warning shouldn't fire if the generator is infinite, **but** filtered down.
+        if ( m_config->warnAboutInfiniteGenerators() &&
+             !newTracker->m_generator->isFinite() &&
+             !newTracker->isFiltered() ) {
+            // We want the semantics of `FAIL()`, but we inline it
+            // to avoid issues with conditionally prefixed macros
+            INTERNAL_CATCH_MSG( "FAIL",
+                                Catch::ResultWas::ExplicitFailure,
+                                Catch::ResultDisposition::Normal,
+                                "GENERATE() would run infinitely" );
+        }
+
+        auto returnPtr = newTracker.get();
         currentTracker.addChild( CATCH_MOVE( newTracker ) );
 
-        ret->open();
-        return ret;
+        returnPtr->open();
+        return returnPtr;
     }
 
     bool RunContext::testForMissingAssertions(Counts& assertions) {

@@ -26,25 +26,30 @@ namespace Catch {
          * escape sequences are considered.
          *
          * Internal representation:
-         * An escape sequence looks like \033[39;49m
-         * We need bidirectional iteration and the unbound length of escape
-         * sequences poses a problem for operator-- To make this work we'll
-         * replace the last `m` with a 0xff (this is a codepoint that won't have
-         * any utf-8 meaning).
+         * * An escape sequence looks like \033[39;49m
+         * * The string is stored unmodified
+         * * Index ranges of escape sequences are stored in separate vector
          */
         class AnsiSkippingString {
+        public:
+            //! Byte offsets of an escape sequence: [start, end)
+            struct EscapeRange {
+                std::ptrdiff_t start;
+                std::ptrdiff_t end;
+            };
+
+        private:
             std::string m_string;
             std::size_t m_size = 0;
+            // Sorted, non-overlapping. Empty -> no escapes in input
+            std::vector<EscapeRange> m_escapes;
 
-            // perform 0xff replacement and calculate m_size
+            // find escape sequences and calculate m_size
             void preprocessString();
 
         public:
             class const_iterator;
             using iterator = const_iterator;
-            // note: must be u-suffixed or this will cause a "truncation of
-            // constant value" warning on MSVC
-            static constexpr char sentinel = static_cast<char>( 0xffu );
 
             explicit AnsiSkippingString( std::string const& text );
             explicit AnsiSkippingString( std::string&& text );
@@ -53,22 +58,28 @@ namespace Catch {
             const_iterator end() const;
 
             size_t size() const { return m_size; }
+            bool hasEscapes() const { return !m_escapes.empty(); }
 
-            std::string substring( const_iterator begin,
-                                   const_iterator end ) const;
+            std::string substring( const_iterator first,
+                                   const_iterator last ) const;
+            // Support for appending without extra allocations
+            void appendSubstringTo( std::string& out,
+                                    const_iterator first,
+                                    const_iterator last ) const;
         };
 
         class AnsiSkippingString::const_iterator {
             friend AnsiSkippingString;
             struct EndTag {};
 
-            const std::string* m_string;
+            const AnsiSkippingString* m_string;
             std::string::const_iterator m_it;
 
-            explicit const_iterator( const std::string& string, EndTag ):
-                m_string( &string ), m_it( string.end() ) {}
+            explicit const_iterator( const AnsiSkippingString& string, EndTag ):
+                m_string( &string ), m_it( string.m_string.end() ) {}
 
-            void tryParseAnsiEscapes();
+            void jumpForwardOverEscapes();
+            void jumpBackOverEscapes();
             void advance();
             void unadvance();
 
@@ -79,9 +90,9 @@ namespace Catch {
             using reference = value_type&;
             using iterator_category = std::bidirectional_iterator_tag;
 
-            explicit const_iterator( const std::string& string ):
-                m_string( &string ), m_it( string.begin() ) {
-                tryParseAnsiEscapes();
+            explicit const_iterator( const AnsiSkippingString& string ):
+                m_string( &string ), m_it( string.m_string.begin() ) {
+                if ( m_string->hasEscapes() ) { jumpForwardOverEscapes(); }
             }
 
             char operator*() const { return *m_it; }

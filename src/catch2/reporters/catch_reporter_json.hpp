@@ -85,9 +85,6 @@ namespace Catch {
         std::stack<Writer> m_writers{};
 
         bool m_startedListing = false;
-
-        // std::size_t m_sectionDepth = 0;
-        // std::size_t m_sectionStarted = 0;
     };
 } // namespace Catch
 

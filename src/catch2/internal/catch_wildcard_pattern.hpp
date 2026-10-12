@@ -9,6 +9,7 @@
 #define CATCH_WILDCARD_PATTERN_HPP_INCLUDED
 
 #include <catch2/catch_case_sensitive.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 
 #include <string>
 
@@ -25,10 +26,9 @@ namespace Catch
     public:
 
         WildcardPattern( std::string const& pattern, CaseSensitive caseSensitivity );
-        bool matches( std::string const& str ) const;
+        bool matches( StringRef str ) const;
 
     private:
-        std::string normaliseString( std::string const& str ) const;
         CaseSensitive m_caseSensitivity;
         WildcardPosition m_wildcard = NoWildcard;
         std::string m_pattern;

@@ -71,6 +71,7 @@ namespace Catch {
         };
         struct SectionNode {
             explicit SectionNode(SectionStats const& _stats) : stats(_stats) {}
+            explicit SectionNode(SectionStats&& _stats) : stats(CATCH_MOVE(_stats)) {}
 
             bool operator == (SectionNode const& other) const {
                 return stats.sectionInfo.lineInfo == other.stats.sectionInfo.lineInfo;

@@ -32,18 +32,21 @@ namespace Catch {
     class MatchExpr final : public ITransientExpression {
         ArgT && m_arg;
         MatcherT const& m_matcher;
+
+        static void streamFn( void const* self, std::ostream& os ) {
+            auto const& expr = *static_cast<MatchExpr const*>(
+                static_cast<ITransientExpression const*>( self ) );
+            os << Catch::Detail::stringify( expr.m_arg )
+               << ' '
+               << expr.m_matcher.toString();
+        }
+
     public:
         constexpr MatchExpr( ArgT && arg, MatcherT const& matcher )
-        :   ITransientExpression{ true, matcher.match( arg ) }, // not forwarding arg here on purpose
+        :   ITransientExpression{ &streamFn, true, matcher.match( arg ) }, // not forwarding arg here on purpose
             m_arg( CATCH_FORWARD(arg) ),
             m_matcher( matcher )
         {}
-
-        void streamReconstructedExpression( std::ostream& os ) const override {
-            os << Catch::Detail::stringify( m_arg )
-               << ' '
-               << m_matcher.toString();
-        }
     };
 
 #ifdef __clang__

@@ -4519,7 +4519,7 @@ Matchers.tests.cpp:<line number>: PASSED:
   CHECK_THAT( testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "this string contains
-  'abc' as a substring" (case insensitive)
+  'ABC' as a substring" (case insensitive)
 
 -------------------------------------------------------------------------------
 Equals string matcher
@@ -4677,7 +4677,7 @@ Exception.tests.cpp:<line number>
 Exception.tests.cpp:<line number>: PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) )
 with expansion:
-  "expected exception" equals: "expected exception" (case insensitive)
+  "expected exception" equals: "expecteD Exception" (case insensitive)
 
 -------------------------------------------------------------------------------
 Exception messages can be tested for
@@ -4704,7 +4704,7 @@ with expansion:
 Exception.tests.cpp:<line number>: PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), ContainsSubstring( "exCept", Catch::CaseSensitive::No ) )
 with expansion:
-  "expected exception" contains: "except" (case insensitive)
+  "expected exception" contains: "exCept" (case insensitive)
 
 -------------------------------------------------------------------------------
 Exception thrown inside stringify does not fail the test
@@ -8218,6 +8218,103 @@ with expansion:
   ""\\/\t\r\n"" == ""\\/\t\r\n""
 
 -------------------------------------------------------------------------------
+JsonWriter serializes non-finite FP using Python spelling - double
+  NaN
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( sstream.str() == "NaN" )
+with expansion:
+  "NaN" == "NaN"
+
+-------------------------------------------------------------------------------
+JsonWriter serializes non-finite FP using Python spelling - double
+  Pos nf
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( sstream.str() == "Infinity" )
+with expansion:
+  "Infinity" == "Infinity"
+
+-------------------------------------------------------------------------------
+JsonWriter serializes non-finite FP using Python spelling - double
+  Neg inf
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( sstream.str() == "-Infinity" )
+with expansion:
+  "-Infinity" == "-Infinity"
+
+-------------------------------------------------------------------------------
+JsonWriter serializes non-finite FP using Python spelling - float
+  NaN
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( sstream.str() == "NaN" )
+with expansion:
+  "NaN" == "NaN"
+
+-------------------------------------------------------------------------------
+JsonWriter serializes non-finite FP using Python spelling - float
+  Pos nf
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( sstream.str() == "Infinity" )
+with expansion:
+  "Infinity" == "Infinity"
+
+-------------------------------------------------------------------------------
+JsonWriter serializes non-finite FP using Python spelling - float
+  Neg inf
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE( sstream.str() == "-Infinity" )
+with expansion:
+  "-Infinity" == "-Infinity"
+
+-------------------------------------------------------------------------------
+JsonWriter serializes numbers independently of the global locale
+-------------------------------------------------------------------------------
+Json.tests.cpp:<line number>
+...............................................................................
+
+Json.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( sstream.str(), ContainsSubstring( "\"double\": 1.5," ) && ContainsSubstring( "\"int\": 1234567," ) && ContainsSubstring( "\"bool-1\": true," ) && ContainsSubstring( "\"bool-2\": false," ) && ContainsSubstring( "\"array\": [\n    2.5,\n    1234567\n  ]\n}" ) )
+with expansion:
+  "{
+    "double": 1.5,
+    "int": 1234567,
+    "bool-1": true,
+    "bool-2": false,
+    "array": [
+      2.5,
+      1234567
+    ]
+  }" ( contains: ""double": 1.5," and contains: ""int": 1234567," and contains:
+  ""bool-1": true," and contains: ""bool-2": false," and contains: ""array": [
+      2.5,
+      1234567
+    ]
+  }" )
+
+-------------------------------------------------------------------------------
 Lambdas in assertions
 -------------------------------------------------------------------------------
 Compilation.tests.cpp:<line number>
@@ -9878,7 +9975,7 @@ with expansion:
   1 == 1
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {} } )
+  CHECK( cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {}, {} } )
 with expansion:
   {?} == {?}
 
@@ -9888,7 +9985,7 @@ with expansion:
   1 == 1
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cfg.getProcessedReporterSpecs()[0] == Catch::ProcessedReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, {} } )
+  CHECK( cfg.getProcessedReporterSpecs()[0] == Catch::ProcessedReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, Catch::Verbosity::Normal, {} } )
 with expansion:
   {?} == {?}
 
@@ -9992,7 +10089,7 @@ with message:
   result.errorMessage() := ""
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_Specs{ { "console", {}, {}, {} } } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "console", {}, {}, {}, {} } } )
 with expansion:
   { {?} } == { {?} }
 with message:
@@ -10014,7 +10111,7 @@ with message:
   result.errorMessage() := ""
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_Specs{ { "xml", {}, {}, {} } } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "xml", {}, {}, {}, {} } } )
 with expansion:
   { {?} } == { {?} }
 with message:
@@ -10036,7 +10133,7 @@ with message:
   result.errorMessage() := ""
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_Specs{ { "junit", {}, {}, {} } } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "junit", {}, {}, {}, {} } } )
 with expansion:
   { {?} } == { {?} }
 with message:
@@ -10077,7 +10174,7 @@ with message:
   result.errorMessage() := ""
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_Specs{ { "console", "out.txt"s, {}, {} } } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "console", "out.txt"s, {}, {}, {} } } )
 with expansion:
   { {?} } == { {?} }
 with message:
@@ -10099,7 +10196,7 @@ with message:
   result.errorMessage() := ""
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_Specs{ { "console", "C:\\Temp\\out.txt"s, {}, {} } } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "console", "C:\\Temp\\out.txt"s, {}, {}, {} } } )
 with expansion:
   { {?} } == { {?} }
 with message:
@@ -10120,7 +10217,7 @@ with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "junit", "output-junit.xml"s, {}, {} } } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {}, {} }, { "junit", "output-junit.xml"s, {}, {}, {} } } )
 with expansion:
   { {?}, {?} } == { {?}, {?} }
 
@@ -10139,7 +10236,7 @@ with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "console", {}, {}, {} } } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {}, {} }, { "console", {}, {}, {}, {} } } )
 with expansion:
   { {?}, {?} } == { {?}, {?} }
 
@@ -11134,7 +11231,7 @@ Reporters.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( listingString, ContainsSubstring("fakeTag"s) )
 with expansion:
   "{
-    "version": 1,
+    "version": 2,
     "metadata": {
       "name": "",
       "rng-seed": 1234,
@@ -11174,7 +11271,7 @@ Reporters.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( listingString, ContainsSubstring("fake reporter"s) )
 with expansion:
   "{
-    "version": 1,
+    "version": 2,
     "metadata": {
       "name": "",
       "rng-seed": 1234,
@@ -11212,7 +11309,7 @@ Reporters.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) )
 with expansion:
   "{
-    "version": 1,
+    "version": 2,
     "metadata": {
       "name": "",
       "rng-seed": 1234,
@@ -11222,14 +11319,9 @@ with expansion:
       "tests": [
         {
           "name": "fake test name",
-          "class-name": "",
           "tags": [
             "fakeTestTag"
-          ],
-          "source-location": {
-            "filename": "fake-file.cpp",
-            "line": 123456789
-          }
+          ]
         }
       ]" ( contains: "fake test name" and contains: "fakeTestTag" )
 with message:
@@ -12096,7 +12188,7 @@ with expansion:
 Matchers.tests.cpp:<line number>: PASSED:
   CHECK_THAT( testStringForMatching(), ContainsSubstring( "aBC", Catch::CaseSensitive::No ) )
 with expansion:
-  "this string contains 'abc' as a substring" contains: "abc" (case
+  "this string contains 'abc' as a substring" contains: "aBC" (case
   insensitive)
 
 Matchers.tests.cpp:<line number>: PASSED:
@@ -12107,7 +12199,7 @@ with expansion:
 Matchers.tests.cpp:<line number>: PASSED:
   CHECK_THAT( testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No ) )
 with expansion:
-  "this string contains 'abc' as a substring" starts with: "this" (case
+  "this string contains 'abc' as a substring" starts with: "THIS" (case
   insensitive)
 
 Matchers.tests.cpp:<line number>: PASSED:
@@ -12118,7 +12210,7 @@ with expansion:
 Matchers.tests.cpp:<line number>: PASSED:
   CHECK_THAT( testStringForMatching(), EndsWith( " SuBsTrInG", Catch::CaseSensitive::No ) )
 with expansion:
-  "this string contains 'abc' as a substring" ends with: " substring" (case
+  "this string contains 'abc' as a substring" ends with: " SuBsTrInG" (case
   insensitive)
 
 -------------------------------------------------------------------------------
@@ -19411,6 +19503,107 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 -------------------------------------------------------------------------------
+toLower( char )
+  ASCII letters are lowercased
+-------------------------------------------------------------------------------
+StringManip.tests.cpp:<line number>
+...............................................................................
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( 'A' ) == 'a' )
+with expansion:
+  'a' == 'a'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( 'Z' ) == 'z' )
+with expansion:
+  'z' == 'z'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( 'a' ) == 'a' )
+with expansion:
+  'a' == 'a'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( 'z' ) == 'z' )
+with expansion:
+  'z' == 'z'
+
+-------------------------------------------------------------------------------
+toLower( char )
+  Chars outside 'A'-'Z' are left alone
+-------------------------------------------------------------------------------
+StringManip.tests.cpp:<line number>
+...............................................................................
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '@' ) == '@' )
+with expansion:
+  '@' == '@'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '[' ) == '[' )
+with expansion:
+  '[' == '['
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '`' ) == '`' )
+with expansion:
+  '`' == '`'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '{' ) == '{' )
+with expansion:
+  '{' == '{'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '0' ) == '0' )
+with expansion:
+  '0' == '0'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( ' ' ) == ' ' )
+with expansion:
+  ' ' == ' '
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( '\0' ) == '\0' )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+toLower( char )
+  Non-ASCII chars are left alone
+-------------------------------------------------------------------------------
+StringManip.tests.cpp:<line number>
+...............................................................................
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) )
+with expansion:
+  'Ä' == 'Ä'
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) )
+with expansion:
+  'ÿ' == 'ÿ'
+
+-------------------------------------------------------------------------------
+toLower( char )
+  Is usable in constant expressions
+-------------------------------------------------------------------------------
+StringManip.tests.cpp:<line number>
+...............................................................................
+
+StringManip.tests.cpp:<line number>: PASSED:
+with message:
+  toLower( 'A' ) == 'a'
+
+StringManip.tests.cpp:<line number>: PASSED:
+with message:
+  toLower( '0' ) == '0'
+
+-------------------------------------------------------------------------------
 toString on const wchar_t const pointer returns the string contents
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -20123,6 +20316,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  451 |  331 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2416 | 2215 passed | 158 failed | 43 failed as expected
+test cases:  455 |  335 passed |  96 failed | 6 skipped | 18 failed as expected
+assertions: 2438 | 2237 passed | 158 failed | 43 failed as expected
 

@@ -12,6 +12,7 @@
 #include <catch2/catch_test_run_info.hpp>
 #include <catch2/catch_totals.hpp>
 #include <catch2/catch_assertion_result.hpp>
+#include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_message_info.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
@@ -36,6 +37,7 @@ namespace Catch {
         ReporterConfig( IConfig const* _fullConfig,
                         Detail::unique_ptr<IStream> _stream,
                         ColourMode colourMode,
+                        Verbosity verbosity,
                         std::map<std::string, std::string> customOptions );
 
         ReporterConfig( ReporterConfig&& ) = default;
@@ -45,12 +47,14 @@ namespace Catch {
         Detail::unique_ptr<IStream> takeStream() &&;
         IConfig const* fullConfig() const;
         ColourMode colourMode() const;
+        Verbosity verbosity() const;
         std::map<std::string, std::string> const& customOptions() const;
 
     private:
         Detail::unique_ptr<IStream> m_stream;
         IConfig const* m_fullConfig;
         ColourMode m_colourMode;
+        Verbosity m_verbosity;
         std::map<std::string, std::string> m_customOptions;
     };
 
