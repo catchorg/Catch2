@@ -812,40 +812,28 @@ with expansion:
 at Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/1" time="{duration}" status="run">
-      <skipped message="TEST_CASE tagged with !mayfail"/>
-    </testcase>
-    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/1/A" time="{duration}" status="run">
+    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/A/1" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure type="FAIL">
 FAILED:
 at Condition.tests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/2" time="{duration}" status="run">
-      <skipped message="TEST_CASE tagged with !mayfail"/>
-    </testcase>
-    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/2/A" time="{duration}" status="run">
+    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/A/2" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure type="FAIL">
 FAILED:
 at Condition.tests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/1" time="{duration}" status="run">
-      <skipped message="TEST_CASE tagged with !mayfail"/>
-    </testcase>
-    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/1/B" time="{duration}" status="run">
+    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/B/1" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure type="FAIL">
 FAILED:
 at Condition.tests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/2" time="{duration}" status="run">
-      <skipped message="TEST_CASE tagged with !mayfail"/>
-    </testcase>
-    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/2/B" time="{duration}" status="run">
+    <testcase classname="<exe-name>.global" name="Mayfail test case with nested sections/B/2" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure type="FAIL">
 FAILED:
@@ -1710,8 +1698,8 @@ at Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="measure" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="mix info, unscoped info and warning" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="more nested SECTION tests" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="more nested SECTION tests/equal" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="more nested SECTION tests/equal/doesn't equal" time="{duration}" status="run">
+    <testcase classname="<exe-name>.global" name="more nested SECTION tests/doesn't equal" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="more nested SECTION tests/doesn't equal/equal" time="{duration}" status="run">
       <failure message="a == b" type="REQUIRE">
 FAILED:
   REQUIRE( a == b )
@@ -1720,27 +1708,25 @@ with expansion:
 at Misc.tests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="<exe-name>.global" name="more nested SECTION tests/doesn't equal" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="more nested SECTION tests/doesn't equal/not equal" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="more nested SECTION tests/doesn't equal/less than" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="nested SECTION tests" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="nested SECTION tests/doesn't equal" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="nested SECTION tests/doesn't equal/not equal" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="nested sections can be skipped dynamically at runtime/A" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="nested sections can be skipped dynamically at runtime/B2" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="nested sections can be skipped dynamically at runtime/B2/B1" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="nested sections can be skipped dynamically at runtime/B2/B" time="{duration}" status="run">
-      <skipped type="SKIP">
-SKIPPED
-at Skip.tests.cpp:<line number>
-      </skipped>
-    </testcase>
     <testcase classname="<exe-name>.global" name="nested sections can be skipped dynamically at runtime/B" time="{duration}" status="run">
       <system-out>
 a!
 b1!
 !
       </system-out>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="nested sections can be skipped dynamically at runtime/B/B1" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="nested sections can be skipped dynamically at runtime/B/B2" time="{duration}" status="run">
+      <skipped type="SKIP">
+SKIPPED
+at Skip.tests.cpp:<line number>
+      </skipped>
     </testcase>
     <testcase classname="<exe-name>.global" name="non streamable - with conv. op" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="non-copyable objects" time="{duration}" status="run"/>
