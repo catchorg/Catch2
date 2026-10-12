@@ -168,12 +168,11 @@ same as the Catch name; see also ``TEST_PREFIX`` and ``TEST_SUFFIX``.
 #------------------------------------------------------------------------------
 function(catch_discover_tests TARGET)
 
-  cmake_parse_arguments(
+  cmake_parse_arguments(PARSE_ARGV 1
     ""
     "SKIP_IS_FAILURE;ADD_TAGS_AS_LABELS"
     "TEST_PREFIX;TEST_SUFFIX;WORKING_DIRECTORY;TEST_LIST;REPORTER;OUTPUT_DIR;OUTPUT_PREFIX;OUTPUT_SUFFIX;DISCOVERY_MODE"
     "TEST_SPEC;EXTRA_ARGS;PROPERTIES;DL_PATHS;DL_FRAMEWORK_PATHS"
-    ${ARGN}
   )
 
   if(${CMAKE_VERSION} VERSION_LESS "3.19")
@@ -216,7 +215,7 @@ function(catch_discover_tests TARGET)
     PROPERTY CROSSCOMPILING_EMULATOR
   )
   if(NOT _SKIP_IS_FAILURE)
-    set(_PROPERTIES ${_PROPERTIES} SKIP_RETURN_CODE 4)
+    list(APPEND _PROPERTIES SKIP_RETURN_CODE 4)
   endif()
 
   if(_DISCOVERY_MODE STREQUAL "POST_BUILD")
