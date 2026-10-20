@@ -2938,8 +2938,8 @@ StringManip.tests.cpp:<line number>: passed: toLower( '{' ) == '{' for: '{' == '
 StringManip.tests.cpp:<line number>: passed: toLower( '0' ) == '0' for: '0' == '0'
 StringManip.tests.cpp:<line number>: passed: toLower( ' ' ) == ' ' for: ' ' == ' '
 StringManip.tests.cpp:<line number>: passed: toLower( '\0' ) == '\0' for: 0 == 0
-StringManip.tests.cpp:<line number>: passed: toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'Ã„' == 'Ã„'
-StringManip.tests.cpp:<line number>: passed: toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'Ã¿' == 'Ã¿'
+StringManip.tests.cpp:<line number>: passed: toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'Ä' == 'Ä'
+StringManip.tests.cpp:<line number>: passed: toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'ÿ' == 'ÿ'
 StringManip.tests.cpp:<line number>: passed: with 1 message: 'toLower( 'A' ) == 'a''
 StringManip.tests.cpp:<line number>: passed: with 1 message: 'toLower( '0' ) == '0''
 Misc.tests.cpp:<line number>: passed: result == "\"wide load\"" for: ""wide load"" == ""wide load""

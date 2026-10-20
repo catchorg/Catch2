@@ -19647,12 +19647,12 @@ StringManip.tests.cpp:<line number>
 StringManip.tests.cpp:<line number>: PASSED:
   CHECK( toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) )
 with expansion:
-  'Ã„' == 'Ã„'
+  'Ä' == 'Ä'
 
 StringManip.tests.cpp:<line number>: PASSED:
   CHECK( toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) )
 with expansion:
-  'Ã¿' == 'Ã¿'
+  'ÿ' == 'ÿ'
 
 -------------------------------------------------------------------------------
 toLower( char )

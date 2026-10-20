@@ -912,7 +912,6 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Parsing benchmark CLI options" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing benchmark CLI options/Defaults" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing benchmark CLI options/Custom warmup and clock estimation times" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="estimate_clock_resolution/with iteration limit" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing path filter specs" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing path filter specs/Only section specs leads to old filter behaviour" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing path filter specs/Generator specs enable new filter behaviour" time="{duration}" status="run"/>
@@ -1617,6 +1616,7 @@ at Skip.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="empty tags are not allowed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="erfc_inv" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="estimate_clock_resolution" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="estimate_clock_resolution/with iteration limit" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="even more nested SECTION tests" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="even more nested SECTION tests/c" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="even more nested SECTION tests/c/d (leaf)" time="{duration}" status="run"/>

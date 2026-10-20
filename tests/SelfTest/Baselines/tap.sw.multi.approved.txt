@@ -4721,9 +4721,9 @@ ok {test-number} - toLower( ' ' ) == ' ' for: ' ' == ' '
 # toLower( char )
 ok {test-number} - toLower( '\0' ) == '\0' for: 0 == 0
 # toLower( char )
-ok {test-number} - toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'Ã„' == 'Ã„'
+ok {test-number} - toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'Ä' == 'Ä'
 # toLower( char )
-ok {test-number} - toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'Ã¿' == 'Ã¿'
+ok {test-number} - toLower( static_cast<char>( 0x<hex digits> ) ) == static_cast<char>( 0x<hex digits> ) for: 'ÿ' == 'ÿ'
 # toLower( char )
 ok {test-number} - with 1 message: 'toLower( 'A' ) == 'a''
 # toLower( char )
