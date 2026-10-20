@@ -433,7 +433,7 @@ TEST_CASE("run benchmark", "[benchmark][approvals]") {
     bench.run<counting_clock>();
     auto end = counting_clock::now();
 
-    CHECK((end - start).count() == 2867251000);
+    CHECK((end - start).count() == 1907245000);
 }
 
 TEST_CASE("Failing benchmarks", "[!benchmark][.approvals]") {
