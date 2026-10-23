@@ -19,6 +19,22 @@ behaviour, which does not affect generators at all. If you also use either
 `-g`/`--generator-index`, or `-p`/`--path-filter`, you will get the new
 behaviour, which can also filter generator elements.
 
+When path filters are in effect, the console and compact reporters print
+the active selection at the start of the run, next to the `Filters:` line,
+e.g.
+
+```text
+Filters: "foo"
+Path filters:
+  - Section: "A"
+  - Generator: "0"
+```
+
+The filters are listed one per line, labelled as `Section` or `Generator`,
+in the order in which they were specified. This makes it easy to see exactly
+what has been selected when a filter combination ends up running no
+assertions.
+
 Both the new and old filter behaviours include some potentially surprising
 things:
   * Code outside of sections being skipped will still be executed. E.g.
