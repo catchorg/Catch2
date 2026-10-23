@@ -254,6 +254,11 @@ namespace Catch {
                 f << "";
                 m_data.shardIndex = bazelShardOptions->shardIndex;
                 m_data.shardCount = bazelShardOptions->shardCount;
+                // Random order can disagree between shards without a shared seed.
+                if ( m_data.shardCount > 1 &&
+                     m_data.runOrder == TestRunOrder::Randomized ) {
+                    m_data.runOrder = TestRunOrder::Declared;
+                }
             }
         }
 
