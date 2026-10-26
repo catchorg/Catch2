@@ -6,8 +6,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.16.0
-//  Generated: 2026-08-25 09:29:22.652020
+//  Catch v3.16.1
+//  Generated: 2026-10-08 14:47:23.970926
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -1520,7 +1520,7 @@ namespace Catch {
             *reinterpret_cast<char volatile*>(p) = *reinterpret_cast<char const volatile*>(p);
         }
         // TODO equivalent keep_memory()
-#if defined(_MSVC_VER)
+#if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
 
@@ -2513,6 +2513,9 @@ namespace Catch {
 // be null...
 #pragma GCC diagnostic ignored "-Waddress"
 #pragma GCC diagnostic ignored "-Wnonnull-compare"
+#elif defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpointer-bool-conversion"
 #endif
 
         template<typename T>
@@ -2523,6 +2526,8 @@ namespace Catch {
 
 #if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic pop
+#elif defined(__clang__)
+#pragma clang diagnostic pop
 #endif
         auto get() -> std::ostream& { return *m_oss; }
     };
@@ -2957,7 +2962,7 @@ namespace Catch {
 
 #if defined( CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER ) && \
     defined( CATCH_CONFIG_CPP17_OPTIONAL ) &&              \
-    /* P3168 turned optional into a range, making this ambigous with the range support */ \
+    /* P3168 turned optional into a range, making this ambiguous with the range support */ \
     !defined( __cpp_lib_optional_range_support )
 #include <optional>
 namespace Catch {
@@ -3530,10 +3535,9 @@ namespace Catch
     public:
 
         WildcardPattern( std::string const& pattern, CaseSensitive caseSensitivity );
-        bool matches( std::string const& str ) const;
+        bool matches( StringRef str ) const;
 
     private:
-        std::string normaliseString( std::string const& str ) const;
         CaseSensitive m_caseSensitivity;
         WildcardPosition m_wildcard = NoWildcard;
         std::string m_pattern;
@@ -4742,8 +4746,9 @@ namespace Catch {
                     -> ParserResult override {
                     T temp;
                     auto result = convertInto( arg, temp );
-                    if ( result )
-                        m_ref.push_back( temp );
+                    if ( result ) {
+                        m_ref.push_back( CATCH_MOVE( temp ) );
+                    }
                     return result;
                 }
             };
@@ -5130,6 +5135,7 @@ namespace Catch {
     constexpr int UnmatchedTestSpecExitCode = 3;
     constexpr int AllTestsSkippedExitCode = 4;
     constexpr int InvalidTestSpecExitCode = 5;
+    constexpr int ReporterConstructionErrorExitCode = 6;
     constexpr int TestFailureExitCode = 42;
 
     class Session : Detail::NonCopyable {
@@ -5285,21 +5291,40 @@ namespace Catch {
 #    pragma clang diagnostic ignored "-Wfloat-equal"
 #endif
 
+        // To avoid instantiating all of `is_foo_comparable<T, T&>`,
+        // `is_foo_comparable<T&, T&>`, `is_foo_comparable<T, T>`, ...
+        // we force the type into simple T ref. This does not cause behaviour
+        // change, because the decomposer already only uses lvalues.
+        //
+        // Note that we do not strip away constness, as that would make
+        // the comparability of `const T` dependent on comparability of `T`,
+        // which could lead to behavior change from the current implementation.
+        template <typename T>
+        using IsComparableNormalized_t = std::remove_reference_t<T>&;
+
 #define CATCH_DEFINE_COMPARABLE_TRAIT( id, op )                               \
     template <typename, typename, typename = void>                            \
-    struct is_##id##_comparable : std::false_type {};                         \
+    struct is_##id##_comparable_impl : std::false_type {};                    \
     template <typename T, typename U>                                         \
-    struct is_##id##_comparable<                                              \
+    struct is_##id##_comparable_impl<                                         \
         T,                                                                    \
         U,                                                                    \
         void_t<decltype( std::declval<T>() op std::declval<U>() )>>           \
         : std::true_type {};                                                  \
+    template <typename T, typename U>                                         \
+    using is_##id##_comparable =                                              \
+        is_##id##_comparable_impl<IsComparableNormalized_t<T>,                \
+                                  IsComparableNormalized_t<U>>;               \
     template <typename, typename = void>                                      \
-    struct is_##id##_0_comparable : std::false_type {};                       \
+    struct is_##id##_0_comparable_impl : std::false_type {};                  \
     template <typename T>                                                     \
-    struct is_##id##_0_comparable<T,                                          \
-                                  void_t<decltype( std::declval<T>() op 0 )>> \
-        : std::true_type {};
+    struct is_##id##_0_comparable_impl<                                       \
+        T,                                                                    \
+        void_t<decltype( std::declval<T>() op 0 )>>                           \
+        : std::true_type {};                                                  \
+    template <typename T>                                                     \
+    using is_##id##_0_comparable =                                            \
+        is_##id##_0_comparable_impl<IsComparableNormalized_t<T>>;
 
         // We need all 6 pre-spaceship comparison ops: <, <=, >, >=, ==, !=
         CATCH_DEFINE_COMPARABLE_TRAIT( lt, < )
@@ -5512,28 +5537,27 @@ namespace Catch {
     struct always_false : std::false_type {};
 
     class ITransientExpression {
+        //! Type-erased streaming function for the derived expression
+        using StreamFn = void ( * )( void const*, std::ostream& );
+
+        StreamFn m_streamFn;
         bool m_isBinaryExpression;
         bool m_result;
-
-    protected:
-        ~ITransientExpression() = default;
 
     public:
         constexpr auto isBinaryExpression() const -> bool { return m_isBinaryExpression; }
         constexpr auto getResult() const -> bool { return m_result; }
-        //! This function **has** to be overridden by the derived class.
-        virtual void streamReconstructedExpression( std::ostream& os ) const;
 
-        constexpr ITransientExpression( bool isBinaryExpression, bool result )
-        :   m_isBinaryExpression( isBinaryExpression ),
-            m_result( result )
-        {}
+        constexpr ITransientExpression( StreamFn streamFn,
+                                        bool isBinaryExpression,
+                                        bool result ):
+            m_streamFn( streamFn ),
+            m_isBinaryExpression( isBinaryExpression ),
+            m_result( result ) {}
 
-        constexpr ITransientExpression( ITransientExpression const& ) = default;
-        constexpr ITransientExpression& operator=( ITransientExpression const& ) = default;
-
-        friend std::ostream& operator<<(std::ostream& out, ITransientExpression const& expr) {
-            expr.streamReconstructedExpression(out);
+        friend std::ostream& operator<<( std::ostream& out,
+                                         ITransientExpression const& expr ) {
+            expr.m_streamFn( &expr, out );
             return out;
         }
     };
@@ -5546,87 +5570,67 @@ namespace Catch {
         StringRef m_op;
         RhsT m_rhs;
 
-        void streamReconstructedExpression( std::ostream &os ) const override {
-            formatReconstructedExpression
-                    ( os, Catch::Detail::stringify( m_lhs ), m_op, Catch::Detail::stringify( m_rhs ) );
+        static void streamFn( void const* self, std::ostream& out ) {
+            auto const& expr = *static_cast<BinaryExpr const*>(
+                static_cast<ITransientExpression const*>( self ) );
+            formatReconstructedExpression(
+                out,
+                Catch::Detail::stringify( expr.m_lhs ),
+                expr.m_op,
+                Catch::Detail::stringify( expr.m_rhs ) );
         }
 
     public:
         constexpr BinaryExpr( bool comparisonResult, LhsT lhs, StringRef op, RhsT rhs )
-        :   ITransientExpression{ true, comparisonResult },
+        :   ITransientExpression{ &streamFn, true, comparisonResult },
             m_lhs( lhs ),
             m_op( op ),
             m_rhs( rhs )
         {}
-
-        template<typename T>
-        auto operator && ( T ) const -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<T>::value,
-            "chained comparisons are not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
-
-        template<typename T>
-        auto operator || ( T ) const -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<T>::value,
-            "chained comparisons are not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
-
-        template<typename T>
-        auto operator == ( T ) const -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<T>::value,
-            "chained comparisons are not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
-
-        template<typename T>
-        auto operator != ( T ) const -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<T>::value,
-            "chained comparisons are not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
-
-        template<typename T>
-        auto operator > ( T ) const -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<T>::value,
-            "chained comparisons are not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
-
-        template<typename T>
-        auto operator < ( T ) const -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<T>::value,
-            "chained comparisons are not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
-
-        template<typename T>
-        auto operator >= ( T ) const -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<T>::value,
-            "chained comparisons are not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
-
-        template<typename T>
-        auto operator <= ( T ) const -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<T>::value,
-            "chained comparisons are not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
     };
+
+#define CATCH_INTERNAL_DEFINE_BINARY_EXPR_OPERATOR( op )               \
+    template <typename LhsT, typename RhsT, typename T>                \
+    auto operator op( BinaryExpr<LhsT, RhsT> const&, T )               \
+        ->BinaryExpr<LhsT, RhsT const&> const {                        \
+        static_assert( always_false<T>::value,                         \
+                       "chained comparisons are not supported inside " \
+                       "assertions, wrap the expression inside "       \
+                       "parentheses, or decompose it" );               \
+    }
+
+    /*
+     * The operators are **intentionally** not hidden friends.
+     *
+     * If they were hidden friends, all of them would get stamped out when
+     * a `BinaryExpr` is instantiated with a new type. In practice, only
+     * few operators are used for each different `BinaryExpr<LhsT, RhsT>`,
+     * so this avoids bunch of wasted work.
+     */
+    CATCH_INTERNAL_DEFINE_BINARY_EXPR_OPERATOR( && )
+    CATCH_INTERNAL_DEFINE_BINARY_EXPR_OPERATOR( || )
+    CATCH_INTERNAL_DEFINE_BINARY_EXPR_OPERATOR( == )
+    CATCH_INTERNAL_DEFINE_BINARY_EXPR_OPERATOR( != )
+    CATCH_INTERNAL_DEFINE_BINARY_EXPR_OPERATOR( > )
+    CATCH_INTERNAL_DEFINE_BINARY_EXPR_OPERATOR( < )
+    CATCH_INTERNAL_DEFINE_BINARY_EXPR_OPERATOR( >= )
+    CATCH_INTERNAL_DEFINE_BINARY_EXPR_OPERATOR( <= )
+
+#undef CATCH_INTERNAL_DEFINE_BINARY_EXPR_OPERATOR
 
     template<typename LhsT>
     class UnaryExpr final : public ITransientExpression {
         LhsT m_lhs;
 
-        void streamReconstructedExpression( std::ostream &os ) const override {
-            os << Catch::Detail::stringify( m_lhs );
+        static void streamFn( void const* self, std::ostream& os ) {
+            auto const& expr = *static_cast<UnaryExpr const*>(
+                static_cast<ITransientExpression const*>( self ) );
+            os << Catch::Detail::stringify( expr.m_lhs );
         }
 
     public:
         explicit constexpr UnaryExpr( LhsT lhs )
-        :   ITransientExpression{ false, static_cast<bool>(lhs) },
+        :   ITransientExpression{ &streamFn, false, static_cast<bool>(lhs) },
             m_lhs( lhs )
         {}
     };
@@ -5638,153 +5642,186 @@ namespace Catch {
     public:
         explicit constexpr ExprLhs( LhsT lhs ) : m_lhs( lhs ) {}
 
+        // We rely on reference collapsing if LhsT is already a reference.
+        // Used in the out-of-class decomposition operators
+        constexpr LhsT& getLhs() { return m_lhs; }
+
+        constexpr auto makeUnaryExpr() const -> UnaryExpr<LhsT> {
+            return UnaryExpr<LhsT>{ m_lhs };
+        }
+    };
+
+/*
+ * The comparison operators are **intentionally** not hidden friends.
+ *
+ * If they were hidden friends, all of them would get stamped out when
+ * a `ExprLhs` is instantiated with a new type. In practice, only few
+ * operators are used for each different `ExprLhs<T>`, so this avoids
+ * a lot of wasted work.
+ */
 #define CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR( id, op )           \
-    template <typename RhsT>                                                   \
-    constexpr friend auto operator op( ExprLhs&& lhs, RhsT&& rhs )             \
-        -> std::enable_if_t<                                                   \
+    template <typename LhsT, typename RhsT>                                    \
+    constexpr auto operator op( ExprLhs<LhsT>&& lhs, RhsT&& rhs )              \
+        ->std::enable_if_t<                                                    \
             Detail::conjunction<Detail::is_##id##_comparable<LhsT, RhsT>,      \
                                 Detail::negation<capture_by_value<             \
                                     Detail::RemoveCVRef_t<RhsT>>>>::value,     \
             BinaryExpr<LhsT, RhsT const&>> {                                   \
-        return {                                                               \
-            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
+        return { static_cast<bool>( lhs.getLhs() op rhs ),                     \
+                 lhs.getLhs(),                                                 \
+                 #op##_sr,                                                     \
+                 rhs };                                                        \
     }                                                                          \
-    template <typename RhsT>                                                   \
-    constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
-        -> std::enable_if_t<                                                   \
+    template <typename LhsT, typename RhsT>                                    \
+    constexpr auto operator op( ExprLhs<LhsT>&& lhs, RhsT rhs )                \
+        ->std::enable_if_t<                                                    \
             Detail::conjunction<Detail::is_##id##_comparable<LhsT, RhsT>,      \
                                 capture_by_value<RhsT>>::value,                \
             BinaryExpr<LhsT, RhsT>> {                                          \
-        return {                                                               \
-            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
+        return { static_cast<bool>( lhs.getLhs() op rhs ),                     \
+                 lhs.getLhs(),                                                 \
+                 #op##_sr,                                                     \
+                 rhs };                                                        \
     }                                                                          \
-    template <typename RhsT>                                                   \
-    constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
-        -> std::enable_if_t<                                                   \
+    template <typename LhsT, typename RhsT>                                    \
+    constexpr auto operator op( ExprLhs<LhsT>&& lhs, RhsT rhs )                \
+        ->std::enable_if_t<                                                    \
             Detail::conjunction<                                               \
                 Detail::negation<Detail::is_##id##_comparable<LhsT, RhsT>>,    \
-                Detail::is_eq_0_comparable<LhsT>,                              \
-              /* We allow long because we want `ptr op NULL` to be accepted */ \
+                Detail::is_eq_0_comparable<LhsT>, /* We allow long because we  \
+                                                     want `ptr op NULL` to be  \
+                                                     accepted */               \
                 Detail::disjunction<std::is_same<RhsT, int>,                   \
                                     std::is_same<RhsT, long>>>::value,         \
             BinaryExpr<LhsT, RhsT>> {                                          \
         if ( rhs != 0 ) { throw_test_failure_exception(); }                    \
-        return {                                                               \
-            static_cast<bool>( lhs.m_lhs op 0 ), lhs.m_lhs, #op##_sr, rhs };   \
+        return { static_cast<bool>( lhs.getLhs() op 0 ),                       \
+                 lhs.getLhs(),                                                 \
+                 #op##_sr,                                                     \
+                 rhs };                                                        \
     }                                                                          \
-    template <typename RhsT>                                                   \
-    constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
-        -> std::enable_if_t<                                                   \
+    template <typename LhsT, typename RhsT>                                    \
+    constexpr auto operator op( ExprLhs<LhsT>&& lhs, RhsT rhs )                \
+        ->std::enable_if_t<                                                    \
             Detail::conjunction<                                               \
                 Detail::negation<Detail::is_##id##_comparable<LhsT, RhsT>>,    \
-                Detail::is_eq_0_comparable<RhsT>,                              \
-              /* We allow long because we want `ptr op NULL` to be accepted */ \
+                Detail::is_eq_0_comparable<RhsT>, /* We allow long because we  \
+                                                     want `ptr op NULL` to be  \
+                                                     accepted */               \
                 Detail::disjunction<std::is_same<LhsT, int>,                   \
                                     std::is_same<LhsT, long>>>::value,         \
             BinaryExpr<LhsT, RhsT>> {                                          \
-        if ( lhs.m_lhs != 0 ) { throw_test_failure_exception(); }              \
-        return { static_cast<bool>( 0 op rhs ), lhs.m_lhs, #op##_sr, rhs };    \
+        if ( lhs.getLhs() != 0 ) { throw_test_failure_exception(); }           \
+        return { static_cast<bool>( 0 op rhs ), lhs.getLhs(), #op##_sr, rhs }; \
     }
 
-        CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR( eq, == )
-        CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR( ne, != )
+    CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR( eq, == )
+    CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR( ne, != )
 
-    #undef CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR
-
+#undef CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR
 
 #define CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( id, op )         \
-    template <typename RhsT>                                                   \
-    constexpr friend auto operator op( ExprLhs&& lhs, RhsT&& rhs )             \
-        -> std::enable_if_t<                                                   \
+    template <typename LhsT, typename RhsT>                                    \
+    constexpr auto operator op( ExprLhs<LhsT>&& lhs, RhsT&& rhs )              \
+        ->std::enable_if_t<                                                    \
             Detail::conjunction<Detail::is_##id##_comparable<LhsT, RhsT>,      \
                                 Detail::negation<capture_by_value<             \
                                     Detail::RemoveCVRef_t<RhsT>>>>::value,     \
             BinaryExpr<LhsT, RhsT const&>> {                                   \
-        return {                                                               \
-            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
+        return { static_cast<bool>( lhs.getLhs() op rhs ),                     \
+                 lhs.getLhs(),                                                 \
+                 #op##_sr,                                                     \
+                 rhs };                                                        \
     }                                                                          \
-    template <typename RhsT>                                                   \
-    constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
-        -> std::enable_if_t<                                                   \
+    template <typename LhsT, typename RhsT>                                    \
+    constexpr auto operator op( ExprLhs<LhsT>&& lhs, RhsT rhs )                \
+        ->std::enable_if_t<                                                    \
             Detail::conjunction<Detail::is_##id##_comparable<LhsT, RhsT>,      \
                                 capture_by_value<RhsT>>::value,                \
             BinaryExpr<LhsT, RhsT>> {                                          \
-        return {                                                               \
-            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
+        return { static_cast<bool>( lhs.getLhs() op rhs ),                     \
+                 lhs.getLhs(),                                                 \
+                 #op##_sr,                                                     \
+                 rhs };                                                        \
     }                                                                          \
-    template <typename RhsT>                                                   \
-    constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
-        -> std::enable_if_t<                                                   \
+    template <typename LhsT, typename RhsT>                                    \
+    constexpr auto operator op( ExprLhs<LhsT>&& lhs, RhsT rhs )                \
+        ->std::enable_if_t<                                                    \
             Detail::conjunction<                                               \
                 Detail::negation<Detail::is_##id##_comparable<LhsT, RhsT>>,    \
                 Detail::is_##id##_0_comparable<LhsT>,                          \
                 std::is_same<RhsT, int>>::value,                               \
             BinaryExpr<LhsT, RhsT>> {                                          \
         if ( rhs != 0 ) { throw_test_failure_exception(); }                    \
-        return {                                                               \
-            static_cast<bool>( lhs.m_lhs op 0 ), lhs.m_lhs, #op##_sr, rhs };   \
+        return { static_cast<bool>( lhs.getLhs() op 0 ),                       \
+                 lhs.getLhs(),                                                 \
+                 #op##_sr,                                                     \
+                 rhs };                                                        \
     }                                                                          \
-    template <typename RhsT>                                                   \
-    constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
-        -> std::enable_if_t<                                                   \
+    template <typename LhsT, typename RhsT>                                    \
+    constexpr auto operator op( ExprLhs<LhsT>&& lhs, RhsT rhs )                \
+        ->std::enable_if_t<                                                    \
             Detail::conjunction<                                               \
                 Detail::negation<Detail::is_##id##_comparable<LhsT, RhsT>>,    \
                 Detail::is_##id##_0_comparable<RhsT>,                          \
                 std::is_same<LhsT, int>>::value,                               \
             BinaryExpr<LhsT, RhsT>> {                                          \
-        if ( lhs.m_lhs != 0 ) { throw_test_failure_exception(); }              \
-        return { static_cast<bool>( 0 op rhs ), lhs.m_lhs, #op##_sr, rhs };    \
+        if ( lhs.getLhs() != 0 ) { throw_test_failure_exception(); }           \
+        return { static_cast<bool>( 0 op rhs ), lhs.getLhs(), #op##_sr, rhs }; \
     }
 
-        CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( lt, < )
-        CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( le, <= )
-        CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( gt, > )
-        CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( ge, >= )
+    CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( lt, < )
+    CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( le, <= )
+    CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( gt, > )
+    CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( ge, >= )
 
-    #undef CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR
+#undef CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR
 
-
-#define CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR( op )                        \
-    template <typename RhsT>                                                   \
-    constexpr friend auto operator op( ExprLhs&& lhs, RhsT&& rhs )             \
-        -> std::enable_if_t<                                                   \
-            !capture_by_value<Detail::RemoveCVRef_t<RhsT>>::value,             \
-            BinaryExpr<LhsT, RhsT const&>> {                                   \
-        return {                                                               \
-            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
-    }                                                                          \
-    template <typename RhsT>                                                   \
-    constexpr friend auto operator op( ExprLhs&& lhs, RhsT rhs )               \
-        -> std::enable_if_t<capture_by_value<RhsT>::value,                     \
-                            BinaryExpr<LhsT, RhsT>> {                          \
-        return {                                                               \
-            static_cast<bool>( lhs.m_lhs op rhs ), lhs.m_lhs, #op##_sr, rhs }; \
+#define CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR( op )            \
+    template <typename LhsT, typename RhsT>                        \
+    constexpr auto operator op( ExprLhs<LhsT>&& lhs, RhsT&& rhs )  \
+        ->std::enable_if_t<                                        \
+            !capture_by_value<Detail::RemoveCVRef_t<RhsT>>::value, \
+            BinaryExpr<LhsT, RhsT const&>> {                       \
+        return { static_cast<bool>( lhs.getLhs() op rhs ),         \
+                 lhs.getLhs(),                                     \
+                 #op##_sr,                                         \
+                 rhs };                                            \
+    }                                                              \
+    template <typename LhsT, typename RhsT>                        \
+    constexpr auto operator op( ExprLhs<LhsT>&& lhs, RhsT rhs )    \
+        ->std::enable_if_t<capture_by_value<RhsT>::value,          \
+                           BinaryExpr<LhsT, RhsT>> {               \
+        return { static_cast<bool>( lhs.getLhs() op rhs ),         \
+                 lhs.getLhs(),                                     \
+                 #op##_sr,                                         \
+                 rhs };                                            \
     }
 
-        CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(|)
-        CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(&)
-        CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(^)
+    CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR( | )
+    CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR( & )
+    CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR( ^)
 
-    #undef CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR
+#undef CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR
 
-        template<typename RhsT>
-        friend auto operator && ( ExprLhs &&, RhsT && ) -> BinaryExpr<LhsT, RhsT const&> {
-            static_assert(always_false<RhsT>::value,
+    template <typename LhsT, typename RhsT>
+    auto operator&&( ExprLhs<LhsT>&&, RhsT&& )
+        -> BinaryExpr<LhsT, RhsT const&> {
+        static_assert(
+            always_false<RhsT>::value,
             "operator&& is not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
+            "wrap the expression inside parentheses, or decompose it" );
+    }
 
-        template<typename RhsT>
-        friend auto operator || ( ExprLhs &&, RhsT && ) -> BinaryExpr<LhsT, RhsT const&> {
-            static_assert(always_false<RhsT>::value,
+    template <typename LhsT, typename RhsT>
+    auto operator||( ExprLhs<LhsT>&&, RhsT&& )
+        -> BinaryExpr<LhsT, RhsT const&> {
+        static_assert(
+            always_false<RhsT>::value,
             "operator|| is not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
+            "wrap the expression inside parentheses, or decompose it" );
+    }
 
-        constexpr auto makeUnaryExpr() const -> UnaryExpr<LhsT> {
-            return UnaryExpr<LhsT>{ m_lhs };
-        }
-    };
 
     struct Decomposer {
         template <typename T,
@@ -5862,7 +5899,20 @@ namespace Catch {
         void handleUnexpectedExceptionNotThrown();
         void handleExceptionNotThrownAsExpected();
         void handleThrowingCallSkipped();
-        void handleUnexpectedInflightException();
+
+        // Marking this as `noexcept` gives us measurable improvement
+        // in optimized compilation times. Making it `noexcept` changes
+        // what happens if the underlying code throws, **but** the only
+        // way this can throw is if the reporter itself throws from
+        // `assertionEnded`. However, in such case the process is going
+        // to abort anyway, because we will enter `assertionEnded` again
+        // from the (noexcept) destructor of `AssertionHandler` above.
+        // In the future, all reporter event handlers will be marked
+        // `noexcept` to make this limitation explicit.
+        void handleUnexpectedInflightException() noexcept;
+        // Ideally we could extend the logic above to more of the handle*
+        // function, but right now it would worsen the behaviour of
+        // preexisting custom reporters that throw from event handlers.
 
         void complete();
 
@@ -5919,6 +5969,19 @@ namespace Catch {
 
 #endif
 
+#if defined( CATCH_CONFIG_USE_BUILTIN_CONSTANT_P ) && \
+    !defined( CATCH_CONFIG_NO_USE_BUILTIN_CONSTANT_P )
+    // CATCH_INTERNAL_IGNORE_BUT_WARN already checks the expression on these
+    // compilers, so avoid checking it a third time in the loop condition.
+    #define INTERNAL_CATCH_TEST_LOOP_CONDITION( ... ) false
+#else
+    // * The double negation silences MSVC's C4800 warning.
+    // * We keep the expression to allow for warnings in the original context
+    // * The static_cast forces short-circuit evaluation if the type has overloaded &&.
+    #define INTERNAL_CATCH_TEST_LOOP_CONDITION( ... ) \
+        (void)0, (false) && static_cast<const bool&>( !!(__VA_ARGS__) )
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( macroName, resultDisposition, ... ) \
     do { /* NOLINT(bugprone-infinite-loop) */ \
@@ -5932,8 +5995,7 @@ namespace Catch {
             CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
         catchAssertionHandler.complete(); \
-    } while( (void)0, (false) && static_cast<const bool&>( !!(__VA_ARGS__) ) ) // the expression here is never evaluated at runtime but it forces the compiler to give it a look
-    // The double negation silences MSVC's C4800 warning, the static_cast forces short-circuit evaluation if the type has overloaded &&.
+    } while( INTERNAL_CATCH_TEST_LOOP_CONDITION( __VA_ARGS__ ) ) // the expression here is never evaluated at runtime, but is shown to some compilers
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( macroName, resultDisposition, ... ) \
@@ -6282,7 +6344,22 @@ struct NameAndTags {
 };
 
 struct AutoReg : Detail::NonCopyable {
-    AutoReg( Detail::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, StringRef classOrMethod, NameAndTags const& nameAndTags ) noexcept;
+    AutoReg( Detail::unique_ptr<ITestInvoker> invoker,
+             SourceLineInfo const& lineInfo,
+             StringRef classOrMethod,
+             NameAndTags const& nameAndTags ) noexcept;
+
+    /**
+     * Overload that takes the simple function pointer directly.
+     *
+     * Useful to keep compilation costs low; the unique_ptr overload
+     * combined with `makeTestInvoker` causes quadratic compilation times
+     * with GCC + optimizations (and super-linear with Clang + optims).
+     */
+    AutoReg( void ( *testAsFunction )(),
+             SourceLineInfo const& lineInfo,
+             StringRef classOrMethod,
+             NameAndTags const& nameAndTags ) noexcept;
 };
 
 } // end namespace Catch
@@ -6308,7 +6385,7 @@ struct AutoReg : Detail::NonCopyable {
         CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
         CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
-        namespace{ const Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( &TestName ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); } /* NOLINT */ \
+        namespace{ const Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( &TestName, CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); } /* NOLINT */ \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         static void TestName()
     #define INTERNAL_CATCH_TESTCASE( ... ) \
@@ -6411,7 +6488,7 @@ static int catchInternalSectionHint = 0;
             CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
             CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
             CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
-            Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( Function ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
+            Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Function, CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
             CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         } while(false)
 
@@ -6912,7 +6989,7 @@ namespace Catch {
     template<typename... Ts>\
     void reg_test(TypeList<Ts...>, Catch::NameAndTags nameAndTags)\
     {\
-        Catch::AutoReg( Catch::makeTestInvoker(&TestFunc<Ts...>), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), nameAndTags);\
+        Catch::AutoReg( &TestFunc<Ts...>, CATCH_INTERNAL_LINEINFO, Catch::StringRef(), nameAndTags);\
     }
 
 #define INTERNAL_CATCH_NTTP_REGISTER0(TestFunc, signature, ...)
@@ -6920,7 +6997,7 @@ namespace Catch {
     template<INTERNAL_CATCH_REMOVE_PARENS(signature)>\
     void reg_test(Nttp<__VA_ARGS__>, Catch::NameAndTags nameAndTags)\
     {\
-        Catch::AutoReg( Catch::makeTestInvoker(&TestFunc<__VA_ARGS__>), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), nameAndTags);\
+        Catch::AutoReg( &TestFunc<__VA_ARGS__>, CATCH_INTERNAL_LINEINFO, Catch::StringRef(), nameAndTags);\
     }
 
 #define INTERNAL_CATCH_NTTP_REGISTER_METHOD0(TestName, signature, ...)\
@@ -7108,7 +7185,7 @@ namespace Catch {
                     constexpr char const* tmpl_types[] = {CATCH_REC_LIST(INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS, INTERNAL_CATCH_REMOVE_PARENS(TmplTypes))};\
                     constexpr char const* types_list[] = {CATCH_REC_LIST(INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS, INTERNAL_CATCH_REMOVE_PARENS(TypesList))};\
                     constexpr auto num_types = sizeof(types_list) / sizeof(types_list[0]);\
-                    (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestFuncName<Types> ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ Name " - " + std::string(tmpl_types[index / num_types]) + '<' + types_list[index % num_types] + '>', Tags } ), index++)... };/* NOLINT */\
+                    (void)expander{(Catch::AutoReg( &TestFuncName<Types>, CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ Name " - " + std::string(tmpl_types[index / num_types]) + '<' + types_list[index % num_types] + '>', Tags } ), index++)... };/* NOLINT */\
                 }                                                     \
             };                                                        \
             static const int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){ \
@@ -7154,7 +7231,7 @@ namespace Catch {
             void reg_tests() {                                          \
                 size_t index = 0;                                    \
                 using expander = size_t[];                           \
-                (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestFunc<Types> ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ Name " - " INTERNAL_CATCH_STRINGIZE(TmplList) " - " + std::to_string(index), Tags } ), index++)... };/* NOLINT */\
+                (void)expander{(Catch::AutoReg( &TestFunc<Types>, CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ Name " - " INTERNAL_CATCH_STRINGIZE(TmplList) " - " + std::to_string(index), Tags } ), index++)... };/* NOLINT */\
             }                                                     \
         };\
         static const int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){ \
@@ -7485,7 +7562,9 @@ namespace Catch {
         //! Orders by name, classname and tags
         friend bool operator<( TestCaseInfo const& lhs,
                                TestCaseInfo const& rhs );
-
+        //! Compares name, classname and tags
+        friend bool operator==( TestCaseInfo const& lhs,
+                                TestCaseInfo const& rhs );
 
         std::string tagsAsString() const;
 
@@ -7712,7 +7791,7 @@ namespace Catch {
 
 #define CATCH_VERSION_MAJOR 3
 #define CATCH_VERSION_MINOR 16
-#define CATCH_VERSION_PATCH 0
+#define CATCH_VERSION_PATCH 1
 
 #endif // CATCH_VERSION_MACROS_HPP_INCLUDED
 
@@ -9150,6 +9229,7 @@ random(T a, T b) {
 #define CATCH_GENERATORS_RANGE_HPP_INCLUDED
 
 
+#include <cassert>
 #include <iterator>
 #include <type_traits>
 
@@ -11197,9 +11277,10 @@ namespace Catch {
 namespace Catch {
 
     template<typename Container>
-    Container createShard(Container const& container, std::size_t const shardCount, std::size_t const shardIndex) {
+    Container createShard(Container container, std::size_t const shardCount, std::size_t const shardIndex) {
         assert(shardCount > shardIndex);
 
+        // Single shard means there is nothing to do
         if (shardCount == 1) {
             return container;
         }
@@ -11215,7 +11296,10 @@ namespace Catch {
         auto startIterator = std::next(container.begin(), static_cast<std::ptrdiff_t>(startIndex));
         auto endIterator = std::next(container.begin(), static_cast<std::ptrdiff_t>(endIndex));
 
-        return Container(startIterator, endIterator);
+        container.erase(endIterator, container.end());
+        container.erase(container.begin(), startIterator);
+
+        return container;
     }
 
 }
@@ -11322,7 +11406,12 @@ namespace Catch {
     bool contains( std::string const& s, std::string const& infix );
     void toLowerInPlace( std::string& s );
     std::string toLower( std::string const& s );
-    char toLower( char c );
+    //! ASCII only.
+    constexpr char toLower( char c ) {
+        const uint32_t as_number = static_cast<unsigned char>( c );
+        const bool isUpper = ( as_number - static_cast<uint32_t>( 'A' ) ) < 26u;
+        return static_cast<char>( as_number | ( isUpper << 5 ) );
+    }
     //! Returns a new string without whitespace at the start/end
     std::string trim( std::string const& str );
     //! Returns a substring of the original ref without whitespace. Beware lifetimes!
@@ -11554,25 +11643,30 @@ namespace Catch {
          * escape sequences are considered.
          *
          * Internal representation:
-         * An escape sequence looks like \033[39;49m
-         * We need bidirectional iteration and the unbound length of escape
-         * sequences poses a problem for operator-- To make this work we'll
-         * replace the last `m` with a 0xff (this is a codepoint that won't have
-         * any utf-8 meaning).
+         * * An escape sequence looks like \033[39;49m
+         * * The string is stored unmodified
+         * * Index ranges of escape sequences are stored in separate vector
          */
         class AnsiSkippingString {
+        public:
+            //! Byte offsets of an escape sequence: [start, end)
+            struct EscapeRange {
+                std::ptrdiff_t start;
+                std::ptrdiff_t end;
+            };
+
+        private:
             std::string m_string;
             std::size_t m_size = 0;
+            // Sorted, non-overlapping. Empty -> no escapes in input
+            std::vector<EscapeRange> m_escapes;
 
-            // perform 0xff replacement and calculate m_size
+            // find escape sequences and calculate m_size
             void preprocessString();
 
         public:
             class const_iterator;
             using iterator = const_iterator;
-            // note: must be u-suffixed or this will cause a "truncation of
-            // constant value" warning on MSVC
-            static constexpr char sentinel = static_cast<char>( 0xffu );
 
             explicit AnsiSkippingString( std::string const& text );
             explicit AnsiSkippingString( std::string&& text );
@@ -11581,22 +11675,28 @@ namespace Catch {
             const_iterator end() const;
 
             size_t size() const { return m_size; }
+            bool hasEscapes() const { return !m_escapes.empty(); }
 
-            std::string substring( const_iterator begin,
-                                   const_iterator end ) const;
+            std::string substring( const_iterator first,
+                                   const_iterator last ) const;
+            // Support for appending without extra allocations
+            void appendSubstringTo( std::string& out,
+                                    const_iterator first,
+                                    const_iterator last ) const;
         };
 
         class AnsiSkippingString::const_iterator {
             friend AnsiSkippingString;
             struct EndTag {};
 
-            const std::string* m_string;
+            const AnsiSkippingString* m_string;
             std::string::const_iterator m_it;
 
-            explicit const_iterator( const std::string& string, EndTag ):
-                m_string( &string ), m_it( string.end() ) {}
+            explicit const_iterator( const AnsiSkippingString& string, EndTag ):
+                m_string( &string ), m_it( string.m_string.end() ) {}
 
-            void tryParseAnsiEscapes();
+            void jumpForwardOverEscapes();
+            void jumpBackOverEscapes();
             void advance();
             void unadvance();
 
@@ -11607,9 +11707,9 @@ namespace Catch {
             using reference = value_type&;
             using iterator_category = std::bidirectional_iterator_tag;
 
-            explicit const_iterator( const std::string& string ):
-                m_string( &string ), m_it( string.begin() ) {
-                tryParseAnsiEscapes();
+            explicit const_iterator( const AnsiSkippingString& string ):
+                m_string( &string ), m_it( string.m_string.begin() ) {
+                if ( m_string->hasEscapes() ) { jumpForwardOverEscapes(); }
             }
 
             char operator*() const { return *m_it; }
@@ -12071,18 +12171,21 @@ namespace Catch {
     class MatchExpr final : public ITransientExpression {
         ArgT && m_arg;
         MatcherT const& m_matcher;
+
+        static void streamFn( void const* self, std::ostream& os ) {
+            auto const& expr = *static_cast<MatchExpr const*>(
+                static_cast<ITransientExpression const*>( self ) );
+            os << Catch::Detail::stringify( expr.m_arg )
+               << ' '
+               << expr.m_matcher.toString();
+        }
+
     public:
         constexpr MatchExpr( ArgT && arg, MatcherT const& matcher )
-        :   ITransientExpression{ true, matcher.match( arg ) }, // not forwarding arg here on purpose
+        :   ITransientExpression{ &streamFn, true, matcher.match( arg ) }, // not forwarding arg here on purpose
             m_arg( CATCH_FORWARD(arg) ),
             m_matcher( matcher )
         {}
-
-        void streamReconstructedExpression( std::ostream& os ) const override {
-            os << Catch::Detail::stringify( m_arg )
-               << ' '
-               << m_matcher.toString();
-        }
     };
 
 #ifdef __clang__
@@ -13867,11 +13970,7 @@ namespace Catch {
     public:
         // GCC5 compat: we cannot use inherited constructor, because it
         //              doesn't implement backport of P0136
-        AutomakeReporter( ReporterConfig&& _config ):
-            StreamingReporterBase( CATCH_MOVE( _config ) ) {
-            m_preferences.shouldReportAllAssertionStarts = false;
-        }
-
+        AutomakeReporter( ReporterConfig&& _config );
         ~AutomakeReporter() override;
 
         static std::string getDescription() {
@@ -13898,11 +13997,7 @@ namespace Catch {
 
     class CompactReporter final : public StreamingReporterBase {
     public:
-        CompactReporter( ReporterConfig&& _config ):
-            StreamingReporterBase( CATCH_MOVE( _config ) ) {
-            m_preferences.shouldReportAllAssertionStarts = false;
-        }
-
+        CompactReporter( ReporterConfig&& _config );
         ~CompactReporter() override;
 
         static std::string getDescription();
@@ -14044,6 +14139,7 @@ namespace Catch {
         };
         struct SectionNode {
             explicit SectionNode(SectionStats const& _stats) : stats(_stats) {}
+            explicit SectionNode(SectionStats&& _stats) : stats(CATCH_MOVE(_stats)) {}
 
             bool operator == (SectionNode const& other) const {
                 return stats.sectionInfo.lineInfo == other.stats.sectionInfo.lineInfo;
@@ -14181,10 +14277,12 @@ namespace Catch {
 #ifndef CATCH_REPORTER_HELPERS_HPP_INCLUDED
 #define CATCH_REPORTER_HELPERS_HPP_INCLUDED
 
+
+
 #include <iosfwd>
+#include <map>
 #include <string>
 #include <vector>
-
 
 namespace Catch {
 
@@ -14263,6 +14361,11 @@ namespace Catch {
     void printTestRunTotals( std::ostream& stream,
                       ColourImpl& streamColour,
                       Totals const& totals );
+
+    //! Throws an exception if options contain unknown keys
+    void rejectSuperfluousConfigKeys(
+        std::map<std::string, std::string> const& options,
+        std::initializer_list<StringRef> knownKeys );
 
 } // end namespace Catch
 
@@ -14602,14 +14705,7 @@ namespace Catch {
 
     class SonarQubeReporter final : public CumulativeReporterBase {
     public:
-        SonarQubeReporter(ReporterConfig&& config)
-        : CumulativeReporterBase(CATCH_MOVE(config))
-        , xml(m_stream) {
-            m_preferences.shouldRedirectStdOut = true;
-            m_preferences.shouldReportAllAssertions = false;
-            m_preferences.shouldReportAllAssertionStarts = false;
-            m_shouldStoreSuccesfulAssertions = false;
-        }
+        SonarQubeReporter( ReporterConfig&& config );
 
         static std::string getDescription() {
             using namespace std::string_literals;
@@ -14653,11 +14749,7 @@ namespace Catch {
 
     class TAPReporter final : public StreamingReporterBase {
     public:
-        TAPReporter( ReporterConfig&& config ):
-            StreamingReporterBase( CATCH_MOVE(config) ) {
-            m_preferences.shouldReportAllAssertions = true;
-            m_preferences.shouldReportAllAssertionStarts = false;
-        }
+        TAPReporter( ReporterConfig&& config );
 
         static std::string getDescription() {
             using namespace std::string_literals;
@@ -14696,13 +14788,7 @@ namespace Catch {
 
     class TeamCityReporter final : public StreamingReporterBase {
     public:
-        TeamCityReporter( ReporterConfig&& _config )
-        :   StreamingReporterBase( CATCH_MOVE(_config) )
-        {
-            m_preferences.shouldRedirectStdOut = true;
-            m_preferences.shouldReportAllAssertionStarts = false;
-        }
-
+        TeamCityReporter( ReporterConfig&& _config );
         ~TeamCityReporter() override;
 
         static std::string getDescription() {

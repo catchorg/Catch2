@@ -59,6 +59,16 @@ specified the filters through the new `-p/--path-filter` parameter, which
 means that generators are taken into account.
 
 
+### Reporter event handling functions without noexcept
+
+> Deprecated in Catch2 3.16.1
+
+Catch2 does not try to support reporters throwing from arbitrary
+`fooStarting` or `fooEnded` test running event. For legacy reasons, the
+event listener interface is declared without `noexcept`, but in the future
+it will be changed to use `noexcept` to make this limitation explicit.
+
+
 ### Generator interfaces
 
 #### Defaulted `UntypedGeneratorBase::isFinite()`

@@ -482,6 +482,41 @@ set_tests_properties(Validation::TestCaseTags
 )
 
 
+add_executable(ThrowingReporter ${TESTS_DIR}/X38-ThrowingReporter.cpp)
+target_link_libraries(ThrowingReporter PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME Reporters::ThrowInConstructor
+  COMMAND
+    $<TARGET_FILE:ThrowingReporter>
+      --reporter ThrowingReporter::Xthrow-in-constructor=true
+)
+set_tests_properties(Reporters::ThrowInConstructor
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "Error when creating reporter: Exception in constructor"
+)
+
+foreach(reporterName   "Automake"
+                       "compact"
+                       "console"
+                       "JUnit"
+                       "SonarQube"
+                       "TAP"
+                       "TeamCity"
+                       "XML"
+                       "JSON")
+  add_test(NAME "Reporters::RejectUnknownArgs::${reporterName}"
+    COMMAND
+      $<TARGET_FILE:SelfTest>
+        --reporter ${reporterName}::Xfoo=bar
+        "[comparisons]" # Limit selection to avoid running full test binary if the error check doesn't trigger
+  )
+  set_tests_properties("Reporters::RejectUnknownArgs::${reporterName}"
+    PROPERTIES
+      PASS_REGULAR_EXPRESSION "Error when creating reporter: Unknown reporter argument: Xfoo"
+  )
+endforeach()
+
+
 add_executable(QuickExitInTest ${TESTS_DIR}/X40-QuickExit.cpp)
 target_link_libraries(QuickExitInTest PRIVATE Catch2::Catch2WithMain)
 add_test(
