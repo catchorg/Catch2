@@ -12,6 +12,7 @@
 - BDD: [SCENARIO, GIVEN, WHEN, THEN](../examples/120-Bdd-ScenarioGivenWhenThen.cpp)
 - Listener: [Listeners](../examples/210-Evt-EventListeners.cpp)
 - Configuration: [Provide your own output streams](../examples/231-Cfg-OutputStreams.cpp)
+- Configuration: [Provide your own main()](../examples/232-Cfg-CustomMain.cpp)
 - Generators: [Create your own generator](../examples/300-Gen-OwnGenerator.cpp)
 - Generators: [Use map to convert types in GENERATE expression](../examples/301-Gen-MapTypeConversion.cpp)
 - Generators: [Run test with a table of input values](../examples/302-Gen-Table.cpp)
@@ -38,7 +39,6 @@
 - Report: [Automake reporter](../examples/205-Rpt-AutomakeReporter.cpp)
 - Report: [TAP reporter](../examples/206-Rpt-TapReporter.cpp)
 - Report: [Multiple reporter](../examples/208-Rpt-MultipleReporters.cpp)
-- Configuration: [Provide your own main()](../examples/220-Cfg-OwnMain.cpp)
 - Configuration: [Compile-time configuration](../examples/230-Cfg-CompileTimeConfiguration.cpp)
 - Configuration: [Run-time configuration](../examples/240-Cfg-RunTimeConfiguration.cpp)
 
