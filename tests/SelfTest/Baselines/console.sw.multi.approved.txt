@@ -10715,6 +10715,54 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   Benchmark options
+  resamples must be greater than zero
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( result )
+with expansion:
+  !{?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( result.errorMessage(), ContainsSubstring("Benchmark resamples must be greater than 0") )
+with expansion:
+  "Benchmark resamples must be greater than 0" contains: "Benchmark resamples
+  must be greater than 0"
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( config.benchmarkResamples == 100000 )
+with expansion:
+  100000 (0x<hex digits>) == 100000 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  Benchmark options
+  resamples must be parseable
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( result )
+with expansion:
+  !{?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( result.errorMessage(), ContainsSubstring("Could not parse 'abc' as benchmark resamples") )
+with expansion:
+  "Could not parse 'abc' as benchmark resamples" contains: "Could not parse
+  'abc' as benchmark resamples"
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( config.benchmarkResamples == 100000 )
+with expansion:
+  100000 (0x<hex digits>) == 100000 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  Benchmark options
   confidence-interval
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
@@ -20317,5 +20365,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  455 |  335 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2438 | 2237 passed | 158 failed | 43 failed as expected
+assertions: 2444 | 2243 passed | 158 failed | 43 failed as expected
 

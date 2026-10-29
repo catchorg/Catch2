@@ -208,6 +208,19 @@ namespace Catch {
             config.benchmarkSamples = *parsedSamples;
             return ParserResult::ok( ParseResultType::Matched );
         };
+        auto const setBenchmarkResamples = [&]( std::string const& resamples ) {
+            auto parsedResamples = parseUInt( resamples );
+            if ( !parsedResamples ) {
+                return ParserResult::runtimeError(
+                    "Could not parse '" + resamples + "' as benchmark resamples" );
+            }
+            if ( *parsedResamples == 0 ) {
+                return ParserResult::runtimeError(
+                    "Benchmark resamples must be greater than 0" );
+            }
+            config.benchmarkResamples = *parsedResamples;
+            return ParserResult::ok( ParseResultType::Matched );
+        };
 
         auto const setShardIndex = [&](std::string const& shardIndex) {
             auto parsedIndex = parseUInt( shardIndex );
@@ -346,7 +359,7 @@ namespace Catch {
             | Opt( setBenchmarkSamples, "samples"  )
                 ["--benchmark-samples"]
                 ( "number of samples to collect (default: 100)" )
-            | Opt( config.benchmarkResamples, "resamples" )
+            | Opt( setBenchmarkResamples, "resamples" )
                 ["--benchmark-resamples"]
                 ( "number of resamples for the bootstrap (default: 100000)" )
             | Opt( config.benchmarkConfidenceInterval, "confidence interval" )

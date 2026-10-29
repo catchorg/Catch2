@@ -326,6 +326,26 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             REQUIRE(config.benchmarkResamples == 20000);
         }
 
+        SECTION("resamples must be greater than zero") {
+            auto result = cli.parse({"test", "--benchmark-resamples=0"});
+
+            CHECK_FALSE(result);
+            REQUIRE_THAT(
+                result.errorMessage(),
+                ContainsSubstring("Benchmark resamples must be greater than 0"));
+            CHECK(config.benchmarkResamples == 100000);
+        }
+
+        SECTION("resamples must be parseable") {
+            auto result = cli.parse({"test", "--benchmark-resamples=abc"});
+
+            CHECK_FALSE(result);
+            REQUIRE_THAT(
+                result.errorMessage(),
+                ContainsSubstring("Could not parse 'abc' as benchmark resamples"));
+            CHECK(config.benchmarkResamples == 100000);
+        }
+
         SECTION("confidence-interval") {
             CHECK(cli.parse({ "test", "--benchmark-confidence-interval=0.99" }));
 
