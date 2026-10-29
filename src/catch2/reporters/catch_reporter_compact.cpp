@@ -215,6 +215,12 @@ private:
                          << m_config->testSpec()
                          << '\n';
             }
+            if ( !m_config->getPathFilters().empty() ) {
+                m_stream << m_colour->guardColour( Colour::BrightYellow )
+                         << "Path filters:\n"
+                         << serializePathFilters( m_config->getPathFilters() )
+                         << '\n';
+            }
             m_stream << "RNG seed: " << getSeed() << '\n'
                      << std::flush;
         }
