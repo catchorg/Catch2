@@ -9046,9 +9046,9 @@ with expansion:
   9.100000381f > 10
 
 Condition.tests.cpp:<line number>: FAILED:
-  CHECK( data.float_nine_point_one > 9.2 )
+  CHECK( data.float_nine_point_one > 9.2f )
 with expansion:
-  9.100000381f > 9.19999999999999929
+  9.100000381f > 9.199999809f
 
 Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello > "hello" )
@@ -9147,9 +9147,9 @@ with expansion:
   9.100000381f < 10
 
 Condition.tests.cpp:<line number>: PASSED:
-  REQUIRE( data.float_nine_point_one < 9.2 )
+  REQUIRE( data.float_nine_point_one < 9.2f )
 with expansion:
-  9.100000381f < 9.19999999999999929
+  9.100000381f < 9.199999809f
 
 Condition.tests.cpp:<line number>: PASSED:
   REQUIRE( data.str_hello <= "hello" )

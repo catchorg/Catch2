@@ -2255,7 +2255,7 @@ not ok {test-number} - data.float_nine_point_one < 9 for: 9.100000381f < 9
 # Ordering comparison checks that should fail
 not ok {test-number} - data.float_nine_point_one > 10 for: 9.100000381f > 10
 # Ordering comparison checks that should fail
-not ok {test-number} - data.float_nine_point_one > 9.2 for: 9.100000381f > 9.19999999999999929
+not ok {test-number} - data.float_nine_point_one > 9.2f for: 9.100000381f > 9.199999809f
 # Ordering comparison checks that should fail
 not ok {test-number} - data.str_hello > "hello" for: "hello" > "hello"
 # Ordering comparison checks that should fail
@@ -2293,7 +2293,7 @@ ok {test-number} - data.float_nine_point_one > 9 for: 9.100000381f > 9
 # Ordering comparison checks that should succeed
 ok {test-number} - data.float_nine_point_one < 10 for: 9.100000381f < 10
 # Ordering comparison checks that should succeed
-ok {test-number} - data.float_nine_point_one < 9.2 for: 9.100000381f < 9.19999999999999929
+ok {test-number} - data.float_nine_point_one < 9.2f for: 9.100000381f < 9.199999809f
 # Ordering comparison checks that should succeed
 ok {test-number} - data.str_hello <= "hello" for: "hello" <= "hello"
 # Ordering comparison checks that should succeed
