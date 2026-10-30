@@ -257,6 +257,7 @@ set(GENERATOR_HEADERS
   ${SOURCES_DIR}/generators/catch_generators_random.hpp
   ${SOURCES_DIR}/generators/catch_generators_range.hpp
   ${SOURCES_DIR}/generators/catch_generators_throw.hpp
+  ${SOURCES_DIR}/generators/catch_generators_tuple.hpp
 )
 set(GENERATOR_SOURCES
   ${SOURCES_DIR}/generators/catch_generator_exception.cpp

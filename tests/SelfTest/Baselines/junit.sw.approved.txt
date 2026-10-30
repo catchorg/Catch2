@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2450" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2481" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1308,6 +1308,17 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Tracker/successfully close one section, then find another/Re-enter - skips S1 and enters S2/fail S2" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Tracker/open a nested section" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Trim strings" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Tuple" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Tuple/Basic Use Case" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Tuple/Basic Use Case/Tuple Implicit" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Tuple/Basic Use Case/Tuple Explicit" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Tuple/Basic Use Case/Pair" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Tuple/Basic Use Case/Array" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Tuple/Single Parameter" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Tuple/Single Parameter/Tuple" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Tuple/Single Parameter/Pair" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Tuple/Single Parameter/Array" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Tuple/Single Parameter/Any" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Container conversions" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Type conversions of RangeEquals and similar/Container conversions/Two equal containers of different container types" time="{duration}" status="run"/>

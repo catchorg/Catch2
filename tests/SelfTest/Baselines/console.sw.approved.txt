@@ -14925,6 +14925,371 @@ with expansion:
   There is no extra whitespace here
 
 -------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+  Tuple Implicit
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( std_serialization( element ) == catch2_serialization( element ) )
+with expansion:
+  "42" == "42"
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( counter == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+  Tuple Implicit
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( std_serialization( element ) == catch2_serialization( element ) )
+with expansion:
+  "foo" == "foo"
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( counter == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+  Tuple Implicit
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( std_serialization( element ) == catch2_serialization( element ) )
+with expansion:
+  "3.14" == "3.14"
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( counter == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+  Tuple Explicit
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( std_serialization( element ) == catch2_serialization( element ) )
+with expansion:
+  "42" == "42"
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( counter == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+  Tuple Explicit
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( std_serialization( element ) == catch2_serialization( element ) )
+with expansion:
+  "foo" == "foo"
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( counter == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+  Tuple Explicit
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( std_serialization( element ) == catch2_serialization( element ) )
+with expansion:
+  "3.14" == "3.14"
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( counter == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+  Pair
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( std_serialization( element ) == catch2_serialization( element ) )
+with expansion:
+  "42" == "42"
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( counter == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+  Pair
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( std_serialization( element ) == catch2_serialization( element ) )
+with expansion:
+  "foo" == "foo"
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( counter == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+  Array
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( std_serialization( element ) == catch2_serialization( element ) )
+with expansion:
+  "1" == "1"
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( counter == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+  Array
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( std_serialization( element ) == catch2_serialization( element ) )
+with expansion:
+  "2" == "2"
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( counter == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+  Array
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( std_serialization( element ) == catch2_serialization( element ) )
+with expansion:
+  "3" == "3"
+
+-------------------------------------------------------------------------------
+Tuple
+  Basic Use Case
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( counter == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Tuple
+  Single Parameter
+  Tuple
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+Tuple
+  Single Parameter
+  Tuple
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+Tuple
+  Single Parameter
+  Tuple
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+Tuple
+  Single Parameter
+  Pair
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+Tuple
+  Single Parameter
+  Pair
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+Tuple
+  Single Parameter
+  Array
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+Tuple
+  Single Parameter
+  Array
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+Tuple
+  Single Parameter
+  Array
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+Tuple
+  Single Parameter
+  Any
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
 Type conversions of RangeEquals and similar
   Container conversions
   Two equal containers of different container types
@@ -20327,6 +20692,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  455 |  335 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2438 | 2237 passed | 158 failed | 43 failed as expected
+test cases:  456 |  336 passed |  96 failed | 6 skipped | 18 failed as expected
+assertions: 2469 | 2268 passed | 158 failed | 43 failed as expected
 

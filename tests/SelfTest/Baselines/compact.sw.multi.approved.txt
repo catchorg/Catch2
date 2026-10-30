@@ -2292,6 +2292,37 @@ There is no extra whitespace here
 StringManip.tests.cpp:<line number>: passed: trim(StringRef(whitespace_at_both_ends)) == StringRef(no_whitespace) for: There is no extra whitespace here
 ==
 There is no extra whitespace here
+Generators.tests.cpp:<line number>: passed: std_serialization( element ) == catch2_serialization( element ) for: "42" == "42"
+Generators.tests.cpp:<line number>: passed: counter == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: std_serialization( element ) == catch2_serialization( element ) for: "foo" == "foo"
+Generators.tests.cpp:<line number>: passed: counter == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: std_serialization( element ) == catch2_serialization( element ) for: "3.14" == "3.14"
+Generators.tests.cpp:<line number>: passed: counter == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: std_serialization( element ) == catch2_serialization( element ) for: "42" == "42"
+Generators.tests.cpp:<line number>: passed: counter == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: std_serialization( element ) == catch2_serialization( element ) for: "foo" == "foo"
+Generators.tests.cpp:<line number>: passed: counter == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: std_serialization( element ) == catch2_serialization( element ) for: "3.14" == "3.14"
+Generators.tests.cpp:<line number>: passed: counter == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: std_serialization( element ) == catch2_serialization( element ) for: "42" == "42"
+Generators.tests.cpp:<line number>: passed: counter == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: std_serialization( element ) == catch2_serialization( element ) for: "foo" == "foo"
+Generators.tests.cpp:<line number>: passed: counter == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: std_serialization( element ) == catch2_serialization( element ) for: "1" == "1"
+Generators.tests.cpp:<line number>: passed: counter == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: std_serialization( element ) == catch2_serialization( element ) for: "2" == "2"
+Generators.tests.cpp:<line number>: passed: counter == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: std_serialization( element ) == catch2_serialization( element ) for: "3" == "3"
+Generators.tests.cpp:<line number>: passed: counter == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed:
+Generators.tests.cpp:<line number>: passed:
+Generators.tests.cpp:<line number>: passed:
+Generators.tests.cpp:<line number>: passed:
+Generators.tests.cpp:<line number>: passed:
+Generators.tests.cpp:<line number>: passed:
+Generators.tests.cpp:<line number>: passed:
+Generators.tests.cpp:<line number>: passed:
+Generators.tests.cpp:<line number>: passed:
 MatchersRanges.tests.cpp:<line number>: passed: array_int_a, RangeEquals( c_array ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
 MatchersRanges.tests.cpp:<line number>: passed: array_int_a, UnorderedRangeEquals( c_array ) for: { 1, 2, 3 } unordered elements are { 1, 2, 3 }
 MatchersRanges.tests.cpp:<line number>: passed: array_int_3, !RangeEquals( array_int_4 ) for: { 1, 2, 3 } not elements are { 1, 2, 3, 4 }
@@ -3019,7 +3050,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  455 |  335 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2438 | 2237 passed | 158 failed | 43 failed as expected
+test cases:  456 |  336 passed |  96 failed | 6 skipped | 18 failed as expected
+assertions: 2469 | 2268 passed | 158 failed | 43 failed as expected
 
 

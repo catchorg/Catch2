@@ -3582,6 +3582,68 @@ ok {test-number} - trim(StringRef(leading_whitespace)) == StringRef(no_whitespac
 ok {test-number} - trim(StringRef(trailing_whitespace)) == StringRef(no_whitespace) for: There is no extra whitespace here == There is no extra whitespace here
 # Trim strings
 ok {test-number} - trim(StringRef(whitespace_at_both_ends)) == StringRef(no_whitespace) for: There is no extra whitespace here == There is no extra whitespace here
+# Tuple
+ok {test-number} - std_serialization( element ) == catch2_serialization( element ) for: "42" == "42"
+# Tuple
+ok {test-number} - counter == 1 for: 1 == 1
+# Tuple
+ok {test-number} - std_serialization( element ) == catch2_serialization( element ) for: "foo" == "foo"
+# Tuple
+ok {test-number} - counter == 1 for: 1 == 1
+# Tuple
+ok {test-number} - std_serialization( element ) == catch2_serialization( element ) for: "3.14" == "3.14"
+# Tuple
+ok {test-number} - counter == 1 for: 1 == 1
+# Tuple
+ok {test-number} - std_serialization( element ) == catch2_serialization( element ) for: "42" == "42"
+# Tuple
+ok {test-number} - counter == 1 for: 1 == 1
+# Tuple
+ok {test-number} - std_serialization( element ) == catch2_serialization( element ) for: "foo" == "foo"
+# Tuple
+ok {test-number} - counter == 1 for: 1 == 1
+# Tuple
+ok {test-number} - std_serialization( element ) == catch2_serialization( element ) for: "3.14" == "3.14"
+# Tuple
+ok {test-number} - counter == 1 for: 1 == 1
+# Tuple
+ok {test-number} - std_serialization( element ) == catch2_serialization( element ) for: "42" == "42"
+# Tuple
+ok {test-number} - counter == 1 for: 1 == 1
+# Tuple
+ok {test-number} - std_serialization( element ) == catch2_serialization( element ) for: "foo" == "foo"
+# Tuple
+ok {test-number} - counter == 1 for: 1 == 1
+# Tuple
+ok {test-number} - std_serialization( element ) == catch2_serialization( element ) for: "1" == "1"
+# Tuple
+ok {test-number} - counter == 1 for: 1 == 1
+# Tuple
+ok {test-number} - std_serialization( element ) == catch2_serialization( element ) for: "2" == "2"
+# Tuple
+ok {test-number} - counter == 1 for: 1 == 1
+# Tuple
+ok {test-number} - std_serialization( element ) == catch2_serialization( element ) for: "3" == "3"
+# Tuple
+ok {test-number} - counter == 1 for: 1 == 1
+# Tuple
+ok {test-number} -
+# Tuple
+ok {test-number} -
+# Tuple
+ok {test-number} -
+# Tuple
+ok {test-number} -
+# Tuple
+ok {test-number} -
+# Tuple
+ok {test-number} -
+# Tuple
+ok {test-number} -
+# Tuple
+ok {test-number} -
+# Tuple
+ok {test-number} -
 # Type conversions of RangeEquals and similar
 ok {test-number} - array_int_a, RangeEquals( c_array ) for: { 1, 2, 3 } elements are { 1, 2, 3 }
 # Type conversions of RangeEquals and similar
@@ -4884,5 +4946,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2450
+1..2481
 

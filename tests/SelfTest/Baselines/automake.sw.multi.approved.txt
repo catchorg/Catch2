@@ -306,6 +306,7 @@
 :test-result: FAIL Thrown string literals are translated
 :test-result: PASS Tracker
 :test-result: PASS Trim strings
+:test-result: PASS Tuple
 :test-result: PASS Type conversions of RangeEquals and similar
 :test-result: FAIL Unexpected exceptions can be translated
 :test-result: FAIL Unscoped capture outlives scope
