@@ -13,6 +13,11 @@
 Catch needs to be able to convert types you use in assertions and logging expressions into strings (for logging and reporting purposes).
 Most built-in or std types are supported out of the box but there are two ways that you can tell Catch how to convert your own types (or other, third-party types) into strings.
 
+To use the string conversion features described on this page, include:
+```cpp
+#include <catch2/catch_tostring.hpp>
+```
+
 ## operator << overload for std::ostream
 
 This is the standard way of providing string conversions in C++ - and the chances are you may already provide this for your own purposes. If you're not familiar with this idiom it involves writing a free function of the form:
@@ -61,7 +66,13 @@ namespace Catch {
 
 ## Exceptions
 
-By default all exceptions deriving from `std::exception` will be translated to strings by calling the `what()` method. For exception types that do not derive from `std::exception` - or if `what()` does not return a suitable string - use `CATCH_TRANSLATE_EXCEPTION`. This defines a function that takes your exception type, by reference, and returns a string. It can appear anywhere in the code - it doesn't have to be in the same translation unit. For example:
+By default all exceptions deriving from `std::exception` will be translated to strings by calling the `what()` method. For exception types that do not derive from `std::exception` - or if `what()` does not return a suitable string - use `CATCH_TRANSLATE_EXCEPTION`. This defines a function that takes your exception type, by reference, and returns a string. It can appear anywhere in the code - it doesn't have to be in the same translation unit. 
+
+```cpp
+#include <catch2/catch_translate_exception.hpp>
+```
+
+For example:
 
 ```cpp
 CATCH_TRANSLATE_EXCEPTION( MyType const& ex ) {
@@ -78,6 +89,9 @@ If you only need to convert enums to strings for test reporting purposes you can
 However, as a convenience, Catch provides the `CATCH_REGISTER_ENUM` helper macro that will generate the `StringMaker` specialisation for you with minimal code.
 Simply provide it the (qualified) enum name, followed by all the enum values, and you're done!
 
+```cpp
+#include <catch2/catch_test_macros.hpp>
+```
 E.g.
 
 ```cpp
@@ -98,6 +112,7 @@ namespace Bikeshed {
 
 // Important!: This macro must appear at top level scope - not inside a namespace
 // You can fully qualify the names, or use a using if you prefer
+
 CATCH_REGISTER_ENUM( Bikeshed::Colours,
     Bikeshed::Colours::Red,
     Bikeshed::Colours::Green,
