@@ -5,6 +5,11 @@ Catch2 provides various macros for logging extra information when
 running a test. These macros default to being scoped, and associate with
 all assertions in the scope, regardless of whether they pass or fail.
 
+To use the logging macros described on this page, include:
+```cpp
+#include <catch2/catch_test_macros.hpp>
+```
+
 **example**
 ```cpp
 TEST_CASE("Simple info") {
