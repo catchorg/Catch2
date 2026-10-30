@@ -60,6 +60,8 @@ namespace Catch {
         bool filenamesAsTags = false;
         bool libIdentify = false;
         bool allowZeroTests = false;
+        bool outputTestCaseNameFirst = false;
+        bool outputTestCaseStats = false;
 
         int abortAfter = -1;
         uint32_t rngSeed = generateRandomSeed(GenerateFrom::Default);
@@ -143,6 +145,8 @@ namespace Catch {
         int abortAfter() const override;
         bool showInvisibles() const override;
         Verbosity verbosity() const override;
+        bool outputTestCaseNameFirst() const override;
+        bool outputTestCaseStats() const override;
         bool skipBenchmarks() const override;
         bool benchmarkNoAnalysis() const override;
         unsigned int benchmarkSamples() const override;
