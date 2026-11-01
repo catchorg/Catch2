@@ -217,6 +217,8 @@ namespace Catch {
     int Config::abortAfter() const                     { return m_data.abortAfter; }
     bool Config::showInvisibles() const                { return m_data.showInvisibles; }
     Verbosity Config::verbosity() const                { return m_data.verbosity; }
+    bool Config::outputTestCaseNameFirst() const       { return m_data.outputTestCaseNameFirst; }
+    bool Config::outputTestCaseStats() const           { return m_data.outputTestCaseStats; }
 
     bool Config::skipBenchmarks() const                           { return m_data.skipBenchmarks; }
     bool Config::benchmarkNoAnalysis() const                      { return m_data.benchmarkNoAnalysis; }
