@@ -13,6 +13,11 @@ Most test frameworks have a large collection of assertion macros to capture all 
 
 Catch is different. Because it decomposes natural C-style conditional expressions most of these forms are reduced to one or two that you will use all the time. That said there is a rich set of auxiliary macros as well. We'll describe all of these here.
 
+To use the assertion macros described on this page, include:
+```cpp
+#include <catch2/catch_test_macros.hpp>
+```
+
 Most of these macros come in two forms:
 
 ## Natural Expressions
