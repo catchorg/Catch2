@@ -121,6 +121,9 @@ namespace Progmasoft::Catch3::Runner
         std::vector<std::string> arguments;
         /// Variables added to, or replacing, those of this process.
         std::vector<std::pair<std::string, std::string>> environment;
+        /// Variables of this process the child keeps although their names
+        /// look like secrets; see `IsSecretVariable`.
+        std::vector<std::string> keptEnvironment;
         /// The working directory; empty keeps the current one.
         std::filesystem::path workingDirectory;
         bool searchPath = false;
@@ -229,6 +232,12 @@ namespace Progmasoft::Catch3::Runner
     /// The number of hardware threads, at least 1.
     [[nodiscard]] unsigned
     HardwareThreads() noexcept;
+
+    /// Whether a variable of this name holds a secret that a child does not
+    /// inherit: its name contains, in any case, TOKEN, SECRET, PASSWORD,
+    /// PASSWD, CREDENTIAL, API_KEY, APIKEY, PRIVATE_KEY or ACCESS_KEY.
+    [[nodiscard]] bool
+    IsSecretVariable(std::string_view name);
 
     /// The value of an environment variable; empty when it is not set.
     [[nodiscard]] std::string

@@ -274,6 +274,17 @@ accident. `Progmasoft::Catch3::TestTemporaryDirectory()` in
 The directory is removed when the attempt passes and kept when it fails;
 the report says where.
 
+## Environment variables
+
+Workers, and the processes the runner starts for itself, inherit its
+environment without the variables whose names look like secrets: those that
+contain, in any case, `TOKEN`, `SECRET`, `PASSWORD`, `PASSWD`, `CREDENTIAL`,
+`API_KEY`, `APIKEY`, `PRIVATE_KEY` or `ACCESS_KEY`. A test that needs one
+gets it with `--pass-env=NAME`, which can be repeated, or `"pass-env"` in
+the project configuration. The runner itself starts with the whole
+environment, so code that runs before the first worker starts still sees
+them.
+
 
 ## What a failure report says
 
@@ -376,7 +387,7 @@ as on the command line, with the key named in the message:
 | a whole number or a string | `retries` (`"auto"`, `"off"`), `seed` (`"random"`) |
 | a number | `timeout` (seconds), `benchmark-confidence-interval` |
 | a path, relative to the file | `junit`, `json`, `trace`, `shard-durations`; `history`, or `false` for none |
-| an array of strings | `tests` (test specs), `warn` |
+| an array of strings | `tests` (test specs), `warn`, `pass-env` |
 | `"quiet"`, `"normal"` or `"verbose"` | `verbosity` |
 
 `"version": 1` is required; `"$schema"` may name a schema for editors.

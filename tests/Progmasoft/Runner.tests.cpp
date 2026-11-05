@@ -292,3 +292,43 @@ TEST_CASE("JUnit and trace outputs are written", "[progmasoft][runner]")
     REQUIRE(traceJson);
     CHECK((*traceJson)["traceEvents"].Items().size() >= 3);
 }
+
+TEST_CASE("A child does not inherit the secrets of the runner",
+          "[progmasoft][runner]")
+{
+    CHECK(Runner::IsSecretVariable("GITHUB_TOKEN"));
+    CHECK(Runner::IsSecretVariable("aws_secret_access_key"));
+    CHECK(Runner::IsSecretVariable("DB_PASSWORD"));
+    CHECK(Runner::IsSecretVariable("NPM_ApiKey"));
+    CHECK_FALSE(Runner::IsSecretVariable("PATH"));
+    CHECK_FALSE(Runner::IsSecretVariable("XAUTHORITY"));
+
+    Runner::ChildOptions options;
+#if defined(_WIN32)
+    REQUIRE(_putenv_s("CATCH3_TEST_TOKEN", "withheld") == 0);
+    REQUIRE(_putenv_s("CATCH3_TEST_PLAIN", "kept") == 0);
+    options.arguments = { "cmd.exe", "/d", "/c", "set" };
+#else
+    REQUIRE(setenv("CATCH3_TEST_TOKEN", "withheld", 1) == 0);
+    REQUIRE(setenv("CATCH3_TEST_PLAIN", "kept", 1) == 0);
+    options.arguments = { "env" };
+#endif
+    options.searchPath = true;
+    auto printed = Runner::RunAndCapture(options);
+    REQUIRE(printed);
+    CHECK(printed->output.find("CATCH3_TEST_TOKEN") == std::string::npos);
+    CHECK_THAT(printed->output, ContainsSubstring("CATCH3_TEST_PLAIN=kept"));
+
+    options.keptEnvironment = { "CATCH3_TEST_TOKEN" };
+    printed = Runner::RunAndCapture(options);
+    REQUIRE(printed);
+    CHECK_THAT(printed->output,
+               ContainsSubstring("CATCH3_TEST_TOKEN=withheld"));
+#if defined(_WIN32)
+    CHECK(_putenv_s("CATCH3_TEST_TOKEN", "") == 0);
+    CHECK(_putenv_s("CATCH3_TEST_PLAIN", "") == 0);
+#else
+    CHECK(unsetenv("CATCH3_TEST_TOKEN") == 0);
+    CHECK(unsetenv("CATCH3_TEST_PLAIN") == 0);
+#endif
+}

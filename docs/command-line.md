@@ -71,6 +71,7 @@ Without a spec, every test runs except hidden ones, whose tags start with
 | `-j`, `--jobs=N` | worker processes; 0, the default, uses one per hardware thread |
 | `--in-process` | run the tests in this process, one after another |
 | `--isolate` | start a fresh process for every test |
+| `--pass-env=NAME` | give the tests the variable `NAME`, which they do not get because its name looks like a secret (repeatable) |
 | `--timeout=SECONDS` | the limit for a test without history, and the cap of learned limits; 0 for none |
 | `--no-adaptive-timeout` | use `--timeout` for every test |
 | `--retries=N\|auto\|off` | `auto` (default) retries what may pass again; N retries every failure up to N times |
