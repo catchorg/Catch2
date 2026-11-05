@@ -1081,6 +1081,8 @@ namespace Progmasoft::Catch3::Runner
         unsigned jobs = 0;
         bool inProcess = false;
         bool isolate = false;
+        /// Variables the tests keep although their names look like secrets.
+        std::vector<std::string> passedEnvironment;
         /// The per-test limit; zero disables it.
         std::chrono::milliseconds timeout{0};
         bool timeoutGiven = false;
@@ -1628,6 +1630,9 @@ namespace Progmasoft::Catch3::Runner
         std::vector<std::string> arguments;
         /// Variables added to, or replacing, those of this process.
         std::vector<std::pair<std::string, std::string>> environment;
+        /// Variables of this process the child keeps although their names
+        /// look like secrets; see `IsSecretVariable`.
+        std::vector<std::string> keptEnvironment;
         /// The working directory; empty keeps the current one.
         std::filesystem::path workingDirectory;
         bool searchPath = false;
@@ -1736,6 +1741,12 @@ namespace Progmasoft::Catch3::Runner
     /// The number of hardware threads, at least 1.
     [[nodiscard]] unsigned
     HardwareThreads() noexcept;
+
+    /// Whether a variable of this name holds a secret that a child does not
+    /// inherit: its name contains, in any case, TOKEN, SECRET, PASSWORD,
+    /// PASSWD, CREDENTIAL, API_KEY, APIKEY, PRIVATE_KEY or ACCESS_KEY.
+    [[nodiscard]] bool
+    IsSecretVariable(std::string_view name);
 
     /// The value of an environment variable; empty when it is not set.
     [[nodiscard]] std::string
@@ -13388,6 +13399,17 @@ namespace Progmasoft::Catch3::Runner
                      options.isolate = true;
                      return Status::Ok();
                  }},
+                {"pass-env",
+                 '\0',
+                 Takes::kValue,
+                 "NAME",
+                 "Running",
+                 "give the tests the variable NAME, which they do not get "
+                 "because its name looks like a secret (repeatable)",
+                 [](Options &options, const std::optional<std::string> &value) {
+                     options.passedEnvironment.push_back(*value);
+                     return Status::Ok();
+                 }},
                 {"timeout",
                  '\0',
                  Takes::kValue,
@@ -14862,9 +14884,12 @@ namespace Progmasoft::Catch3::Runner
 // Copyright (c) 2026 Progmasoft.
 // SPDX-License-Identifier: MPL-2.0 WITH AdditionRef-Progmasoft-Exception-2.0
 #include <algorithm>
+#include <cctype>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <iterator>
+#include <string_view>
 #include <thread>
 
 
@@ -14899,8 +14924,64 @@ extern char **environ;
 
 namespace Progmasoft::Catch3::Runner
 {
+    bool
+    IsSecretVariable(std::string_view name)
+    {
+        std::string upper;
+        upper.reserve(name.size());
+        for (const char character : name)
+        {
+            upper.push_back(character >= 'a' && character <= 'z'
+                                ? static_cast<char>(character - 'a' + 'A')
+                                : character);
+        }
+        constexpr std::string_view kSecretWords[] = {
+            "TOKEN",   "SECRET", "PASSWORD",    "PASSWD",     "CREDENTIAL",
+            "API_KEY", "APIKEY", "PRIVATE_KEY", "ACCESS_KEY",
+        };
+        return std::any_of(std::begin(kSecretWords),
+                           std::end(kSecretWords),
+                           [&](std::string_view word) {
+                               return upper.find(word) != std::string::npos;
+                           });
+    }
+
     namespace
     {
+        /// Whether a variable of this process stays out of a child: a secret
+        /// that the options do not keep. Windows spells names in any case.
+        bool
+        Withheld(std::string_view name, const std::vector<std::string> &kept)
+        {
+            if (!IsSecretVariable(name))
+            {
+                return false;
+            }
+            return std::none_of(
+                kept.begin(),
+                kept.end(),
+                [&](const std::string &keptName) {
+                    if (keptName.size() != name.size())
+                    {
+                        return false;
+                    }
+#if defined(_WIN32)
+                    return std::equal(
+                        keptName.begin(),
+                        keptName.end(),
+                        name.begin(),
+                        [](char left, char right) {
+                            return std::toupper(
+                                       static_cast<unsigned char>(left))
+                                   == std::toupper(
+                                       static_cast<unsigned char>(right));
+                        });
+#else
+                    return keptName == name;
+#endif
+                });
+        }
+
 #if defined(_WIN32)
         HANDLE
         AsHandle(std::intptr_t value) noexcept
@@ -15035,7 +15116,8 @@ namespace Progmasoft::Catch3::Runner
 
         std::wstring
         EnvironmentBlock(
-            const std::vector<std::pair<std::string, std::string>> &additions)
+            const std::vector<std::pair<std::string, std::string>> &additions,
+            const std::vector<std::string> &kept)
         {
             std::vector<std::wstring> entries;
             wchar_t *current = GetEnvironmentStringsW();
@@ -15044,6 +15126,13 @@ namespace Progmasoft::Catch3::Runner
                 for (const wchar_t *entry = current; *entry != L'\0';
                      entry += wcslen(entry) + 1)
                 {
+                    // A leading '=' marks the hidden per-drive variables.
+                    const std::wstring_view text{ entry };
+                    const auto equals = text.find(L'=', 1);
+                    if (Withheld(Narrow(text.substr(0, equals)), kept))
+                    {
+                        continue;
+                    }
                     entries.emplace_back(entry);
                 }
                 FreeEnvironmentStringsW(current);
@@ -15073,6 +15162,12 @@ namespace Progmasoft::Catch3::Runner
             for (const auto &entry : entries)
             {
                 block += entry;
+                block.push_back(L'\0');
+            }
+            // A block ends in an empty entry; one without variables is two
+            // terminators.
+            if (entries.empty())
+            {
                 block.push_back(L'\0');
             }
             block.push_back(L'\0');
@@ -15494,7 +15589,8 @@ namespace Progmasoft::Catch3::Runner
             }
             AppendQuotedArgument(commandLine, Widen(options.arguments[index]));
         }
-        std::wstring environment = EnvironmentBlock(options.environment);
+        std::wstring environment
+            = EnvironmentBlock(options.environment, options.keptEnvironment);
         const std::wstring directory = options.workingDirectory.wstring();
 
         PROCESS_INFORMATION information{};
@@ -15817,6 +15913,12 @@ namespace Progmasoft::Catch3::Runner
              entry != nullptr && *entry != nullptr;
              ++entry)
         {
+            const std::string_view text{ *entry };
+            if (Withheld(text.substr(0, text.find('=')),
+                         options.keptEnvironment))
+            {
+                continue;
+            }
             environmentStorage.emplace_back(*entry);
         }
         for (const auto &[name, value] : options.environment)
@@ -16224,6 +16326,7 @@ namespace Progmasoft::Catch3::Runner
                 { "jobs", ValueKind::kCount },
                 { "in-process", ValueKind::kFlag },
                 { "isolate", ValueKind::kFlag },
+                { "pass-env", ValueKind::kWords },
                 { "timeout", ValueKind::kNumber },
                 { "adaptive-timeout",
                   ValueKind::kNegated,
@@ -20604,6 +20707,7 @@ namespace Progmasoft::Catch3::Runner
                 const std::size_t id = ++workersStarted_;
                 child.environment.emplace_back("CATCH3_WORKER",
                                                std::to_string(id));
+                child.keptEnvironment = options_.passedEnvironment;
                 auto process = ChildProcess::Start(child);
                 if (!process)
                 {

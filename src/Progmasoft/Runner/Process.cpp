@@ -247,14 +247,7 @@ namespace Progmasoft::Catch3::Runner
                     // A leading '=' marks the hidden per-drive variables.
                     const std::wstring_view text{ entry };
                     const auto equals = text.find(L'=', 1);
-                    std::string name;
-                    for (const wchar_t character : text.substr(0, equals))
-                    {
-                        name.push_back(character < 0x80
-                                           ? static_cast<char>(character)
-                                           : '?');
-                    }
-                    if (Withheld(name, kept))
+                    if (Withheld(Narrow(text.substr(0, equals)), kept))
                     {
                         continue;
                     }
@@ -287,6 +280,12 @@ namespace Progmasoft::Catch3::Runner
             for (const auto &entry : entries)
             {
                 block += entry;
+                block.push_back(L'\0');
+            }
+            // A block ends in an empty entry; one without variables is two
+            // terminators.
+            if (entries.empty())
+            {
                 block.push_back(L'\0');
             }
             block.push_back(L'\0');
