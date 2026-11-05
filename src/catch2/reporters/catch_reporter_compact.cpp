@@ -251,5 +251,12 @@ private:
         }
 
         CompactReporter::~CompactReporter() = default;
+        CompactReporter::CompactReporter( ReporterConfig&& _config ):
+            StreamingReporterBase( CATCH_MOVE( _config ) ) {
+            rejectSuperfluousConfigKeys( m_customOptions, {} );
+
+            m_preferences.shouldReportAllAssertionStarts = false;
+        }
+
 
 } // end namespace Catch

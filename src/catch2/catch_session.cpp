@@ -380,7 +380,17 @@ namespace Catch {
             getCurrentMutableContext().setConfig(m_config.get());
 
             // Create reporter(s) so we can route listings through them
-            auto reporter = prepareReporters(m_config.get());
+            IEventListenerPtr reporter;
+            CATCH_TRY {
+                auto reporter_ = prepareReporters( m_config.get() );
+                swap( reporter, reporter_ );
+            }
+#if !defined( CATCH_CONFIG_DISABLE_EXCEPTIONS )
+            catch ( std::exception& ex ) {
+                Catch::cerr() << "Error when creating reporter: " << ex.what() << '\n' << std::flush;
+                return ReporterConstructionErrorExitCode;
+            }
+#endif
 
             auto const& invalidSpecs = m_config->testSpec().getInvalidSpecs();
             if ( !invalidSpecs.empty() ) {

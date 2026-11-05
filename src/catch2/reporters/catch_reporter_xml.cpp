@@ -28,6 +28,8 @@ namespace Catch {
     :   StreamingReporterBase( CATCH_MOVE(_config) ),
         m_xml(m_stream)
     {
+        rejectSuperfluousConfigKeys( m_customOptions, {} );
+
         m_preferences.shouldRedirectStdOut = true;
         m_preferences.shouldReportAllAssertions = true;
         m_preferences.shouldReportAllAssertionStarts = false;

@@ -59,7 +59,20 @@ namespace Catch {
         void handleUnexpectedExceptionNotThrown();
         void handleExceptionNotThrownAsExpected();
         void handleThrowingCallSkipped();
-        void handleUnexpectedInflightException();
+
+        // Marking this as `noexcept` gives us measurable improvement
+        // in optimized compilation times. Making it `noexcept` changes
+        // what happens if the underlying code throws, **but** the only
+        // way this can throw is if the reporter itself throws from
+        // `assertionEnded`. However, in such case the process is going
+        // to abort anyway, because we will enter `assertionEnded` again
+        // from the (noexcept) destructor of `AssertionHandler` above.
+        // In the future, all reporter event handlers will be marked
+        // `noexcept` to make this limitation explicit.
+        void handleUnexpectedInflightException() noexcept;
+        // Ideally we could extend the logic above to more of the handle*
+        // function, but right now it would worsen the behaviour of
+        // preexisting custom reporters that throw from event handlers.
 
         void complete();
 

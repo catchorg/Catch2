@@ -5,14 +5,23 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
+
 #include <catch2/reporters/catch_reporter_automake.hpp>
 #include <catch2/catch_test_case_info.hpp>
+#include <catch2/reporters/catch_reporter_helpers.hpp>
 
 #include <ostream>
 
 namespace Catch {
 
     AutomakeReporter::~AutomakeReporter() = default;
+
+    AutomakeReporter::AutomakeReporter( ReporterConfig&& _config ):
+        StreamingReporterBase( CATCH_MOVE( _config ) ) {
+        rejectSuperfluousConfigKeys( m_customOptions, {} );
+
+        m_preferences.shouldReportAllAssertionStarts = false;
+    }
 
     void AutomakeReporter::testCaseEnded(TestCaseStats const& _testCaseStats) {
         // Possible values to emit are PASS, XFAIL, SKIP, FAIL, XPASS and ERROR.

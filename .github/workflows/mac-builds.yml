@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: [macos-14, macos-15, macos-15-intel]
+        image: [macos-15, macos-15-intel]
         build_type: [Debug, Release]
         std: [14, 17]
 

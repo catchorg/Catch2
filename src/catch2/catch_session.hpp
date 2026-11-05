@@ -22,6 +22,7 @@ namespace Catch {
     constexpr int UnmatchedTestSpecExitCode = 3;
     constexpr int AllTestsSkippedExitCode = 4;
     constexpr int InvalidTestSpecExitCode = 5;
+    constexpr int ReporterConstructionErrorExitCode = 6;
     constexpr int TestFailureExitCode = 42;
 
     class Session : Detail::NonCopyable {
