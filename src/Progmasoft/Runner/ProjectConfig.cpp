@@ -68,6 +68,7 @@ namespace Progmasoft::Catch3::Runner
                 { "jobs", ValueKind::kCount },
                 { "in-process", ValueKind::kFlag },
                 { "isolate", ValueKind::kFlag },
+                { "pass-env", ValueKind::kWords },
                 { "timeout", ValueKind::kNumber },
                 { "adaptive-timeout",
                   ValueKind::kNegated,

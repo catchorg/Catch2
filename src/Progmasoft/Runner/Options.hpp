@@ -138,6 +138,8 @@ namespace Progmasoft::Catch3::Runner
         unsigned jobs = 0;
         bool inProcess = false;
         bool isolate = false;
+        /// Variables the tests keep although their names look like secrets.
+        std::vector<std::string> passedEnvironment;
         /// The per-test limit; zero disables it.
         std::chrono::milliseconds timeout{0};
         bool timeoutGiven = false;

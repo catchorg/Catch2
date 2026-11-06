@@ -994,6 +994,7 @@ namespace Progmasoft::Catch3::Runner
                 const std::size_t id = ++workersStarted_;
                 child.environment.emplace_back("CATCH3_WORKER",
                                                std::to_string(id));
+                child.keptEnvironment = options_.passedEnvironment;
                 auto process = ChildProcess::Start(child);
                 if (!process)
                 {

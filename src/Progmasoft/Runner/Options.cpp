@@ -361,6 +361,17 @@ namespace Progmasoft::Catch3::Runner
                      options.isolate = true;
                      return Status::Ok();
                  }},
+                {"pass-env",
+                 '\0',
+                 Takes::kValue,
+                 "NAME",
+                 "Running",
+                 "give the tests the variable NAME, which they do not get "
+                 "because its name looks like a secret (repeatable)",
+                 [](Options &options, const std::optional<std::string> &value) {
+                     options.passedEnvironment.push_back(*value);
+                     return Status::Ok();
+                 }},
                 {"timeout",
                  '\0',
                  Takes::kValue,
