@@ -63,6 +63,7 @@ internal_headers = [
   'generators/catch_generators_random.hpp',
   'generators/catch_generators_range.hpp',
   'generators/catch_generators_throw.hpp',
+  'generators/catch_generators_tuple.hpp',
   'interfaces/catch_interfaces_all.hpp',
   'interfaces/catch_interfaces_capture.hpp',
   'interfaces/catch_interfaces_config.hpp',
