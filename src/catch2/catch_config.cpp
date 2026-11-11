@@ -277,6 +277,12 @@ namespace Catch {
                 m_data.rngSeedWasFixed = true;
             }
         }
+
+        if ( m_data.shardCount > 1 &&
+             m_data.runOrder == TestRunOrder::Randomized &&
+             !m_data.rngSeedWasFixed) {
+            m_data.runOrder = TestRunOrder::Declared;
+        }
     }
 
 } // end namespace Catch
