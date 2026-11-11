@@ -11,6 +11,7 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <cassert>
+#include <new>
 
 namespace Catch {
 
