@@ -85,6 +85,19 @@ TEST_CASE("splitString", "[string-manip]") {
     CHECK_THAT(splitStringRef("abc,def", ','), Equals(std::vector<StringRef>{"abc", "def"}));
 }
 
+TEST_CASE( "Splitting preserves single-character fields",
+           "[string-manip][approvals]" ) {
+    using namespace Catch::Matchers;
+    using Catch::splitStringRef;
+    using Catch::StringRef;
+    CHECK_THAT( splitStringRef( "a,b,c", ',' ),
+                Equals( std::vector<StringRef>{ "a", "b", "c" } ) );
+    CHECK_THAT( splitStringRef( "a,", ',' ),
+                Equals( std::vector<StringRef>{ "a" } ) );
+    CHECK_THAT( splitStringRef( ",a,,b,", ',' ),
+                Equals( std::vector<StringRef>{ "a", "b" } ) );
+}
+
 TEST_CASE("startsWith", "[string-manip]") {
     using Catch::startsWith;
 

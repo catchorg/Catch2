@@ -163,3 +163,19 @@ TEST_CASE( "Enum backed by larger underlying type", "[enum][toString]" ) {
     REQUIRE( stringify( LargeEnum::Flag2 ) == "Flag2" );
     REQUIRE( stringify( LargeEnum::Flag5 ) == "Flag5" );
 }
+
+enum SingleCharacterEnum {
+    A,
+    B,
+    C
+};
+
+CATCH_REGISTER_ENUM( SingleCharacterEnum, A, B, C )
+
+TEST_CASE( "Single-character enum values can be registered",
+           "[enum][toString][approvals]" ) {
+    using Catch::Detail::stringify;
+    REQUIRE( stringify( A ) == "A" );
+    REQUIRE( stringify( B ) == "B" );
+    REQUIRE( stringify( C ) == "C" );
+}
