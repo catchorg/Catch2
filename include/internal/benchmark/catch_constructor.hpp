@@ -11,6 +11,7 @@
 #ifndef TWOBLUECUBES_CATCH_CONSTRUCTOR_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_CONSTRUCTOR_HPP_INCLUDED
 
+#include <new>
 #include <type_traits>
 
 namespace Catch {

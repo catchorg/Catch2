@@ -15,6 +15,8 @@
 #include "catch_preprocessor.hpp"
 #include "catch_meta.hpp"
 
+#include <new>
+
 namespace Catch {
 
 template<typename C>
