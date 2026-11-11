@@ -374,6 +374,7 @@ inline auto Column::operator + (Column const& other) -> Columns {
 // ........... back in clara.hpp
 
 #include <cctype>
+#include <new>
 #include <string>
 #include <memory>
 #include <set>
