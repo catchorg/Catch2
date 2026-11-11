@@ -12,6 +12,7 @@
 
 #include <catch2/internal/catch_move_and_forward.hpp>
 
+#include <new>
 #include <type_traits>
 
 namespace Catch {
