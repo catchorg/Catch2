@@ -681,6 +681,81 @@ Nor would this
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="#2809 - Sections taking more cycles than following GENERATE" tags="[generators][regression]" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
+    <Section name="a" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
+      <Section name="aa" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
+        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
+      <Original>
+        (g == true || g == false)
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Section name="a" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
+      <Section name="ab" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
+        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
+      <Original>
+        (g == true || g == false)
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Section name="b" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
+      <Section name="ba" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
+        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
+      <Original>
+        (g == true || g == false)
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
+      <Original>
+        (nested == 1 || nested == 2)
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Section name="b" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
+      <Section name="bb" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
+        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
+      <Original>
+        (g == true || g == false)
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
+      <Original>
+        (nested == 1 || nested == 2)
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="#3001: Enum-based bitfields can be captured" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
       <Original>
@@ -23651,6 +23726,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2243" failures="158" expectedFailures="43" skips="12"/>
-  <OverallResultsCases successes="336" failures="96" expectedFailures="18" skips="6"/>
+  <OverallResults successes="2253" failures="158" expectedFailures="43" skips="12"/>
+  <OverallResultsCases successes="337" failures="96" expectedFailures="18" skips="6"/>
 </Catch2TestRun>
