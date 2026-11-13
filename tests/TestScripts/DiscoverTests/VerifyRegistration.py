@@ -40,12 +40,13 @@ def get_cmake_version():
             int(version_match.group(2)),
             int(version_match.group(3)))
 
-def build_project(sources_dir, output_base_path, catch2_path):
-    build_dir = os.path.join(output_base_path, 'ctest-registration-test')
+def build_project(sources_dir, output_base_path, catch2_path, discovery_mode):
+    build_dir = os.path.join(output_base_path, 'ctest-registration-test-' + discovery_mode)
     config_cmd = ['cmake',
                   '-B', build_dir,
                   '-S', sources_dir,
                   f'-DCATCH2_PATH={catch2_path}',
+                  f'-DTEST_DISCOVERY_MODE={discovery_mode}',
                   '-DCMAKE_BUILD_TYPE=Debug']
 
     build_cmd = ['cmake',
@@ -129,12 +130,13 @@ def extract_tests_from_ctest(ctest_output) -> List[TestInfo]:
     test_infos = []
     for test in tests:
         test_command = test['command']
-        # First part of the command is the binary, second is the filter,
-        # third is the `--order decl` arg for faster startup.
+        # Four emulator arguments precede the binary, filter, and
+        # `--order decl` argument for faster startup.
         # If there are less, registration has failed. If there are more,
         # registration has changed and the script needs updating.
-        assert len(test_command) == 3, test_command
-        test_name = test_command[1]
+        assert len(test_command) == 7, test_command
+        assert test_command[1:4] == ['-E', 'env', 'CATCH2_ENV_EMULATOR=yes'], test_command
+        test_name = test_command[5]
         labels = []
         for prop in test['properties']:
             if prop['name'] == 'LABELS':
@@ -257,14 +259,15 @@ def escape_catch2_test_names(infos: List[TestInfo]):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print(f'Usage: {sys.argv[0]} path-to-catch2-cml output-path')
+    if len(sys.argv) not in (3, 4):
+        print(f'Usage: {sys.argv[0]} path-to-catch2-cml output-path [PRE_TEST|POST_BUILD]')
         exit(2)
     catch2_path = sys.argv[1]
     output_base_path = sys.argv[2]
     sources_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
 
-    build_path = build_project(sources_dir, output_base_path, catch2_path)
+    discovery_mode = sys.argv[3] if len(sys.argv) == 4 else "PRE_TEST"
+    build_path = build_project(sources_dir, output_base_path, catch2_path, discovery_mode)
 
     raw_catch_test_names = get_test_names(build_path)
     catch_test_names = escape_catch2_test_names(raw_catch_test_names)
@@ -302,3 +305,18 @@ if __name__ == '__main__':
     cmake_version = get_cmake_version()
     if cmake_version >= (3, 27):
         check_DL_PATHS(ctest_output)
+
+    expected_environment = [
+        'CATCH2_ENV_FIRST=one',
+        'CATCH2_ENV_SECOND=two',
+        'CATCH2_ENV_SEMICOLON=left;right',
+        'CATCH2_ENV_EMPTY=',
+    ]
+    for test in json.loads(ctest_output)['tests']:
+        properties = {prop['name']: prop['value'] for prop in test['properties']}
+        assert properties['ENVIRONMENT'] == expected_environment, properties
+        assert properties['PROCESSORS'] == 3, properties
+        assert properties['TIMEOUT'] == 10, properties
+    subprocess.run(['ctest', '--test-dir', build_path, '-C', 'Debug',
+                    '-R', 'Environment properties reach the test process',
+                    '--output-on-failure'], check=True)

@@ -167,6 +167,12 @@ Both `TEST_PREFIX` and `TEST_SUFFIX` can be specified at the same time.
 Specifies additional properties to be set on all tests discovered by this
 invocation of `catch_discover_tests`.
 
+Quote list-valued properties so that the entire list is passed as one value:
+
+```cmake
+catch_discover_tests(tests PROPERTIES ENVIRONMENT "FIRST=one;SECOND=two")
+```
+
 
 * `TEST_LIST var`
 
