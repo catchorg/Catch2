@@ -16,6 +16,12 @@ if os.name == 'nt':
     os.system('')
 
 rootPath = os.path.join(catchPath, 'tests/SelfTest/Baselines')
+# Compilers can retain a symlinked source path even though baseline I/O uses
+# the canonical repository path. Strip the longer root first if they overlap.
+sourceRootPaths = sorted({
+    catchPath,
+    os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')),
+}, key=len, reverse=True)
 # Init so it is guaranteed to fail loudly if the scoping gets messed up
 outputDirPath = None
 
@@ -97,12 +103,13 @@ def normalizeFilepath(line):
     # Sometimes the path separators used by compiler and Python can differ,
     # so we try to match the path with both forward and backward path
     # separators, to make the paths relative to Catch2 repo root.
-    forwardSlashPath = catchPath.replace('\\', '/')
-    if forwardSlashPath in line:
-        line = line.replace(forwardSlashPath + '/', '')
-    backwardSlashPath = catchPath.replace('/', '\\')
-    if backwardSlashPath in line:
-        line = line.replace(backwardSlashPath + '\\', '')
+    for sourceRootPath in sourceRootPaths:
+        forwardSlashPath = sourceRootPath.replace('\\', '/')
+        if forwardSlashPath in line:
+            line = line.replace(forwardSlashPath + '/', '')
+        backwardSlashPath = sourceRootPath.replace('/', '\\')
+        if backwardSlashPath in line:
+            line = line.replace(backwardSlashPath + '\\', '')
 
     m = langFilenameParser.match(line)
     if m:
