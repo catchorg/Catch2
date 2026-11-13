@@ -517,6 +517,21 @@ foreach(reporterName   "Automake"
 endforeach()
 
 
+add_executable(CumulativeSectionTree ${TESTS_DIR}/X41-CumulativeSectionTree.cpp)
+target_link_libraries(CumulativeSectionTree PRIVATE Catch2::Catch2WithMain)
+foreach(sectionEndCase "nested skip" "nested fatal assertion" "nested exception" "normal nested sections")
+  string(REPLACE " " "-" sectionEndTestName "${sectionEndCase}")
+  add_test(
+    NAME "Reporters::CumulativeSectionTree::${sectionEndTestName}"
+    COMMAND CumulativeSectionTree "${sectionEndCase}" --reporter section-tree
+  )
+  set_tests_properties("Reporters::CumulativeSectionTree::${sectionEndTestName}"
+    PROPERTIES
+      PASS_REGULAR_EXPRESSION "CUMULATIVE_TREE_OK"
+      FAIL_REGULAR_EXPRESSION "CUMULATIVE_TREE_BAD"
+  )
+endforeach()
+
 add_executable(QuickExitInTest ${TESTS_DIR}/X40-QuickExit.cpp)
 target_link_libraries(QuickExitInTest PRIVATE Catch2::Catch2WithMain)
 add_test(
