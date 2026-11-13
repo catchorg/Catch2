@@ -255,3 +255,22 @@ TEST_CASE("#1938 - Section followed by flat generate", "[.][regression][generato
     auto m = GENERATE(2, 3);
     REQUIRE(m);
 }
+
+TEST_CASE("#2809 - Sections taking more cycles than following GENERATE", "[regression][generators]") {
+    bool enterNested = false;
+    SECTION("a") {
+        SECTION("aa") { SUCCEED(); }
+        SECTION("ab") { SUCCEED(); }
+    }
+    SECTION("b") {
+        SECTION("ba") { enterNested = true; SUCCEED(); }
+        SECTION("bb") { enterNested = true; SUCCEED(); }
+    }
+
+    auto g = GENERATE(true, false);
+    REQUIRE((g == true || g == false));
+    if (enterNested) {
+        auto nested = GENERATE(1, 2);
+        REQUIRE((nested == 1 || nested == 2));
+    }
+}

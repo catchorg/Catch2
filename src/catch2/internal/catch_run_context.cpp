@@ -41,6 +41,9 @@ namespace Catch {
                 // Filtered generator has moved to specific index due to
                 // a filter, it needs special handling of `countedNext()`
                 bool m_isFiltered = false;
+                // Tracks whether countedNext() returned false so we know
+                // m_generator is exhausted and cannot be dereferenced.
+                bool m_isExhausted = false;
 
                 GeneratorTracker(
                     TestCaseTracking::NameAndLocation&& nameAndLocation,
@@ -119,14 +122,37 @@ namespace Catch {
                         return nullptr;
                     }
 
-                    if ( !tracker->isComplete() ) { tracker->open(); }
+                    if ( !tracker->isComplete() ) {
+                        tracker->open();
+                    } else if ( tracker->m_isExhausted ) {
+                        return nullptr;
+                    } else {
+                        ctx.setCurrentTracker( tracker );
+                    }
 
                     return tracker;
+                }
+
+                void resetGenerator( GeneratorBasePtr&& generator ) {
+                    m_generator = CATCH_MOVE( generator );
+                    m_isExhausted = false;
+                    m_ctx.setCurrentTracker( this );
+                }
+
+                void enterAsCompleted() {
+                    m_runState = CompletedSuccessfully;
+                    m_ctx.setCurrentTracker( this );
                 }
 
                 // TrackerBase interface
                 bool isGeneratorTracker() const override { return true; }
                 void close() override {
+                    if ( m_runState == CompletedSuccessfully ) {
+                        assert( &m_ctx.currentTracker() == this );
+                        m_ctx.setCurrentTracker( m_parent );
+                        m_ctx.completeCycle();
+                        return;
+                    }
                     TrackerBase::close();
                     // If a generator has a child (it is followed by a section)
                     // and none of its children have started, then we must wait
@@ -183,12 +209,17 @@ namespace Catch {
                     // value, but we do not want to invoke the side-effect if
                     // this generator is still waiting for any child to start.
                     assert( m_generator && "Tracker without generator" );
-                    if ( should_wait_for_child
-                        ||  ( m_runState == CompletedSuccessfully
-                            && !m_isFiltered // filtered generators cannot meaningfully move forward, as they would get past the filter
-                            && m_generator->countedNext() ) ) {
+                    if ( should_wait_for_child ) {
                         m_children.clear();
                         m_runState = Executing;
+                    } else if ( m_runState == CompletedSuccessfully &&
+                                !m_isFiltered ) { // filtered generators cannot meaningfully move forward, as they would get past the filter
+                        if ( m_generator->countedNext() ) {
+                            m_children.clear();
+                            m_runState = Executing;
+                        } else {
+                            m_isExhausted = true;
+                        }
                     }
                 }
 
@@ -542,15 +573,26 @@ namespace Catch {
         SourceLineInfo lineInfo,
         Generators::GeneratorBasePtr&& generator ) {
 
-        auto nameAndLoc = TestCaseTracking::NameAndLocation( static_cast<std::string>( generatorName ), lineInfo );
+        auto nameAndLocRef = TestCaseTracking::NameAndLocationRef( generatorName, lineInfo );
         auto& currentTracker = m_trackerContext.currentTracker();
         assert(
-            currentTracker.nameAndLocation() != nameAndLoc &&
+            !( currentTracker.nameAndLocation() == nameAndLocRef ) &&
             "Trying to create tracker for a generator that already has one" );
+
+        if ( auto* existing = currentTracker.findChild( nameAndLocRef ) ) {
+            assert( existing->isGeneratorTracker() );
+            assert( existing->isComplete() );
+            auto* genTracker =
+                static_cast<Generators::GeneratorTracker*>( existing );
+            assert( genTracker->m_isExhausted );
+            genTracker->resetGenerator( CATCH_MOVE( generator ) );
+            return genTracker;
+        }
 
         auto newTracker =
             Catch::Detail::make_unique<Generators::GeneratorTracker>(
-                CATCH_MOVE( nameAndLoc ),
+                TestCaseTracking::NameAndLocation(
+                    static_cast<std::string>( generatorName ), lineInfo ),
                 m_trackerContext,
                 &currentTracker,
                 CATCH_MOVE( generator ) );
@@ -568,9 +610,14 @@ namespace Catch {
         }
 
         auto returnPtr = newTracker.get();
+        const bool parentAlreadyComplete = currentTracker.isComplete();
         currentTracker.addChild( CATCH_MOVE( newTracker ) );
 
-        returnPtr->open();
+        if ( parentAlreadyComplete ) {
+            returnPtr->enterAsCompleted();
+        } else {
+            returnPtr->open();
+        }
         return returnPtr;
     }
 

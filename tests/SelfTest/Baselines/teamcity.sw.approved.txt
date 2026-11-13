@@ -55,6 +55,8 @@
 ##teamcity[testStarted name='#2615 - Throwing in constructor generator fails test case but does not abort']
 ##teamcity[testIgnored name='#2615 - Throwing in constructor generator fails test case but does not abort' message='Generators.tests.cpp:<line number>|n...............................................................................|n|nGenerators.tests.cpp:<line number>|nunexpected exception with message:|n  "failure to init"|n  {Unknown expression after the reported line}|nwith expansion:|n  {Unknown expression after the reported line}|n- failure ignore as test marked as |'ok to fail|'|n']
 ##teamcity[testFinished name='#2615 - Throwing in constructor generator fails test case but does not abort' duration="{duration}"]
+##teamcity[testStarted name='#2809 - Sections taking more cycles than following GENERATE']
+##teamcity[testFinished name='#2809 - Sections taking more cycles than following GENERATE' duration="{duration}"]
 ##teamcity[testStarted name='#3001: Enum-based bitfields can be captured']
 ##teamcity[testFinished name='#3001: Enum-based bitfields can be captured' duration="{duration}"]
 ##teamcity[testStarted name='#748 - captures with unexpected exceptions']
