@@ -85,6 +85,16 @@ Matchers.tests.cpp:<line number>: passed: smallest_non_zero, !WithinULP( -smalle
 Matchers.tests.cpp:<line number>: passed: smallest_non_zero, WithinULP( -smallest_non_zero, 2 ) for: 0.0f is within 2 ULPs of -1.40129846e-45f ([-4.20389539e-45, 1.40129846e-45])
 Matchers.tests.cpp:<line number>: passed: smallest_non_zero, !WithinULP( -smallest_non_zero, 1 ) for: 0.0f not is within 1 ULPs of -1.40129846e-45f ([-2.80259693e-45, -0.00000000e+00])
 Generators.tests.cpp:<line number>: failed: unexpected exception with message: 'failure to init'; expression was: {Unknown expression after the reported line}
+PartTracker.tests.cpp:<line number>: passed:
+PartTracker.tests.cpp:<line number>: passed: (g == true || g == false) for: true
+PartTracker.tests.cpp:<line number>: passed:
+PartTracker.tests.cpp:<line number>: passed: (g == true || g == false) for: true
+PartTracker.tests.cpp:<line number>: passed:
+PartTracker.tests.cpp:<line number>: passed: (g == true || g == false) for: true
+PartTracker.tests.cpp:<line number>: passed: (nested == 1 || nested == 2) for: true
+PartTracker.tests.cpp:<line number>: passed:
+PartTracker.tests.cpp:<line number>: passed: (g == true || g == false) for: true
+PartTracker.tests.cpp:<line number>: passed: (nested == 1 || nested == 2) for: true
 Compilation.tests.cpp:<line number>: passed: bf.e == 1 for: 1 == 1
 Compilation.tests.cpp:<line number>: passed: 1 == bf.e for: 1 == 1
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'expected exception'; expression was: {Unknown expression after the reported line}
@@ -3036,7 +3046,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-test cases:  456 |  336 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2444 | 2243 passed | 158 failed | 43 failed as expected
+test cases:  457 |  337 passed |  96 failed | 6 skipped | 18 failed as expected
+assertions: 2454 | 2253 passed | 158 failed | 43 failed as expected
 
 

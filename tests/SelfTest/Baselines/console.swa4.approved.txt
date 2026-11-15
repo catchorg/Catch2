@@ -773,6 +773,100 @@ due to unexpected exception with message:
   failure to init
 
 -------------------------------------------------------------------------------
+#2809 - Sections taking more cycles than following GENERATE
+  a
+  aa
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+#2809 - Sections taking more cycles than following GENERATE
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( (g == true || g == false) )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+#2809 - Sections taking more cycles than following GENERATE
+  a
+  ab
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+#2809 - Sections taking more cycles than following GENERATE
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( (g == true || g == false) )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+#2809 - Sections taking more cycles than following GENERATE
+  b
+  ba
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+#2809 - Sections taking more cycles than following GENERATE
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( (g == true || g == false) )
+with expansion:
+  true
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( (nested == 1 || nested == 2) )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+#2809 - Sections taking more cycles than following GENERATE
+  b
+  bb
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+#2809 - Sections taking more cycles than following GENERATE
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( (g == true || g == false) )
+with expansion:
+  true
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( (nested == 1 || nested == 2) )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 #3001: Enum-based bitfields can be captured
 -------------------------------------------------------------------------------
 Compilation.tests.cpp:<line number>
@@ -968,6 +1062,6 @@ Condition.tests.cpp:<line number>: FAILED:
   CHECK( true != true )
 
 ===============================================================================
-test cases:  34 | 28 passed | 3 failed | 3 failed as expected
-assertions: 104 | 96 passed | 4 failed | 4 failed as expected
+test cases:  35 |  29 passed | 3 failed | 3 failed as expected
+assertions: 114 | 106 passed | 4 failed | 4 failed as expected
 

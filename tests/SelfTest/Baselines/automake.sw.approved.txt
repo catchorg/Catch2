@@ -26,6 +26,7 @@ Nor would this
 :test-result: PASS #2152 - ULP checks between differently signed values were wrong - double
 :test-result: PASS #2152 - ULP checks between differently signed values were wrong - float
 :test-result: XFAIL #2615 - Throwing in constructor generator fails test case but does not abort
+:test-result: PASS #2809 - Sections taking more cycles than following GENERATE
 :test-result: PASS #3001: Enum-based bitfields can be captured
 :test-result: XFAIL #748 - captures with unexpected exceptions
 :test-result: PASS #809

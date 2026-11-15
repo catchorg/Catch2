@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2456" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2466" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -59,6 +59,13 @@ failure to init
 at Generators.tests.cpp:<line number>
       </error>
     </testcase>
+    <testcase classname="<exe-name>.global" name="#2809 - Sections taking more cycles than following GENERATE" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#2809 - Sections taking more cycles than following GENERATE/a" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#2809 - Sections taking more cycles than following GENERATE/a/aa" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#2809 - Sections taking more cycles than following GENERATE/a/ab" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#2809 - Sections taking more cycles than following GENERATE/b" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#2809 - Sections taking more cycles than following GENERATE/b/ba" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#2809 - Sections taking more cycles than following GENERATE/b/bb" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#3001: Enum-based bitfields can be captured" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}" status="run">

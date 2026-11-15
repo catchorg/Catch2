@@ -164,6 +164,26 @@ ok {test-number} - smallest_non_zero, WithinULP( -smallest_non_zero, 2 ) for: 0.
 ok {test-number} - smallest_non_zero, !WithinULP( -smallest_non_zero, 1 ) for: 0.0f not is within 1 ULPs of -1.40129846e-45f ([-2.80259693e-45, -0.00000000e+00])
 # #2615 - Throwing in constructor generator fails test case but does not abort
 not ok {test-number} - unexpected exception with message: 'failure to init'; expression was: {Unknown expression after the reported line}
+# #2809 - Sections taking more cycles than following GENERATE
+ok {test-number} -
+# #2809 - Sections taking more cycles than following GENERATE
+ok {test-number} - (g == true || g == false) for: true
+# #2809 - Sections taking more cycles than following GENERATE
+ok {test-number} -
+# #2809 - Sections taking more cycles than following GENERATE
+ok {test-number} - (g == true || g == false) for: true
+# #2809 - Sections taking more cycles than following GENERATE
+ok {test-number} -
+# #2809 - Sections taking more cycles than following GENERATE
+ok {test-number} - (g == true || g == false) for: true
+# #2809 - Sections taking more cycles than following GENERATE
+ok {test-number} - (nested == 1 || nested == 2) for: true
+# #2809 - Sections taking more cycles than following GENERATE
+ok {test-number} -
+# #2809 - Sections taking more cycles than following GENERATE
+ok {test-number} - (g == true || g == false) for: true
+# #2809 - Sections taking more cycles than following GENERATE
+ok {test-number} - (nested == 1 || nested == 2) for: true
 # #3001: Enum-based bitfields can be captured
 ok {test-number} - bf.e == 1 for: 1 == 1
 # #3001: Enum-based bitfields can be captured
@@ -4896,5 +4916,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2456
+1..2466
 

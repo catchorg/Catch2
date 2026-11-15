@@ -291,6 +291,13 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="#1938 - mixed sections and generates/A" duration="{duration}"/>
     <testCase name="#1938 - mixed sections and generates/B" duration="{duration}"/>
     <testCase name="#1938 - nested generate" duration="{duration}"/>
+    <testCase name="#2809 - Sections taking more cycles than following GENERATE" duration="{duration}"/>
+    <testCase name="#2809 - Sections taking more cycles than following GENERATE/a" duration="{duration}"/>
+    <testCase name="#2809 - Sections taking more cycles than following GENERATE/a/aa" duration="{duration}"/>
+    <testCase name="#2809 - Sections taking more cycles than following GENERATE/a/ab" duration="{duration}"/>
+    <testCase name="#2809 - Sections taking more cycles than following GENERATE/b" duration="{duration}"/>
+    <testCase name="#2809 - Sections taking more cycles than following GENERATE/b/ba" duration="{duration}"/>
+    <testCase name="#2809 - Sections taking more cycles than following GENERATE/b/bb" duration="{duration}"/>
     <testCase name="Tracker" duration="{duration}"/>
     <testCase name="Tracker/successfully close one section" duration="{duration}"/>
     <testCase name="Tracker/fail one section" duration="{duration}"/>
