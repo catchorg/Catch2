@@ -664,6 +664,16 @@ if(CATCH_ENABLE_CMAKE_HELPER_TESTS)
       LABELS "uses-python"
   )
 
+  add_test(NAME "CMakeHelper::DiscoverTests::PostBuild"
+    COMMAND
+      Python3::Interpreter "${CMAKE_CURRENT_LIST_DIR}/TestScripts/DiscoverTests/VerifyRegistration.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}" POST_BUILD
+  )
+  set_tests_properties("CMakeHelper::DiscoverTests::PostBuild"
+    PROPERTIES
+      COST 240
+      LABELS "uses-python"
+  )
+
   add_test(NAME "CMakeHelper::PrepareCommandFragment"
     COMMAND
       "${CMAKE_COMMAND}"

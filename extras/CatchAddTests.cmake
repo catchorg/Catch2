@@ -215,12 +215,11 @@ function(make_test_list_file_path CTEST_FILE OUT_VARIABLE)
 endfunction()
 
 function(catch_discover_tests_impl)
-  cmake_parse_arguments(
+  cmake_parse_arguments(PARSE_ARGV 0
     ""
     ""
-    "TEST_EXECUTABLE;TEST_WORKING_DIR;TEST_OUTPUT_DIR;TEST_OUTPUT_PREFIX;TEST_OUTPUT_SUFFIX;TEST_PREFIX;TEST_REPORTER;TEST_SPEC;TEST_SUFFIX;TEST_LIST;CTEST_FILE"
-    "TEST_EXTRA_ARGS;TEST_PROPERTIES;TEST_EXECUTOR;TEST_DL_PATHS;TEST_DL_FRAMEWORK_PATHS;ADD_TAGS_AS_LABELS"
-    ${ARGN}
+    "TEST_EXECUTABLE;TEST_WORKING_DIR;TEST_OUTPUT_DIR;TEST_OUTPUT_PREFIX;TEST_OUTPUT_SUFFIX;TEST_PREFIX;TEST_REPORTER;TEST_SPEC;TEST_SUFFIX;TEST_LIST;CTEST_FILE;TEST_PROPERTIES"
+    "TEST_EXTRA_ARGS;TEST_EXECUTOR;TEST_DL_PATHS;TEST_DL_FRAMEWORK_PATHS;ADD_TAGS_AS_LABELS"
   )
 
   # We write the list of all discovered tests into a separate file
@@ -239,9 +238,10 @@ function(catch_discover_tests_impl)
   # leading/trailing whitespace isn't trimmed by CMake's argument passing.
   string(REGEX REPLACE "^'(.*)'$" "\\1" prefix "${_TEST_PREFIX}")
   string(REGEX REPLACE "^'(.*)'$" "\\1" suffix "${_TEST_SUFFIX}")
+  set(executor ${_TEST_EXECUTOR})
   set(spec ${_TEST_SPEC})
   set(extra_args ${_TEST_EXTRA_ARGS})
-  set(properties ${_TEST_PROPERTIES})
+  set(properties "${_TEST_PROPERTIES}")
   set(reporter ${_TEST_REPORTER})
   set(output_dir ${_TEST_OUTPUT_DIR})
   set(output_prefix ${_TEST_OUTPUT_PREFIX})
@@ -294,7 +294,7 @@ function(catch_discover_tests_impl)
   endif()
 
   execute_process(
-    COMMAND ${_TEST_EXECUTOR} "${_TEST_EXECUTABLE}" ${spec}
+    COMMAND ${executor} "${_TEST_EXECUTABLE}" ${spec}
       --list-tests
       --reporter "json::verbosity=${_Verbosity}"
       --out "${listing_output_path}"
@@ -324,7 +324,7 @@ function(catch_discover_tests_impl)
     # note that the use of --list-reporters is not the important part,
     # we only want to check whether the execution succeeds with ${reporter_arg}
     execute_process(
-      COMMAND ${_TEST_EXECUTOR} "${_TEST_EXECUTABLE}" ${spec} ${reporter_arg} --list-reporters
+      COMMAND ${executor} "${_TEST_EXECUTABLE}" ${spec} ${reporter_arg} --list-reporters
       OUTPUT_VARIABLE reporter_check_output
       RESULT_VARIABLE reporter_check_result
       WORKING_DIRECTORY "${_TEST_WORKING_DIR}"
@@ -400,7 +400,7 @@ function(catch_discover_tests_impl)
   # Of these, <exec>,<exe>,<extra_args>, and <reporter> are the same between
   # all tests.
   prepare_command_fragment(_exec_exe_fragment
-    ${_TEST_EXECUTOR}
+    ${executor}
     "${_TEST_EXECUTABLE}"
   )
   prepare_command_fragment(_args_reporter_fragment
@@ -534,7 +534,7 @@ if(CMAKE_SCRIPT_MODE_FILE AND DEFINED TEST_EXECUTABLE)
     TEST_WORKING_DIR ${TEST_WORKING_DIR}
     TEST_SPEC ${TEST_SPEC}
     TEST_EXTRA_ARGS ${TEST_EXTRA_ARGS}
-    TEST_PROPERTIES ${TEST_PROPERTIES}
+    TEST_PROPERTIES "${TEST_PROPERTIES}"
     TEST_PREFIX ${TEST_PREFIX}
     TEST_SUFFIX ${TEST_SUFFIX}
     TEST_LIST ${TEST_LIST}
