@@ -911,29 +911,25 @@ at Condition.tests.cpp:<line number>
       </skipped>
     </testCase>
     <testCase name="Inequality checks that should succeed" duration="{duration}"/>
-    <testCase name="Mayfail test case with nested sections/1" duration="{duration}"/>
-    <testCase name="Mayfail test case with nested sections/1/A" duration="{duration}">
+    <testCase name="Mayfail test case with nested sections/A/1" duration="{duration}">
       <skipped message="FAIL()">
 FAILED:
 at Condition.tests.cpp:<line number>
       </skipped>
     </testCase>
-    <testCase name="Mayfail test case with nested sections/2" duration="{duration}"/>
-    <testCase name="Mayfail test case with nested sections/2/A" duration="{duration}">
+    <testCase name="Mayfail test case with nested sections/A/2" duration="{duration}">
       <skipped message="FAIL()">
 FAILED:
 at Condition.tests.cpp:<line number>
       </skipped>
     </testCase>
-    <testCase name="Mayfail test case with nested sections/1" duration="{duration}"/>
-    <testCase name="Mayfail test case with nested sections/1/B" duration="{duration}">
+    <testCase name="Mayfail test case with nested sections/B/1" duration="{duration}">
       <skipped message="FAIL()">
 FAILED:
 at Condition.tests.cpp:<line number>
       </skipped>
     </testCase>
-    <testCase name="Mayfail test case with nested sections/2" duration="{duration}"/>
-    <testCase name="Mayfail test case with nested sections/2/B" duration="{duration}">
+    <testCase name="Mayfail test case with nested sections/B/2" duration="{duration}">
       <skipped message="FAIL()">
 FAILED:
 at Condition.tests.cpp:<line number>
@@ -2228,8 +2224,8 @@ at Misc.tests.cpp:<line number>
       </failure>
     </testCase>
     <testCase name="more nested SECTION tests" duration="{duration}"/>
-    <testCase name="more nested SECTION tests/equal" duration="{duration}"/>
-    <testCase name="more nested SECTION tests/equal/doesn't equal" duration="{duration}">
+    <testCase name="more nested SECTION tests/doesn't equal" duration="{duration}"/>
+    <testCase name="more nested SECTION tests/doesn't equal/equal" duration="{duration}">
       <failure message="REQUIRE(a == b)">
 FAILED:
 	REQUIRE( a == b )
@@ -2238,7 +2234,6 @@ with expansion:
 at Misc.tests.cpp:<line number>
       </failure>
     </testCase>
-    <testCase name="more nested SECTION tests/doesn't equal" duration="{duration}"/>
     <testCase name="more nested SECTION tests/doesn't equal/not equal" duration="{duration}"/>
     <testCase name="more nested SECTION tests/doesn't equal/less than" duration="{duration}"/>
     <testCase name="nested SECTION tests" duration="{duration}"/>
@@ -2340,15 +2335,14 @@ at Skip.tests.cpp:<line number>
       </skipped>
     </testCase>
     <testCase name="nested sections can be skipped dynamically at runtime/A" duration="{duration}"/>
-    <testCase name="nested sections can be skipped dynamically at runtime/B2" duration="{duration}"/>
-    <testCase name="nested sections can be skipped dynamically at runtime/B2/B1" duration="{duration}"/>
-    <testCase name="nested sections can be skipped dynamically at runtime/B2/B" duration="{duration}">
+    <testCase name="nested sections can be skipped dynamically at runtime/B" duration="{duration}"/>
+    <testCase name="nested sections can be skipped dynamically at runtime/B/B1" duration="{duration}"/>
+    <testCase name="nested sections can be skipped dynamically at runtime/B/B2" duration="{duration}">
       <skipped message="SKIP()">
 SKIPPED
 at Skip.tests.cpp:<line number>
       </skipped>
     </testCase>
-    <testCase name="nested sections can be skipped dynamically at runtime/B" duration="{duration}"/>
     <testCase name="sections can be skipped dynamically at runtime" duration="{duration}"/>
     <testCase name="sections can be skipped dynamically at runtime/not skipped" duration="{duration}"/>
     <testCase name="sections can be skipped dynamically at runtime/skipped" duration="{duration}">
