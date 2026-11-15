@@ -92,12 +92,11 @@ namespace Catch {
         std::size_t start = 0;
         for(std::size_t pos = 0; pos < str.size(); ++pos ) {
             if( str[pos] == delimiter ) {
-                if( pos - start > 1 )
-                    subStrings.push_back( str.substr( start, pos-start ) );
+                subStrings.push_back( str.substr( start, pos-start ) );
                 start = pos+1;
             }
         }
-        if( start < str.size() )
+        if( !str.empty() )
             subStrings.push_back( str.substr( start, str.size()-start ) );
         return subStrings;
     }
