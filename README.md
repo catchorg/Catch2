@@ -10,6 +10,7 @@
 [![Try online](https://img.shields.io/badge/try-online-blue.svg)](https://godbolt.org/z/EdoY15q9G)
 [![Join the chat in Discord: https://discord.gg/4CWS9zD](https://img.shields.io/badge/Discord-Chat!-brightgreen.svg)](https://discord.gg/4CWS9zD)
 
+<!-- SPHINX-START -->
 
 ## What is Catch2?
 
@@ -101,3 +102,5 @@ This documentation comprises these three parts:
 * For discussion or questions please use [our Discord](https://discord.gg/4CWS9zD)
 * See who else is using Catch2 in [Open Source Software](docs/opensource-users.md#top)
 or [commercially](docs/commercial-users.md#top).
+
+<!-- SPHINX-END -->
