@@ -10771,10 +10771,10 @@ Approx( 1.21999999999999997 )
     </Expression>
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
       <Original>
-        data.float_nine_point_one > 9.2
+        data.float_nine_point_one > 9.2f
       </Original>
       <Expanded>
-        9.100000381f > 9.19999999999999929
+        9.100000381f > 9.199999809f
       </Expanded>
     </Expression>
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
@@ -10926,10 +10926,10 @@ Approx( 1.21999999999999997 )
     </Expression>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
       <Original>
-        data.float_nine_point_one &lt; 9.2
+        data.float_nine_point_one &lt; 9.2f
       </Original>
       <Expanded>
-        9.100000381f &lt; 9.19999999999999929
+        9.100000381f &lt; 9.199999809f
       </Expanded>
     </Expression>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
