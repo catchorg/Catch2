@@ -120,6 +120,7 @@ namespace Catch {
             }
         }
 
+        auto consoleWidth = static_cast<size_t> (CATCH_CONFIG_CONSOLE_WIDTH);
         for( auto const& tagCount : tagCounts ) {
             ReusableStringStream rss;
             rss << "  " << std::setw(2) << tagCount.second.count << "  ";
@@ -127,7 +128,7 @@ namespace Catch {
             auto wrapper = Column( tagCount.second.all() )
                                                     .initialIndent( 0 )
                                                     .indent( str.size() )
-                                                    .width( CATCH_CONFIG_CONSOLE_WIDTH-10 );
+                                                    .width( consoleWidth-10 );
             Catch::cout() << str << wrapper << '\n';
         }
         Catch::cout() << pluralise( tagCounts.size(), "tag" ) << '\n' << std::endl;
@@ -141,6 +142,7 @@ namespace Catch {
         for( auto const& factoryKvp : factories )
             maxNameLen = (std::max)( maxNameLen, factoryKvp.first.size() );
 
+        auto consoleWidth = static_cast<size_t> (CATCH_CONFIG_CONSOLE_WIDTH);
         for( auto const& factoryKvp : factories ) {
             Catch::cout()
                     << Column( factoryKvp.first + ":" )
@@ -149,7 +151,7 @@ namespace Catch {
                     +  Column( factoryKvp.second->getDescription() )
                             .initialIndent(0)
                             .indent(2)
-                            .width( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen-8 )
+                            .width( consoleWidth - maxNameLen-8 )
                     << "\n";
         }
         Catch::cout() << std::endl;
