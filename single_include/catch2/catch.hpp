@@ -16645,8 +16645,8 @@ void ConsoleReporter::printTestCaseAndSectionHeader() {
         auto
             it = m_sectionStack.begin() + 1, // Skip first section (test case)
             itEnd = m_sectionStack.end();
-        for (; it != itEnd; ++it)
-            printHeaderString(it->name, 2);
+        for (size_t indent = 2; it != itEnd; ++it, indent += 2)
+            printHeaderString(it->name, indent);
     }
 
     SourceLineInfo lineInfo = m_sectionStack.back().lineInfo;
