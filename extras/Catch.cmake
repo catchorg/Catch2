@@ -219,6 +219,13 @@ function(catch_discover_tests TARGET)
     set(_PROPERTIES ${_PROPERTIES} SKIP_RETURN_CODE 4)
   endif()
 
+  # Emscripten binaries run under node with a virtual filesystem, so a listing
+  # written to a file never reaches the disk. Read it from stdout instead.
+  set(_LISTING_TO_STDOUT "")
+  if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+    set(_LISTING_TO_STDOUT ON)
+  endif()
+
   if(_DISCOVERY_MODE STREQUAL "POST_BUILD")
     add_custom_command(
       TARGET ${TARGET} POST_BUILD
@@ -242,6 +249,7 @@ function(catch_discover_tests TARGET)
               -D "TEST_DL_FRAMEWORK_PATHS=${_DL_FRAMEWORK_PATHS}"
               -D "CTEST_FILE=${ctest_tests_file}"
               -D "ADD_TAGS_AS_LABELS=${_ADD_TAGS_AS_LABELS}"
+              -D "LISTING_TO_STDOUT=${_LISTING_TO_STDOUT}"
               -P "${_CATCH_DISCOVER_TESTS_SCRIPT}"
       VERBATIM
     )
@@ -288,6 +296,7 @@ function(catch_discover_tests TARGET)
       "      TEST_DL_PATHS"          " [==[" "${_DL_PATHS}"               "]==]"   "\n"
       "      TEST_DL_FRAMEWORK_PATHS" " [==[" "${_DL_FRAMEWORK_PATHS}"     "]==]"   "\n"
       "      ADD_TAGS_AS_LABELS"     " [==[" "${_ADD_TAGS_AS_LABELS}"     "]==]"   "\n"
+      "      LISTING_TO_STDOUT"      " [==[" "${_LISTING_TO_STDOUT}"      "]==]"   "\n"
       "    )"                                                                      "\n"
       "  endif()"                                                                  "\n"
       "  include(\"${ctest_tests_file}\")"                                         "\n"
