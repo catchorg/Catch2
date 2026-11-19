@@ -626,6 +626,17 @@ set_tests_properties(CompileConfiguration::FastCompile
     PASS_REGULAR_EXPRESSION "test cases:  6 \\| 1 passed \\| 1 failed \\| 4 failed as expected\nassertions: 13 \\| 6 passed \\| 2 failed \\| 5 failed as expected"
 )
 
+add_executable(TemplateListTestCaseSuffixes ${TESTS_DIR}/X41-TemplateListTestCaseSuffixes.cpp)
+target_link_libraries(TemplateListTestCaseSuffixes PRIVATE Catch2::Catch2WithMain)
+add_test(NAME TemplateListTestCaseSuffixes COMMAND TemplateListTestCaseSuffixes)
+
+add_executable(ThrowingTemplateListTestCaseSuffix ${TESTS_DIR}/X42-ThrowingTemplateListTestCaseSuffix.cpp)
+target_link_libraries(ThrowingTemplateListTestCaseSuffix PRIVATE Catch2::Catch2WithMain)
+add_test(NAME ThrowingTemplateListTestCaseSuffix COMMAND ThrowingTemplateListTestCaseSuffix)
+set_tests_properties(ThrowingTemplateListTestCaseSuffix PROPERTIES
+  PASS_REGULAR_EXPRESSION "Errors occurred during startup![\r\n ]+Could not name type list test[\r\n ]+Unknown exception"
+)
+
 # This sets up a one-off executable that compiles against the amalgamated
 # files, and then runs it for a super simple check that the amalgamated
 # files are usable.
@@ -738,6 +749,8 @@ set(EXTRA_TEST_BINARIES
   FastCompileMacros
   InfiniteGenerators
   ThreadSafetyTests
+  TemplateListTestCaseSuffixes
+  ThrowingTemplateListTestCaseSuffix
 #  DebugBreakMacros
 )
 
