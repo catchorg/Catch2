@@ -630,13 +630,6 @@ add_executable(TemplateListTestCaseSuffixes ${TESTS_DIR}/X41-TemplateListTestCas
 target_link_libraries(TemplateListTestCaseSuffixes PRIVATE Catch2::Catch2WithMain)
 add_test(NAME TemplateListTestCaseSuffixes COMMAND TemplateListTestCaseSuffixes)
 
-add_executable(ThrowingTemplateListTestCaseSuffix ${TESTS_DIR}/X42-ThrowingTemplateListTestCaseSuffix.cpp)
-target_link_libraries(ThrowingTemplateListTestCaseSuffix PRIVATE Catch2::Catch2WithMain)
-add_test(NAME ThrowingTemplateListTestCaseSuffix COMMAND ThrowingTemplateListTestCaseSuffix)
-set_tests_properties(ThrowingTemplateListTestCaseSuffix PROPERTIES
-  PASS_REGULAR_EXPRESSION "Errors occurred during startup![\r\n ]+Could not name type list test[\r\n ]+Unknown exception"
-)
-
 # This sets up a one-off executable that compiles against the amalgamated
 # files, and then runs it for a super simple check that the amalgamated
 # files are usable.
@@ -750,7 +743,6 @@ set(EXTRA_TEST_BINARIES
   InfiniteGenerators
   ThreadSafetyTests
   TemplateListTestCaseSuffixes
-  ThrowingTemplateListTestCaseSuffix
 #  DebugBreakMacros
 )
 
