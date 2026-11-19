@@ -222,6 +222,8 @@ namespace Catch {
                     std::rethrow_exception(ex_ptr);
                 } catch ( std::exception const& ex ) {
                     errStream->stream() << TextFlow::Column( ex.what() ).indent(2) << '\n';
+                } catch ( ... ) {
+                    errStream->stream() << "  Unknown exception\n";
                 }
             }
         }

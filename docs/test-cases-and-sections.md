@@ -280,6 +280,10 @@ List can be `std::tuple`, `boost::mpl::list`, `boost::mp11::mp_list` or anything
 
 This allows you to reuse the _type list_ in multiple test cases.
 
+See the "Naming tests from type lists" section of the
+[compile-time configuration guide](configuration.md#top) to customize the
+suffix added to each registered test name.
+
 Example:
 ```cpp
 using MyTypes = std::tuple<int, char, float>;

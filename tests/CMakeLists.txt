@@ -176,6 +176,15 @@ set_tests_properties(RunTests PROPERTIES
   COST 15
 )
 
+# Startup errors require a separate executable. Keep it in the basic suite
+# so its coverage is collected alongside SelfTest's.
+add_executable(ThrowingTemplateListTestCaseSuffix ThrowingTemplateListTestCaseSuffix.cpp)
+target_link_libraries(ThrowingTemplateListTestCaseSuffix PRIVATE Catch2::Catch2WithMain)
+add_test(NAME ThrowingTemplateListTestCaseSuffix COMMAND ThrowingTemplateListTestCaseSuffix)
+set_tests_properties(ThrowingTemplateListTestCaseSuffix PROPERTIES
+  PASS_REGULAR_EXPRESSION "Errors occurred during startup![\r\n ]+Could not name type list test[\r\n ]+Unknown exception"
+)
+
 # Because CTest does not allow us to check both return code _and_ expected
 # output in one test, we run these commands twice. First time we check
 # the output, the second time we check the exit code.
@@ -750,5 +759,5 @@ set_tests_properties("Bazel::RngSeedEnvVar::MalformedValueIsIgnored"
     PASS_REGULAR_EXPRESSION "Randomness seeded to: 17171717"
 )
 
-list(APPEND CATCH_TEST_TARGETS SelfTest)
+list(APPEND CATCH_TEST_TARGETS SelfTest ThrowingTemplateListTestCaseSuffix)
 set(CATCH_TEST_TARGETS ${CATCH_TEST_TARGETS} PARENT_SCOPE)
