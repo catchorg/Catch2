@@ -270,7 +270,7 @@ namespace Catch {
                 ( "skip exception tests" )
             | Opt( config.showInvisibles )
                 ["-i"]["--invisibles"]
-                ( "show invisibles (tabs, newlines)" )
+                ( "show invisibles (control characters)" )
             | Opt( config.defaultOutputFilename, "filename" )
                 ["-o"]["--out"]
                 ( "default output filename" )
