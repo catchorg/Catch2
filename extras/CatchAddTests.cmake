@@ -218,7 +218,7 @@ function(catch_discover_tests_impl)
   cmake_parse_arguments(
     ""
     ""
-    "TEST_EXECUTABLE;TEST_WORKING_DIR;TEST_OUTPUT_DIR;TEST_OUTPUT_PREFIX;TEST_OUTPUT_SUFFIX;TEST_PREFIX;TEST_REPORTER;TEST_SPEC;TEST_SUFFIX;TEST_LIST;CTEST_FILE"
+    "TEST_EXECUTABLE;TEST_WORKING_DIR;TEST_OUTPUT_DIR;TEST_OUTPUT_PREFIX;TEST_OUTPUT_SUFFIX;TEST_PREFIX;TEST_REPORTER;TEST_STDOUT_REPORTER;TEST_SPEC;TEST_SUFFIX;TEST_LIST;CTEST_FILE"
     "TEST_EXTRA_ARGS;TEST_PROPERTIES;TEST_EXECUTOR;TEST_DL_PATHS;TEST_DL_FRAMEWORK_PATHS;ADD_TAGS_AS_LABELS"
     ${ARGN}
   )
@@ -243,6 +243,8 @@ function(catch_discover_tests_impl)
   set(extra_args ${_TEST_EXTRA_ARGS})
   set(properties ${_TEST_PROPERTIES})
   set(reporter ${_TEST_REPORTER})
+  set(stdout_reporter "${_TEST_STDOUT_REPORTER}")
+  set(stdout_reporter_arg "")
   set(output_dir ${_TEST_OUTPUT_DIR})
   set(output_prefix ${_TEST_OUTPUT_PREFIX})
   set(output_suffix ${_TEST_OUTPUT_SUFFIX})
@@ -319,19 +321,29 @@ function(catch_discover_tests_impl)
   # Prepare reporter
   if(reporter)
     set(reporter_arg "--reporter ${reporter}")
+  endif()
+  if(stdout_reporter)
+    string(APPEND stdout_reporter "::out=-")
+    set(stdout_reporter_arg "--reporter ${stdout_reporter}")
+  endif()
+
+  foreach(reporter_spec IN ITEMS "${reporter}" "${stdout_reporter}")
+    if(NOT reporter_spec)
+      continue()
+    endif()
 
     # Run test executable to check whether reporter is available
     # note that the use of --list-reporters is not the important part,
-    # we only want to check whether the execution succeeds with ${reporter_arg}
+    # we only want to check whether the execution succeeds with the reporter
     execute_process(
-      COMMAND ${_TEST_EXECUTOR} "${_TEST_EXECUTABLE}" ${spec} ${reporter_arg} --list-reporters
+      COMMAND ${_TEST_EXECUTOR} "${_TEST_EXECUTABLE}" ${spec} "--reporter ${reporter_spec}" --list-reporters
       OUTPUT_VARIABLE reporter_check_output
       RESULT_VARIABLE reporter_check_result
       WORKING_DIRECTORY "${_TEST_WORKING_DIR}"
     )
     if(${reporter_check_result} EQUAL 255)
       message(FATAL_ERROR
-        "\"${reporter}\" is not a valid reporter!\n"
+        "\"${reporter_spec}\" is not a valid reporter!\n"
       )
     elseif(NOT ${reporter_check_result} EQUAL 0)
       message(FATAL_ERROR
@@ -340,7 +352,7 @@ function(catch_discover_tests_impl)
         "  Output: ${reporter_check_output}\n"
       )
     endif()
-  endif()
+  endforeach()
 
   # Prepare output dir
   if(output_dir AND NOT IS_ABSOLUTE ${output_dir})
@@ -406,6 +418,7 @@ function(catch_discover_tests_impl)
   prepare_command_fragment(_args_reporter_fragment
     "${extra_args}"
     "${reporter_arg}"
+    "${stdout_reporter_arg}"
     "--order decl"
   )
 
@@ -539,6 +552,7 @@ if(CMAKE_SCRIPT_MODE_FILE AND DEFINED TEST_EXECUTABLE)
     TEST_SUFFIX ${TEST_SUFFIX}
     TEST_LIST ${TEST_LIST}
     TEST_REPORTER ${TEST_REPORTER}
+    TEST_STDOUT_REPORTER ${TEST_STDOUT_REPORTER}
     TEST_OUTPUT_DIR ${TEST_OUTPUT_DIR}
     TEST_OUTPUT_PREFIX ${TEST_OUTPUT_PREFIX}
     TEST_OUTPUT_SUFFIX ${TEST_OUTPUT_SUFFIX}
