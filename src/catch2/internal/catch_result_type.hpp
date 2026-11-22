@@ -40,7 +40,7 @@ namespace Catch {
 
 
     // ResultDisposition::Flags enum
-    struct ResultDisposition { enum Flags {
+    struct ResultDisposition { enum [[clang::flag_enum]] Flags {
         Normal = 0x01,
 
         ContinueOnFailure = 0x02,   // Failures fail test, but execution continues
