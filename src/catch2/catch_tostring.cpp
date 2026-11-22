@@ -110,13 +110,23 @@ namespace Detail {
 
         ret += '"';
         for ( size_t i = 0; i < string.size(); ++i ) {
-            const char c = string[i];
-            if ( c == '\r' || c == '\n' || c == '\t' || c == '\f' ) {
+            const auto c = static_cast<unsigned char>( string[i] );
+            if ( c < 0x20 || c == 0x7f ) {
                 write_to( i );
                 if ( c == '\r' ) { ret.append( "\\r" ); }
-                if ( c == '\n' ) { ret.append( "\\n" ); }
-                if ( c == '\t' ) { ret.append( "\\t" ); }
-                if ( c == '\f' ) { ret.append( "\\f" ); }
+                else if ( c == '\n' ) { ret.append( "\\n" ); }
+                else if ( c == '\t' ) { ret.append( "\\t" ); }
+                else if ( c == '\f' ) { ret.append( "\\f" ); }
+                else if ( c == '\0' ) { ret.append( "\\0" ); }
+                else if ( c == '\a' ) { ret.append( "\\a" ); }
+                else if ( c == '\b' ) { ret.append( "\\b" ); }
+                else if ( c == '\v' ) { ret.append( "\\v" ); }
+                else {
+                    static constexpr char hex[] = "0123456789abcdef";
+                    char const escaped[] = {
+                        '\\', 'x', hex[c >> 4], hex[c & 0xf] };
+                    ret.append( escaped, sizeof( escaped ) );
+                }
             }
         }
         write_to( string.size() );
