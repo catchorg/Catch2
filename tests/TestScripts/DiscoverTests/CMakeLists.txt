@@ -18,6 +18,7 @@ catch_discover_tests(
   TEST_PREFIX " prefix "
   TEST_SUFFIX " suffix "
   ADD_TAGS_AS_LABELS
+  EXTRA_ARGS --colour-mode none --name "discovery argument test"
   DISCOVERY_MODE PRE_TEST
   ${extra_args}
 )
