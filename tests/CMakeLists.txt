@@ -654,6 +654,15 @@ if(CATCH_ENABLE_CONFIGURE_TESTS)
 endif()
 
 if(CATCH_ENABLE_CMAKE_HELPER_TESTS)
+  foreach(mode POST_BUILD PRE_TEST)
+    add_test(NAME "CMakeHelper::DiscoverTests::Stdout::${mode}"
+      COMMAND Python3::Interpreter
+        "${CMAKE_CURRENT_LIST_DIR}/TestScripts/DiscoverTests/VerifyRegistration.py"
+        "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/stdout-${mode}" "${mode}" ON
+    )
+    set_tests_properties("CMakeHelper::DiscoverTests::Stdout::${mode}"
+      PROPERTIES COST 240 LABELS "uses-python")
+  endforeach()
   add_test(NAME "CMakeHelper::DiscoverTests"
     COMMAND
       Python3::Interpreter "${CMAKE_CURRENT_LIST_DIR}/TestScripts/DiscoverTests/VerifyRegistration.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"

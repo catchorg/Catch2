@@ -15,9 +15,11 @@ namespace {
 
 struct PrintsWhenConstructed {
     PrintsWhenConstructed() {
+#ifndef DISCOVERY_USE_STDOUT
         std::cout << "Hello\n";
-        std::cerr << "Holla\n";
         std::fprintf(stdout, "Hullo\n");
+#endif
+        std::cerr << "Holla\n";
         std::fprintf(stderr, "Hillo\n");
     }
 };

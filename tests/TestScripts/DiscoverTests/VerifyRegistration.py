@@ -40,13 +40,15 @@ def get_cmake_version():
             int(version_match.group(2)),
             int(version_match.group(3)))
 
-def build_project(sources_dir, output_base_path, catch2_path):
+def build_project(sources_dir, output_base_path, catch2_path, mode, use_stdout):
     build_dir = os.path.join(output_base_path, 'ctest-registration-test')
     config_cmd = ['cmake',
                   '-B', build_dir,
                   '-S', sources_dir,
                   f'-DCATCH2_PATH={catch2_path}',
-                  '-DCMAKE_BUILD_TYPE=Debug']
+                  '-DCMAKE_BUILD_TYPE=Debug',
+                  f'-DDISCOVERY_MODE={mode}',
+                  f'-DDISCOVERY_USE_STDOUT={use_stdout}']
 
     build_cmd = ['cmake',
                  '--build', build_dir,
@@ -257,14 +259,15 @@ def escape_catch2_test_names(infos: List[TestInfo]):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print(f'Usage: {sys.argv[0]} path-to-catch2-cml output-path')
+    if len(sys.argv) not in (3, 5):
+        print(f'Usage: {sys.argv[0]} path-to-catch2-cml output-path [mode use-stdout]')
         exit(2)
     catch2_path = sys.argv[1]
     output_base_path = sys.argv[2]
     sources_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
 
-    build_path = build_project(sources_dir, output_base_path, catch2_path)
+    mode, use_stdout = sys.argv[3:] if len(sys.argv) == 5 else ('PRE_TEST', 'OFF')
+    build_path = build_project(sources_dir, output_base_path, catch2_path, mode, use_stdout)
 
     raw_catch_test_names = get_test_names(build_path)
     catch_test_names = escape_catch2_test_names(raw_catch_test_names)

@@ -218,7 +218,7 @@ function(catch_discover_tests_impl)
   cmake_parse_arguments(
     ""
     ""
-    "TEST_EXECUTABLE;TEST_WORKING_DIR;TEST_OUTPUT_DIR;TEST_OUTPUT_PREFIX;TEST_OUTPUT_SUFFIX;TEST_PREFIX;TEST_REPORTER;TEST_SPEC;TEST_SUFFIX;TEST_LIST;CTEST_FILE"
+    "TEST_EXECUTABLE;TEST_WORKING_DIR;TEST_OUTPUT_DIR;TEST_OUTPUT_PREFIX;TEST_OUTPUT_SUFFIX;TEST_PREFIX;TEST_REPORTER;TEST_SPEC;TEST_SUFFIX;TEST_LIST;CTEST_FILE;USE_STDOUT"
     "TEST_EXTRA_ARGS;TEST_PROPERTIES;TEST_EXECUTOR;TEST_DL_PATHS;TEST_DL_FRAMEWORK_PATHS;ADD_TAGS_AS_LABELS"
     ${ARGN}
   )
@@ -286,7 +286,11 @@ function(catch_discover_tests_impl)
     set(ENV{DYLD_FRAMEWORK_PATH} "${paths}")
   endif()
 
-  make_temp_file_path(listing_output_path "${_TEST_WORKING_DIR}")
+  if(_USE_STDOUT)
+    set(listing_output_path "%stdout")
+  else()
+    make_temp_file_path(listing_output_path "${_TEST_WORKING_DIR}")
+  endif()
 
   set(_Verbosity "quiet")
   if (add_tags)
@@ -312,8 +316,10 @@ function(catch_discover_tests_impl)
   endif()
 
   # Read the JSON output back from the output file and validate it.
-  file(READ ${listing_output_path} listing_output)
-  file(REMOVE ${listing_output_path})
+  if(NOT _USE_STDOUT)
+    file(READ "${listing_output_path}" listing_output)
+    file(REMOVE "${listing_output_path}")
+  endif()
   validate_input_noescapes(listing_output)
 
   # Prepare reporter
@@ -546,5 +552,6 @@ if(CMAKE_SCRIPT_MODE_FILE AND DEFINED TEST_EXECUTABLE)
     TEST_DL_FRAMEWORK_PATHS ${TEST_DL_FRAMEWORK_PATHS}
     CTEST_FILE ${CTEST_FILE}
     ADD_TAGS_AS_LABELS ${ADD_TAGS_AS_LABELS}
+    USE_STDOUT ${USE_STDOUT}
   )
 endif()

@@ -40,6 +40,7 @@ same as the Catch name; see also ``TEST_PREFIX`` and ``TEST_SUFFIX``.
                          [DISCOVERY_MODE <POST_BUILD|PRE_TEST>]
                          [SKIP_IS_FAILURE]
                          [ADD_TAGS_AS_LABELS]
+                         [USE_STDOUT]
     )
 
   ``catch_discover_tests`` sets up a post-build command on the test executable
@@ -163,6 +164,11 @@ same as the Catch name; see also ``TEST_PREFIX`` and ``TEST_SUFFIX``.
   ``ADD_TAGS_AS_LABELS``
     Adds all test tags as CTest labels.
 
+  ``USE_STDOUT``
+    Reads the JSON listing from stdout instead of a temporary file. Use this
+    for executors that cannot write to the host filesystem, such as Emscripten.
+    The executable must not write other output to stdout during discovery.
+
 #]=======================================================================]
 
 #------------------------------------------------------------------------------
@@ -170,7 +176,7 @@ function(catch_discover_tests TARGET)
 
   cmake_parse_arguments(
     ""
-    "SKIP_IS_FAILURE;ADD_TAGS_AS_LABELS"
+    "SKIP_IS_FAILURE;ADD_TAGS_AS_LABELS;USE_STDOUT"
     "TEST_PREFIX;TEST_SUFFIX;WORKING_DIRECTORY;TEST_LIST;REPORTER;OUTPUT_DIR;OUTPUT_PREFIX;OUTPUT_SUFFIX;DISCOVERY_MODE"
     "TEST_SPEC;EXTRA_ARGS;PROPERTIES;DL_PATHS;DL_FRAMEWORK_PATHS"
     ${ARGN}
@@ -203,7 +209,7 @@ function(catch_discover_tests TARGET)
   endif()
 
   ## Generate a unique name based on the extra arguments
-  string(SHA1 args_hash "${_TEST_SPEC} ${_EXTRA_ARGS} ${_REPORTER} ${_OUTPUT_DIR} ${_OUTPUT_PREFIX} ${_OUTPUT_SUFFIX}")
+  string(SHA1 args_hash "${_TEST_SPEC} ${_EXTRA_ARGS} ${_REPORTER} ${_OUTPUT_DIR} ${_OUTPUT_PREFIX} ${_OUTPUT_SUFFIX} ${_USE_STDOUT}")
   string(SUBSTRING ${args_hash} 0 7 args_hash)
 
   # Define rule to generate test list for aforementioned test executable
@@ -242,6 +248,7 @@ function(catch_discover_tests TARGET)
               -D "TEST_DL_FRAMEWORK_PATHS=${_DL_FRAMEWORK_PATHS}"
               -D "CTEST_FILE=${ctest_tests_file}"
               -D "ADD_TAGS_AS_LABELS=${_ADD_TAGS_AS_LABELS}"
+              -D "USE_STDOUT=${_USE_STDOUT}"
               -P "${_CATCH_DISCOVER_TESTS_SCRIPT}"
       VERBATIM
     )
@@ -288,6 +295,7 @@ function(catch_discover_tests TARGET)
       "      TEST_DL_PATHS"          " [==[" "${_DL_PATHS}"               "]==]"   "\n"
       "      TEST_DL_FRAMEWORK_PATHS" " [==[" "${_DL_FRAMEWORK_PATHS}"     "]==]"   "\n"
       "      ADD_TAGS_AS_LABELS"     " [==[" "${_ADD_TAGS_AS_LABELS}"     "]==]"   "\n"
+      "      USE_STDOUT"             " [==[" "${_USE_STDOUT}"             "]==]"   "\n"
       "    )"                                                                      "\n"
       "  endif()"                                                                  "\n"
       "  include(\"${ctest_tests_file}\")"                                         "\n"
