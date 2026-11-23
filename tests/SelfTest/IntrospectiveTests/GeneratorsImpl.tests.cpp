@@ -387,7 +387,7 @@ TEST_CASE("Multiple random generators in one test case output different values",
         // we use a very high threshold of 20% before failure is reported.
         REQUIRE(same < 200);
     }
-    SECTION("Float") {
+    SECTION("double") {
         auto random1 = Catch::Generators::random(0., 1000.);
         auto random2 = Catch::Generators::random(0., 1000.);
         size_t same = 0;
@@ -543,7 +543,7 @@ TEST_CASE( "Random generators can be seeded", "[generators][approvals]" ) {
             rng1.next(); rng2.next();
         }
     }
-    SECTION("Float generator") {
+    SECTION("Double generator") {
         using Catch::Generators::RandomFloatingGenerator;
         RandomFloatingGenerator<double> rng1( 0., 100., 0x1234 ),
                                         rng2( 0., 100., 0x1234 );
