@@ -14415,15 +14415,7 @@ Message from section two
           0 == 0
         </Expanded>
       </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Original>
-          s.data() == rawChars
-        </Original>
-        <Expanded>
-          "hello" == "hello"
-        </Expanded>
-      </Expression>
-      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="From sub-string" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
@@ -23620,6 +23612,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2239" failures="158" expectedFailures="43" skips="12"/>
+  <OverallResults successes="2238" failures="158" expectedFailures="43" skips="12"/>
   <OverallResultsCases successes="336" failures="96" expectedFailures="18" skips="6"/>
 </Catch2TestRun>

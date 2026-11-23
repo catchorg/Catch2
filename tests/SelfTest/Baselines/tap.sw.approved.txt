@@ -2930,8 +2930,6 @@ ok {test-number} - s.size() == 5 for: 5 == 5
 # StringRef
 ok {test-number} - std::strcmp( rawChars, "hello" ) == 0 for: 0 == 0
 # StringRef
-ok {test-number} - s.data() == rawChars for: "hello" == "hello"
-# StringRef
 ok {test-number} - original == "original"
 # StringRef
 ok {test-number} - original.data()
@@ -4899,5 +4897,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2452
+1..2451
 

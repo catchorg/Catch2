@@ -12236,11 +12236,6 @@ String.tests.cpp:<line number>: PASSED:
 with expansion:
   0 == 0
 
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( s.data() == rawChars )
-with expansion:
-  "hello" == "hello"
-
 -------------------------------------------------------------------------------
 StringRef
   From sub-string
@@ -20340,5 +20335,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  456 |  336 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2440 | 2239 passed | 158 failed | 43 failed as expected
+assertions: 2439 | 2238 passed | 158 failed | 43 failed as expected
 

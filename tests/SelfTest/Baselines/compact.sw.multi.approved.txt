@@ -1912,7 +1912,6 @@ String.tests.cpp:<line number>: passed: std::strcmp( empty.data(), "" ) == 0 for
 String.tests.cpp:<line number>: passed: s.empty() == false for: false == false
 String.tests.cpp:<line number>: passed: s.size() == 5 for: 5 == 5
 String.tests.cpp:<line number>: passed: std::strcmp( rawChars, "hello" ) == 0 for: 0 == 0
-String.tests.cpp:<line number>: passed: s.data() == rawChars for: "hello" == "hello"
 String.tests.cpp:<line number>: passed: original == "original"
 String.tests.cpp:<line number>: passed: original.data()
 String.tests.cpp:<line number>: passed: original.begin() == copy.begin() for: "original string" == "original string"
@@ -3022,6 +3021,6 @@ InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
 test cases:  456 |  336 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2440 | 2239 passed | 158 failed | 43 failed as expected
+assertions: 2439 | 2238 passed | 158 failed | 43 failed as expected
 
 

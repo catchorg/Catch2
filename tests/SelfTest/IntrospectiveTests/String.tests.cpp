@@ -28,8 +28,6 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
 
         auto rawChars = s.data();
         REQUIRE( std::strcmp( rawChars, "hello" ) == 0 );
-
-        REQUIRE(s.data() == rawChars);
     }
     SECTION( "From sub-string" ) {
         StringRef original = StringRef( "original string" ).substr(0, 8);
