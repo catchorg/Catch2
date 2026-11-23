@@ -261,7 +261,7 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
     }
 
 
-    SECTION( "use-colour") {
+    SECTION( "colour-mode") {
 
         using Catch::ColourMode;
 
@@ -271,19 +271,19 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             REQUIRE( config.defaultColourMode == ColourMode::PlatformDefault );
         }
 
-        SECTION( "auto" ) {
+        SECTION( "default" ) {
             CHECK( cli.parse( { "test", "--colour-mode", "default" } ) );
 
             REQUIRE( config.defaultColourMode == ColourMode::PlatformDefault );
         }
 
-        SECTION( "yes" ) {
+        SECTION( "ansi" ) {
             CHECK(cli.parse({"test", "--colour-mode", "ansi"}));
 
             REQUIRE( config.defaultColourMode == ColourMode::ANSI );
         }
 
-        SECTION( "no" ) {
+        SECTION( "none" ) {
             CHECK(cli.parse({"test", "--colour-mode", "none"}));
 
             REQUIRE( config.defaultColourMode == ColourMode::None );

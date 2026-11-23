@@ -122,12 +122,12 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="Process can be configured on command line/output filename/--out" duration="{duration}"/>
     <testCase name="Process can be configured on command line/combinations" duration="{duration}"/>
     <testCase name="Process can be configured on command line/combinations/Single character flags can be combined" duration="{duration}"/>
-    <testCase name="Process can be configured on command line/use-colour" duration="{duration}"/>
-    <testCase name="Process can be configured on command line/use-colour/without option" duration="{duration}"/>
-    <testCase name="Process can be configured on command line/use-colour/auto" duration="{duration}"/>
-    <testCase name="Process can be configured on command line/use-colour/yes" duration="{duration}"/>
-    <testCase name="Process can be configured on command line/use-colour/no" duration="{duration}"/>
-    <testCase name="Process can be configured on command line/use-colour/error" duration="{duration}"/>
+    <testCase name="Process can be configured on command line/colour-mode" duration="{duration}"/>
+    <testCase name="Process can be configured on command line/colour-mode/without option" duration="{duration}"/>
+    <testCase name="Process can be configured on command line/colour-mode/default" duration="{duration}"/>
+    <testCase name="Process can be configured on command line/colour-mode/ansi" duration="{duration}"/>
+    <testCase name="Process can be configured on command line/colour-mode/none" duration="{duration}"/>
+    <testCase name="Process can be configured on command line/colour-mode/error" duration="{duration}"/>
     <testCase name="Process can be configured on command line/Benchmark options" duration="{duration}"/>
     <testCase name="Process can be configured on command line/Benchmark options/samples" duration="{duration}"/>
     <testCase name="Process can be configured on command line/Benchmark options/samples must be greater than zero" duration="{duration}"/>

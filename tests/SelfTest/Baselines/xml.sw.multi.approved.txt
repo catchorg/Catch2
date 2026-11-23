@@ -12680,7 +12680,7 @@ Approx( 1.21999999999999997 )
       </Section>
       <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="use-colour" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+    <Section name="colour-mode" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Section name="without option" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
@@ -12702,8 +12702,8 @@ Approx( 1.21999999999999997 )
       </Section>
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="use-colour" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Section name="auto" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+    <Section name="colour-mode" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Section name="default" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
             cli.parse( { "test", "--colour-mode", "default" } )
@@ -12724,8 +12724,8 @@ Approx( 1.21999999999999997 )
       </Section>
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="use-colour" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Section name="yes" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+    <Section name="colour-mode" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Section name="ansi" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
             cli.parse({"test", "--colour-mode", "ansi"})
@@ -12746,8 +12746,8 @@ Approx( 1.21999999999999997 )
       </Section>
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="use-colour" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Section name="no" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+    <Section name="colour-mode" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Section name="none" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
             cli.parse({"test", "--colour-mode", "none"})
@@ -12768,7 +12768,7 @@ Approx( 1.21999999999999997 )
       </Section>
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="use-colour" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+    <Section name="colour-mode" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Section name="error" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
