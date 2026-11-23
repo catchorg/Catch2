@@ -7984,18 +7984,18 @@ Approx( 1.30000000000000004 )
         <Section name="Floating Point" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
           <Section name="Exact" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -1
+              i := 0
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
                 -1.0 == Approx( -1.0 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -1
+              i := 0
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8006,20 +8006,18 @@ Approx( 1.30000000000000004 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.9
+              i := 1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
-                -0.90000000000000002
-==
-Approx( -0.90000000000000002 )
+                -0.875 == Approx( -0.875 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.9
+              i := 1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8030,20 +8028,18 @@ Approx( -0.90000000000000002 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.8
+              i := 2
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
-                -0.80000000000000004
-==
-Approx( -0.80000000000000004 )
+                -0.75 == Approx( -0.75 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.8
+              i := 2
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8054,20 +8050,18 @@ Approx( -0.80000000000000004 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.7
+              i := 3
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
-                -0.70000000000000007
-==
-Approx( -0.70000000000000007 )
+                -0.625 == Approx( -0.625 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.7
+              i := 3
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8078,20 +8072,18 @@ Approx( -0.70000000000000007 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.6
+              i := 4
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
-                -0.60000000000000009
-==
-Approx( -0.60000000000000009 )
+                -0.5 == Approx( -0.5 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.6
+              i := 4
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8102,20 +8094,18 @@ Approx( -0.60000000000000009 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.5
+              i := 5
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
-                -0.50000000000000011
-==
-Approx( -0.50000000000000011 )
+                -0.375 == Approx( -0.375 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.5
+              i := 5
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8126,20 +8116,18 @@ Approx( -0.50000000000000011 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.4
+              i := 6
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
-                -0.40000000000000013
-==
-Approx( -0.40000000000000013 )
+                -0.25 == Approx( -0.25 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.4
+              i := 6
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8150,20 +8138,18 @@ Approx( -0.40000000000000013 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.3
+              i := 7
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
-                -0.30000000000000016
-==
-Approx( -0.30000000000000016 )
+                -0.125 == Approx( -0.125 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.3
+              i := 7
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8174,20 +8160,18 @@ Approx( -0.30000000000000016 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.2
+              i := 8
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
-                -0.20000000000000015
-==
-Approx( -0.20000000000000015 )
+                0.0 == Approx( 0.0 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.2
+              i := 8
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8198,20 +8182,18 @@ Approx( -0.20000000000000015 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.1
+              i := 9
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
-                -0.10000000000000014
-==
-Approx( -0.10000000000000014 )
+                0.125 == Approx( 0.125 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.1
+              i := 9
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8222,20 +8204,18 @@ Approx( -0.10000000000000014 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -1.38778e-16
+              i := 10
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
-                -0.00000000000000014
-==
-Approx( -0.00000000000000014 )
+                0.25 == Approx( 0.25 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -1.38778e-16
+              i := 10
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8246,20 +8226,18 @@ Approx( -0.00000000000000014 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.1
+              i := 11
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
-                0.09999999999999987
-==
-Approx( 0.09999999999999987 )
+                0.375 == Approx( 0.375 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.1
+              i := 11
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8270,20 +8248,18 @@ Approx( 0.09999999999999987 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.2
+              i := 12
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
-                0.19999999999999987
-==
-Approx( 0.19999999999999987 )
+                0.5 == Approx( 0.5 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.2
+              i := 12
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8294,20 +8270,18 @@ Approx( 0.19999999999999987 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.3
+              i := 13
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
-                0.29999999999999988
-==
-Approx( 0.29999999999999988 )
+                0.625 == Approx( 0.625 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.3
+              i := 13
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8318,20 +8292,18 @@ Approx( 0.29999999999999988 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.4
+              i := 14
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
-                0.39999999999999991
-==
-Approx( 0.39999999999999991 )
+                0.75 == Approx( 0.75 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.4
+              i := 14
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8342,131 +8314,14 @@ Approx( 0.39999999999999991 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.5
+              i := 15
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
-                0.49999999999999989
-==
-Approx( 0.49999999999999989 )
-              </Expanded>
-            </Expression>
-            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.5
-            </Info>
-            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              <Original>
-                gen.next()
-              </Original>
-              <Expanded>
-                true
-              </Expanded>
-            </Expression>
-            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.6
-            </Info>
-            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              <Original>
-                gen.get() == Approx(expected)
-              </Original>
-              <Expanded>
-                0.59999999999999987
-==
-Approx( 0.59999999999999987 )
-              </Expanded>
-            </Expression>
-            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.6
-            </Info>
-            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              <Original>
-                gen.next()
-              </Original>
-              <Expanded>
-                true
-              </Expanded>
-            </Expression>
-            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.7
-            </Info>
-            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              <Original>
-                gen.get() == Approx(expected)
-              </Original>
-              <Expanded>
-                0.69999999999999984
-==
-Approx( 0.69999999999999984 )
-              </Expanded>
-            </Expression>
-            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.7
-            </Info>
-            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              <Original>
-                gen.next()
-              </Original>
-              <Expanded>
-                true
-              </Expanded>
-            </Expression>
-            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.8
-            </Info>
-            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              <Original>
-                gen.get() == Approx(expected)
-              </Original>
-              <Expanded>
-                0.79999999999999982
-==
-Approx( 0.79999999999999982 )
-              </Expanded>
-            </Expression>
-            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.8
-            </Info>
-            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              <Original>
-                gen.next()
-              </Original>
-              <Expanded>
-                true
-              </Expanded>
-            </Expression>
-            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.9
-            </Info>
-            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              <Original>
-                gen.get() == Approx(expected)
-              </Original>
-              <Expanded>
-                0.8999999999999998
-==
-Approx( 0.8999999999999998 )
-              </Expanded>
-            </Expression>
-            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.9
-            </Info>
-            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              <Original>
-                gen.next()
-              </Original>
-              <Expanded>
-                true
-              </Expanded>
-            </Expression>
-            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              <Original>
-                gen.get() == Approx( rangeEnd )
-              </Original>
-              <Expanded>
-                0.99999999999999978 == Approx( 1.0 )
+                0.875 == Approx( 0.875 )
               </Expanded>
             </Expression>
             <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -8477,31 +8332,31 @@ Approx( 0.8999999999999998 )
                 !false
               </Expanded>
             </Expression>
-            <OverallResults successes="42" failures="0" expectedFailures="0" skipped="false"/>
+            <OverallResults successes="32" failures="0" expectedFailures="0" skipped="false"/>
           </Section>
-          <OverallResults successes="42" failures="0" expectedFailures="0" skipped="false"/>
+          <OverallResults successes="32" failures="0" expectedFailures="0" skipped="false"/>
         </Section>
-        <OverallResults successes="42" failures="0" expectedFailures="0" skipped="false"/>
+        <OverallResults successes="32" failures="0" expectedFailures="0" skipped="false"/>
       </Section>
-      <OverallResults successes="42" failures="0" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="32" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Range" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
       <Section name="Positive manual step" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
         <Section name="Floating Point" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
           <Section name="Slightly over end" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -1
+              i := 0
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
                 -1.0 == Approx( -1.0 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -1
+              i := 0
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8512,11 +8367,11 @@ Approx( 0.8999999999999998 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.7
+              i := 1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
                 -0.69999999999999996
@@ -8525,7 +8380,7 @@ Approx( -0.69999999999999996 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.7
+              i := 1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8536,20 +8391,20 @@ Approx( -0.69999999999999996 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.4
+              i := 2
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
                 -0.39999999999999997
 ==
-Approx( -0.39999999999999997 )
+Approx( -0.40000000000000002 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.4
+              i := 2
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8560,20 +8415,20 @@ Approx( -0.39999999999999997 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.1
+              i := 3
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
                 -0.09999999999999998
 ==
-Approx( -0.09999999999999998 )
+Approx( -0.10000000000000001 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.1
+              i := 3
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8584,11 +8439,11 @@ Approx( -0.09999999999999998 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.2
+              i := 4
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
                 0.20000000000000001
@@ -8597,7 +8452,7 @@ Approx( 0.20000000000000001 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.2
+              i := 4
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8608,18 +8463,18 @@ Approx( 0.20000000000000001 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.5
+              i := 5
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
                 0.5 == Approx( 0.5 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.5
+              i := 5
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8627,6 +8482,19 @@ Approx( 0.20000000000000001 )
               </Original>
               <Expanded>
                 true
+              </Expanded>
+            </Expression>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              i := 6
+            </Info>
+            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.get() == Approx( expected[i] )
+              </Original>
+              <Expanded>
+                0.80000000000000004
+==
+Approx( 0.80000000000000004 )
               </Expanded>
             </Expression>
             <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -8637,31 +8505,31 @@ Approx( 0.20000000000000001 )
                 !false
               </Expanded>
             </Expression>
-            <OverallResults successes="13" failures="0" expectedFailures="0" skipped="false"/>
+            <OverallResults successes="14" failures="0" expectedFailures="0" skipped="false"/>
           </Section>
-          <OverallResults successes="13" failures="0" expectedFailures="0" skipped="false"/>
+          <OverallResults successes="14" failures="0" expectedFailures="0" skipped="false"/>
         </Section>
-        <OverallResults successes="13" failures="0" expectedFailures="0" skipped="false"/>
+        <OverallResults successes="14" failures="0" expectedFailures="0" skipped="false"/>
       </Section>
-      <OverallResults successes="13" failures="0" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="14" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Range" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
       <Section name="Positive manual step" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
         <Section name="Floating Point" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
           <Section name="Slightly under end" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -1
+              i := 0
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
                 -1.0 == Approx( -1.0 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -1
+              i := 0
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8672,11 +8540,11 @@ Approx( 0.20000000000000001 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.7
+              i := 1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
                 -0.69999999999999996
@@ -8685,7 +8553,7 @@ Approx( -0.69999999999999996 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.7
+              i := 1
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8696,20 +8564,20 @@ Approx( -0.69999999999999996 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.4
+              i := 2
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
                 -0.39999999999999997
 ==
-Approx( -0.39999999999999997 )
+Approx( -0.40000000000000002 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.4
+              i := 2
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8720,20 +8588,20 @@ Approx( -0.39999999999999997 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.1
+              i := 3
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
                 -0.09999999999999998
 ==
-Approx( -0.09999999999999998 )
+Approx( -0.10000000000000001 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is -0.1
+              i := 3
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8744,11 +8612,11 @@ Approx( -0.09999999999999998 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.2
+              i := 4
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
                 0.20000000000000001
@@ -8757,7 +8625,7 @@ Approx( 0.20000000000000001 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.2
+              i := 4
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8768,18 +8636,18 @@ Approx( 0.20000000000000001 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.5
+              i := 5
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
-                gen.get() == Approx(expected)
+                gen.get() == Approx( expected[i] )
               </Original>
               <Expanded>
                 0.5 == Approx( 0.5 )
               </Expanded>
             </Expression>
             <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-              Current expected value is 0.5
+              i := 5
             </Info>
             <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
               <Original>
@@ -8787,6 +8655,43 @@ Approx( 0.20000000000000001 )
               </Original>
               <Expanded>
                 true
+              </Expanded>
+            </Expression>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              i := 6
+            </Info>
+            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.get() == Approx( expected[i] )
+              </Original>
+              <Expanded>
+                0.80000000000000004
+==
+Approx( 0.80000000000000004 )
+              </Expanded>
+            </Expression>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              i := 6
+            </Info>
+            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.next()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Info filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              i := 7
+            </Info>
+            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.get() == Approx( expected[i] )
+              </Original>
+              <Expanded>
+                1.10000000000000009
+==
+Approx( 1.10000000000000009 )
               </Expanded>
             </Expression>
             <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -8797,13 +8702,13 @@ Approx( 0.20000000000000001 )
                 !false
               </Expanded>
             </Expression>
-            <OverallResults successes="13" failures="0" expectedFailures="0" skipped="false"/>
+            <OverallResults successes="16" failures="0" expectedFailures="0" skipped="false"/>
           </Section>
-          <OverallResults successes="13" failures="0" expectedFailures="0" skipped="false"/>
+          <OverallResults successes="16" failures="0" expectedFailures="0" skipped="false"/>
         </Section>
-        <OverallResults successes="13" failures="0" expectedFailures="0" skipped="false"/>
+        <OverallResults successes="16" failures="0" expectedFailures="0" skipped="false"/>
       </Section>
-      <OverallResults successes="13" failures="0" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="16" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Range" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
       <Section name="Negative manual step" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -23590,6 +23495,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2238" failures="158" expectedFailures="43" skips="12"/>
+  <OverallResults successes="2232" failures="158" expectedFailures="43" skips="12"/>
   <OverallResultsCases successes="336" failures="96" expectedFailures="18" skips="6"/>
 </Catch2TestRun>

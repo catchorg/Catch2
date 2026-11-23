@@ -6811,327 +6811,221 @@ GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
   -1.0 == Approx( -1.0 )
 with message:
-  Current expected value is -1
+  i := 0
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -1
+  i := 0
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
-  -0.90000000000000002
-  ==
-  Approx( -0.90000000000000002 )
+  -0.875 == Approx( -0.875 )
 with message:
-  Current expected value is -0.9
+  i := 1
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -0.9
+  i := 1
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
-  -0.80000000000000004
-  ==
-  Approx( -0.80000000000000004 )
+  -0.75 == Approx( -0.75 )
 with message:
-  Current expected value is -0.8
+  i := 2
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -0.8
+  i := 2
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
-  -0.70000000000000007
-  ==
-  Approx( -0.70000000000000007 )
+  -0.625 == Approx( -0.625 )
 with message:
-  Current expected value is -0.7
+  i := 3
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -0.7
+  i := 3
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
-  -0.60000000000000009
-  ==
-  Approx( -0.60000000000000009 )
+  -0.5 == Approx( -0.5 )
 with message:
-  Current expected value is -0.6
+  i := 4
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -0.6
+  i := 4
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
-  -0.50000000000000011
-  ==
-  Approx( -0.50000000000000011 )
+  -0.375 == Approx( -0.375 )
 with message:
-  Current expected value is -0.5
+  i := 5
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -0.5
+  i := 5
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
-  -0.40000000000000013
-  ==
-  Approx( -0.40000000000000013 )
+  -0.25 == Approx( -0.25 )
 with message:
-  Current expected value is -0.4
+  i := 6
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -0.4
+  i := 6
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
-  -0.30000000000000016
-  ==
-  Approx( -0.30000000000000016 )
+  -0.125 == Approx( -0.125 )
 with message:
-  Current expected value is -0.3
+  i := 7
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -0.3
+  i := 7
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
-  -0.20000000000000015
-  ==
-  Approx( -0.20000000000000015 )
+  0.0 == Approx( 0.0 )
 with message:
-  Current expected value is -0.2
+  i := 8
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -0.2
+  i := 8
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
-  -0.10000000000000014
-  ==
-  Approx( -0.10000000000000014 )
+  0.125 == Approx( 0.125 )
 with message:
-  Current expected value is -0.1
+  i := 9
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -0.1
+  i := 9
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
-  -0.00000000000000014
-  ==
-  Approx( -0.00000000000000014 )
+  0.25 == Approx( 0.25 )
 with message:
-  Current expected value is -1.38778e-16
+  i := 10
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -1.38778e-16
+  i := 10
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
-  0.09999999999999987
-  ==
-  Approx( 0.09999999999999987 )
+  0.375 == Approx( 0.375 )
 with message:
-  Current expected value is 0.1
+  i := 11
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is 0.1
+  i := 11
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
-  0.19999999999999987
-  ==
-  Approx( 0.19999999999999987 )
+  0.5 == Approx( 0.5 )
 with message:
-  Current expected value is 0.2
+  i := 12
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is 0.2
+  i := 12
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
-  0.29999999999999988
-  ==
-  Approx( 0.29999999999999988 )
+  0.625 == Approx( 0.625 )
 with message:
-  Current expected value is 0.3
+  i := 13
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is 0.3
+  i := 13
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
-  0.39999999999999991
-  ==
-  Approx( 0.39999999999999991 )
+  0.75 == Approx( 0.75 )
 with message:
-  Current expected value is 0.4
+  i := 14
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is 0.4
+  i := 14
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
-  0.49999999999999989
-  ==
-  Approx( 0.49999999999999989 )
+  0.875 == Approx( 0.875 )
 with message:
-  Current expected value is 0.5
-
-GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.next() )
-with expansion:
-  true
-with message:
-  Current expected value is 0.5
-
-GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
-with expansion:
-  0.59999999999999987
-  ==
-  Approx( 0.59999999999999987 )
-with message:
-  Current expected value is 0.6
-
-GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.next() )
-with expansion:
-  true
-with message:
-  Current expected value is 0.6
-
-GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
-with expansion:
-  0.69999999999999984
-  ==
-  Approx( 0.69999999999999984 )
-with message:
-  Current expected value is 0.7
-
-GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.next() )
-with expansion:
-  true
-with message:
-  Current expected value is 0.7
-
-GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
-with expansion:
-  0.79999999999999982
-  ==
-  Approx( 0.79999999999999982 )
-with message:
-  Current expected value is 0.8
-
-GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.next() )
-with expansion:
-  true
-with message:
-  Current expected value is 0.8
-
-GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
-with expansion:
-  0.8999999999999998
-  ==
-  Approx( 0.8999999999999998 )
-with message:
-  Current expected value is 0.9
-
-GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.next() )
-with expansion:
-  true
-with message:
-  Current expected value is 0.9
-
-GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx( rangeEnd ) )
-with expansion:
-  0.99999999999999978 == Approx( 1.0 )
+  i := 15
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE_FALSE( gen.next() )
@@ -7149,96 +7043,105 @@ GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
   -1.0 == Approx( -1.0 )
 with message:
-  Current expected value is -1
+  i := 0
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -1
+  i := 0
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
   -0.69999999999999996
   ==
   Approx( -0.69999999999999996 )
 with message:
-  Current expected value is -0.7
+  i := 1
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -0.7
+  i := 1
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
   -0.39999999999999997
   ==
-  Approx( -0.39999999999999997 )
+  Approx( -0.40000000000000002 )
 with message:
-  Current expected value is -0.4
+  i := 2
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -0.4
+  i := 2
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
   -0.09999999999999998
   ==
-  Approx( -0.09999999999999998 )
+  Approx( -0.10000000000000001 )
 with message:
-  Current expected value is -0.1
+  i := 3
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -0.1
+  i := 3
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
   0.20000000000000001
   ==
   Approx( 0.20000000000000001 )
 with message:
-  Current expected value is 0.2
+  i := 4
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is 0.2
+  i := 4
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
   0.5 == Approx( 0.5 )
 with message:
-  Current expected value is 0.5
+  i := 5
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is 0.5
+  i := 5
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == Approx( expected[i] ) )
+with expansion:
+  0.80000000000000004
+  ==
+  Approx( 0.80000000000000004 )
+with message:
+  i := 6
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE_FALSE( gen.next() )
@@ -7256,96 +7159,121 @@ GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
   -1.0 == Approx( -1.0 )
 with message:
-  Current expected value is -1
+  i := 0
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -1
+  i := 0
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
   -0.69999999999999996
   ==
   Approx( -0.69999999999999996 )
 with message:
-  Current expected value is -0.7
+  i := 1
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -0.7
+  i := 1
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
   -0.39999999999999997
   ==
-  Approx( -0.39999999999999997 )
+  Approx( -0.40000000000000002 )
 with message:
-  Current expected value is -0.4
+  i := 2
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -0.4
+  i := 2
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
   -0.09999999999999998
   ==
-  Approx( -0.09999999999999998 )
+  Approx( -0.10000000000000001 )
 with message:
-  Current expected value is -0.1
+  i := 3
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is -0.1
+  i := 3
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
   0.20000000000000001
   ==
   Approx( 0.20000000000000001 )
 with message:
-  Current expected value is 0.2
+  i := 4
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is 0.2
+  i := 4
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE( gen.get() == Approx(expected) )
+  REQUIRE( gen.get() == Approx( expected[i] ) )
 with expansion:
   0.5 == Approx( 0.5 )
 with message:
-  Current expected value is 0.5
+  i := 5
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.next() )
 with expansion:
   true
 with message:
-  Current expected value is 0.5
+  i := 5
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == Approx( expected[i] ) )
+with expansion:
+  0.80000000000000004
+  ==
+  Approx( 0.80000000000000004 )
+with message:
+  i := 6
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.next() )
+with expansion:
+  true
+with message:
+  i := 6
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == Approx( expected[i] ) )
+with expansion:
+  1.10000000000000009
+  ==
+  Approx( 1.10000000000000009 )
+with message:
+  i := 7
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE_FALSE( gen.next() )
@@ -20322,5 +20250,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  456 |  336 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2439 | 2238 passed | 158 failed | 43 failed as expected
+assertions: 2433 | 2232 passed | 158 failed | 43 failed as expected
 

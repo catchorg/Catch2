@@ -1731,139 +1731,127 @@ ok {test-number} - gen.get() == 5 for: 5 == 5
 # Generators internals
 ok {test-number} - !(gen.next()) for: !false
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -1.0 == Approx( -1.0 ) with 1 message: 'Current expected value is -1'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: -1.0 == Approx( -1.0 ) with 1 message: 'i := 0'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -1'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 0'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.90000000000000002 == Approx( -0.90000000000000002 ) with 1 message: 'Current expected value is -0.9'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: -0.875 == Approx( -0.875 ) with 1 message: 'i := 1'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.9'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 1'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.80000000000000004 == Approx( -0.80000000000000004 ) with 1 message: 'Current expected value is -0.8'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: -0.75 == Approx( -0.75 ) with 1 message: 'i := 2'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.8'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 2'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.70000000000000007 == Approx( -0.70000000000000007 ) with 1 message: 'Current expected value is -0.7'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: -0.625 == Approx( -0.625 ) with 1 message: 'i := 3'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.7'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 3'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.60000000000000009 == Approx( -0.60000000000000009 ) with 1 message: 'Current expected value is -0.6'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: -0.5 == Approx( -0.5 ) with 1 message: 'i := 4'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.6'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 4'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.50000000000000011 == Approx( -0.50000000000000011 ) with 1 message: 'Current expected value is -0.5'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: -0.375 == Approx( -0.375 ) with 1 message: 'i := 5'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.5'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 5'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.40000000000000013 == Approx( -0.40000000000000013 ) with 1 message: 'Current expected value is -0.4'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: -0.25 == Approx( -0.25 ) with 1 message: 'i := 6'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.4'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 6'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.30000000000000016 == Approx( -0.30000000000000016 ) with 1 message: 'Current expected value is -0.3'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: -0.125 == Approx( -0.125 ) with 1 message: 'i := 7'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.3'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 7'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.20000000000000015 == Approx( -0.20000000000000015 ) with 1 message: 'Current expected value is -0.2'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: 0.0 == Approx( 0.0 ) with 1 message: 'i := 8'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.2'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 8'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.10000000000000014 == Approx( -0.10000000000000014 ) with 1 message: 'Current expected value is -0.1'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: 0.125 == Approx( 0.125 ) with 1 message: 'i := 9'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.1'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 9'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.00000000000000014 == Approx( -0.00000000000000014 ) with 1 message: 'Current expected value is -1.38778e-16'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: 0.25 == Approx( 0.25 ) with 1 message: 'i := 10'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -1.38778e-16'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 10'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.09999999999999987 == Approx( 0.09999999999999987 ) with 1 message: 'Current expected value is 0.1'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: 0.375 == Approx( 0.375 ) with 1 message: 'i := 11'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.1'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 11'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.19999999999999987 == Approx( 0.19999999999999987 ) with 1 message: 'Current expected value is 0.2'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: 0.5 == Approx( 0.5 ) with 1 message: 'i := 12'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.2'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 12'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.29999999999999988 == Approx( 0.29999999999999988 ) with 1 message: 'Current expected value is 0.3'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: 0.625 == Approx( 0.625 ) with 1 message: 'i := 13'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.3'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 13'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.39999999999999991 == Approx( 0.39999999999999991 ) with 1 message: 'Current expected value is 0.4'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: 0.75 == Approx( 0.75 ) with 1 message: 'i := 14'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.4'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 14'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.49999999999999989 == Approx( 0.49999999999999989 ) with 1 message: 'Current expected value is 0.5'
-# Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.5'
-# Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.59999999999999987 == Approx( 0.59999999999999987 ) with 1 message: 'Current expected value is 0.6'
-# Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.6'
-# Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.69999999999999984 == Approx( 0.69999999999999984 ) with 1 message: 'Current expected value is 0.7'
-# Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.7'
-# Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.79999999999999982 == Approx( 0.79999999999999982 ) with 1 message: 'Current expected value is 0.8'
-# Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.8'
-# Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.8999999999999998 == Approx( 0.8999999999999998 ) with 1 message: 'Current expected value is 0.9'
-# Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.9'
-# Generators internals
-ok {test-number} - gen.get() == Approx( rangeEnd ) for: 0.99999999999999978 == Approx( 1.0 )
+ok {test-number} - gen.get() == Approx( expected[i] ) for: 0.875 == Approx( 0.875 ) with 1 message: 'i := 15'
 # Generators internals
 ok {test-number} - !(gen.next()) for: !false
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -1.0 == Approx( -1.0 ) with 1 message: 'Current expected value is -1'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: -1.0 == Approx( -1.0 ) with 1 message: 'i := 0'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -1'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 0'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.69999999999999996 == Approx( -0.69999999999999996 ) with 1 message: 'Current expected value is -0.7'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: -0.69999999999999996 == Approx( -0.69999999999999996 ) with 1 message: 'i := 1'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.7'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 1'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.39999999999999997 == Approx( -0.39999999999999997 ) with 1 message: 'Current expected value is -0.4'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: -0.39999999999999997 == Approx( -0.40000000000000002 ) with 1 message: 'i := 2'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.4'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 2'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.09999999999999998 == Approx( -0.09999999999999998 ) with 1 message: 'Current expected value is -0.1'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: -0.09999999999999998 == Approx( -0.10000000000000001 ) with 1 message: 'i := 3'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.1'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 3'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.20000000000000001 == Approx( 0.20000000000000001 ) with 1 message: 'Current expected value is 0.2'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: 0.20000000000000001 == Approx( 0.20000000000000001 ) with 1 message: 'i := 4'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.2'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 4'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.5 == Approx( 0.5 ) with 1 message: 'Current expected value is 0.5'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: 0.5 == Approx( 0.5 ) with 1 message: 'i := 5'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.5'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 5'
+# Generators internals
+ok {test-number} - gen.get() == Approx( expected[i] ) for: 0.80000000000000004 == Approx( 0.80000000000000004 ) with 1 message: 'i := 6'
 # Generators internals
 ok {test-number} - !(gen.next()) for: !false
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -1.0 == Approx( -1.0 ) with 1 message: 'Current expected value is -1'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: -1.0 == Approx( -1.0 ) with 1 message: 'i := 0'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -1'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 0'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.69999999999999996 == Approx( -0.69999999999999996 ) with 1 message: 'Current expected value is -0.7'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: -0.69999999999999996 == Approx( -0.69999999999999996 ) with 1 message: 'i := 1'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.7'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 1'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.39999999999999997 == Approx( -0.39999999999999997 ) with 1 message: 'Current expected value is -0.4'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: -0.39999999999999997 == Approx( -0.40000000000000002 ) with 1 message: 'i := 2'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.4'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 2'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: -0.09999999999999998 == Approx( -0.09999999999999998 ) with 1 message: 'Current expected value is -0.1'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: -0.09999999999999998 == Approx( -0.10000000000000001 ) with 1 message: 'i := 3'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is -0.1'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 3'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.20000000000000001 == Approx( 0.20000000000000001 ) with 1 message: 'Current expected value is 0.2'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: 0.20000000000000001 == Approx( 0.20000000000000001 ) with 1 message: 'i := 4'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.2'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 4'
 # Generators internals
-ok {test-number} - gen.get() == Approx(expected) for: 0.5 == Approx( 0.5 ) with 1 message: 'Current expected value is 0.5'
+ok {test-number} - gen.get() == Approx( expected[i] ) for: 0.5 == Approx( 0.5 ) with 1 message: 'i := 5'
 # Generators internals
-ok {test-number} - gen.next() for: true with 1 message: 'Current expected value is 0.5'
+ok {test-number} - gen.next() for: true with 1 message: 'i := 5'
+# Generators internals
+ok {test-number} - gen.get() == Approx( expected[i] ) for: 0.80000000000000004 == Approx( 0.80000000000000004 ) with 1 message: 'i := 6'
+# Generators internals
+ok {test-number} - gen.next() for: true with 1 message: 'i := 6'
+# Generators internals
+ok {test-number} - gen.get() == Approx( expected[i] ) for: 1.10000000000000009 == Approx( 1.10000000000000009 ) with 1 message: 'i := 7'
 # Generators internals
 ok {test-number} - !(gen.next()) for: !false
 # Generators internals
@@ -4886,5 +4874,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2451
+1..2445
 

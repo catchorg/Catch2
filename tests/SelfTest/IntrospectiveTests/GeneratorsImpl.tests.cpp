@@ -20,6 +20,8 @@
 #include <catch2/generators/catch_generators_random.hpp>
 #include <catch2/generators/catch_generators_range.hpp>
 
+#include <vector>
+
 // Tests of generator implementation details
 TEST_CASE("Generators internals", "[generators][internals]") {
     using namespace Catch::Generators;
@@ -222,54 +224,37 @@ TEST_CASE("Generators internals", "[generators][internals]") {
 
             SECTION("Floating Point") {
                 using Catch::Approx;
-                SECTION("Exact") {
-                    const auto rangeStart = -1.;
-                    const auto rangeEnd = 1.;
-                    const auto step = .1;
-
-                    auto gen = range(rangeStart, rangeEnd, step);
-                    auto expected = rangeStart;
-                    while( (rangeEnd - expected) > step ) {
-                        INFO( "Current expected value is " << expected );
-                        REQUIRE(gen.get() == Approx(expected));
-                        REQUIRE(gen.next());
-
-                        expected += step;
+                auto checkElements = []( Catch::Generators::GeneratorWrapper<double>&& gen,
+                                         std::vector<double> const& expected ) {
+                    assert( !expected.empty() && "No elements provided to check" );
+                    for ( size_t i = 0; i < expected.size(); ++i ) {
+                        CAPTURE( i );
+                        REQUIRE( gen.get() == Approx( expected[i] ) );
+                        if ( i + 1 < expected.size() ) {
+                            REQUIRE( gen.next() );
+                        }
                     }
-                    REQUIRE(gen.get() == Approx( rangeEnd ) );
-                    REQUIRE_FALSE(gen.next());
+                    REQUIRE_FALSE( gen.next() );
+                };
+
+                SECTION("Exact") {
+                    // step evenly divides the range, so the last element is
+                    // exactly one step below the (excluded) end
+                    checkElements( range(-1., 1., .125),
+                                   { -1., -0.875, -0.75, -0.625,
+                                     -0.5, -0.375, -0.25, -0.125,
+                                     0., 0.125, 0.25, 0.375,
+                                     0.5, 0.625, 0.75, 0.875 } );
                 }
                 SECTION("Slightly over end") {
-                    const auto rangeStart = -1.;
-                    const auto rangeEnd = 1.;
-                    const auto step = .3;
-
-                    auto gen = range(rangeStart, rangeEnd, step);
-                    auto expected = rangeStart;
-                    while( (rangeEnd - expected) > step ) {
-                       INFO( "Current expected value is " << expected );
-                       REQUIRE(gen.get() == Approx(expected));
-                       REQUIRE(gen.next());
-
-                       expected += step;
-                    }
-                    REQUIRE_FALSE(gen.next());
+                    // stepping from the last element would overshoot the end
+                    checkElements( range(-1., 1., .3),
+                                   { -1., -0.7, -0.4, -0.1, 0.2, 0.5, 0.8 } );
                 }
                 SECTION("Slightly under end") {
-                    const auto rangeStart = -1.;
-                    const auto rangeEnd = .9;
-                    const auto step = .3;
-
-                    auto gen = range(rangeStart, rangeEnd, step);
-                    auto expected = rangeStart;
-                    while( (rangeEnd - expected) > step ) {
-                       INFO( "Current expected value is " << expected );
-                       REQUIRE(gen.get() == Approx(expected));
-                       REQUIRE(gen.next());
-
-                       expected += step;
-                    }
-                    REQUIRE_FALSE(gen.next());
+                    // the end allows one more element than "Slightly over end"
+                    checkElements( range(-1., 1.2, .3),
+                                   { -1., -0.7, -0.4, -0.1, 0.2, 0.5, 0.8, 1.1 } );
                 }
             }
         }
