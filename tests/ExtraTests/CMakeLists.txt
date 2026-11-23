@@ -136,7 +136,7 @@ target_compile_definitions(DisabledExceptions-CustomHandler PUBLIC CATCH_CONFIG_
 add_test(NAME CATCH_CONFIG_DISABLE_EXCEPTIONS-1 COMMAND DisabledExceptions-DefaultHandler "Tests that run")
 set_tests_properties(CATCH_CONFIG_DISABLE_EXCEPTIONS-1
   PROPERTIES
-    PASS_REGULAR_EXPRESSION "assertions: 4 \| 2 passed \| 2 failed"
+    PASS_REGULAR_EXPRESSION "assertions: 4 \\| 2 passed \\| 2 failed"
     FAIL_REGULAR_EXPRESSION "abort;terminate;fatal"
 )
 
@@ -188,7 +188,7 @@ endif()
 add_test(NAME CATCH_CONFIG_DISABLE_EXCEPTIONS-3 COMMAND DisabledExceptions-CustomHandler "Tests that run")
 set_tests_properties(CATCH_CONFIG_DISABLE_EXCEPTIONS-3
   PROPERTIES
-    PASS_REGULAR_EXPRESSION "assertions: 4 \| 2 passed \| 2 failed"
+    PASS_REGULAR_EXPRESSION "assertions: 4 \\| 2 passed \\| 2 failed"
     FAIL_REGULAR_EXPRESSION "====== CUSTOM HANDLER ======"
 )
 
