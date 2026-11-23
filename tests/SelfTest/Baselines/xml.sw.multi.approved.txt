@@ -9663,7 +9663,7 @@ Approx( 3.14150000000000018 )
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Calling writeArray will create an empty pair of braces" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
+    <Section name="Calling writeArray will create an empty pair of brackets" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Json.tests.cpp" >
         <Original>
           stream.str() == "[\n]"

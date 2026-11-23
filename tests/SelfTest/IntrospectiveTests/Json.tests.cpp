@@ -96,7 +96,7 @@ TEST_CASE( "JsonWriter", "[JSON][JsonWriter]" ) {
                               "\"fully_object\": {\n    \"key\": 1\n  }" ) );
     }
 
-    SECTION( "Calling writeArray will create an empty pair of braces" ) {
+    SECTION( "Calling writeArray will create an empty pair of brackets" ) {
         { auto writer = Catch::JsonValueWriter{ stream }.writeArray(); }
         REQUIRE( stream.str() == "[\n]" );
     }

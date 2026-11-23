@@ -7990,7 +7990,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 JsonWriter
-  Calling writeArray will create an empty pair of braces
+  Calling writeArray will create an empty pair of brackets
 -------------------------------------------------------------------------------
 Json.tests.cpp:<line number>
 ...............................................................................
