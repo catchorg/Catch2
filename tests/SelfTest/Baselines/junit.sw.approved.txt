@@ -962,9 +962,9 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/-a aborts after first failure" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/-x 2 aborts after two failures" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/-x must be numeric" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/wait-for-keypress" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/wait-for-keypress/Accepted options" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/wait-for-keypress/invalid options are reported" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/wait-for-keypress" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/wait-for-keypress/Accepted options" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/wait-for-keypress/invalid options are reported" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/nothrow" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/nothrow/-e" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/nothrow/--nothrow" time="{duration}" status="run"/>

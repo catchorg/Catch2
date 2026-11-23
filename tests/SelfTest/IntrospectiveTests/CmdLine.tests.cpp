@@ -198,8 +198,9 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             CHECK(!result);
             REQUIRE_THAT(result.errorMessage(), ContainsSubstring("convert") && ContainsSubstring("oops"));
         }
+    }
 
-     SECTION("wait-for-keypress") {
+    SECTION("wait-for-keypress") {
         SECTION("Accepted options") {
             using tuple_type = std::tuple<char const*, Catch::WaitForKeypress::When>;
             auto input = GENERATE(table<char const*, Catch::WaitForKeypress::When>({
@@ -222,7 +223,6 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
 #endif
         }
     }
-   }
 
     SECTION("nothrow") {
         SECTION("-e") {

@@ -10334,7 +10334,6 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
-  abort
   wait-for-keypress
   Accepted options
 -------------------------------------------------------------------------------
@@ -10353,7 +10352,6 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
-  abort
   wait-for-keypress
   Accepted options
 -------------------------------------------------------------------------------
@@ -10372,7 +10370,6 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
-  abort
   wait-for-keypress
   Accepted options
 -------------------------------------------------------------------------------
@@ -10391,7 +10388,6 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
-  abort
   wait-for-keypress
   Accepted options
 -------------------------------------------------------------------------------
@@ -10410,7 +10406,6 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
-  abort
   wait-for-keypress
   invalid options are reported
 -------------------------------------------------------------------------------
