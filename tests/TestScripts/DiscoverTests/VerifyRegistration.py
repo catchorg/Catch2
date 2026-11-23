@@ -130,10 +130,13 @@ def extract_tests_from_ctest(ctest_output) -> List[TestInfo]:
     for test in tests:
         test_command = test['command']
         # First part of the command is the binary, second is the filter,
-        # third is the `--order decl` arg for faster startup.
+        # Extra arguments retain their boundaries, including spaces in values.
         # If there are less, registration has failed. If there are more,
         # registration has changed and the script needs updating.
-        assert len(test_command) == 3, test_command
+        assert test_command[2:] == [
+            '--colour-mode', 'none', '--name', 'discovery argument test',
+            '--order decl'
+        ], test_command
         test_name = test_command[1]
         labels = []
         for prop in test['properties']:
