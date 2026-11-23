@@ -34,6 +34,7 @@ same as the Catch name; see also ``TEST_PREFIX`` and ``TEST_SUFFIX``.
                          [PROPERTIES name1 value1...]
                          [TEST_LIST var]
                          [REPORTER reporter]
+                         [STDOUT_REPORTER reporter]
                          [OUTPUT_DIR dir]
                          [OUTPUT_PREFIX prefix]
                          [OUTPUT_SUFFIX suffix]
@@ -106,6 +107,13 @@ same as the Catch name; see also ``TEST_PREFIX`` and ``TEST_SUFFIX``.
     Use the specified reporter when running the test case. The reporter will
     be passed to the Catch executable as ``--reporter reporter``.
 
+  ``STDOUT_REPORTER reporter``
+    Use the specified reporter with its output directed to stdout, independently
+    of ``OUTPUT_DIR``. This can be combined with ``REPORTER`` to get console
+    output alongside per-test report files. Extended reporter specifications
+    such as ``console::colour-mode=ansi`` are accepted, but must not specify
+    their own ``out`` option.
+
   ``OUTPUT_DIR dir``
     If specified, the parameter is passed along as
     ``--out dir/<test_name>`` to Catch executable. The actual file name is the
@@ -171,7 +179,7 @@ function(catch_discover_tests TARGET)
   cmake_parse_arguments(
     ""
     "SKIP_IS_FAILURE;ADD_TAGS_AS_LABELS"
-    "TEST_PREFIX;TEST_SUFFIX;WORKING_DIRECTORY;TEST_LIST;REPORTER;OUTPUT_DIR;OUTPUT_PREFIX;OUTPUT_SUFFIX;DISCOVERY_MODE"
+    "TEST_PREFIX;TEST_SUFFIX;WORKING_DIRECTORY;TEST_LIST;REPORTER;STDOUT_REPORTER;OUTPUT_DIR;OUTPUT_PREFIX;OUTPUT_SUFFIX;DISCOVERY_MODE"
     "TEST_SPEC;EXTRA_ARGS;PROPERTIES;DL_PATHS;DL_FRAMEWORK_PATHS"
     ${ARGN}
   )
@@ -203,7 +211,7 @@ function(catch_discover_tests TARGET)
   endif()
 
   ## Generate a unique name based on the extra arguments
-  string(SHA1 args_hash "${_TEST_SPEC} ${_EXTRA_ARGS} ${_REPORTER} ${_OUTPUT_DIR} ${_OUTPUT_PREFIX} ${_OUTPUT_SUFFIX}")
+  string(SHA1 args_hash "${_TEST_SPEC} ${_EXTRA_ARGS} ${_REPORTER} ${_STDOUT_REPORTER} ${_OUTPUT_DIR} ${_OUTPUT_PREFIX} ${_OUTPUT_SUFFIX}")
   string(SUBSTRING ${args_hash} 0 7 args_hash)
 
   # Define rule to generate test list for aforementioned test executable
@@ -235,6 +243,7 @@ function(catch_discover_tests TARGET)
               -D "TEST_SUFFIX='${_TEST_SUFFIX}'"
               -D "TEST_LIST=${_TEST_LIST}"
               -D "TEST_REPORTER=${_REPORTER}"
+              -D "TEST_STDOUT_REPORTER=${_STDOUT_REPORTER}"
               -D "TEST_OUTPUT_DIR=${_OUTPUT_DIR}"
               -D "TEST_OUTPUT_PREFIX=${_OUTPUT_PREFIX}"
               -D "TEST_OUTPUT_SUFFIX=${_OUTPUT_SUFFIX}"
@@ -281,6 +290,7 @@ function(catch_discover_tests TARGET)
       "      TEST_SUFFIX"            " [==['" "${_TEST_SUFFIX}"            "']==]"   "\n"
       "      TEST_LIST"              " [==[" "${_TEST_LIST}"              "]==]"   "\n"
       "      TEST_REPORTER"          " [==[" "${_REPORTER}"               "]==]"   "\n"
+      "      TEST_STDOUT_REPORTER"   " [==[" "${_STDOUT_REPORTER}"        "]==]"   "\n"
       "      TEST_OUTPUT_DIR"        " [==[" "${_OUTPUT_DIR}"             "]==]"   "\n"
       "      TEST_OUTPUT_PREFIX"     " [==[" "${_OUTPUT_PREFIX}"          "]==]"   "\n"
       "      TEST_OUTPUT_SUFFIX"     " [==[" "${_OUTPUT_SUFFIX}"          "]==]"   "\n"

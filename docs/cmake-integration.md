@@ -123,6 +123,7 @@ catch_discover_tests(target
                      [PROPERTIES name1 value1...]
                      [TEST_LIST var]
                      [REPORTER reporter]
+                     [STDOUT_REPORTER reporter]
                      [OUTPUT_DIR dir]
                      [OUTPUT_PREFIX prefix]
                      [OUTPUT_SUFFIX suffix]
@@ -179,6 +180,26 @@ Note that this variable is only available in CTest.
 
 Use the specified reporter when running the test case. The reporter will
 be passed to the test runner as `--reporter reporter`.
+
+* `STDOUT_REPORTER reporter`
+
+> [Introduced](https://github.com/catchorg/Catch2/issues/2824) in Catch2 X.Y.Z.
+
+Use the specified reporter with its output directed to stdout, independently
+of `OUTPUT_DIR`. This can be combined with `REPORTER` to get console output
+alongside per-test report files:
+
+```cmake
+catch_discover_tests(tests
+    STDOUT_REPORTER console::colour-mode=ansi
+    REPORTER junit
+    OUTPUT_DIR reports
+    OUTPUT_SUFFIX .xml
+)
+```
+
+Extended reporter specifications are accepted, but must not specify their
+own `out` option.
 
 * `OUTPUT_DIR dir`
 

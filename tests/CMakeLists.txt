@@ -664,6 +664,16 @@ if(CATCH_ENABLE_CMAKE_HELPER_TESTS)
       LABELS "uses-python"
   )
 
+  add_test(NAME "CMakeHelper::DiscoverTestReporters"
+    COMMAND
+      Python3::Interpreter "${CMAKE_CURRENT_LIST_DIR}/TestScripts/DiscoverTests/VerifyReporters.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
+  )
+  set_tests_properties("CMakeHelper::DiscoverTestReporters"
+    PROPERTIES
+      COST 240
+      LABELS "uses-python"
+  )
+
   add_test(NAME "CMakeHelper::PrepareCommandFragment"
     COMMAND
       "${CMAKE_COMMAND}"
