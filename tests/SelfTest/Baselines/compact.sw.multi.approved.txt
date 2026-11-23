@@ -1915,6 +1915,7 @@ String.tests.cpp:<line number>: passed: std::strcmp( rawChars, "hello" ) == 0 fo
 String.tests.cpp:<line number>: passed: original == "original"
 String.tests.cpp:<line number>: passed: original.data()
 String.tests.cpp:<line number>: passed: original.begin() == copy.begin() for: "original string" == "original string"
+String.tests.cpp:<line number>: passed: original.data() == copy.data() for: "original string" == "original string"
 String.tests.cpp:<line number>: passed: original.begin() == copy.begin() for: "original string" == "original string"
 String.tests.cpp:<line number>: passed: ss.empty() == false for: false == false
 String.tests.cpp:<line number>: passed: ss.size() == 5 for: 5 == 5
@@ -1922,7 +1923,6 @@ String.tests.cpp:<line number>: passed: std::strncmp( ss.data(), "hello", 5 ) ==
 String.tests.cpp:<line number>: passed: ss == "hello" for: hello == "hello"
 String.tests.cpp:<line number>: passed: ss.size() == 6 for: 6 == 6
 String.tests.cpp:<line number>: passed: std::strcmp( ss.data(), "world!" ) == 0 for: 0 == 0
-String.tests.cpp:<line number>: passed: s.data() == s2.data() for: "hello world!" == "hello world!"
 String.tests.cpp:<line number>: passed: s.data() == ss.data() for: "hello world!" == "hello world!"
 String.tests.cpp:<line number>: passed: s.substr(s.size() + 1, 123).empty() for: true
 String.tests.cpp:<line number>: passed: std::strcmp(ss.data(), "world!") == 0 for: 0 == 0

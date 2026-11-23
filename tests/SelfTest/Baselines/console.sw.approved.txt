@@ -12263,6 +12263,11 @@ String.tests.cpp:<line number>: PASSED:
 with expansion:
   "original string" == "original string"
 
+String.tests.cpp:<line number>: PASSED:
+  REQUIRE( original.data() == copy.data() )
+with expansion:
+  "original string" == "original string"
+
 -------------------------------------------------------------------------------
 StringRef
   Copy assignment is shallow
@@ -12320,19 +12325,6 @@ String.tests.cpp:<line number>: PASSED:
   REQUIRE( std::strcmp( ss.data(), "world!" ) == 0 )
 with expansion:
   0 == 0
-
--------------------------------------------------------------------------------
-StringRef
-  Substrings
-  Pointer values of full refs should match
--------------------------------------------------------------------------------
-String.tests.cpp:<line number>
-...............................................................................
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( s.data() == s2.data() )
-with expansion:
-  "hello world!" == "hello world!"
 
 -------------------------------------------------------------------------------
 StringRef

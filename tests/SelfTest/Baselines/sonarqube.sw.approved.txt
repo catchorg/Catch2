@@ -369,7 +369,6 @@ at AssertionHandler.tests.cpp:<line number>
     <testCase name="StringRef/Substrings" duration="{duration}"/>
     <testCase name="StringRef/Substrings/zero-based substring" duration="{duration}"/>
     <testCase name="StringRef/Substrings/non-zero-based substring" duration="{duration}"/>
-    <testCase name="StringRef/Substrings/Pointer values of full refs should match" duration="{duration}"/>
     <testCase name="StringRef/Substrings/Pointer values of substring refs should also match" duration="{duration}"/>
     <testCase name="StringRef/Substrings/Past the end substring" duration="{duration}"/>
     <testCase name="StringRef/Substrings/Substring off the end are trimmed" duration="{duration}"/>

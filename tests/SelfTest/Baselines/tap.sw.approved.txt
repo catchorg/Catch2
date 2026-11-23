@@ -2936,6 +2936,8 @@ ok {test-number} - original.data()
 # StringRef
 ok {test-number} - original.begin() == copy.begin() for: "original string" == "original string"
 # StringRef
+ok {test-number} - original.data() == copy.data() for: "original string" == "original string"
+# StringRef
 ok {test-number} - original.begin() == copy.begin() for: "original string" == "original string"
 # StringRef
 ok {test-number} - ss.empty() == false for: false == false
@@ -2949,8 +2951,6 @@ ok {test-number} - ss == "hello" for: hello == "hello"
 ok {test-number} - ss.size() == 6 for: 6 == 6
 # StringRef
 ok {test-number} - std::strcmp( ss.data(), "world!" ) == 0 for: 0 == 0
-# StringRef
-ok {test-number} - s.data() == s2.data() for: "hello world!" == "hello world!"
 # StringRef
 ok {test-number} - s.data() == ss.data() for: "hello world!" == "hello world!"
 # StringRef

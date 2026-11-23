@@ -14430,7 +14430,15 @@ Message from section two
           "original string" == "original string"
         </Expanded>
       </Expression>
-      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Original>
+          original.data() == copy.data()
+        </Original>
+        <Expanded>
+          "original string" == "original string"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Copy assignment is shallow" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
@@ -14502,20 +14510,6 @@ Message from section two
         <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
       </Section>
       <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
-    </Section>
-    <Section name="Substrings" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Section name="Pointer values of full refs should match" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            s.data() == s2.data()
-          </Original>
-          <Expanded>
-            "hello world!" == "hello world!"
-          </Expanded>
-        </Expression>
-        <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
-      </Section>
-      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Substrings" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
       <Section name="Pointer values of substring refs should also match" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
