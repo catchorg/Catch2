@@ -19,7 +19,7 @@ struct UsesSentinel {
     using const_sentinel = std::nullptr_t;
 
     const_iterator begin() const { return nullptr; }
-    const_iterator end() const { return nullptr; }
+    const_sentinel end() const { return nullptr; }
 };
 
 TEST_CASE("Range type with sentinel") {
