@@ -129,6 +129,7 @@ catch_discover_tests(target
                      [DISCOVERY_MODE <POST_BUILD|PRE_TEST>]
                      [SKIP_IS_FAILURE]
                      [ADD_TAGS_AS_LABELS]
+                     [USE_STDOUT]
 )
 ```
 
@@ -230,6 +231,16 @@ Skipped tests will be marked as failed instead.
 * `ADD_TAGS_AS_LABELS`
 
 Add the tags from tests as labels to CTest.
+
+* `USE_STDOUT`
+
+> [Introduced](https://github.com/catchorg/Catch2/issues/3241) in Catch2 X.Y.Z
+
+Read the JSON test listing from stdout instead of a temporary file. Use
+`catch_discover_tests(tests USE_STDOUT)` when the executor cannot write to the
+host filesystem, for example with Emscripten's virtual filesystem. This works
+with both discovery modes. The executable must not print other output to stdout
+during discovery; leave this option off when static initialization prints there.
 
 
 ### `ParseAndAddCatchTests.cmake`
