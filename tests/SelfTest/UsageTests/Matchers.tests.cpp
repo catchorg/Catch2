@@ -477,7 +477,6 @@ TEST_CASE( "Floating point matchers: float", "[matchers][floating-point]" ) {
         REQUIRE_THAT( 0.f, WithinAbs( 1.f, 1 ) );
 
         REQUIRE_THAT( 0.f, !WithinAbs( 1.f, 0.99f ) );
-        REQUIRE_THAT( 0.f, !WithinAbs( 1.f, 0.99f ) );
 
         REQUIRE_THAT( 0.f, WithinAbs( -0.f, 0 ) );
 
@@ -489,14 +488,12 @@ TEST_CASE( "Floating point matchers: float", "[matchers][floating-point]" ) {
     SECTION( "ULPs" ) {
         REQUIRE_THAT( 1.f, WithinULP( 1.f, 0 ) );
         REQUIRE_THAT(-1.f, WithinULP( -1.f, 0 ) );
+        REQUIRE_THAT( -0.f, WithinULP( 0.f, 0 ) );
 
         REQUIRE_THAT( nextafter( 1.f, 2.f ), WithinULP( 1.f, 1 ) );
         REQUIRE_THAT( 0.f, WithinULP( nextafter( 0.f, 1.f ), 1 ) );
         REQUIRE_THAT( 1.f, WithinULP( nextafter( 1.f, 0.f ), 1 ) );
         REQUIRE_THAT( 1.f, !WithinULP( nextafter( 1.f, 2.f ), 0 ) );
-
-        REQUIRE_THAT( 1.f, WithinULP( 1.f, 0 ) );
-        REQUIRE_THAT( -0.f, WithinULP( 0.f, 0 ) );
     }
     SECTION( "Composed" ) {
         REQUIRE_THAT( 1.f, WithinAbs( 1.f, 0.5 ) || WithinULP( 1.f, 1 ) );
@@ -541,7 +538,6 @@ TEST_CASE( "Floating point matchers: double", "[matchers][floating-point]" ) {
         REQUIRE_THAT( 0., WithinAbs( 1., 1 ) );
 
         REQUIRE_THAT( 0., !WithinAbs( 1., 0.99 ) );
-        REQUIRE_THAT( 0., !WithinAbs( 1., 0.99 ) );
 
         REQUIRE_THAT( 11., !WithinAbs( 10., 0.5 ) );
         REQUIRE_THAT( 10., !WithinAbs( 11., 0.5 ) );
@@ -550,14 +546,12 @@ TEST_CASE( "Floating point matchers: double", "[matchers][floating-point]" ) {
     }
     SECTION( "ULPs" ) {
         REQUIRE_THAT( 1., WithinULP( 1., 0 ) );
+        REQUIRE_THAT(-0., WithinULP( 0., 0 ) );
 
         REQUIRE_THAT( nextafter( 1., 2. ), WithinULP( 1., 1 ) );
         REQUIRE_THAT( 0., WithinULP( nextafter( 0., 1. ), 1 ) );
         REQUIRE_THAT( 1., WithinULP( nextafter( 1., 0. ), 1 ) );
         REQUIRE_THAT( 1., !WithinULP( nextafter( 1., 2. ), 0 ) );
-
-        REQUIRE_THAT( 1., WithinULP( 1., 0 ) );
-        REQUIRE_THAT( -0., WithinULP( 0., 0 ) );
     }
     SECTION( "Composed" ) {
         REQUIRE_THAT( 1., WithinAbs( 1., 0.5 ) || WithinULP( 2., 1 ) );

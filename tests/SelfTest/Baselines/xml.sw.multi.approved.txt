@@ -5633,14 +5633,6 @@ Approx( 1.30000000000000004 )
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          0., !WithinAbs( 1., 0.99 )
-        </Original>
-        <Expanded>
-          0.0 not is within 0.98999999999999999 of 1.0
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
-        <Original>
           11., !WithinAbs( 10., 0.5 )
         </Original>
         <Expanded>
@@ -5671,7 +5663,7 @@ Approx( 1.30000000000000004 )
           -10.0 is within 0.5 of -9.59999999999999964
         </Expanded>
       </Expression>
-      <OverallResults successes="8" failures="0" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="7" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="ULPs" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -5680,6 +5672,14 @@ Approx( 1.30000000000000004 )
         </Original>
         <Expanded>
           1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          -0., WithinULP( 0., 0 )
+        </Original>
+        <Expanded>
+          -0.0 is within 0 ULPs of 0.0000000000000000e+00 ([0.0000000000000000e+00, 0.0000000000000000e+00])
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -5714,23 +5714,7 @@ Approx( 1.30000000000000004 )
           1.0 not is within 0 ULPs of 1.0000000000000002e+00 ([1.0000000000000002e+00, 1.0000000000000002e+00])
         </Expanded>
       </Expression>
-      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
-        <Original>
-          1., WithinULP( 1., 0 )
-        </Original>
-        <Expanded>
-          1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
-        <Original>
-          -0., WithinULP( 0., 0 )
-        </Original>
-        <Expanded>
-          -0.0 is within 0 ULPs of 0.0000000000000000e+00 ([0.0000000000000000e+00, 0.0000000000000000e+00])
-        </Expanded>
-      </Expression>
-      <OverallResults successes="7" failures="0" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="6" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Composed" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -5897,14 +5881,6 @@ Approx( 1.30000000000000004 )
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          0.f, !WithinAbs( 1.f, 0.99f )
-        </Original>
-        <Expanded>
-          0.0f not is within 0.99000000953674316 of 1.0
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
-        <Original>
           0.f, WithinAbs( -0.f, 0 )
         </Original>
         <Expanded>
@@ -5943,7 +5919,7 @@ Approx( 1.30000000000000004 )
           -10.0f is within 0.5 of -9.60000038146972656
         </Expanded>
       </Expression>
-      <OverallResults successes="9" failures="0" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="8" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="ULPs" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -5960,6 +5936,14 @@ Approx( 1.30000000000000004 )
         </Original>
         <Expanded>
           -1.0f is within 0 ULPs of -1.00000000e+00f ([-1.00000000e+00, -1.00000000e+00])
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          -0.f, WithinULP( 0.f, 0 )
+        </Original>
+        <Expanded>
+          -0.0f is within 0 ULPs of 0.00000000e+00f ([0.00000000e+00, 0.00000000e+00])
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -5994,23 +5978,7 @@ Approx( 1.30000000000000004 )
           1.0f not is within 0 ULPs of 1.00000012e+00f ([1.00000012e+00, 1.00000012e+00])
         </Expanded>
       </Expression>
-      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
-        <Original>
-          1.f, WithinULP( 1.f, 0 )
-        </Original>
-        <Expanded>
-          1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
-        <Original>
-          -0.f, WithinULP( 0.f, 0 )
-        </Original>
-        <Expanded>
-          -0.0f is within 0 ULPs of 0.00000000e+00f ([0.00000000e+00, 0.00000000e+00])
-        </Expanded>
-      </Expression>
-      <OverallResults successes="8" failures="0" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="7" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Composed" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -23651,6 +23619,6 @@ Approx( -1.95996398454005449 )
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2243" failures="158" expectedFailures="43" skips="12"/>
+  <OverallResults successes="2239" failures="158" expectedFailures="43" skips="12"/>
   <OverallResultsCases successes="336" failures="96" expectedFailures="18" skips="6"/>
 </Catch2TestRun>

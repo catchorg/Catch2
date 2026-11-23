@@ -4950,11 +4950,6 @@ with expansion:
   0.0 not is within 0.98999999999999999 of 1.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 0., !WithinAbs( 1., 0.99 ) )
-with expansion:
-  0.0 not is within 0.98999999999999999 of 1.0
-
-Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 11., !WithinAbs( 10., 0.5 ) )
 with expansion:
   11.0 not is within 0.5 of 10.0
@@ -4988,6 +4983,12 @@ with expansion:
   0000000000000000e+00])
 
 Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( -0., WithinULP( 0., 0 ) )
+with expansion:
+  -0.0 is within 0 ULPs of 0.0000000000000000e+00 ([0.0000000000000000e+00, 0.
+  0000000000000000e+00])
+
+Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( nextafter( 1., 2. ), WithinULP( 1., 1 ) )
 with expansion:
   1.00000000000000022 is within 1 ULPs of 1.0000000000000000e+00 ([9.
@@ -5010,18 +5011,6 @@ Matchers.tests.cpp:<line number>: PASSED:
 with expansion:
   1.0 not is within 0 ULPs of 1.0000000000000002e+00 ([1.0000000000000002e+00,
   1.0000000000000002e+00])
-
-Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1., WithinULP( 1., 0 ) )
-with expansion:
-  1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.
-  0000000000000000e+00])
-
-Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( -0., WithinULP( 0., 0 ) )
-with expansion:
-  -0.0 is within 0 ULPs of 0.0000000000000000e+00 ([0.0000000000000000e+00, 0.
-  0000000000000000e+00])
 
 -------------------------------------------------------------------------------
 Floating point matchers: double
@@ -5147,11 +5136,6 @@ with expansion:
   0.0f not is within 0.99000000953674316 of 1.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 0.f, !WithinAbs( 1.f, 0.99f ) )
-with expansion:
-  0.0f not is within 0.99000000953674316 of 1.0
-
-Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 0.f, WithinAbs( -0.f, 0 ) )
 with expansion:
   0.0f is within 0.0 of -0.0
@@ -5195,6 +5179,11 @@ with expansion:
   00])
 
 Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( -0.f, WithinULP( 0.f, 0 ) )
+with expansion:
+  -0.0f is within 0 ULPs of 0.00000000e+00f ([0.00000000e+00, 0.00000000e+00])
+
+Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( nextafter( 1.f, 2.f ), WithinULP( 1.f, 1 ) )
 with expansion:
   1.000000119f is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.
@@ -5215,16 +5204,6 @@ Matchers.tests.cpp:<line number>: PASSED:
 with expansion:
   1.0f not is within 0 ULPs of 1.00000012e+00f ([1.00000012e+00, 1.00000012e+
   00])
-
-Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1.f, WithinULP( 1.f, 0 ) )
-with expansion:
-  1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
-
-Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( -0.f, WithinULP( 0.f, 0 ) )
-with expansion:
-  -0.0f is within 0 ULPs of 0.00000000e+00f ([0.00000000e+00, 0.00000000e+00])
 
 -------------------------------------------------------------------------------
 Floating point matchers: float
@@ -20372,5 +20351,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  456 |  336 passed |  96 failed | 6 skipped | 18 failed as expected
-assertions: 2444 | 2243 passed | 158 failed | 43 failed as expected
+assertions: 2440 | 2239 passed | 158 failed | 43 failed as expected
 

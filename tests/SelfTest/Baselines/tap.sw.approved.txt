@@ -1247,8 +1247,6 @@ ok {test-number} - 0., WithinAbs( 1., 1 ) for: 0.0 is within 1.0 of 1.0
 # Floating point matchers: double
 ok {test-number} - 0., !WithinAbs( 1., 0.99 ) for: 0.0 not is within 0.98999999999999999 of 1.0
 # Floating point matchers: double
-ok {test-number} - 0., !WithinAbs( 1., 0.99 ) for: 0.0 not is within 0.98999999999999999 of 1.0
-# Floating point matchers: double
 ok {test-number} - 11., !WithinAbs( 10., 0.5 ) for: 11.0 not is within 0.5 of 10.0
 # Floating point matchers: double
 ok {test-number} - 10., !WithinAbs( 11., 0.5 ) for: 10.0 not is within 0.5 of 11.0
@@ -1259,6 +1257,8 @@ ok {test-number} - -10., WithinAbs( -9.6, 0.5 ) for: -10.0 is within 0.5 of -9.5
 # Floating point matchers: double
 ok {test-number} - 1., WithinULP( 1., 0 ) for: 1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
 # Floating point matchers: double
+ok {test-number} - -0., WithinULP( 0., 0 ) for: -0.0 is within 0 ULPs of 0.0000000000000000e+00 ([0.0000000000000000e+00, 0.0000000000000000e+00])
+# Floating point matchers: double
 ok {test-number} - nextafter( 1., 2. ), WithinULP( 1., 1 ) for: 1.00000000000000022 is within 1 ULPs of 1.0000000000000000e+00 ([9.9999999999999989e-01, 1.0000000000000002e+00])
 # Floating point matchers: double
 ok {test-number} - 0., WithinULP( nextafter( 0., 1. ), 1 ) for: 0.0 is within 1 ULPs of 4.9406564584124654e-324 ([0.0000000000000000e+00, 9.8813129168249309e-324])
@@ -1266,10 +1266,6 @@ ok {test-number} - 0., WithinULP( nextafter( 0., 1. ), 1 ) for: 0.0 is within 1 
 ok {test-number} - 1., WithinULP( nextafter( 1., 0. ), 1 ) for: 1.0 is within 1 ULPs of 9.9999999999999989e-01 ([9.9999999999999978e-01, 1.0000000000000000e+00])
 # Floating point matchers: double
 ok {test-number} - 1., !WithinULP( nextafter( 1., 2. ), 0 ) for: 1.0 not is within 0 ULPs of 1.0000000000000002e+00 ([1.0000000000000002e+00, 1.0000000000000002e+00])
-# Floating point matchers: double
-ok {test-number} - 1., WithinULP( 1., 0 ) for: 1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
-# Floating point matchers: double
-ok {test-number} - -0., WithinULP( 0., 0 ) for: -0.0 is within 0 ULPs of 0.0000000000000000e+00 ([0.0000000000000000e+00, 0.0000000000000000e+00])
 # Floating point matchers: double
 ok {test-number} - 1., WithinAbs( 1., 0.5 ) || WithinULP( 2., 1 ) for: 1.0 ( is within 0.5 of 1.0 or is within 1 ULPs of 2.0000000000000000e+00 ([1.9999999999999998e+00, 2.0000000000000004e+00]) )
 # Floating point matchers: double
@@ -1307,8 +1303,6 @@ ok {test-number} - 0.f, WithinAbs( 1.f, 1 ) for: 0.0f is within 1.0 of 1.0
 # Floating point matchers: float
 ok {test-number} - 0.f, !WithinAbs( 1.f, 0.99f ) for: 0.0f not is within 0.99000000953674316 of 1.0
 # Floating point matchers: float
-ok {test-number} - 0.f, !WithinAbs( 1.f, 0.99f ) for: 0.0f not is within 0.99000000953674316 of 1.0
-# Floating point matchers: float
 ok {test-number} - 0.f, WithinAbs( -0.f, 0 ) for: 0.0f is within 0.0 of -0.0
 # Floating point matchers: float
 ok {test-number} - 11.f, !WithinAbs( 10.f, 0.5f ) for: 11.0f not is within 0.5 of 10.0
@@ -1323,6 +1317,8 @@ ok {test-number} - 1.f, WithinULP( 1.f, 0 ) for: 1.0f is within 0 ULPs of 1.0000
 # Floating point matchers: float
 ok {test-number} - -1.f, WithinULP( -1.f, 0 ) for: -1.0f is within 0 ULPs of -1.00000000e+00f ([-1.00000000e+00, -1.00000000e+00])
 # Floating point matchers: float
+ok {test-number} - -0.f, WithinULP( 0.f, 0 ) for: -0.0f is within 0 ULPs of 0.00000000e+00f ([0.00000000e+00, 0.00000000e+00])
+# Floating point matchers: float
 ok {test-number} - nextafter( 1.f, 2.f ), WithinULP( 1.f, 1 ) for: 1.000000119f is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00])
 # Floating point matchers: float
 ok {test-number} - 0.f, WithinULP( nextafter( 0.f, 1.f ), 1 ) for: 0.0f is within 1 ULPs of 1.40129846e-45f ([0.00000000e+00, 2.80259693e-45])
@@ -1330,10 +1326,6 @@ ok {test-number} - 0.f, WithinULP( nextafter( 0.f, 1.f ), 1 ) for: 0.0f is withi
 ok {test-number} - 1.f, WithinULP( nextafter( 1.f, 0.f ), 1 ) for: 1.0f is within 1 ULPs of 9.99999940e-01f ([9.99999881e-01, 1.00000000e+00])
 # Floating point matchers: float
 ok {test-number} - 1.f, !WithinULP( nextafter( 1.f, 2.f ), 0 ) for: 1.0f not is within 0 ULPs of 1.00000012e+00f ([1.00000012e+00, 1.00000012e+00])
-# Floating point matchers: float
-ok {test-number} - 1.f, WithinULP( 1.f, 0 ) for: 1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
-# Floating point matchers: float
-ok {test-number} - -0.f, WithinULP( 0.f, 0 ) for: -0.0f is within 0 ULPs of 0.00000000e+00f ([0.00000000e+00, 0.00000000e+00])
 # Floating point matchers: float
 ok {test-number} - 1.f, WithinAbs( 1.f, 0.5 ) || WithinULP( 1.f, 1 ) for: 1.0f ( is within 0.5 of 1.0 or is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00]) )
 # Floating point matchers: float
@@ -4907,5 +4899,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2456
+1..2452
 
