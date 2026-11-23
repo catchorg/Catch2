@@ -11,7 +11,7 @@
 [Sending output to a file](#sending-output-to-a-file)<br>
 [Naming a test run](#naming-a-test-run)<br>
 [Eliding assertions expected to throw](#eliding-assertions-expected-to-throw)<br>
-[Make whitespace visible](#make-whitespace-visible)<br>
+[Make control characters visible](#make-control-characters-visible)<br>
 [Warnings](#warnings)<br>
 [Reporting timings](#reporting-timings)<br>
 [Load test names to run from a file](#load-test-names-to-run-from-a-file)<br>
@@ -342,11 +342,16 @@ Sometimes exceptions are expected outside of one of the assertions that tests fo
 When running with this option any throw checking assertions are skipped so as not to contribute additional noise. Be careful if this affects the behaviour of subsequent tests.
 
 <a id="invisibles"></a>
-## Make whitespace visible
+## Make control characters visible
 <pre>-i, --invisibles</pre>
 
-If a string comparison fails due to differences in whitespace - especially leading or trailing whitespace - it can be hard to see what's going on.
-This option transforms tabs and newline characters into ```\t``` and ```\n``` respectively when printing.
+If a string comparison fails due to differences in whitespace or other control
+characters, it can be hard to see what's going on. This option displays ASCII
+control characters as escape sequences when printing strings. It uses the
+standard short escapes, such as `\0`, `\a`, `\t`, and `\n`, and `\xNN` for the
+remaining control bytes, including DEL (`\x7f`). Non-ASCII bytes are preserved.
+
+> Escaping all ASCII control characters was [introduced](https://github.com/catchorg/Catch2/issues/1928) in Catch2 X.Y.Z.
 
 <a id="warnings"></a>
 ## Warnings

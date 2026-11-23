@@ -46,6 +46,30 @@ TEST_CASE("convertIntoString stringification helper", "[toString][approvals]") {
         CHECK(convertIntoString("ab\fcd"_sr, true) == R"("ab\fcd")"s);
         CHECK(convertIntoString("ab\"cd"_sr, true) == R"("ab"cd")"s);
     }
+    SECTION("All ASCII control bytes can be made visible") {
+        char const* const escapes[] = {
+            "\\0", "\\x01", "\\x02", "\\x03", "\\x04", "\\x05", "\\x06", "\\a",
+            "\\b", "\\t", "\\n", "\\v", "\\f", "\\r", "\\x0e", "\\x0f",
+            "\\x10", "\\x11", "\\x12", "\\x13", "\\x14", "\\x15", "\\x16", "\\x17",
+            "\\x18", "\\x19", "\\x1a", "\\x1b", "\\x1c", "\\x1d", "\\x1e", "\\x1f"
+        };
+        for ( unsigned int i = 0; i < 32; ++i ) {
+            CAPTURE( i );
+            std::string const input( 1, static_cast<char>( i ) );
+            CHECK( convertIntoString( input, true ) == "\""s + escapes[i] + "\"" );
+            CHECK( convertIntoString( input, false ) == "\""s + input + "\"" );
+        }
+        CHECK( convertIntoString( "\x7f"_sr, true ) == R"("\x7f")"s );
+        CHECK( convertIntoString( "\x7f"_sr, false ) == "\"\x7f\""s );
+    }
+    SECTION("Embedded controls are escaped without changing surrounding text") {
+        CHECK( convertIntoString( "a\0\a\b\v\x1b\x7fz"_sr, true ) ==
+               R"("a\0\a\b\v\x1b\x7fz")"s );
+        CHECK( convertIntoString( " ~\x80\xc3\xa9"_sr, true ) ==
+               "\" ~\x80\xc3\xa9\""s );
+        CHECK( convertIntoString( R"(\0 \x1b "quoted")"_sr, true ) ==
+               R"("\0 \x1b "quoted"")"s );
+    }
 }
 
 TEMPLATE_TEST_CASE( "Stringifying char arrays with statically known sizes",
