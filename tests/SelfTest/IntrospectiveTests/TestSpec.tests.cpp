@@ -58,6 +58,7 @@ TEST_CASE( "Parse test names and tags", "[command-line][test-spec][approvals]" )
         CHECK( spec.hasFilters() == true );
         CHECK( spec.matches( *tcA ) == false );
         CHECK( spec.matches( *tcB ) == true );
+        CHECK( spec.matches( *tcC ) == false );
     }
 
     SECTION( "Test spec from quoted name should have one filter" ) {
@@ -65,14 +66,6 @@ TEST_CASE( "Parse test names and tags", "[command-line][test-spec][approvals]" )
         CHECK( spec.hasFilters() == true );
         CHECK( spec.matches( *tcA ) == false );
         CHECK( spec.matches( *tcB ) == true );
-    }
-
-    SECTION( "Test spec from name should have one filter" ) {
-        TestSpec spec = parseTestSpec( "b" );
-        CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( *tcA ) == false );
-        CHECK( spec.matches( *tcB ) == true );
-        CHECK( spec.matches( *tcC ) == false );
     }
 
     SECTION( "Wildcard at the start" ) {
