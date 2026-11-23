@@ -132,6 +132,29 @@ namespace Catch {
         // This was added in C++20, but we require only C++14 for now.
         template <typename T>
         using RemoveCVRef_t = std::remove_cv_t<std::remove_reference_t<T>>;
+
+        // Perform ordinary lookup before decomposition operators can hide
+        // global user-defined comparisons. Decomposition uses lvalues.
+#define CATCH_INTERNAL_COMPARISON_HELPERS(id, op)                             \
+    template <typename L, typename R>                                        \
+    constexpr bool compare_##id(L& lhs, R& rhs) {                            \
+        return static_cast<bool>(lhs op rhs);                                \
+    }                                                                       \
+    template <typename T>                                                    \
+    constexpr bool compare_##id##_zero(T& lhs) {                             \
+        return static_cast<bool>(lhs op 0);                                  \
+    }                                                                       \
+    template <typename T>                                                    \
+    constexpr bool compare_zero_##id(T& rhs) {                               \
+        return static_cast<bool>(0 op rhs);                                  \
+    }
+        CATCH_INTERNAL_COMPARISON_HELPERS(eq, ==)
+        CATCH_INTERNAL_COMPARISON_HELPERS(ne, !=)
+        CATCH_INTERNAL_COMPARISON_HELPERS(lt, <)
+        CATCH_INTERNAL_COMPARISON_HELPERS(le, <=)
+        CATCH_INTERNAL_COMPARISON_HELPERS(gt, >)
+        CATCH_INTERNAL_COMPARISON_HELPERS(ge, >=)
+#undef CATCH_INTERNAL_COMPARISON_HELPERS
     }
 
     // Note: This is about as much as we can currently reasonably support.
@@ -294,7 +317,7 @@ namespace Catch {
                                 Detail::negation<capture_by_value<             \
                                     Detail::RemoveCVRef_t<RhsT>>>>::value,     \
             BinaryExpr<LhsT, RhsT const&>> {                                   \
-        return { static_cast<bool>( lhs.getLhs() op rhs ),                     \
+        return { Detail::compare_##id( lhs.getLhs(), rhs ),                    \
                  lhs.getLhs(),                                                 \
                  #op##_sr,                                                     \
                  rhs };                                                        \
@@ -305,7 +328,7 @@ namespace Catch {
             Detail::conjunction<Detail::is_##id##_comparable<LhsT, RhsT>,      \
                                 capture_by_value<RhsT>>::value,                \
             BinaryExpr<LhsT, RhsT>> {                                          \
-        return { static_cast<bool>( lhs.getLhs() op rhs ),                     \
+        return { Detail::compare_##id( lhs.getLhs(), rhs ),                    \
                  lhs.getLhs(),                                                 \
                  #op##_sr,                                                     \
                  rhs };                                                        \
@@ -322,7 +345,7 @@ namespace Catch {
                                     std::is_same<RhsT, long>>>::value,         \
             BinaryExpr<LhsT, RhsT>> {                                          \
         if ( rhs != 0 ) { throw_test_failure_exception(); }                    \
-        return { static_cast<bool>( lhs.getLhs() op 0 ),                       \
+        return { Detail::compare_##id##_zero( lhs.getLhs() ),                  \
                  lhs.getLhs(),                                                 \
                  #op##_sr,                                                     \
                  rhs };                                                        \
@@ -339,7 +362,7 @@ namespace Catch {
                                     std::is_same<LhsT, long>>>::value,         \
             BinaryExpr<LhsT, RhsT>> {                                          \
         if ( lhs.getLhs() != 0 ) { throw_test_failure_exception(); }           \
-        return { static_cast<bool>( 0 op rhs ), lhs.getLhs(), #op##_sr, rhs }; \
+        return { Detail::compare_zero_##id( rhs ), lhs.getLhs(), #op##_sr, rhs }; \
     }
 
     CATCH_INTERNAL_DEFINE_EXPRESSION_EQUALITY_OPERATOR( eq, == )
@@ -355,7 +378,7 @@ namespace Catch {
                                 Detail::negation<capture_by_value<             \
                                     Detail::RemoveCVRef_t<RhsT>>>>::value,     \
             BinaryExpr<LhsT, RhsT const&>> {                                   \
-        return { static_cast<bool>( lhs.getLhs() op rhs ),                     \
+        return { Detail::compare_##id( lhs.getLhs(), rhs ),                    \
                  lhs.getLhs(),                                                 \
                  #op##_sr,                                                     \
                  rhs };                                                        \
@@ -366,7 +389,7 @@ namespace Catch {
             Detail::conjunction<Detail::is_##id##_comparable<LhsT, RhsT>,      \
                                 capture_by_value<RhsT>>::value,                \
             BinaryExpr<LhsT, RhsT>> {                                          \
-        return { static_cast<bool>( lhs.getLhs() op rhs ),                     \
+        return { Detail::compare_##id( lhs.getLhs(), rhs ),                    \
                  lhs.getLhs(),                                                 \
                  #op##_sr,                                                     \
                  rhs };                                                        \
@@ -380,7 +403,7 @@ namespace Catch {
                 std::is_same<RhsT, int>>::value,                               \
             BinaryExpr<LhsT, RhsT>> {                                          \
         if ( rhs != 0 ) { throw_test_failure_exception(); }                    \
-        return { static_cast<bool>( lhs.getLhs() op 0 ),                       \
+        return { Detail::compare_##id##_zero( lhs.getLhs() ),                  \
                  lhs.getLhs(),                                                 \
                  #op##_sr,                                                     \
                  rhs };                                                        \
@@ -394,7 +417,7 @@ namespace Catch {
                 std::is_same<LhsT, int>>::value,                               \
             BinaryExpr<LhsT, RhsT>> {                                          \
         if ( lhs.getLhs() != 0 ) { throw_test_failure_exception(); }           \
-        return { static_cast<bool>( 0 op rhs ), lhs.getLhs(), #op##_sr, rhs }; \
+        return { Detail::compare_zero_##id( rhs ), lhs.getLhs(), #op##_sr, rhs }; \
     }
 
     CATCH_INTERNAL_DEFINE_EXPRESSION_COMPARISON_OPERATOR( lt, < )
