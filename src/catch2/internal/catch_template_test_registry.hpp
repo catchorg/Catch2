@@ -8,11 +8,25 @@
 #ifndef CATCH_TEMPLATE_TEST_REGISTRY_HPP_INCLUDED
 #define CATCH_TEMPLATE_TEST_REGISTRY_HPP_INCLUDED
 
+#include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 #include <catch2/internal/catch_test_registry.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_preprocessor.hpp>
 #include <catch2/internal/catch_meta.hpp>
 #include <catch2/internal/catch_unique_name.hpp>
+
+#if defined( CATCH_CONFIG_TEMPLATE_LIST_TEST_CASE_SUFFIX )
+#    define INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_NAME( Name, Type, TmplList, Index ) \
+        Name " - " + std::string( ( CATCH_CONFIG_TEMPLATE_LIST_TEST_CASE_SUFFIX( \
+            Type, INTERNAL_CATCH_STRINGIZE( TmplList ), std::size_t{ Index } ) ) )
+#    define INTERNAL_CATCH_REGISTER_TEMPLATE_LIST( Registrar ) \
+        CATCH_TRY { Registrar.reg_tests(); } \
+        CATCH_CATCH_ALL { ::Catch::getMutableRegistryHub().registerStartupException(); }
+#else
+#    define INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_NAME( Name, Type, TmplList, Index ) \
+        Name " - " INTERNAL_CATCH_STRINGIZE( TmplList ) " - " + std::to_string( Index )
+#    define INTERNAL_CATCH_REGISTER_TEMPLATE_LIST( Registrar ) Registrar.reg_tests();
+#endif
 
 
 // GCC 5 and older do not properly handle disabling unused-variable warning
@@ -182,13 +196,13 @@
             void reg_tests() {                                          \
                 size_t index = 0;                                    \
                 using expander = size_t[];                           \
-                (void)expander{(Catch::AutoReg( &TestFunc<Types>, CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ Name " - " INTERNAL_CATCH_STRINGIZE(TmplList) " - " + std::to_string(index), Tags } ), index++)... };/* NOLINT */\
+                (void)expander{(Catch::AutoReg( &TestFunc<Types>, CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_NAME( Name, Types, TmplList, index ), Tags } ), index++)... };/* NOLINT */\
             }                                                     \
         };\
         static const int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){ \
                 using TestInit = typename convert<TestName, TmplList>::type; \
                 TestInit t;                                           \
-                t.reg_tests();                                        \
+                INTERNAL_CATCH_REGISTER_TEMPLATE_LIST( t )            \
                 return 0;                                             \
             }();                                                      \
         }}\
@@ -318,13 +332,13 @@
             void reg_tests(){\
                 size_t index = 0;\
                 using expander = size_t[];\
-                (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestName<Types>::test ), CATCH_INTERNAL_LINEINFO, #ClassName##_catch_sr, Catch::NameAndTags{ Name " - " INTERNAL_CATCH_STRINGIZE(TmplList) " - " + std::to_string(index), Tags } ), index++)... };/* NOLINT */ \
+                (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestName<Types>::test ), CATCH_INTERNAL_LINEINFO, #ClassName##_catch_sr, Catch::NameAndTags{ INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_NAME( Name, Types, TmplList, index ), Tags } ), index++)... };/* NOLINT */ \
             }\
         };\
         static const int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){\
             using TestInit = typename convert<TestNameClass, TmplList>::type;\
             TestInit t;\
-            t.reg_tests();\
+            INTERNAL_CATCH_REGISTER_TEMPLATE_LIST( t ) \
             return 0;\
         }(); \
     }}\

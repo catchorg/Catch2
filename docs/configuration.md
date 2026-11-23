@@ -3,6 +3,7 @@
 
 **Contents**<br>
 [Prefixing Catch macros](#prefixing-catch-macros)<br>
+[Naming tests from type lists](#naming-tests-from-type-lists)<br>
 [Terminal colour](#terminal-colour)<br>
 [Console width](#console-width)<br>
 [stdout](#stdout)<br>
@@ -33,6 +34,40 @@ with the same name.
 
 To keep test code clean and uncluttered Catch uses short macro names (e.g. ```TEST_CASE``` and ```REQUIRE```). Occasionally these may conflict with identifiers from platform headers or the system under test. In this case the above identifier can be defined. This will cause all the Catch user macros to be prefixed with ```CATCH_``` (e.g. ```CATCH_TEST_CASE``` and ```CATCH_REQUIRE```).
 
+
+## Naming tests from type lists
+
+> [Introduced](https://github.com/catchorg/Catch2/issues/2542) in Catch2 X.Y.Z
+
+`TEMPLATE_LIST_TEST_CASE` and `TEMPLATE_LIST_TEST_CASE_METHOD` add
+` - <type list name> - <index>` to each test name by default.
+
+To customize the suffix, define
+`CATCH_CONFIG_TEMPLATE_LIST_TEST_CASE_SUFFIX(Type, ListName, Index)` before
+including Catch2 headers in the translation unit that defines the tests.
+`Type` is the current C++ type, `ListName` is the stringified type list
+argument, and `Index` is the zero-based position as a `std::size_t` value.
+The macro expands to an expression from which Catch2 constructs a `std::string`
+during static test registration. Catch2 appends the resulting string after ` - `.
+Use distinct suffixes for entries in the same test, including repeated types.
+
+```cpp
+#define CATCH_CONFIG_TEMPLATE_LIST_TEST_CASE_SUFFIX(Type, ListName, Index) \
+    testTypeName<Type>()
+#include <catch2/catch_template_test_macros.hpp>
+#include <tuple>
+
+template <typename T> char const* testTypeName();
+template <> char const* testTypeName<int>() { return "int"; }
+template <> char const* testTypeName<double>() { return "double"; }
+
+using MyTypes = std::tuple<int, double>;
+TEMPLATE_LIST_TEST_CASE("Arithmetic", "[arithmetic]", MyTypes) {
+    REQUIRE(TestType{2} + TestType{2} == TestType{4});
+}
+```
+
+This registers `Arithmetic - int` and `Arithmetic - double`.
 
 ## Terminal colour
 

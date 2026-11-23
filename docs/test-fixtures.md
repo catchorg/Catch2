@@ -275,6 +275,10 @@ Catch2 also provides `TEMPLATE_LIST_TEST_CASE_METHOD` to support template fixtur
 template type lists like `std::tuple`, `boost::mpl::list` or `boost::mp11::mp_list`. This test case works the same as `TEMPLATE_TEST_CASE_METHOD`,
 only difference is the source of types. This allows you to reuse the template type list in multiple test cases.
 
+See the "Naming tests from type lists" section of the
+[compile-time configuration guide](configuration.md#top) to customize the
+suffix added to each registered test name.
+
 Example:
 ```cpp
 using MyTypes = std::tuple<int, char, double>;
