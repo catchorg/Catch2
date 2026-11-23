@@ -55,7 +55,7 @@ TEST_CASE("replaceInPlace", "[string-manip]") {
     }
     SECTION("replace no chars") {
         CHECK_FALSE(Catch::replaceInPlace(letters, "x", "z"));
-        CHECK(letters == letters);
+        CHECK( letters == "abcdefcg" );
     }
     SECTION("no replace in already-replaced string") {
         SECTION("lengthening") {

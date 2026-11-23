@@ -4514,7 +4514,7 @@ ok {test-number} - letters == "replaced" for: "replaced" == "replaced"
 # replaceInPlace
 ok {test-number} - !(Catch::replaceInPlace(letters, "x", "z")) for: !false
 # replaceInPlace
-ok {test-number} - letters == letters for: "abcdefcg" == "abcdefcg"
+ok {test-number} - letters == "abcdefcg" for: "abcdefcg" == "abcdefcg"
 # replaceInPlace
 ok {test-number} - Catch::replaceInPlace(letters, "c", "cc") for: true
 # replaceInPlace

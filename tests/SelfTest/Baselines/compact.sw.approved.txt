@@ -2803,7 +2803,7 @@ StringManip.tests.cpp:<line number>: passed: letters == "abcdefcz" for: "abcdefc
 StringManip.tests.cpp:<line number>: passed: Catch::replaceInPlace(letters, letters, "replaced") for: true
 StringManip.tests.cpp:<line number>: passed: letters == "replaced" for: "replaced" == "replaced"
 StringManip.tests.cpp:<line number>: passed: !(Catch::replaceInPlace(letters, "x", "z")) for: !false
-StringManip.tests.cpp:<line number>: passed: letters == letters for: "abcdefcg" == "abcdefcg"
+StringManip.tests.cpp:<line number>: passed: letters == "abcdefcg" for: "abcdefcg" == "abcdefcg"
 StringManip.tests.cpp:<line number>: passed: Catch::replaceInPlace(letters, "c", "cc") for: true
 StringManip.tests.cpp:<line number>: passed: letters == "abccdefccg" for: "abccdefccg" == "abccdefccg"
 StringManip.tests.cpp:<line number>: passed: Catch::replaceInPlace(s, "--", "-") for: true

@@ -21795,7 +21795,7 @@ Approx( -1.95996398454005449 )
       </Expression>
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
         <Original>
-          letters == letters
+          letters == "abcdefcg"
         </Original>
         <Expanded>
           "abcdefcg" == "abcdefcg"

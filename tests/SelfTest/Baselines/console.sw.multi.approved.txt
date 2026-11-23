@@ -18743,7 +18743,7 @@ with expansion:
   !false
 
 StringManip.tests.cpp:<line number>: PASSED:
-  CHECK( letters == letters )
+  CHECK( letters == "abcdefcg" )
 with expansion:
   "abcdefcg" == "abcdefcg"
 
