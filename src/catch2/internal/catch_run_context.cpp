@@ -811,8 +811,8 @@ namespace Catch {
     void RunContext::handleUnfinishedSections() {
         // If sections ended prematurely due to an exception we stored their
         // infos here so we can tear them down outside the unwind process.
-        for ( auto it = m_unfinishedSections.rbegin(),
-                   itEnd = m_unfinishedSections.rend();
+        for ( auto it = m_unfinishedSections.begin(),
+                   itEnd = m_unfinishedSections.end();
               it != itEnd;
               ++it ) {
             sectionEnded( CATCH_MOVE( *it ) );
