@@ -72,6 +72,7 @@
 #include <catch2/internal/catch_errno_guard.hpp>
 #include <catch2/internal/catch_exception_translator_registry.hpp>
 #include <catch2/internal/catch_fatal_condition_handler.hpp>
+#include <catch2/internal/catch_flag_enum.hpp>
 #include <catch2/internal/catch_floating_point_helpers.hpp>
 #include <catch2/internal/catch_getenv.hpp>
 #include <catch2/internal/catch_is_permutation.hpp>

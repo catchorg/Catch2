@@ -99,6 +99,7 @@ internal_headers = [
   'internal/catch_errno_guard.hpp',
   'internal/catch_exception_translator_registry.hpp',
   'internal/catch_fatal_condition_handler.hpp',
+  'internal/catch_flag_enum.hpp',
   'internal/catch_floating_point_helpers.hpp',
   'internal/catch_getenv.hpp',
   'internal/catch_istream.hpp',

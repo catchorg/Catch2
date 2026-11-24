@@ -92,6 +92,7 @@ set(IMPL_HEADERS
   ${SOURCES_DIR}/internal/catch_errno_guard.hpp
   ${SOURCES_DIR}/internal/catch_exception_translator_registry.hpp
   ${SOURCES_DIR}/internal/catch_fatal_condition_handler.hpp
+  ${SOURCES_DIR}/internal/catch_flag_enum.hpp
   ${SOURCES_DIR}/internal/catch_floating_point_helpers.hpp
   ${SOURCES_DIR}/internal/catch_getenv.hpp
   ${SOURCES_DIR}/internal/catch_istream.hpp
