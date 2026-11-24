@@ -8,6 +8,8 @@
 #ifndef CATCH_RESULT_TYPE_HPP_INCLUDED
 #define CATCH_RESULT_TYPE_HPP_INCLUDED
 
+#include <catch2/internal/catch_flag_enum.hpp>
+
 namespace Catch {
 
     // ResultWas::OfType enum
@@ -40,7 +42,7 @@ namespace Catch {
 
 
     // ResultDisposition::Flags enum
-    struct ResultDisposition { enum [[clang::flag_enum]] Flags {
+    struct ResultDisposition { enum CATCH_ATTR_FLAG_ENUM Flags {
         Normal = 0x01,
 
         ContinueOnFailure = 0x02,   // Failures fail test, but execution continues
