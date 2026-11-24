@@ -110,9 +110,7 @@ int main( int argc, char* argv[] ) {
   return session.run();
 }
 ```
-
-See the [Clara documentation](https://github.com/catchorg/Clara/blob/master/README.md)
-for more details on how to use the Clara parser.
+See the [Clara documentation](clara.md)
 
 
 ## Version detection
