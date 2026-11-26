@@ -25,4 +25,6 @@ with tempfile.TemporaryDirectory(prefix='catch shard tests ') as directory:
     ], check=True, capture_output=True, text=True)
     tests = json.loads(listing.stdout)['tests']
     assert len(tests) == 1, tests
-    assert tests[0].get('command', [None])[0] == str(binary), tests
+    command = tests[0].get('command', [])
+    assert command, tests
+    assert pathlib.Path(command[0]) == binary, tests
