@@ -51,6 +51,7 @@ function(add_warnings_to_targets targets)
       "-Wdangling"
       "-Wdeprecated"
       "-Wdeprecated-register"
+      "-Wdouble-promotion"
       "-Wexceptions"
       "-Wexit-time-destructors"
       "-Wextra"
