@@ -1,0 +1,9 @@
+### Python template
+build/
+eggs/
+.eggs/
+*.egg-info/
+*.egg
+
+# Sphinx documentation
+_build/
