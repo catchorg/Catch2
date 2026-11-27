@@ -297,7 +297,9 @@ function(catch_discover_tests_impl)
     COMMAND ${_TEST_EXECUTOR} "${_TEST_EXECUTABLE}" ${spec}
       --list-tests
       --reporter "json::verbosity=${_Verbosity}"
-      --out "${listing_output_path}"
+      # Keep the path in the same argument: a Windows executable run under
+      # Wine treats the leading '/' of the temp path as an option prefix.
+      "--out=${listing_output_path}"
       --order lex # Make sure the output order, and thus test registration order, is consistent across runs.
     OUTPUT_VARIABLE listing_output
     RESULT_VARIABLE result

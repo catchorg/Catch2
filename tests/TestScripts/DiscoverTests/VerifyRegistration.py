@@ -107,12 +107,26 @@ def get_ctest_listing(build_path):
     old_path = os.getcwd()
     os.chdir(build_path)
 
+    # `catch_discover_tests` takes its listing temp file from XDG_RUNTIME_DIR,
+    # TMPDIR, TMP, or TEMP. Point it at a '/'-rooted path so the Windows
+    # argument parsing emulated by windows-arg-emulator.py is exercised on
+    # every platform.
+    temp_root = os.path.abspath(build_path)
+    if os.name == 'nt':
+        drive, tail = os.path.splitdrive(temp_root)
+        temp_root = tail.replace('\\', '/') if len(drive) == 2 else None
+    env = os.environ.copy()
+    if temp_root:
+        env.pop('XDG_RUNTIME_DIR', None)
+        env['TMPDIR'] = temp_root
+
     cmd = ['ctest', '-C', 'debug', '--show-only=json-v1']
     try:
         result = subprocess.run(cmd,
                                 capture_output = True,
                                 check = True,
-                                text = True)
+                                text = True,
+                                env = env)
     except subprocess.CalledProcessError as err:
         print('Error when getting output from CTest')
         print(f'cmd: {err.cmd}')
@@ -129,12 +143,13 @@ def extract_tests_from_ctest(ctest_output) -> List[TestInfo]:
     test_infos = []
     for test in tests:
         test_command = test['command']
-        # First part of the command is the binary, second is the filter,
-        # third is the `--order decl` arg for faster startup.
-        # If there are less, registration has failed. If there are more,
-        # registration has changed and the script needs updating.
-        assert len(test_command) == 3, test_command
-        test_name = test_command[1]
+        # The command starts with the binary, optionally prefixed by the
+        # cross-compiling emulator. The filter and the `--order decl` arg for
+        # faster startup are always the last two elements. If there are less,
+        # registration has failed.
+        assert len(test_command) >= 3, test_command
+        assert test_command[-1] == '--order decl', test_command
+        test_name = test_command[-2]
         labels = []
         for prop in test['properties']:
             if prop['name'] == 'LABELS':
