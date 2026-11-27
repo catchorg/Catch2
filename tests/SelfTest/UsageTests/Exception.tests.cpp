@@ -181,7 +181,6 @@ TEST_CASE( "Exception messages can be tested for", "[!throws]" ) {
 TEST_CASE( "Mismatching exception messages failing the test", "[.][failing][!throws]" ) {
     REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
     REQUIRE_THROWS_WITH( thisThrows(), "should fail" );
-    REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
 }
 
 TEST_CASE( "#748 - captures with unexpected exceptions", "[.][failing][!throws][!shouldfail]" ) {

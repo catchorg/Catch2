@@ -28,8 +28,6 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
 
         auto rawChars = s.data();
         REQUIRE( std::strcmp( rawChars, "hello" ) == 0 );
-
-        REQUIRE(s.data() == rawChars);
     }
     SECTION( "From sub-string" ) {
         StringRef original = StringRef( "original string" ).substr(0, 8);
@@ -41,6 +39,7 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
         StringRef original = StringRef( "original string" );
         StringRef copy = original;
         REQUIRE(original.begin() == copy.begin());
+        REQUIRE( original.data() == copy.data() );
     }
     SECTION( "Copy assignment is shallow" ) {
         StringRef original = StringRef( "original string" );
@@ -64,11 +63,6 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
             ss = s.substr( 6, 6 );
             REQUIRE( ss.size() == 6 );
             REQUIRE( std::strcmp( ss.data(), "world!" ) == 0 );
-        }
-
-        SECTION( "Pointer values of full refs should match" ) {
-            StringRef s2 = s;
-            REQUIRE( s.data() == s2.data() );
         }
 
         SECTION( "Pointer values of substring refs should also match" ) {

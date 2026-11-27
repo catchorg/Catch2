@@ -36,6 +36,7 @@
 
 #include <cassert>
 #include <memory>
+#include <new>
 #include <ostream>
 #include <sstream>
 #include <string>

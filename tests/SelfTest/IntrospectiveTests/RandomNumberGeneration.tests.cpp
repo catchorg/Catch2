@@ -179,8 +179,7 @@ TEST_CASE( "uniform_integer_distribution can handle boolean unit ranges",
     CAPTURE( seed );
     Catch::SimplePcg32 pcg( seed );
 
-    // We check unitary ranges of 3 different values, min for type, max for
-    // type, some value in between just to make sure
+    // We check unitary ranges of true/false
     SECTION( "lowest value" ) {
         Catch::uniform_integer_distribution<bool> dist( false, false );
         CheckReturnValue( dist, pcg, false );

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2487" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="141" skipped="12" tests="2476" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -759,7 +759,7 @@ at Condition.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="JsonWriter/Calling writeObject will create an empty pair of braces" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter/Calling writeObject with key will create an object to write the value" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter/nesting objects" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="JsonWriter/Calling writeArray will create an empty pair of braces" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="JsonWriter/Calling writeArray will create an empty pair of brackets" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter/Calling writeArray creates array to write the values to" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter/Moved from JsonObjectWriter shall not insert superfluous brace" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="JsonWriter/Moved from JsonArrayWriter shall not insert superfluous bracket" time="{duration}" status="run"/>
@@ -962,9 +962,9 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/-a aborts after first failure" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/-x 2 aborts after two failures" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/-x must be numeric" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/wait-for-keypress" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/wait-for-keypress/Accepted options" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/wait-for-keypress/invalid options are reported" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/wait-for-keypress" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/wait-for-keypress/Accepted options" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/wait-for-keypress/invalid options are reported" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/nothrow" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/nothrow/-e" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/nothrow/--nothrow" time="{duration}" status="run"/>
@@ -973,12 +973,12 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/output filename/--out" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/combinations" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/combinations/Single character flags can be combined" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour/without option" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour/auto" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour/yes" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour/no" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour/error" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/colour-mode" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/colour-mode/without option" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/colour-mode/default" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/colour-mode/ansi" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/colour-mode/none" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/colour-mode/error" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/samples" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/samples must be greater than zero" time="{duration}" status="run"/>
@@ -1137,7 +1137,6 @@ at Matchers.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings/zero-based substring" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings/non-zero-based substring" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="StringRef/Substrings/Pointer values of full refs should match" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings/Pointer values of substring refs should also match" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings/Past the end substring" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings/Substring off the end are trimmed" time="{duration}" status="run"/>

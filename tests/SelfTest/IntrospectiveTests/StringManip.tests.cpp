@@ -55,7 +55,7 @@ TEST_CASE("replaceInPlace", "[string-manip]") {
     }
     SECTION("replace no chars") {
         CHECK_FALSE(Catch::replaceInPlace(letters, "x", "z"));
-        CHECK(letters == letters);
+        CHECK( letters == "abcdefcg" );
     }
     SECTION("no replace in already-replaced string") {
         SECTION("lengthening") {
@@ -83,6 +83,23 @@ TEST_CASE("splitString", "[string-manip]") {
     CHECK_THAT(splitStringRef("", ','), Equals(std::vector<StringRef>()));
     CHECK_THAT(splitStringRef("abc", ','), Equals(std::vector<StringRef>{"abc"}));
     CHECK_THAT(splitStringRef("abc,def", ','), Equals(std::vector<StringRef>{"abc", "def"}));
+}
+
+TEST_CASE( "Splitting preserves empty and single-character fields",
+           "[string-manip][approvals]" ) {
+    using namespace Catch::Matchers;
+    using Catch::splitStringRef;
+    using Catch::StringRef;
+    CHECK_THAT( splitStringRef( "a,b,c", ',' ),
+                Equals( std::vector<StringRef>{ "a", "b", "c" } ) );
+    CHECK_THAT( splitStringRef( "a,", ',' ),
+                Equals( std::vector<StringRef>{ "a", "" } ) );
+    CHECK_THAT( splitStringRef( ",a,,b,", ',' ),
+                Equals( std::vector<StringRef>{ "", "a", "", "b", "" } ) );
+    CHECK_THAT( splitStringRef( "a,,,b", ',' ),
+                Equals( std::vector<StringRef>{ "a", "", "", "b" } ) );
+    CHECK_THAT( splitStringRef( ",", ',' ),
+                Equals( std::vector<StringRef>{ "", "" } ) );
 }
 
 TEST_CASE("startsWith", "[string-manip]") {
